@@ -7,6 +7,7 @@ q:: Esc
 a:: Alt
 d:: Shift
 f:: Ctrl
+n:: Tab
 
 w:: WheelUp
 s:: WheelDown
@@ -39,6 +40,8 @@ k:: Down
 l:: Right
 
 
-Escape::
-ExitApp
-return
+; Enable to allow stopping the script
+
+; Escape::
+; ExitApp
+; return
