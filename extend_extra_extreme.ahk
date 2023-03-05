@@ -34,6 +34,11 @@ Return
 
 m::Click
 
+t:: MouseMove, 0, -100 , 0, R
+g:: MouseMove, 0, 20 , 0, R
+,:: MouseMove, -100, 0 , 0, R
+.::MouseMove, 20, 0 , 0, R
+
 i:: Up
 j:: Left
 k:: Down
