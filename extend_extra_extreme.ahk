@@ -34,17 +34,18 @@ Return
 
 m::Click
 
-t:: MouseMove, 0, -100 , 0, R
-g:: MouseMove, 0, 20 , 0, R
-,:: MouseMove, -100, 0 , 0, R
-.::MouseMove, 20, 0 , 0, R
+t:: MouseMove, 0   , -100 , 0, R
+g:: MouseMove, 0   , 20   , 0, R
+,:: MouseMove, -100, 0    , 0, R
+.:: MouseMove, 20  , 0    , 0, R
+<:: MouseMove, (A_ScreenWidth//2)  , (A_ScreenHeight//2)
 
 i:: Up
 j:: Left
 k:: Down
 l:: Right
 
-
+; TODO: add a button to center the cursor?          
 ; Enable to allow stopping the script
 
 ; Escape::
