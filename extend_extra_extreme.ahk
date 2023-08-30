@@ -1,13 +1,11 @@
 ﻿#Requires AutoHotkey v2.0
-
-
 ; [^ = Ctrl] [+ = Shift] [! = Alt] [# = Win]
 ; add macros to excecute scripts? something like that, can use extend layer to make macros that for example open upp bluetooth and turn it on...
 
 ; TODO: add a button to center the cursor? (DONE)
 ; TODO: add shortcuts to change between layers? (hold shift and press capslock for privacy layer?)
 ; Enable to allow stopping the script
-
+; show battery percentage
 
 ; TODO! able to write large text on screen.
 ; TODO! change between users in google chrome? useful because i will have a lot of chrome tab groups for different classes.
@@ -48,7 +46,7 @@ layerTwo := 0
 GUIPrivacyBox := Gui()
 GUIPrivacyBox.Opt("-Caption +AlwaysOnTop +Owner +LastFound")  ; +ToolWindow avoids a taskbar button and an alt-tab menu item.
 GUIPrivacyBox.BackColor := "Black"
-; Gui( %GUIPrivacyBox%: Color, Black)
+; Gui( %GUIPrivacyBox%: Color, Black)1
 ; Gui( %GUIPrivacyBox%: +AlwaysOnTop -Caption +ToolWindow)
 
 
@@ -62,10 +60,6 @@ Class Keyboard{
     GUILayerIndicator := "IndicatorGUI"
     Layer := 1
     IndicatorColor := ""
-
-
-
-    
 
     __New() {
 
@@ -89,14 +83,14 @@ Class Keyboard{
             {
                 This.GUILayerIndicator.Hide()
             }
-        ; This.Layer = 1 
+        this.Layer := 1 
         SetCapsLockState !GetKeyState("CapsLock", "T")
     }
 
     ToggleCapsLockStateSecondLayer(){
-    
-        SetCapsLockState !GetKeyState("CapsLock", "T")
 
+        SetCapsLockState !GetKeyState("CapsLock", "T")
+    
         if GetKeyState("CapsLock", "T") = 1
         {
             if (This.Layer == 1){
@@ -108,8 +102,6 @@ Class Keyboard{
                 This.Layer := 1
             }
 
-
-            
             This.GUILayerIndicator.BackColor := This.IndicatorColor
             guiHeight := A_ScreenHeight-142
             This.GUILayerIndicator.Show( Format("x0 y{1} w50 h142 NoActivate", guiHeight) )
@@ -129,17 +121,9 @@ Class Keyboard{
             This.GUILayerIndicator.Show( Format("x0 y{1} w50 h142 NoActivate", guiHeight) )
             SetCapsLockState true
         }
+
     }
 }
-
-; InstanceName:= New Keyboard
-
-; Keyboard.Prnt()
-
-; KeyboardInstance.ToggleCapsLockStateFirstLayer()
-; KeyboardInstance.ToggleCapsLockStateSecondLayer()
-
-; MsgBox ,,, Test
 
 
 ; O::{
@@ -151,14 +135,15 @@ Class Keyboard{
 ;     SetTimer (UserInput, Off)
 ; }
 
-+CapsLock:: KeyboardInstance.ToggleCapsLockStateSecondLayer()
 CapsLock:: KeyboardInstance.ToggleCapsLockStateFirstLayer()
++CapsLock:: KeyboardInstance.ToggleCapsLockStateSecondLayer()
 
 
-#Hotif GetKeyState("CapsLock","T") && KeyboardInstance.Layer == 1
+#HOTIF GetKeyState("CapsLock","T") && KeyboardInstance.Layer == 1
 
-    ; 1:: Run  %A_ScriptDir%\powerShellScripts\toggle-touch-screen.exe
-    ; 2:: Run  %A_ScriptDir%\powerShellScripts\toggle-hd-camera.exe
+    
+    1:: Run A_ComSpec Format(' /c {1}\powerShellScripts\toggle-touch-screen.exe" ', A_ScriptDir)
+    2:: Run A_ComSpec Format(' /c {1}\powerShellScripts\toggle-hd-camera.exe" ', A_ScriptDir) 
 
     q:: Esc
     å:: Esc
@@ -202,10 +187,10 @@ CapsLock:: KeyboardInstance.ToggleCapsLockStateFirstLayer()
     k:: Down
     l:: Right
 
-#Hotif
+#HOTIF
 
 
-#Hotif GetKeyState("CapsLock","T") && KeyboardInstance.Layer == 2 ; Start
+#HOTIF GetKeyState("CapsLock","T") && KeyboardInstance.Layer == 2 ; Start
 
     ; Hides screen
     A:: {
@@ -245,8 +230,7 @@ CapsLock:: KeyboardInstance.ToggleCapsLockStateFirstLayer()
         GUIPrivacyBox.Hide()
     }
 
-#Hotif ; End
-
+#HOTIF ; End
 
 ; UserInput:
 
@@ -266,7 +250,7 @@ CapsLock:: KeyboardInstance.ToggleCapsLockStateFirstLayer()
 ;     GuiControl, %GUIshowKeysPressed%: show,  KeysPressedText, % KeysPressed
 ; Return
 
-
-; ; Escape::
-; ; ExitApp
-; ; return
+; Escape::{
+;     ExitApp
+; }
+; return
