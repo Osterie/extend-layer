@@ -8,6 +8,17 @@
 ListLines, Off
 SetBatchLines, -1
 
+
+
+
+
+BlockInput, On
+Sleep, 5000
+BlockInput, Off
+
+
+
+
 ; TODO: maybe have a gui to show which keys to press to go to which url, can be integrated with the show class schedule gui (make it)
 
 ; ? maybe make a function to show / hide gui, since i often do it...
@@ -23,9 +34,9 @@ SetBatchLines, -1
 ; TODO! maybe have indicators to check if camera/tocuh screen is disabled, maybe image of camra and screen with green or red square under, can toggle gui.
 
 ; Runs AHK script as Admin, allows excecution scripts which require admin privilleges
-; SetWorkingDir %A_ScriptDir%
-; if not A_IsAdmin
-; 	Run *RunAs "%A_ScriptFullPath%" ; (A_AhkPath is usually optional if the script has the .ahk extension.) You would typically check  first.
+SetWorkingDir %A_ScriptDir%
+if not A_IsAdmin
+	Run *RunAs "%A_ScriptFullPath%" ; (A_AhkPath is usually optional if the script has the .ahk extension.) You would typically check  first.
 
 
 ; -----------Show Keys Pressed (make into function or something?) or class? class can have create method and destroy method idk...---------
@@ -211,10 +222,10 @@ CapsLock:: KeyboardInstance.ToggleCapsLockStateFirstLayer()
 
 #IF GetKeyState("CapsLock","T") && KeyboardInstance.Layer == 1
 
-    1:: Run  %A_ScriptDir%\toggle-touch-screen.exe
-    2:: Run  %A_ScriptDir%\toggle-hd-camera.exe
-    3:: Run  %A_ScriptDir%\toggle-bluetooth.exe
-    4:: Run  %A_ScriptDir%\toggle-touchpad.exe
+    1:: Run  %A_ScriptDir%\powerShellScripts\toggle-touch-screen.exe
+    2:: Run  %A_ScriptDir%\powerShellScripts\toggle-hd-camera.exe
+    3:: Run  %A_ScriptDir%\powerShellScripts\toggle-bluetooth.exe
+    4:: Run  %A_ScriptDir%\powerShellScripts\toggle-touchpad.exe
 
     q:: Esc
     å:: Esc
@@ -257,6 +268,19 @@ CapsLock:: KeyboardInstance.ToggleCapsLockStateFirstLayer()
 
 
 #IF GetKeyState("CapsLock","T") && KeyboardInstance.Layer == 2 ; Start
+
+    Esc::ExitApp
+
+    q::
+    BlockInput On
+    Suspend On
+    Return
+
+    $|::
+        Suspend Permit
+        BlockInput Off
+        Suspend Off
+    Return
 
     ; Go to study plan
     1:: Run, chrome.exe "https://tp.educloud.no/ntnu/timeplan/?type=student&&&week=34&weekTo=48&ar=2023&&id[]=38726&&"
@@ -331,4 +355,5 @@ CapsLock:: KeyboardInstance.ToggleCapsLockStateFirstLayer()
     Return
 
 #IF ; End
-return
+
+; return
