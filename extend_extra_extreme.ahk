@@ -273,12 +273,14 @@ CapsLock:: KeyboardInstance.ToggleCapsLockStateFirstLayer()
 
     q::
     BlockInput On
+    BlockInput, MouseMove
     Suspend On
     Return
 
     $|::
         Suspend Permit
         BlockInput Off
+        BlockInput, MouseMoveOff
         Suspend Off
     Return
 
