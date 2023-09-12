@@ -71,6 +71,114 @@ Class FirstKeyboardOverlay{
 
     IsVisible := false
 
+    CreateKeyboardOverlay(){
+ 
+        ; Changing this font size will resize the keyboard:
+        k_FontSize = 10
+        k_FontName = Verdana  ; This can be blank to use the system's default font.
+        k_FontStyle = Bold    ; Example of an alternative: Italic Underline
+        
+        ; Gui
+        Gui, GUISecondKeyboardOverlay: Font, s%k_FontSize% %k_FontStyle%, %k_FontName%
+        Gui, GUISecondKeyboardOverlay: +E0x20 -Caption +AlwaysOnTop -MaximizeBox +ToolWindow
+        
+        
+        ;---- Calculate object dimensions based on chosen font size:
+        k_KeyWidth := k_FontSize * 6
+        k_KeyHeight := k_FontSize * 3
+        
+        ; Spacing to be used between the keys.
+        k_KeyMargin := k_FontSize // 10
+        
+        
+        ; Only a facilitator for creating GUI.
+        k_KeySizeHelperRow = w%k_KeyWidth% h%k_KeyHeight%
+        k_PositionHelperRow = x+%k_KeyMargin% %k_KeySizeHelperRow%
+        
+        ;---- Calculate object dimensions based on chosen font size:
+        k_KeyWidthDestination := k_FontSize * 6
+        k_KeyHeightDestination := k_FontSize * 6
+        
+        ; Spacing to be used between the keys for destination row (second row probably).
+        ; Only a facilitator for creating GUI.
+        k_KeySizeDestination = w%k_KeyWidthDestination% h%k_KeyHeightDestination%
+        k_PositionDestinationRow = x+%k_KeyMargin% %k_KeySizeDestination%
+        
+        ;   The first row.
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 1
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 2
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 3
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 4
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 5
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 6 
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 7 
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 8 
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 9 
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 0
+        
+        ;   The second row.
+        Gui, GUISecondKeyboardOverlay: Add, Button, xm y+%k_KeyMargin% h%k_KeyHeight% w%k_PositionDestinationRow%, Time Table
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Black Board
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Prog 1
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Team
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Math
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Prog Num Sec
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Jupyter Hub
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 8 
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 9 
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 0
+        
+
+        return
+    }
+
+    Destroy(){
+        Gui, GUISecondKeyboardOverlay: Destroy
+
+    }
+
+    Show(){
+        ;---- Show the keyboard centered but not active (to maintain the current window's focus):
+        Gui, GUISecondKeyboardOverlay: Show, xCenter NoActivate, Virtual Keyboard View
+         
+        ;    Get the window's Width and Height through the GUI's name.
+        WinGetPos,,, k_WindowWidth, k_WindowHeight, Virtual Keyboard View
+         
+        ;---- Position the keyboard at the bottom of the screen while avoiding the taskbar:
+        SysGet, k_WorkArea, MonitorWorkArea, 1
+        
+        ; Calculate window's X-position:
+        k_WindowX = %k_WorkAreaRight%
+        k_WindowX -= %k_WorkAreaLeft%  ; Now k_WindowX contains the width of this monitor.
+        k_WindowX -= %k_WindowWidth%
+        k_WindowX /= 2  ; Calculate position to center it horizontally.
+        ; The following is done in case the window will be on a non-primary monitor
+        ; or if the taskbar is anchored on the left side of the screen:
+        k_WindowX += %k_WorkAreaLeft%
+        
+        ; Calculate window's Y-position:
+        k_WindowY = %k_WorkAreaBottom%
+        k_WindowY -= %k_WindowHeight%
+         
+        ;   Move the window to the bottom-center position of the monitor.
+        WinMove, Virtual Keyboard View,, %k_WindowX%, %k_WindowY%
+        this.IsVisible := true
+    }
+
+    Hide(){
+        Gui, GUISecondKeyboardOverlay: Hide
+        this.IsVisible := false
+    }
+
+    GetVisibility(){
+        return this.IsVisible
+    }
+}
+
+Class SecondKeyboardOverlay{
+
+    IsVisible := false
+
     BluetoothToggle := ""
     TouchPadToggle := ""
     TouchScreenToggle := ""
@@ -253,120 +361,91 @@ Class FirstKeyboardOverlay{
     }
 }
 
-Class SecondKeyboardOverlay{
 
-    IsVisible := false
+Class Monitor{
 
-    CreateKeyboardOverlay(){
- 
-        ; Changing this font size will resize the keyboard:
-        k_FontSize = 10
-        k_FontName = Verdana  ; This can be blank to use the system's default font.
-        k_FontStyle = Bold    ; Example of an alternative: Italic Underline
-        
-        ; Gui
-        Gui, GUISecondKeyboardOverlay: Font, s%k_FontSize% %k_FontStyle%, %k_FontName%
-        Gui, GUISecondKeyboardOverlay: +E0x20 -Caption +AlwaysOnTop -MaximizeBox +ToolWindow
-        
-        
-        ;---- Calculate object dimensions based on chosen font size:
-        k_KeyWidth := k_FontSize * 6
-        k_KeyHeight := k_FontSize * 3
-        
-        ; Spacing to be used between the keys.
-        k_KeyMargin := k_FontSize // 10
-        
-        
-        ; Only a facilitator for creating GUI.
-        k_KeySizeHelperRow = w%k_KeyWidth% h%k_KeyHeight%
-        k_PositionHelperRow = x+%k_KeyMargin% %k_KeySizeHelperRow%
-        
-        ;---- Calculate object dimensions based on chosen font size:
-        k_KeyWidthDestination := k_FontSize * 6
-        k_KeyHeightDestination := k_FontSize * 6
-        
-        ; Spacing to be used between the keys for destination row (second row probably).
-        ; Only a facilitator for creating GUI.
-        k_KeySizeDestination = w%k_KeyWidthDestination% h%k_KeyHeightDestination%
-        k_PositionDestinationRow = x+%k_KeyMargin% %k_KeySizeDestination%
-        
-        ;   The first row.
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 1
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 2
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 3
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 4
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 5
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 6 
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 7 
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 8 
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 9 
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 0
-        
-        ;   The second row.
-        Gui, GUISecondKeyboardOverlay: Add, Button, xm y+%k_KeyMargin% h%k_KeyHeight% w%k_PositionDestinationRow%, Time Table
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Black Board
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Prog 1
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Team
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Math
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Prog Num Sec
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Jupyter Hub
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 8 
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 9 
-        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 0
-        
-
-        return
+    SetBrightness( ByRef brightness := 50, timeout = 1 )
+    {
+        if ( brightness >= 0 && brightness <= 100 )
+        {
+            For property in ComObjGet( "winmgmts:\\.\root\WMI" ).ExecQuery( "SELECT * FROM WmiMonitorBrightnessMethods" )
+                property.WmiSetBrightness( timeout, brightness )	
+        }
+         else if ( brightness > 100 )
+         {
+             brightness := 100
+         }
+         else if ( brightness < 0 )
+         {
+             brightness := 0
+         }
+    }
+    
+    GetCurrentBrightness()
+    {
+        For property in ComObjGet( "winmgmts:\\.\root\WMI" ).ExecQuery( "SELECT * FROM WmiMonitorBrightness" )
+            currentBrightness := property.CurrentBrightness	
+    
+        return currentBrightness
+    }
+    
+    ; Each parameter takes values from 0 to 255
+    ; Change gamma of display, 0 dark, 128 normal, 255 bright
+    SetGamma(red, green, blue){
+        VarSetCapacity(gammaRamp, 512*3)
+        Loop,	256
+        {
+            If  (newRed:=(red+128)*(A_Index-1))>65535
+                 newRed:=65535
+            NumPut(newRed, gammaRamp, 2*(A_Index-1), "Ushort")
+    
+            If  (newGreen:=(green+128)*(A_Index-1))>65535
+                newGreen:=65535
+            NumPut(newGreen, gammaRamp,  512+2*(A_Index-1), "Ushort")
+            
+            If  (newBlue:=(blue+128)*(A_Index-1))>65535
+                newBlue:=65535
+            NumPut(newBlue, gammaRamp, 1024+2*(A_Index-1), "Ushort")
+        }
+        hDC := DllCall("GetDC", "Uint", 0)
+        DllCall("SetDeviceGammaRamp", "Uint", hDC, "Uint", &gammaRamp)
+        DllCall("ReleaseDC", "Uint", 0, "Uint", hDC)
     }
 
-    Destroy(){
-        Gui, GUISecondKeyboardOverlay: Destroy
+    GetCurrentGamma(){
+    
+        VarSetCapacity(gammaRamp, 1536, 0)
+        hDC := DllCall("user32\GetDC", Ptr,0, Ptr)
+        DllCall("gdi32\GetDeviceGammaRamp", Ptr,hDC, Ptr,&gammaRamp)
 
-    }
+        gammaRampList := []
+        gammaRampList["Red"]   := NumGet(gammaRamp,        2, "ushort") - 128
+        gammaRampList["Green"] := NumGet(gammaRamp,  512 + 2, "ushort") - 128
+        gammaRampList["Blue"]  := NumGet(gammaRamp, 1024 + 2, "ushort") - 128
+        Return gammaRampList
 
-    Show(){
-        ;---- Show the keyboard centered but not active (to maintain the current window's focus):
-        Gui, GUISecondKeyboardOverlay: Show, xCenter NoActivate, Virtual Keyboard View
-         
-        ;    Get the window's Width and Height through the GUI's name.
-        WinGetPos,,, k_WindowWidth, k_WindowHeight, Virtual Keyboard View
-         
-        ;---- Position the keyboard at the bottom of the screen while avoiding the taskbar:
-        SysGet, k_WorkArea, MonitorWorkArea, 1
-        
-        ; Calculate window's X-position:
-        k_WindowX = %k_WorkAreaRight%
-        k_WindowX -= %k_WorkAreaLeft%  ; Now k_WindowX contains the width of this monitor.
-        k_WindowX -= %k_WindowWidth%
-        k_WindowX /= 2  ; Calculate position to center it horizontally.
-        ; The following is done in case the window will be on a non-primary monitor
-        ; or if the taskbar is anchored on the left side of the screen:
-        k_WindowX += %k_WorkAreaLeft%
-        
-        ; Calculate window's Y-position:
-        k_WindowY = %k_WorkAreaBottom%
-        k_WindowY -= %k_WindowHeight%
-         
-        ;   Move the window to the bottom-center position of the monitor.
-        WinMove, Virtual Keyboard View,, %k_WindowX%, %k_WindowY%
-        this.IsVisible := true
-    }
 
-    Hide(){
-        Gui, GUISecondKeyboardOverlay: Hide
-        this.IsVisible := false
+        ; VarSetCapacity(vData, 1536, 0)
+        ; hDC := DllCall("user32\GetDC", Ptr,0, Ptr)
+        ; DllCall("gdi32\GetDeviceGammaRamp", Ptr,hDC, Ptr,&vData)
+        ; msgbox, % vData 
+        ; vColR := NumGet(vData, 2, "UShort") - 128
+        ; vColG := NumGet(vData, 512+2, "UShort") - 128
+        ; vColB := NumGet(vData, 1024+2, "UShort") - 128
+        ; DllCall("user32\ReleaseDC", Ptr,0, Ptr,hDC)
+        ; MsgBox, % Format("RGB: {:i},{:i},{:i}", vColR, vColG, vColB) ;e.g. RGB: 127,127,125
+        ; MsgBox, % Format("red: {:i}`r`n" "green: {:i}`r`n" "blue: {:i}", vColR, vColG, vColB)
+        ; return [vColR, vColG, cColB]
     }
-
-    GetVisibility(){
-        return this.IsVisible
-    }
+    
 }
 
 
-
-
-
+; ----------------------------------------------
 ; ----------- FUNCTIONS ------------------------
+; ----------------------------------------------
 
+; -----------WRITE ON SCREEN--------------------
 
 ValidateKeyPressed(key){
 
@@ -422,6 +501,8 @@ DisableHotKey(){
 		Hotkey, % "~*" A_LoopField, OnKeyPressed, off
 	}
 }
+
+; ------------LOGIN TO SITES----------------------
 
 LoginToBlackboard(url){
     Run, chrome.exe %url%

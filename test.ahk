@@ -1,23 +1,38 @@
-#Include Chrome.ahk
 
-; Create an instance of the Chrome class using
-; the folder ChromeProfile to store the user profile
-FileCreateDir, ChromeProfile
-ChromeInst := new Chrome("ChromeProfile")
+SetGamma(red, green, blue){
+    VarSetCapacity(gammaRamp, 512*3)
+    Loop,	256
+    {
+        If  (newRed:=(red+128)*(A_Index-1))>65535
+             newRed:=65535
+        NumPut(newRed, gammaRamp, 2*(A_Index-1), "Ushort")
 
-; Connect to the newly opened tab and navigate to another website
-; Note: If your first action is to navigate away, it may be just as
-; effective to provide the target URL when instantiating the Chrome class
-PageInstance := ChromeInst.GetPage()
-PageInstance.Call("Page.navigate", {"url": "https://autohotkey.com/"})
-PageInstance.WaitForLoad()
+        If  (newGreen:=(green+128)*(A_Index-1))>65535
+            newGreen:=65535
+        NumPut(newGreen, gammaRamp,  512+2*(A_Index-1), "Ushort")
+        
+        If  (newBlue:=(blue+128)*(A_Index-1))>65535
+            newBlue:=65535
+        NumPut(newBlue, gammaRamp, 1024+2*(A_Index-1), "Ushort")
+    }
+    hDC := DllCall("GetDC", "Uint", 0)
+    DllCall("SetDeviceGammaRamp", "Uint", hDC, "Uint", &gammaRamp)
+    DllCall("ReleaseDC", "Uint", 0, "Uint", hDC)
+}
+; SetGamma(128, 128, 128)
 
-; Execute some JavaScript
-PageInstance.Evaluate("alert('Hello World!');")
 
-; Close the browser (note: this closes *all* pages/tabs)
-PageInstance.Call("Browser.close")
-PageInstance.Disconnect()
 
-ExitApp
-return
+
+
+
+; u :: max brightns toggle for normal
+; j :: min brightness toggle for normal
+
+
+; i :: gamma min, toggle for normal
+; o :: gamma normal toggle for normal
+
+; k :: change gamma red
+; l :: change gamma green
+; ø :: change gamam blue

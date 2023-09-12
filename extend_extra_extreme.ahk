@@ -24,15 +24,15 @@ SetWorkingDir %A_ScriptDir%
 if not A_IsAdmin
 	Run *RunAs "%A_ScriptFullPath%" ; (A_AhkPath is usually optional if the script has the .ahk extension.) You would typically check  first.
 
-
-
 ; -------------- TO-DO LIST -------------------------
+
+; TODO: in lib.ahk, there are two very similiar classes, use inheritance or whatever, take arguments, do something to reuse code, ugly now
 
 ; TODO: scrape assignemtns and add to keyboard overlay? which also has link to it and color showing if it is completed or not
 
 ; TODO: connect/disconnect airpods,
 
-; TODO: show warning when computer gets too hot!! show temperature also
+;// Cant check battery temp TODO: show warning when computer gets too hot!! show temperature also
 
 ; TODO: set brightness to full, and set it to zero shortcut
 
@@ -142,6 +142,9 @@ FirstKeyboardOverlayInstance.CreateKeyboardOverlay()
 SecondKeyboardOverlayInstance := new SecondKeyboardOverlay()
 SecondKeyboardOverlayInstance.CreateKeyboardOverlay()
 
+MonitorInstance := new Monitor()
+
+
 
 CapsLock:: 
     KeyboardInstance.ToggleCapsLockStateFirstLayer()
@@ -178,30 +181,58 @@ Return
         FirstKeyboardOverlayInstance.Hide()
     return
 
-    +1:: 
-        FirstKeyboardOverlayInstance.ChangeState("Touch-Screen")
-        FirstKeyboardOverlayInstance.Show()
-        RunWait, %A_ScriptDir%\powerShellScripts\toggle-touch-screen.exe
-        
+
+    ; Go to study plan (from current week to end of first semester currently)
+    +1::
+        Run, chrome.exe "https://tp.educloud.no/ntnu/timeplan/?&type=student&weekTo=52&ar=2023&&&id[]=38136"
     Return
 
+    ; Go to blackboard
     +2:: 
-        RunWait  %A_ScriptDir%\powerShellScripts\toggle-hd-camera.exe
-        FirstKeyboardOverlayInstance.ChangeState("Camera")
-        FirstKeyboardOverlayInstance.Show()
+        Run, chrome.exe "https://ntnu.blackboard.com/ultra/course"
+        Sleep, 4000
     Return
-
+    ; Go to programming 1
     +3:: 
-        RunWait  %A_ScriptDir%\powerShellScripts\toggle-bluetooth.exe
-        FirstKeyboardOverlayInstance.ChangeState("Bluetooth")
-        FirstKeyboardOverlayInstance.Show()
+        LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_39969_1/cl/outline")
     Return
 
+    ; Go to team class
     +4:: 
-        RunWait  %A_ScriptDir%\powerShellScripts\toggle-touchpad.exe
-        FirstKeyboardOverlayInstance.ChangeState("Touchpad")
-        FirstKeyboardOverlayInstance.Show()
+        LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_39995_1/cl/outline")
     Return
+
+    ; Go to Math
+    +5:: 
+        LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_44996_1/cl/outline")
+    Return
+    
+    ; Go to programming and numeric safety stuff...
+    +6:: 
+        LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_43055_1/cl/outline")
+    Return
+
+    ; Go to jupyterhub
+    +7:: 
+        Run, chrome.exe "https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab"
+        Sleep, 2000
+        LoginToJupyterHub()
+    Return
+
+    ; Shows gui which can be written in to help classmates/colleagues or whatever
+    ^0:: 
+        toggleKeysGUI = % !toggleKeysGUI
+        if (toggleKeysGUI){
+            CreateHotkey()
+            Gui, GUIshowKeysPressed: Show 
+        }
+        else {
+            DisableHotKey()
+            KeysPressed = % ""
+            GuiControl, GUIshowKeysPressed:, KeysPressedText, % KeysPressed
+            Gui, GUIshowKeysPressed: Hide
+        }
+    Return   
 
     q:: Esc
     å:: Esc
@@ -255,58 +286,26 @@ Return
         SecondKeyboardOverlayInstance.Hide()
     return
 
-    ; Go to study plan (from current week to end of first semester currently)
-    +1::
-        Run, chrome.exe "https://tp.educloud.no/ntnu/timeplan/?&type=student&weekTo=52&ar=2023&&&id[]=38136"
+    +1:: 
+        FirstKeyboardOverlayInstance.ChangeState("Touch-Screen")
+        RunWait, %A_ScriptDir%\powerShellScripts\toggle-touch-screen.exe
+        
     Return
 
-    ; Go to blackboard
     +2:: 
-        Run, chrome.exe "https://ntnu.blackboard.com/ultra/course"
-        Sleep, 4000
+        RunWait  %A_ScriptDir%\powerShellScripts\toggle-hd-camera.exe
+        FirstKeyboardOverlayInstance.ChangeState("Camera")
     Return
-    ; Go to programming 1
+
     +3:: 
-        LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_39969_1/cl/outline")
+        RunWait  %A_ScriptDir%\powerShellScripts\toggle-bluetooth.exe
+        FirstKeyboardOverlayInstance.ChangeState("Bluetooth")
     Return
 
-    ; Go to team class
     +4:: 
-        LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_39995_1/cl/outline")
+        RunWait  %A_ScriptDir%\powerShellScripts\toggle-touchpad.exe
+        FirstKeyboardOverlayInstance.ChangeState("Touchpad")
     Return
-
-    ; Go to Math
-    +5:: 
-        LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_44996_1/cl/outline")
-    Return
-    
-    ; Go to programming and numeric safety stuff...
-    +6:: 
-        LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_43055_1/cl/outline")
-    Return
-
-    ; Go to jupyterhub
-    +7:: 
-        Run, chrome.exe "https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab"
-        Sleep, 2000
-        LoginToJupyterHub()
-    Return
-
-    
-    ; Shows gui which can be written in to help classmates/colleagues or whatever
-    ^0:: 
-        toggleKeysGUI = % !toggleKeysGUI
-        if (toggleKeysGUI){
-            CreateHotkey()
-            Gui, GUIshowKeysPressed: Show 
-        }
-        else {
-            DisableHotKey()
-            KeysPressed = % ""
-            GuiControl, GUIshowKeysPressed:, KeysPressedText, % KeysPressed
-            Gui, GUIshowKeysPressed: Hide
-        }
-    Return    
     
     ; Hides screen
     A::
@@ -358,6 +357,51 @@ Return
         BlockInput, MouseMoveOff
         Suspend Off
     Return
+
+
+
+    ; u :: max brightns toggle for normal
+    ; j :: min brightness toggle for normal
+
+    u:: MonitorInstance.SetBrightness(100)
+    j:: MonitorInstance.SetBrightness(0)
+
+    i:: 
+        gammaRamp := MonitorInstance.GetCurrentGamma()
+        red := gammaRamp["Red"]
+        green := gammaRamp["Green"]
+        blue := gammaRamp["Blue"]
+
+        if ( (red + green + blue) == 0 ){
+            MonitorInstance.SetGamma(128, 128, 128)
+        }
+        else{
+            MonitorInstance.SetGamma(0, 0, 0)
+        }
+    Return
+
+    o:: 
+        gammaRamp := MonitorInstance.GetCurrentGamma()
+        red := gammaRamp["Red"]
+        green := gammaRamp["Green"]
+        blue := gammaRamp["Blue"]
+
+        if ( (red + green + blue) < 255*3 ){
+            MonitorInstance.SetGamma(255, 255, 255) 
+        }
+        else{
+            MonitorInstance.SetGamma(128, 128, 128)
+        }
+    Return
+
+
+
+; i :: gamma min, toggle for normal
+; o :: gamma max toggle for normal
+
+; k :: change gamma red
+; l :: change gamma green
+; ø :: change gamam blue
 
     Esc::ExitApp
 
