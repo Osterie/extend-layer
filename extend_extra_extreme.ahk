@@ -257,42 +257,38 @@ Return
 
     ; Go to study plan (from current week to end of first semester currently)
     +1::
-        CurrentWeek := SubStr(A_YWeek, -1)
-        Run, chrome.exe "https://tp.educloud.no/ntnu/timeplan/?type=student&&&week="%CurrentWeek%"&weekTo=48&ar=2023&&id[]=38726&&"
-        LoginToBlackboard()
+        Run, chrome.exe "https://tp.educloud.no/ntnu/timeplan/?&type=student&weekTo=52&ar=2023&&&id[]=38136"
     Return
 
     ; Go to blackboard
     +2:: 
         Run, chrome.exe "https://ntnu.blackboard.com/ultra/course"
+        Sleep, 4000
     Return
     ; Go to programming 1
     +3:: 
-        Run, chrome.exe "https://ntnu.blackboard.com/ultra/courses/_39969_1/cl/outline"
-        LoginToBlackboard()
+        LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_39969_1/cl/outline")
     Return
 
     ; Go to team class
     +4:: 
-        Run, chrome.exe "https://ntnu.blackboard.com/ultra/courses/_39995_1/cl/outline"
-        LoginToBlackboard()
+        LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_39995_1/cl/outline")
     Return
 
     ; Go to Math
     +5:: 
-        Run, chrome.exe "https://ntnu.blackboard.com/ultra/courses/_44996_1/cl/outline"
-        LoginToBlackboard()
+        LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_44996_1/cl/outline")
     Return
     
     ; Go to programming and numeric safety stuff...
     +6:: 
-        Run, chrome.exe "https://ntnu.blackboard.com/ultra/courses/_43055_1/cl/outline"
-        LoginToBlackboard()
+        LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_43055_1/cl/outline")
     Return
 
     ; Go to jupyterhub
     +7:: 
         Run, chrome.exe "https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab"
+        Sleep, 2000
         LoginToJupyterHub()
     Return
 

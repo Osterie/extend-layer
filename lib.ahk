@@ -423,7 +423,10 @@ DisableHotKey(){
 	}
 }
 
-LoginToBlackboard(){
+LoginToBlackboard(url){
+    Run, chrome.exe %url%
+    
+    Sleep, 4000
     ImageSearch, MouseX, MouseY, 0, 0, A_ScreenWidth, A_ScreenHeight, %A_ScriptDir%\imageSearchImages\feideBlackboardMaximized.png
     if (ErrorLevel = 1){
         ; MsgBox Icon could not be found on the screen.
@@ -435,10 +438,16 @@ LoginToBlackboard(){
 
         else{
             MouseClick, left, MouseX, MouseY
+            Send, ^l
+            Send, %url%
+            Send {Enter}
         }
     }
     else{
         MouseClick, left, MouseX, MouseY
+        Send, ^l
+        Send, %url%
+        Send {Enter}
     }
 }
 
