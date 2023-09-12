@@ -19,7 +19,7 @@ SetGamma(red, green, blue){
     DllCall("SetDeviceGammaRamp", "Uint", hDC, "Uint", &gammaRamp)
     DllCall("ReleaseDC", "Uint", 0, "Uint", hDC)
 }
-; SetGamma(128, 128, 128)
+SetGamma(0, 0, 0)
 
 
 

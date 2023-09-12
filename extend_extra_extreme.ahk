@@ -26,6 +26,8 @@ if not A_IsAdmin
 
 ; -------------- TO-DO LIST -------------------------
 
+
+
 ; TODO: in lib.ahk, there are two very similiar classes, use inheritance or whatever, take arguments, do something to reuse code, ugly now
 
 ; TODO: scrape assignemtns and add to keyboard overlay? which also has link to it and color showing if it is completed or not
@@ -55,6 +57,8 @@ if not A_IsAdmin
 
 ; TODO: maybe have a gui to show which keys to press to go to which url
 
+; TODO: automatically slowly change gamma values for fun...
+
 ; ? maybe make a function to show / hide gui, since i often do it...
 
 ; TODO: Mute all windowes except spotify?.
@@ -65,20 +69,8 @@ if not A_IsAdmin
 ; TODO! maybe have indicators to check if camera/tocuh screen is disabled, maybe image of camra and screen with green or red square under, can toggle gui.
 
 
-; CreateFirstKeyboardOverlay()
-
 ; -----------Show Keys Pressed (make into function or something?) or class? class can have create method and destroy method idk...---------
 ;------------- Second layer ctrl + 0 (^0) shortcut, shows a gui which can be written text into.------------
-
-; Enumerate Query
-; for device in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_PnPEntity")
-;     {	
-;         If InStr(device.manufacturer, "USB" )
-;             list .= device.name "`t`t`t" device.manufacturer  "`n"
-        
-;     }
-;     MsgBox, %list%
-
 
 
 KeysPressed := ""
@@ -143,7 +135,6 @@ SecondKeyboardOverlayInstance := new SecondKeyboardOverlay()
 SecondKeyboardOverlayInstance.CreateKeyboardOverlay()
 
 MonitorInstance := new Monitor()
-
 
 
 CapsLock:: 
@@ -287,24 +278,24 @@ Return
     return
 
     +1:: 
-        FirstKeyboardOverlayInstance.ChangeState("Touch-Screen")
+        SecondKeyboardOverlayInstance.ChangeState("Touch-Screen")
         RunWait, %A_ScriptDir%\powerShellScripts\toggle-touch-screen.exe
         
     Return
 
     +2:: 
+        SecondKeyboardOverlayInstance.ChangeState("Camera")
         RunWait  %A_ScriptDir%\powerShellScripts\toggle-hd-camera.exe
-        FirstKeyboardOverlayInstance.ChangeState("Camera")
     Return
 
     +3:: 
+        SecondKeyboardOverlayInstance.ChangeState("Bluetooth")
         RunWait  %A_ScriptDir%\powerShellScripts\toggle-bluetooth.exe
-        FirstKeyboardOverlayInstance.ChangeState("Bluetooth")
     Return
 
     +4:: 
+        SecondKeyboardOverlayInstance.ChangeState("Touchpad")
         RunWait  %A_ScriptDir%\powerShellScripts\toggle-touchpad.exe
-        FirstKeyboardOverlayInstance.ChangeState("Touchpad")
     Return
     
     ; Hides screen
@@ -359,10 +350,6 @@ Return
     Return
 
 
-
-    ; u :: max brightns toggle for normal
-    ; j :: min brightness toggle for normal
-
     u:: 
         brightness := MonitorInstance.GetCurrentBrightness()
         if (brightness == 100){
@@ -411,15 +398,36 @@ Return
         }
     Return
 
+    k::
+        gammaRamp := MonitorInstance.GetCurrentGamma()
+        red := gammaRamp["Red"]
+        red := CycleColorValue(red)
+        green := gammaRamp["Green"]
+        blue := gammaRamp["Blue"]
 
+        MonitorInstance.SetGamma(red, green, blue)
+    Return
 
-; i :: gamma min, toggle for normal
-; o :: gamma max toggle for normal
+    l::
+        gammaRamp := MonitorInstance.GetCurrentGamma()
+        red := gammaRamp["Red"]
+        green := gammaRamp["Green"]
+        green := CycleColorValue(green)
+        blue := gammaRamp["Blue"]
 
-; k :: change gamma red
-; l :: change gamma green
-; ø :: change gamam blue
+        MonitorInstance.SetGamma(red, green, blue)
+    Return
+    
+    ø::
+        gammaRamp := MonitorInstance.GetCurrentGamma()
+        red := gammaRamp["Red"]
+        green := gammaRamp["Green"]
+        blue := gammaRamp["Blue"]
+        blue := CycleColorValue(blue)
+
+        MonitorInstance.SetGamma(red, green, blue)
+    Return
 
     Esc::ExitApp
 
-#IF ; End
+#IF ; End:)
