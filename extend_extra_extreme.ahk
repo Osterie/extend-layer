@@ -363,8 +363,25 @@ Return
     ; u :: max brightns toggle for normal
     ; j :: min brightness toggle for normal
 
-    u:: MonitorInstance.SetBrightness(100)
-    j:: MonitorInstance.SetBrightness(0)
+    u:: 
+        brightness := MonitorInstance.GetCurrentBrightness()
+        if (brightness == 100){
+            MonitorInstance.SetBrightness(50)
+        }
+        else{
+            MonitorInstance.SetBrightness(100)
+        }
+    Return
+
+    j:: 
+        brightness := MonitorInstance.GetCurrentBrightness()
+        if (brightness == 0){
+            MonitorInstance.SetBrightness(50)
+        }
+        else{
+            MonitorInstance.SetBrightness(0)
+        }
+    Return
 
     i:: 
         gammaRamp := MonitorInstance.GetCurrentGamma()

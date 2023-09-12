@@ -422,22 +422,10 @@ Class Monitor{
         gammaRampList["Red"]   := NumGet(gammaRamp,        2, "ushort") - 128
         gammaRampList["Green"] := NumGet(gammaRamp,  512 + 2, "ushort") - 128
         gammaRampList["Blue"]  := NumGet(gammaRamp, 1024 + 2, "ushort") - 128
+
         Return gammaRampList
 
-
-        ; VarSetCapacity(vData, 1536, 0)
-        ; hDC := DllCall("user32\GetDC", Ptr,0, Ptr)
-        ; DllCall("gdi32\GetDeviceGammaRamp", Ptr,hDC, Ptr,&vData)
-        ; msgbox, % vData 
-        ; vColR := NumGet(vData, 2, "UShort") - 128
-        ; vColG := NumGet(vData, 512+2, "UShort") - 128
-        ; vColB := NumGet(vData, 1024+2, "UShort") - 128
-        ; DllCall("user32\ReleaseDC", Ptr,0, Ptr,hDC)
-        ; MsgBox, % Format("RGB: {:i},{:i},{:i}", vColR, vColG, vColB) ;e.g. RGB: 127,127,125
-        ; MsgBox, % Format("red: {:i}`r`n" "green: {:i}`r`n" "blue: {:i}", vColR, vColG, vColB)
-        ; return [vColR, vColG, cColB]
     }
-    
 }
 
 
