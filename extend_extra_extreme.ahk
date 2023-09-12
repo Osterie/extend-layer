@@ -1,31 +1,62 @@
-﻿#Requires AutoHotkey v1.1.36.02
-; [^ = Ctrl] [+ = Shift] [! = Alt] [# = WinK]
+﻿; [^ = Ctrl] [+ = Shift] [! = Alt] [# = WinK]
+#Requires AutoHotkey v1.1.36.02
+#Include lib.ahk
+
+;---------------------- OPTIMIZATIONS ------------------
 
 #NoEnv
-#SingleInstance force
-#MaxHotkeysPerInterval 200
+#MaxHotkeysPerInterval 99000000
+#HotkeyInterval 99000000
 #KeyHistory 0
-ListLines, Off
+ListLines Off
+Process, Priority, , A
 SetBatchLines, -1
+SetKeyDelay, -1, -1
+SetMouseDelay, -1
+SetDefaultMouseSpeed, 0
+SetWinDelay, -1
+SetControlDelay, -1
+DllCall("ntdll\ZwSetTimerResolution","Int",5000,"Int",1,"Int*",MyCurrentTimerResolution) ;setting the Windows Timer Resolution to 0.5ms, THIS IS A GLOBAL CHANGE
+
+;--------------------- Runs AHK script as Admin, allows excecution scripts which require admin privilleges -------------------
+
+SetWorkingDir %A_ScriptDir%
+if not A_IsAdmin
+	Run *RunAs "%A_ScriptFullPath%" ; (A_AhkPath is usually optional if the script has the .ahk extension.) You would typically check  first.
 
 
 
+; -------------- TO-DO LIST -------------------------
 
+; TODO: scrape assignemtns and add to keyboard overlay? which also has link to it and color showing if it is completed or not
 
-BlockInput, On
-Sleep, 5000
-BlockInput, Off
+; TODO: connect/disconnect airpods,
 
+; TODO: show warning when computer gets too hot!! show temperature also
 
+; TODO: set brightness to full, and set it to zero shortcut
 
+; TODO: change background of the keyboard overlay keys for disabling/enabling to have green/red background based on if it is on or off
+; TODO: keyboard overlay for disabling/enabling devices should maybe use images instead of text?
 
-; TODO: maybe have a gui to show which keys to press to go to which url, can be integrated with the show class schedule gui (make it)
+; TODO: i believe the promt which apperas when a powerhsell script runs can be hidden
+
+; TODO: the url to the schedule can be changed to "from the current week to week 48" so i dont have to scroll
+
+; TODO when screen darkened show battery percentage and maybe a countdown to sleep? maybe even make sleep impossible when screen darkened
+; TODO make it possible to switch performance mode, add gui to show current mode, auto switch for screen darkner and such
+
+; WinKill, "C:\Users\adria\github\extend-layer\secondLayerKeyboardOverlay.ahk"
+
+; TODO: both first and second layer use keys to run scripts/go to urls, have a overlay keyboard for each to show which keys do what
+; At the same time, the keys can change color for the "Deactivate/Activate" shortcuts.
+
+; TODO: Create functions in lib.ahk
+
+; TODO: maybe have a gui to show which keys to press to go to which url
 
 ; ? maybe make a function to show / hide gui, since i often do it...
 
-; TODO: add shortcuts to change between layers? (hold shift and press capslock for privacy layer?)
-; TODO: Create second script which can stop extend_extra_extreme.ahk and also run it. (as Admin!)
-; TODO: show battery percentage
 ; TODO: Mute all windowes except spotify?.
 
 ; make it harder to switch layer if a certain button is pressed? (locks layer and requires a key combination to disable the layer)
@@ -33,13 +64,22 @@ BlockInput, Off
 ; TODO! shortcut auto open and login to blackboard, maybe use c# to do the logging and ahk to launch script?
 ; TODO! maybe have indicators to check if camera/tocuh screen is disabled, maybe image of camra and screen with green or red square under, can toggle gui.
 
-; Runs AHK script as Admin, allows excecution scripts which require admin privilleges
-SetWorkingDir %A_ScriptDir%
-if not A_IsAdmin
-	Run *RunAs "%A_ScriptFullPath%" ; (A_AhkPath is usually optional if the script has the .ahk extension.) You would typically check  first.
 
+; CreateFirstKeyboardOverlay()
 
 ; -----------Show Keys Pressed (make into function or something?) or class? class can have create method and destroy method idk...---------
+;------------- Second layer ctrl + 0 (^0) shortcut, shows a gui which can be written text into.------------
+
+; Enumerate Query
+; for device in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_PnPEntity")
+;     {	
+;         If InStr(device.manufacturer, "USB" )
+;             list .= device.name "`t`t`t" device.manufacturer  "`n"
+        
+;     }
+;     MsgBox, %list%
+
+
 
 KeysPressed := ""
 toggleKeysGUI := 0
@@ -50,7 +90,6 @@ Gui, GUIshowKeysPressed: Color, EEAA99
 Gui, GUIshowKeysPressed: Font, s20 w70 q4, Times New Roman
 Gui, GUIshowKeysPressed: add, Text, w890  h300 vKeysPressedText, %KeysPressed%
 
-; -----------Keyboard layers---------
 
 #IF
 	OnKeyPressed:
@@ -86,61 +125,7 @@ Gui, GUIshowKeysPressed: add, Text, w890  h300 vKeysPressedText, %KeysPressed%
 
 #IF
 
-ValidateKeyPressed(key){
-
-    key = % StrReplace(key, "*", "")
-    key = % StrReplace(key, "~", "")
-
-    if (key == "Space"){
-        key = % A_Space
-    }
-    else if (key == "BackSpace" && GetKeyState("Ctrl") ) {
-        key = % "ctrl + backspace"
-    }
-    else if (key == "BackSpace"){
-        ; key = % A_Space
-        key = % "backspace"
-    }
-    if ( GetKeyState("Shift") ){
-        StringUpper, key, key
-    }
-    else{
-        StringLower, key, key
-    }
-
-    return key
-}
-
-CreateHotkey() {
-	Loop, 95
-	{
-		k := Chr(A_Index + 31)
-		k := (k = " ") ? "Space" : k
-		Hotkey, % "~*" k, OnKeyPressed, on
-	}
-
-	Otherkeys := "Enter|BackSpace|ø|å|æ"
-    Loop, parse, Otherkeys, |
-	{
-		Hotkey, % "~*" A_LoopField, OnKeyPressed, on
-	}
-}
-
-DisableHotKey(){
-	Loop, 95
-	{
-		k := Chr(A_Index + 31)
-		k := (k = " ") ? "Space" : k
-		Hotkey, % "~*" k, OnKeyPressed, off
-	}
-
-	Otherkeys := "Enter|BackSpace|ø|å|æ"
-    Loop, parse, Otherkeys, |
-	{
-		Hotkey, % "~*" A_LoopField, OnKeyPressed, off
-	}
-}
-
+; -----------Keyboard layers---------
 
 Gui, GUIPrivacyBox: new
 Gui, GUIPrivacyBox: +AlwaysOnTop -Caption +ToolWindow
@@ -148,84 +133,75 @@ Gui, GUIPrivacyBox: Color, Black
 
 ; ----------------------------------
 
-Class Keyboard{
-
-    Layer := 1
-    IndicatorColor := ""
-
-    __New() {
-
-        Gui, GUILayerIndicator: new
-        Gui, GUILayerIndicator: +AlwaysOnTop -Caption +ToolWindow
-    }
-
-    ToggleCapsLockStateFirstLayer(){
-
-        if GetKeyState("CapsLock", "T") = 0
-            {
-                Gui, GUILayerIndicator: Color, Green
-                guiHeight := A_ScreenHeight-142
-                Gui, GUILayerIndicator: Show, x0 y%guiHeight% w50 h142 NoActivate
-            }
-    
-        else if (GetKeyState("CapsLock", "T") = 1)
-            {
-                Gui, GUILayerIndicator: Hide
-            }
-        this.Layer := 1 
-        SetCapsLockState % !GetKeyState("CapsLock", "T")
-    }
-
-    ToggleCapsLockStateSecondLayer(){
-
-        SetCapsLockState % !GetKeyState("CapsLock", "T")
-    
-        if GetKeyState("CapsLock", "T") = 1
-        {
-            if (This.Layer == 1){
-                This.IndicatorColor := "Red"
-                This.Layer := 2
-            }
-            else if (This.Layer == 2){
-                This.IndicatorColor := "Green"
-                This.Layer := 1
-            }
-
-
-            Gui, GUILayerIndicator: Color, % This.IndicatorColor
-            guiHeight := A_ScreenHeight-142
-            Gui, GUILayerIndicator: Show, x0 y%guiHeight% w50 h142 NoActivate
-        }
-        else if GetKeyState("CapsLock", "T") = 0
-        {
-            if (This.Layer == 1){
-                This.IndicatorColor := "Red"
-                This.Layer := 2
-            }
-            else if (This.Layer == 2){
-                This.IndicatorColor := "Green"
-                This.Layer := 1
-            }
-
-            Gui, GUILayerIndicator: Color, % This.IndicatorColor
-            guiHeight := A_ScreenHeight-142
-            Gui, GUILayerIndicator: Show, x0 y%guiHeight% w50 h142 NoActivate
-            SetCapsLockState on
-        }
-    }
-}
 
 KeyboardInstance := new Keyboard()
 
-CapsLock:: KeyboardInstance.ToggleCapsLockStateFirstLayer()
-+CapsLock:: KeyboardInstance.ToggleCapsLockStateSecondLayer()
+FirstKeyboardOverlayInstance := new FirstKeyboardOverlay()
+FirstKeyboardOverlayInstance.CreateKeyboardOverlay()
+
+SecondKeyboardOverlayInstance := new SecondKeyboardOverlay()
+SecondKeyboardOverlayInstance.CreateKeyboardOverlay()
+
+
+CapsLock:: 
+    KeyboardInstance.ToggleCapsLockStateFirstLayer()
+Return
+
+
++CapsLock:: 
+    KeyboardInstance.ToggleCapsLockStateSecondLayer()
+
+    if (FirstKeyboardOverlayInstance.GetVisibility() == true){
+        FirstKeyboardOverlayInstance.Hide()
+        SecondKeyboardOverlayInstance.Show()
+
+    }
+    else if (SecondKeyboardOverlayInstance.GetVisibility() == true){
+        SecondKeyboardOverlayInstance.Hide()
+        FirstKeyboardOverlayInstance.Show()
+
+    }
+    
+Return
+
 
 #IF GetKeyState("CapsLock","T") && KeyboardInstance.Layer == 1
 
-    1:: Run  %A_ScriptDir%\powerShellScripts\toggle-touch-screen.exe
-    2:: Run  %A_ScriptDir%\powerShellScripts\toggle-hd-camera.exe
-    3:: Run  %A_ScriptDir%\powerShellScripts\toggle-bluetooth.exe
-    4:: Run  %A_ScriptDir%\powerShellScripts\toggle-touchpad.exe
+    ; !FIXME! since shift is used to change layers, this will show the gui ghost layer unwanted, change the key or something! 
+    ~Shift:: 
+        FirstKeyboardOverlayInstance.Show()
+        keywait, Shift
+    return
+
+    Shift up:: 
+        SecondKeyboardOverlayInstance.Hide()
+        FirstKeyboardOverlayInstance.Hide()
+    return
+
+    +1:: 
+        FirstKeyboardOverlayInstance.ChangeState("Touch-Screen")
+        FirstKeyboardOverlayInstance.Show()
+        RunWait, %A_ScriptDir%\powerShellScripts\toggle-touch-screen.exe
+        
+    Return
+
+    +2:: 
+        RunWait  %A_ScriptDir%\powerShellScripts\toggle-hd-camera.exe
+        FirstKeyboardOverlayInstance.ChangeState("Camera")
+        FirstKeyboardOverlayInstance.Show()
+    Return
+
+    +3:: 
+        RunWait  %A_ScriptDir%\powerShellScripts\toggle-bluetooth.exe
+        FirstKeyboardOverlayInstance.ChangeState("Bluetooth")
+        FirstKeyboardOverlayInstance.Show()
+    Return
+
+    +4:: 
+        RunWait  %A_ScriptDir%\powerShellScripts\toggle-touchpad.exe
+        FirstKeyboardOverlayInstance.ChangeState("Touchpad")
+        FirstKeyboardOverlayInstance.Show()
+    Return
 
     q:: Esc
     å:: Esc
@@ -269,42 +245,59 @@ CapsLock:: KeyboardInstance.ToggleCapsLockStateFirstLayer()
 
 #IF GetKeyState("CapsLock","T") && KeyboardInstance.Layer == 2 ; Start
 
-    Esc::ExitApp
+    ~Shift:: 
+        SecondKeyboardOverlayInstance.Show()
+        keywait, Shift
+    return
 
-    q::
-    BlockInput On
-    BlockInput, MouseMove
-    Suspend On
+    Shift up:: 
+        FirstKeyboardOverlayInstance.Hide()
+        SecondKeyboardOverlayInstance.Hide()
+    return
+
+    ; Go to study plan (from current week to end of first semester currently)
+    +1::
+        CurrentWeek := SubStr(A_YWeek, -1)
+        Run, chrome.exe "https://tp.educloud.no/ntnu/timeplan/?type=student&&&week="%CurrentWeek%"&weekTo=48&ar=2023&&id[]=38726&&"
+        LoginToBlackboard()
     Return
-
-    $|::
-        Suspend Permit
-        BlockInput Off
-        BlockInput, MouseMoveOff
-        Suspend Off
-    Return
-
-    ; Go to study plan
-    1:: Run, chrome.exe "https://tp.educloud.no/ntnu/timeplan/?type=student&&&week=34&weekTo=48&ar=2023&&id[]=38726&&"
 
     ; Go to blackboard
-    2:: Run, chrome.exe "https://ntnu.blackboard.com/ultra/course"
-
+    +2:: 
+        Run, chrome.exe "https://ntnu.blackboard.com/ultra/course"
+    Return
     ; Go to programming 1
-    3:: Run, chrome.exe "https://ntnu.blackboard.com/ultra/courses/_39969_1/cl/outline"
+    +3:: 
+        Run, chrome.exe "https://ntnu.blackboard.com/ultra/courses/_39969_1/cl/outline"
+        LoginToBlackboard()
+    Return
 
     ; Go to team class
-    4:: Run, chrome.exe "https://ntnu.blackboard.com/ultra/courses/_39995_1/cl/outline"
+    +4:: 
+        Run, chrome.exe "https://ntnu.blackboard.com/ultra/courses/_39995_1/cl/outline"
+        LoginToBlackboard()
+    Return
 
     ; Go to Math
-    5:: Run, chrome.exe "https://ntnu.blackboard.com/ultra/courses/_44996_1/cl/outline"
-
+    +5:: 
+        Run, chrome.exe "https://ntnu.blackboard.com/ultra/courses/_44996_1/cl/outline"
+        LoginToBlackboard()
+    Return
+    
     ; Go to programming and numeric safety stuff...
-    6:: Run, chrome.exe "https://ntnu.blackboard.com/ultra/courses/_43055_1/cl/outline"
+    +6:: 
+        Run, chrome.exe "https://ntnu.blackboard.com/ultra/courses/_43055_1/cl/outline"
+        LoginToBlackboard()
+    Return
 
     ; Go to jupyterhub
-    7:: Run, chrome.exe "https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab"
+    +7:: 
+        Run, chrome.exe "https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab"
+        LoginToJupyterHub()
+    Return
 
+    
+    ; Shows gui which can be written in to help classmates/colleagues or whatever
     ^0:: 
         toggleKeysGUI = % !toggleKeysGUI
         if (toggleKeysGUI){
@@ -316,7 +309,6 @@ CapsLock:: KeyboardInstance.ToggleCapsLockStateFirstLayer()
             KeysPressed = % ""
             GuiControl, GUIshowKeysPressed:, KeysPressedText, % KeysPressed
             Gui, GUIshowKeysPressed: Hide
-
         }
     Return    
     
@@ -356,6 +348,21 @@ CapsLock:: KeyboardInstance.ToggleCapsLockStateFirstLayer()
         Gui, GUIPrivacyBox: Hide
     Return
 
-#IF ; End
+    ; Blocks input from keyboard and mouse, can be deactivated using pipe (|)
+    q::
+        BlockInput On
+        BlockInput, MouseMove
+        Suspend On
+    Return
 
-; return
+    ; If input is blocked (q has been pressed while in second layer), it can be enabled again.
+    $|::
+        Suspend Permit
+        BlockInput Off
+        BlockInput, MouseMoveOff
+        Suspend Off
+    Return
+
+    Esc::ExitApp
+
+#IF ; End
