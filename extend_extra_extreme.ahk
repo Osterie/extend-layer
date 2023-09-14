@@ -175,7 +175,7 @@ Return
 
     ; Go to study plan (from current week to end of first semester currently)
     +1::
-        Run, chrome.exe "https://tp.educloud.no/ntnu/timeplan/?&type=student&weekTo=52&ar=2023&&&id[]=38136"
+        Run, chrome.exe "https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&"
     Return
 
     ; Go to blackboard
@@ -280,7 +280,6 @@ Return
     +1:: 
         SecondKeyboardOverlayInstance.ChangeState("Touch-Screen")
         RunWait, %A_ScriptDir%\powerShellScripts\toggle-touch-screen.exe
-        
     Return
 
     +2:: 
@@ -309,7 +308,7 @@ Return
         guiWidth := Width*0.7
         guiHeight := Height*0.7
         Gui, GUIPrivacyBox: Show, x%X% y%Y% w%guiWidth% h%guiHeight% NoActivate
-        Return
+    Return
 
     ; Hides tabs
     D::
@@ -382,7 +381,7 @@ Return
         else{
             MonitorInstance.SetGamma(0, 0, 0)
         }
-    Return
+    Return 
 
     o:: 
         gammaRamp := MonitorInstance.GetCurrentGamma()
