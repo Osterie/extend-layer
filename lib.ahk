@@ -184,6 +184,9 @@ Class SecondKeyboardOverlay{
     TouchScreenToggle := ""
     CameraToggle := ""
 
+
+    <p> window.location.pathname </p>
+
     __New(){
 
         ; ------------------------GET DEVICE STATES--------------------------------
@@ -191,7 +194,8 @@ Class SecondKeyboardOverlay{
 
         ; Capture the output and error separately
         FileDelete, %A_ScriptDir%\output.txt
-        RunWait, powershell.exe -ExecutionPolicy Bypass -Command "& { . '%A_ScriptDir%\test.ps1' } 2> %A_ScriptDir%\error.txt > %A_ScriptDir%\output.txt", , UseErrorLevel UseStderr
+        ; RunWait, %A_ScriptDir%\powerShellScripts\toggle-touch-screen.exe
+        RunWait, powershell.exe -ExecutionPolicy Bypass -Command "& { . '%A_ScriptDir%\powerShellScripts\get-device-states.exe' } 2> %A_ScriptDir%\error.txt > %A_ScriptDir%\output.txt", , UseErrorLevel UseStderr
 
         ; Read the captured output and error from the files
         FileRead, deviceToggles, %A_ScriptDir%\output.txt

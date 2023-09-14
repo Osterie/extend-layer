@@ -1,6 +1,4 @@
-# [CmdletBinding()] Param (
-#     [Parameter()][ValidateSet('On', 'Off')][string]$BluetoothStatus
-# )
+# [CmdletBinding()] Param ( [Parameter()][ValidateSet('On', 'Off')][string]$BluetoothStatus )
 
 # Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass ; Invoke-PS2EXE C:\Users\adria\github\extend-layer\powerShellScripts\toggle-bluetooth.ps1 C:\Users\adria\github\extend-layer\powerShellScripts\toggle-bluetooth.exe
 
