@@ -184,35 +184,27 @@ Class SecondKeyboardOverlay{
     TouchScreenToggle := ""
     CameraToggle := ""
 
-
-    <p> window.location.pathname </p>
-
     __New(){
 
         ; ------------------------GET DEVICE STATES--------------------------------
         deviceToggles := ""
 
-        ; Capture the output and error separately
+        ; Capture the output (delets the output.txt file if it alredy exists)
         FileDelete, %A_ScriptDir%\output.txt
-        ; RunWait, %A_ScriptDir%\powerShellScripts\toggle-touch-screen.exe
-        RunWait, powershell.exe -ExecutionPolicy Bypass -Command "& { . '%A_ScriptDir%\powerShellScripts\get-device-states.exe' } 2> %A_ScriptDir%\error.txt > %A_ScriptDir%\output.txt", , UseErrorLevel UseStderr
+        RunWait, powershell.exe -ExecutionPolicy Bypass -Command "& { . '%A_ScriptDir%\powerShellScripts\get-device-states.exe' } 1> %A_ScriptDir%\output.txt", 
 
-        ; Read the captured output and error from the files
+        ; Read the captured output from the file
         FileRead, deviceToggles, %A_ScriptDir%\output.txt
 
-        ; Delete the files after reading them
+        ; Delete the file after reading them
         FileDelete, %A_ScriptDir%\output.txt
 
         StringSplit, deviceTogglesArray, deviceToggles, `n,
         
-
         This.BluetoothToggle := deviceTogglesArray1
         This.TouchPadToggle := deviceTogglesArray2
         This.TouchScreenToggle := deviceTogglesArray3
         This.CameraToggle := deviceTogglesArray4
-
-        ; This.BluetoothToggle := "test"
-
     }
 
     CreateKeyboardOverlay(){
@@ -516,6 +508,7 @@ LoginToBlackboard(url){
 
         else{
             MouseClick, left, MouseX, MouseY
+            Sleep, 2000
             Send, ^l
             Send, %url%
             Send {Enter}
@@ -523,6 +516,7 @@ LoginToBlackboard(url){
     }
     else{
         MouseClick, left, MouseX, MouseY
+        Sleep, 2000
         Send, ^l
         Send, %url%
         Send {Enter}

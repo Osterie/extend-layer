@@ -1,6 +1,6 @@
 ﻿; [^ = Ctrl] [+ = Shift] [! = Alt] [# = WinK]
 #Requires AutoHotkey v1.1.36.02
-#Include lib.ahk
+#Include library.ahk
 
 ;---------------------- OPTIMIZATIONS ------------------
 
@@ -30,7 +30,7 @@ if not A_IsAdmin
 
 ; TODO: in lib.ahk, there are two very similiar classes, use inheritance or whatever, take arguments, do something to reuse code, ugly now
 
-; TODO: scrape assignemtns and add to keyboard overlay? which also has link to it and color showing if it is completed or not
+; // TODO: scrape assignemtns and add to keyboard overlay? which also has link to it and color showing if it is completed or not
 
 ; TODO: connect/disconnect airpods,
 
@@ -161,7 +161,6 @@ Return
 
 #IF GetKeyState("CapsLock","T") && KeyboardInstance.Layer == 1
 
-    ; !FIXME! since shift is used to change layers, this will show the gui ghost layer unwanted, change the key or something! 
     ~Shift:: 
         FirstKeyboardOverlayInstance.Show()
         keywait, Shift
