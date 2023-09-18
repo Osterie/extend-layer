@@ -26,6 +26,9 @@ if not A_IsAdmin
 
 ; -------------- TO-DO LIST -------------------------
 
+; FIXME; bug, sometimes gui is shown at the lowest layer (not prioritised to show over all other apps) dont know why, but perhaps has something to do with reduced windows appereance.
+; FIXME: bug, when second layer is turned on first, when shift is held down the ovelay is not shown. Fix by showing overlay when shift+Capslock is first pressed and whatever.
+; TODO; able to restart a wireless router? check here and search: https://github.com/shajul/Autohotkey/blob/master/Scriplets/Wireless_Router_Restart.ahk
 
 
 ; TODO: in lib.ahk, there are two very similiar classes, use inheritance or whatever, take arguments, do something to reuse code, ugly now
@@ -48,26 +51,12 @@ if not A_IsAdmin
 ; TODO when screen darkened show battery percentage and maybe a countdown to sleep? maybe even make sleep impossible when screen darkened
 ; TODO make it possible to switch performance mode, add gui to show current mode, auto switch for screen darkner and such
 
-; WinKill, "C:\Users\adria\github\extend-layer\secondLayerKeyboardOverlay.ahk"
-
-; TODO: both first and second layer use keys to run scripts/go to urls, have a overlay keyboard for each to show which keys do what
-; At the same time, the keys can change color for the "Deactivate/Activate" shortcuts.
-
-; TODO: Create functions in lib.ahk
-
-; TODO: maybe have a gui to show which keys to press to go to which url
-
+; TODO FUTURE: possible to integrate with real life appliances, for example to control lights in rooms, a third layer could be created for this
 ; TODO: automatically slowly change gamma values for fun...
 
-; ? maybe make a function to show / hide gui, since i often do it...
+; TODO: the scroll wheel shortcut should probably only scroll once, not twice.
 
-; TODO: Mute all windowes except spotify?.
-
-; make it harder to switch layer if a certain button is pressed? (locks layer and requires a key combination to disable the layer)
-
-; TODO! shortcut auto open and login to blackboard, maybe use c# to do the logging and ahk to launch script?
-; TODO! maybe have indicators to check if camera/tocuh screen is disabled, maybe image of camra and screen with green or red square under, can toggle gui.
-
+; TODO: a shortcut to turn the screen black(which alredy exists), but randomly change rgb values and then black. (so it looks like it is glitching.) Maybe have it connected to if mouse is used or clicked or something, maybe a certain keypress
 
 ; -----------Show Keys Pressed (make into function or something?) or class? class can have create method and destroy method idk...---------
 ;------------- Second layer ctrl + 0 (^0) shortcut, shows a gui which can be written text into.------------
