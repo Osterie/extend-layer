@@ -191,7 +191,7 @@ Class SecondKeyboardOverlay{
 
         ; Capture the output (delets the output.txt file if it alredy exists)
         FileDelete, %A_ScriptDir%\output.txt
-        RunWait, powershell.exe -ExecutionPolicy Bypass -Command "& { . '%A_ScriptDir%\powerShellScripts\get-device-states.exe' } 1> %A_ScriptDir%\output.txt", 
+        RunWait, powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass -Command "& { . '%A_ScriptDir%\powerShellScripts\get-device-states.exe' } 1> %A_ScriptDir%\output.txt", 
 
         ; Read the captured output from the file
         FileRead, deviceToggles, %A_ScriptDir%\output.txt
@@ -429,6 +429,108 @@ Class Monitor{
     }
 }
 
+Class ClockDisplay{
+
+    minutes := ""
+    seconds := ""
+
+    __New(initialMinutes, initialSeconds)
+    {
+        this.minutes := new NumberDisplay(60)
+        this.seconds := new NumberDisplay(60)
+
+        this.minutes.setValue(initialMinutes)
+        this.seconds.setValue(initialSeconds)
+    }   
+
+    getTimeAsString(){
+        timeAsString := this.minutes.getDisplayValue() . ":" . this.seconds.getDisplayValue()
+        return timeAsString
+    }
+
+    incrementTime(){
+        this.seconds.incrementValue()
+        if (this.seconds.getValue() == 0)
+        {
+            this.minutes.incrementValue()
+        }
+    }
+
+    decrementTime(){
+        if (this.seconds.getValue() == 0){
+            this.minutes.decrementValue()
+        }
+        this.seconds.decrementValue()
+
+    }
+
+    setTime(minutes, seconds){
+        this.minutes.setValue(minutes)
+        this.seconds.setValue(seconds)
+    }
+
+    isMidnight(){
+        midnight := false
+        if (this.seconds.getValue() == 0 && this.minutes.getValue() == 0){
+            midnight := true
+        }
+        return midnight
+    }
+}
+
+
+
+Class NumberDisplay{
+    value := 0
+    upperLimit := 0
+
+    __New(upperLimit){
+        if (upperLimit >= 0)
+        {
+            this.upperLimit := upperLimit
+        }
+    }    
+
+    incrementValue(){
+        this.value := mod( (this.value + 1) , this.upperLimit)
+    }
+    decrementValue(){
+        this.value := mod( (this.value - 1) , this.upperLimit)
+        if (this.value < 0){
+            this.value := this.upperLimit-1
+        }
+    }
+
+    setValue(value){
+        if ( (value < 0) || (value >= this.upperLimit) )
+        {
+            return
+        }
+        this.value := value
+    }
+    getValue()
+    {
+        return this.value
+    }
+
+    getDisplayValue()
+    {
+        valueToDisplay := ""
+        if (this.value < 10)
+        {
+            valueToDisplay := "0" + this.value
+        }
+        else 
+        {
+            valueToDisplay := "" + this.value
+        }
+        return valueToDisplay
+    }
+}
+
+
+
+
 
 ; ----------------------------------------------
 ; ----------- FUNCTIONS ------------------------
@@ -496,7 +598,7 @@ DisableHotKey(){
 LoginToBlackboard(url){
     Run, chrome.exe %url%
     
-    Sleep, 4000
+    Sleep, 3000
     ImageSearch, MouseX, MouseY, 0, 0, A_ScreenWidth, A_ScreenHeight, %A_ScriptDir%\imageSearchImages\feideBlackboardMaximized.png
     if (ErrorLevel = 1){
         ; MsgBox Icon could not be found on the screen.
@@ -540,6 +642,25 @@ LoginToJupyterHub(){
     else{
         MouseClick, left, MouseX, MouseY
     }
+}
+
+; --------------Seach----------
+
+
+SearchHighlitedOrClipboard(){
+    clip := clipboard
+    send, ^c
+    googleSearchUrl := "https://www.google.com/search?q="
+    isUrl := SubStr(clipboard, 1 , 8)
+    if (isUrl = "https://") {   ; if it starts with "https://" go to, rather than search in google search
+        run, %clipboard%
+    }
+    else { ;search using google search
+        joined_url = %googleSearchUrl%%clipboard%
+        run, %joined_url%
+        }
+    clipboard := clip ;put the last copied thing back in the clipboard
+    return
 }
 
 ; ---------CHANGE VALUES---------------

@@ -13,6 +13,9 @@ SetWorkingDir %A_ScriptDir%
 if not A_IsAdmin
 	Run *RunAs "%A_ScriptFullPath%" ; (A_AhkPath is usually optional if the script has the .ahk extension.) You would typically check  first.
 
-^!l:: Run *RunAs %A_ScriptDir%\extendLayer.ahk
 
+^!l:: Run *RunAs %A_ScriptDir%\extendLayer.ahk
+^!i:: Run %A_ScriptDir%\test.ahk
+
+^!|::Reload
 ^!Esc::ExitApp

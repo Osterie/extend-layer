@@ -30,6 +30,13 @@ if not A_IsAdmin
 ; FIXME: bug, when second layer is turned on first, when shift is held down the ovelay is not shown. Fix by showing overlay when shift+Capslock is first pressed and whatever.
 ; TODO; able to restart a wireless router? check here and search: https://github.com/shajul/Autohotkey/blob/master/Scriplets/Wireless_Router_Restart.ahk
 
+; TODO; powershell is slow. is there an alternative? can it be made faster? can it be used without opening the terminal view at all?
+; TODO; timer that counts down until screen turns dark, and for computer goes to sleep.
+
+; TODO; have a timer show up when screen is about to go to sleep? probably worthless since it dimmens before turning off.
+
+; TODO: create a class called keyboard registry or something, connect keyboard class to keyboard overlay class also.
+; TODO; auto search for the copied text shortcut. (first layer obvs)
 
 ; TODO: in lib.ahk, there are two very similiar classes, use inheritance or whatever, take arguments, do something to reuse code, ugly now
 
@@ -39,14 +46,10 @@ if not A_IsAdmin
 
 ;// Cant check battery temp TODO: show warning when computer gets too hot!! show temperature also
 
-; TODO: set brightness to full, and set it to zero shortcut
-
 ; TODO: change background of the keyboard overlay keys for disabling/enabling to have green/red background based on if it is on or off
 ; TODO: keyboard overlay for disabling/enabling devices should maybe use images instead of text?
 
 ; TODO: i believe the promt which apperas when a powerhsell script runs can be hidden
-
-; TODO: the url to the schedule can be changed to "from the current week to week 48" so i dont have to scroll
 
 ; TODO when screen darkened show battery percentage and maybe a countdown to sleep? maybe even make sleep impossible when screen darkened
 ; TODO make it possible to switch performance mode, add gui to show current mode, auto switch for screen darkner and such
@@ -112,6 +115,11 @@ Gui, GUIPrivacyBox: new
 Gui, GUIPrivacyBox: +AlwaysOnTop -Caption +ToolWindow
 Gui, GUIPrivacyBox: Color, Black
 
+
+screenSleepCountdown := new ClockDisplay(3,0)
+storedSecond := A_Sec
+countdownCanceled := false
+
 ; ----------------------------------
 
 
@@ -124,6 +132,8 @@ SecondKeyboardOverlayInstance := new SecondKeyboardOverlay()
 SecondKeyboardOverlayInstance.CreateKeyboardOverlay()
 
 MonitorInstance := new Monitor()
+
+
 
 
 CapsLock:: 
@@ -144,7 +154,15 @@ Return
         FirstKeyboardOverlayInstance.Show()
 
     }
-    
+Return
+
+^!ø::
+    Reload
+Return
+
+^!w:: ;close tabs to the right
+    Send \^l{F6}{AppsKey}{Up}{Enter}
+    Send +{F6 2} ;go back to body of page 
 Return
 
 
@@ -227,6 +245,11 @@ Return
     e:: Browser_Back
     r:: Browser_Forward
 
+    ; opens a new tab in chrome which searches for the highlited content, if not content is highlighted, clipboard content is sent.
+    t:: SearchHighlitedOrClipboard()
+    Return
+
+
     y:: PgUp
     h:: PgDn
 
@@ -245,6 +268,7 @@ Return
     ,:: F6 ;allows focusing tab bar in most web browsers
     <:: MouseMove, (A_ScreenWidth//2)  , (A_ScreenHeight//2)
 
+    G:: AppsKey
     i:: Up
     j:: Left
     k:: Down
@@ -267,31 +291,55 @@ Return
 
     +1:: 
         SecondKeyboardOverlayInstance.ChangeState("Touch-Screen")
-        RunWait, %A_ScriptDir%\powerShellScripts\toggle-touch-screen.exe
+        RunWait, powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass %A_ScriptDir%\powerShellScripts\toggle-touch-screen.exe
     Return
 
     +2:: 
         SecondKeyboardOverlayInstance.ChangeState("Camera")
-        RunWait  %A_ScriptDir%\powerShellScripts\toggle-hd-camera.exe
+        RunWait, powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass %A_ScriptDir%\powerShellScripts\toggle-hd-camera.exe
     Return
 
     +3:: 
         SecondKeyboardOverlayInstance.ChangeState("Bluetooth")
-        RunWait  %A_ScriptDir%\powerShellScripts\toggle-bluetooth.exe
+        RunWait, powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass %A_ScriptDir%\powerShellScripts\toggle-bluetooth.exe
     Return
 
     +4:: 
         SecondKeyboardOverlayInstance.ChangeState("Touchpad")
-        RunWait  %A_ScriptDir%\powerShellScripts\toggle-touchpad.exe
+        RunWait, powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass %A_ScriptDir%\powerShellScripts\toggle-touchpad.exe
     Return
     
     ; Hides screen
     A::
+    ; TODO: make a function or class or whatever...
         Gui, GUIPrivacyBox: Show, x0 y0 w%A_ScreenWidth% h%A_ScreenHeight% NoActivate
+        
+        Gui, GUICountdown: new
+        Gui, GUICountdown: +AlwaysOnTop -Caption +ToolWindow
+        Gui, GUICountdown: Color, black
+        Gui, GUICountdown: Font, cDA4F49
+        Gui, GUICountdown: Add, Text, w200 Center vCountdown, % screenSleepCountdown.getTimeAsString()
+        GuiControl, GUICountdown:, Countdown, % screenSleepCountdown.getTimeAsString()
+        Gui, GUICountdown: show
+
+        loop {
+            if (storedSecond != A_Sec){
+                screenSleepCountdown.decrementTime()
+                GuiControl, GUICountdown:, Countdown, % A_TimeIdle
+                GuiControl, GUICountdown:, Countdown, % screenSleepCountdown.getTimeAsString()
+                if (A_TimeIdle + 1000 < 2000){
+                    screenSleepCountdown.setTime(1,0)
+                }
+                storedSecond := A_Sec
+            }
+        } until screenSleepCountdown.isMidnight() || countdownCanceled
+        return
     Return
 
     ; Hides window
     S::
+        countdownCanceled := true
+        Gui, GUICountdown: Destroy
         WinGetPos, X, Y, Width, Height, A
         guiWidth := Width*0.7
         guiHeight := Height*0.7
@@ -300,6 +348,8 @@ Return
 
     ; Hides tabs
     D::
+        countdownCanceled := true
+        Gui, GUICountdown: Destroy
         WinGetActiveTitle, Title
         If (InStr(Title, "Google Chrome") || InStr(Title, "Mozilla Firefox") || InStr(Title, "Edge")){
             WinGetPos, X, Y, Width, Height, A
@@ -319,6 +369,9 @@ Return
     ; Hides GUI
     F::
         Gui, GUIPrivacyBox: Hide
+        countdownCanceled := true
+        Gui, GUICountdown: Destroy
+
     Return
 
     ; Blocks input from keyboard and mouse, can be deactivated using pipe (|)
