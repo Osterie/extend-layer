@@ -1,6 +1,9 @@
 ﻿; [^ = Ctrl] [+ = Shift] [! = Alt] [# = WinK]
 #Requires AutoHotkey v1.1.36.02
-#Include library.ahk
+#Include .\library\CountDownGUI.ahk
+#Include .\library\library.ahk
+#Include .\library\LayerIndicatorController.ahk
+
 
 ;---------------------- OPTIMIZATIONS ------------------
 
@@ -24,12 +27,18 @@ SetWorkingDir %A_ScriptDir%
 if not A_IsAdmin
 	Run *RunAs "%A_ScriptFullPath%" ; (A_AhkPath is usually optional if the script has the .ahk extension.) You would typically check  first.
 
+; ----Ensures consistency------
+
+SetCapsLockState off
+
 ; -------------- TO-DO LIST -------------------------
 
 ; FIXME; bug, sometimes gui is shown at the lowest layer (not prioritised to show over all other apps) dont know why, but perhaps has something to do with reduced windows appereance.
 ; FIXME: bug, when second layer is turned on first, when shift is held down the ovelay is not shown. Fix by showing overlay when shift+Capslock is first pressed and whatever.
 ; TODO; able to restart a wireless router? check here and search: https://github.com/shajul/Autohotkey/blob/master/Scriplets/Wireless_Router_Restart.ahk
 
+
+; TODO; should be possible to have gui over taskbar, since screen hider is over the taskbar...
 ; TODO; powershell is slow. is there an alternative? can it be made faster? can it be used without opening the terminal view at all?
 ; TODO; timer that counts down until screen turns dark, and for computer goes to sleep.
 
@@ -116,43 +125,50 @@ Gui, GUIPrivacyBox: +AlwaysOnTop -Caption +ToolWindow
 Gui, GUIPrivacyBox: Color, Black
 
 
-screenSleepCountdown := new ClockDisplay(3,0)
-storedSecond := A_Sec
-countdownCanceled := false
+; screenSleepCountdown := new ClockDisplay(3,0)
+; storedSecond := A_Sec
+; countdownCanceled := false
 
 ; ----------------------------------
 
-
-KeyboardInstance := new Keyboard()
-
-FirstKeyboardOverlayInstance := new FirstKeyboardOverlay()
-FirstKeyboardOverlayInstance.CreateKeyboardOverlay()
-
-SecondKeyboardOverlayInstance := new SecondKeyboardOverlay()
-SecondKeyboardOverlayInstance.CreateKeyboardOverlay()
+layers := new LayerIndicatorController()
+layers.addLayerIndicator(1, "Green")
+layers.addLayerIndicator(2, "Red")
 
 MonitorInstance := new Monitor()
 
 
+; countdownGui := new CountdownGUI(3,3)
+; countdownGui.createGui()
+; countdownGui.showGui()
+; countdownGui.startCountdown()
+
 
 
 CapsLock:: 
-    KeyboardInstance.ToggleCapsLockStateFirstLayer()
+    ; changes the layer to 0 if it is not zero, or 1 if it is zero
+    layers.toggleLayerIndicator(1)
+    ; shows the active layer
+    layers.showLayerIndicator(layers.getActiveLayer())
+    ; hides layers which are not the acrive layer
+    layers.hideInactiveLayers()
+    ; toggles capslock
+    SetCapsLockState % !GetKeyState("CapsLock", "T")
 Return
 
-
 +CapsLock:: 
-    KeyboardInstance.ToggleCapsLockStateSecondLayer()
 
-    if (FirstKeyboardOverlayInstance.GetVisibility() == true){
-        FirstKeyboardOverlayInstance.Hide()
-        SecondKeyboardOverlayInstance.Show()
-
+    activeLayer := layers.getActiveLayer()
+    
+    if (activeLayer == 0){
+        layers.setCurrentLayerIndicator(2)
+        layers.showLayerIndicator(2)
+        SetCapsLockState on
     }
-    else if (SecondKeyboardOverlayInstance.GetVisibility() == true){
-        SecondKeyboardOverlayInstance.Hide()
-        FirstKeyboardOverlayInstance.Show()
-
+    else{
+        layers.cycleExtraLayerIndicators()
+        layers.showLayerIndicator(layers.getActiveLayer())
+        layers.hideInactiveLayers()
     }
 Return
 
@@ -166,7 +182,7 @@ Return
 Return
 
 
-#IF GetKeyState("CapsLock","T") && KeyboardInstance.Layer == 1
+#IF GetKeyState("CapsLock","T") && layers.getActiveLayer() == 1
 
     ~Shift:: 
         FirstKeyboardOverlayInstance.Show()
@@ -277,7 +293,7 @@ Return
 #IF
 
 
-#IF GetKeyState("CapsLock","T") && KeyboardInstance.Layer == 2 ; Start
+#IF GetKeyState("CapsLock","T") && layers.getActiveLayer() == 2 ; Start
 
     ~Shift:: 
         SecondKeyboardOverlayInstance.Show()
