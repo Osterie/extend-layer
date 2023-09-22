@@ -255,294 +255,294 @@ SetBatchLines, -1
 
 ; }
 
-; Class FirstKeyboardOverlay{
+Class FirstKeyboardOverlay{
 
-;     IsVisible := false
+    IsVisible := false
 
-;     CreateKeyboardOverlay(){
+    CreateKeyboardOverlay(){
  
-;         ; Changing this font size will resize the keyboard:
-;         k_FontSize = 10
-;         k_FontName = Verdana  ; This can be blank to use the system's default font.
-;         k_FontStyle = Bold    ; Example of an alternative: Italic Underline
+        ; Changing this font size will resize the keyboard:
+        k_FontSize = 10
+        k_FontName = Verdana  ; This can be blank to use the system's default font.
+        k_FontStyle = Bold    ; Example of an alternative: Italic Underline
         
-;         ; Gui
-;         Gui, GUIFirstKeyboardOverlay: Font, s%k_FontSize% %k_FontStyle%, %k_FontName%
-;         Gui, GUIFirstKeyboardOverlay: +E0x20 -Caption +AlwaysOnTop -MaximizeBox +ToolWindow
-        
-        
-;         ;---- Calculate object dimensions based on chosen font size:
-;         k_KeyWidth := k_FontSize * 6
-;         k_KeyHeight := k_FontSize * 3
-        
-;         ; Spacing to be used between the keys.
-;         k_KeyMargin := k_FontSize // 10
+        ; Gui
+        Gui, GUIFirstKeyboardOverlay: Font, s%k_FontSize% %k_FontStyle%, %k_FontName%
+        Gui, GUIFirstKeyboardOverlay: +E0x20 -Caption +AlwaysOnTop -MaximizeBox +ToolWindow
         
         
-;         ; Only a facilitator for creating GUI.
-;         k_KeySizeHelperRow = w%k_KeyWidth% h%k_KeyHeight%
-;         k_PositionHelperRow = x+%k_KeyMargin% %k_KeySizeHelperRow%
+        ;---- Calculate object dimensions based on chosen font size:
+        k_KeyWidth := k_FontSize * 6
+        k_KeyHeight := k_FontSize * 3
         
-;         ;---- Calculate object dimensions based on chosen font size:
-;         k_KeyWidthDestination := k_FontSize * 6
-;         k_KeyHeightDestination := k_FontSize * 6
+        ; Spacing to be used between the keys.
+        k_KeyMargin := k_FontSize // 10
         
-;         ; Spacing to be used between the keys for destination row (second row probably).
-;         ; Only a facilitator for creating GUI.
-;         k_KeySizeDestination = w%k_KeyWidthDestination% h%k_KeyHeightDestination%
-;         k_PositionDestinationRow = x+%k_KeyMargin% %k_KeySizeDestination%
         
-;         ;   The first row.
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 1
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 2
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 3
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 4
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 5
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 6 
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 7 
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 8 
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 9 
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 0
+        ; Only a facilitator for creating GUI.
+        k_KeySizeHelperRow = w%k_KeyWidth% h%k_KeyHeight%
+        k_PositionHelperRow = x+%k_KeyMargin% %k_KeySizeHelperRow%
         
-;         ;   The second row.
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, xm y+%k_KeyMargin% h%k_KeyHeight% w%k_PositionDestinationRow%, Time Table
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Black Board
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Prog 1
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Team
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Math
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Prog Num Sec
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Jupyter Hub
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 8 
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 9 
-;         Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 0
+        ;---- Calculate object dimensions based on chosen font size:
+        k_KeyWidthDestination := k_FontSize * 6
+        k_KeyHeightDestination := k_FontSize * 6
+        
+        ; Spacing to be used between the keys for destination row (second row probably).
+        ; Only a facilitator for creating GUI.
+        k_KeySizeDestination = w%k_KeyWidthDestination% h%k_KeyHeightDestination%
+        k_PositionDestinationRow = x+%k_KeyMargin% %k_KeySizeDestination%
+        
+        ;   The first row.
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 1
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 2
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 3
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 4
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 5
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 6 
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 7 
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 8 
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 9 
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 0
+        
+        ;   The second row.
+        Gui, GUIFirstKeyboardOverlay: Add, Button, xm y+%k_KeyMargin% h%k_KeyHeight% w%k_PositionDestinationRow%, Time Table
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Black Board
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Prog 1
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Team
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Math
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Prog Num Sec
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, Jupyter Hub
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 8 
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 9 
+        Gui, GUIFirstKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 0
         
 
-;         return
-;     }
+        return
+    }
 
-;     Destroy(){
-;         Gui, GUIFirstKeyboardOverlay: Destroy
-;     }
+    Destroy(){
+        Gui, GUIFirstKeyboardOverlay: Destroy
+    }
 
-;     Show(){
-;         ;---- Show the keyboard centered but not active (to maintain the current window's focus):
-;         Gui, GUIFirstKeyboardOverlay: Show, xCenter NoActivate, Virtual Keyboard View
+    Show(){
+        ;---- Show the keyboard centered but not active (to maintain the current window's focus):
+        Gui, GUIFirstKeyboardOverlay: Show, xCenter NoActivate, Virtual Keyboard View
          
-;         ;    Get the window's Width and Height through the GUI's name.
-;         WinGetPos,,, k_WindowWidth, k_WindowHeight, Virtual Keyboard View
+        ;    Get the window's Width and Height through the GUI's name.
+        WinGetPos,,, k_WindowWidth, k_WindowHeight, Virtual Keyboard View
          
-;         ;---- Position the keyboard at the bottom of the screen while avoiding the taskbar:
-;         SysGet, k_WorkArea, MonitorWorkArea, 1
+        ;---- Position the keyboard at the bottom of the screen while avoiding the taskbar:
+        SysGet, k_WorkArea, MonitorWorkArea, 1
         
-;         ; Calculate window's X-position:
-;         k_WindowX = %k_WorkAreaRight%
-;         k_WindowX -= %k_WorkAreaLeft%  ; Now k_WindowX contains the width of this monitor.
-;         k_WindowX -= %k_WindowWidth%
-;         k_WindowX /= 2  ; Calculate position to center it horizontally.
-;         ; The following is done in case the window will be on a non-primary monitor
-;         ; or if the taskbar is anchored on the left side of the screen:
-;         k_WindowX += %k_WorkAreaLeft%
+        ; Calculate window's X-position:
+        k_WindowX = %k_WorkAreaRight%
+        k_WindowX -= %k_WorkAreaLeft%  ; Now k_WindowX contains the width of this monitor.
+        k_WindowX -= %k_WindowWidth%
+        k_WindowX /= 2  ; Calculate position to center it horizontally.
+        ; The following is done in case the window will be on a non-primary monitor
+        ; or if the taskbar is anchored on the left side of the screen:
+        k_WindowX += %k_WorkAreaLeft%
         
-;         ; Calculate window's Y-position:
-;         k_WindowY = %k_WorkAreaBottom%
-;         k_WindowY -= %k_WindowHeight%
+        ; Calculate window's Y-position:
+        k_WindowY = %k_WorkAreaBottom%
+        k_WindowY -= %k_WindowHeight%
          
-;         ;   Move the window to the bottom-center position of the monitor.
-;         WinMove, Virtual Keyboard View,, %k_WindowX%, %k_WindowY%
-;         this.IsVisible := true
-;     }
+        ;   Move the window to the bottom-center position of the monitor.
+        WinMove, Virtual Keyboard View,, %k_WindowX%, %k_WindowY%
+        this.IsVisible := true
+    }
 
-;     Hide(){
-;         Gui, GUIFirstKeyboardOverlay: Hide
-;         this.IsVisible := false
-;     }
+    Hide(){
+        Gui, GUIFirstKeyboardOverlay: Hide
+        this.IsVisible := false
+    }
 
-;     GetVisibility(){
-;         return this.IsVisible
-;     }
-; }
+    GetVisibility(){
+        return this.IsVisible
+    }
+}
 
-; Class SecondKeyboardOverlay{
+Class SecondKeyboardOverlay{
 
-;     IsVisible := false
+    IsVisible := false
 
-;     BluetoothToggle := ""
-;     TouchPadToggle := ""
-;     TouchScreenToggle := ""
-;     CameraToggle := ""
+    BluetoothToggle := ""
+    TouchPadToggle := ""
+    TouchScreenToggle := ""
+    CameraToggle := ""
 
-;     __New(){
+    __New(){
 
-;         ; ------------------------GET DEVICE STATES--------------------------------
-;         deviceToggles := ""
+        ; ------------------------GET DEVICE STATES--------------------------------
+        deviceToggles := ""
 
-;         ; Capture the output (delets the output.txt file if it alredy exists)
-;         FileDelete, %A_ScriptDir%\output.txt
-;         RunWait, powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass -Command "& { . '%A_ScriptDir%\powerShellScripts\get-device-states.exe' } 1> %A_ScriptDir%\output.txt", 
+        ; Capture the output (delets the output.txt file if it alredy exists)
+        ; FileDelete, %A_ScriptDir%\output.txt
+        ; RunWait, powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass -Command "& { . '%A_ScriptDir%\powerShellScripts\get-device-states.exe' } 1> %A_ScriptDir%\output.txt", 
 
-;         ; Read the captured output from the file
-;         FileRead, deviceToggles, %A_ScriptDir%\output.txt
+        ; ; Read the captured output from the file
+        ; FileRead, deviceToggles, %A_ScriptDir%\output.txt
 
-;         ; Delete the file after reading them
-;         FileDelete, %A_ScriptDir%\output.txt
+        ; ; Delete the file after reading them
+        ; FileDelete, %A_ScriptDir%\output.txt
 
-;         StringSplit, deviceTogglesArray, deviceToggles, `n,
+        ; StringSplit, deviceTogglesArray, deviceToggles, `n,
         
-;         This.BluetoothToggle := deviceTogglesArray1
-;         This.TouchPadToggle := deviceTogglesArray2
-;         This.TouchScreenToggle := deviceTogglesArray3
-;         This.CameraToggle := deviceTogglesArray4
-;     }
+        This.BluetoothToggle := deviceTogglesArray1
+        This.TouchPadToggle := deviceTogglesArray2
+        This.TouchScreenToggle := deviceTogglesArray3
+        This.CameraToggle := deviceTogglesArray4
+    }
 
-;     CreateKeyboardOverlay(){
+    CreateKeyboardOverlay(){
 
-;         global
+        global
  
-;         ; Changing this font size will resize the keyboard:
-;         k_FontSize = 10
-;         k_FontName = Verdana  ; This can be blank to use the system's default font.
-;         k_FontStyle = Bold    ; Example of an alternative: Italic Underline
+        ; Changing this font size will resize the keyboard:
+        k_FontSize = 10
+        k_FontName = Verdana  ; This can be blank to use the system's default font.
+        k_FontStyle = Bold    ; Example of an alternative: Italic Underline
         
-;         ; Gui
-;         Gui, GUISecondKeyboardOverlay: Font, s%k_FontSize% %k_FontStyle%, %k_FontName%
-;         Gui, GUISecondKeyboardOverlay: +E0x20 -Caption +AlwaysOnTop -MaximizeBox +ToolWindow
+        ; Gui
+        Gui, GUISecondKeyboardOverlay: Font, s%k_FontSize% %k_FontStyle%, %k_FontName%
+        Gui, GUISecondKeyboardOverlay: +E0x20 -Caption +AlwaysOnTop -MaximizeBox +ToolWindow
         
-;         ;---- Calculate object dimensions based on chosen font size:
-;         k_KeyWidth := k_FontSize * 6
-;         k_KeyHeight := k_FontSize * 3
+        ;---- Calculate object dimensions based on chosen font size:
+        k_KeyWidth := k_FontSize * 6
+        k_KeyHeight := k_FontSize * 3
         
-;         ; Spacing to be used between the keys.
-;         k_KeyMargin := k_FontSize // 10
+        ; Spacing to be used between the keys.
+        k_KeyMargin := k_FontSize // 10
         
         
-;         ; Only a facilitator for creating GUI.
-;         k_KeySizeHelperRow = w%k_KeyWidth% h%k_KeyHeight%
-;         k_PositionHelperRow = x+%k_KeyMargin% %k_KeySizeHelperRow%
+        ; Only a facilitator for creating GUI.
+        k_KeySizeHelperRow = w%k_KeyWidth% h%k_KeyHeight%
+        k_PositionHelperRow = x+%k_KeyMargin% %k_KeySizeHelperRow%
         
-;         ;---- Calculate object dimensions based on chosen font size:
-;         k_KeyWidthDestination := k_FontSize * 6
-;         k_KeyHeightDestination := k_FontSize * 6
+        ;---- Calculate object dimensions based on chosen font size:
+        k_KeyWidthDestination := k_FontSize * 6
+        k_KeyHeightDestination := k_FontSize * 6
         
-;         ; Spacing to be used between the keys for destination row (second row probably).
-;         ; Only a facilitator for creating GUI.
-;         k_KeySizeDestination = w%k_KeyWidthDestination% h%k_KeyHeightDestination%
-;         k_PositionDestinationRow = x+%k_KeyMargin% %k_KeySizeDestination%
+        ; Spacing to be used between the keys for destination row (second row probably).
+        ; Only a facilitator for creating GUI.
+        k_KeySizeDestination = w%k_KeyWidthDestination% h%k_KeyHeightDestination%
+        k_PositionDestinationRow = x+%k_KeyMargin% %k_KeySizeDestination%
         
-;         ;   The first row.
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 1
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 2
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 3
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 4
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 5
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 6 
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 7 
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 8 
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 9 
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 0
+        ;   The first row.
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 1
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 2
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 3
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 4
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 5
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 6 
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 7 
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 8 
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 9 
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionHelperRow%, 0
         
-;         ;   The second row.
-;         Gui, GUISecondKeyboardOverlay: Add, Button, xm y+%k_KeyMargin% h%k_KeyHeight% w%k_PositionDestinationRow% vTouchScreen, % This.TouchScreenToggle
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow% vCamera, % This.CameraToggle
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow% vBluetooth, % This.BluetoothToggle
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow% vTouchPad, % This.TouchPadToggle
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 5
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 6
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 7
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 8 
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 9 
-;         Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 0
-;         return
-;     }
+        ;   The second row.
+        Gui, GUISecondKeyboardOverlay: Add, Button, xm y+%k_KeyMargin% h%k_KeyHeight% w%k_PositionDestinationRow% vTouchScreen, % This.TouchScreenToggle
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow% vCamera, % This.CameraToggle
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow% vBluetooth, % This.BluetoothToggle
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow% vTouchPad, % This.TouchPadToggle
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 5
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 6
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 7
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 8 
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 9 
+        Gui, GUISecondKeyboardOverlay: Add, Button, %k_PositionDestinationRow%, 0
+        return
+    }
 
-;     Destroy(){
-;         Gui, GUISecondKeyboardOverlay: Destroy
+    Destroy(){
+        Gui, GUISecondKeyboardOverlay: Destroy
 
-;     }
+    }
 
-;     Show(){
-;         ;---- Show the keyboard centered but not active (to maintain the current window's focus):
-;         Gui, GUISecondKeyboardOverlay: Show, xCenter NoActivate, Virtual Keyboard View
+    Show(){
+        ;---- Show the keyboard centered but not active (to maintain the current window's focus):
+        Gui, GUISecondKeyboardOverlay: Show, xCenter NoActivate, Virtual Keyboard View
          
-;         ;    Get the window's Width and Height through the GUI's name.
-;         WinGetPos,,, k_WindowWidth, k_WindowHeight, Virtual Keyboard View
+        ;    Get the window's Width and Height through the GUI's name.
+        WinGetPos,,, k_WindowWidth, k_WindowHeight, Virtual Keyboard View
          
-;         ;---- Position the keyboard at the bottom of the screen while avoiding the taskbar:
-;         SysGet, k_WorkArea, MonitorWorkArea, 1
+        ;---- Position the keyboard at the bottom of the screen while avoiding the taskbar:
+        SysGet, k_WorkArea, MonitorWorkArea, 1
         
-;         ; Calculate window's X-position:
-;         k_WindowX = %k_WorkAreaRight%
-;         k_WindowX -= %k_WorkAreaLeft%  ; Now k_WindowX contains the width of this monitor.
-;         k_WindowX -= %k_WindowWidth%
-;         k_WindowX /= 2  ; Calculate position to center it horizontally.
-;         ; The following is done in case the window will be on a non-primary monitor
-;         ; or if the taskbar is anchored on the left side of the screen:
-;         k_WindowX += %k_WorkAreaLeft%
+        ; Calculate window's X-position:
+        k_WindowX = %k_WorkAreaRight%
+        k_WindowX -= %k_WorkAreaLeft%  ; Now k_WindowX contains the width of this monitor.
+        k_WindowX -= %k_WindowWidth%
+        k_WindowX /= 2  ; Calculate position to center it horizontally.
+        ; The following is done in case the window will be on a non-primary monitor
+        ; or if the taskbar is anchored on the left side of the screen:
+        k_WindowX += %k_WorkAreaLeft%
         
-;         ; Calculate window's Y-position:
-;         k_WindowY = %k_WorkAreaBottom%
-;         k_WindowY -= %k_WindowHeight%
+        ; Calculate window's Y-position:
+        k_WindowY = %k_WorkAreaBottom%
+        k_WindowY -= %k_WindowHeight%
          
-;         ;   Move the window to the bottom-center position of the monitor.
-;         WinMove, Virtual Keyboard View,, %k_WindowX%, %k_WindowY%
-;         this.IsVisible := true
-;     }
+        ;   Move the window to the bottom-center position of the monitor.
+        WinMove, Virtual Keyboard View,, %k_WindowX%, %k_WindowY%
+        this.IsVisible := true
+    }
 
-;     Hide(){
-;         Gui, GUISecondKeyboardOverlay: Hide
-;         this.IsVisible := false
-;     }
+    Hide(){
+        Gui, GUISecondKeyboardOverlay: Hide
+        this.IsVisible := false
+    }
 
-;     GetVisibility(){
-;         return this.IsVisible
-;     }
+    GetVisibility(){
+        return this.IsVisible
+    }
 
-;     ChangeState(device){
+    ChangeState(device){
 
-;         if (device == "Touch-Screen"){
-;             If InStr(This.TouchScreenToggle, "Enable"){
-;                 This.TouchScreenToggle := StrReplace(This.TouchScreenToggle, "Enable", "Disable")
-;             }
-;             else{
-;                 This.TouchScreenToggle := StrReplace(This.TouchScreenToggle, "Disable", "Enable")
-;             }
+        if (device == "Touch-Screen"){
+            If InStr(This.TouchScreenToggle, "Enable"){
+                This.TouchScreenToggle := StrReplace(This.TouchScreenToggle, "Enable", "Disable")
+            }
+            else{
+                This.TouchScreenToggle := StrReplace(This.TouchScreenToggle, "Disable", "Enable")
+            }
 
-;             GuiControl, GUISecondKeyboardOverlay:, TouchScreen, % This.TouchScreenToggle
-;         }
+            GuiControl, GUISecondKeyboardOverlay:, TouchScreen, % This.TouchScreenToggle
+        }
 
-;         else if (device == "Bluetooth"){
-;             If InStr(This.BluetoothToggle, "Enable")            {
-;                 This.BluetoothToggle := StrReplace(This.BluetoothToggle, "Enable", "Disable")
-;             }
-;             else{
-;                 This.BluetoothToggle := StrReplace(This.BluetoothToggle, "Disable", "Enable")
-;             }
+        else if (device == "Bluetooth"){
+            If InStr(This.BluetoothToggle, "Enable")            {
+                This.BluetoothToggle := StrReplace(This.BluetoothToggle, "Enable", "Disable")
+            }
+            else{
+                This.BluetoothToggle := StrReplace(This.BluetoothToggle, "Disable", "Enable")
+            }
 
-;             GuiControl, GUISecondKeyboardOverlay:, Bluetooth, % This.BluetoothToggle
-;         }
+            GuiControl, GUISecondKeyboardOverlay:, Bluetooth, % This.BluetoothToggle
+        }
 
-;         else if (device == "Touchpad"){
-;             If InStr(This.TouchPadToggle, "Enable"){
-;                 This.TouchPadToggle := StrReplace(This.TouchPadToggle, "Enable", "Disable")
-;             }
-;             else{
-;                 This.TouchPadToggle := StrReplace(This.TouchPadToggle, "Disable", "Enable")
-;             }
+        else if (device == "Touchpad"){
+            If InStr(This.TouchPadToggle, "Enable"){
+                This.TouchPadToggle := StrReplace(This.TouchPadToggle, "Enable", "Disable")
+            }
+            else{
+                This.TouchPadToggle := StrReplace(This.TouchPadToggle, "Disable", "Enable")
+            }
 
-;             GuiControl, GUISecondKeyboardOverlay:, TouchPad, % This.TouchPadToggle
-;         }
+            GuiControl, GUISecondKeyboardOverlay:, TouchPad, % This.TouchPadToggle
+        }
 
-;         else if (device == "Camera"){
-;             If InStr(This.CameraToggle, "Enable"){
-;                 This.CameraToggle := StrReplace(This.CameraToggle, "Enable", "Disable")
-;             }
-;             else{
-;                 This.CameraToggle := StrReplace(This.CameraToggle, "Disable", "Enable")
-;             }
+        else if (device == "Camera"){
+            If InStr(This.CameraToggle, "Enable"){
+                This.CameraToggle := StrReplace(This.CameraToggle, "Enable", "Disable")
+            }
+            else{
+                This.CameraToggle := StrReplace(This.CameraToggle, "Disable", "Enable")
+            }
 
-;             GuiControl, GUISecondKeyboardOverlay:, Camera, % This.CameraToggle
-;         }
-;     }
-; }
+            GuiControl, GUISecondKeyboardOverlay:, Camera, % This.CameraToggle
+        }
+    }
+}
 
 
 
@@ -557,29 +557,29 @@ SetBatchLines, -1
 
 ; -----------WRITE ON SCREEN--------------------
 
-ValidateKeyPressed(key){
+ValidateKeyPressed(pressedKey){
 
-    key = % StrReplace(key, "*", "")
-    key = % StrReplace(key, "~", "")
+    pressedKey = % StrReplace(pressedKey, "*", "")
+    pressedKey = % StrReplace(pressedKey, "~", "")
 
-    if (key == "Space"){
-        key = % A_Space
+    if (pressedKey == "Space"){
+        pressedKey = % A_Space
     }
-    else if (key == "BackSpace" && GetKeyState("Ctrl") ) {
-        key = % "ctrl + backspace"
+    else if (pressedKey == "BackSpace" && GetKeyState("Ctrl") ) {
+        pressedKey = % "ctrl + backspace"
     }
-    else if (key == "BackSpace"){
-        ; key = % A_Space
-        key = % "backspace"
+    else if (pressedKey == "BackSpace"){
+        ; pressedKey = % A_Space
+        pressedKey = % "backspace"
     }
     if ( GetKeyState("Shift") ){
-        StringUpper, key, key
+        StringUpper, pressedKey, pressedKey
     }
     else{
-        StringLower, key, key
+        StringLower, pressedKey, pressedKey
     }
 
-    return key
+    return pressedKey
 }
 
 CreateHotkey() {

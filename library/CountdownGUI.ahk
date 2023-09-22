@@ -13,7 +13,6 @@ Class CountdownGUI{
     }
     
     createGui(){
-
         global
         Gui, GUICountdown: new
         Gui, GUICountdown: +AlwaysOnTop -Caption +ToolWindow
@@ -23,11 +22,11 @@ Class CountdownGUI{
     }
     
     destroyGui(){
-        Gui, GUICountdown: destroy
+        Gui, GUICountdown: Destroy
     }
 
     showGui(){
-        Gui, GUICountdown: show
+        Gui, GUICountdown: Show
     }
 
     hideGui(){
@@ -49,5 +48,7 @@ Class CountdownGUI{
     stopCountdown(){
         this.countdownStopped := true
     }
-    ; resetCountdown(){}
+    resetCountdown(){
+        
+    }
 }

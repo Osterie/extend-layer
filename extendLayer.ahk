@@ -2,10 +2,13 @@
 #Requires AutoHotkey v1.1.36.02
 #Include .\library\CountDownGUI.ahk
 #Include .\library\library.ahk
+#Include .\library\Monitor.ahk
 #Include .\library\LayerIndicatorController.ahk
 
-
 ;---------------------- OPTIMIZATIONS ------------------
+; 
+; DllCall("Sleep","UInt",1) ;I just slept exactly 1ms!
+
 
 #NoEnv
 #MaxHotkeysPerInterval 99000000
@@ -27,20 +30,21 @@ SetWorkingDir %A_ScriptDir%
 if not A_IsAdmin
 	Run *RunAs "%A_ScriptFullPath%" ; (A_AhkPath is usually optional if the script has the .ahk extension.) You would typically check  first.
 
-; ----Ensures consistency------
-
-SetCapsLockState off
 
 ; -------------- TO-DO LIST -------------------------
 
+; TODO, update to v2...
+
+; FIXME; when switching layer, the layer overlay should also swithc...
 ; FIXME; bug, sometimes gui is shown at the lowest layer (not prioritised to show over all other apps) dont know why, but perhaps has something to do with reduced windows appereance.
 ; FIXME: bug, when second layer is turned on first, when shift is held down the ovelay is not shown. Fix by showing overlay when shift+Capslock is first pressed and whatever.
 ; TODO; able to restart a wireless router? check here and search: https://github.com/shajul/Autohotkey/blob/master/Scriplets/Wireless_Router_Restart.ahk
 
-
 ; TODO; should be possible to have gui over taskbar, since screen hider is over the taskbar...
 ; TODO; powershell is slow. is there an alternative? can it be made faster? can it be used without opening the terminal view at all?
 ; TODO; timer that counts down until screen turns dark, and for computer goes to sleep.
+
+; Add some tooltip or something which shows when script is aunced
 
 ; TODO; have a timer show up when screen is about to go to sleep? probably worthless since it dimmens before turning off.
 
@@ -70,53 +74,6 @@ SetCapsLockState off
 
 ; TODO: a shortcut to turn the screen black(which alredy exists), but randomly change rgb values and then black. (so it looks like it is glitching.) Maybe have it connected to if mouse is used or clicked or something, maybe a certain keypress
 
-; -----------Show Keys Pressed (make into function or something?) or class? class can have create method and destroy method idk...---------
-;------------- Second layer ctrl + 0 (^0) shortcut, shows a gui which can be written text into.------------
-
-
-KeysPressed := ""
-toggleKeysGUI := 0
-
-Gui, GUIshowKeysPressed: new ; Create a new GUI
-Gui, GUIshowKeysPressed: -Caption +AlwaysOnTop +Owner +LastFound 
-Gui, GUIshowKeysPressed: Color, EEAA99
-Gui, GUIshowKeysPressed: Font, s20 w70 q4, Times New Roman
-Gui, GUIshowKeysPressed: add, Text, w890  h300 vKeysPressedText, %KeysPressed%
-
-
-#IF
-	OnKeyPressed:
-		try {
-            
-			key := ValidateKeyPressed(A_ThisHotKey)
-
-            if (key == "backspace"){
-                StringTrimRight, KeysPressed, KeysPressed, 1
-            }
-            else if (key == "ctrl + backspace"){
-
-                if (SubStr(KeysPressed,0,1) == " ") {
-                    StringTrimRight, KeysPressed, KeysPressed, 1
-                }
-
-                else if (!InStr(KeysPressed, " ")){
-                    KeysPressed = % ""
-                }
-                LastUnderScorePosition := InStr(KeysPressed," ",0,0)  ; get position of last occurrence of " "
-                KeysPressed := SubStr(KeysPressed,1,LastUnderScorePosition)  ; get substring from start to last dot
-            }
-
-            else if (key == "enter"){
-                KeysPressed = %KeysPressed%`n
-                
-            }
-            else{
-                KeysPressed = % KeysPressed key
-            }
-            GuiControl, GUIshowKeysPressed:, KeysPressedText, % KeysPressed
-		}
-
-#IF
 
 ; -----------Keyboard layers---------
 
@@ -124,6 +81,11 @@ Gui, GUIPrivacyBox: new
 Gui, GUIPrivacyBox: +AlwaysOnTop -Caption +ToolWindow
 Gui, GUIPrivacyBox: Color, Black
 
+FirstKeyboardOverlayInstance := new FirstKeyboardOverlay()
+FirstKeyboardOverlayInstance.CreateKeyboardOverlay()
+
+SecondKeyboardOverlayInstance := new SecondKeyboardOverlay()
+SecondKeyboardOverlayInstance.CreateKeyboardOverlay()
 
 ; screenSleepCountdown := new ClockDisplay(3,0)
 ; storedSecond := A_Sec
@@ -137,48 +99,33 @@ layers.addLayerIndicator(2, "Red")
 
 MonitorInstance := new Monitor()
 
+; ----Ensures consistency------
 
-; countdownGui := new CountdownGUI(3,3)
+SetCapsLockState off
+
+; --------------
+
+
+countdownGui := new CountdownGUI(3,3)
 ; countdownGui.createGui()
-; countdownGui.showGui()
-; countdownGui.startCountdown()
+
+MsgBox, hei
+
+; -----------Show Keys Pressed (make into function or something?) or class? class can have create method and destroy method idk...---------
+;------------- Second layer ctrl + 0 (^0) shortcut, shows a gui which can be written text into.------------
 
 
+KeysPressed := ""
+toggleKeysGUI := 0
 
-CapsLock:: 
-    ; changes the layer to 0 if it is not zero, or 1 if it is zero
-    layers.toggleLayerIndicator(1)
-    ; shows the active layer
-    layers.showLayerIndicator(layers.getActiveLayer())
-    ; hides layers which are not the acrive layer
-    layers.hideInactiveLayers()
-    ; toggles capslock
-    SetCapsLockState % !GetKeyState("CapsLock", "T")
-Return
+; fixme only create when going to use
+Gui, GUIshowKeysPressed: new ; Create a new GUI
+Gui, GUIshowKeysPressed: -Caption +AlwaysOnTop +Owner +LastFound 
+Gui, GUIshowKeysPressed: Color, EEAA99
+Gui, GUIshowKeysPressed: Font, s20 w70 q4, Times New Roman
+Gui, GUIshowKeysPressed: add, Text, w890  h300 vKeysPressedText, %KeysPressed%
 
-+CapsLock:: 
 
-    activeLayer := layers.getActiveLayer()
-    
-    if (activeLayer == 0){
-        layers.setCurrentLayerIndicator(2)
-        layers.showLayerIndicator(2)
-        SetCapsLockState on
-    }
-    else{
-        layers.cycleExtraLayerIndicators()
-        layers.showLayerIndicator(layers.getActiveLayer())
-        layers.hideInactiveLayers()
-    }
-Return
-
-^!ø::
-    Reload
-Return
-
-^!w:: ;close tabs to the right
-    Send \^l{F6}{AppsKey}{Up}{Enter}
-    Send +{F6 2} ;go back to body of page 
 Return
 
 
@@ -247,6 +194,8 @@ Return
         }
     Return   
 
+    
+
     q:: Esc
     å:: Esc
     
@@ -258,12 +207,12 @@ Return
     w:: WheelUp
     s:: WheelDown
 
+
     e:: Browser_Back
     r:: Browser_Forward
 
     ; opens a new tab in chrome which searches for the highlited content, if not content is highlighted, clipboard content is sent.
     t:: SearchHighlitedOrClipboard()
-    Return
 
 
     y:: PgUp
@@ -292,8 +241,8 @@ Return
 
 #IF
 
-
 #IF GetKeyState("CapsLock","T") && layers.getActiveLayer() == 2 ; Start
+
 
     ~Shift:: 
         SecondKeyboardOverlayInstance.Show()
@@ -327,35 +276,16 @@ Return
     
     ; Hides screen
     A::
-    ; TODO: make a function or class or whatever...
         Gui, GUIPrivacyBox: Show, x0 y0 w%A_ScreenWidth% h%A_ScreenHeight% NoActivate
-        
-        Gui, GUICountdown: new
-        Gui, GUICountdown: +AlwaysOnTop -Caption +ToolWindow
-        Gui, GUICountdown: Color, black
-        Gui, GUICountdown: Font, cDA4F49
-        Gui, GUICountdown: Add, Text, w200 Center vCountdown, % screenSleepCountdown.getTimeAsString()
-        GuiControl, GUICountdown:, Countdown, % screenSleepCountdown.getTimeAsString()
-        Gui, GUICountdown: show
-
-        loop {
-            if (storedSecond != A_Sec){
-                screenSleepCountdown.decrementTime()
-                GuiControl, GUICountdown:, Countdown, % A_TimeIdle
-                GuiControl, GUICountdown:, Countdown, % screenSleepCountdown.getTimeAsString()
-                if (A_TimeIdle + 1000 < 2000){
-                    screenSleepCountdown.setTime(1,0)
-                }
-                storedSecond := A_Sec
-            }
-        } until screenSleepCountdown.isMidnight() || countdownCanceled
-        return
+        countdownGui.createGui()
+        countdownGui.showGui()
+        countdownGui.startCountdown()
     Return
 
     ; Hides window
     S::
-        countdownCanceled := true
-        Gui, GUICountdown: Destroy
+        countdownGui.stopCountdown()
+        countdownGui.destroyGui()
         WinGetPos, X, Y, Width, Height, A
         guiWidth := Width*0.7
         guiHeight := Height*0.7
@@ -364,8 +294,8 @@ Return
 
     ; Hides tabs
     D::
-        countdownCanceled := true
-        Gui, GUICountdown: Destroy
+        countdownGui.stopCountdown()
+        countdownGui.destroyGui()
         WinGetActiveTitle, Title
         If (InStr(Title, "Google Chrome") || InStr(Title, "Mozilla Firefox") || InStr(Title, "Edge")){
             WinGetPos, X, Y, Width, Height, A
@@ -385,8 +315,8 @@ Return
     ; Hides GUI
     F::
         Gui, GUIPrivacyBox: Hide
-        countdownCanceled := true
-        Gui, GUICountdown: Destroy
+        countdownGui.stopCountdown()
+        countdownGui.destroyGui()
 
     Return
 
@@ -487,3 +417,90 @@ Return
     Esc::ExitApp
 
 #IF ; End:)
+
+#IF
+	OnKeyPressed:
+		try {
+            
+			key := ValidateKeyPressed(A_ThisHotKey)
+
+            if (key == "backspace"){
+                StringTrimRight, KeysPressed, KeysPressed, 1
+            }
+            else if (key == "ctrl + backspace"){
+
+                if (SubStr(KeysPressed,0,1) == " ") {
+                    StringTrimRight, KeysPressed, KeysPressed, 1
+                }
+
+                else if (!InStr(KeysPressed, " ")){
+                    KeysPressed = % ""
+                }
+                LastUnderScorePosition := InStr(KeysPressed," ",0,0)  ; get position of last occurrence of " "
+                KeysPressed := SubStr(KeysPressed,1,LastUnderScorePosition)  ; get substring from start to last dot
+            }
+
+            else if (key == "enter"){
+                KeysPressed = %KeysPressed%`n
+                
+            }
+            else{
+                KeysPressed = % KeysPressed key
+            }
+            GuiControl, GUIshowKeysPressed:, KeysPressedText, % KeysPressed
+		}
+    Return
+#IF
+
+
+; TODO add for when !Capslock and #Capslock is pressed and handle the situation accrodingly since it now is buggy
+; since they do not have their own hotwkeys and handling.
+CapsLock:: 
+    
+    ; changes the layer to 0 if it is not zero, or 1 if it is zero
+    layers.toggleLayerIndicator(1)
+    activeLayer := layers.getActiveLayer()
+
+    if (activeLayer == 0){
+        ; hides layers which are not the active layer
+        layers.hideInactiveLayers()
+        ; toggles capslock
+        SetCapsLockState off
+    }
+    else{
+        ; shows the active layer (which should be layer 1)
+        layers.showLayerIndicator(layers.getActiveLayer())
+        ; hides layers which are not the acrive layer
+        layers.hideInactiveLayers()
+        ; toggles capslock
+        SetCapsLockState on
+    }
+Return
+; MsgBox, hei
+
++CapsLock:: 
+
+    activeLayer := layers.getActiveLayer()
+    
+    if (activeLayer == 0){
+        layers.setCurrentLayerIndicator(2)
+        layers.showLayerIndicator(2)
+        SetCapsLockState on
+    }
+    else{
+        layers.cycleExtraLayerIndicators()
+        layers.showLayerIndicator(layers.getActiveLayer())
+        layers.hideInactiveLayers()
+    }
+Return
+
+^!ø::
+    Reload
+Return
+
+; FIXME does not always work
+^!w:: ;close tabs to the right
+    Sleep, 250
+    Send \^l{F6}{AppsKey}{Up}{Enter}
+    Send +{F6 2} ;go back to body of page 
+Return
