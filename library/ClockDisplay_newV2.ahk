@@ -1,5 +1,5 @@
-#Requires AutoHotkey v1.1.36.02
-#Include %A_ScriptDir%\library\NumberDisplay.ahk
+﻿#Requires Autohotkey v2.0
+#Include "%A_ScriptDir%\library\NumberDisplay_newV2.ahk"
 
 Class ClockDisplay{
 
@@ -8,8 +8,8 @@ Class ClockDisplay{
 
     __New(initialMinutes, initialSeconds)
     {
-        this.minutes := new NumberDisplay(60)
-        this.seconds := new NumberDisplay(60)
+        this.minutes := NumberDisplay(60)
+        this.seconds := NumberDisplay(60)
 
         this.minutes.setValue(initialMinutes)
         this.seconds.setValue(initialSeconds)

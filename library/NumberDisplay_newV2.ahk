@@ -1,4 +1,5 @@
-#Requires AutoHotkey v1.1.36.02
+﻿#Requires Autohotkey v2.0
+
 
 Class NumberDisplay{
     value := 0
@@ -38,11 +39,11 @@ Class NumberDisplay{
         valueToDisplay := ""
         if (this.value < 10)
         {
-            valueToDisplay := "0" + this.value
+            valueToDisplay := "0" . this.value
         }
         else 
         {
-            valueToDisplay := "" + this.value
+            valueToDisplay := "" . this.value
         }
         return valueToDisplay
     }

@@ -1,6 +1,6 @@
-#Requires AutoHotkey v1.1.36.02
+﻿#Requires Autohotkey v2.0
 
-#Include %A_ScriptDir%\library\LayerIndicator.ahk
+#Include "%A_ScriptDir%\library\LayerIndicator_newV2.ahk"
 
 ; TODO; instead of multiple guis, it would be possible to just change the color and have the same gui no change...
 Class LayerIndicatorController{
@@ -10,30 +10,29 @@ Class LayerIndicatorController{
 
     addLayerIndicator(layer, color){
         
-        layerIndicator := new LayerIndicator(layer, color)
-        layerIndicator.createLayerIndicator()
-        this.layers[layer] := layerIndicator
+        layerIndicatorInstance := LayerIndicator(layer, color)
+        layerIndicatorInstance.createLayerIndicator()
+        this.layers.InsertAt(layer, layerIndicatorInstance) 
     }
 
     showLayerIndicator(layer){
         this.activeLayer := layer
-        this.layers[layer].show()
+        this.layers[layer].showGui()
     }
     hideLayerIndicator(layer){
         this.activeLayer := 0
-        this.layers[layer].hide()
+        this.layers[layer].hideGui()
     }
 
     hideInactiveLayers(){
-        for layer in this.layers{
-            if (layer != this.activeLayer){
-                this.layers[layer].hide()
+        loop this.layers.Length
+            if (A_Index != this.activeLayer){
+                this.layers[A_Index].hideGui()
             }
-        }
     }
 
     getLayerIndicator(){
-        return layers[activeLayer]
+        return this.layers[this.activeLayer]
     }
 
     getActiveLayer(){
@@ -56,7 +55,7 @@ Class LayerIndicatorController{
 
     ; increases activeLayer by 1, if upperLimit is reached, it is set back to 1 (Note, not does not go back to 0)
     cycleExtraLayerIndicators(){
-        layersAmount := this.layers.MaxIndex()
+        layersAmount := this.layers.Length
         this.activeLayer := this.activeLayer+1 
         if( this.activeLayer == layersAmount+1){
             this.activeLayer := 1
@@ -67,5 +66,4 @@ Class LayerIndicatorController{
     resetLayerIndicators(){
         this.activeLayer := 0
     }
-    
 }
