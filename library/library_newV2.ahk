@@ -309,6 +309,8 @@ Class SecondKeyboardOverlay{
 
 
 
+
+
 ; ----------------------------------------------
 ; ----------- FUNCTIONS ------------------------
 ; ----------------------------------------------
@@ -469,6 +471,7 @@ LoginToBlackboard(url){
             Send("{Enter}")
         }
     }
+    
     else{
         MouseClick("left", MouseX, MouseY)
         Sleep(2000)
@@ -501,7 +504,7 @@ LoginToJupyterHub(){
 
 
 SearchHighlitedOrClipboard(){
-    clip := A_Clipboard
+    clipboardValue := A_Clipboard
     Send("^c")
     googleSearchUrl := "https://www.google.com/search?q="
     isUrl := SubStr(A_Clipboard, 1, 8)
@@ -512,13 +515,17 @@ SearchHighlitedOrClipboard(){
         joined_url := googleSearchUrl . "" . A_Clipboard
         Run(joined_url)
         }
-    A_Clipboard := clip ;put the last copied thing back in the clipboard
+    A_Clipboard := clipboardValue ;put the last copied thing back in the clipboard
     return
 }
 
 ; ---------CHANGE VALUES---------------
 
 ; FIXME: this should be made more general. "CycleValue" or something. Take currentValue, lowerlimit, upperlimit and step.
+ToggleValue(givenValue, value1, value2, defaultValue){
+
+    
+}
 
 CycleColorValue(colorValue){
     if (colorValue == 0){

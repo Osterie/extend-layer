@@ -7,12 +7,10 @@ Class CountdownGUI{
 
     countdownStopped := false
     screenSleepCountdown := ""
-    storedSecond := A_Sec
     GUICountdown := 0
 
     __New(minutes, seconds){
         this.screenSleepCountdown := ClockDisplay(minutes, seconds)
-        this.storedSecond := A_Sec
     }
     
     createGui(){
@@ -38,13 +36,13 @@ Class CountdownGUI{
 
     startCountdown(){
         Loop{
+            if (A_TimeIdle + 1000 < 2000){
+                this.screenSleepCountdown.setTime(1,0)
+            }
             this.screenSleepCountdown.decrementTime()
             ; ogcTextCountdown.Value := this.screenSleepCountdown.getTimeAsString()
             this.GUICountdown['Countdown'].Text := this.screenSleepCountdown.getTimeAsString()
 
-            if (A_TimeIdle + 1000 < 2000){
-                this.screenSleepCountdown.setTime(1,0)
-            }
             Sleep(920)
 
         } until this.screenSleepCountdown.isMidnight() || this.countdownStopped
@@ -53,7 +51,7 @@ Class CountdownGUI{
     stopCountdown(){
         this.countdownStopped := true
     }
-    resetCountdown(){
-
+    setCountdown(minutes, seconds){
+        this.screenSleepCountdown.setTime(minutes, seconds)
     }
 }

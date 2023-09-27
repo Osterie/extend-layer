@@ -28,7 +28,7 @@ if not A_IsAdmin
 
 ; -------------- TO-DO LIST -------------------------
 
-; TODO, update to v2...
+; todo; create function/methods for "toggleValues(value1, value2, defaultValue)"
 
 ; TODO: to make those keyboard overlay classes only one class and more genereal, make then read a file which contains information about how the overlay should look
 ; for a new row, write something to indicate a new row.
@@ -71,7 +71,7 @@ if not A_IsAdmin
 ; TODO: the scroll wheel shortcut should probably only scroll once, not twice.
 
 ; TODO: a shortcut to turn the screen black(which alredy exists), but randomly change rgb values and then black. (so it looks like it is glitching.) Maybe have it connected to if mouse is used or clicked or something, maybe a certain keypress
-
+; todo: text which conveges and is mirrored along the middle
 
 ; -----------Keyboard layers---------
 
@@ -201,7 +201,7 @@ GUICountdown := CountdownGUI(3,3)
     ,:: F6
     <:: MouseMove((A_ScreenWidth//2), (A_ScreenHeight//2))
 
-    G:: AppsKey
+    g:: AppsKey
     i:: Up
     j:: Left
     k:: Down
@@ -211,44 +211,46 @@ GUICountdown := CountdownGUI(3,3)
 
 #HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 2 
     
+    ; Shows second keyboard overlay
     ~Shift::{ 
         SecondKeyboardOverlayInstance.ShowGui()
         KeyWait("Shift")
     return
     } 
-
+    ; Hides second keyboard overlay (and first just in case)
     Shift up::{ 
         FirstKeyboardOverlayInstance.HideGui()
         SecondKeyboardOverlayInstance.HideGui()
     return
     } 
-
+    ; Toggles touch-screen
     +1::{ 
         SecondKeyboardOverlayInstance.ChangeState("Touch-Screen")
         RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-touch-screen.exe")
     Return
     } 
-
+    ; Toggles camera
     +2::{ 
         SecondKeyboardOverlayInstance.ChangeState("Camera")
         RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-hd-camera.exe")
     Return
     } 
-
+    ; Toggles bluetooth
     +3::{ 
         SecondKeyboardOverlayInstance.ChangeState("Bluetooth")
         RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-bluetooth.exe")
     Return
     } 
-
+    ; Toggles touchpad
     +4::{ 
         SecondKeyboardOverlayInstance.ChangeState("Touchpad")
         RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-touchpad.exe")
     Return
     } 
     ; Hides screen
-    A:: {
+    a:: {
         GUIPrivacyBox.Show("x0 y0 w" . A_ScreenWidth . " h" . A_ScreenHeight . " NoActivate")
+        GUICountdown.setCountdown(3,3)
         GUICountdown.createGui()
         GUICountdown.showGui()
         GUICountdown.startCountdown()
@@ -256,7 +258,7 @@ GUICountdown := CountdownGUI(3,3)
     }
 
     ; Hides window
-    S::{
+    s::{
         GUICountdown.stopCountdown()
         GUICountdown.destroyGui()
         WinGetPos(&X, &Y, &Width, &Height, "A")
@@ -266,7 +268,7 @@ GUICountdown := CountdownGUI(3,3)
     Return
     }
     ; Hides tabs
-    D:: {
+    d:: {
         GUICountdown.stopCountdown()
         GUICountdown.destroyGui()
         Title := WinGetTitle("A")
@@ -287,7 +289,7 @@ GUICountdown := CountdownGUI(3,3)
     }
 
     ; Hides GUI
-    F:: {
+    f:: {
         GUIPrivacyBox.Hide()
         GUICountdown.stopCountdown()
         GUICountdown.destroyGui()
@@ -311,7 +313,15 @@ GUICountdown := CountdownGUI(3,3)
     Return
     } 
 
+    ; Switches power saver on, or off(wont turn off if battery is 50% or lower)
+    p::{
+        ; Turns on power saver by setting it to turn on when under 100% charge
+        ; Run, powercfg /setdcvalueindex SCHEME_CURRENT SUB_ENERGYSAVER ESBATTTHRESHOLD 100
+        ; Returns power saver settings to default (at <= 50%)
+        ; Run, powercfg /setdcvalueindex SCHEME_CURRENT SUB_ENERGYSAVER ESBATTTHRESHOLD 50
+    }
 
+    ; Switches brightness to 100 or 50
     u::{ 
         brightness := MonitorInstance.GetCurrentBrightness()
         if (brightness == 100){
@@ -322,7 +332,7 @@ GUICountdown := CountdownGUI(3,3)
         }
     Return
     } 
-
+    ; Switches brightness to 0 or 50
     j::{ 
         brightness := MonitorInstance.GetCurrentBrightness()
         if (brightness == 0){
@@ -333,7 +343,7 @@ GUICountdown := CountdownGUI(3,3)
         }
     Return
     } 
-
+    ; Switches gamma values (r, g, b) to 0,0,0 or 128,128,128
     i::{ 
         gammaRamp := MonitorInstance.GetCurrentGamma()
         red := gammaRamp[1]
@@ -348,12 +358,12 @@ GUICountdown := CountdownGUI(3,3)
         }
     Return 
     } 
-
+    ; Switches gamma values (r, g, b) to 256,256,256 or 128,128,128
     o::{ 
         gammaRamp := MonitorInstance.GetCurrentGamma()
-        red := gammaRamp["Red"]
-        green := gammaRamp["Green"]
-        blue := gammaRamp["Blue"]
+        red := gammaRamp[1]
+        green := gammaRamp[2]
+        blue := gammaRamp[3]
 
         if ( (red + green + blue) < 255*3 ){
             MonitorInstance.SetGamma(255, 255, 255) 
@@ -403,10 +413,8 @@ GUICountdown := CountdownGUI(3,3)
 
 ; TODO add for when !Capslock and #Capslock is pressed and handle the situation accrodingly since it now is buggy
 ; since they do not have their own hotwkeys and handling.
-CapsLock:: 
-    
-    ; changes the layer to 0 if it is not zero, or 1 if it is zero
-{ 
+; changes the layer to 0 if it is not zero, or 1 if it is zero
+CapsLock::{ 
     layers.toggleLayerIndicator(1)
     activeLayer := layers.getActiveLayer()
 
@@ -427,9 +435,7 @@ CapsLock::
 Return
 } 
 
-+CapsLock:: 
-
-{ 
++CapsLock:: { 
     activeLayer := layers.getActiveLayer()
     
     if (activeLayer == 0){
@@ -445,17 +451,17 @@ Return
 Return
 } 
 
-^!ø::{ 
-    Reload()
-Return
-
 ; FIXME does not always work
-} 
-^!w:: ;close tabs to the right
-{ 
-    Sleep(250)
-    Send("\^l{F6}{AppsKey}{Up}{Enter}")
-    Send("+{F6 2}") ;go back to body of page 
+ ;close tabs to the right
+^!w::{ 
+    Sleep(500)
+    Send("+{F6}")
+    ; Send("{F6}")
+    Send("{AppsKey}")
+    Send("{Up}")
+    Send("{Enter}")
+    ; Send("\^l{F6}{AppsKey}{Up}{Enter}")
+    ; Send("+{F6 2}") ;go back to body of page 
 Return
 }  
 
@@ -475,7 +481,7 @@ showKeysPressedControl := GUIshowKeysPressed.AddText(, "")
 
 
 ; Shows gui which can be written in to help classmates/colleagues or whatever
-^!0:: { 
+#0:: { 
     global  
 
     toggleKeysGUI := !toggleKeysGUI
