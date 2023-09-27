@@ -523,59 +523,24 @@ SearchHighlitedOrClipboard(){
 
 ; FIXME: this should be made more general. "CycleValue" or something. Take currentValue, lowerlimit, upperlimit and step.
 ToggleValue(givenValue, value1, value2, defaultValue){
-
+    valueToReturn := 0
+    if (givenValue == value1){
+        valueToReturn := value2
+    }
+    else if (givenValue == value2){
+        valueToReturn := value1
+    }
+    else{
+        valueToReturn := defaultValue
+    }
+    return valueToReturn
     
 }
 
-CycleColorValue(colorValue){
-    if (colorValue == 0){
-        colorValue := "128"
+CycleValue(givenValue, step, upperLimit){
+    givenValue += step
+    if (givenValue >= upperLimit){
+        givenValue := 0
     }
-    else if (colorValue == 128){
-        colorValue := "255"
-    }
-    else{
-        colorValue := "0"
-    }
-    Return colorValue
+    Return givenValue
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

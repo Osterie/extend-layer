@@ -30,6 +30,10 @@ if not A_IsAdmin
 
 ; todo; create function/methods for "toggleValues(value1, value2, defaultValue)"
 
+; todo; In the future, possible to add a button which opens a gui user interface where values can be changed, for 
+; example, the step to go when changing red, green, blue gamma values, and so on, brightness...
+
+
 ; TODO: to make those keyboard overlay classes only one class and more genereal, make then read a file which contains information about how the overlay should look
 ; for a new row, write something to indicate a new row.
 
@@ -297,6 +301,7 @@ GUICountdown := CountdownGUI(3,3)
     }
 
     ; Blocks input from keyboard and mouse, can be deactivated using pipe (|)
+    ; FIXME does not work
     q:: {
         BlockInput("On")
         BlockInput("MouseMove")
@@ -377,7 +382,7 @@ GUICountdown := CountdownGUI(3,3)
     k::{ 
         gammaRamp := MonitorInstance.GetCurrentGamma()
         red := gammaRamp.Get(1)
-        red := CycleColorValue(red)
+        red := CycleValue(red, 127, 255)
         green := gammaRamp.Get(2)
         blue := gammaRamp.Get(3)
 
@@ -389,7 +394,7 @@ GUICountdown := CountdownGUI(3,3)
         gammaRamp := MonitorInstance.GetCurrentGamma()
         red := gammaRamp.Get(1)
         green := gammaRamp.Get(2)
-        green := CycleColorValue(green)
+        green := CycleValue(green, 127, 255)
         blue := gammaRamp.Get(3)
 
         MonitorInstance.SetGamma(red, green, blue)
@@ -401,7 +406,7 @@ GUICountdown := CountdownGUI(3,3)
         red := gammaRamp.Get(1)
         green := gammaRamp.Get(2)
         blue := gammaRamp.Get(3)
-        blue := CycleColorValue(blue)
+        blue := CycleValue(blue, 127, 255)
 
         MonitorInstance.SetGamma(red, green, blue)
     Return
@@ -483,8 +488,7 @@ showKeysPressedControl := GUIshowKeysPressed.AddText(, "")
 ; Shows gui which can be written in to help classmates/colleagues or whatever
 #0:: { 
     global  
-
-    toggleKeysGUI := !toggleKeysGUI
+    toggleKeysGUI := ToggleValue(toggleKeysGUI, 1, 0, 0)
     if (toggleKeysGUI){
         ; TODO can maybe reduce number of lines in this function?
         CreateHotkey(showKeysPressedControl)
