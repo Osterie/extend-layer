@@ -380,35 +380,17 @@ GUICountdown := CountdownGUI(3,3)
     } 
 
     k::{ 
-        gammaRamp := MonitorInstance.GetCurrentGamma()
-        red := gammaRamp.Get(1)
-        red := CycleValue(red, 127, 255)
-        green := gammaRamp.Get(2)
-        blue := gammaRamp.Get(3)
-
-        MonitorInstance.SetGamma(red, green, blue)
+        MonitorInstance.CycleRed(127, 255)
     Return
     } 
 
     l::{ 
-        gammaRamp := MonitorInstance.GetCurrentGamma()
-        red := gammaRamp.Get(1)
-        green := gammaRamp.Get(2)
-        green := CycleValue(green, 127, 255)
-        blue := gammaRamp.Get(3)
-
-        MonitorInstance.SetGamma(red, green, blue)
+        MonitorInstance.CycleGreen(127, 255)
     Return
     } 
     
     ø::{ 
-        gammaRamp := MonitorInstance.GetCurrentGamma()
-        red := gammaRamp.Get(1)
-        green := gammaRamp.Get(2)
-        blue := gammaRamp.Get(3)
-        blue := CycleValue(blue, 127, 255)
-
-        MonitorInstance.SetGamma(red, green, blue)
+        MonitorInstance.CycleBlue(127, 255)
     Return
     }
 

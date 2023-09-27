@@ -536,11 +536,3 @@ ToggleValue(givenValue, value1, value2, defaultValue){
     return valueToReturn
     
 }
-
-CycleValue(givenValue, step, upperLimit){
-    givenValue += step
-    if (givenValue >= upperLimit){
-        givenValue := 0
-    }
-    Return givenValue
-}

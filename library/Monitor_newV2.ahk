@@ -40,7 +40,6 @@ Class Monitor{
         GAMMA_RAMP := Buffer(1536)
         hMonitor := DllCall("user32\MonitorFromWindow", "ptr", 0, "uint", 0x00000002) ; MONITOR_DEFAULTTONEAREST = 0x00000002
 
-
         while ((i := A_Index - 1) < 256 ){	
 			NumPut("ushort", (r := (red   + 128) * i) > 65535 ? 65535 : r, GAMMA_RAMP,        2 * i)
 			NumPut("ushort", (g := (green + 128) * i) > 65535 ? 65535 : g, GAMMA_RAMP,  512 + 2 * i)
@@ -48,33 +47,36 @@ Class Monitor{
 		}
         hDC := DllCall("GetDC", "Uint", 0)
         DllCall("SetDeviceGammaRamp", "Uint", hDC, "ptr", GAMMA_RAMP)
+    }
 
-        ; DllCall("ReleaseDC", "Uint", 0, "Uint", hDC)
-		; 	return true
-		; throw Error("Unable to set values.`n`nError code: " Format("0x{:X}", A_LastError))
+    CycleRed(step, upperLimit){
+        gammaRamp := this.getCurrentGamma()
+        red := gammaRamp.Get(1)
+        red := this.CycleValue(red, step, upperLimit)
+        green := gammaRamp.Get(2)
+        blue := gammaRamp.Get(3)
 
-        ; Loop 256
-        ; {
-        ;     If ( (newRed:=(red+128)*(A_Index-1))>65535 ){
-        ;         newRed:=65535
-        ;     }
-        ;     ; me32 := Buffer(548, 0)
-        ;     ; NumPut("Uint", 548, me32)
-        ;     NumPut("Ushort", newRed, gammaRamp, 2*(A_Index))
+        this.setGamma(red, green, blue)
+    }
+
+    CycleBlue(step, upperLimit){
+        gammaRamp := this.getCurrentGamma()
+        red := gammaRamp.Get(1)
+        green := gammaRamp.Get(2)
+        green := this.CycleValue(green, step, upperLimit)
+        blue := gammaRamp.Get(3)
+
+        this.setGamma(red, green, blue)
+    }
     
-        ;     If ( (newGreen:=(green+128)*(A_Index-1))>65535 ){
-        ;         newGreen:=65535
-        ;     }
-        ;     NumPut("Ushort", newGreen, gammaRamp, 512+2*(A_Index-1))
-            
-        ;     If ( (newBlue:=(blue+128)*(A_Index-1))>65535 ){
-        ;         newBlue:=65535
-        ;     }
-        ;     NumPut("Ushort", newBlue, gammaRamp, 1024+2*(A_Index-1))
-        ; }
-        ; hDC := DllCall("GetDC", "Uint", 0)
-        ; DllCall("SetDeviceGammaRamp", "Uint", hDC, "ptr", gammaRamp)
-        ; DllCall("ReleaseDC", "Uint", 0, "Uint", hDC)
+    CycleGreen(step, upperLimit){
+        gammaRamp := this.getCurrentGamma()
+        red := gammaRamp.Get(1)
+        green := gammaRamp.Get(2)
+        blue := gammaRamp.Get(3)
+        blue := this.CycleValue(blue, step, upperLimit)
+
+        this.setGamma(red, green, blue)
     }
 
     GetCurrentGamma(){
@@ -90,5 +92,13 @@ Class Monitor{
 
         Return gammaRampList
 
+    }
+
+    CycleValue(givenValue, step, upperLimit){
+        givenValue += step
+        if (givenValue >= upperLimit){
+            givenValue := 0
+        }
+        Return givenValue
     }
 }
