@@ -1,12 +1,10 @@
 ﻿#Requires Autohotkey v2.0
 ; [^ = Ctrl] [+ = Shift] [! = Alt] [# = WinK]
 
-; REMOVED: #NoEnv
 #SingleInstance force
 A_MaxHotkeysPerInterval := 200
 KeyHistory(0)
 ListLines(false)
-; REMOVED: SetBatchLines, -1
 
 
 SetWorkingDir(A_ScriptDir)

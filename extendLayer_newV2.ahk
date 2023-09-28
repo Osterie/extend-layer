@@ -4,6 +4,8 @@
 #Include ".\library\library_newV2.ahk"
 #Include ".\library\Monitor_newV2.ahk"
 #Include ".\library\LayerIndicatorController_newV2.ahk"
+#Include ".\library\BatteryController.ahk"
+#Include ".\library\PrivacyGUIController.ahk"
 
 ;---------------------- OPTIMIZATIONS ------------------
 ; 
@@ -30,6 +32,8 @@ if not A_IsAdmin
 
 ; todo; create function/methods for "toggleValues(value1, value2, defaultValue)"
 
+; Todo; add guis for more stuff, like power mode.
+
 ; todo; In the future, possible to add a button which opens a gui user interface where values can be changed, for 
 ; example, the step to go when changing red, green, blue gamma values, and so on, brightness...
 
@@ -55,6 +59,8 @@ if not A_IsAdmin
 
 ; TODO: in lib.ahk, there are two very similiar classes, use inheritance or whatever, take arguments, do something to reuse code, ugly now
 
+; TODO; create a seperate script to log how much power is being used? maybe make this a method for the battery class, and a seperate class for batteryLogger which is an object which will be used in battery class
+
 ; // TODO: scrape assignemtns and add to keyboard overlay? which also has link to it and color showing if it is completed or not
 
 ; TODO: connect/disconnect airpods,
@@ -79,9 +85,12 @@ if not A_IsAdmin
 
 ; -----------Keyboard layers---------
 
-GUIPrivacyBox := Gui()
-GUIPrivacyBox.Opt("-Caption +AlwaysOnTop +Owner +LastFound")
-GUIPrivacyBox.BackColor := "Black"
+privacyController := PrivacyGUIController()
+privacyController.CreateGui()
+
+; GUIPrivacyBox := Gui()
+; GUIPrivacyBox.Opt("-Caption +AlwaysOnTop +Owner +LastFound")
+; GUIPrivacyBox.BackColor := "Black"
 
 FirstKeyboardOverlayInstance := FirstKeyboardOverlay()
 FirstKeyboardOverlayInstance.CreateKeyboardOverlay()
@@ -102,13 +111,18 @@ layers.addLayerIndicator(2, "Red")
 MonitorInstance := Monitor()
 
 ; ----Ensures consistency------
-
+; turns off CapsLock
 SetCapsLockState("off")
+
+battery := BatteryController(50, 50)
+battery.setPowerSaverModeGUID("a1841308-3541-4fab-bc81-f71556f20b4a")
+battery.setDefaultPowerModeGUID("8759706d-706b-4c22-b2ec-f91e1ef6ed38")
+battery.ActivateNormalPowerMode()
 
 ; --------------
 
 
-GUICountdown := CountdownGUI(3,3)
+; GUICountdown := CountdownGUI(3,3)
 ; GUICountdown.createGui()
 
 #HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 1
@@ -116,49 +130,41 @@ GUICountdown := CountdownGUI(3,3)
     ~Shift::{ 
         FirstKeyboardOverlayInstance.ShowGui()
         KeyWait("Shift")
-    return
     } 
 
     Shift up::{ 
         SecondKeyboardOverlayInstance.HideGui()
         FirstKeyboardOverlayInstance.HideGui()
-    return
     } 
     ; Go to study plan (from current week to end of first semester currently)
     +1::{ 
         Run("chrome.exe `"https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&`"")
-    Return
     } 
 
     ; Go to blackboard
     +2::{ 
         Run("chrome.exe `"https://ntnu.blackboard.com/ultra/course`"")
         Sleep(4000)
-    Return
     }
 
     ; Go to programming 1
     +3::{ 
         LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_39969_1/cl/outline")
-    Return
     } 
 
     ; Go to team class
     +4::{ 
         LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_39995_1/cl/outline")
-    Return
     } 
 
     ; Go to Math
     +5::{ 
         LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_44996_1/cl/outline")
-    Return
     } 
     
     ; Go to programming and numeric safety stuff...
     +6::{ 
         LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_43055_1/cl/outline")
-    Return
     } 
 
     ; Go to jupyterhub
@@ -166,7 +172,6 @@ GUICountdown := CountdownGUI(3,3)
         Run("chrome.exe `"https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab`"")
         Sleep(2000)
         LoginToJupyterHub()
-    Return
     } 
 
     q:: Esc
@@ -186,7 +191,6 @@ GUICountdown := CountdownGUI(3,3)
 
     ; opens a new tab in chrome which searches for the highlited content, if not content is highlighted, clipboard content is sent.
     t:: SearchHighlitedOrClipboard()
-
 
     y:: PgUp
     h:: PgDn
@@ -219,85 +223,55 @@ GUICountdown := CountdownGUI(3,3)
     ~Shift::{ 
         SecondKeyboardOverlayInstance.ShowGui()
         KeyWait("Shift")
-    return
     } 
+
     ; Hides second keyboard overlay (and first just in case)
     Shift up::{ 
         FirstKeyboardOverlayInstance.HideGui()
         SecondKeyboardOverlayInstance.HideGui()
-    return
     } 
+
     ; Toggles touch-screen
     +1::{ 
         SecondKeyboardOverlayInstance.ChangeState("Touch-Screen")
         RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-touch-screen.exe")
-    Return
     } 
+
     ; Toggles camera
     +2::{ 
         SecondKeyboardOverlayInstance.ChangeState("Camera")
         RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-hd-camera.exe")
-    Return
     } 
+
     ; Toggles bluetooth
     +3::{ 
         SecondKeyboardOverlayInstance.ChangeState("Bluetooth")
         RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-bluetooth.exe")
-    Return
     } 
+
     ; Toggles touchpad
     +4::{ 
         SecondKeyboardOverlayInstance.ChangeState("Touchpad")
         RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-touchpad.exe")
-    Return
     } 
+
     ; Hides screen
     a:: {
-        GUIPrivacyBox.Show("x0 y0 w" . A_ScreenWidth . " h" . A_ScreenHeight . " NoActivate")
-        GUICountdown.setCountdown(3,3)
-        GUICountdown.createGui()
-        GUICountdown.showGui()
-        GUICountdown.startCountdown()
-    Return
+        privacyController.HideScreen()
     }
 
     ; Hides window
     s::{
-        GUICountdown.stopCountdown()
-        GUICountdown.destroyGui()
-        WinGetPos(&X, &Y, &Width, &Height, "A")
-        guiWidth := Width*0.7
-        guiHeight := Height*0.7
-        GUIPrivacyBox.Show("x" . X . " y" . Y . " w" . guiWidth . " h" . guiHeight . " NoActivate")
-    Return
+        privacyController.HideWindow()
     }
     ; Hides tabs
     d:: {
-        GUICountdown.stopCountdown()
-        GUICountdown.destroyGui()
-        Title := WinGetTitle("A")
-        If (InStr(Title, "Google Chrome") || InStr(Title, "Mozilla Firefox") || InStr(Title, "Edge")){
-            WinGetPos(&X, &Y, &Width, &Height, "A")
-            guiWidth := Width*0.55
-            GUIPrivacyBox.Show("x" . X . " y" . Y . " w" . guiWidth . " h40 NoActivate")
-        }
-
-        Else If (InStr(Title, "Visual Studio")){
-            WinGetPos(&X, &Y, &Width, &Height, "A")
-            guiX := (X*1)+60
-            guiY := (Y*1)+45
-            guiWidth := Width*0.66
-            GUIPrivacyBox.Show("x" . guiX . " y" . guiY . " w" . guiWidth . " h40 NoActivate")
-        }
-    Return
+        privacyController.HideTabs()
     }
 
     ; Hides GUI
     f:: {
-        GUIPrivacyBox.Hide()
-        GUICountdown.stopCountdown()
-        GUICountdown.destroyGui()
-    Return
+        privacyController.HideGui()
     }
 
     ; Blocks input from keyboard and mouse, can be deactivated using pipe (|)
@@ -306,24 +280,19 @@ GUICountdown := CountdownGUI(3,3)
         BlockInput("On")
         BlockInput("MouseMove")
         Suspend(true)
-    Return
     }
 
-    ; If input is blocked (q has been pressed while in second layer), it can be enabled again.
+    ; if input is blocked (q has been pressed while in second layer), it can be enabled again.
     $|::{
         #SuspendExempt
         BlockInput("Off")
         BlockInput("MouseMoveOff")
         Suspend(false)
-    Return
-    } 
+    }
 
     ; Switches power saver on, or off(wont turn off if battery is 50% or lower)
     p::{
-        ; Turns on power saver by setting it to turn on when under 100% charge
-        ; Run, powercfg /setdcvalueindex SCHEME_CURRENT SUB_ENERGYSAVER ESBATTTHRESHOLD 100
-        ; Returns power saver settings to default (at <= 50%)
-        ; Run, powercfg /setdcvalueindex SCHEME_CURRENT SUB_ENERGYSAVER ESBATTTHRESHOLD 50
+        battery.TogglePowerSaverMode()
     }
 
     ; Switches brightness to 100 or 50
