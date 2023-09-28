@@ -5,12 +5,8 @@ Class PrivacyGUIController{
 
     GUIPrivacyBox := ""
     minutes := 3
-    seconds := 3
-    GUICountdown := CountdownGUI(3,3)
-
-    ; __New(){
-
-    ; }
+    seconds := 0
+    GUICountdown := CountdownGUI(3,0)
 
     CreateGui(){
         this.GUIPrivacyBox := Gui()
@@ -20,33 +16,41 @@ Class PrivacyGUIController{
 
     DestroyGui(){
         this.GUIPrivacyBox.Destroy()
-        this.GUICountdown.stopCountdown()
-        this.GUICountdown.destroyGui()
+        this.GUICountdown.StopCountdown()
+        this.GUICountdown.DestroyGui()
     }
 
     HideGui(){
         this.GUIPrivacyBox.Hide()
-        this.GUICountdown.stopCountdown()
-        this.GUICountdown.destroyGui()
+        
+        try{
+            this.GUICountdown.StopCountdown()
+            this.GUICountdown.DestroyGui()
+        }
     }
 
     ChangeCountdown(minutes, seconds){
         this.minutes := minutes
         this.seconds := seconds
+        this.GUICountdown.SetCountdown(this.minutes, this.seconds)
     }
     ; Covers the entire screen with a gui.
     ; Includes a countown to when screen turns off
     HideScreen(){
         this.GUIPrivacyBox.Show("x0 y0 w" . A_ScreenWidth . " h" . A_ScreenHeight . " NoActivate")
-        this.GUICountdown.setCountdown(this.minutes, this.seconds)
-        this.GUICountdown.createGui()
-        this.GUICountdown.showGui()
-        this.GUICountdown.startCountdown()
+        
+        ; this.GUICountdown.SetCountdown(this.minutes, this.seconds)
+        this.GUICountdown.CreateGui()
+        this.GUICountdown.ShowGui()
+        this.GUICountdown.StartCountdown()
     }
     ; Hides the active window
     HideWindow(){
-        this.GUICountdown.stopCountdown()
-        this.GUICountdown.destroyGui()
+        try{
+            this.GUICountdown.StopCountdown()
+            this.GUICountdown.DestroyGui()
+        }
+
         WinGetPos(&X, &Y, &Width, &Height, "A")
         guiWidth := Width*0.7
         guiHeight := Height*0.7
@@ -54,8 +58,11 @@ Class PrivacyGUIController{
     }
     ; Hides the tabs of vscode or the current search engine
     HideTabs(){
-        this.GUICountdown.stopCountdown()
-        this.GUICountdown.destroyGui()
+        try{
+            this.GUICountdown.StopCountdown()
+            this.GUICountdown.DestroyGui()
+        }
+
         Title := WinGetTitle("A")
         WinGetPos(&X, &Y, &Width, &Height, "A")
         if (InStr(Title, "Google Chrome") || InStr(Title, "Mozilla Firefox") || InStr(Title, "Edge")){

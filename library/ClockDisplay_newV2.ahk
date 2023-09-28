@@ -11,38 +11,38 @@ Class ClockDisplay{
         this.minutes := NumberDisplay(60)
         this.seconds := NumberDisplay(60)
 
-        this.minutes.setValue(initialMinutes)
-        this.seconds.setValue(initialSeconds)
+        this.minutes.SetValue(initialMinutes)
+        this.seconds.SetValue(initialSeconds)
     }   
 
-    getTimeAsString(){
-        timeAsString := this.minutes.getDisplayValue() . ":" . this.seconds.getDisplayValue()
+    GetTimeAsString(){
+        timeAsString := this.minutes.GetDisplayValue() . ":" . this.seconds.GetDisplayValue()
         return timeAsString
     }
 
-    incrementTime(){
-        this.seconds.incrementValue()
-        if (this.seconds.getValue() == 0)
+    IncrementTime(){
+        this.seconds.IncrementValue()
+        if (this.seconds.GetValue() == 0)
         {
-            this.minutes.incrementValue()
+            this.minutes.IncrementValue()
         }
     }
 
-    decrementTime(){
-        this.seconds.decrementValue()
-        if (this.seconds.getValue() == 0){
-            this.minutes.decrementValue()
+    DecrementTime(){
+        this.seconds.DecrementValue()
+        if (this.seconds.GetValue() == 59){
+            this.minutes.DecrementValue()
         }
     }
 
-    setTime(minutes, seconds){
-        this.minutes.setValue(minutes)
-        this.seconds.setValue(seconds)
+    SetTime(minutes, seconds){
+        this.minutes.SetValue(minutes)
+        this.seconds.SetValue(seconds)
     }
 
-    isMidnight(){
+    IsMidnight(){
         midnight := false
-        if (this.seconds.getValue() == 0 && this.minutes.getValue() == 0){
+        if (this.seconds.GetValue() == 0 && this.minutes.GetValue() == 0){
             midnight := true
         }
         return midnight

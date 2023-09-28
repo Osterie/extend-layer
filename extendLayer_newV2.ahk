@@ -87,6 +87,8 @@ if not A_IsAdmin
 
 privacyController := PrivacyGUIController()
 privacyController.CreateGui()
+; todo get screen sleepe countdown 
+privacyController.ChangeCountdown(3,0)
 
 ; GUIPrivacyBox := Gui()
 ; GUIPrivacyBox.Opt("-Caption +AlwaysOnTop +Owner +LastFound")

@@ -7,14 +7,17 @@ Class CountdownGUI{
 
     countdownStopped := false
     screenSleepCountdown := ""
-    GUICountdown := 0
+    GUICountdown := ""
+    minutes := 0
+    seconds := 0
 
     __New(minutes, seconds){
         this.screenSleepCountdown := ClockDisplay(minutes, seconds)
+        this.minutes := minutes
+        this.seconds := seconds
     }
     
-    createGui(){
-        
+    CreateGui(){
         this.GUICountdown := Gui()
         this.GUICountdown.Opt("+AlwaysOnTop -Caption +ToolWindow")
         this.GUICountdown.BackColor := "black"
@@ -22,36 +25,47 @@ Class CountdownGUI{
         this.GUICountdown.Add("Text", "w200 Center vCountdown", this.screenSleepCountdown.getTimeAsString())
     }
     
-    destroyGui(){
+    DestroyGui(){
         this.GUICountdown.Destroy()
     }
 
-    showGui(){
+    ShowGui(){
         this.GUICountdown.Show()
     }
 
-    hideGui(){
-        this.GUICountdown.hide()
+    HideGui(){
+        this.GUICountdown.Hide()
     }
 
-    startCountdown(){
-        Loop{
-            if (A_TimeIdle + 1000 < 2000){
-                this.screenSleepCountdown.setTime(1,0)
-            }
-            this.screenSleepCountdown.decrementTime()
-            ; ogcTextCountdown.Value := this.screenSleepCountdown.getTimeAsString()
-            this.GUICountdown['Countdown'].Text := this.screenSleepCountdown.getTimeAsString()
+    StartCountdown(){
+        this.idle := false
+        this.countdownStopped := false
+        this.screenSleepCountdown.SetTime(this.minutes,this.seconds)
 
+        Loop{
+
+            this.GUICountdown['Countdown'].Text := this.screenSleepCountdown.GetTimeAsString()
             Sleep(920)
 
-        } until this.screenSleepCountdown.isMidnight() || this.countdownStopped
+            if (A_TimeIdle < 920 && this.idle){
+                this.idle := false
+                this.screenSleepCountdown.SetTime(this.minutes,this.seconds)
+            }
+            else{
+                this.screenSleepCountdown.DecrementTime()
+            }
+           
+            this.idle := true
+
+        } until this.screenSleepCountdown.IsMidnight() || this.countdownStopped
         return
     }
     stopCountdown(){
         this.countdownStopped := true
     }
     setCountdown(minutes, seconds){
-        this.screenSleepCountdown.setTime(minutes, seconds)
+        this.minutes := minutes
+        this.seconds := seconds
+        this.screenSleepCountdown.SetTime(minutes, seconds)
     }
 }

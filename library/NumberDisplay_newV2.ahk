@@ -15,26 +15,26 @@ Class NumberDisplay{
     incrementValue(){
         this.value := mod( (this.value + 1) , this.upperLimit)
     }
-    decrementValue(){
+    DecrementValue(){
         this.value := this.value - 1
         if (this.value < 0){
             this.value := this.upperLimit-1
         }
     }
 
-    setValue(value){
+    SetValue(value){
         if ( (value < 0) || (value >= this.upperLimit) )
         {
             return
         }
         this.value := value
     }
-    getValue()
+    GetValue()
     {
         return this.value
     }
 
-    getDisplayValue()
+    GetDisplayValue()
     {
         valueToDisplay := ""
         if (this.value < 10)
