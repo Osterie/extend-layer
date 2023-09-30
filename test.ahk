@@ -10,4 +10,4 @@ test2 := 20
 ; Returns power saver settings to default (at <= 50%)
 ; Run, powercfg /setdcvalueindex SCHEME_CURRENT SUB_ENERGYSAVER ESBATTTHRESHOLD 50
 
-msgbox(run("powercfg /GETACTIVESCHEME"))
+; msgbox(run("powercfg /GETACTIVESCHEME"))

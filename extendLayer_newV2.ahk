@@ -6,6 +6,7 @@
 #Include ".\library\LayerIndicatorController_newV2.ahk"
 #Include ".\library\BatteryController.ahk"
 #Include ".\library\PrivacyGUIController.ahk"
+#Include ".\library\InputController.ahk"
 
 ;---------------------- OPTIMIZATIONS ------------------
 ; 
@@ -36,7 +37,11 @@ if not A_IsAdmin
 
 ; todo; In the future, possible to add a button which opens a gui user interface where values can be changed, for 
 ; example, the step to go when changing red, green, blue gamma values, and so on, brightness...
-
+; Ability to also disable keybidnds, and for these settings to be remembered in a file, which can be read and its content put through a function/class method which understands the content
+; This gui can also be used to toggle "beginner mode" or something (which is not created yet).
+; This would allow the user to for example show an onscreen keyboard ovelay which shows what every keyboard key does, making this script usable for more people.
+; In the gui it should also be possible to switch which keys do what, since people have diffenet keyboards.
+; The keyboard overlay should maybe make it possible to hover over a key, or hold/press ctrl or something to show which key on the keyboard to press to activate that special key.
 
 ; TODO: to make those keyboard overlay classes only one class and more genereal, make then read a file which contains information about how the overlay should look
 ; for a new row, write something to indicate a new row.
@@ -83,55 +88,48 @@ if not A_IsAdmin
 ; TODO: a shortcut to turn the screen black(which alredy exists), but randomly change rgb values and then black. (so it looks like it is glitching.) Maybe have it connected to if mouse is used or clicked or something, maybe a certain keypress
 ; todo: text which conveges and is mirrored along the middle
 
-; -----------Keyboard layers---------
+; ----------- OBJECT CREATION ---------------
 
+; Enables / disables input (mouse or keyboard)
+Input := InputController()
+
+; Used to hide screen and parts of the screen
 privacyController := PrivacyGUIController()
 privacyController.CreateGui()
-; todo get screen sleepe countdown 
 privacyController.ChangeCountdown(3,0)
 
-; GUIPrivacyBox := Gui()
-; GUIPrivacyBox.Opt("-Caption +AlwaysOnTop +Owner +LastFound")
-; GUIPrivacyBox.BackColor := "Black"
-
+; Shows an on screen overlay for the first keyboard layer which shows which urls can be went to using the number keys
 FirstKeyboardOverlayInstance := FirstKeyboardOverlay()
 FirstKeyboardOverlayInstance.CreateKeyboardOverlay()
 
+
+; TODO this is a pretty bad way to do this... 
+; Shows an on screen overlay for the first keyboard layer which shows which number keys to press to enable/disable devices
 SecondKeyboardOverlayInstance := SecondKeyboardOverlay()
 SecondKeyboardOverlayInstance.CreateKeyboardOverlay()
 
-; screenSleepCountdown := new ClockDisplay(3,0)
-; storedSecond := A_Sec
-; countdownCanceled := false
-
-; ----------------------------------
-
+; Used to switch the active layer
 layers := LayerIndicatorController()
 layers.addLayerIndicator(1, "Green")
 layers.addLayerIndicator(2, "Red")
 
+; Used to change brightness and gamma settings of the monitor
 MonitorInstance := Monitor()
 
-; ----Ensures consistency------
-; turns off CapsLock
-SetCapsLockState("off")
-
+; Used to switch between power saver mdoe and normal power mode
 battery := BatteryController(50, 50)
 battery.setPowerSaverModeGUID("a1841308-3541-4fab-bc81-f71556f20b4a")
 battery.setDefaultPowerModeGUID("8759706d-706b-4c22-b2ec-f91e1ef6ed38")
 battery.ActivateNormalPowerMode()
 
-; --------------
-
-
-; GUICountdown := CountdownGUI(3,3)
-; GUICountdown.createGui()
+; ----Ensures consistency------
+; turns off CapsLock
+SetCapsLockState("off")
 
 #HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 1
 
     ~Shift::{ 
         FirstKeyboardOverlayInstance.ShowGui()
-        KeyWait("Shift")
     } 
 
     Shift up::{ 
@@ -220,8 +218,9 @@ battery.ActivateNormalPowerMode()
 #HotIf
 
 #HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 2 
-    
-    ; Shows second keyboard overlay
+
+
+    ; Shows second keyboard overlay when shift is held down
     ~Shift::{ 
         SecondKeyboardOverlayInstance.ShowGui()
         KeyWait("Shift")
@@ -235,6 +234,7 @@ battery.ActivateNormalPowerMode()
 
     ; Toggles touch-screen
     +1::{ 
+        ; TODO the run should be in the class that handles keyboard overlay, make more classes and such
         SecondKeyboardOverlayInstance.ChangeState("Touch-Screen")
         RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-touch-screen.exe")
     } 
@@ -276,21 +276,16 @@ battery.ActivateNormalPowerMode()
         privacyController.HideGui()
     }
 
-    ; Blocks input from keyboard and mouse, can be deactivated using pipe (|)
-    ; FIXME does not work
-    q:: {
-        BlockInput("On")
-        BlockInput("MouseMove")
-        Suspend(true)
+    ; Blocks input from keyboard and mouse, can be deactivated with Home + End
+    Home::{
+        Input.BlockAllInput()
+    }
+    
+    ; Re-Enables input
+    Home & End::{
+        Input.UnBlockAllInput()
     }
 
-    ; if input is blocked (q has been pressed while in second layer), it can be enabled again.
-    $|::{
-        #SuspendExempt
-        BlockInput("Off")
-        BlockInput("MouseMoveOff")
-        Suspend(false)
-    }
 
     ; Switches power saver on, or off(wont turn off if battery is 50% or lower)
     p::{
@@ -306,7 +301,6 @@ battery.ActivateNormalPowerMode()
         else{
             MonitorInstance.SetBrightness(100)
         }
-    Return
     } 
     ; Switches brightness to 0 or 50
     j::{ 
@@ -317,7 +311,6 @@ battery.ActivateNormalPowerMode()
         else{
             MonitorInstance.SetBrightness(0)
         }
-    Return
     } 
     ; Switches gamma values (r, g, b) to 0,0,0 or 128,128,128
     i::{ 
@@ -332,7 +325,6 @@ battery.ActivateNormalPowerMode()
         else{
             MonitorInstance.SetGamma(0, 0, 0)
         }
-    Return 
     } 
     ; Switches gamma values (r, g, b) to 256,256,256 or 128,128,128
     o::{ 
@@ -399,12 +391,30 @@ Return
     if (activeLayer == 0){
         layers.setCurrentLayerIndicator(2)
         layers.showLayerIndicator(2)
+
+        FirstKeyboardOverlayInstance.HideGui()
+        SecondKeyboardOverlayInstance.ShowGui()
+
         SetCapsLockState("on")
+
+
+
     }
     else{
+
         layers.cycleExtraLayerIndicators()
-        layers.showLayerIndicator(layers.getActiveLayer())
+        newActiveLayer := layers.getActiveLayer()
+        layers.showLayerIndicator(newActiveLayer)
         layers.hideInactiveLayers()
+
+        if (newActiveLayer == 1){
+            FirstKeyboardOverlayInstance.ShowGui()
+            SecondKeyboardOverlayInstance.HideGui()
+        }
+        else if (newActiveLayer == 2){
+            SecondKeyboardOverlayInstance.ShowGui()
+            FirstKeyboardOverlayInstance.HideGui()
+        }
     }
 Return
 } 
@@ -412,12 +422,14 @@ Return
 ; FIXME does not always work
  ;close tabs to the right
 ^!w::{ 
+    Input.BlockKeyboard()
     Sleep(500)
     Send("+{F6}")
     ; Send("{F6}")
     Send("{AppsKey}")
     Send("{Up}")
     Send("{Enter}")
+    Input.UnBlockKeyboard()
     ; Send("\^l{F6}{AppsKey}{Up}{Enter}")
     ; Send("+{F6 2}") ;go back to body of page 
 Return
