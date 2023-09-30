@@ -7,8 +7,7 @@ Class Monitor{
     ; blue
     ; brightnees
 
-    SetBrightness( brightness, timeout := 1 )
-    {
+    SetBrightness( brightness, timeout := 1 ){
         if ( brightness >= 0 && brightness <= 100 )
         {
             For property in ComObjGet( "winmgmts:\\.\root\WMI" ).ExecQuery( "SELECT * FROM WmiMonitorBrightnessMethods" )
@@ -24,8 +23,7 @@ Class Monitor{
          }
     }
     
-    GetCurrentBrightness()
-    {
+    GetCurrentBrightness(){
         For property in ComObjGet( "winmgmts:\\.\root\WMI" ).ExecQuery( "SELECT * FROM WmiMonitorBrightness" )
             currentBrightness := property.CurrentBrightness	
     
@@ -77,6 +75,36 @@ Class Monitor{
         blue := this.CycleValue(blue, step, upperLimit)
 
         this.setGamma(red, green, blue)
+    }
+
+    ; Switches gamma values (r, g, b) to 256,256,256 or 128,128,128
+    ToggleHighestGamma(){
+        gammaRamp := this.GetCurrentGamma()
+        red := gammaRamp[1]
+        green := gammaRamp[2]
+        blue := gammaRamp[3]
+
+        if ( (red + green + blue) < 255*3 ){
+            this.SetGamma(255, 255, 255) 
+        }
+        else{
+            this.SetGamma(128, 128, 128)
+        }
+    }
+
+    ; Switches gamma values (r, g, b) to 0,0,0 or 128,128,128
+    ToggleLowestGamma(){
+        gammaRamp := this.GetCurrentGamma()
+        red := gammaRamp[1]
+        green := gammaRamp[2]
+        blue := gammaRamp[3]
+
+        if ( (red + green + blue) == 0 ){
+            this.SetGamma(128, 128, 128)
+        }
+        else{
+            this.SetGamma(0, 0, 0)
+        }
     }
 
     GetCurrentGamma(){

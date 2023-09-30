@@ -312,52 +312,20 @@ SetCapsLockState("off")
             MonitorInstance.SetBrightness(0)
         }
     } 
-    ; Switches gamma values (r, g, b) to 0,0,0 or 128,128,128
-    i::{ 
-        gammaRamp := MonitorInstance.GetCurrentGamma()
-        red := gammaRamp[1]
-        green := gammaRamp[2]
-        blue := gammaRamp[3]
 
-        if ( (red + green + blue) == 0 ){
-            MonitorInstance.SetGamma(128, 128, 128)
-        }
-        else{
-            MonitorInstance.SetGamma(0, 0, 0)
-        }
-    } 
     ; Switches gamma values (r, g, b) to 256,256,256 or 128,128,128
-    o::{ 
-        gammaRamp := MonitorInstance.GetCurrentGamma()
-        red := gammaRamp[1]
-        green := gammaRamp[2]
-        blue := gammaRamp[3]
+    o:: MonitorInstance.ToggleHighestGamma() 
 
-        if ( (red + green + blue) < 255*3 ){
-            MonitorInstance.SetGamma(255, 255, 255) 
-        }
-        else{
-            MonitorInstance.SetGamma(128, 128, 128)
-        }
-    Return
-    } 
+    ; Switches gamma values (r, g, b) to 0,0,0 or 128,128,128
+    i:: MonitorInstance.ToggleLowestGamma()     
 
-    k::{ 
-        MonitorInstance.CycleRed(127, 255)
-    Return
-    } 
+    k:: MonitorInstance.CycleRed(127, 255) 
 
-    l::{ 
-        MonitorInstance.CycleGreen(127, 255)
-    Return
-    } 
+    l:: MonitorInstance.CycleGreen(127, 255)
     
-    ø::{ 
-        MonitorInstance.CycleBlue(127, 255)
-    Return
-    }
+    ø:: MonitorInstance.CycleBlue(127, 255)
 
-    Esc::    ExitApp()
+    Esc:: ExitApp()
 
 #HotIf ; End:)
 
