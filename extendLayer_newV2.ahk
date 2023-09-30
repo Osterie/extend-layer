@@ -33,6 +33,7 @@ if not A_IsAdmin
 
 ; todo; create function/methods for "toggleValues(value1, value2, defaultValue)"
 
+; todo: keep awake for a while, like 30min can be changed in settinsg
 ; Todo; add guis for more stuff, like power mode.
 
 ; todo; In the future, possible to add a button which opens a gui user interface where values can be changed, for 
@@ -46,16 +47,11 @@ if not A_IsAdmin
 ; TODO: to make those keyboard overlay classes only one class and more genereal, make then read a file which contains information about how the overlay should look
 ; for a new row, write something to indicate a new row.
 
-; FIXME; when switching layer, the layer overlay should also swithc...
-; FIXME; bug, sometimes gui is shown at the lowest layer (not prioritised to show over all other apps) dont know why, but perhaps has something to do with reduced windows appereance.
-; FIXME: bug, when second layer is turned on first, when shift is held down the ovelay is not shown. Fix by showing overlay when shift+Capslock is first pressed and whatever.
 ; TODO; able to restart a wireless router? check here and search: https://github.com/shajul/Autohotkey/blob/master/Scriplets/Wireless_Router_Restart.ahk
 
-; TODO; should be possible to have gui over taskbar, since screen hider is over the taskbar...
 ; TODO; powershell is slow. is there an alternative? can it be made faster? can it be used without opening the terminal view at all?
-; TODO; timer that counts down until screen turns dark, and for computer goes to sleep.
 
-; Add some tooltip or something which shows when script is aunced
+; TODO; Add some tooltip or something which shows when script is launced
 
 ; TODO; have a timer show up when screen is about to go to sleep? probably worthless since it dimmens before turning off.
 
@@ -418,6 +414,7 @@ GUIshowKeysPressed.SetFont("s20 w70 q4", "Times New Roman")
 showKeysPressedControl := GUIshowKeysPressed.AddText(, "")
 
 
+; TODO: make class
 ; Shows gui which can be written in to help classmates/colleagues or whatever
 #0:: { 
     global  
@@ -435,4 +432,5 @@ showKeysPressedControl := GUIshowKeysPressed.AddText(, "")
 Return 
 } 
 
-
+ToolTip "Script enabled!"
+SetTimer () => ToolTip(), -2000
