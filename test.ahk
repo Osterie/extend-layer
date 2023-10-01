@@ -11,3 +11,6 @@ test2 := 20
 ; Run, powercfg /setdcvalueindex SCHEME_CURRENT SUB_ENERGYSAVER ESBATTTHRESHOLD 50
 
 ; msgbox(run("powercfg /GETACTIVESCHEME"))
+
+
+Esc:: ExitApp

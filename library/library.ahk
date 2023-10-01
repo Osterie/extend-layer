@@ -306,60 +306,7 @@ Class SecondKeyboardOverlay{
 ; ----------- FUNCTIONS ------------------------
 ; ----------------------------------------------
 
-; ------------LOGIN TO SITES----------------------
-
-LoginToBlackboard(url){
-    Run("chrome.exe " url)
-    
-    Sleep(3000)
-    ErrorLevel := !ImageSearch(&MouseX, &MouseY, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir "\imageSearchImages\feideBlackboardMaximized.png")
-    if (ErrorLevel = 1){
-        ; MsgBox Icon could not be found on the screen.
-        ErrorLevel := !ImageSearch(&MouseX, &MouseY, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir "\imageSearchImages\feideBlackboardMinimized.png")
-
-        if (ErrorLevel = 1){
-            ; MsgBox Icon could not be found on the screen.
-        }
-
-        else{
-            MouseClick("left", MouseX, MouseY)
-            Sleep(2000)
-            Send("^l")
-            Send(url)
-            Send("{Enter}")
-        }
-    }
-    
-    else{
-        MouseClick("left", MouseX, MouseY)
-        Sleep(2000)
-        Send("^l")
-        Send(url)
-        Send("{Enter}")
-    }
-}
-
-LoginToJupyterHub(){
-    ErrorLevel := !ImageSearch(&MouseX, &MouseY, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir "\imageSearchImages\jupyterHubMaximized.png")
-    if (ErrorLevel = 1){
-        ; MsgBox Icon could not be found on the screen.
-        ErrorLevel := !ImageSearch(&MouseX, &MouseY, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir "\imageSearchImages\jupyterHubMinimized.png")
-
-        if (ErrorLevel = 1){
-            ; MsgBox Icon could not be found on the screen.
-        }
-
-        else{
-            MouseClick("left", MouseX, MouseY)
-        }
-    }
-    else{
-        MouseClick("left", MouseX, MouseY)
-    }
-}
-
 ; --------------Seach----------
-
 
 SearchHighlitedOrClipboard(){
     clipboardValue := A_Clipboard

@@ -8,6 +8,7 @@
 #Include ".\library\PrivacyGUIController.ahk"
 #Include ".\library\ComputerInputController.ahk"
 #Include ".\library\KeysPressedGui.ahk"
+#Include ".\library\WebNavigator.ahk"
 
 ;---------------------- OPTIMIZATIONS ------------------
 
@@ -21,6 +22,8 @@ SetDefaultMouseSpeed(0)
 SetWinDelay(-1)
 SetControlDelay(-1)
 SetWorkingDir(A_ScriptDir)
+ProcessSetPriority "High"
+
 
 ; |-----------------------------------------------------------|
 ; |----- Runs AHK script as Admin ----------------------------|
@@ -105,6 +108,7 @@ privacyController := PrivacyGUIController()
 privacyController.CreateGui()
 privacyController.ChangeCountdown(3,0)
 
+; ------------------FIIIIIXXX--------------------------
 ; TODO this is a pretty bad way to do this... 
 ; Shows an on screen overlay for the first keyboard layer which shows which urls can be went to using the number keys
 FirstKeyboardOverlayInstance := FirstKeyboardOverlay()
@@ -129,6 +133,15 @@ battery := BatteryController(50, 50)
 battery.setPowerSaverModeGUID("a1841308-3541-4fab-bc81-f71556f20b4a")
 battery.setDefaultPowerModeGUID("8759706d-706b-4c22-b2ec-f91e1ef6ed38")
 battery.ActivateNormalPowerMode()
+
+UrlNavigator := WebNavigator()
+blackboardLoginImages := Array()
+blackboardLoginImages.Push("\imageSearchImages\feideBlackboardMaximized.png")
+blackboardLoginImages.Push("\imageSearchImages\feideBlackboardMinimized.png")
+jupyterHubLoginImages := Array()
+jupyterHubLoginImages.Push("\imageSearchImages\jupyterHubMaximized.png")
+jupyterHubLoginImages.Push("\imageSearchImages\jupyterHubMinimized.png")
+
 
 ; ----Ensures consistency------
 SetCapsLockState("off")
@@ -220,40 +233,37 @@ CapsLock::{
     } 
     ; Go to study plan (from current week to end of first semester currently)
     +1::{ 
-        Run("chrome.exe `"https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&`"")
+        UrlNavigator.OpenUrl("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&")
     } 
 
     ; Go to blackboard
     +2::{ 
-        Run("chrome.exe `"https://ntnu.blackboard.com/ultra/course`"")
-        Sleep(4000)
+        UrlNavigator.OpenUrl("https://ntnu.blackboard.com/ultra/course")
     }
 
     ; Go to programming 1
     +3::{ 
-        LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_39969_1/cl/outline")
+        UrlNavigator.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_39969_1/cl/outline" , blackboardLoginImages, 3000, true)
     } 
 
     ; Go to team class
     +4::{ 
-        LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_39995_1/cl/outline")
+        UrlNavigator.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_39995_1/cl/outline" , blackboardLoginImages, 3000, true)
     } 
 
     ; Go to Math
     +5::{ 
-        LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_44996_1/cl/outline")
+        UrlNavigator.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_44996_1/cl/outline" , blackboardLoginImages, 3000, true)
     } 
     
     ; Go to programming and numeric safety stuff...
     +6::{ 
-        LoginToBlackboard("https://ntnu.blackboard.com/ultra/courses/_43055_1/cl/outline")
+        UrlNavigator.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_43055_1/cl/outline" , blackboardLoginImages, 3000, true)
     } 
 
     ; Go to jupyterhub
     +7::{ 
-        Run("chrome.exe `"https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab`"")
-        Sleep(2000)
-        LoginToJupyterHub()
+        UrlNavigator.LoginToSite("https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab" , jupyterHubLoginImages, 4000, false)
     } 
 
     q:: Esc
