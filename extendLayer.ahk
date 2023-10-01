@@ -299,11 +299,11 @@ SetCapsLockState("off")
     ; Switches gamma values (r, g, b) to 0,0,0 or 128,128,128
     i:: MonitorInstance.ToggleLowestGamma()     
 
-    k:: MonitorInstance.CycleRed(127, 255) 
+    k:: MonitorInstance.CycleRed(63, 255) 
 
-    l:: MonitorInstance.CycleGreen(127, 255)
+    l:: MonitorInstance.CycleGreen(63, 255)
     
-    ø:: MonitorInstance.CycleBlue(127, 255)
+    ø:: MonitorInstance.CycleBlue(63, 255)
 
     Esc:: ExitApp()
 
@@ -330,7 +330,6 @@ CapsLock::{
         ; toggles capslock
         SetCapsLockState("on")
     }
-Return
 } 
 
 +CapsLock:: { 
@@ -363,25 +362,7 @@ Return
             FirstKeyboardOverlayInstance.HideGui()
         }
     }
-Return
 } 
-
-; FIXME does not always work
- ;close tabs to the right
-^!w::{ 
-    Input.BlockKeyboard()
-    Sleep(500)
-    Send("+{F6}")
-    ; Send("{F6}")
-    Send("{AppsKey}")
-    Send("{Up}")
-    Send("{Enter}")
-    Input.UnBlockKeyboard()
-    ; Send("\^l{F6}{AppsKey}{Up}{Enter}")
-    ; Send("+{F6 2}") ;go back to body of page 
-Return
-}  
-
 
 ; -----------Show Keys Pressed (make into function or something?) or class? class can have create method and destroy method idk...---------
 ;------------- Second layer ctrl + 0 (^0) shortcut, shows a gui which can be written text into.------------
@@ -412,8 +393,15 @@ showKeysPressedControl := GUIshowKeysPressed.AddText(, "")
         SetTextAndResize(showKeysPressedControl, "")
         GUIshowKeysPressed.Hide()
     }
-Return 
 } 
+
+;close tabs to the right
+^!w::{ 
+    Input.BlockKeyboard()
+    Send("\^l{F6}{AppsKey}{Up}{Enter}")
+    Send("+{F6 2}") ;go back to body of page 
+    Input.UnBlockKeyboard()
+}  
 
 ToolTip "Script enabled!"
 SetTimer () => ToolTip(), -2000
