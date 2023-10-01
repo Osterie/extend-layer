@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-Class InputController{
+Class ComputerInputController{
 
     BlockAllInput(){
         this.BlockKeyboard()

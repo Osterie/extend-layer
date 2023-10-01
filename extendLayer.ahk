@@ -6,11 +6,10 @@
 #Include ".\library\LayerIndicatorController.ahk"
 #Include ".\library\BatteryController.ahk"
 #Include ".\library\PrivacyGUIController.ahk"
-#Include ".\library\InputController.ahk"
+#Include ".\library\ComputerInputController.ahk"
+#Include ".\library\KeysPressedGui.ahk"
 
 ;---------------------- OPTIMIZATIONS ------------------
-
-; DllCall("Sleep", "UInt", 1) ;I just slept exactly 1ms!
 
 A_MaxHotkeysPerInterval := 99000000
 A_HotkeyInterval := 99000000
@@ -21,15 +20,21 @@ SetMouseDelay(-1)
 SetDefaultMouseSpeed(0)
 SetWinDelay(-1)
 SetControlDelay(-1)
-
-;--------------------- Runs AHK script as Admin, allows excecution scripts which require admin privilleges -------------------
-
 SetWorkingDir(A_ScriptDir)
-if not A_IsAdmin
+
+; |-----------------------------------------------------------|
+; |----- Runs AHK script as Admin ----------------------------|
+; |----- Allows Excecuting Powershell Scripts ----------------|
+; |----- Also makes it possible to run powercfg and such -----|
+; |-----------------------------------------------------------|
+
+if (not A_IsAdmin){
 	Run("*RunAs `"" A_ScriptFullPath "`"") ; (A_AhkPath is usually optional if the script has the .ahk extension.) You would typically check  first.
+}
 
-
-; -------------- TO-DO LIST -------------------------
+; |---------------------------------------------------|
+; |-------------- TO-DO LIST -------------------------|
+; |---------------------------------------------------|
 
 ; todo; create function/methods for "toggleValues(value1, value2, defaultValue)"
 
@@ -84,25 +89,32 @@ if not A_IsAdmin
 ; TODO: a shortcut to turn the screen black(which alredy exists), but randomly change rgb values and then black. (so it looks like it is glitching.) Maybe have it connected to if mouse is used or clicked or something, maybe a certain keypress
 ; todo: text which conveges and is mirrored along the middle
 
-; ----------- OBJECT CREATION ---------------
+; |-------------------------------------------|
+; |----------- OBJECT CREATION ---------------|
+; |-------------------------------------------|
+
+; Allows to write on the screen in a textarea
+OnScreenWriter := KeysPressedGui()
+OnScreenWriter.CreateGUI()
 
 ; Enables / disables input (mouse or keyboard)
-Input := InputController()
+ComputerInput := ComputerInputController()
 
 ; Used to hide screen and parts of the screen
 privacyController := PrivacyGUIController()
 privacyController.CreateGui()
 privacyController.ChangeCountdown(3,0)
 
+; TODO this is a pretty bad way to do this... 
 ; Shows an on screen overlay for the first keyboard layer which shows which urls can be went to using the number keys
 FirstKeyboardOverlayInstance := FirstKeyboardOverlay()
 FirstKeyboardOverlayInstance.CreateKeyboardOverlay()
 
-
-; TODO this is a pretty bad way to do this... 
 ; Shows an on screen overlay for the first keyboard layer which shows which number keys to press to enable/disable devices
 SecondKeyboardOverlayInstance := SecondKeyboardOverlay()
 SecondKeyboardOverlayInstance.CreateKeyboardOverlay()
+; ---------------------FIX AWFUL ABOVE------------------
+
 
 ; Used to switch the active layer
 layers := LayerIndicatorController()
@@ -118,10 +130,83 @@ battery.setPowerSaverModeGUID("a1841308-3541-4fab-bc81-f71556f20b4a")
 battery.setDefaultPowerModeGUID("8759706d-706b-4c22-b2ec-f91e1ef6ed38")
 battery.ActivateNormalPowerMode()
 
-
 ; ----Ensures consistency------
-; turns off CapsLock
 SetCapsLockState("off")
+
+; |------------------------------|
+; |----------Hotkeys-------------|
+; |------------------------------|
+; TODO add for when !Capslock and #Capslock is pressed and handle the situation accrodingly since it now is buggy
+; since they do not have their own hotwkeys and handling.
+; changes the layer to 0 if it is not zero, or 1 if it is zero
+CapsLock::{ 
+    layers.toggleLayerIndicator(1)
+    activeLayer := layers.getActiveLayer()
+
+    if (activeLayer == 0){
+        ; hides layers which are not the active layer
+        layers.hideInactiveLayers()
+        ; toggles capslock
+        SetCapsLockState("off")
+    }
+    else{
+        ; shows the active layer (which should be layer 1)
+        layers.showLayerIndicator(layers.getActiveLayer())
+        ; hides layers which are not the acrive layer
+        layers.hideInactiveLayers()
+        ; toggles capslock
+        SetCapsLockState("on")
+    }
+} 
+
++CapsLock:: { 
+    activeLayer := layers.getActiveLayer()
+    
+    if (activeLayer == 0){
+        layers.setCurrentLayerIndicator(2)
+        layers.showLayerIndicator(2)
+
+        FirstKeyboardOverlayInstance.HideGui()
+        SecondKeyboardOverlayInstance.ShowGui()
+
+        SetCapsLockState("on")
+
+    }
+    else{
+
+        layers.cycleExtraLayerIndicators()
+
+        newActiveLayer := layers.getActiveLayer()
+        layers.showLayerIndicator(newActiveLayer)
+        layers.hideInactiveLayers()
+
+        if (newActiveLayer == 1){
+            FirstKeyboardOverlayInstance.ShowGui()
+            SecondKeyboardOverlayInstance.HideGui()
+        }
+        else if (newActiveLayer == 2){
+            SecondKeyboardOverlayInstance.ShowGui()
+            FirstKeyboardOverlayInstance.HideGui()
+        }
+    }
+} 
+
+; Shows gui which can be written in to help classmates/colleagues or whatever
+#0:: { 
+    OnScreenWriter.ToggleShowKeysPressed()
+} 
+
+;close tabs to the right
+^!w::{ 
+    ComputerInput.BlockKeyboard()
+    Send("\^l{F6}{AppsKey}{Up}{Enter}")
+    Send("+{F6 2}") ;go back to body of page 
+    ComputerInput.UnBlockKeyboard()
+}  
+
+; |------------------------------|
+; |-----------Layers-------------|
+; |------------------------------|
 
 #HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 1
 
@@ -274,12 +359,12 @@ SetCapsLockState("off")
 
     ; Blocks input from keyboard and mouse, can be deactivated with Home + End
     Home::{
-        Input.BlockAllInput()
+        ComputerInput.BlockAllInput()
     }
     
     ; Re-Enables input
     Home & End::{
-        Input.UnBlockAllInput()
+        ComputerInput.UnBlockAllInput()
     }
 
 
@@ -309,99 +394,6 @@ SetCapsLockState("off")
 
 #HotIf ; End:)
 
-; TODO add for when !Capslock and #Capslock is pressed and handle the situation accrodingly since it now is buggy
-; since they do not have their own hotwkeys and handling.
-; changes the layer to 0 if it is not zero, or 1 if it is zero
-CapsLock::{ 
-    layers.toggleLayerIndicator(1)
-    activeLayer := layers.getActiveLayer()
-
-    if (activeLayer == 0){
-        ; hides layers which are not the active layer
-        layers.hideInactiveLayers()
-        ; toggles capslock
-        SetCapsLockState("off")
-    }
-    else{
-        ; shows the active layer (which should be layer 1)
-        layers.showLayerIndicator(layers.getActiveLayer())
-        ; hides layers which are not the acrive layer
-        layers.hideInactiveLayers()
-        ; toggles capslock
-        SetCapsLockState("on")
-    }
-} 
-
-+CapsLock:: { 
-    activeLayer := layers.getActiveLayer()
-    
-    if (activeLayer == 0){
-        layers.setCurrentLayerIndicator(2)
-        layers.showLayerIndicator(2)
-
-        FirstKeyboardOverlayInstance.HideGui()
-        SecondKeyboardOverlayInstance.ShowGui()
-
-        SetCapsLockState("on")
-
-    }
-    else{
-
-        layers.cycleExtraLayerIndicators()
-
-        newActiveLayer := layers.getActiveLayer()
-        layers.showLayerIndicator(newActiveLayer)
-        layers.hideInactiveLayers()
-
-        if (newActiveLayer == 1){
-            FirstKeyboardOverlayInstance.ShowGui()
-            SecondKeyboardOverlayInstance.HideGui()
-        }
-        else if (newActiveLayer == 2){
-            SecondKeyboardOverlayInstance.ShowGui()
-            FirstKeyboardOverlayInstance.HideGui()
-        }
-    }
-} 
-
-; -----------Show Keys Pressed (make into function or something?) or class? class can have create method and destroy method idk...---------
-;------------- Second layer ctrl + 0 (^0) shortcut, shows a gui which can be written text into.------------
-
-toggleKeysGUI := 0
-
-; fixme only create when going to use
-GUIshowKeysPressed := Gui()
-; GUIshowKeysPressed.new() ; Create a new GUI
-GUIshowKeysPressed.Opt("-Caption +AlwaysOnTop +Owner +LastFound")
-GUIshowKeysPressed.BackColor := "EEAA99"
-GUIshowKeysPressed.SetFont("s20 w70 q4", "Times New Roman")
-showKeysPressedControl := GUIshowKeysPressed.AddText(, "")
-
-
-; TODO: make class
-; Shows gui which can be written in to help classmates/colleagues or whatever
-#0:: { 
-    global  
-    toggleKeysGUI := ToggleValue(toggleKeysGUI, 1, 0, 0)
-    if (toggleKeysGUI){
-        ; TODO can maybe reduce number of lines in this function?
-        CreateHotkey(showKeysPressedControl)
-        GUIshowKeysPressed.Show()
-    }
-    else {
-        DisableHotKeys()
-        SetTextAndResize(showKeysPressedControl, "")
-        GUIshowKeysPressed.Hide()
-    }
-} 
-
-;close tabs to the right
-^!w::{ 
-    Input.BlockKeyboard()
-    Send("\^l{F6}{AppsKey}{Up}{Enter}")
-    Send("+{F6 2}") ;go back to body of page 
-    Input.UnBlockKeyboard()
-}  
-
+; Used to show user the script is enabled
 ToolTip "Script enabled!"
-SetTimer () => ToolTip(), -2000
+SetTimer () => ToolTip(), -3000
