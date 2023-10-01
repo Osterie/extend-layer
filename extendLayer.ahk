@@ -1,15 +1,15 @@
 ﻿; [^ = Ctrl] [+ = Shift] [! = Alt] [# = WinK]
 #Requires Autohotkey v2.0
-#Include ".\library\CountdownGUI_newV2.ahk"
-#Include ".\library\library_newV2.ahk"
-#Include ".\library\Monitor_newV2.ahk"
-#Include ".\library\LayerIndicatorController_newV2.ahk"
+#Include ".\library\CountdownGUI.ahk"
+#Include ".\library\library.ahk"
+#Include ".\library\Monitor.ahk"
+#Include ".\library\LayerIndicatorController.ahk"
 #Include ".\library\BatteryController.ahk"
 #Include ".\library\PrivacyGUIController.ahk"
 #Include ".\library\InputController.ahk"
 
 ;---------------------- OPTIMIZATIONS ------------------
-; 
+
 ; DllCall("Sleep", "UInt", 1) ;I just slept exactly 1ms!
 
 A_MaxHotkeysPerInterval := 99000000
@@ -118,6 +118,7 @@ battery.setPowerSaverModeGUID("a1841308-3541-4fab-bc81-f71556f20b4a")
 battery.setDefaultPowerModeGUID("8759706d-706b-4c22-b2ec-f91e1ef6ed38")
 battery.ActivateNormalPowerMode()
 
+
 ; ----Ensures consistency------
 ; turns off CapsLock
 SetCapsLockState("off")
@@ -180,7 +181,6 @@ SetCapsLockState("off")
 
     w:: WheelUp
     s:: WheelDown
-
 
     e:: Browser_Back
     r:: Browser_Forward
@@ -289,25 +289,9 @@ SetCapsLockState("off")
     }
 
     ; Switches brightness to 100 or 50
-    u::{ 
-        brightness := MonitorInstance.GetCurrentBrightness()
-        if (brightness == 100){
-            MonitorInstance.SetBrightness(50)
-        }
-        else{
-            MonitorInstance.SetBrightness(100)
-        }
-    } 
+    u:: MonitorInstance.ToggleHighestBrightness() 
     ; Switches brightness to 0 or 50
-    j::{ 
-        brightness := MonitorInstance.GetCurrentBrightness()
-        if (brightness == 0){
-            MonitorInstance.SetBrightness(50)
-        }
-        else{
-            MonitorInstance.SetBrightness(0)
-        }
-    } 
+    j:: MonitorInstance.ToggleLowestBrightness() 
 
     ; Switches gamma values (r, g, b) to 256,256,256 or 128,128,128
     o:: MonitorInstance.ToggleHighestGamma() 
@@ -361,12 +345,11 @@ Return
 
         SetCapsLockState("on")
 
-
-
     }
     else{
 
         layers.cycleExtraLayerIndicators()
+
         newActiveLayer := layers.getActiveLayer()
         layers.showLayerIndicator(newActiveLayer)
         layers.hideInactiveLayers()

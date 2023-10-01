@@ -1,5 +1,5 @@
 #Requires Autohotkey v2.0
-#Include "./CountdownGUI_newV2.ahk"
+#Include "./CountdownGUI.ahk"
 
 Class PrivacyGUIController{
 

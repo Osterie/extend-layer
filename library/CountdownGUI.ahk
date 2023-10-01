@@ -1,6 +1,6 @@
 ﻿#Requires Autohotkey v2.0
-#Include "%A_ScriptDir%\library\ClockDisplay_newV2.ahk"
-; #Include ".\library\CountdownGUI_newV2.ahk"
+#Include "%A_ScriptDir%\library\ClockDisplay.ahk"
+; #Include ".\library\CountdownGUI.ahk"
 
 
 Class CountdownGUI{

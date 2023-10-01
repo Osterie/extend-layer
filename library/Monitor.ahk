@@ -5,22 +5,19 @@ Class Monitor{
     ; red 
     ; green
     ; blue
-    ; brightnees
+    ; brightness
 
+    ; Takes brightness values between 0 and 100 and sets screens brightness to that value
     SetBrightness( brightness, timeout := 1 ){
-        if ( brightness >= 0 && brightness <= 100 )
-        {
-            For property in ComObjGet( "winmgmts:\\.\root\WMI" ).ExecQuery( "SELECT * FROM WmiMonitorBrightnessMethods" )
-                property.WmiSetBrightness( timeout, brightness )	
+        if ( brightness > 100 ){
+            brightness := 100
         }
-         else if ( brightness > 100 )
-         {
-             brightness := 100
-         }
-         else if ( brightness < 0 )
-         {
-             brightness := 0
-         }
+        else if ( brightness < 0 ){
+            brightness := 0
+        }
+        ; changes brightness
+        For property in ComObjGet( "winmgmts:\\.\root\WMI" ).ExecQuery( "SELECT * FROM WmiMonitorBrightnessMethods" )
+                property.WmiSetBrightness( timeout, brightness )	
     }
     
     GetCurrentBrightness(){
@@ -29,7 +26,24 @@ Class Monitor{
     
         return currentBrightness
     }
+
+    ToggleHighestBrightness(){
+        if (this.GetCurrentBrightness() == 100){
+            this.SetBrightness(50)
+        }
+        else{
+            this.SetBrightness(100)
+        }
+    }
     
+    ToggleLowestBrightness(){
+        if (this.GetCurrentBrightness() == 0){
+            this.SetBrightness(50)
+        }
+        else{
+            this.SetBrightness(0)
+        }
+    }
     ; Each parameter takes values from 0 to 255
     ; Change gamma of display, 0 dark, 128 normal, 255 bright
     SetGamma(red, green, blue){

@@ -1,6 +1,6 @@
 ﻿#Requires Autohotkey v2.0
 
-#Include "%A_ScriptDir%\library\LayerIndicator_newV2.ahk"
+#Include "%A_ScriptDir%\library\LayerIndicator.ahk"
 
 ; TODO; instead of multiple guis, it would be possible to just change the color and have the same gui no change...
 Class LayerIndicatorController{
