@@ -308,37 +308,41 @@ Class SecondKeyboardOverlay{
 
 ; --------------Seach----------
 
+; Searches google for the currently highlighteded text, or the text stored in the clipboard
 SearchHighlitedOrClipboard(){
     clipboardValue := A_Clipboard
     Send("^c")
     googleSearchUrl := "https://www.google.com/search?q="
+    
+    ; if it starts with "https://" go to, rather than search in google search
     isUrl := SubStr(A_Clipboard, 1, 8)
-    if (isUrl = "https://") {   ; if it starts with "https://" go to, rather than search in google search
+    if (isUrl = "https://") {   
         Run(A_Clipboard)
     }
     else { ;search using google search
         joined_url := googleSearchUrl . "" . A_Clipboard
         Run(joined_url)
-        }
-    A_Clipboard := clipboardValue ;put the last copied thing back in the clipboard
-    return
+    }
+    
+    ;put the last copied thing back in the clipboard
+    A_Clipboard := clipboardValue 
 }
 
 ; ---------CHANGE VALUES---------------
 
 ; FIXME: this should be made more general. "CycleValue" or something. Take currentValue, lowerlimit, upperlimit and step.
-ToggleValue(givenValue, value1, value2, defaultValue){
-    valueToReturn := 0
-    if (givenValue == value1){
-        valueToReturn := value2
-    }
-    else if (givenValue == value2){
-        valueToReturn := value1
-    }
-    else{
-        valueToReturn := defaultValue
-    }
-    return valueToReturn
+; ToggleValue(givenValue, value1, value2, defaultValue){
+;     valueToReturn := 0
+;     if (givenValue == value1){
+;         valueToReturn := value2
+;     }
+;     else if (givenValue == value2){
+;         valueToReturn := value1
+;     }
+;     else{
+;         valueToReturn := defaultValue
+;     }
+;     return valueToReturn
     
-}
+; }
 

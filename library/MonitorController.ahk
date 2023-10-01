@@ -1,6 +1,6 @@
 ﻿#Requires Autohotkey v2.0
 
-Class Monitor{
+Class MonitorController{
 
     ; red 
     ; green

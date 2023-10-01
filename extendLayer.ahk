@@ -2,7 +2,7 @@
 #Requires Autohotkey v2.0
 #Include ".\library\CountdownGUI.ahk"
 #Include ".\library\library.ahk"
-#Include ".\library\Monitor.ahk"
+#Include ".\library\MonitorController.ahk"
 #Include ".\library\LayerIndicatorController.ahk"
 #Include ".\library\BatteryController.ahk"
 #Include ".\library\PrivacyGUIController.ahk"
@@ -68,20 +68,20 @@ if (not A_IsAdmin){
 
 ; TODO: in lib.ahk, there are two very similiar classes, use inheritance or whatever, take arguments, do something to reuse code, ugly now
 
-; TODO; create a seperate script to log how much power is being used? maybe make this a method for the battery class, and a seperate class for batteryLogger which is an object which will be used in battery class
+; TODO; create a seperate script to log how much power is being used? maybe make this a method for the Battery class, and a seperate class for batteryLogger which is an object which will be used in Battery class
 
 ; // TODO: scrape assignemtns and add to keyboard overlay? which also has link to it and color showing if it is completed or not
 
 ; TODO: connect/disconnect airpods,
 
-;// Cant check battery temp TODO: show warning when computer gets too hot!! show temperature also
+;// Cant check Battery temp TODO: show warning when computer gets too hot!! show temperature also
 
 ; TODO: change background of the keyboard overlay keys for disabling/enabling to have green/red background based on if it is on or off
 ; TODO: keyboard overlay for disabling/enabling devices should maybe use images instead of text?
 
 ; TODO: i believe the promt which apperas when a powerhsell script runs can be hidden
 
-; TODO when screen darkened show battery percentage and maybe a countdown to sleep? maybe even make sleep impossible when screen darkened
+; TODO when screen darkened show Battery percentage and maybe a countdown to sleep? maybe even make sleep impossible when screen darkened
 ; TODO make it possible to switch performance mode, add gui to show current mode, auto switch for screen darkner and such
 
 ; TODO FUTURE: possible to integrate with real life appliances, for example to control lights in rooms, a third layer could be created for this
@@ -126,21 +126,17 @@ layers.addLayerIndicator(1, "Green")
 layers.addLayerIndicator(2, "Red")
 
 ; Used to change brightness and gamma settings of the monitor
-MonitorInstance := Monitor()
+Monitor := MonitorController()
 
 ; Used to switch between power saver mdoe and normal power mode
-battery := BatteryController(50, 50)
-battery.setPowerSaverModeGUID("a1841308-3541-4fab-bc81-f71556f20b4a")
-battery.setDefaultPowerModeGUID("8759706d-706b-4c22-b2ec-f91e1ef6ed38")
-battery.ActivateNormalPowerMode()
+Battery := BatteryController(50, 50)
+Battery.setPowerSaverModeGUID("a1841308-3541-4fab-bc81-f71556f20b4a")
+Battery.setDefaultPowerModeGUID("8759706d-706b-4c22-b2ec-f91e1ef6ed38")
+Battery.ActivateNormalPowerMode()
 
 UrlNavigator := WebNavigator()
-blackboardLoginImages := Array()
-blackboardLoginImages.Push("\imageSearchImages\feideBlackboardMaximized.png")
-blackboardLoginImages.Push("\imageSearchImages\feideBlackboardMinimized.png")
-jupyterHubLoginImages := Array()
-jupyterHubLoginImages.Push("\imageSearchImages\jupyterHubMaximized.png")
-jupyterHubLoginImages.Push("\imageSearchImages\jupyterHubMinimized.png")
+blackboardLoginImages := ["\imageSearchImages\feideBlackboardMaximized.png", "\imageSearchImages\feideBlackboardMinimized.png"]
+jupyterHubLoginImages := ["\imageSearchImages\jupyterHubMaximized.png", "\imageSearchImages\jupyterHubMinimized.png"]
 
 
 ; ----Ensures consistency------
@@ -170,9 +166,9 @@ CapsLock::{
         ; toggles capslock
         SetCapsLockState("on")
     }
-} 
+}
 
-+CapsLock:: { 
++CapsLock:: {
     activeLayer := layers.getActiveLayer()
     
     if (activeLayer == 0){
@@ -202,12 +198,10 @@ CapsLock::{
             FirstKeyboardOverlayInstance.HideGui()
         }
     }
-} 
+}
 
 ; Shows gui which can be written in to help classmates/colleagues or whatever
-#0:: { 
-    OnScreenWriter.ToggleShowKeysPressed()
-} 
+#0:: OnScreenWriter.ToggleShowKeysPressed() 
 
 ;close tabs to the right
 ^!w::{ 
@@ -232,39 +226,25 @@ CapsLock::{
         FirstKeyboardOverlayInstance.HideGui()
     } 
     ; Go to study plan (from current week to end of first semester currently)
-    +1::{ 
-        UrlNavigator.OpenUrl("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&")
-    } 
+    +1::UrlNavigator.OpenUrl("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&") 
 
     ; Go to blackboard
-    +2::{ 
-        UrlNavigator.OpenUrl("https://ntnu.blackboard.com/ultra/course")
-    }
+    +2::UrlNavigator.OpenUrl("https://ntnu.blackboard.com/ultra/course")
 
     ; Go to programming 1
-    +3::{ 
-        UrlNavigator.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_39969_1/cl/outline" , blackboardLoginImages, 3000, true)
-    } 
+    +3::UrlNavigator.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_39969_1/cl/outline" , blackboardLoginImages, 3000, true) 
 
     ; Go to team class
-    +4::{ 
-        UrlNavigator.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_39995_1/cl/outline" , blackboardLoginImages, 3000, true)
-    } 
+    +4::UrlNavigator.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_39995_1/cl/outline" , blackboardLoginImages, 3000, true) 
 
     ; Go to Math
-    +5::{ 
-        UrlNavigator.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_44996_1/cl/outline" , blackboardLoginImages, 3000, true)
-    } 
+    +5::UrlNavigator.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_44996_1/cl/outline" , blackboardLoginImages, 3000, true) 
     
     ; Go to programming and numeric safety stuff...
-    +6::{ 
-        UrlNavigator.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_43055_1/cl/outline" , blackboardLoginImages, 3000, true)
-    } 
+    +6::UrlNavigator.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_43055_1/cl/outline" , blackboardLoginImages, 3000, true) 
 
     ; Go to jupyterhub
-    +7::{ 
-        UrlNavigator.LoginToSite("https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab" , jupyterHubLoginImages, 4000, false)
-    } 
+    +7::UrlNavigator.LoginToSite("https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab" , jupyterHubLoginImages, 4000, false) 
 
     q:: Esc
     å:: Esc
@@ -296,11 +276,12 @@ CapsLock::{
     c:: ^c
     v:: ^v
 
-    m:: Click()
-    ,:: F6
     <:: MouseMove((A_ScreenWidth//2), (A_ScreenHeight//2))
-
     g:: AppsKey
+    m:: Click()
+    
+    ,:: F6
+
     i:: Up
     j:: Left
     k:: Down
@@ -310,15 +291,14 @@ CapsLock::{
 
 #HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 2 
 
-
     ; Shows second keyboard overlay when shift is held down
-    ~Shift::{ 
+    ~Shift::{
         SecondKeyboardOverlayInstance.ShowGui()
         KeyWait("Shift")
     } 
 
     ; Hides second keyboard overlay (and first just in case)
-    Shift up::{ 
+    Shift up::{
         FirstKeyboardOverlayInstance.HideGui()
         SecondKeyboardOverlayInstance.HideGui()
     } 
@@ -349,56 +329,43 @@ CapsLock::{
     } 
 
     ; Hides screen
-    a:: {
-        privacyController.HideScreen()
-    }
+    a:: privacyController.HideScreen()
 
     ; Hides window
-    s::{
-        privacyController.HideWindow()
-    }
+    s:: privacyController.HideWindow()
+
     ; Hides tabs
-    d:: {
-        privacyController.HideTabs()
-    }
+    d:: privacyController.HideTabs()
 
     ; Hides GUI
-    f:: {
-        privacyController.HideGui()
-    }
+    f:: privacyController.HideGui()
 
     ; Blocks input from keyboard and mouse, can be deactivated with Home + End
-    Home::{
-        ComputerInput.BlockAllInput()
-    }
+    Home:: ComputerInput.BlockAllInput()
     
     ; Re-Enables input
-    Home & End::{
-        ComputerInput.UnBlockAllInput()
-    }
+    Home & End:: ComputerInput.UnBlockAllInput()
 
-
-    ; Switches power saver on, or off(wont turn off if battery is 50% or lower)
-    p::{
-        battery.TogglePowerSaverMode()
-    }
+    ; Switches power saver on, or off(wont turn off if Battery is 50% or lower)
+    p:: Battery.TogglePowerSaverMode()
 
     ; Switches brightness to 100 or 50
-    u:: MonitorInstance.ToggleHighestBrightness() 
+    u:: Monitor.ToggleHighestBrightness() 
+    
     ; Switches brightness to 0 or 50
-    j:: MonitorInstance.ToggleLowestBrightness() 
+    j:: Monitor.ToggleLowestBrightness() 
 
     ; Switches gamma values (r, g, b) to 256,256,256 or 128,128,128
-    o:: MonitorInstance.ToggleHighestGamma() 
+    o:: Monitor.ToggleHighestGamma() 
 
     ; Switches gamma values (r, g, b) to 0,0,0 or 128,128,128
-    i:: MonitorInstance.ToggleLowestGamma()     
+    i:: Monitor.ToggleLowestGamma()     
 
-    k:: MonitorInstance.CycleRed(63, 255) 
+    k:: Monitor.CycleRed(63, 255) 
 
-    l:: MonitorInstance.CycleGreen(63, 255)
+    l:: Monitor.CycleGreen(63, 255)
     
-    ø:: MonitorInstance.CycleBlue(63, 255)
+    ø:: Monitor.CycleBlue(63, 255)
 
     Esc:: ExitApp()
 
