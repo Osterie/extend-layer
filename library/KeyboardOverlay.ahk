@@ -64,7 +64,6 @@ Class KeyboardOverlay{
         this.keyboardOverlay.Add("Button", this.positionSecondRow, valueSecondRow)
     }
 
-
     ; Adds a column to the keyboard overlay, first row showing what key to press to excecute the event in the second row
     ; Dynamic means the second row is changed when the key pressed event happens
     AddColumnToggleValue(keyFirstRow, valueSecondRow, stateSecondRow){
@@ -74,67 +73,24 @@ Class KeyboardOverlay{
         this.keyboardOverlay.Add("Button", this.positionSecondRow . " v" . valueSecondRow , stateSecondRow . " " . valueSecondRow)
     }
 
-    ToggleValue(valueSecondRow, state){
+    ToggleState(valueSecondRow){
 
+        state := StrLower(this.GetState(valueSecondRow))
 
-        if (StrLower(state) == "enable"){
+        if (state == "enable"){
             state := "Disable"
         }
-        else if (StrLower(state) == "disable"){
+        else if (state == "disable"){
             state := "Enable"
         }
 
         this.keyboardOverlay[valueSecondRow].Text := state . " " . valueSecondRow
+    }
 
-
-        ; if (device == "Touch-Screen"){
-        ;     If InStr(This.TouchScreenToggle, "Enable"){
-        ;         This.TouchScreenToggle := StrReplace(This.TouchScreenToggle, "Enable", "Disable")
-        ;     }
-        ;     else{
-        ;         This.TouchScreenToggle := StrReplace(This.TouchScreenToggle, "Disable", "Enable")
-        ;     }
-
-        ;     this.GUISecondKeyboardOverlay['TouchScreen'].Text := This.TouchScreenToggle
-
-        ;     ; ogcButtonTouchScreen.Value := This.TouchScreenToggle
-        ; }
-
-        ; else if (device == "Bluetooth"){
-        ;     If InStr(This.BluetoothToggle, "Enable")            {
-        ;         This.BluetoothToggle := StrReplace(This.BluetoothToggle, "Enable", "Disable")
-        ;     }
-        ;     else{
-        ;         This.BluetoothToggle := StrReplace(This.BluetoothToggle, "Disable", "Enable")
-        ;     }
-
-        ;     this.GUISecondKeyboardOverlay['Bluetooth'].Text := This.BluetoothToggle
-        ;     ; ogcButtonBluetooth.Value := This.BluetoothToggle
-        ; }
-
-        ; else if (device == "TouchPad"){
-        ;     If InStr(This.TouchPadToggle, "Enable"){
-        ;         This.TouchPadToggle := StrReplace(This.TouchPadToggle, "Enable", "Disable")
-        ;     }
-        ;     else{
-        ;         This.TouchPadToggle := StrReplace(This.TouchPadToggle, "Disable", "Enable")
-        ;     }
-        ;     this.GUISecondKeyboardOverlay['TouchPad'].Text := This.TouchPadToggle
-
-        ;     ; ogcButtonTouchPad.Value := This.TouchPadToggle
-        ; }
-
-        ; else if (device == "Camera"){
-        ;     If InStr(This.CameraToggle, "Enable"){
-        ;         This.CameraToggle := StrReplace(This.CameraToggle, "Enable", "Disable")
-        ;     }
-        ;     else{
-        ;         This.CameraToggle := StrReplace(This.CameraToggle, "Disable", "Enable")
-        ;     }
-        ;     this.GUISecondKeyboardOverlay['Camera'].Text := This.CameraToggle
-
-            ; ogcButtonCamera.Value := This.CameraToggle
-        ; }
+    GetState(valueSecondRow){
+        parts := StrSplit(this.keyboardOverlay[valueSecondRow].Text, " ")
+        state := parts[1]
+        return state
     }
 
     ChangeElementWidth(){
@@ -143,16 +99,4 @@ Class KeyboardOverlay{
     ChangeElementHeight(){
 
     }
-
-    
-
 }
-
-test := KeyboardOverlay()
-test.CreateGUI()
-test.AddColumnToggleValue("1", "Die", "Enable")
-test.AddColumnToggleValue("2", "Live", "Enable")
-test.AddColumnToggleValue("3", "Dont", "Enable")
-test.ToggleValue("Live", "Enable")
-test.ShowGui()
-Esc:: ExitApp

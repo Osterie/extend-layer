@@ -9,6 +9,7 @@
 #Include ".\library\ComputerInputController.ahk"
 #Include ".\library\KeysPressedGui.ahk"
 #Include ".\library\WebNavigator.ahk"
+#Include ".\library\KeyboardOverlay.ahk"
 
 ; |-----------------------------------------------------|
 ; |---------------------- OPTIMIZATIONS ----------------|
@@ -114,12 +115,31 @@ privacyController.ChangeCountdown(3,0)
 ; ------------------FIIIIIXXX--------------------------
 ; TODO this is a pretty bad way to do this... 
 ; Shows an on screen overlay for the first keyboard layer which shows which urls can be went to using the number keys
-FirstKeyboardOverlayInstance := FirstKeyboardOverlay()
-FirstKeyboardOverlayInstance.CreateKeyboardOverlay()
+; FirstKeyboardOverlayInstance := FirstKeyboardOverlay()
+; FirstKeyboardOverlayInstance.CreateKeyboardOverlay()
+
+FirstKeyboardOverlay := KeyboardOverlay()
+FirstKeyboardOverlay.CreateGui()
+FirstKeyboardOverlay.AddStaticColumn("1", "Time Table")
+FirstKeyboardOverlay.AddStaticColumn("2", "Black Board")
+FirstKeyboardOverlay.AddStaticColumn("3", "Prog 1")
+FirstKeyboardOverlay.AddStaticColumn("4", "Team")
+FirstKeyboardOverlay.AddStaticColumn("5", "Math")
+FirstKeyboardOverlay.AddStaticColumn("6", "Prog Num Sec")
+FirstKeyboardOverlay.AddStaticColumn("7", "Jupyter Hub")
+FirstKeyboardOverlay.AddStaticColumn("8", "")
+FirstKeyboardOverlay.AddStaticColumn("9", "")
+FirstKeyboardOverlay.AddStaticColumn("0", "")
 
 ; Shows an on screen overlay for the first keyboard layer which shows which number keys to press to enable/disable devices
-SecondKeyboardOverlayInstance := SecondKeyboardOverlay()
-SecondKeyboardOverlayInstance.CreateKeyboardOverlay()
+; SecondKeyboardOverlayInstance := SecondKeyboardOverlay()
+
+SecondKeyboardOverlay := KeyboardOverlay()
+SecondKeyboardOverlay.CreateGui()
+SecondKeyboardOverlay.AddColumnToggleValue("1", "TouchScreen", "Enable")
+SecondKeyboardOverlay.AddColumnToggleValue("2", "Camera", "Enable")
+SecondKeyboardOverlay.AddColumnToggleValue("3", "Bluetooth", "Enable")
+SecondKeyboardOverlay.AddColumnToggleValue("4", "TouchPad", "Enable")
 ; ---------------------FIX AWFUL ABOVE------------------
 
 
@@ -178,8 +198,10 @@ CapsLock::{
         layers.setCurrentLayerIndicator(2)
         layers.showLayerIndicator(2)
 
-        FirstKeyboardOverlayInstance.HideGui()
-        SecondKeyboardOverlayInstance.ShowGui()
+        FirstKeyboardOverlay.HideGui()
+        ; FirstKeyboardOverlayInstance.HideGui()
+        ; SecondKeyboardOverlayInstance.ShowGui()
+        SecondKeyboardOverlay.ShowGui()
 
         SetCapsLockState("on")
 
@@ -193,12 +215,18 @@ CapsLock::{
         layers.hideInactiveLayers()
 
         if (newActiveLayer == 1){
-            FirstKeyboardOverlayInstance.ShowGui()
-            SecondKeyboardOverlayInstance.HideGui()
+            FirstKeyboardOverlay.ShowGui()
+            ; FirstKeyboardOverlayInstance.ShowGui()
+            SecondKeyboardOverlay.HideGui()
+
+            ; SecondKeyboardOverlayInstance.HideGui()
         }
         else if (newActiveLayer == 2){
-            SecondKeyboardOverlayInstance.ShowGui()
-            FirstKeyboardOverlayInstance.HideGui()
+            ; SecondKeyboardOverlayInstance.ShowGui()
+            SecondKeyboardOverlay.ShowGui()
+
+            ; FirstKeyboardOverlayInstance.HideGui()
+            FirstKeyboardOverlay.HideGui()
         }
     }
 }
@@ -222,12 +250,16 @@ CapsLock::{
 #HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 1
 
     ~Shift::{ 
-        FirstKeyboardOverlayInstance.ShowGui()
+        FirstKeyboardOverlay.ShowGui()
+        ; FirstKeyboardOverlayInstance.ShowGui()
     } 
 
     Shift up::{ 
-        SecondKeyboardOverlayInstance.HideGui()
-        FirstKeyboardOverlayInstance.HideGui()
+        SecondKeyboardOverlay.HideGui()
+
+        ; SecondKeyboardOverlayInstance.HideGui()
+        ; FirstKeyboardOverlayInstance.HideGui()
+        FirstKeyboardOverlay.HideGui()
     } 
     ; Go to study plan (from current week to end of first semester currently)
     +1::UrlNavigator.OpenUrl("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&") 
@@ -297,38 +329,42 @@ CapsLock::{
 
     ; Shows second keyboard overlay when shift is held down
     ~Shift::{
-        SecondKeyboardOverlayInstance.ShowGui()
+        SecondKeyboardOverlay.ShowGui()
+        ; SecondKeyboardOverlayInstance.ShowGui()
         KeyWait("Shift")
     } 
 
     ; Hides second keyboard overlay (and first just in case)
     Shift up::{
-        FirstKeyboardOverlayInstance.HideGui()
-        SecondKeyboardOverlayInstance.HideGui()
+        FirstKeyboardOverlay.HideGui()
+        SecondKeyboardOverlay.HideGui()
+
+        ; FirstKeyboardOverlayInstance.HideGui()
+        ; SecondKeyboardOverlayInstance.HideGui()
     } 
 
     ; Toggles touch-screen
     +1::{ 
         ; TODO the run should be in the class that handles keyboard overlay, make more classes and such
-        SecondKeyboardOverlayInstance.ChangeState("Touch-Screen")
+        SecondKeyboardOverlay.ToggleState("TouchScreen")
         RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-touch-screen.exe")
     } 
 
     ; Toggles camera
     +2::{ 
-        SecondKeyboardOverlayInstance.ChangeState("Camera")
+        SecondKeyboardOverlay.ToggleState("Camera")
         RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-hd-camera.exe")
     } 
 
     ; Toggles bluetooth
     +3::{ 
-        SecondKeyboardOverlayInstance.ChangeState("Bluetooth")
+        SecondKeyboardOverlay.ToggleState("Bluetooth")
         RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-bluetooth.exe")
     } 
 
     ; Toggles touchpad
     +4::{ 
-        SecondKeyboardOverlayInstance.ChangeState("Touchpad")
+        SecondKeyboardOverlay.ToggleState("TouchPad")
         RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-touchpad.exe")
     } 
 
