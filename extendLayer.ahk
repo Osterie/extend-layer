@@ -10,7 +10,9 @@
 #Include ".\library\KeysPressedGui.ahk"
 #Include ".\library\WebNavigator.ahk"
 
-;---------------------- OPTIMIZATIONS ------------------
+; |-----------------------------------------------------|
+; |---------------------- OPTIMIZATIONS ----------------|
+; |-----------------------------------------------------|
 
 A_MaxHotkeysPerInterval := 99000000
 A_HotkeyInterval := 99000000
@@ -23,7 +25,8 @@ SetWinDelay(-1)
 SetControlDelay(-1)
 SetWorkingDir(A_ScriptDir)
 ProcessSetPriority "High"
-
+; Not changing SendMode defaults it to "input", which makes hotkeys super mega terrible
+SendMode "Event"
 
 ; |-----------------------------------------------------------|
 ; |----- Runs AHK script as Admin ----------------------------|
@@ -38,6 +41,11 @@ if (not A_IsAdmin){
 ; |---------------------------------------------------|
 ; |-------------- TO-DO LIST -------------------------|
 ; |---------------------------------------------------|
+
+
+; todo: would be possible to have some hotkeys that open a gui where several options are chosen from.
+; for example for changing performance mode, a dropdown menu for high, normal, low performance nad such can be chosen.
+; There are many possibilities...
 
 ; todo; create function/methods for "toggleValues(value1, value2, defaultValue)"
 
@@ -70,18 +78,13 @@ if (not A_IsAdmin){
 
 ; TODO; create a seperate script to log how much power is being used? maybe make this a method for the Battery class, and a seperate class for batteryLogger which is an object which will be used in Battery class
 
-; // TODO: scrape assignemtns and add to keyboard overlay? which also has link to it and color showing if it is completed or not
-
 ; TODO: connect/disconnect airpods,
-
-;// Cant check Battery temp TODO: show warning when computer gets too hot!! show temperature also
 
 ; TODO: change background of the keyboard overlay keys for disabling/enabling to have green/red background based on if it is on or off
 ; TODO: keyboard overlay for disabling/enabling devices should maybe use images instead of text?
 
 ; TODO: i believe the promt which apperas when a powerhsell script runs can be hidden
 
-; TODO when screen darkened show Battery percentage and maybe a countdown to sleep? maybe even make sleep impossible when screen darkened
 ; TODO make it possible to switch performance mode, add gui to show current mode, auto switch for screen darkner and such
 
 ; TODO FUTURE: possible to integrate with real life appliances, for example to control lights in rooms, a third layer could be created for this
@@ -214,6 +217,7 @@ CapsLock::{
 ; |------------------------------|
 ; |-----------Layers-------------|
 ; |------------------------------|
+
 
 #HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 1
 

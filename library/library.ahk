@@ -8,60 +8,60 @@ Class FirstKeyboardOverlay{
     CreateKeyboardOverlay(){
  
         ; Changing this font size will resize the keyboard:
-        k_FontSize := "10"
-        k_FontName := "Verdana"  ; This can be blank to use the system's default font.
-        k_FontStyle := "Bold"    ; Example of an alternative: Italic Underline
+        fontSize := "10"
+        fontName := "Verdana"  ; This can be blank to use the system's default font.
+        fontStyle := "Bold"    ; Example of an alternative: Italic Underline
         
         ; Gui
         this.GUIFirstKeyboardOverlay := Gui()
-        this.GUIFirstKeyboardOverlay.SetFont("s" . k_FontSize . " " . k_FontStyle, k_FontName)
+        this.GUIFirstKeyboardOverlay.SetFont("s" . fontSize . " " . fontStyle, fontName)
         this.GUIFirstKeyboardOverlay.Opt("+E0x20 -Caption +AlwaysOnTop +Owner +ToolWindow")
         
         
         ;---- Calculate object dimensions based on chosen font size:
-        k_KeyWidth := k_FontSize * 6
-        k_KeyHeight := k_FontSize * 3
+        displayBoxWidth := fontSize * 6
+        displayBoxHeight := fontSize * 3
         
         ; Spacing to be used between the keys.
-        k_KeyMargin := k_FontSize // 10
+        displayBoxMargin := fontSize // 10
         
         
         ; Only a facilitator for creating GUI.
-        k_KeySizeHelperRow := "w" . k_KeyWidth . " h" . k_KeyHeight
-        k_PositionHelperRow := "x+" . k_KeyMargin . " " . k_KeySizeHelperRow
+        keySizeHelperRow := "w" . displayBoxWidth . " h" . displayBoxHeight
+        positionHelperRow := "x+" . displayBoxMargin . " " . keySizeHelperRow
         
         ;---- Calculate object dimensions based on chosen font size:
-        k_KeyWidthDestination := k_FontSize * 6
-        k_KeyHeightDestination := k_FontSize * 6
+        keyWidthDestination := fontSize * 6
+        keyHeightDestination := fontSize * 6
         
         ; Spacing to be used between the keys for destination row (second row probably).
         ; Only a facilitator for creating GUI.
-        k_KeySizeDestination := "w" . k_KeyWidthDestination . " h" . k_KeyHeightDestination
-        k_PositionDestinationRow := "x+" . k_KeyMargin . " " . k_KeySizeDestination
+        keySizeDestination := "w" . keyWidthDestination . " h" . keyHeightDestination
+        positionDestinationRow := "x+" . displayBoxMargin . " " . keySizeDestination
         
         ;   The first row.
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionHelperRow, "1")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionHelperRow, "2")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionHelperRow, "3")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionHelperRow, "4")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionHelperRow, "5")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionHelperRow, "6")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionHelperRow, "7")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionHelperRow, "8")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionHelperRow, "9")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionHelperRow, "0")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionHelperRow, "1")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionHelperRow, "2")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionHelperRow, "3")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionHelperRow, "4")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionHelperRow, "5")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionHelperRow, "6")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionHelperRow, "7")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionHelperRow, "8")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionHelperRow, "9")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionHelperRow, "0")
         
         ;   The second row.
-        this.GUIFirstKeyboardOverlay.Add("Button", "xm y+" . k_KeyMargin . " " . k_KeySizeDestination , "Time Table")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionDestinationRow, "Black Board")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionDestinationRow, "Prog 1")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionDestinationRow, "Team")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionDestinationRow, "Math")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionDestinationRow, "Prog Num Sec")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionDestinationRow, "Jupyter Hub")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionDestinationRow, "8")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionDestinationRow, "9")
-        this.GUIFirstKeyboardOverlay.Add("Button", k_PositionDestinationRow, "0")
+        this.GUIFirstKeyboardOverlay.Add("Button", "xm y+" . displayBoxMargin . " " . keySizeDestination , "Time Table")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionDestinationRow, "Black Board")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionDestinationRow, "Prog 1")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionDestinationRow, "Team")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionDestinationRow, "Math")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionDestinationRow, "Prog Num Sec")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionDestinationRow, "Jupyter Hub")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionDestinationRow, "8")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionDestinationRow, "9")
+        this.GUIFirstKeyboardOverlay.Add("Button", positionDestinationRow, "0")
         
         return
     }
@@ -77,27 +77,27 @@ Class FirstKeyboardOverlay{
 
          
         ;    Get the window's Width and Height through the GUI's name.
-        WinGetPos(, , &k_WindowWidth, &k_WindowHeight, "Virtual Keyboard View")
+        WinGetPos(, , &windowWidth, &windowHeight, "Virtual Keyboard View")
          
         ;---- Position the keyboard at the bottom of the screen while avoiding the taskbar:
 
-        MonitorGetWorkArea(1, &k_WorkAreaLeft, &k_WorkAreaTop, &k_WorkAreaRight, &k_WorkAreaBottom)
+        MonitorGetWorkArea(1, &workAreaLeft, &workAreaTop, &workAreaRight, &workAreaBottom)
         
         ; Calculate window's X-position:
-        k_WindowX := k_WorkAreaRight
-        k_WindowX -= k_WorkAreaLeft  ; Now k_WindowX contains the width of this monitor.
-        k_WindowX -= k_WindowWidth
-        k_WindowX /= 2  ; Calculate position to center it horizontally.
+        windowX := workAreaRight
+        windowX -= workAreaLeft  ; Now windowX contains the width of this monitor.
+        windowX -= windowWidth
+        windowX /= 2  ; Calculate position to center it horizontally.
         ; The following is done in case the window will be on a non-primary monitor
         ; or if the taskbar is anchored on the left side of the screen:
-        k_WindowX += k_WorkAreaLeft
+        windowX += workAreaLeft
         
         ; Calculate window's Y-position:
-        k_WindowY := k_WorkAreaBottom
-        k_WindowY -= k_WindowHeight
+        windowY := workAreaBottom
+        windowY -= windowHeight
          
         ;   Move the window to the bottom-center position of the monitor.
-        WinMove(k_WindowX, k_WindowY, , , "Virtual Keyboard View")
+        WinMove(windowX, windowY, , , "Virtual Keyboard View")
         this.IsVisible := true
     }
 
@@ -127,84 +127,86 @@ Class SecondKeyboardOverlay{
         deviceToggles := ""
 
         ; Capture the output (delets the output.txt file if it alredy exists)
-        ; FileDelete(A_ScriptDir "\output.txt")
-        ;FIXME probably just use run instead of runwait
-        ; RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass -Command `"& { . '" A_ScriptDir "\powerShellScripts\get-device-states.exe' } 1> " A_ScriptDir "\output.txt`"")
+        try{
+            FileDelete(A_ScriptDir "\output.txt")
+        }
+        catch{
+            ; File does not exist...
+        }
 
-        ; ; Read the captured output from the file
-        ; deviceToggles := Fileread(A_ScriptDir "\output.txt")
+        Run("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass -Command `"& { . '" A_ScriptDir "\powerShellScripts\get-device-states.exe' } 1> " A_ScriptDir "\output.txt`"")
 
-        ; ; Delete the file after reading them
-        ; FileDelete(A_ScriptDir "\output.txt")
+        ; Read the captured output from the file
+        deviceToggles := Fileread(A_ScriptDir "\output.txt")
 
-        ; deviceTogglesArray := StrSplit(deviceToggles,"`n")
+        ; Delete the file after reading them
+        FileDelete(A_ScriptDir "\output.txt")
+
+        deviceTogglesArray := StrSplit(deviceToggles,"`n")
         
-        ; This.BluetoothToggle := deviceTogglesArray[1]
-        ; This.TouchPadToggle := deviceTogglesArray[2]
-        ; This.TouchScreenToggle := deviceTogglesArray[3]
-        ; This.CameraToggle := deviceTogglesArray[4]
+        This.BluetoothToggle := deviceTogglesArray[1]
+        This.TouchPadToggle := deviceTogglesArray[2]
+        This.TouchScreenToggle := deviceTogglesArray[3]
+        This.CameraToggle := deviceTogglesArray[4]
     }
 
     CreateKeyboardOverlay(){
  
         ; Changing this font size will resize the keyboard:
-        k_FontSize := "10"
-        k_FontName := "Verdana"  ; This can be blank to use the system's default font.
-        k_FontStyle := "Bold"    ; Example of an alternative: Italic Underline
+        fontSize := "10"
+        fontName := "Verdana"  ; This can be blank to use the system's default font.
+        fontStyle := "Bold"    ; Example of an alternative: Italic Underline
         
         ; Gui
         this.GUISecondKeyboardOverlay := Gui()
-        this.GUISecondKeyboardOverlay.SetFont("s" . k_FontSize . " " . k_FontStyle, k_FontName)
+        this.GUISecondKeyboardOverlay.SetFont("s" . fontSize . " " . fontStyle, fontName)
         this.GUISecondKeyboardOverlay.Opt("+E0x20 -Caption +AlwaysOnTop -MaximizeBox +ToolWindow")
         this.GUISecondKeyboardOverlay.Title := "Virtual Keyboard View"
 
-        
         ;---- Calculate object dimensions based on chosen font size:
-        k_KeyWidth := k_FontSize * 6
-        k_KeyHeight := k_FontSize * 3
+        displayBoxWidth := fontSize * 6
+        displayBoxHeight := fontSize * 3
         
         ; Spacing to be used between the keys.
-        k_KeyMargin := k_FontSize // 10
+        displayBoxMargin := fontSize // 10
         
         
         ; Only a facilitator for creating GUI.
-        k_KeySizeHelperRow := "w" . k_KeyWidth . " h" . k_KeyHeight
-        k_PositionHelperRow := "x+" . k_KeyMargin . " " . k_KeySizeHelperRow
+        keySizeHelperRow := "w" . displayBoxWidth . " h" . displayBoxHeight
+        positionHelperRow := "x+" . displayBoxMargin . " " . keySizeHelperRow
         
         ;---- Calculate object dimensions based on chosen font size:
-        k_KeyWidthDestination := k_FontSize * 6
-        k_KeyHeightDestination := k_FontSize * 6
+        keyWidthDestination := fontSize * 6
+        keyHeightDestination := fontSize * 6
         
         ; Spacing to be used between the keys for destination row (second row probably).
         ; Only a facilitator for creating GUI.
-        k_KeySizeDestination := "w" . k_KeyWidthDestination . " h" . k_KeyHeightDestination
-        k_PositionDestinationRow := "x+" . k_KeyMargin . " " . k_KeySizeDestination
+        keySizeDestination := "w" . keyWidthDestination . " h" . keyHeightDestination
+        positionDestinationRow := "x+" . displayBoxMargin . " " . keySizeDestination
 
         ;   The first row.
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionHelperRow, "1")
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionHelperRow, "2")
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionHelperRow, "3")
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionHelperRow, "4")
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionHelperRow, "5")
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionHelperRow, "6")
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionHelperRow, "7")
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionHelperRow, "8")
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionHelperRow, "9")
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionHelperRow, "0")
+        this.GUISecondKeyboardOverlay.Add("Button", positionHelperRow, "1")
+        this.GUISecondKeyboardOverlay.Add("Button", positionHelperRow, "2")
+        this.GUISecondKeyboardOverlay.Add("Button", positionHelperRow, "3")
+        this.GUISecondKeyboardOverlay.Add("Button", positionHelperRow, "4")
+        this.GUISecondKeyboardOverlay.Add("Button", positionHelperRow, "5")
+        this.GUISecondKeyboardOverlay.Add("Button", positionHelperRow, "6")
+        this.GUISecondKeyboardOverlay.Add("Button", positionHelperRow, "7")
+        this.GUISecondKeyboardOverlay.Add("Button", positionHelperRow, "8")
+        this.GUISecondKeyboardOverlay.Add("Button", positionHelperRow, "9")
+        this.GUISecondKeyboardOverlay.Add("Button", positionHelperRow, "0")
         
         ;   The second row.
-        ; Gui, GUISecondKeyboardOverlay: Add, Button, xm y+%k_KeyMargin% h%k_KeyHeight% w%k_PositionDestinationRow% vTouchScreen, % This.TouchScreenToggle
-        ; this.GUISecondKeyboardOverlay.Add("Button", "xm y+" . k_KeyMargin . " " . k_KeySizeDestination , "Time Table")
-        this.GUISecondKeyboardOverlay.Add("Button", "xm y+" . k_KeyMargin . " " . k_KeySizeDestination . " vTouchScreen", This.TouchScreenToggle)
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionDestinationRow . " vCamera", This.CameraToggle)
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionDestinationRow . " vBluetooth", This.BluetoothToggle)
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionDestinationRow . " vTouchPad", This.TouchPadToggle)
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionDestinationRow, "5")
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionDestinationRow, "6")
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionDestinationRow, "7")
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionDestinationRow, "8")
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionDestinationRow, "9")
-        this.GUISecondKeyboardOverlay.Add("Button", k_PositionDestinationRow, "0")
+        this.GUISecondKeyboardOverlay.Add("Button", "xm y+" . displayBoxMargin . " " . keySizeDestination . " vTouchScreen", This.TouchScreenToggle)
+        this.GUISecondKeyboardOverlay.Add("Button", positionDestinationRow . " vCamera", This.CameraToggle)
+        this.GUISecondKeyboardOverlay.Add("Button", positionDestinationRow . " vBluetooth", This.BluetoothToggle)
+        this.GUISecondKeyboardOverlay.Add("Button", positionDestinationRow . " vTouchPad", This.TouchPadToggle)
+        this.GUISecondKeyboardOverlay.Add("Button", positionDestinationRow, "5")
+        this.GUISecondKeyboardOverlay.Add("Button", positionDestinationRow, "6")
+        this.GUISecondKeyboardOverlay.Add("Button", positionDestinationRow, "7")
+        this.GUISecondKeyboardOverlay.Add("Button", positionDestinationRow, "8")
+        this.GUISecondKeyboardOverlay.Add("Button", positionDestinationRow, "9")
+        this.GUISecondKeyboardOverlay.Add("Button", positionDestinationRow, "0")
         return
     }
 
@@ -217,26 +219,26 @@ Class SecondKeyboardOverlay{
         this.GUISecondKeyboardOverlay.Show("xCenter NoActivate")
          
         ;    Get the window's Width and Height through the GUI's name.
-        WinGetPos(, , &k_WindowWidth, &k_WindowHeight, "Virtual Keyboard View")
+        WinGetPos(, , &windowWidth, &windowHeight, "Virtual Keyboard View")
          
         ;---- Position the keyboard at the bottom of the screen while avoiding the taskbar:
-        MonitorGetWorkArea(1, &k_WorkAreaLeft, &k_WorkAreaTop, &k_WorkAreaRight, &k_WorkAreaBottom)
+        MonitorGetWorkArea(1, &workAreaLeft, &workAreaTop, &workAreaRight, &workAreaBottom)
         
         ; Calculate window's X-position:
-        k_WindowX := k_WorkAreaRight
-        k_WindowX -= k_WorkAreaLeft  ; Now k_WindowX contains the width of this monitor.
-        k_WindowX -= k_WindowWidth
-        k_WindowX /= 2  ; Calculate position to center it horizontally.
+        windowX := workAreaRight
+        windowX -= workAreaLeft  ; Now windowX contains the width of this monitor.
+        windowX -= windowWidth
+        windowX /= 2  ; Calculate position to center it horizontally.
         ; The following is done in case the window will be on a non-primary monitor
         ; or if the taskbar is anchored on the left side of the screen:
-        k_WindowX += k_WorkAreaLeft
+        windowX += workAreaLeft
         
         ; Calculate window's Y-position:
-        k_WindowY := k_WorkAreaBottom
-        k_WindowY -= k_WindowHeight
+        windowY := workAreaBottom
+        windowY -= windowHeight
          
         ;   Move the window to the bottom-center position of the monitor.
-        WinMove(k_WindowX, k_WindowY, , , "Virtual Keyboard View")
+        WinMove(windowX, windowY, , , "Virtual Keyboard View")
         this.IsVisible := true
     }
 
