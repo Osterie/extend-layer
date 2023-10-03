@@ -10,6 +10,7 @@
 #Include ".\library\KeysPressedGui.ahk"
 #Include ".\library\WebNavigator.ahk"
 #Include ".\library\KeyboardOverlay.ahk"
+#Include ".\library\DeviceController.ahk"
 
 ; |-----------------------------------------------------|
 ; |---------------------- OPTIMIZATIONS ----------------|
@@ -43,6 +44,24 @@ if (not A_IsAdmin){
 ; |-------------- TO-DO LIST -------------------------|
 ; |---------------------------------------------------|
 
+; Perhaps it would be a good idea for a shortcuts to file explorer. (made general so it works when file paths are changed and such.)
+; The idea would be you could hold ctrl on the first layer, and an overlay would show what key to press to go to which path in the file explorer.
+
+; Make a function/class or something to find a tab. Open a dialog box or something, write the name of / partial name of the tab you
+; want to go to, then each tab is checked if it contains the name given and so on (obvious what to do next)
+
+
+; https://github.com/ilirb/ahk-scripts
+; Win+C open a CMD at the current path.
+; Ctrl+Shift+T create new Text file in current folder, each time you press it will create new file.
+; Ctrl+Win+C open CMD from everywhere, no need to be in Windows Explorer.
+
+
+; Make it possible to change contrast.
+
+; Make num lock do the same as capslock (layer changer)
+
+; make a simple version which is just the first layer, can be used when main not working
 
 ; todo: would be possible to have some hotkeys that open a gui where several options are chosen from.
 ; for example for changing performance mode, a dropdown menu for high, normal, low performance nad such can be chosen.
@@ -100,6 +119,8 @@ if (not A_IsAdmin){
 ; |----------- OBJECT CREATION ---------------|
 ; |-------------------------------------------|
 
+
+
 ; Allows to write on the screen in a textarea
 OnScreenWriter := KeysPressedGui()
 OnScreenWriter.CreateGUI()
@@ -114,10 +135,11 @@ privacyController.ChangeCountdown(3,0)
 
 ; ------------------FIIIIIXXX--------------------------
 ; TODO this is a pretty bad way to do this... 
-; Shows an on screen overlay for the first keyboard layer which shows which urls can be went to using the number keys
-; FirstKeyboardOverlayInstance := FirstKeyboardOverlay()
-; FirstKeyboardOverlayInstance.CreateKeyboardOverlay()
 
+DeviceManipulator := DeviceController()
+DeviceManipulator.UpdateDevicesActionToToggle()
+
+; Shows an on screen overlay for the first keyboard layer which shows which urls can be went to using the number keys
 FirstKeyboardOverlay := KeyboardOverlay()
 FirstKeyboardOverlay.CreateGui()
 FirstKeyboardOverlay.AddStaticColumn("1", "Time Table")
@@ -132,16 +154,12 @@ FirstKeyboardOverlay.AddStaticColumn("9", "")
 FirstKeyboardOverlay.AddStaticColumn("0", "")
 
 ; Shows an on screen overlay for the first keyboard layer which shows which number keys to press to enable/disable devices
-; SecondKeyboardOverlayInstance := SecondKeyboardOverlay()
-
 SecondKeyboardOverlay := KeyboardOverlay()
 SecondKeyboardOverlay.CreateGui()
-SecondKeyboardOverlay.AddColumnToggleValue("1", "TouchScreen", "Enable")
-SecondKeyboardOverlay.AddColumnToggleValue("2", "Camera", "Enable")
-SecondKeyboardOverlay.AddColumnToggleValue("3", "Bluetooth", "Enable")
-SecondKeyboardOverlay.AddColumnToggleValue("4", "TouchPad", "Enable")
-; ---------------------FIX AWFUL ABOVE------------------
-
+SecondKeyboardOverlay.AddColumnToggleValue("1", "TouchScreen", DeviceManipulator.GetTouchScreenActionToToggle())
+SecondKeyboardOverlay.AddColumnToggleValue("2", "Camera", DeviceManipulator.GetCameraActionToToggle())
+SecondKeyboardOverlay.AddColumnToggleValue("3", "Bluetooth", DeviceManipulator.GetBluetoothActionToToggle())
+SecondKeyboardOverlay.AddColumnToggleValue("4", "TouchPad", DeviceManipulator.GetTouchPadActionToToggle())
 
 ; Used to switch the active layer
 layers := LayerIndicatorController()
@@ -240,7 +258,10 @@ CapsLock::{
     Send("\^l{F6}{AppsKey}{Up}{Enter}")
     Send("+{F6 2}") ;go back to body of page 
     ComputerInput.UnBlockKeyboard()
-}  
+} 
+
+; Works as Alt f4
+^q:: Send("!{f4}")
 
 ; |------------------------------|
 ; |-----------Layers-------------|
@@ -347,13 +368,15 @@ CapsLock::{
     +1::{ 
         ; TODO the run should be in the class that handles keyboard overlay, make more classes and such
         SecondKeyboardOverlay.ToggleState("TouchScreen")
-        RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-touch-screen.exe")
+        DeviceManipulator.ToggleTouchScreenToggle()
+        ; RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-touch-screen.exe")
     } 
 
     ; Toggles camera
     +2::{ 
         SecondKeyboardOverlay.ToggleState("Camera")
-        RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-hd-camera.exe")
+        DeviceManipulator.ToggleCameraToggle()
+        ; RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-hd-camera.exe")
     } 
 
     ; Toggles bluetooth
