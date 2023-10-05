@@ -71,7 +71,7 @@ Class KeyboardOverlay{
         ; The first row.
         this.keyboardOverlay.Add("Button", this.positionFirstRow, keyFirstRow)
         ; The second row.
-        this.keyboardOverlay.Add("Button", this.positionSecondRow . " v" . valueSecondRow , stateSecondRow . " " . valueSecondRow)
+        this.keyboardOverlay.Add("Button", this.positionSecondRow . " v" . StrReplace(valueSecondRow, " "), stateSecondRow . " " . valueSecondRow)
     }
 
     ToggleState(valueSecondRow){

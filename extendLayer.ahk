@@ -43,6 +43,11 @@ if (not A_IsAdmin){
 ; |---------------------------------------------------|
 ; |-------------- TO-DO LIST -------------------------|
 ; |---------------------------------------------------|
+; !add a priority rating for all the todos, using !, ?, and *
+
+; Fixme: bug with second layer, showing wrong text, easay fix probably.
+
+; Add a quick search for chat-gpt
 
 ; a shortcut, which when enabled reads whatever the user is writing, and when they hit enter, it is searched for in the browser
 
@@ -67,6 +72,8 @@ if (not A_IsAdmin){
 ; add a way to navigate a level back in file explorer, but try first to find a shortcut to do so.
 
 ; FIXME fix WebNavigator
+
+; try and explore how to turn on battery-saver. however seems impossible
 
 ; Perhaps it would be a good idea for a shortcuts to file explorer. (made general so it works when file paths are changed and such.)
 ; The idea would be you could hold ctrl on the first layer, and an overlay would show what key to press to go to which path in the file explorer.
@@ -180,10 +187,10 @@ FirstKeyboardOverlay.AddStaticColumn("0", "")
 ; Shows an on screen overlay for the first keyboard layer which shows which number keys to press to enable/disable devices
 SecondKeyboardOverlay := KeyboardOverlay()
 SecondKeyboardOverlay.CreateGui()
-SecondKeyboardOverlay.AddColumnToggleValue("1", "TouchScreen", DeviceManipulator.GetTouchScreenActionToToggle())
+SecondKeyboardOverlay.AddColumnToggleValue("1", "Touch Screen", DeviceManipulator.GetTouchScreenActionToToggle())
 SecondKeyboardOverlay.AddColumnToggleValue("2", "Camera", DeviceManipulator.GetCameraActionToToggle())
-SecondKeyboardOverlay.AddColumnToggleValue("3", "Bluetooth", DeviceManipulator.GetBluetoothActionToToggle())
-SecondKeyboardOverlay.AddColumnToggleValue("4", "TouchPad", DeviceManipulator.GetTouchPadActionToToggle())
+SecondKeyboardOverlay.AddColumnToggleValue("3", "Blue tooth", DeviceManipulator.GetBluetoothActionToToggle())
+SecondKeyboardOverlay.AddColumnToggleValue("4", "Touch Pad", DeviceManipulator.GetTouchPadActionToToggle())
 
 ; Used to switch the active layer
 layers := LayerIndicatorController()
@@ -193,7 +200,7 @@ layers.addLayerIndicator(2, "Red")
 ; Used to change brightness and gamma settings of the monitor
 Monitor := MonitorController()
 
-; Used to switch between power saver mdoe and normal power mode
+; Used to switch between power saver mode and normal power mode (does not work as expected currently, percentage to switch to power saver is changed, but power saver is never turned on...)
 Battery := BatteryController(50, 50)
 Battery.setPowerSaverModeGUID("a1841308-3541-4fab-bc81-f71556f20b4a")
 Battery.setDefaultPowerModeGUID("8759706d-706b-4c22-b2ec-f91e1ef6ed38")

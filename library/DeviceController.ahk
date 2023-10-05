@@ -10,7 +10,7 @@ Class DeviceController{
 
     UpdateDevicesActionToToggle(){
 
-        Run("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass -Command `"& { . '" A_ScriptDir "\powerShellScripts\get-device-states.exe' } 1> " A_ScriptDir "\powerShellScripts\output.txt`"")
+        Runwait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass -Command `"& { . '" A_ScriptDir "\powerShellScripts\get-device-states.ps1' } 1> " A_ScriptDir "\powerShellScripts\output.txt`"")
         
         ; Read the captured output from the file
         devicesActionToToggle := Fileread(A_ScriptDir "\powerShellScripts\output.txt")

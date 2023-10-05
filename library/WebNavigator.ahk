@@ -40,6 +40,7 @@ Class WebNavigator{
         }
     }
 
+    ; !make multiple methods with good names instead of this hunk of junk (not made my myself)
     ; google(service := 1){
     ; static urls := { 0: ""
     ;     , 1 : "https://www.google.com/search?hl=en&q="
@@ -47,6 +48,9 @@ Class WebNavigator{
     ;     , 3 : "https://www.google.com/maps/search/"
     ;     , 4 : "https://translate.google.com/?sl=auto&tl=en&text=" }
     ; POSSIBLE TO ADD MORE. For example to search on wikipedia, or something else idk
+
+    ; !add for chat-gpt
+
     ; backup := ClipboardAll
     ; Clipboard := ""
     ; Send ^c

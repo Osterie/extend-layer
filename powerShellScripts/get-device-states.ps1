@@ -14,7 +14,7 @@ Await ([Windows.Devices.Radios.Radio]::RequestAccessAsync()) ([Windows.Devices.R
 $radios = Await ([Windows.Devices.Radios.Radio]::GetRadiosAsync()) ([System.Collections.Generic.IReadOnlyList[Windows.Devices.Radios.Radio]])
 $bluetooth = $radios | ? { $_.Kind -eq 'Bluetooth' }
 [Windows.Devices.Radios.RadioState,Windows.System.Devices,ContentType=WindowsRuntime] | Out-Null
-if (!$BluetoothStatus) { if ($bluetooth.state -eq 'On') { $BluetoothStatus = 'Off'; Write-Output "Disable Blue  tooth"; Start-Sleep -s 1 } else { $BluetoothStatus = 'On' ; Write-Output "Enable Blue  tooth" ; Start-Sleep -s 1} }
+if (!$BluetoothStatus) { if ($bluetooth.state -eq 'On') { $BluetoothStatus = 'Off'; Write-Output "Disable"; Start-Sleep -s 1 } else { $BluetoothStatus = 'On' ; Write-Output "Enable" ; Start-Sleep -s 1} }
 
 
 # TOUCHPAD Writes to terminal touchpad state (which is interpreted in extend_extra_extreme.ahk)
@@ -22,8 +22,8 @@ $deviceId = 'HID\VID_044E&PID_1212&COL01&COL04\7&3B3FBA1E&0&0003'
 $device   = Get-PnpDevice -InstanceId $deviceId -ErrorAction SilentlyContinue
 if ($device) {
     switch ($device.Status) {
-        'OK'    { Write-Output "Disable Mouse"}
-        default { Write-Output "Enable Mouse"}
+        'OK'    { Write-Output "Disable"}
+        default { Write-Output "Enable"}
     }
 }
 else {
@@ -35,8 +35,8 @@ $deviceId = 'HID\WCOM481A&COL01\5&35681C4A&1&0000'
 $device   = Get-PnpDevice -InstanceId $deviceId -ErrorAction SilentlyContinue
 if ($device) {
     switch ($device.Status) {
-        'OK'    { Write-Output "Disable Touch-Screen";}
-        default { Write-Output "Enable Touch-Screen";}
+        'OK'    { Write-Output "Disable";}
+        default { Write-Output "Enable";}
     }
 }
 else {
@@ -48,8 +48,8 @@ $deviceId = 'USB\VID_05C8&PID_080B&MI_00\6&1553D1E2&0&0000'
 $device   = Get-PnpDevice -InstanceId $deviceId -ErrorAction SilentlyContinue
 if ($device) {
     switch ($device.Status) {
-        'OK'    { Write-Output "Disable Camera";}
-        default { Write-Output "Enable Camera";}
+        'OK'    { Write-Output "Disable";}
+        default { Write-Output "Enable";}
     }
 }
 else {
