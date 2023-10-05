@@ -70,8 +70,8 @@ Class MonitorController{
 
         this.setGamma(red, green, blue)
     }
-
-    CycleBlue(step, upperLimit){
+    
+    CycleGreen(step, upperLimit){
         gammaRamp := this.getCurrentGamma()
         red := gammaRamp.Get(1)
         green := gammaRamp.Get(2)
@@ -80,8 +80,8 @@ Class MonitorController{
 
         this.setGamma(red, green, blue)
     }
-    
-    CycleGreen(step, upperLimit){
+
+    CycleBlue(step, upperLimit){
         gammaRamp := this.getCurrentGamma()
         red := gammaRamp.Get(1)
         green := gammaRamp.Get(2)
@@ -91,6 +91,7 @@ Class MonitorController{
         this.setGamma(red, green, blue)
     }
 
+    
     ; Switches gamma values (r, g, b) to 256,256,256 or 128,128,128
     ToggleHighestGamma(){
         gammaRamp := this.GetCurrentGamma()

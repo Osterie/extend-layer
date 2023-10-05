@@ -44,6 +44,30 @@ if (not A_IsAdmin){
 ; |-------------- TO-DO LIST -------------------------|
 ; |---------------------------------------------------|
 
+; a shortcut, which when enabled reads whatever the user is writing, and when they hit enter, it is searched for in the browser
+
+; add a shortcut for enabling/disabling the script. there is probably a built in function/method or whaterver for this already, Suspend.
+
+; checkout: https://github.com/GorvGoyl/Autohotkey-Scripts-Windows/blob/master/ctrl_caps_as_case_change.ahk
+; link about goes to script which can set text to uppercase, lowercase and more
+
+; checkout: https://github.com/GorvGoyl/Autohotkey-Scripts-Windows/blob/master/in-line-calculator/in-line%20calculator.ahk
+; could use calculator anywehre with script above
+
+; checkout: https://github.com/GorvGoyl/Autohotkey-Scripts-Windows/blob/master/move-inactive-window-alt-leftclick/MoveInactiveWin.ahk
+; move window without activating it. "move window without activating it" so the window can be moved from anywhere, without being activated
+
+; checkout: https://www.autohotkey.com/docs/v1/scripts/#EasyWindowDrag 
+; move a window from anywhere, can be combined with "move window without activating it" so the window can be moved from anywhere, without being activated
+
+; checkout https://github.com/GorvGoyl/Autohotkey-Scripts-Windows/blob/master/win_key_to_show_taskbar.ahk
+; show taskbar when holding windows key, could test for a week and see if it is faster or slower....
+; might be bad since i cant show which app to quick switch to. Might not be an issue
+
+; add a way to navigate a level back in file explorer, but try first to find a shortcut to do so.
+
+; FIXME fix WebNavigator
+
 ; Perhaps it would be a good idea for a shortcuts to file explorer. (made general so it works when file paths are changed and such.)
 ; The idea would be you could hold ctrl on the first layer, and an overlay would show what key to press to go to which path in the file explorer.
 
@@ -51,9 +75,8 @@ if (not A_IsAdmin){
 ; want to go to, then each tab is checked if it contains the name given and so on (obvious what to do next)
 
 
-; https://github.com/ilirb/ahk-scripts
+; https://github.com/ilirb/ahk-scripts/blob/master/Commands/_Functions.ahk
 ; Win+C open a CMD at the current path.
-; Ctrl+Shift+T create new Text file in current folder, each time you press it will create new file.
 ; Ctrl+Win+C open CMD from everywhere, no need to be in Windows Explorer.
 
 
@@ -79,6 +102,7 @@ if (not A_IsAdmin){
 ; This would allow the user to for example show an onscreen keyboard ovelay which shows what every keyboard key does, making this script usable for more people.
 ; In the gui it should also be possible to switch which keys do what, since people have diffenet keyboards.
 ; The keyboard overlay should maybe make it possible to hover over a key, or hold/press ctrl or something to show which key on the keyboard to press to activate that special key.
+; Make it possible to not have gui showing which layer is active (silent running mode or whatever something cool) also an option to not turn on the light for capslock
 
 ; TODO: to make those keyboard overlay classes only one class and more genereal, make then read a file which contains information about how the overlay should look
 ; for a new row, write something to indicate a new row.
@@ -283,7 +307,7 @@ CapsLock::{
         FirstKeyboardOverlay.HideGui()
     } 
     ; Go to study plan (from current week to end of first semester currently)
-    +1::UrlNavigator.OpenUrl("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&") 
+    +1::UrlNavigator.LoginToSite("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&" , blackboardLoginImages, 3000, true) 
 
     ; Go to blackboard
     +2::UrlNavigator.OpenUrl("https://ntnu.blackboard.com/ultra/course")

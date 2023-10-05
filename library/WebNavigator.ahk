@@ -40,6 +40,28 @@ Class WebNavigator{
         }
     }
 
+    ; google(service := 1){
+    ; static urls := { 0: ""
+    ;     , 1 : "https://www.google.com/search?hl=en&q="
+    ;     , 2 : "https://www.google.com/search?site=imghp&tbm=isch&q="
+    ;     , 3 : "https://www.google.com/maps/search/"
+    ;     , 4 : "https://translate.google.com/?sl=auto&tl=en&text=" }
+    ; POSSIBLE TO ADD MORE. For example to search on wikipedia, or something else idk
+    ; backup := ClipboardAll
+    ; Clipboard := ""
+    ; Send ^c
+    ; ClipWait 0
+    ; if ErrorLevel
+    ;     InputBox query, Google Search,,, 200, 100
+    ; else query := Clipboard
+    ; Run % urls[service] query
+    ; Clipboard := backup
+    ; F1::google(1) ; Regular search
+    ; F2::google(2) ; Images search
+    ; F3::google(3) ; Maps search
+    ; F4::google(4) ; Translation
+; }
+
     OpenUrl(url){
         Run("chrome.exe " url)
     }

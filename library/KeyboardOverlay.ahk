@@ -44,6 +44,7 @@ Class KeyboardOverlay{
     ShowGui(){
         this.keyboardOverlay.Show("xCenter NoActivate")
         WinGetPos(, , &windowWidth, &windowHeight, "Virtual Keyboard View")
+        WinSetAlwaysOnTop 1, this.keyboardOverlay
         this.keyboardOverlay.Show("xCenter y" . A_ScreenHeight-windowHeight . "NoActivate")
     }
 
