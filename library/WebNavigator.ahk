@@ -17,7 +17,7 @@ Class WebNavigator{
                 loginButtonClicked := true
 
                 if(loginRedirect){
-                    Sleep(loadTime)
+                    Sleep(loadTime/2)
                     Send("^l")
                     Send(url)
                     Send("{Enter}")
@@ -40,6 +40,9 @@ Class WebNavigator{
         }
     }
 
+    AskChatGpt(question, loadTime){
+
+    }
     ; !make multiple methods with good names instead of this hunk of junk (not made my myself)
     ; google(service := 1){
     ; static urls := { 0: ""

@@ -11,6 +11,7 @@
 #Include ".\library\WebNavigator.ahk"
 #Include ".\library\KeyboardOverlay.ahk"
 #Include ".\library\DeviceController.ahk"
+#Include ".\library\CommandPromptOpener.ahk"
 
 ; |-----------------------------------------------------|
 ; |---------------------- OPTIMIZATIONS ----------------|
@@ -69,9 +70,7 @@ if (not A_IsAdmin){
 ; show taskbar when holding windows key, could test for a week and see if it is faster or slower....
 ; might be bad since i cant show which app to quick switch to. Might not be an issue
 
-; add a way to navigate a level back in file explorer, but try first to find a shortcut to do so.
-
-; FIXME fix WebNavigator
+; add a way to navigate a level back in file explorer(look up, i think it exists), but try first to find a shortcut to do so.
 
 ; try and explore how to turn on battery-saver. however seems impossible
 
@@ -86,6 +85,7 @@ if (not A_IsAdmin){
 ; Win+C open a CMD at the current path.
 ; Ctrl+Win+C open CMD from everywhere, no need to be in Windows Explorer.
 
+; Maybe have a way to recognize who is using the computer, if for example the mouse is clicked 10 times or something in a minute, then disable keyboard and mouse, and turn screen dark, maybe off? could be dangerous
 
 ; Make it possible to change contrast.
 
@@ -150,7 +150,8 @@ if (not A_IsAdmin){
 ; |----------- OBJECT CREATION ---------------|
 ; |-------------------------------------------|
 
-
+; Allows opening cmd pathed to the current file location for vs code and file explorer.
+CommandPrompt := CommandPromptOpener("C:\Users\adria\")
 
 ; Allows to write on the screen in a textarea
 OnScreenWriter := KeysPressedGui()
@@ -164,9 +165,7 @@ privacyController := PrivacyGUIController()
 privacyController.CreateGui()
 privacyController.ChangeCountdown(3,0)
 
-; ------------------FIIIIIXXX--------------------------
-; TODO this is a pretty bad way to do this... 
-
+; Used to get the states of devices, like if bluetooth and such is enabled, also able to disable/enable these devices
 DeviceManipulator := DeviceController()
 DeviceManipulator.UpdateDevicesActionToToggle()
 
@@ -293,6 +292,10 @@ CapsLock::{
 
 ; Works as Alt f4
 ^q:: Send("!{f4}")
+
+#c::{
+    CommandPrompt.OpenCmdPathedToCurrentLocation()
+}
 
 ; |------------------------------|
 ; |-----------Layers-------------|
