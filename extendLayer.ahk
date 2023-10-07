@@ -45,13 +45,12 @@ if (not A_IsAdmin){
 ; |---------------------------------------------------|
 ; !add a priority rating for all the todos, using !, ?, and *
 
-; Fixme: bug with second layer, showing wrong text, easay fix probably.
+; ?a shortcut, which when enabled reads whatever the user is writing, and when they hit enter, it is searched for in the browser
 
-; Add a quick search for chat-gpt
-
-; a shortcut, which when enabled reads whatever the user is writing, and when they hit enter, it is searched for in the browser
-
-; add a shortcut for enabling/disabling the script. there is probably a built in function/method or whaterver for this already, Suspend.
+; !add a shortcut for enabling/disabling the script. there is probably a built in function/method or whaterver for this already, Suspend.
+#SuspendExempt
+^!s::Suspend  ; Ctrl+Alt+S
+#SuspendExempt False
 
 ; checkout: https://github.com/GorvGoyl/Autohotkey-Scripts-Windows/blob/master/ctrl_caps_as_case_change.ahk
 ; link about goes to script which can set text to uppercase, lowercase and more
