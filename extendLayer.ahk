@@ -12,9 +12,9 @@
 #Include ".\library\DeviceController.ahk"
 #Include ".\library\CommandPromptOpener.ahk"
 
-; |-----------------------------------------------------|
-; |---------------------- OPTIMIZATIONS ----------------|
-; |-----------------------------------------------------|
+; |--------------------------------------------------|
+; |------------------- OPTIMIZATIONS ----------------|
+; |--------------------------------------------------|
 
 A_MaxHotkeysPerInterval := 99000000
 A_HotkeyInterval := 99000000
@@ -27,7 +27,7 @@ SetWinDelay(-1)
 SetControlDelay(-1)
 SetWorkingDir(A_ScriptDir)
 ProcessSetPriority "High"
-; Not changing SendMode defaults it to "input", which makes hotkeys super mega terrible
+; Not changing SendMode defaults it to "input", which makes hotkeys super mega terrible (super   ø)
 SendMode "Event"
 
 ; |-----------------------------------------------------------|
@@ -317,18 +317,13 @@ CapsLock::{
 
 #HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 1
 
-    ~Shift::{ 
-        FirstKeyboardOverlay.ShowGui()
-        ; FirstKeyboardOverlayInstance.ShowGui()
-    } 
+    ~Shift:: FirstKeyboardOverlay.ShowGui() 
 
     Shift up::{ 
         SecondKeyboardOverlay.HideGui()
-
-
-        ; FirstKeyboardOverlayInstance.HideGui()
         FirstKeyboardOverlay.HideGui()
-    } 
+    }
+    
     ; Go to study plan (from current week to end of first semester currently)
     +1::WebSearcher.LoginToSite("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&" , blackboardLoginImages, 3000, true) 
 
@@ -351,7 +346,14 @@ CapsLock::{
     +7::WebSearcher.LoginToSite("https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab" , jupyterHubLoginImages, 4000, false) 
 
     ; Alt gr pressed down works like holding down the windows key
-    LControl & RAlt:: Send("{LWin Down}")
+    LControl & RAlt:: {
+        Send("{LWin Down}")
+        ; Incase the layer is turned off, and therefore the hotkey to let the LWin key up
+        ; this ensures the windows key is released after a set time.
+        Sleep(3000)
+        Send("{LWin Up}")
+    }
+
     
     ; When alt gr is released, the windows key is no longer active
     LControl & RAlt up::Send("{LWin Up}")
