@@ -2,6 +2,22 @@
 
 Class WebNavigator{
 
+    ; Closes tabs to the right of the current tab, only works in chrome ATM
+    CloseTabsToTheRight(){
+        ; These sends could be compressed to just one, but for readability they are all seperated to each their line
+        ; Focuses search bar
+        Send("^l")
+        ; Focuses active tab
+        Send("{F6}")
+        ; Right clicks active tab, opening a dropdown meny with actions
+        Send("{AppsKey}")
+        ; Focuses the option to close tabs to the right
+        Send("{Up}")
+        ; Performs said action
+        Send("{Enter}")
+        ; Goes back to the body of the page
+        Send("{F6}") 
+    }
 
     LoginToSite(url, loginButtonImagePaths, loadTime, loginRedirect){
 

@@ -45,45 +45,56 @@ if (not A_IsAdmin){
 ; |---------------------------------------------------|
 ; !add a priority rating for all the todos, using !, ?, and *
 
+; !Future, for other users or just for good practice, make the script more easily understandable and learnable for others.
+; !do this by creating a meny or gui or markdown file or all of the above! which contains enough information for a decent understanding
+
 ; ?a shortcut, which when enabled reads whatever the user is writing, and when they hit enter, it is searched for in the browser
 
 ; !add a shortcut for enabling/disabling the script. there is probably a built in function/method or whaterver for this already, Suspend.
 
 
-; checkout: https://github.com/GorvGoyl/Autohotkey-Scripts-Windows/blob/master/ctrl_caps_as_case_change.ahk
-; link about goes to script which can set text to uppercase, lowercase and more
+;? checkout: https://github.com/GorvGoyl/Autohotkey-Scripts-Windows/blob/master/ctrl_caps_as_case_change.ahk
+;? link about goes to script which can set text to uppercase, lowercase and more
 
-; checkout: https://github.com/GorvGoyl/Autohotkey-Scripts-Windows/blob/master/in-line-calculator/in-line%20calculator.ahk
-; could use calculator anywehre with script above
+;? checkout: https://github.com/GorvGoyl/Autohotkey-Scripts-Windows/blob/master/in-line-calculator/in-line%20calculator.ahk
+;? could use calculator anywehre with script above. 
 
-; checkout: https://github.com/GorvGoyl/Autohotkey-Scripts-Windows/blob/master/move-inactive-window-alt-leftclick/MoveInactiveWin.ahk
-; move window without activating it. "move window without activating it" so the window can be moved from anywhere, without being activated
+;! checkout: https://github.com/GorvGoyl/Autohotkey-Scripts-Windows/blob/master/move-inactive-window-alt-leftclick/MoveInactiveWin.ahk
+;! move window without activating it. "move window without activating it" so the window can be moved from anywhere, without being activated
 
-; checkout: https://www.autohotkey.com/docs/v1/scripts/#EasyWindowDrag 
-; move a window from anywhere, can be combined with "move window without activating it" so the window can be moved from anywhere, without being activated
+;! checkout: https://www.autohotkey.com/docs/v1/scripts/#EasyWindowDrag 
+;! move a window from anywhere, can be combined with "move window without activating it" so the window can be moved from anywhere, without being activated
 
-; checkout https://github.com/GorvGoyl/Autohotkey-Scripts-Windows/blob/master/win_key_to_show_taskbar.ahk
-; show taskbar when holding windows key, could test for a week and see if it is faster or slower....
-; might be bad since i cant show which app to quick switch to. Might not be an issue
+; *checkout https://github.com/GorvGoyl/Autohotkey-Scripts-Windows/blob/master/win_key_to_show_taskbar.ahk
+; *show taskbar when holding windows key, could test for a week and see if it is faster or slower....
+; *might be bad since i cant show which app to quick switch to. Might not be an issue
 
-; add a way to navigate a level back in file explorer(look up, i think it exists), but try first to find a shortcut to do so.
+; ?add a way to navigate a level back in file explorer(look up, i think it exists), but try first to find a shortcut to do so.
 
-; try and explore how to turn on battery-saver. however seems impossible
+; *try and explore how to turn on battery-saver. however seems impossible
 
-; Perhaps it would be a good idea for a shortcuts to file explorer. (made general so it works when file paths are changed and such.)
-; The idea would be you could hold ctrl on the first layer, and an overlay would show what key to press to go to which path in the file explorer.
+; ?Perhaps it would be a good idea for a shortcuts to file explorer. (made general so it works when file paths are changed and such.)
+; ?The idea would be you could hold ctrl on the first layer, and an overlay would show what key to press to go to which path in the file explorer.
+; ?To expand upon this idea, it would be possible to easily create more or remove shortcuts, a simple gui/menu to add/remove filepaths, 
+; ?and have it possible to open file explore to choose the folder you want to jump to for the shortcut
 
-; Make a function/class or something to find a tab. Open a dialog box or something, write the name of / partial name of the tab you
-; want to go to, then each tab is checked if it contains the name given and so on (obvious what to do next)
+; *Make a function/class or something to find and navigat to an open chrome tab. Open a dialog box or something, write the name of / partial name of the tab you
+; *want to go to, then each tab is checked if it contains the name given and so on (obvious what to do next)
 
+; *maybe make it possible to save stuff on the second layer also (the ctrl+s shortcut)
 
-; https://github.com/ilirb/ahk-scripts/blob/master/Commands/_Functions.ahk
-; Win+C open a CMD at the current path.
-; Ctrl+Win+C open CMD from everywhere, no need to be in Windows Explorer.
+; DONE
+; //https://github.com/ilirb/ahk-scripts/blob/master/Commands/_Functions.ahk
+; //Win+C open a CMD at the current path.
+; //Ctrl+Win+C open CMD from everywhere, no need to be in Windows Explorer.
 
-; Maybe have a way to recognize who is using the computer, if for example the mouse is clicked 10 times or something in a minute, then disable keyboard and mouse, and turn screen dark, maybe off? could be dangerous
+; *Maybe have a way to recognize who is using the computer, if for example the mouse is clicked 10 times or something in a minute, then disable keyboard and mouse, and turn screen dark, maybe off? could be dangerous
+
+; !add another windows key to the right side of the keyboard
 
 ; Make it possible to change contrast.
+
+; Make a method in monitor class for adding a transparent black layer over the screen, to be used as a screen dimmer.
 
 ; Make num lock do the same as capslock (layer changer)
 
@@ -280,18 +291,18 @@ CapsLock::{
 
 ;close tabs to the right
 ^!w::{ 
+    Sleep(500)
     ComputerInput.BlockKeyboard()
-    Send("\^l{F6}{AppsKey}{Up}{Enter}")
-    Send("+{F6 2}") ;go back to body of page 
+    try{
+        WebSearcher.CloseTabsToTheRight()
+    }
     ComputerInput.UnBlockKeyboard()
 } 
 
 ; Works as Alt f4
 ^q:: Send("!{f4}")
 
-#c::{
-    CommandPrompt.OpenCmdPathedToCurrentLocation()
-}
+#c:: CommandPrompt.OpenCmdPathedToCurrentLocation()
 
 ; Used to suspend script, suspending the script means noen of its functionalities are active.
 ; Pressing the same key combination again enables the script again
@@ -314,7 +325,7 @@ CapsLock::{
     Shift up::{ 
         SecondKeyboardOverlay.HideGui()
 
-        ; SecondKeyboardOverlayInstance.HideGui()
+
         ; FirstKeyboardOverlayInstance.HideGui()
         FirstKeyboardOverlay.HideGui()
     } 
@@ -338,6 +349,12 @@ CapsLock::{
 
     ; Go to jupyterhub
     +7::WebSearcher.LoginToSite("https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab" , jupyterHubLoginImages, 4000, false) 
+
+    ; Alt gr pressed down works like holding down the windows key
+    LControl & RAlt:: Send("{LWin Down}")
+    
+    ; When alt gr is released, the windows key is no longer active
+    LControl & RAlt up::Send("{LWin Up}")
 
     q:: Esc
     å:: Esc
