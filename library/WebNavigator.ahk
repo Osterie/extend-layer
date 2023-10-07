@@ -42,17 +42,18 @@ Class WebNavigator{
 
     ; Searches google for the currently highlighteded text, or the text stored in the clipboard
     LookUpHighlitedTextOrClipboardContent(){
-        clipboardValue := A_Clipboard
-        Send("^c")
         googleSearchUrl := "https://www.google.com/search?q="
         
-        ; if it starts with "https://" go to, rather than search in google search
-        isUrl := SubStr(A_Clipboard, 1, 8)
-        if (isUrl = "https://") {   
+        clipboardValue := A_Clipboard
+        Send("^c")
+        isUrl := this.isUrl(A_Clipboard)
+        
+        ; if the highlighted text/the text in the clipboard is a url, then the url is opened
+        if (isUrl) {   
             Run(A_Clipboard)
         }
-        else { ;search using google search
-            joined_url := googleSearchUrl . "" . A_Clipboard
+        else { ;if not an url, search using google search
+            joined_url := googleSearchUrl . A_Clipboard
             Run(joined_url)
         }
         
@@ -60,9 +61,45 @@ Class WebNavigator{
         A_Clipboard := clipboardValue
     }
 
-    AskChatGpt(question, loadTime){
-
+    AskChatGptAboutHighligtedTextOrClipboardContent(loadTime){
+        ; saves current clipboard value to a variable
+        clipboardValue := A_Clipboard
+        ; saves a new value to the clipboard, if any text is highligted
+        Send("^c")
+        
+        ; Opens the chat-gpt site and then pastes the clipboard value (which could be the text which was highlighted)
+        Run("https://chat.openai.com/")
+        Sleep(loadTime)
+        Send(A_Clipboard)
+        Send("{Enter}")
+        
+        ;put the last copied thing back in the clipboard
+        A_Clipboard := clipboardValue
     }
+
+    ; asks chat-gpt a question, loadTime is the estimated time the site takes to load in, in probably not the best way to do this
+    AskChatGpt(question, loadTime){
+        Run("https://chat.openai.com/")
+        Sleep(loadTime)
+        Send(question)
+        Send("{Enter}")
+    }
+
+    ; meant to be a private method, checks if a text is a url
+    ; returns a boolean
+    IsUrl(text){
+        isUrl := ""
+        ; if it starts with "https://", then the text is considered a url
+        startOfText := SubStr(text, 1, 8)
+        if (startOfText = "https://") {   
+            isUrl := true
+        }
+        else{
+            isUrl := false
+        }
+        return isUrl
+    }
+
     ; !make multiple methods with good names instead of this hunk of junk (not made my myself)
     ; google(service := 1){
     ; static urls := { 0: ""
@@ -71,8 +108,6 @@ Class WebNavigator{
     ;     , 3 : "https://www.google.com/maps/search/"
     ;     , 4 : "https://translate.google.com/?sl=auto&tl=en&text=" }
     ; POSSIBLE TO ADD MORE. For example to search on wikipedia, or something else idk
-
-    ; !add for chat-gpt
 
     ; backup := ClipboardAll
     ; Clipboard := ""

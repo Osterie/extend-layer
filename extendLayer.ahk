@@ -1,7 +1,6 @@
 ﻿; [^ = Ctrl] [+ = Shift] [! = Alt] [# = WinK]
 #Requires Autohotkey v2.0
 #Include ".\library\CountdownGUI.ahk"
-#Include ".\library\library.ahk"
 #Include ".\library\MonitorController.ahk"
 #Include ".\library\LayerIndicatorController.ahk"
 #Include ".\library\BatteryController.ahk"
@@ -167,7 +166,7 @@ privacyController.ChangeCountdown(3,0)
 
 ; Used to get the states of devices, like if bluetooth and such is enabled, also able to disable/enable these devices
 DeviceManipulator := DeviceController()
-DeviceManipulator.UpdateDevicesActionToToggle()
+; DeviceManipulator.UpdateDevicesActionToToggle()
 
 ; Shows an on screen overlay for the first keyboard layer which shows which urls can be went to using the number keys
 FirstKeyboardOverlay := KeyboardOverlay()
@@ -352,7 +351,8 @@ CapsLock::{
     r:: Browser_Forward
 
     ; opens a new tab in chrome which searches for the highlited content, if not content is highlighted, clipboard content is sent.
-    t:: WebSearcher.SearchHighlitedOrClipboard()
+    t:: WebSearcher.LookUpHighlitedTextOrClipboardContent()
+    +t:: WebSearcher.AskChatGptAboutHighligtedTextOrClipboardContent(3000)
 
     y:: PgUp
     h:: PgDn
