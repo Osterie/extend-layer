@@ -205,7 +205,7 @@ Battery.setPowerSaverModeGUID("a1841308-3541-4fab-bc81-f71556f20b4a")
 Battery.setDefaultPowerModeGUID("8759706d-706b-4c22-b2ec-f91e1ef6ed38")
 Battery.ActivateNormalPowerMode()
 
-UrlNavigator := WebNavigator()
+WebSearcher := WebNavigator()
 blackboardLoginImages := ["\imageSearchImages\feideBlackboardMaximized.png", "\imageSearchImages\feideBlackboardMinimized.png"]
 jupyterHubLoginImages := ["\imageSearchImages\jupyterHubMaximized.png", "\imageSearchImages\jupyterHubMinimized.png"]
 
@@ -317,25 +317,25 @@ CapsLock::{
         FirstKeyboardOverlay.HideGui()
     } 
     ; Go to study plan (from current week to end of first semester currently)
-    +1::UrlNavigator.LoginToSite("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&" , blackboardLoginImages, 3000, true) 
+    +1::WebSearcher.LoginToSite("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&" , blackboardLoginImages, 3000, true) 
 
     ; Go to blackboard
-    +2::UrlNavigator.OpenUrl("https://ntnu.blackboard.com/ultra/course")
+    +2::WebSearcher.OpenUrl("https://ntnu.blackboard.com/ultra/course")
 
     ; Go to programming 1
-    +3::UrlNavigator.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_39969_1/cl/outline" , blackboardLoginImages, 3000, true) 
+    +3::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_39969_1/cl/outline" , blackboardLoginImages, 3000, true) 
 
     ; Go to team class
-    +4::UrlNavigator.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_39995_1/cl/outline" , blackboardLoginImages, 3000, true) 
+    +4::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_39995_1/cl/outline" , blackboardLoginImages, 3000, true) 
 
     ; Go to Math
-    +5::UrlNavigator.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_44996_1/cl/outline" , blackboardLoginImages, 3000, true) 
+    +5::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_44996_1/cl/outline" , blackboardLoginImages, 3000, true) 
     
     ; Go to programming and numeric safety stuff...
-    +6::UrlNavigator.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_43055_1/cl/outline" , blackboardLoginImages, 3000, true) 
+    +6::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_43055_1/cl/outline" , blackboardLoginImages, 3000, true) 
 
     ; Go to jupyterhub
-    +7::UrlNavigator.LoginToSite("https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab" , jupyterHubLoginImages, 4000, false) 
+    +7::WebSearcher.LoginToSite("https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab" , jupyterHubLoginImages, 4000, false) 
 
     q:: Esc
     å:: Esc
@@ -352,7 +352,7 @@ CapsLock::{
     r:: Browser_Forward
 
     ; opens a new tab in chrome which searches for the highlited content, if not content is highlighted, clipboard content is sent.
-    t:: SearchHighlitedOrClipboard()
+    t:: WebSearcher.SearchHighlitedOrClipboard()
 
     y:: PgUp
     h:: PgDn
