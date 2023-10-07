@@ -30,18 +30,19 @@ ProcessSetPriority "High"
 ; Not changing SendMode defaults it to "input", which makes hotkeys super mega terrible (super   ø)
 SendMode "Event"
 
-; |-----------------------------------------------------------|
-; |----- Runs AHK script as Admin ----------------------------|
-; |----- Allows Excecuting Powershell Scripts ----------------|
-; |----- Also makes it possible to run powercfg and such -----|
-; |-----------------------------------------------------------|
+; |----------------------------------------------------------|
+; |---------------- Runs AHK script as Admin ----------------|
+; |----------- Allows Excecuting Powershell Scripts ---------|
+; |----- Also makes it possible to run powercfg and such ----|
+; |----------------------------------------------------------|
 
 if (not A_IsAdmin){
-	Run("*RunAs `"" A_ScriptFullPath "`"") ; (A_AhkPath is usually optional if the script has the .ahk extension.) You would typically check  first.
+    ; "*RunAs*" is an option for the Run() function to run a program as admin
+	Run("*RunAs `"" A_ScriptFullPath "`"") 
 }
 
 ; |---------------------------------------------------|
-; |-------------- TO-DO LIST -------------------------|
+; |------------------ TO-DO LIST ---------------------|
 ; |---------------------------------------------------|
 ; !add a priority rating for all the todos, using !, ?, and *
 
@@ -49,9 +50,6 @@ if (not A_IsAdmin){
 ; !do this by creating a meny or gui or markdown file or all of the above! which contains enough information for a decent understanding
 
 ; ?a shortcut, which when enabled reads whatever the user is writing, and when they hit enter, it is searched for in the browser
-
-; !add a shortcut for enabling/disabling the script. there is probably a built in function/method or whaterver for this already, Suspend.
-
 
 ;? checkout: https://github.com/GorvGoyl/Autohotkey-Scripts-Windows/blob/master/ctrl_caps_as_case_change.ahk
 ;? link about goes to script which can set text to uppercase, lowercase and more
@@ -88,23 +86,19 @@ if (not A_IsAdmin){
 ; //Win+C open a CMD at the current path.
 ; //Ctrl+Win+C open CMD from everywhere, no need to be in Windows Explorer.
 
+; //add another windows key to the right side of the keyboard
+
 ; *Maybe have a way to recognize who is using the computer, if for example the mouse is clicked 10 times or something in a minute, then disable keyboard and mouse, and turn screen dark, maybe off? could be dangerous
 
-; !add another windows key to the right side of the keyboard
+; !Make it possible to change contrast.
 
-; Make it possible to change contrast.
+; ?Make a method in monitor class for adding a transparent black layer over the screen, to be used as a screen dimmer.
 
-; Make a method in monitor class for adding a transparent black layer over the screen, to be used as a screen dimmer.
-
-; Make num lock do the same as capslock (layer changer)
-
-; make a simple version which is just the first layer, can be used when main not working
+; !FUTURE make a simple version which is just the first layer, can be used when main not working
 
 ; todo: would be possible to have some hotkeys that open a gui where several options are chosen from.
 ; for example for changing performance mode, a dropdown menu for high, normal, low performance nad such can be chosen.
 ; There are many possibilities...
-
-; todo; create function/methods for "toggleValues(value1, value2, defaultValue)"
 
 ; todo: keep awake for a while, like 30min can be changed in settinsg
 ; Todo; add guis for more stuff, like power mode.
@@ -118,21 +112,12 @@ if (not A_IsAdmin){
 ; The keyboard overlay should maybe make it possible to hover over a key, or hold/press ctrl or something to show which key on the keyboard to press to activate that special key.
 ; Make it possible to not have gui showing which layer is active (silent running mode or whatever something cool) also an option to not turn on the light for capslock
 
-; TODO: to make those keyboard overlay classes only one class and more genereal, make then read a file which contains information about how the overlay should look
+; TODO:keyboard overlay classes, make then read a file which contains information about how the overlay should look
 ; for a new row, write something to indicate a new row.
 
 ; TODO; able to restart a wireless router? check here and search: https://github.com/shajul/Autohotkey/blob/master/Scriplets/Wireless_Router_Restart.ahk
 
 ; TODO; powershell is slow. is there an alternative? can it be made faster? can it be used without opening the terminal view at all?
-
-; TODO; Add some tooltip or something which shows when script is launced
-
-; TODO; have a timer show up when screen is about to go to sleep? probably worthless since it dimmens before turning off.
-
-; TODO: create a class called keyboard registry or something, connect keyboard class to keyboard overlay class also.
-; TODO; auto search for the copied text shortcut. (first layer obvs)
-
-; TODO: in lib.ahk, there are two very similiar classes, use inheritance or whatever, take arguments, do something to reuse code, ugly now
 
 ; TODO; create a seperate script to log how much power is being used? maybe make this a method for the Battery class, and a seperate class for batteryLogger which is an object which will be used in Battery class
 
@@ -147,8 +132,6 @@ if (not A_IsAdmin){
 
 ; TODO FUTURE: possible to integrate with real life appliances, for example to control lights in rooms, a third layer could be created for this
 ; TODO: automatically slowly change gamma values for fun...
-
-; TODO: the scroll wheel shortcut should probably only scroll once, not twice.
 
 ; TODO: a shortcut to turn the screen black(which alredy exists), but randomly change rgb values and then black. (so it looks like it is glitching.) Maybe have it connected to if mouse is used or clicked or something, maybe a certain keypress
 ; todo: text which conveges and is mirrored along the middle
@@ -219,6 +202,7 @@ jupyterHubLoginImages := ["\imageSearchImages\jupyterHubMaximized.png", "\imageS
 
 ; ----Ensures consistency------
 SetCapsLockState("off")
+SetNumLockState("off")
 
 ; |------------------------------|
 ; |----------Hotkeys-------------|
@@ -226,12 +210,13 @@ SetCapsLockState("off")
 ; TODO add for when !Capslock and #Capslock is pressed and handle the situation accrodingly since it now is buggy
 ; since they do not have their own hotwkeys and handling.
 ; changes the layer to 0 if it is not zero, or 1 if it is zero
+NumLock::
 CapsLock::{ 
     layers.toggleLayerIndicator(1)
     activeLayer := layers.getActiveLayer()
 
     if (activeLayer == 0){
-        ; hides layers which are not the active layer
+        ; hides layers wh ich are not the active layer
         layers.hideInactiveLayers()
         ; toggles capslock
         SetCapsLockState("off")
@@ -354,7 +339,6 @@ CapsLock::{
         Send("{LWin Up}")
     }
 
-    
     ; When alt gr is released, the windows key is no longer active
     LControl & RAlt up::Send("{LWin Up}")
 
@@ -368,6 +352,7 @@ CapsLock::{
 
     w:: WheelUp
     s:: WheelDown
+
 
     e:: Browser_Back
     r:: Browser_Forward
@@ -405,19 +390,12 @@ CapsLock::{
 #HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 2 
 
     ; Shows second keyboard overlay when shift is held down
-    ~Shift::{
-        SecondKeyboardOverlay.ShowGui()
-        ; SecondKeyboardOverlayInstance.ShowGui()
-        KeyWait("Shift")
-    } 
+    ~Shift:: SecondKeyboardOverlay.ShowGui() 
 
     ; Hides second keyboard overlay (and first just in case)
     Shift up::{
         FirstKeyboardOverlay.HideGui()
         SecondKeyboardOverlay.HideGui()
-
-        ; FirstKeyboardOverlayInstance.HideGui()
-        ; SecondKeyboardOverlayInstance.HideGui()
     } 
 
     ; Toggles touch-screen
@@ -425,14 +403,12 @@ CapsLock::{
         ; TODO the run should be in the class that handles keyboard overlay, make more classes and such
         SecondKeyboardOverlay.ToggleState("TouchScreen")
         DeviceManipulator.ToggleTouchScreenToggle()
-        ; RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-touch-screen.exe")
     } 
 
     ; Toggles camera
     +2::{ 
         SecondKeyboardOverlay.ToggleState("Camera")
         DeviceManipulator.ToggleCameraToggle()
-        ; RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-hd-camera.exe")
     } 
 
     ; Toggles bluetooth
@@ -488,7 +464,7 @@ CapsLock::{
 
     Esc:: ExitApp()
 
-#HotIf ; End:)
+#HotIf
 
 ; Used to show user the script is enabled
 ToolTip "Script enabled!"
