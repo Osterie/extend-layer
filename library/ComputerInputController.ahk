@@ -34,12 +34,18 @@ Class ComputerInputController{
         }
     }
 
-    DisableKey(KeyScanCode){
-        Hotkey KeyScanCode, this.DoNothing, "On UseErrorLevel"
+    ; Takes a key or a key scan code.
+    ; This key can also have modifiers such as #, !, +, ^.
+    EnableKey(key){
+        Hotkey key, this.DoNothing, "Off UseErrorLevel"
     }
-    EnableKey(KeyScanCode){
-        Hotkey KeyScanCode, this.DoNothing, "Off UseErrorLevel"
+    
+    ; Takes a key or a key scan code.
+    ; This key can also have modifiers such as #, !, +, ^.
+    DisableKey(key){
+        Hotkey key, this.DoNothing, "On UseErrorLevel"
     }
+
 
     DoNothing(){
         return

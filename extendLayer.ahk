@@ -150,6 +150,7 @@ OnScreenWriter := KeysPressedGui()
 OnScreenWriter.CreateGUI()
 
 ; Enables / disables input (mouse or keyboard)
+; TODO make ComputerInputController enable/disable key class be able to take a key or a key scancode
 ComputerInput := ComputerInputController()
 
 ; Used to hide screen and parts of the screen
@@ -313,7 +314,7 @@ f2::ExitApp
     }
     
     ; Go to study plan (from current week to end of first semester currently)
-    +1::WebSearcher.LoginToSite("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&" , blackboardLoginImages, 3000, true) 
+    +1::WebSearcher.OpenUrl("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&" , blackboardLoginImages, 3000, true) 
 
     ; Go to blackboard
     +2::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/course" , blackboardLoginImages, 3000, false) 
@@ -333,21 +334,17 @@ f2::ExitApp
     ; Go to jupyterhub
     +7::WebSearcher.LoginToSite("https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab" , jupyterHubLoginImages, 4000, false) 
 
-
-
-    ; Left alt or alt gr pressed down works like holding down the windows key
-    LAlt::
+    ; Alt gr held down works like holding down the windows key
     LControl & RAlt:: {
         Send("{LWin Down}")
-        ComputerInput.DisableKey("#SC03A")
+        ComputerInput.DisableKey2("#Capslock")
         keywait("RAlt")
     }
 
-    ; When left alt or alt gr is released, the windows key is no longer active
-    ; LAlt up::
+    ; When Alt gr is released, the windows key is no longer active
     LControl & RAlt up:: {
         Send("{LWin Up}")
-        ComputerInput.EnableKey("#SC03A")
+        ComputerInput.EnableKey2("#Capslock")
     }
 
 
