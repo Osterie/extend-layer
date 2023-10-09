@@ -1,145 +1,117 @@
 #Requires AutoHotkey v2.0
 
-; Hotkey("$+#c", "Off")
+#Requires AutoHotkey v2
 
-; Hotkey "SC020", whatever, "Off UseErrorLevel"
+text := GoogleTranslate('jeg snakker norsk', &from := 'auto')
+MsgBox 'from: ' . from . '`ntranslate: ' . text, 'from auto to English'
 
+; text := GoogleTranslate('test', 'en', 'fr', &variants)
+; MsgBox 'main translate: ' text . '`n`nvariants:`n' . variants, 'from English to French'
 
+GoogleTranslate(str, from := 'auto', to := 'en', &variants := '') {
+    static JS := ObjBindMethod(GetJsObject(), 'eval'), _ := JS(GetJScript())
+    
+    json := SendRequest(str, Type(from) = 'VarRef' ? %from% : from, to)
+    return ExtractTranslation(json, from, &variants)
+
+    GetJsObject() {
+        static document := '', JS
+        if !document {
+            document := ComObject('HTMLFILE')
+            document.write('<meta http-equiv="X-UA-Compatible" content="IE=9">')
+            JS := document.parentWindow
+            (document.documentMode < 9 && JS.execScript())
+        }
+        return JS
+    }
+
+    GetJScript() {
+        return '
+        ( Join
+            var TKK="406398.2087938574";function b(r,_){for(var t=0;t<_.length-2;t+=3){var $=_.charAt(t+2),$="a"<=$?$
+            .charCodeAt(0)-87:Number($),$="+"==_.charAt(t+1)?r>>>$:r<<$;r="+"==_.charAt(t)?r+$&4294967295:r^$}return r}
+            function tk(r){for(var _=TKK.split("."),t=Number(_[0])||0,$=[],a=0,h=0;h<r.length;h++){var n=r.charCodeAt(h);
+            128>n?$[a++]=n:(2048>n?$[a++]=n>>6|192:(55296==(64512&n)&&h+1<r.length&&56320==(64512&r.charCodeAt(h+1))?
+            (n=65536+((1023&n)<<10)+(1023&r.charCodeAt(++h)),$[a++]=n>>18|240,$[a++]=n>>12&63|128):$[a++]=n>>12|224,$
+            [a++]=n>>6&63|128),$[a++]=63&n|128)}for(a=0,r=t;a<$.length;a++)r+=$[a],r=b(r,"+-a^+6");return r=b(r,
+            "+-3^+b+-f"),0>(r^=Number(_[1])||0)&&(r=(2147483647&r)+2147483648),(r%=1e6).toString()+"."+(r^t)}
+        )'
+    }
+
+    SendRequest(str, sl, tl) {
+        static WR := ''
+             , headers := Map('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8',
+                              'User-Agent'  , 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0')
+        if !WR {
+            WR := WebRequest()
+            WR.Fetch('https://translate.google.com',, headers)
+        }
+        url := 'https://translate.googleapis.com/translate_a/single?client=gtx'
+             . '&sl=' . sl . '&tl=' . tl . '&hl=' . tl
+             . '&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&ie=UTF-8&oe=UTF-8&otf=0&ssel=0&tsel=0&pc=1&kc=1'
+             . '&tk=' . JS('tk')(str)
+        return WR.Fetch(url, 'POST', headers, 'q=' . JS('encodeURIComponent')(str))
+    }
+
+    ExtractTranslation(json, from, &variants) {
+        jsObj := JS('(' . json . ')')
+        if !IsObject(jsObj.1) {
+            Loop jsObj.0.length {
+                variants .= jsObj.0.%A_Index - 1%.0
+            }
+        } else {
+            mainTrans := jsObj.0.0.0
+            Loop jsObj.1.length {
+                variants .= '`n+'
+                obj := jsObj.1.%A_Index - 1%.1
+                Loop obj.length {
+                    txt := obj.%A_Index - 1%
+                    variants .= (mainTrans = txt ? '' : '`n' . txt)
+                }
+            }
+        }
+        if !IsObject(jsObj.1)
+            mainTrans := variants := Trim(variants, ',+`n ')
+        else
+            variants := mainTrans . '`n+`n' . Trim(variants, ',+`n ')
+
+        (Type(from) = 'VarRef' && %from% := jsObj.8.3.0)
+        return mainTrans
+    }
+}
+
+class WebRequest{
+    __New() {
+        this.whr := ComObject('WinHttp.WinHttpRequest.5.1')
+    }
+
+    __Delete() {
+        this.whr := ''
+    }
+
+    Fetch(url, method := 'GET', HeadersMap := '', body := '', getRawData := false) {
+        this.whr.Open(method, url, true)
+        for name, value in HeadersMap
+            this.whr.SetRequestHeader(name, value)
+        this.error := ''
+        this.whr.Send(body)
+        this.whr.WaitForResponse()
+        status := this.whr.status
+        if (status != 200)
+            this.error := 'HttpRequest error, status: ' . status . ' — ' . this.whr.StatusText
+        SafeArray := this.whr.responseBody
+        pData := NumGet(ComObjValue(SafeArray) + 8 + A_PtrSize, 'Ptr')
+        length := SafeArray.MaxIndex() + 1
+        if !getRawData
+            res := StrGet(pData, length, 'UTF-8')
+        else {
+            outData := Buffer(length, 0)
+            DllCall('RtlMoveMemory', 'Ptr', outData, 'Ptr', pData, 'Ptr', length)
+            res := outData
+        }
+        return res
+    }
+}
 
 
 esc::ExitApp
-; ; Easy Window Dragging -- KDE style (based on the v1 script by Jonny) 
-; ; https://www.autohotkey.com
-; ; This script makes it much easier to move or resize a window: 1) Hold down
-; ; the ALT key and LEFT-click anywhere inside a window to drag it to a new
-; ; location; 2) Hold down ALT and RIGHT-click-drag anywhere inside a window
-; ; to easily resize it; 3) Press ALT twice, but before releasing it the second
-; ; time, left-click to minimize the window under the mouse cursor, right-click
-; ; to maximize it, or middle-click to close it.
-
-; ; The Double-Alt modifier is activated by pressing
-; ; Alt twice, much like a double-click. Hold the second
-; ; press down until you click.
-; ;
-; ; The shortcuts:
-; ;  Alt + Left Button  : Drag to move a window.
-; ;  Alt + Right Button : Drag to resize a window.
-; ;  Double-Alt + Left Button   : Minimize a window.
-; ;  Double-Alt + Right Button  : Maximize/Restore a window.
-; ;  Double-Alt + Middle Button : Close a window.
-
-; ; This is the setting that runs smoothest on my
-; ; system. Depending on your video card and cpu
-; ; power, you may want to raise or lower this value.
-; SetWinDelay 2
-; CoordMode "Mouse"
-
-; g_DoubleAlt := false
-
-; !LButton::
-; {
-;     global g_DoubleAlt  ; Declare it since this hotkey function must modify it.
-;     if g_DoubleAlt
-;     {
-;         MouseGetPos ,, &KDE_id
-;         ; This message is mostly equivalent to WinMinimize,
-;         ; but it avoids a bug with PSPad.
-;         PostMessage 0x0112, 0xf020,,, KDE_id
-;         g_DoubleAlt := false
-;         return
-;     }
-;     ; Get the initial mouse position and window id, and
-; ;
-; ; You can optionally release Alt after the first
-; ; click rather than holding it down the whole time.
-;     ; abort if the window is maximized.
-;     MouseGetPos &KDE_X1, &KDE_Y1, &KDE_id
-;     if WinGetMinMax(KDE_id)
-;         return
-;     ; Get the initial window position.
-;     WinGetPos &KDE_WinX1, &KDE_WinY1,,, KDE_id
-;     Loop
-;     {
-;         if !GetKeyState("LButton", "P") ; Break if button has been released.
-;             break
-;         MouseGetPos &KDE_X2, &KDE_Y2 ; Get the current mouse position.
-;         KDE_X2 -= KDE_X1 ; Obtain an offset from the initial mouse position.
-;         KDE_Y2 -= KDE_Y1
-;         KDE_WinX2 := (KDE_WinX1 + KDE_X2) ; Apply this offset to the window position.
-;         KDE_WinY2 := (KDE_WinY1 + KDE_Y2)
-;         WinMove KDE_WinX2, KDE_WinY2,,, KDE_id ; Move the window to the new position.
-;     }
-; }
-
-; !RButton::
-; {
-;     global g_DoubleAlt
-;     if g_DoubleAlt
-;     {
-;         MouseGetPos ,, &KDE_id
-;         ; Toggle between maximized and restored state.
-;         if WinGetMinMax(KDE_id)
-;             WinRestore KDE_id
-;         Else
-;             WinMaximize KDE_id
-;         g_DoubleAlt := false
-;         return
-;     }
-;     ; Get the initial mouse position and window id, and
-;     ; abort if the window is maximized.
-;     MouseGetPos &KDE_X1, &KDE_Y1, &KDE_id
-;     if WinGetMinMax(KDE_id)
-;         return
-;     ; Get the initial window position and size.
-;     WinGetPos &KDE_WinX1, &KDE_WinY1, &KDE_WinW, &KDE_WinH, KDE_id
-;     ; Define the window region the mouse is currently in.
-;     ; The four regions are Up and Left, Up and Right, Down and Left, Down and Right.
-;     if (KDE_X1 < KDE_WinX1 + KDE_WinW / 2)
-;         KDE_WinLeft := 1
-;     else
-;         KDE_WinLeft := -1
-;     if (KDE_Y1 < KDE_WinY1 + KDE_WinH / 2)
-;         KDE_WinUp := 1
-;     else
-;         KDE_WinUp := -1
-;     Loop
-;     {
-;         if !GetKeyState("RButton", "P") ; Break if button has been released.
-;             break
-;         MouseGetPos &KDE_X2, &KDE_Y2 ; Get the current mouse position.
-;         ; Get the current window position and size.
-;         WinGetPos &KDE_WinX1, &KDE_WinY1, &KDE_WinW, &KDE_WinH, KDE_id
-;         KDE_X2 -= KDE_X1 ; Obtain an offset from the initial mouse position.
-;         KDE_Y2 -= KDE_Y1
-;         ; Then, act according to the defined region.
-;         WinMove KDE_WinX1 + (KDE_WinLeft+1)/2*KDE_X2  ; X of resized window
-;               , KDE_WinY1 +   (KDE_WinUp+1)/2*KDE_Y2  ; Y of resized window
-;               , KDE_WinW  -     KDE_WinLeft  *KDE_X2  ; W of resized window
-;               , KDE_WinH  -       KDE_WinUp  *KDE_Y2  ; H of resized window
-;               , KDE_id
-;         KDE_X1 := (KDE_X2 + KDE_X1) ; Reset the initial position for the next iteration.
-;         KDE_Y1 := (KDE_Y2 + KDE_Y1)
-;     }
-; }
-
-; ; "Alt + MButton" may be simpler, but I like an extra measure of security for
-; ; an operation like this.
-; !MButton::
-; {
-;     global g_DoubleAlt
-;     if g_DoubleAlt
-;     {
-;         MouseGetPos ,, &KDE_id
-;         WinClose KDE_id
-;         g_DoubleAlt := false
-;         return
-;     }
-; }
-
-; ; This detects "double-clicks" of the alt key.
-; ~Alt::
-; {
-;     global g_DoubleAlt := (A_PriorHotkey = "~Alt" and A_TimeSincePriorHotkey < 400)
-;     Sleep 0
-;     KeyWait "Alt"  ; This prevents the keyboard's auto-repeat feature from interfering.
-; }

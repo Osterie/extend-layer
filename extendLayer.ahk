@@ -202,8 +202,9 @@ WebSearcher := WebNavigator()
 blackboardLoginImages := ["\imageSearchImages\feideBlackboardMaximized.png", "\imageSearchImages\feideBlackboardMinimized.png"]
 jupyterHubLoginImages := ["\imageSearchImages\jupyterHubMaximized.png", "\imageSearchImages\jupyterHubMinimized.png"]
 
-
-; ----Ensures consistency------
+; |-------------------------------------------|
+; |------------Ensures consistency------------|
+; |-------------------------------------------|
 SetCapsLockState("off")
 SetNumLockState("off")
 
@@ -213,6 +214,13 @@ SetNumLockState("off")
 ; TODO add for when !Capslock and #Capslock is pressed and handle the situation accrodingly since it now is buggy
 ; since they do not have their own hotwkeys and handling.
 ; changes the layer to 0 if it is not zero, or 1 if it is zero
+
+text := WebSearcher.TranslateText("jeg snakker norsk", from := "auto")
+; text := GoogleTranslate('jeg snakker norsk', &from := 'auto')
+MsgBox 'from: ' . from . '`ntranslate: ' . text, 'from auto to English'
+
+text := WebSearcher.TranslateText('frosk', 'en', 'fr', &variants)
+MsgBox 'main translate: ' text . '`n`nvariants:`n' . variants, 'from English to French'
 
 NumLock::
 CapsLock::{ 
@@ -281,7 +289,8 @@ CapsLock::{
     ComputerInput.UnBlockKeyboard()
 } 
 
-; used as an emergency exitapp, since the script is not always easy to exit
+; press f2 + any modifier to exit script
+; used as an emergency exitapp, since the script may have bugs which make it hard to exit.
 +f2::
 ^f2::
 !f2::
@@ -291,6 +300,7 @@ f2::ExitApp
 ; Works as Alt f4
 ^q:: Send("!{f4}")
 
+; Win+C Opens a command prompt at the current location
 #c:: CommandPrompt.OpenCmdPathedToCurrentLocation()
 
 ; Used to suspend script, suspending the script means noen of its functionalities are active.
@@ -308,6 +318,7 @@ f2::ExitApp
     ; Shows first keyboard overlay when a modifier is held down
     ~Shift:: FirstKeyboardOverlay.ShowGui() 
 
+    ; Hides first keyboard overlay (and second just in case)
     Shift up::{ 
         SecondKeyboardOverlay.HideGui()
         FirstKeyboardOverlay.HideGui()
@@ -319,19 +330,19 @@ f2::ExitApp
     ; Go to blackboard
     +2::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/course" , blackboardLoginImages, 3000, false) 
     
-    ; Go to programming 1
+    ; Go to programming 1, try to login if not logged in
     +3::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_39969_1/cl/outline" , blackboardLoginImages, 3000, true) 
 
-    ; Go to team class
+    ; Go to team class, try to login if not logged in
     +4::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_39995_1/cl/outline" , blackboardLoginImages, 3000, true) 
 
-    ; Go to Math
+    ; Go to Math, try to login if not logged in
     +5::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_44996_1/cl/outline" , blackboardLoginImages, 3000, true) 
     
-    ; Go to programming and numeric safety stuff...
+    ; Go to programming, numeric and safety, try to login if not logged in
     +6::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_43055_1/cl/outline" , blackboardLoginImages, 3000, true) 
 
-    ; Go to jupyterhub
+    ; Go to jupyterhub, try to login if not logged in
     +7::WebSearcher.LoginToSite("https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab" , jupyterHubLoginImages, 4000, false) 
 
     ; Alt gr held down works like holding down the windows key
@@ -361,8 +372,9 @@ f2::ExitApp
     e:: Browser_Back
     r:: Browser_Forward
 
-    ; opens a new tab in chrome which searches for the highlited content, if not content is highlighted, clipboard content is sent.
+    ; opens a new tab in chrome which searches for the highlited content, if no content is highlighted, clipboard content is sent.
     t:: WebSearcher.LookUpHighlitedTextOrClipboardContent()
+    ; Searches in the same manner as above, but in a chat with GPT-3
     +t:: WebSearcher.AskChatGptAboutHighligtedTextOrClipboardContent(3000)
 
     y:: PgUp
@@ -370,6 +382,7 @@ f2::ExitApp
 
     u:: Home
     o:: End
+
     p:: Del
     ø:: BackSpace
 
@@ -378,9 +391,12 @@ f2::ExitApp
     c:: ^c
     v:: ^v
 
-    <:: MouseMove((A_ScreenWidth//2), (A_ScreenHeight//2))
-    g:: AppsKey
+    ; LeftClick
     m:: Click()
+    ; RightClick
+    g:: AppsKey
+    ; Moves mouse to the center of the screen'
+    <:: MouseMove((A_ScreenWidth//2), (A_ScreenHeight//2))
     
     ,:: F6
 
@@ -390,7 +406,6 @@ f2::ExitApp
     $l:: Right
 
 #HotIf
-
 
 
 #HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 2 
@@ -408,7 +423,6 @@ f2::ExitApp
 
     ; Toggles touch-screen
     +1::{ 
-        ; TODO the run should be in the class that handles keyboard overlay, make more classes and such
         SecondKeyboardOverlay.ToggleState("TouchScreen")
         DeviceManipulator.ToggleTouchScreenToggle()
     } 
@@ -430,7 +444,7 @@ f2::ExitApp
         SecondKeyboardOverlay.ToggleState("TouchPad")
         DeviceManipulator.ToggleTouchPad()
     } 
-    
+
     ; Hides screen
     a:: privacyController.HideScreen()
 

@@ -1,4 +1,5 @@
 #Requires AutoHotkey v2.0
+#Include ".\Translator.ahk"
 
 Class WebNavigator{
 
@@ -91,6 +92,17 @@ Class WebNavigator{
         
         ;put the last copied thing back in the clipboard
         A_Clipboard := clipboardValue
+    }
+
+    ; if no fromLanguage is specified, then the language is automatically detected
+    ; if no toLanguage is specified, then the language is translated to english
+    ; if variants is not specified, only one result is returned
+    SimpleTextTranslation(textToTranslate, fromLanguage := "auto", toLanguage := "en", &variants := ""){
+        TextTranslator := Translator()
+
+        ; Takes a text to translate, the language to translate from, the language to translate to, and the variants of the text(optional)
+        translatedText := TextTranslator.Translate(textToTranslate, fromLanguage, toLanguage, &variants)
+        return translatedText
     }
 
     ; asks chat-gpt a question, loadTime is the estimated time the site takes to load in, in probably not the best way to do this
