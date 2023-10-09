@@ -111,6 +111,33 @@ Class WebNavigator{
         A_Clipboard := clipboardValue
     }
 
+    ; asks chat-gpt a question, loadTime is the estimated time the site takes to load in, in probably not the best way to do this
+    AskChatGpt(question, loadTime){
+        Run("https://chat.openai.com/")
+        Sleep(loadTime)
+        Send(question)
+        Send("{Enter}")
+    }
+
+    ; Translates highligted text or the text in the clipboard
+    ; if no fromLanguage is specified, then the language is automatically detected
+    ; if no toLanguage is specified, then the language is translated to english
+    ; if variants is not specified, only one result is returned
+    TranslateHighlightedTextOrClipboard(fromLanguage := "auto", toLanguage := "en", &variants := ""){
+        ; saves current clipboard value to a variable
+        clipboardValue := A_Clipboard
+        ; saves a new value to the clipboard, if any text is highligted
+        Send("^c")
+
+        ; Takes a text to translate, the language to translate from, the language to translate to, and the variants of the text(optional)
+        translatedText := this.TranslateText(A_Clipboard, fromLanguage, toLanguage, &variants)
+
+        ;put the last copied thing back in the clipboard
+        A_Clipboard := clipboardValue
+
+        return translatedText
+    }
+
     ; if no fromLanguage is specified, then the language is automatically detected
     ; if no toLanguage is specified, then the language is translated to english
     ; if variants is not specified, only one result is returned
@@ -120,32 +147,6 @@ Class WebNavigator{
         ; Takes a text to translate, the language to translate from, the language to translate to, and the variants of the text(optional)
         translatedText := TextTranslator.Translate(textToTranslate, fromLanguage, toLanguage, &variants)
         return translatedText
-    }
-
-    TranslateHighlightedTextOrClipboard(fromLanguage := "auto", toLanguage := "en"){
-        ; saves current clipboard value to a variable
-        clipboardValue := A_Clipboard
-        ; saves a new value to the clipboard, if any text is highligted
-        Send("^c")
-
-        ; Creates a translator object
-        TextTranslator := Translator()
-
-        ; Takes a text to translate, the language to translate from, the language to translate to, and the variants of the text(optional)
-        translatedText := TextTranslator.Translate(A_Clipboard, fromLanguage, toLanguage, &variants)
-        
-        ;put the last copied thing back in the clipboard
-        A_Clipboard := clipboardValue
-
-        return translatedText
-    }
-
-    ; asks chat-gpt a question, loadTime is the estimated time the site takes to load in, in probably not the best way to do this
-    AskChatGpt(question, loadTime){
-        Run("https://chat.openai.com/")
-        Sleep(loadTime)
-        Send(question)
-        Send("{Enter}")
     }
 
     ; meant to be a private method, checks if a text is a url
