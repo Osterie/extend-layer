@@ -153,6 +153,8 @@ ComputerInput := ComputerInputController()
 ; Used to hide screen and parts of the screen
 privacyController := PrivacyGUIController()
 privacyController.CreateGui()
+; Sets the countdown for the screen hider to 3 minutes. (change to your screen sleep time)
+; This shows a countdown on the screen, and when it reaches 0, the screen goes to sleep
 privacyController.ChangeCountdown(3,0)
 
 ; Used to get the states of devices, like if bluetooth and such is enabled, also able to disable/enable these devices
@@ -173,6 +175,7 @@ FirstKeyboardOverlayWebsites.AddStaticColumn("8", "")
 FirstKeyboardOverlayWebsites.AddStaticColumn("9", "")
 FirstKeyboardOverlayWebsites.AddStaticColumn("0", "")
 
+; Shows an on screen overlay for the first keyboard layer which shows which file explorer paths can be went to using the number keys
 FirstKeyboardOverlayFileExplorer := KeyboardOverlay()
 FirstKeyboardOverlayFileExplorer.CreateGui()
 FirstKeyboardOverlayFileExplorer.AddStaticColumn("1", "Root")
