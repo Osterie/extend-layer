@@ -12,15 +12,13 @@
 #Include ".\library\DeviceController.ahk"
 #Include ".\library\CommandPromptOpener.ahk"
 
-
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
 ; |--------------------------------------------------|
 
 A_MaxHotkeysPerInterval := 99000000
 A_HotkeyInterval := 99000000
-; KeyHistory 0
-
+KeyHistory 0
 ListLines(False)
 SetKeyDelay(-1, -1)
 SetMouseDelay(-1)
@@ -100,7 +98,7 @@ if (not A_IsAdmin){
 ; for example for changing performance mode, a dropdown menu for high, normal, low performance nad such can be chosen.
 ; There are many possibilities...
 
-; todo: keep awake for a while, like 30min can be changed in settinsg
+; todo: keep awake for a while, like 30min can be changed in settings 
 ; Todo; add guis for more stuff, like power mode.
 
 ; todo; In the future, possible to add a button which opens a gui user interface where values can be changed, for 
@@ -125,10 +123,12 @@ if (not A_IsAdmin){
 
 ; TODO: change background of the keyboard overlay keys for disabling/enabling to have green/red background based on if it is on or off
 ; TODO: keyboard overlay for disabling/enabling devices should maybe use images instead of text?
+; having images instead would also allow for better code readability and intuitivity and such.
+; because instead of powershell giving "enable" or "disable" they could return "on" or "off" and according to these the images changes
 
 ; TODO: i believe the promt which apperas when a powerhsell script runs can be hidden
 
-; TODO make it possible to switch performance mode, add gui to show current mode, auto switch for screen darkner and such
+; add gui to show current power mode, auto switch for screen darkner and such maybe?
 
 ; TODO FUTURE: possible to integrate with real life appliances, for example to control lights in rooms, a third layer could be created for this
 ; TODO: automatically slowly change gamma values for fun...
@@ -198,7 +198,9 @@ Battery.setPowerSaverModeGUID("a1841308-3541-4fab-bc81-f71556f20b4a")
 Battery.setDefaultPowerModeGUID("8759706d-706b-4c22-b2ec-f91e1ef6ed38")
 Battery.ActivateNormalPowerMode()
 
+; Used to search for stuff in the browser, translate, and excecute shortcues like close tabs to the right in browser
 WebSearcher := WebNavigator()
+; paths to urls of images used to click login buttons
 blackboardLoginImages := ["\imageSearchImages\feideBlackboardMaximized.png", "\imageSearchImages\feideBlackboardMinimized.png"]
 jupyterHubLoginImages := ["\imageSearchImages\jupyterHubMaximized.png", "\imageSearchImages\jupyterHubMinimized.png"]
 
@@ -211,8 +213,7 @@ SetNumLockState("off")
 ; |------------------------------|
 ; |----------Hotkeys-------------|
 ; |------------------------------|
-; TODO add for when !Capslock and #Capslock is pressed and handle the situation accrodingly since it now is buggy
-; since they do not have their own hotwkeys and handling.
+
 ; changes the layer to 0 if it is not zero, or 1 if it is zero
 NumLock::
 CapsLock::{ 
@@ -235,6 +236,7 @@ CapsLock::{
     }
 }
 
+; Changes the layer to 2 if it is zero, and then cycles through the layers if it is not zero
 +CapsLock:: {
 
     activeLayer := layers.getActiveLayer()
@@ -247,7 +249,6 @@ CapsLock::{
         SecondKeyboardOverlay.ShowGui()
 
         SetCapsLockState("on")
-
     }
     else{
 
@@ -272,14 +273,7 @@ CapsLock::{
 #0:: OnScreenWriter.ToggleShowKeysPressed() 
 
 ;close tabs to the right
-^!w::{ 
-    Sleep(500)
-    ComputerInput.BlockKeyboard()
-    try{
-        WebSearcher.CloseTabsToTheRight()
-    }
-    ComputerInput.UnBlockKeyboard()
-} 
+^!w:: WebSearcher.CloseTabsToTheRight() 
 
 ; press f2 + any modifier to exit script
 ; used as an emergency exitapp, since the script may have bugs which make it hard to exit.
@@ -405,7 +399,7 @@ f2::ExitApp
     i:: Up
     j:: Left
     k:: Down
-    $l:: Right
+    l:: Right
 
 #HotIf
 

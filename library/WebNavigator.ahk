@@ -1,10 +1,15 @@
 #Requires AutoHotkey v2.0
 #Include ".\Translator.ahk"
+#Include ".\ComputerInputController.ahk"
 
 Class WebNavigator{
 
     ; Closes tabs to the right of the current tab, only works in chrome ATM
     CloseTabsToTheRight(){
+
+        ComputerInput := ComputerInputController()
+        Sleep(500)
+        ComputerInput.BlockKeyboard()
         ; These sends could be compressed to just one, but for readability they are all seperated to each their line
         ; Focuses search bar
         Send("^l")
@@ -23,6 +28,8 @@ Class WebNavigator{
         Sleep(50)
         ; Goes back to the body of the page
         Send("{F6}") 
+
+        ComputerInput.UnBlockKeyboard()
     }
 
     LoginToSite(url, loginButtonImagePaths, loadTime, loginRedirect){
