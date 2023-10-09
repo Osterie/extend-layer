@@ -280,6 +280,13 @@ CapsLock::{
     ComputerInput.UnBlockKeyboard()
 } 
 
+; used as an emergency exitapp, since the script is not always easy to exit
++f2::
+^f2::
+!f2::
+#f2::
+f2::ExitApp
+
 ; Works as Alt f4
 ^q:: Send("!{f4}")
 
@@ -331,15 +338,16 @@ CapsLock::{
     ; Left alt or alt gr pressed down works like holding down the windows key
     LAlt::
     LControl & RAlt:: {
-        ComputerInput.DisableKey("SC03A")
-        ; Send("{LWin Down}")
+        Send("{LWin Down}")
+        ComputerInput.DisableKey("#SC03A")
+        keywait("RAlt")
     }
 
     ; When left alt or alt gr is released, the windows key is no longer active
     ; LAlt up::
     LControl & RAlt up:: {
-        ComputerInput.EnableKey("SC03A")
-        ; Send("{LWin Up}")
+        Send("{LWin Up}")
+        ComputerInput.EnableKey("#SC03A")
     }
 
 
