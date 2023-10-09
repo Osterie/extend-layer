@@ -214,14 +214,6 @@ SetNumLockState("off")
 ; TODO add for when !Capslock and #Capslock is pressed and handle the situation accrodingly since it now is buggy
 ; since they do not have their own hotwkeys and handling.
 ; changes the layer to 0 if it is not zero, or 1 if it is zero
-
-text := WebSearcher.TranslateText("jeg snakker norsk", from := "auto")
-; text := GoogleTranslate('jeg snakker norsk', &from := 'auto')
-MsgBox 'from: ' . from . '`ntranslate: ' . text, 'from auto to English'
-
-text := WebSearcher.TranslateText('frosk', 'en', 'fr', &variants)
-MsgBox 'main translate: ' text . '`n`nvariants:`n' . variants, 'from English to French'
-
 NumLock::
 CapsLock::{ 
     layers.toggleLayerIndicator(1)
@@ -376,6 +368,14 @@ f2::ExitApp
     t:: WebSearcher.LookUpHighlitedTextOrClipboardContent()
     ; Searches in the same manner as above, but in a chat with GPT-3
     +t:: WebSearcher.AskChatGptAboutHighligtedTextOrClipboardContent(3000)
+    ^t::{
+        text := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "en")
+        MsgBox(text)
+    }
+    +^t::{
+        text := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "no")
+        MsgBox(text)
+    }
 
     y:: PgUp
     h:: PgDn

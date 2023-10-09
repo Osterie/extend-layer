@@ -97,11 +97,29 @@ Class WebNavigator{
     ; if no fromLanguage is specified, then the language is automatically detected
     ; if no toLanguage is specified, then the language is translated to english
     ; if variants is not specified, only one result is returned
-    SimpleTextTranslation(textToTranslate, fromLanguage := "auto", toLanguage := "en", &variants := ""){
+    TranslateText(textToTranslate, fromLanguage := "auto", toLanguage := "en", &variants := ""){
         TextTranslator := Translator()
 
         ; Takes a text to translate, the language to translate from, the language to translate to, and the variants of the text(optional)
         translatedText := TextTranslator.Translate(textToTranslate, fromLanguage, toLanguage, &variants)
+        return translatedText
+    }
+
+    TranslateHighlightedTextOrClipboard(fromLanguage := "auto", toLanguage := "en"){
+        ; saves current clipboard value to a variable
+        clipboardValue := A_Clipboard
+        ; saves a new value to the clipboard, if any text is highligted
+        Send("^c")
+
+        ; Creates a translator object
+        TextTranslator := Translator()
+
+        ; Takes a text to translate, the language to translate from, the language to translate to, and the variants of the text(optional)
+        translatedText := TextTranslator.Translate(A_Clipboard, fromLanguage, toLanguage, &variants)
+        
+        ;put the last copied thing back in the clipboard
+        A_Clipboard := clipboardValue
+
         return translatedText
     }
 
@@ -127,30 +145,6 @@ Class WebNavigator{
         }
         return isUrl
     }
-
-    ; !make multiple methods with good names instead of this hunk of junk (not made my myself)
-    ; google(service := 1){
-    ; static urls := { 0: ""
-    ;     , 1 : "https://www.google.com/search?hl=en&q="
-    ;     , 2 : "https://www.google.com/search?site=imghp&tbm=isch&q="
-    ;     , 3 : "https://www.google.com/maps/search/"
-    ;     , 4 : "https://translate.google.com/?sl=auto&tl=en&text=" }
-    ; POSSIBLE TO ADD MORE. For example to search on wikipedia, or something else idk
-
-    ; backup := ClipboardAll
-    ; Clipboard := ""
-    ; Send ^c
-    ; ClipWait 0
-    ; if ErrorLevel
-    ;     InputBox query, Google Search,,, 200, 100
-    ; else query := Clipboard
-    ; Run % urls[service] query
-    ; Clipboard := backup
-    ; F1::google(1) ; Regular search
-    ; F2::google(2) ; Images search
-    ; F3::google(3) ; Maps search
-    ; F4::google(4) ; Translation
-; }
 
     OpenUrl(url){
         Run("chrome.exe " url)
