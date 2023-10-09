@@ -314,11 +314,11 @@ f2::ExitApp
     }
     
     ; Go to study plan (from current week to end of first semester currently)
-    +1::WebSearcher.OpenUrl("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&" , blackboardLoginImages, 3000, true) 
+    +1::WebSearcher.OpenUrl("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&") 
 
     ; Go to blackboard
     +2::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/course" , blackboardLoginImages, 3000, false) 
-
+    
     ; Go to programming 1
     +3::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_39969_1/cl/outline" , blackboardLoginImages, 3000, true) 
 
@@ -346,7 +346,6 @@ f2::ExitApp
         Send("{LWin Up}")
         ComputerInput.EnableKey("#Capslock")
     }
-
 
     q:: Esc
     å:: Esc
