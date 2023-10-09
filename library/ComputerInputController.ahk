@@ -21,23 +21,27 @@ Class ComputerInputController{
     }
 
     BlockKeyboard(){
-        Loop 512
-        {
+        Loop 512{
             Key := Format("SC{:X}",A_Index)
             Hotkey Key, this.DoNothing, "On UseErrorLevel"
         }
     }
 
     UnBlockKeyboard(){
-        Loop 512
-        {
+        Loop 512{
             Key := Format("SC{:X}",A_Index)
             Hotkey Key, this.DoNothing, "Off UseErrorLevel"
         }
     }
 
-    DoNothing()
-    {
+    DisableKey(KeyScanCode){
+        Hotkey KeyScanCode, this.DoNothing, "On UseErrorLevel"
+    }
+    EnableKey(KeyScanCode){
+        Hotkey KeyScanCode, this.DoNothing, "Off UseErrorLevel"
+    }
+
+    DoNothing(){
         return
     }
 }

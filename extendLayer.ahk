@@ -1,4 +1,4 @@
-﻿; [^ = Ctrl] [+ = Shift] [! = Alt] [# = WinK]
+﻿; [^ = Ctrl] [+ = Shift] [! = Alt] [# = Win]
 #Requires Autohotkey v2.0
 #Include ".\library\CountdownGUI.ahk"
 #Include ".\library\MonitorController.ahk"
@@ -12,13 +12,15 @@
 #Include ".\library\DeviceController.ahk"
 #Include ".\library\CommandPromptOpener.ahk"
 
+
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
 ; |--------------------------------------------------|
 
 A_MaxHotkeysPerInterval := 99000000
 A_HotkeyInterval := 99000000
-KeyHistory 0
+; KeyHistory 0
+
 ListLines(False)
 SetKeyDelay(-1, -1)
 SetMouseDelay(-1)
@@ -90,9 +92,7 @@ if (not A_IsAdmin){
 
 ; *Maybe have a way to recognize who is using the computer, if for example the mouse is clicked 10 times or something in a minute, then disable keyboard and mouse, and turn screen dark, maybe off? could be dangerous
 
-; !Make it possible to change contrast.
-
-; ?Make a method in monitor class for adding a transparent black layer over the screen, to be used as a screen dimmer.
+; *Make a method in monitor class for adding a transparent black layer over the screen, to be used as a screen dimmer.
 
 ; !FUTURE make a simple version which is just the first layer, can be used when main not working
 
@@ -135,6 +135,8 @@ if (not A_IsAdmin){
 
 ; TODO: a shortcut to turn the screen black(which alredy exists), but randomly change rgb values and then black. (so it looks like it is glitching.) Maybe have it connected to if mouse is used or clicked or something, maybe a certain keypress
 ; todo: text which conveges and is mirrored along the middle
+
+; Layers and keyboard overlay could possibly be used in a class, since they work for the same thing, the layers.
 
 ; |-------------------------------------------|
 ; |----------- OBJECT CREATION ---------------|
@@ -210,6 +212,7 @@ SetNumLockState("off")
 ; TODO add for when !Capslock and #Capslock is pressed and handle the situation accrodingly since it now is buggy
 ; since they do not have their own hotwkeys and handling.
 ; changes the layer to 0 if it is not zero, or 1 if it is zero
+
 NumLock::
 CapsLock::{ 
     layers.toggleLayerIndicator(1)
@@ -232,6 +235,7 @@ CapsLock::{
 }
 
 +CapsLock:: {
+
     activeLayer := layers.getActiveLayer()
     
     if (activeLayer == 0){
@@ -239,8 +243,6 @@ CapsLock::{
         layers.showLayerIndicator(2)
 
         FirstKeyboardOverlay.HideGui()
-        ; FirstKeyboardOverlayInstance.HideGui()
-        ; SecondKeyboardOverlayInstance.ShowGui()
         SecondKeyboardOverlay.ShowGui()
 
         SetCapsLockState("on")
@@ -256,16 +258,10 @@ CapsLock::{
 
         if (newActiveLayer == 1){
             FirstKeyboardOverlay.ShowGui()
-            ; FirstKeyboardOverlayInstance.ShowGui()
             SecondKeyboardOverlay.HideGui()
-
-            ; SecondKeyboardOverlayInstance.HideGui()
         }
         else if (newActiveLayer == 2){
-            ; SecondKeyboardOverlayInstance.ShowGui()
             SecondKeyboardOverlay.ShowGui()
-
-            ; FirstKeyboardOverlayInstance.HideGui()
             FirstKeyboardOverlay.HideGui()
         }
     }
@@ -299,9 +295,9 @@ CapsLock::{
 ; |-----------Layers-------------|
 ; |------------------------------|
 
-
 #HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 1
 
+    ; Shows first keyboard overlay when a modifier is held down
     ~Shift:: FirstKeyboardOverlay.ShowGui() 
 
     Shift up::{ 
@@ -313,7 +309,7 @@ CapsLock::{
     +1::WebSearcher.LoginToSite("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&" , blackboardLoginImages, 3000, true) 
 
     ; Go to blackboard
-    +2::WebSearcher.OpenUrl("https://ntnu.blackboard.com/ultra/course")
+    +2::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/course" , blackboardLoginImages, 3000, false) 
 
     ; Go to programming 1
     +3::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_39969_1/cl/outline" , blackboardLoginImages, 3000, true) 
@@ -330,17 +326,22 @@ CapsLock::{
     ; Go to jupyterhub
     +7::WebSearcher.LoginToSite("https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab" , jupyterHubLoginImages, 4000, false) 
 
-    ; Alt gr pressed down works like holding down the windows key
+
+
+    ; Left alt or alt gr pressed down works like holding down the windows key
+    LAlt::
     LControl & RAlt:: {
-        Send("{LWin Down}")
-        ; Incase the layer is turned off, and therefore the hotkey to let the LWin key up
-        ; this ensures the windows key is released after a set time.
-        Sleep(3000)
-        Send("{LWin Up}")
+        ComputerInput.DisableKey("SC03A")
+        ; Send("{LWin Down}")
     }
 
-    ; When alt gr is released, the windows key is no longer active
-    LControl & RAlt up::Send("{LWin Up}")
+    ; When left alt or alt gr is released, the windows key is no longer active
+    ; LAlt up::
+    LControl & RAlt up:: {
+        ComputerInput.EnableKey("SC03A")
+        ; Send("{LWin Up}")
+    }
+
 
     q:: Esc
     å:: Esc
@@ -352,7 +353,6 @@ CapsLock::{
 
     w:: WheelUp
     s:: WheelDown
-
 
     e:: Browser_Back
     r:: Browser_Forward
@@ -383,12 +383,16 @@ CapsLock::{
     i:: Up
     j:: Left
     k:: Down
-    l:: Right
+    $l:: Right
 
 #HotIf
 
+
+
 #HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 2 
 
+    b::KeyHistory
+    
     ; Shows second keyboard overlay when shift is held down
     ~Shift:: SecondKeyboardOverlay.ShowGui() 
 

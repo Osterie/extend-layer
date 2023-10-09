@@ -44,6 +44,7 @@ Class MonitorController{
             this.SetBrightness(0)
         }
     }
+
     ; Each parameter takes values from 0 to 255
     ; Change gamma of display, 0 dark, 128 normal, 255 bright
     SetGamma(red, green, blue){
@@ -91,7 +92,6 @@ Class MonitorController{
         this.setGamma(red, green, blue)
     }
 
-    
     ; Switches gamma values (r, g, b) to 256,256,256 or 128,128,128
     ToggleHighestGamma(){
         gammaRamp := this.GetCurrentGamma()
