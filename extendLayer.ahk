@@ -368,13 +368,15 @@ f2::ExitApp
     t:: WebSearcher.LookUpHighlitedTextOrClipboardContent()
     ; Searches in the same manner as above, but in a chat with GPT-3
     +t:: WebSearcher.AskChatGptAboutHighligtedTextOrClipboardContent(3000)
+    ; Ctrl + t translates highlighted text or clipboard content from a detected language to english 
     ^t::{
-        text := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "en")
-        MsgBox(text)
+        translatedText := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "en")
+        MsgBox(translatedText)
     }
-    +^t::{
-        text := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "no")
-        MsgBox(text)
+    ; Ctrl Shift+ + t translates highlighted text or clipboard content from a detected language to norwegian
+    ^+t::{
+        translatedText := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "no")
+        MsgBox(translatedText)
     }
 
     y:: PgUp
