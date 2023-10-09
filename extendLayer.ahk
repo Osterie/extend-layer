@@ -58,7 +58,7 @@ if (not A_IsAdmin){
 ;? could use calculator anywehre with script above. 
 
 ;! checkout: https://github.com/GorvGoyl/Autohotkey-Scripts-Windows/blob/master/move-inactive-window-alt-leftclick/MoveInactiveWin.ahk
-;! move window without activating it. "move window without activating it" so the window can be moved from anywhere, without being activated
+;! move window without activating it. so the window can be moved from anywhere, without being activated
 
 ;! checkout: https://www.autohotkey.com/docs/v1/scripts/#EasyWindowDrag 
 ;! move a window from anywhere, can be combined with "move window without activating it" so the window can be moved from anywhere, without being activated
@@ -373,6 +373,10 @@ f2::ExitApp
         MsgBox(translatedText)
     }
 
+    b::{
+        inputBoxWebSearch := InputBox("What would you like to search in the browser?", "Web search", "w150 h150")
+        WebSearcher.SearchInBrowser(inputBoxWebSearch.Value)
+    }
     y:: PgUp
     h:: PgDn
 

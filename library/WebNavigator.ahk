@@ -71,23 +71,28 @@ Class WebNavigator{
 
     ; Searches google for the currently highlighteded text, or the text stored in the clipboard
     LookUpHighlitedTextOrClipboardContent(){
-        googleSearchUrl := "https://www.google.com/search?q="
         
-        clipboardValue := A_Clipboard
+        rememberedClipboardValue := A_Clipboard
         Send("^c")
-        isUrl := this.isUrl(A_Clipboard)
+
+        this.SearchInBrowser(A_Clipboard)
+        
+        ;put the last copied thing back in the clipboard
+        A_Clipboard := rememberedClipboardValue
+    }
+
+    SearchInBrowser(searchTerm){
+        googleSearchUrl := "https://www.google.com/search?q="
+        isUrl := this.isUrl(searchTerm)
         
         ; if the highlighted text/the text in the clipboard is a url, then the url is opened
         if (isUrl) {   
-            Run(A_Clipboard)
+            Run(searchTerm)
         }
         else { ;if not an url, search using google search
-            joined_url := googleSearchUrl . A_Clipboard
+            joined_url := googleSearchUrl . searchTerm
             Run(joined_url)
         }
-        
-        ;put the last copied thing back in the clipboard
-        A_Clipboard := clipboardValue
     }
 
     AskChatGptAboutHighligtedTextOrClipboardContent(loadTime){
