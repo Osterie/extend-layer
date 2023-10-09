@@ -422,15 +422,15 @@ f2::ExitApp
     ; Toggles bluetooth
     +3::{ 
         SecondKeyboardOverlay.ToggleState("Bluetooth")
-        RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-bluetooth.exe")
+        DeviceManipulator.ToggleBluetooth()
     } 
 
     ; Toggles touchpad
     +4::{ 
         SecondKeyboardOverlay.ToggleState("TouchPad")
-        RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-touchpad.exe")
+        DeviceManipulator.ToggleTouchPad()
     } 
-
+    
     ; Hides screen
     a:: privacyController.HideScreen()
 
@@ -464,13 +464,17 @@ f2::ExitApp
     ; Switches gamma values (r, g, b) to 0,0,0 or 128,128,128
     i:: Monitor.ToggleLowestGamma()     
 
+    ; Increases red by 63 until it reaches 255, then it starts over
     k:: Monitor.CycleRed(63, 255) 
 
+    ; Increases green by 63 until it reaches 255, then it starts over
     l:: Monitor.CycleGreen(63, 255)
     
+    ; Increases blue by 63 until it reaches 255, then it starts over
     ø:: Monitor.CycleBlue(63, 255)
 
-    Esc:: ExitApp()
+    ; Closes script
+    Esc:: ExitApp
 
 #HotIf
 
