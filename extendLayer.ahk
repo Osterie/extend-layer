@@ -337,14 +337,14 @@ f2::ExitApp
     ; Alt gr held down works like holding down the windows key
     LControl & RAlt:: {
         Send("{LWin Down}")
-        ComputerInput.DisableKey2("#Capslock")
+        ComputerInput.DisableKey("#Capslock")
         keywait("RAlt")
     }
 
     ; When Alt gr is released, the windows key is no longer active
     LControl & RAlt up:: {
         Send("{LWin Up}")
-        ComputerInput.EnableKey2("#Capslock")
+        ComputerInput.EnableKey("#Capslock")
     }
 
 
