@@ -42,14 +42,18 @@ Class KeyboardOverlay{
     }
 
     ShowGui(){
-        this.keyboardOverlay.Show("xCenter NoActivate")
-        WinGetPos(, , &windowWidth, &windowHeight, "Virtual Keyboard View")
-        WinSetAlwaysOnTop 1, this.keyboardOverlay
-        this.keyboardOverlay.Show("xCenter y" . A_ScreenHeight-windowHeight . "NoActivate")
+        try{
+            this.keyboardOverlay.Show("xCenter NoActivate")
+            WinGetPos(, , &windowWidth, &windowHeight, "Virtual Keyboard View")
+            WinSetAlwaysOnTop 1, this.keyboardOverlay
+            this.keyboardOverlay.Show("xCenter y" . A_ScreenHeight-windowHeight . "NoActivate")
+        }
     }
 
     HideGui(){
-        this.keyboardOverlay.Hide()
+        try{
+            this.keyboardOverlay.Hide()
+        }
     }
 
     DestroyGui(){

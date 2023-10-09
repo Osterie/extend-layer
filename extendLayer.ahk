@@ -11,6 +11,7 @@
 #Include ".\library\KeyboardOverlay.ahk"
 #Include ".\library\DeviceController.ahk"
 #Include ".\library\CommandPromptOpener.ahk"
+#Include ".\library\FileExplorerNavigator.ahk"
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -76,17 +77,10 @@ if (not A_IsAdmin){
 ; ?To expand upon this idea, it would be possible to easily create more or remove shortcuts, a simple gui/menu to add/remove filepaths, 
 ; ?and have it possible to open file explore to choose the folder you want to jump to for the shortcut
 
-; *Make a function/class or something to find and navigat to an open chrome tab. Open a dialog box or something, write the name of / partial name of the tab you
+; *Make a function/class or something to find and navigate to an open chrome tab. Open a dialog box or something, write the name of / partial name of the tab you
 ; *want to go to, then each tab is checked if it contains the name given and so on (obvious what to do next)
 
 ; *maybe make it possible to save stuff on the second layer also (the ctrl+s shortcut)
-
-; DONE
-; //https://github.com/ilirb/ahk-scripts/blob/master/Commands/_Functions.ahk
-; //Win+C open a CMD at the current path.
-; //Ctrl+Win+C open CMD from everywhere, no need to be in Windows Explorer.
-
-; //add another windows key to the right side of the keyboard
 
 ; *Maybe have a way to recognize who is using the computer, if for example the mouse is clicked 10 times or something in a minute, then disable keyboard and mouse, and turn screen dark, maybe off? could be dangerous
 
@@ -145,6 +139,9 @@ if (not A_IsAdmin){
 ; Allows opening cmd pathed to the current file location for vs code and file explorer.
 CommandPrompt := CommandPromptOpener("C:\Users\adria\")
 
+; Allows navigating the file explorer and opening the file explorer pathed to a given file location
+FileExplorer := FileExplorerNavigator()
+
 ; Allows to write on the screen in a textarea
 OnScreenWriter := KeysPressedGui()
 OnScreenWriter.CreateGUI()
@@ -163,26 +160,40 @@ DeviceManipulator := DeviceController()
 ; DeviceManipulator.UpdateDevicesActionToToggle()
 
 ; Shows an on screen overlay for the first keyboard layer which shows which urls can be went to using the number keys
-FirstKeyboardOverlay := KeyboardOverlay()
-FirstKeyboardOverlay.CreateGui()
-FirstKeyboardOverlay.AddStaticColumn("1", "Time Table")
-FirstKeyboardOverlay.AddStaticColumn("2", "Black Board")
-FirstKeyboardOverlay.AddStaticColumn("3", "Prog 1")
-FirstKeyboardOverlay.AddStaticColumn("4", "Team")
-FirstKeyboardOverlay.AddStaticColumn("5", "Math")
-FirstKeyboardOverlay.AddStaticColumn("6", "Prog Num Sec")
-FirstKeyboardOverlay.AddStaticColumn("7", "Jupyter Hub")
-FirstKeyboardOverlay.AddStaticColumn("8", "")
-FirstKeyboardOverlay.AddStaticColumn("9", "")
-FirstKeyboardOverlay.AddStaticColumn("0", "")
+FirstKeyboardOverlayWebsites := KeyboardOverlay()
+FirstKeyboardOverlayWebsites.CreateGui()
+FirstKeyboardOverlayWebsites.AddStaticColumn("1", "Time Table")
+FirstKeyboardOverlayWebsites.AddStaticColumn("2", "Black Board")
+FirstKeyboardOverlayWebsites.AddStaticColumn("3", "Prog 1")
+FirstKeyboardOverlayWebsites.AddStaticColumn("4", "Team")
+FirstKeyboardOverlayWebsites.AddStaticColumn("5", "Math")
+FirstKeyboardOverlayWebsites.AddStaticColumn("6", "Prog Num Sec")
+FirstKeyboardOverlayWebsites.AddStaticColumn("7", "Jupyter Hub")
+FirstKeyboardOverlayWebsites.AddStaticColumn("8", "")
+FirstKeyboardOverlayWebsites.AddStaticColumn("9", "")
+FirstKeyboardOverlayWebsites.AddStaticColumn("0", "")
+
+FirstKeyboardOverlayFileExplorer := KeyboardOverlay()
+FirstKeyboardOverlayFileExplorer.CreateGui()
+FirstKeyboardOverlayFileExplorer.AddStaticColumn("1", "Root")
+FirstKeyboardOverlayFileExplorer.AddStaticColumn("2", "Adrian")
+FirstKeyboardOverlayFileExplorer.AddStaticColumn("3", "Github")
+FirstKeyboardOverlayFileExplorer.AddStaticColumn("4", "Down loads")
+FirstKeyboardOverlayFileExplorer.AddStaticColumn("5", "University")
+FirstKeyboardOverlayFileExplorer.AddStaticColumn("6", "Mappe")
+FirstKeyboardOverlayFileExplorer.AddStaticColumn("7", "")
+FirstKeyboardOverlayFileExplorer.AddStaticColumn("8", "")
+FirstKeyboardOverlayFileExplorer.AddStaticColumn("9", "")
+FirstKeyboardOverlayFileExplorer.AddStaticColumn("0", "")
+
 
 ; Shows an on screen overlay for the first keyboard layer which shows which number keys to press to enable/disable devices
-SecondKeyboardOverlay := KeyboardOverlay()
-SecondKeyboardOverlay.CreateGui()
-SecondKeyboardOverlay.AddColumnToggleValue("1", "Touch Screen", DeviceManipulator.GetTouchScreenActionToToggle())
-SecondKeyboardOverlay.AddColumnToggleValue("2", "Camera", DeviceManipulator.GetCameraActionToToggle())
-SecondKeyboardOverlay.AddColumnToggleValue("3", "Blue tooth", DeviceManipulator.GetBluetoothActionToToggle())
-SecondKeyboardOverlay.AddColumnToggleValue("4", "Touch Pad", DeviceManipulator.GetTouchPadActionToToggle())
+SecondKeyboardOverlayDevices := KeyboardOverlay()
+SecondKeyboardOverlayDevices.CreateGui()
+SecondKeyboardOverlayDevices.AddColumnToggleValue("1", "Touch Screen", DeviceManipulator.GetTouchScreenActionToToggle())
+SecondKeyboardOverlayDevices.AddColumnToggleValue("2", "Camera", DeviceManipulator.GetCameraActionToToggle())
+SecondKeyboardOverlayDevices.AddColumnToggleValue("3", "Blue tooth", DeviceManipulator.GetBluetoothActionToToggle())
+SecondKeyboardOverlayDevices.AddColumnToggleValue("4", "Touch Pad", DeviceManipulator.GetTouchPadActionToToggle())
 
 ; Used to switch the active layer
 layers := LayerIndicatorController()
@@ -245,8 +256,8 @@ CapsLock::{
         layers.setCurrentLayerIndicator(2)
         layers.showLayerIndicator(2)
 
-        FirstKeyboardOverlay.HideGui()
-        SecondKeyboardOverlay.ShowGui()
+        FirstKeyboardOverlayWebsites.HideGui()
+        SecondKeyboardOverlayDevices.ShowGui()
 
         SetCapsLockState("on")
     }
@@ -259,12 +270,12 @@ CapsLock::{
         layers.hideInactiveLayers()
 
         if (newActiveLayer == 1){
-            FirstKeyboardOverlay.ShowGui()
-            SecondKeyboardOverlay.HideGui()
+            FirstKeyboardOverlayWebsites.ShowGui()
+            SecondKeyboardOverlayDevices.HideGui()
         }
         else if (newActiveLayer == 2){
-            SecondKeyboardOverlay.ShowGui()
-            FirstKeyboardOverlay.HideGui()
+            SecondKeyboardOverlayDevices.ShowGui()
+            FirstKeyboardOverlayWebsites.HideGui()
         }
     }
 }
@@ -301,13 +312,20 @@ f2::ExitApp
 
 #HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 1
 
-    ; Shows first keyboard overlay when a modifier is held down
-    ~Shift:: FirstKeyboardOverlay.ShowGui() 
+    ; Shows first keyboard overlay for websites when a shift is held down
+    ~Shift:: FirstKeyboardOverlayWebsites.ShowGui() 
 
-    ; Hides first keyboard overlay (and second just in case)
+    ; Shows first keyboard overlay for file explorer when a shift is held down
+    ~Ctrl:: FirstKeyboardOverlayFileExplorer.ShowGui()
+
+    ; Hides first keyboard overlay for file explorer 
+    Ctrl up:: FirstKeyboardOverlayFileExplorer.HideGui()
+
+    ; Hides first keyboard overlay for websites (and second overlay for devices just in case)
     Shift up::{ 
-        SecondKeyboardOverlay.HideGui()
-        FirstKeyboardOverlay.HideGui()
+        SecondKeyboardOverlayDevices.HideGui()
+        FirstKeyboardOverlayWebsites.HideGui()
+        FirstKeyboardOverlayFileExplorer.HideGui()
     }
     
     ; Go to study plan (from current week to end of first semester currently)
@@ -330,6 +348,13 @@ f2::ExitApp
 
     ; Go to jupyterhub, try to login if not logged in
     +7::WebSearcher.LoginToSite("https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab" , jupyterHubLoginImages, 4000, false) 
+
+    ^1:: FileExplorer.NavigateToFolder("C:\") 
+    ^2:: FileExplorer.NavigateToFolder("C:\Users\adria")
+    ^3:: FileExplorer.NavigateToFolder("C:\Users\adria\github")
+    ^4:: FileExplorer.NavigateToFolder("C:\Users\adria\Downloads")
+    ^5:: FileExplorer.NavigateToFolder("C:\Users\adria\github\University")
+    ^6:: FileExplorer.NavigateToFolder("C:\Users\adria\github\University\Programmering 1\Mappe Vurdering\mappe-idata1003-traindispatchsystem-Osterie")
 
     ; Alt gr held down works like holding down the windows key
     LControl & RAlt:: {
@@ -372,7 +397,7 @@ f2::ExitApp
         translatedText := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "no")
         MsgBox(translatedText)
     }
-
+    ; Creates an input box, which when confirm or enter is pressed, searches the web for its contents
     b::{
         inputBoxWebSearch := InputBox("What would you like to search in the browser?", "Web search", "w150 h150")
         WebSearcher.SearchInBrowser(inputBoxWebSearch.Value)
@@ -413,35 +438,35 @@ f2::ExitApp
     b::KeyHistory
     
     ; Shows second keyboard overlay when shift is held down
-    ~Shift:: SecondKeyboardOverlay.ShowGui() 
+    ~Shift:: SecondKeyboardOverlayDevices.ShowGui() 
 
     ; Hides second keyboard overlay (and first just in case)
     Shift up::{
-        FirstKeyboardOverlay.HideGui()
-        SecondKeyboardOverlay.HideGui()
+        FirstKeyboardOverlayWebsites.HideGui()
+        SecondKeyboardOverlayDevices.HideGui()
     } 
 
     ; Toggles touch-screen
     +1::{ 
-        SecondKeyboardOverlay.ToggleState("TouchScreen")
+        SecondKeyboardOverlayDevices.ToggleState("TouchScreen")
         DeviceManipulator.ToggleTouchScreenToggle()
     } 
 
     ; Toggles camera
     +2::{ 
-        SecondKeyboardOverlay.ToggleState("Camera")
+        SecondKeyboardOverlayDevices.ToggleState("Camera")
         DeviceManipulator.ToggleCameraToggle()
     } 
 
     ; Toggles bluetooth
     +3::{ 
-        SecondKeyboardOverlay.ToggleState("Bluetooth")
+        SecondKeyboardOverlayDevices.ToggleState("Bluetooth")
         DeviceManipulator.ToggleBluetooth()
     } 
 
     ; Toggles touchpad
     +4::{ 
-        SecondKeyboardOverlay.ToggleState("TouchPad")
+        SecondKeyboardOverlayDevices.ToggleState("TouchPad")
         DeviceManipulator.ToggleTouchPad()
     } 
 
