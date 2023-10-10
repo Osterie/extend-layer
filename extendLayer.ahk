@@ -47,6 +47,23 @@ if (not A_IsAdmin){
 ; |---------------------------------------------------|
 ; !add a priority rating for all the todos, using !, ?, and *
 
+; ! .ini file. Should have settings for guis, like this:
+; [Notepad]
+; Width=580
+; Height=290
+; X=1335
+; Y=225
+; Surface=168200
+
+; [Paint]
+; Width=820
+; Height=1058
+; X=1100
+; Y=1200
+; Surface=867560
+
+
+
 ; !Future, for other users or just for good practice, make the script more easily understandable and learnable for others.
 ; !do this by creating a meny or gui or markdown file or all of the above! which contains enough information for a decent understanding
 
@@ -351,6 +368,7 @@ f2::ExitApp
     ; Go to capquiz
     +8::WebSearcher.OpenUrl("https://capquiz.math.ntnu.no/my/")
     
+    ; opens the file explorer in the given location
     ^1:: FileExplorer.NavigateToFolder("C:\") 
     ^2:: FileExplorer.NavigateToFolder("C:\Users\adria")
     ^3:: FileExplorer.NavigateToFolder("C:\Users\adria\github")
@@ -387,23 +405,28 @@ f2::ExitApp
 
     ; opens a new tab in chrome which searches for the highlited content, if no content is highlighted, clipboard content is sent.
     t:: WebSearcher.LookUpHighlitedTextOrClipboardContent()
+    
     ; Searches in the same manner as above, but in a chat with GPT-3
     +t:: WebSearcher.AskChatGptAboutHighligtedTextOrClipboardContent(3000)
+    
     ; Ctrl + t translates highlighted text or clipboard content from a detected language to english 
     ^t::{
         translatedText := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "en")
         MsgBox(translatedText)
     }
+
     ; Ctrl Shift+ + t translates highlighted text or clipboard content from a detected language to norwegian
     ^+t::{
         translatedText := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "no")
         MsgBox(translatedText)
     }
+
     ; Creates an input box, which when confirm or enter is pressed, searches the web for its contents
     b::{
         inputBoxWebSearch := InputBox("What would you like to search in the browser?", "Web search", "w150 h150")
         WebSearcher.SearchInBrowser(inputBoxWebSearch.Value)
     }
+
     y:: PgUp
     h:: PgDn
 
@@ -422,7 +445,7 @@ f2::ExitApp
     m:: Click()
     ; RightClick
     g:: AppsKey
-    ; Moves mouse to the center of the screen'
+    ; Moves mouse to the center of the screen
     <:: MouseMove((A_ScreenWidth//2), (A_ScreenHeight//2))
     
     ,:: F6
@@ -437,6 +460,7 @@ f2::ExitApp
 
 #HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 2 
 
+    ; Shows key history, used for debugging
     b::KeyHistory
     
     ; Shows second keyboard overlay when shift is held down
@@ -475,13 +499,13 @@ f2::ExitApp
     ; Hides screen
     a:: privacyController.HideScreen()
 
-    ; Hides window
+    ; Hides windows
     s:: privacyController.HideWindow()
 
     ; Hides tabs
     d:: privacyController.HideTabs()
 
-    ; Hides GUI
+    ; Hides the gui which is used to hide tabs, windows and the screen
     f:: privacyController.HideGui()
 
     ; Blocks input from keyboard and mouse, can be deactivated with Home + End
