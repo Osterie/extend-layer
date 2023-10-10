@@ -50,6 +50,8 @@ if (not A_IsAdmin){
 ; !Future, for other users or just for good practice, make the script more easily understandable and learnable for others.
 ; !do this by creating a meny or gui or markdown file or all of the above! which contains enough information for a decent understanding
 
+; ?Show battery percentage on screen hide, can be combined with keep pc awake to see when pc is done charging
+
 ; ?a shortcut, which when enabled reads whatever the user is writing, and when they hit enter, it is searched for in the browser
 
 ;? checkout: https://github.com/GorvGoyl/Autohotkey-Scripts-Windows/blob/master/ctrl_caps_as_case_change.ahk
@@ -68,14 +70,9 @@ if (not A_IsAdmin){
 ; *show taskbar when holding windows key, could test for a week and see if it is faster or slower....
 ; *might be bad since i cant show which app to quick switch to. Might not be an issue
 
-; ?add a way to navigate a level back in file explorer(look up, i think it exists), but try first to find a shortcut to do so.
-
 ; *try and explore how to turn on battery-saver. however seems impossible
 
-; ?Perhaps it would be a good idea for a shortcuts to file explorer. (made general so it works when file paths are changed and such.)
-; ?The idea would be you could hold ctrl on the first layer, and an overlay would show what key to press to go to which path in the file explorer.
-; ?To expand upon this idea, it would be possible to easily create more or remove shortcuts, a simple gui/menu to add/remove filepaths, 
-; ?and have it possible to open file explore to choose the folder you want to jump to for the shortcut
+; ?make it possible to easily create more or remove shortcuts for keyboard overlays, a simple gui/menu to add/remove filepaths/text, 
 
 ; *Make a function/class or something to find and navigate to an open chrome tab. Open a dialog box or something, write the name of / partial name of the tab you
 ; *want to go to, then each tab is checked if it contains the name given and so on (obvious what to do next)
@@ -128,7 +125,7 @@ if (not A_IsAdmin){
 ; TODO: automatically slowly change gamma values for fun...
 
 ; TODO: a shortcut to turn the screen black(which alredy exists), but randomly change rgb values and then black. (so it looks like it is glitching.) Maybe have it connected to if mouse is used or clicked or something, maybe a certain keypress
-; todo: text which conveges and is mirrored along the middle
+; todo: text which converges and is mirrored along the middle cool effect only... used as a screensaver or something
 
 ; Layers and keyboard overlay could possibly be used in a class, since they work for the same thing, the layers.
 
@@ -147,7 +144,6 @@ OnScreenWriter := KeysPressedGui()
 OnScreenWriter.CreateGUI()
 
 ; Enables / disables input (mouse or keyboard)
-; TODO make ComputerInputController enable/disable key class be able to take a key or a key scancode
 ComputerInput := ComputerInputController()
 
 ; Used to hide screen and parts of the screen
@@ -171,7 +167,7 @@ FirstKeyboardOverlayWebsites.AddStaticColumn("4", "Team")
 FirstKeyboardOverlayWebsites.AddStaticColumn("5", "Math")
 FirstKeyboardOverlayWebsites.AddStaticColumn("6", "Prog Num Sec")
 FirstKeyboardOverlayWebsites.AddStaticColumn("7", "Jupyter Hub")
-FirstKeyboardOverlayWebsites.AddStaticColumn("8", "")
+FirstKeyboardOverlayWebsites.AddStaticColumn("8", "Capquiz")
 FirstKeyboardOverlayWebsites.AddStaticColumn("9", "")
 FirstKeyboardOverlayWebsites.AddStaticColumn("0", "")
 
@@ -182,7 +178,7 @@ FirstKeyboardOverlayFileExplorer.AddStaticColumn("1", "Root")
 FirstKeyboardOverlayFileExplorer.AddStaticColumn("2", "Adrian")
 FirstKeyboardOverlayFileExplorer.AddStaticColumn("3", "Github")
 FirstKeyboardOverlayFileExplorer.AddStaticColumn("4", "Down loads")
-FirstKeyboardOverlayFileExplorer.AddStaticColumn("5", "University")
+FirstKeyboardOverlayFileExplorer.AddStaticColumn("5", "School")
 FirstKeyboardOverlayFileExplorer.AddStaticColumn("6", "Mappe")
 FirstKeyboardOverlayFileExplorer.AddStaticColumn("7", "")
 FirstKeyboardOverlayFileExplorer.AddStaticColumn("8", "")
@@ -352,6 +348,9 @@ f2::ExitApp
     ; Go to jupyterhub, try to login if not logged in
     +7::WebSearcher.LoginToSite("https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab" , jupyterHubLoginImages, 4000, false) 
 
+    ; Go to capquiz
+    +8::WebSearcher.OpenUrl("https://capquiz.math.ntnu.no/my/")
+    
     ^1:: FileExplorer.NavigateToFolder("C:\") 
     ^2:: FileExplorer.NavigateToFolder("C:\Users\adria")
     ^3:: FileExplorer.NavigateToFolder("C:\Users\adria\github")
