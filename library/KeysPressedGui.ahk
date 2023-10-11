@@ -18,7 +18,8 @@ Class KeysPressedGui{
         this.showKeysPressedControl := this.GuiShowKeysPressed.AddText(, "")
     }
 
-    ToggleShowKeysPressed(){
+    ToggleShowKeysPressed(self){
+        msgbox(self . " what")
         if (this.guiHidden){
             this.ShowKeysPressed()
         }
@@ -86,8 +87,7 @@ Class KeysPressedGui{
             Hotkey("~*" A_LoopField , , "off")
         }
     }
-    
-    
+      
     OnKeyPressed(self){
         try {
     

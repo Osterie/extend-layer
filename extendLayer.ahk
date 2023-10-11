@@ -1,4 +1,10 @@
 ﻿; [^ = Ctrl] [+ = Shift] [! = Alt] [# = Win]
+; I found two ways to make a hotkey which excecutes a class method:
+; way1 := OnScreenWriter.ToggleShowKeysPressed.Bind(OnScreenWriter)
+; way2 := ObjBindMethod(OnScreenWriter, "ToggleShowKeysPressed")
+; HotKey OnScreenWriterHotkey, way1
+; HotKey OnScreenWriterHotkey, way2
+
 #Requires Autohotkey v2.0
 #Include ".\library\CountdownGUI.ahk"
 #Include ".\library\MonitorController.ahk"
@@ -64,6 +70,9 @@ if (not A_IsAdmin){
 
 
 
+; * Could make it possible to write anywhere on screen.
+
+
 ; !Future, for other users or just for good practice, make the script more easily understandable and learnable for others.
 ; !do this by creating a meny or gui or markdown file or all of the above! which contains enough information for a decent understanding
 
@@ -90,6 +99,10 @@ if (not A_IsAdmin){
 ; *try and explore how to turn on battery-saver. however seems impossible
 
 ; ?make it possible to easily create more or remove shortcuts for keyboard overlays, a simple gui/menu to add/remove filepaths/text, 
+
+; !Add a shortcut to copy a piece of the screen and have it as a moveable image
+
+; ?the input reader in KeysPressedGui can probably be made into its own class. It can be used to read input from the user, and then do something with it.
 
 ; *Make a function/class or something to find and navigate to an open chrome tab. Open a dialog box or something, write the name of / partial name of the tab you
 ; *want to go to, then each tab is checked if it contains the name given and so on (obvious what to do next)
@@ -172,11 +185,14 @@ privacyController.ChangeCountdown(3,0)
 
 ; Used to get the states of devices, like if bluetooth and such is enabled, also able to disable/enable these devices
 DeviceManipulator := DeviceController()
-; DeviceManipulator.UpdateDevicesActionToToggle()
+; launches a powershell script which gets the states of some devices, like if the mouse is enabled.
+; Having this activated will slow down the startup of the script significantly.
+; !DeviceManipulator.UpdateDevicesActionToToggle()
 
 ; Shows an on screen overlay for the first keyboard layer which shows which urls can be went to using the number keys
 FirstKeyboardOverlayWebsites := KeyboardOverlay()
 FirstKeyboardOverlayWebsites.CreateGui()
+
 FirstKeyboardOverlayWebsites.AddStaticColumn("1", "Time Table")
 FirstKeyboardOverlayWebsites.AddStaticColumn("2", "Black Board")
 FirstKeyboardOverlayWebsites.AddStaticColumn("3", "Prog 1")
@@ -296,8 +312,14 @@ CapsLock::{
     }
 }
 
-; Shows gui which can be written in to help classmates/colleagues or whatever
-#0:: OnScreenWriter.ToggleShowKeysPressed() 
+; Shows/hides gui which can be written in to help classmates/colleagues or whatever
+; boundFuncThatCalculates1Plus2 := Func("add").Bind(1, 2)
+way1 := OnScreenWriter.ToggleShowKeysPressed.Bind(OnScreenWriter)
+ToggleShowKeysPressed := ObjBindMethod(OnScreenWriter, "ToggleShowKeysPressed")
+OnScreenWriterHotkey := IniRead("Config.ini", "DefaultHotkeys", "WriteOnScreen") ; Default key is #0
+; msgbox(ToggleShowKeysPressed)
+HotKey OnScreenWriterHotkey, ToggleShowKeysPressed
+
 
 ;close tabs to the right
 ^!w:: WebSearcher.CloseTabsToTheRight() 
@@ -546,3 +568,8 @@ f2::ExitApp
 ; Used to show user the script is enabled
 ToolTip "Script enabled!"
 SetTimer () => ToolTip(), -3000
+
+
+
+; Shows/hides gui which can be written in to help classmates/colleagues or whatever
+; #0:: OnScreenWriter.ToggleShowKeysPressed() 

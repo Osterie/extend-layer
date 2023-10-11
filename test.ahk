@@ -1,11 +1,20 @@
 #Requires AutoHotkey v2.0
 
-test := IniRead("Config.ini", "testing", "Up")
-HotKey test, MyFunc
+Hotkey("^j", "MyHotkeyFunction")
 
-MyFunc(ThisHotkey){
-    MsgBox(test "`n" "rNo")
-    Return
+; Function to handle the hotkey
+MyHotkeyFunction() {
+    MsgBox("Ctrl+J was pressed!")
 }
+
+; test := IniRead("Config.ini", "FirstKeyboardOverlayWebsites", "Up")
+; Section := IniRead("Config.ini", "Hotkeys")
+; MsgBox(section)
+; HotKey test, MyFunc
+
+; MyFunc(ThisHotkey){
+;     MsgBox(test "`n" "rNo")
+;     Return
+; }
 
 esc::ExitApp
