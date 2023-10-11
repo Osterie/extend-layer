@@ -18,8 +18,10 @@ Class KeysPressedGui{
         this.showKeysPressedControl := this.GuiShowKeysPressed.AddText(, "")
     }
 
-    ToggleShowKeysPressed(self){
-        msgbox(self . " what")
+    ; The reason for the asterisk is because the Hotkey function is used to create hotkeys.
+    ; And when it is used with a function or class method, the function or class method are automatically given one argument, which is the name of the hotkey that was pressed.
+    ; Which is sad
+    ToggleShowKeysPressed(*){
         if (this.guiHidden){
             this.ShowKeysPressed()
         }

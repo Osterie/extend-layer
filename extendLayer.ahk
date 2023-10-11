@@ -5,6 +5,11 @@
 ; HotKey OnScreenWriterHotkey, way1
 ; HotKey OnScreenWriterHotkey, way2
 
+; CloseTabsToTheRight := ObjBindMethod(WebSearcher, "CloseTabsToTheRight")
+; CloseTabsToTheRightHotkey := IniRead("Config.ini", "DefaultHotkeys", "CloseTabsToTheRight") ; Default key is ^!W
+; Hotkey(CloseTabsToTheRightHotkey, CloseTabsToTheRight)
+
+
 #Requires Autohotkey v2.0
 #Include ".\library\CountdownGUI.ahk"
 #Include ".\library\MonitorController.ahk"
@@ -18,6 +23,7 @@
 #Include ".\library\DeviceController.ahk"
 #Include ".\library\CommandPromptOpener.ahk"
 #Include ".\library\FileExplorerNavigator.ahk"
+#Include ".\library\Configurator.ahk"
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -162,6 +168,8 @@ if (not A_IsAdmin){
 ; |-------------------------------------------|
 ; |----------- OBJECT CREATION ---------------|
 ; |-------------------------------------------|
+
+StartupConfigurator := Configurator("Config.ini")
 
 ; Allows opening cmd pathed to the current file location for vs code and file explorer.
 CommandPrompt := CommandPromptOpener("C:\Users\adria\")
@@ -313,28 +321,34 @@ CapsLock::{
 }
 
 ; Shows/hides gui which can be written in to help classmates/colleagues or whatever
-; boundFuncThatCalculates1Plus2 := Func("add").Bind(1, 2)
-way1 := OnScreenWriter.ToggleShowKeysPressed.Bind(OnScreenWriter)
-ToggleShowKeysPressed := ObjBindMethod(OnScreenWriter, "ToggleShowKeysPressed")
-OnScreenWriterHotkey := IniRead("Config.ini", "DefaultHotkeys", "WriteOnScreen") ; Default key is #0
-; msgbox(ToggleShowKeysPressed)
-HotKey OnScreenWriterHotkey, ToggleShowKeysPressed
-
+; OnScreenWriterHotkey := IniRead("Config.ini", "DefaultHotkeys", "WriteOnScreen") ; Default key is #0
+; Hotkey(OnScreenWriterHotkey, "#0")
+; Hotkey("#0", "off")
+StartupConfigurator.InitializeHotkey("DefaultHotkeys", "WriteOnScreen", "#0")
+#0:: OnScreenWriter.ToggleShowKeysPressed()
 
 ;close tabs to the right
+; CloseTabsToTheRightHotkey := IniRead("Config.ini", "DefaultHotkeys", "CloseTabsToTheRight") ; Default key is ^!W
+; Hotkey(CloseTabsToTheRightHotkey, "^!w")
+StartupConfigurator.InitializeHotkey("DefaultHotkeys", "CloseTabsToTheRight", "^!w")
 ^!w:: WebSearcher.CloseTabsToTheRight() 
+
+; Works as Alt f4
+; Hotkey "RCtrl & RShift", "AltTab"
+; Hotkey("e", "^q")
+StartupConfigurator.InitializeHotkey("DefaultHotkeys", "AltF4", "^q")
+^q:: Send("!{f4}")
 
 ; press f2 + any modifier to exit script
 ; used as an emergency exitapp, since the script may have bugs which make it hard to exit.
-+f2::
-^f2::
-!f2::
-#f2::
-f2::ExitApp
+; +f2::
+; ^f2::
+; !f2::
+; #f2::
+; f2::ExitApp
 
-; Works as Alt f4
-^q:: Send("!{f4}")
 
+*f2::ExitApp
 ; Win+C Opens a command prompt at the current location
 #c:: CommandPrompt.OpenCmdPathedToCurrentLocation()
 
@@ -542,7 +556,7 @@ f2::ExitApp
     ; Switches brightness to 100 or 50
     u:: Monitor.ToggleHighestBrightness() 
     
-    ; Switches brightness to 0 or 50
+    ; ; Switches brightness to 0 or 50
     j:: Monitor.ToggleLowestBrightness() 
 
     ; Switches gamma values (r, g, b) to 256,256,256 or 128,128,128
