@@ -6,7 +6,7 @@
 ; HotKey OnScreenWriterHotkey, way2
 
 ; CloseTabsToTheRight := ObjBindMethod(WebSearcher, "CloseTabsToTheRight")
-; CloseTabsToTheRightHotkey := IniRead("Config.ini", "DefaultHotkeys", "CloseTabsToTheRight") ; Default key is ^!W
+; CloseTabsToTheRightHotkey := IniRead("Config.ini", "Hotkeys", "CloseTabsToTheRight") ; Default key is ^!W
 ; Hotkey(CloseTabsToTheRightHotkey, CloseTabsToTheRight)
 
 
@@ -169,7 +169,8 @@ if (not A_IsAdmin){
 ; |----------- OBJECT CREATION ---------------|
 ; |-------------------------------------------|
 
-StartupConfigurator := Configurator("Config.ini")
+; This is used to read ini files, and create hotkeys from them
+StartupConfigurator := Configurator("Config.ini", "DefaultConfig.ini")
 
 ; Allows opening cmd pathed to the current file location for vs code and file explorer.
 CommandPrompt := CommandPromptOpener("C:\Users\adria\")
@@ -321,35 +322,31 @@ CapsLock::{
 }
 
 ; Shows/hides gui which can be written in to help classmates/colleagues or whatever
-; OnScreenWriterHotkey := IniRead("Config.ini", "DefaultHotkeys", "WriteOnScreen") ; Default key is #0
+; OnScreenWriterHotkey := IniRead("Config.ini", "Hotkeys", "WriteOnScreen") ; Default key is #0
 ; Hotkey(OnScreenWriterHotkey, "#0")
 ; Hotkey("#0", "off")
-StartupConfigurator.InitializeHotkey("DefaultHotkeys", "WriteOnScreen", "#0")
+StartupConfigurator.InitializeHotkey("Hotkeys", "WriteOnScreen", "#0")
 #0:: OnScreenWriter.ToggleShowKeysPressed()
 
 ;close tabs to the right
-; CloseTabsToTheRightHotkey := IniRead("Config.ini", "DefaultHotkeys", "CloseTabsToTheRight") ; Default key is ^!W
+; CloseTabsToTheRightHotkey := IniRead("Config.ini", "Hotkeys", "CloseTabsToTheRight") ; Default key is ^!W
 ; Hotkey(CloseTabsToTheRightHotkey, "^!w")
-StartupConfigurator.InitializeHotkey("DefaultHotkeys", "CloseTabsToTheRight", "^!w")
+StartupConfigurator.InitializeHotkey("Hotkeys", "CloseTabsToTheRight", "^!w")
 ^!w:: WebSearcher.CloseTabsToTheRight() 
 
 ; Works as Alt f4
 ; Hotkey "RCtrl & RShift", "AltTab"
 ; Hotkey("e", "^q")
-StartupConfigurator.InitializeHotkey("DefaultHotkeys", "AltF4", "^q")
+StartupConfigurator.InitializeHotkey("Hotkeys", "AltF4", "^q")
 ^q:: Send("!{f4}")
 
 ; press f2 + any modifier to exit script
 ; used as an emergency exitapp, since the script may have bugs which make it hard to exit.
-; +f2::
-; ^f2::
-; !f2::
-; #f2::
-; f2::ExitApp
-
-
+StartupConfigurator.InitializeHotkey("Hotkeys", "EmergencyClose", "*f2")
 *f2::ExitApp
+
 ; Win+C Opens a command prompt at the current location
+StartupConfigurator.InitializeHotkey("Hotkeys", "OpenCmdPathedToCurrentLocation", "#c")
 #c:: CommandPrompt.OpenCmdPathedToCurrentLocation()
 
 ; Used to suspend script, suspending the script means noen of its functionalities are active.

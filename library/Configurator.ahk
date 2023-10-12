@@ -3,13 +3,22 @@
 Class Configurator{
 
     iniFile := ""
+    defaultIniFile := ""
 
-    __New(iniFile){
+    __New(iniFile, defaultIniFile){
         this.iniFile := iniFile
+        this.defaultIniFile := defaultIniFile
     }
 
     ChangeIniFile(iniFile){
         this.iniFile := iniFile
+    }
+    ChangeDefaultIniFile(defaultIniFile){
+        this.defaultIniFile := defaultIniFile
+    }
+
+    InitializeAllHotkeys(){
+        
     }
 
     ; This function is used to initialize the hotkeys, there are default keys for hotkeys, but the user can change them.
