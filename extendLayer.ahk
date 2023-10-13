@@ -246,8 +246,10 @@ Monitor := MonitorController()
 
 ; Used to switch between power saver mode and normal power mode (does not work as expected currently, percentage to switch to power saver is changed, but power saver is never turned on...)
 Battery := BatteryController(50, 50)
-Battery.setPowerSaverModeGUID("a1841308-3541-4fab-bc81-f71556f20b4a")
-Battery.setDefaultPowerModeGUID("8759706d-706b-4c22-b2ec-f91e1ef6ed38")
+powerSaverModeGUID := IniRead("Config.ini", "Battery", "PowerSaverModeGUID")
+Battery.setPowerSaverModeGUID(powerSaverModeGUID)
+defaultPowerModeGUID := IniRead("Config.ini", "Battery", "DefaultPowerModeGUID")
+Battery.setPowerSaverModeGUID(defaultPowerModeGUID)
 Battery.ActivateNormalPowerMode()
 
 ; Used to search for stuff in the browser, translate, and excecute shortcues like close tabs to the right in browser
