@@ -352,6 +352,7 @@ StartupConfigurator.InitializeHotkey("Hotkeys", "OpenCmdPathedToCurrentLocation"
 ; Used to suspend script, suspending the script means noen of its functionalities are active.
 ; Pressing the same key combination again enables the script again
 #SuspendExempt
+StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
 ^!s::Suspend  ; Ctrl+Alt+S
 #SuspendExempt False
 
