@@ -322,21 +322,14 @@ CapsLock::{
 }
 
 ; Shows/hides gui which can be written in to help classmates/colleagues or whatever
-; OnScreenWriterHotkey := IniRead("Config.ini", "Hotkeys", "WriteOnScreen") ; Default key is #0
-; Hotkey(OnScreenWriterHotkey, "#0")
-; Hotkey("#0", "off")
 StartupConfigurator.InitializeHotkey("Hotkeys", "WriteOnScreen", "#0")
 #0:: OnScreenWriter.ToggleShowKeysPressed()
 
-;close tabs to the right
-; CloseTabsToTheRightHotkey := IniRead("Config.ini", "Hotkeys", "CloseTabsToTheRight") ; Default key is ^!W
-; Hotkey(CloseTabsToTheRightHotkey, "^!w")
+; close tabs to the right
 StartupConfigurator.InitializeHotkey("Hotkeys", "CloseTabsToTheRight", "^!w")
 ^!w:: WebSearcher.CloseTabsToTheRight() 
 
 ; Works as Alt f4
-; Hotkey "RCtrl & RShift", "AltTab"
-; Hotkey("e", "^q")
 StartupConfigurator.InitializeHotkey("Hotkeys", "AltF4", "^q")
 ^q:: Send("!{f4}")
 
@@ -351,6 +344,8 @@ StartupConfigurator.InitializeHotkey("Hotkeys", "OpenCmdPathedToCurrentLocation"
 
 ; Used to suspend script, suspending the script means noen of its functionalities are active.
 ; Pressing the same key combination again enables the script again
+; SuspendExempt means this hotkey will not be suspended when the script is suspended.
+; Since this hotkey suspends the script it is important that it is not suspended itself.
 #SuspendExempt
 StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
 ^!s::Suspend  ; Ctrl+Alt+S
