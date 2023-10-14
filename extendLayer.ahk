@@ -325,26 +325,25 @@ CapsLock::{
     }
 }
 
-; Shows/hides gui which can be written in to help classmates/colleagues or whatever
+; Is used to initialize all hotkeys, if hotkeys are changed by the user, these changes are stored in the Config.ini file.
+; This file is then read by StartupConfigurator and the default hotkeys are changed accordingly
 StartupConfigurator.InitializeAllHotkeys("Hotkeys")
-; StartupConfigurator.InitializeHotkey("Hotkeys", "WriteOnScreen", "#0")
+
+
+; Shows/hides gui which can be written in to help classmates/colleagues or whatever
 #0:: OnScreenWriter.ToggleShowKeysPressed()
 
 ; close tabs to the right
-; StartupConfigurator.InitializeHotkey("Hotkeys", "CloseTabsToTheRight", "^!w")
 ^!w:: WebSearcher.CloseTabsToTheRight() 
 
 ; Works as Alt f4
-; StartupConfigurator.InitializeHotkey("Hotkeys", "AltF4", "^q")
 ^q:: Send("!{f4}")
 
 ; press f2 + any modifier to exit script
 ; used as an emergency exitapp, since the script may have bugs which make it hard to exit.
-; StartupConfigurator.InitializeHotkey("Hotkeys", "EmergencyClose", "*f2")
 *f2::ExitApp
 
 ; Win+C Opens a command prompt at the current location
-; StartupConfigurator.InitializeHotkey("Hotkeys", "OpenCmdPathedToCurrentLocation", "#c")
 #c:: CommandPrompt.OpenCmdPathedToCurrentLocation()
 
 ; Used to suspend script, suspending the script means noen of its functionalities are active.
@@ -352,7 +351,9 @@ StartupConfigurator.InitializeAllHotkeys("Hotkeys")
 ; SuspendExempt means this hotkey will not be suspended when the script is suspended.
 ; Since this hotkey suspends the script it is important that it is not suspended itself.
 #SuspendExempt
-; StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
+; Even though all hotkeys should be initialized, this is necessary becaues the hotkey to suspend the
+; script is required to be suspend exempt.
+StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
 ^!s::Suspend  ; Ctrl+Alt+S
 #SuspendExempt False
 
