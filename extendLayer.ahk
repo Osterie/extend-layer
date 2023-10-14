@@ -173,7 +173,8 @@ if (not A_IsAdmin){
 StartupConfigurator := Configurator("Config.ini", "DefaultConfig.ini")
 
 ; Allows opening cmd pathed to the current file location for vs code and file explorer.
-CommandPrompt := CommandPromptOpener("C:\Users\adria\")
+commandPromptDefaultPath := IniRead("Config.ini", "CommandPrompt", "DefaultPath")
+CommandPrompt := CommandPromptOpener(commandPromptDefaultPath)
 
 ; Allows navigating the file explorer and opening the file explorer pathed to a given file location
 FileExplorer := FileExplorerNavigator()
@@ -190,6 +191,7 @@ privacyController := PrivacyGUIController()
 privacyController.CreateGui()
 ; Sets the countdown for the screen hider to 3 minutes. (change to your screen sleep time)
 ; This shows a countdown on the screen, and when it reaches 0, the screen goes to sleep
+; TODO probably should create a setting for this in ini file
 privacyController.ChangeCountdown(3,0)
 
 ; Used to get the states of devices, like if bluetooth and such is enabled, also able to disable/enable these devices
@@ -245,10 +247,10 @@ layers.addLayerIndicator(2, "Red")
 Monitor := MonitorController()
 
 ; Used to switch between power saver mode and normal power mode (does not work as expected currently, percentage to switch to power saver is changed, but power saver is never turned on...)
-Battery := BatteryController(50, 50)
 powerSaverModeGUID := IniRead("Config.ini", "Battery", "PowerSaverModeGUID")
-Battery.setPowerSaverModeGUID(powerSaverModeGUID)
 defaultPowerModeGUID := IniRead("Config.ini", "Battery", "DefaultPowerModeGUID")
+Battery := BatteryController(50, 50)
+Battery.setPowerSaverModeGUID(powerSaverModeGUID)
 Battery.setDefaultPowerModeGUID(defaultPowerModeGUID)
 Battery.ActivateNormalPowerMode()
 
@@ -324,24 +326,25 @@ CapsLock::{
 }
 
 ; Shows/hides gui which can be written in to help classmates/colleagues or whatever
-StartupConfigurator.InitializeHotkey("Hotkeys", "WriteOnScreen", "#0")
+StartupConfigurator.InitializeAllHotkeys("Hotkeys")
+; StartupConfigurator.InitializeHotkey("Hotkeys", "WriteOnScreen", "#0")
 #0:: OnScreenWriter.ToggleShowKeysPressed()
 
 ; close tabs to the right
-StartupConfigurator.InitializeHotkey("Hotkeys", "CloseTabsToTheRight", "^!w")
+; StartupConfigurator.InitializeHotkey("Hotkeys", "CloseTabsToTheRight", "^!w")
 ^!w:: WebSearcher.CloseTabsToTheRight() 
 
 ; Works as Alt f4
-StartupConfigurator.InitializeHotkey("Hotkeys", "AltF4", "^q")
+; StartupConfigurator.InitializeHotkey("Hotkeys", "AltF4", "^q")
 ^q:: Send("!{f4}")
 
 ; press f2 + any modifier to exit script
 ; used as an emergency exitapp, since the script may have bugs which make it hard to exit.
-StartupConfigurator.InitializeHotkey("Hotkeys", "EmergencyClose", "*f2")
+; StartupConfigurator.InitializeHotkey("Hotkeys", "EmergencyClose", "*f2")
 *f2::ExitApp
 
 ; Win+C Opens a command prompt at the current location
-StartupConfigurator.InitializeHotkey("Hotkeys", "OpenCmdPathedToCurrentLocation", "#c")
+; StartupConfigurator.InitializeHotkey("Hotkeys", "OpenCmdPathedToCurrentLocation", "#c")
 #c:: CommandPrompt.OpenCmdPathedToCurrentLocation()
 
 ; Used to suspend script, suspending the script means noen of its functionalities are active.
@@ -349,7 +352,7 @@ StartupConfigurator.InitializeHotkey("Hotkeys", "OpenCmdPathedToCurrentLocation"
 ; SuspendExempt means this hotkey will not be suspended when the script is suspended.
 ; Since this hotkey suspends the script it is important that it is not suspended itself.
 #SuspendExempt
-StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
+; StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
 ^!s::Suspend  ; Ctrl+Alt+S
 #SuspendExempt False
 
@@ -577,8 +580,3 @@ StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
 ; Used to show user the script is enabled
 ToolTip "Script enabled!"
 SetTimer () => ToolTip(), -3000
-
-
-
-; Shows/hides gui which can be written in to help classmates/colleagues or whatever
-; #0:: OnScreenWriter.ToggleShowKeysPressed() 

@@ -1,20 +1,24 @@
 #Requires AutoHotkey v2.0
 
-Hotkey("^j", "MyHotkeyFunction")
+test := IniRead("Config.ini", "Hotkeys", "Altf4")
+msgbox(test)
+Section := IniRead("Config.ini", "Hotkeys")
+MsgBox(Section)
 
-; Function to handle the hotkey
-MyHotkeyFunction() {
-    MsgBox("Ctrl+J was pressed!")
+; This splits Section, using "`n" as a delimiter, which is new line in ahk.
+; A_LoopField is the current item in the loop.
+Loop Parse, Section, "`n"{
+    splitIniLine := StrSplit(A_LoopField, "=")
+    keyValue := splitIniLine[1]
+    value := splitIniLine[2]
+    ; MsgBox(keyValue "`n" value)
 }
-
-; test := IniRead("Config.ini", "FirstKeyboardOverlayWebsites", "Up")
-; Section := IniRead("Config.ini", "Hotkeys")
-; MsgBox(section)
-; HotKey test, MyFunc
 
 ; MyFunc(ThisHotkey){
 ;     MsgBox(test "`n" "rNo")
 ;     Return
 ; }
+
+; ReadSectionBySubstring()
 
 esc::ExitApp
