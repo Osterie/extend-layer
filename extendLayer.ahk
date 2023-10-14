@@ -24,6 +24,7 @@
 #Include ".\library\FileExplorerNavigator.ahk"
 #Include ".\library\Configurator.ahk"
 #Include ".\library\KeyboardOverlayRegistry.ahk"
+#Include ".\library\ApplicationManipulator.ahk"
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -169,22 +170,28 @@ if (not A_IsAdmin){
 ; |------------HOTSTRINGS-------------|
 ; |-----------------------------------|
 
-::]d::  ; This hotstring replaces "]d" with the current date and time via the statement below.
-{
-    Send FormatTime(, "d.M.yyyy")  ; It will look like 9/1/2005 3:53 PM
+; This hotstring replaces "]d" with the current date and time via the statement below.
+:*:]d::{
+    Send(FormatTime(, "d.M.yyyy"))  ; It will look like 13.7.2005
 }
 
 name := IniRead("PrivateConfig.ini", "PrivateInfo", "Name")
 eMail := IniRead("PrivateConfig.ini", "PrivateInfo", "Email")
 
-Hotstring "::agb", StrReplace(name, "Ã¸", "ø")
-Hotstring "::a@", eMail
+Hotstring( "::agb", StrReplace(name, "Ã¸", "ø"))
+Hotstring( "::a@", eMail)
+
+; ::agb::{
+;     Send(StrReplace(name, "Ã¸", "ø"))
+; }
 
 
 
 ; |-------------------------------------------|
 ; |----------- OBJECT CREATION ---------------|
 ; |-------------------------------------------|
+
+ApplicationManipulatorInstance := ApplicationManipulator()
 
 ; This is used to read ini files, and create hotkeys from them
 StartupConfigurator := Configurator("Config.ini", "DefaultConfig.ini")
@@ -199,6 +206,11 @@ FileExplorer := FileExplorerNavigator()
 ; Allows to write on the screen in a textarea
 OnScreenWriter := KeysPressedGui()
 OnScreenWriter.CreateGUI()
+
+; CloseTabsToTheRight := ObjBindMethod(WebSearcher, "CloseTabsToTheRight")
+; CloseTabsToTheRightHotkey := IniRead("Config.ini", "Hotkeys", "CloseTabsToTheRight") ; Default key is ^!W
+; Hotkey(CloseTabsToTheRightHotkey, CloseTabsToTheRight)
+
 
 ; Enables / disables input (mouse or keyboard)
 ComputerInput := ComputerInputController()
@@ -221,9 +233,19 @@ DeviceManipulator := DeviceController()
 FirstKeyboardOverlayWebsites := KeyboardOverlay()
 FirstKeyboardOverlayWebsites.CreateGui()
 
+; StartupConfigurator.
 
-; FirstKeyboardOverlayWebsites.AddStaticColumn("9", "")
-; FirstKeyboardOverlayWebsites.AddStaticColumn("0", "")
+FirstKeyboardOverlayWebsites.AddStaticColumn("1", "Time Table")
+FirstKeyboardOverlayWebsites.AddStaticColumn("2", "Black Board")
+FirstKeyboardOverlayWebsites.AddStaticColumn("3", "Prog 1")
+FirstKeyboardOverlayWebsites.AddStaticColumn("4", "Team")
+FirstKeyboardOverlayWebsites.AddStaticColumn("5", "Math")
+FirstKeyboardOverlayWebsites.AddStaticColumn("6", "Prog Num Sec")
+FirstKeyboardOverlayWebsites.AddStaticColumn("7", "Jupyter Hub")
+FirstKeyboardOverlayWebsites.AddStaticColumn("8", "Capquiz")
+FirstKeyboardOverlayWebsites.AddStaticColumn("9", "")
+FirstKeyboardOverlayWebsites.AddStaticColumn("0", "")
+
 
 ; Shows an on screen overlay for the first keyboard layer which shows which file explorer paths can be went to using the number keys
 FirstKeyboardOverlayFileExplorer := KeyboardOverlay()
@@ -325,18 +347,44 @@ CapsLock::{
 ; This file is then read by StartupConfigurator and the default hotkeys are changed accordingly
 StartupConfigurator.InitializeAllHotkeys("Hotkeys")
 
+; MethodsWithCorrespondingClasses := Map("ToggleShowKeysPressed", OnScreenWriter, "CloseTabsToTheRight", WebSearcher, "CloseActiveApplication", ApplicationManipulatorInstance, 
+; "CloseActiveAutohotkeyScript", ApplicationManipulatorInstance, "SuspendActiveAutohotkeyScript", ApplicationManipulatorInstance, "OpenCmdPathedToCurrentLocation", CommandPrompt)
+
+; classForThis := MethodsWithCorrespondingClasses["ToggleShowKeysPressed"]
+
+; ; way1 := OnScreenWriter.ToggleShowKeysPressed.Bind(OnScreenWriter)
+; ; way2 := ObjBindMethod(OnScreenWriter, "ToggleShowKeysPressed")
+; way2 := ObjBindMethod(classForThis, "ToggleShowKeysPressed")
+; OnScreenWriterHotkey := IniRead("Config.ini", "Hotkeys", "ToggleShowKeysPressed")
+; HotKey OnScreenWriterHotkey, way2
+
+; shit := Map("ToggleShowKeysPressed", OnScreenWriter)
+; classForThis := shit["ToggleShowKeysPressed"]
+
+; way1 := OnScreenWriter.ToggleShowKeysPressed.Bind(OnScreenWriter)
+; way2 := ObjBindMethod(OnScreenWriter, "ToggleShowKeysPressed")
+; way2 := ObjBindMethod(classForThis, "ToggleShowKeysPressed")
+; OnScreenWriterHotkey := IniRead("Config.ini", "Hotkeys", "ToggleShowKeysPressed")
+; HotKey OnScreenWriterHotkey, way2
+; HotKey "#0", "off"
+; HotKey OnScreenWriterHotkey, way2
+
 ; Shows/hides gui which can be written in to help classmates/colleagues or whatever
-#0:: OnScreenWriter.ToggleShowKeysPressed()
+; #0:: OnScreenWriter.ToggleShowKeysPressed()
+
+
+
 
 ; close tabs to the right
 ^!w:: WebSearcher.CloseTabsToTheRight() 
 
-; Works as Alt f4
-^q:: Send("!{f4}")
+
+; Works as Alt+f4
+^q:: ApplicationManipulatorInstance.CloseActiveApplication()
 
 ; press f2 + any modifier to exit script
 ; used as an emergency exitapp, since the script may have bugs which make it hard to exit.
-*f2::ExitApp
+*f2::ApplicationManipulatorInstance.CloseActiveAutohotkeyScript()
 
 ; Win+C Opens a command prompt at the current location
 #c:: CommandPrompt.OpenCmdPathedToCurrentLocation()
@@ -348,7 +396,8 @@ StartupConfigurator.InitializeAllHotkeys("Hotkeys")
 #SuspendExempt
 ; Even though all hotkeys should be initialized, this is necessary becaues the hotkey to suspend the
 ; script is required to be suspend exempt.
-StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
+; StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
+
 ^!s::Suspend  ; Ctrl+Alt+S
 #SuspendExempt False
 
@@ -357,7 +406,6 @@ StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
 ; |------------------------------|
 
 #HotIf layers.getActiveLayer() == 1
-
 
     ; Shows first keyboard overlay for websites when a shift is held down
     ~Shift:: OverlayRegistry.showKeyboardOverlay(FirstKeyboardOverlayWebsites) ;FirstKeyboardOverlayWebsites.ShowGui() 
@@ -370,6 +418,8 @@ StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
 
     ; Hides first keyboard overlay for websites (and second overlay for devices just in case)
     Shift up:: OverlayRegistry.hideAllLayers()
+
+
     
     ; Go to study plan (from current week to end of first semester currently)
     +1::WebSearcher.OpenUrl("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&") 

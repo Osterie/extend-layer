@@ -20,6 +20,19 @@ Class Configurator{
         this.defaultIniFile := defaultIniFile
     }
 
+    InitializeKeyboardOverlay(keyboardOverlay){
+
+    }
+    ReadKeyboardOverlaySection(section){
+        modifierKey := IniRead(this.iniFile, section, "LayerModifier")
+        
+    }
+    ReadArray(section, key){
+        values := IniRead(this.iniFile, section, key)
+        valueArray := values.StrSplit(values, ",")
+        return valueArray
+    }
+
     InitializeAllHotkeys(section){
 
         iniFileSection := IniRead(this.iniFile, "Hotkeys")
@@ -35,7 +48,7 @@ Class Configurator{
             iniFileFunction := StrSplit(iniFileSectionArray[A_Index], "=")[1]
             ; This is the hotkey that is currently in use (found in the DefaultConfig.ini file)
             inUseHotkey := StrSplit(defaultIniFileSectionArray[A_Index], "=")[2]
-            this.InitializeHotkey(section, iniFileFunction, inUseHotkey )
+            this.InitializeHotkey2(section, iniFileFunction, inUseHotkey )
         }
     }
 
@@ -45,12 +58,34 @@ Class Configurator{
     ; inUseHotkey is the hotkey that is currently in use.
     ; iniFileFunction is the function that is in the ini file, for example EmergencyClose is a function, and its default inUseHotkey is F2
     ; Often inUseHotkey may be the same as iniFileFunction, but not always.
-    InitializeHotkey(section, iniFileFunction, inUseHotkey){
+    InitializeHotkey1(section, iniFileFunction, inUseHotkey){
         newHotkey := IniRead(this.iniFile, section, iniFileFunction)
         ; if the new hotkey is different from the new one, then the in use hotkey is replaced with the new hotkey
         if (newHotkey != inUseHotkey){
             Hotkey(inUseHotkey, "off")
             Hotkey(newHotkey, inUseHotkey)
         }
+    }
+
+    InitializeHotkey2(section, iniFileMethod, inUseHotkey){
+        ; msgbox(section . " " . iniFileMethod . " " . inUseHotkey)
+        MethodsWithCorrespondingClasses := Map("ToggleShowKeysPressed", OnScreenWriter, "CloseTabsToTheRight", WebSearcher, "CloseActiveApplication", ApplicationManipulatorInstance, 
+        "CloseActiveAutohotkeyScript", ApplicationManipulatorInstance, "SuspendActiveAutohotkeyScript", ApplicationManipulatorInstance, "OpenCmdPathedToCurrentLocation", CommandPrompt)
+
+        methodClass := MethodsWithCorrespondingClasses[iniFileMethod]
+
+        ; way1 := OnScreenWriter.ToggleShowKeysPressed.Bind(OnScreenWriter)
+        ; way2 := ObjBindMethod(OnScreenWriter, "ToggleShowKeysPressed")
+        classMethodCall := ObjBindMethod(methodClass, iniFileMethod)
+        newHotkey := IniRead(this.iniFile, section, iniFileMethod)
+        ; OnScreenWriterHotkey := IniRead("Config.ini", "Hotkeys", iniFileMethod)
+        HotKey newHotkey, classMethodCall
+
+        ; newHotkey := IniRead(this.iniFile, section, iniFileFunction)
+        ; ; if the new hotkey is different from the new one, then the in use hotkey is replaced with the new hotkey
+        ; if (newHotkey != inUseHotkey){
+        ;     Hotkey(inUseHotkey, "off")
+        ;     Hotkey(newHotkey, inUseHotkey)
+        ; }
     }
 }
