@@ -7,10 +7,12 @@ Class Configurator{
 
     iniFile := ""
     defaultIniFile := ""
+    methodsWithCorrespondingClasses := ""
 
-    __New(iniFile, defaultIniFile){
+    __New(iniFile, defaultIniFile, methodsWithCorrespondingClasses){
         this.iniFile := iniFile
         this.defaultIniFile := defaultIniFile
+        this.methodsWithCorrespondingClasses := methodsWithCorrespondingClasses
     }
 
     ChangeIniFile(iniFile){
@@ -68,11 +70,8 @@ Class Configurator{
     }
 
     InitializeHotkey2(section, iniFileMethod, inUseHotkey){
-        ; msgbox(section . " " . iniFileMethod . " " . inUseHotkey)
-        MethodsWithCorrespondingClasses := Map("ToggleShowKeysPressed", OnScreenWriter, "CloseTabsToTheRight", WebSearcher, "CloseActiveApplication", ApplicationManipulatorInstance, 
-        "CloseActiveAutohotkeyScript", ApplicationManipulatorInstance, "SuspendActiveAutohotkeyScript", ApplicationManipulatorInstance, "OpenCmdPathedToCurrentLocation", CommandPrompt)
 
-        methodClass := MethodsWithCorrespondingClasses[iniFileMethod]
+        methodClass := this.methodsWithCorrespondingClasses[iniFileMethod]
 
         ; way1 := OnScreenWriter.ToggleShowKeysPressed.Bind(OnScreenWriter)
         ; way2 := ObjBindMethod(OnScreenWriter, "ToggleShowKeysPressed")

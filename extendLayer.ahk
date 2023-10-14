@@ -191,10 +191,8 @@ Hotstring( "::a@", eMail)
 ; |----------- OBJECT CREATION ---------------|
 ; |-------------------------------------------|
 
-ApplicationManipulatorInstance := ApplicationManipulator()
 
-; This is used to read ini files, and create hotkeys from them
-StartupConfigurator := Configurator("Config.ini", "DefaultConfig.ini")
+ApplicationManipulatorInstance := ApplicationManipulator()
 
 ; Allows opening cmd pathed to the current file location for vs code and file explorer.
 commandPromptDefaultPath := IniRead("Config.ini", "CommandPrompt", "DefaultPath")
@@ -298,6 +296,16 @@ WebSearcher := WebNavigator()
 blackboardLoginImages := ["\imageSearchImages\feideBlackboardMaximized.png", "\imageSearchImages\feideBlackboardMinimized.png"]
 jupyterHubLoginImages := ["\imageSearchImages\jupyterHubMaximized.png", "\imageSearchImages\jupyterHubMinimized.png"]
 
+
+
+methodsWithCorrespondingClasses := Map("ToggleShowKeysPressed", OnScreenWriter, "CloseTabsToTheRight", WebSearcher, "CloseActiveApplication", ApplicationManipulatorInstance, 
+"CloseActiveAutohotkeyScript", ApplicationManipulatorInstance, "SuspendActiveAutohotkeyScript", ApplicationManipulatorInstance, "OpenCmdPathedToCurrentLocation", CommandPrompt)
+
+
+; This is used to read ini files, and create hotkeys from them
+StartupConfigurator := Configurator("Config.ini", "DefaultConfig.ini", methodsWithCorrespondingClasses)
+
+
 ; |-------------------------------------------|
 ; |------------Ensures consistency------------|
 ; |-------------------------------------------|
@@ -347,47 +355,23 @@ CapsLock::{
 ; This file is then read by StartupConfigurator and the default hotkeys are changed accordingly
 StartupConfigurator.InitializeAllHotkeys("Hotkeys")
 
-; MethodsWithCorrespondingClasses := Map("ToggleShowKeysPressed", OnScreenWriter, "CloseTabsToTheRight", WebSearcher, "CloseActiveApplication", ApplicationManipulatorInstance, 
-; "CloseActiveAutohotkeyScript", ApplicationManipulatorInstance, "SuspendActiveAutohotkeyScript", ApplicationManipulatorInstance, "OpenCmdPathedToCurrentLocation", CommandPrompt)
-
-; classForThis := MethodsWithCorrespondingClasses["ToggleShowKeysPressed"]
-
-; ; way1 := OnScreenWriter.ToggleShowKeysPressed.Bind(OnScreenWriter)
-; ; way2 := ObjBindMethod(OnScreenWriter, "ToggleShowKeysPressed")
-; way2 := ObjBindMethod(classForThis, "ToggleShowKeysPressed")
-; OnScreenWriterHotkey := IniRead("Config.ini", "Hotkeys", "ToggleShowKeysPressed")
-; HotKey OnScreenWriterHotkey, way2
-
-; shit := Map("ToggleShowKeysPressed", OnScreenWriter)
-; classForThis := shit["ToggleShowKeysPressed"]
-
-; way1 := OnScreenWriter.ToggleShowKeysPressed.Bind(OnScreenWriter)
-; way2 := ObjBindMethod(OnScreenWriter, "ToggleShowKeysPressed")
-; way2 := ObjBindMethod(classForThis, "ToggleShowKeysPressed")
-; OnScreenWriterHotkey := IniRead("Config.ini", "Hotkeys", "ToggleShowKeysPressed")
-; HotKey OnScreenWriterHotkey, way2
-; HotKey "#0", "off"
-; HotKey OnScreenWriterHotkey, way2
-
 ; Shows/hides gui which can be written in to help classmates/colleagues or whatever
 ; #0:: OnScreenWriter.ToggleShowKeysPressed()
 
 
-
-
 ; close tabs to the right
-^!w:: WebSearcher.CloseTabsToTheRight() 
+; !^!w:: WebSearcher.CloseTabsToTheRight() 
 
 
 ; Works as Alt+f4
-^q:: ApplicationManipulatorInstance.CloseActiveApplication()
+; !^q:: ApplicationManipulatorInstance.CloseActiveApplication()
 
 ; press f2 + any modifier to exit script
 ; used as an emergency exitapp, since the script may have bugs which make it hard to exit.
-*f2::ApplicationManipulatorInstance.CloseActiveAutohotkeyScript()
+; *!f2::ApplicationManipulatorInstance.CloseActiveAutohotkeyScript()
 
 ; Win+C Opens a command prompt at the current location
-#c:: CommandPrompt.OpenCmdPathedToCurrentLocation()
+; !#c:: CommandPrompt.OpenCmdPathedToCurrentLocation()
 
 ; Used to suspend script, suspending the script means noen of its functionalities are active.
 ; Pressing the same key combination again enables the script again
@@ -396,9 +380,8 @@ StartupConfigurator.InitializeAllHotkeys("Hotkeys")
 #SuspendExempt
 ; Even though all hotkeys should be initialized, this is necessary becaues the hotkey to suspend the
 ; script is required to be suspend exempt.
-; StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
-
-^!s::Suspend  ; Ctrl+Alt+S
+StartupConfigurator.InitializeHotkey1("Hotkeys", "SuspendActiveAutohotkeyScript", "^!s")
+!^!s::Suspend  ; Ctrl+Alt+S
 #SuspendExempt False
 
 ; |------------------------------|
@@ -419,8 +402,6 @@ StartupConfigurator.InitializeAllHotkeys("Hotkeys")
     ; Hides first keyboard overlay for websites (and second overlay for devices just in case)
     Shift up:: OverlayRegistry.hideAllLayers()
 
-
-    
     ; Go to study plan (from current week to end of first semester currently)
     +1::WebSearcher.OpenUrl("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&") 
 

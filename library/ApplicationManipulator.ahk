@@ -2,14 +2,14 @@
 
 Class ApplicationManipulator{
 
-    CloseActiveApplication(){
+    CloseActiveApplication(*){
         Send("!{f4}")
     }
 
-    CloseActiveAutohotkeyScript(){
+    CloseActiveAutohotkeyScript(*){
         Exitapp
     }
-    SuspendActiveAutohotkeyScript(){
+    SuspendActiveAutohotkeyScript(*){
         Suspend
     }
 }

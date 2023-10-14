@@ -4,8 +4,9 @@
 
 Class WebNavigator{
 
+    ; Public method
     ; Closes tabs to the right of the current tab, only works in chrome ATM
-    CloseTabsToTheRight(){
+    CloseTabsToTheRight(*){
 
         ComputerInput := ComputerInputController()
         Sleep(500)
@@ -13,19 +14,19 @@ Class WebNavigator{
         ; These sends could be compressed to just one, but for readability they are all seperated to each their line
         ; Focuses search bar
         Send("^l")
-        Sleep(70)
+        Sleep(80)
         ; Focuses active tab
         Send("{F6}")
-        Sleep(70)
+        Sleep(80)
         ; Right clicks active tab, opening a dropdown meny with actions
         Send("{AppsKey}")
-        Sleep(70)
+        Sleep(80)
         ; Focuses the option to close tabs to the right
         Send("{Up}")
-        Sleep(70)
+        Sleep(80)
         ; Performs said action
         Send("{Enter}")
-        Sleep(70)
+        Sleep(80)
         ; Goes back to the body of the page
         Send("{F6}") 
 

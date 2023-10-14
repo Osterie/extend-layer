@@ -8,7 +8,8 @@ Class CommandPromptOpener{
         this.defaultPath := defaultPath
     }
 
-    OpenCmdPathedToCurrentLocation(){
+    ; public method
+    OpenCmdPathedToCurrentLocation(*){
 
         if ( WinActive("ahk_class CabinetWClass") ){
             this.OpenCmdFileExplorer()
