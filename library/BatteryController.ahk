@@ -24,7 +24,7 @@ Class BatteryController{
         this.activePowerMode := this.powerSaverModeGUID
         Run("powercfg /s " . this.powerSaverModeGUID)
     }
-
+    
     ActivateNormalPowerMode(){
         this.activePowerMode := this.defaultPowerModeGUID
         Run("powercfg /s " . this.defaultPowerModeGUID)

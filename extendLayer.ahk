@@ -249,7 +249,7 @@ Battery := BatteryController(50, 50)
 powerSaverModeGUID := IniRead("Config.ini", "Battery", "PowerSaverModeGUID")
 Battery.setPowerSaverModeGUID(powerSaverModeGUID)
 defaultPowerModeGUID := IniRead("Config.ini", "Battery", "DefaultPowerModeGUID")
-Battery.setPowerSaverModeGUID(defaultPowerModeGUID)
+Battery.setDefaultPowerModeGUID(defaultPowerModeGUID)
 Battery.ActivateNormalPowerMode()
 
 ; Used to search for stuff in the browser, translate, and excecute shortcues like close tabs to the right in browser

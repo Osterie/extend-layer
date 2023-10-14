@@ -9,7 +9,6 @@ Class LayerIndicatorController{
     activeLayer := 0
 
     addLayerIndicator(layer, color){
-        
         layerIndicatorInstance := LayerIndicator(layer, color)
         layerIndicatorInstance.createLayerIndicator()
         this.layers.InsertAt(layer, layerIndicatorInstance) 
