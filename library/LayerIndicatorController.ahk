@@ -47,9 +47,12 @@ Class LayerIndicatorController{
     toggleLayerIndicator(toggleValue){
         if (this.activeLayer == 0){
             this.activeLayer := toggleValue
+            this.showLayerIndicator(this.activeLayer)
         }
         else{
             this.activeLayer := 0
+            this.hideInactiveLayers()
+
         }
     }
 
