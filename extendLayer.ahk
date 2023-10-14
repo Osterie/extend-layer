@@ -295,14 +295,7 @@ CapsLock::{
     activeLayer := layers.getActiveLayer()
     
     if (activeLayer == 0){
-        layers.setCurrentLayerIndicator(2)
         layers.showLayerIndicator(2)
-
-        ; OverlayRegistry.showKeyboardOverlay(SecondKeyboardOverlayDevices)
-        ; FirstKeyboardOverlayWebsites.HideGui()
-        ; SecondKeyboardOverlayDevices.ShowGui()
-
-        SetCapsLockState("on")
     }
     else{
 
@@ -314,13 +307,9 @@ CapsLock::{
 
         if (newActiveLayer == 1){
             OverlayRegistry.showKeyboardOverlay(FirstKeyboardOverlayWebsites)
-            ; FirstKeyboardOverlayWebsites.ShowGui()
-            ; SecondKeyboardOverlayDevices.HideGui()
         }
         else if (newActiveLayer == 2){
             OverlayRegistry.showKeyboardOverlay(SecondKeyboardOverlayDevices)
-            ; SecondKeyboardOverlayDevices.ShowGui()
-            ; FirstKeyboardOverlayWebsites.HideGui()
         }
     }
 }
@@ -328,7 +317,6 @@ CapsLock::{
 ; Is used to initialize all hotkeys, if hotkeys are changed by the user, these changes are stored in the Config.ini file.
 ; This file is then read by StartupConfigurator and the default hotkeys are changed accordingly
 StartupConfigurator.InitializeAllHotkeys("Hotkeys")
-
 
 ; Shows/hides gui which can be written in to help classmates/colleagues or whatever
 #0:: OnScreenWriter.ToggleShowKeysPressed()
@@ -373,12 +361,7 @@ StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
     Ctrl up:: OverlayRegistry.hideKeyboardOverlay(FirstKeyboardOverlayFileExplorer) ;FirstKeyboardOverlayFileExplorer.HideGui()
 
     ; Hides first keyboard overlay for websites (and second overlay for devices just in case)
-    Shift up::{ 
-        OverlayRegistry.hideAllLayers()
-        ; SecondKeyboardOverlayDevices.HideGui()
-        ; FirstKeyboardOverlayWebsites.HideGui()
-        ; FirstKeyboardOverlayFileExplorer.HideGui()
-    }
+    Shift up:: OverlayRegistry.hideAllLayers()
     
     ; Go to study plan (from current week to end of first semester currently)
     +1::WebSearcher.OpenUrl("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&") 
@@ -503,11 +486,7 @@ StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
     ~Shift:: OverlayRegistry.showKeyboardOverlay(SecondKeyboardOverlayDevices) ;SecondKeyboardOverlayDevices.ShowGui() 
 
     ; Hides second keyboard overlay (and first just in case)
-    Shift up::{
-        OverlayRegistry.hideAllLayers()
-        ; FirstKeyboardOverlayWebsites.HideGui()
-        ; SecondKeyboardOverlayDevices.HideGui()
-    } 
+    Shift up:: OverlayRegistry.hideAllLayers() 
 
     ; Toggles touch-screen
     +1::{ 
