@@ -24,6 +24,7 @@
 #Include ".\library\CommandPromptOpener.ahk"
 #Include ".\library\FileExplorerNavigator.ahk"
 #Include ".\library\Configurator.ahk"
+#Include ".\library\KeyboardOverlayRegistry.ahk"
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -200,6 +201,8 @@ DeviceManipulator := DeviceController()
 ; Having this activated will slow down the startup of the script significantly.
 ; !DeviceManipulator.UpdateDevicesActionToToggle()
 
+
+
 ; Shows an on screen overlay for the first keyboard layer which shows which urls can be went to using the number keys
 FirstKeyboardOverlayWebsites := KeyboardOverlay()
 FirstKeyboardOverlayWebsites.CreateGui()
@@ -212,8 +215,8 @@ FirstKeyboardOverlayWebsites.AddStaticColumn("5", "Math")
 FirstKeyboardOverlayWebsites.AddStaticColumn("6", "Prog Num Sec")
 FirstKeyboardOverlayWebsites.AddStaticColumn("7", "Jupyter Hub")
 FirstKeyboardOverlayWebsites.AddStaticColumn("8", "Capquiz")
-FirstKeyboardOverlayWebsites.AddStaticColumn("9", "")
-FirstKeyboardOverlayWebsites.AddStaticColumn("0", "")
+; FirstKeyboardOverlayWebsites.AddStaticColumn("9", "")
+; FirstKeyboardOverlayWebsites.AddStaticColumn("0", "")
 
 ; Shows an on screen overlay for the first keyboard layer which shows which file explorer paths can be went to using the number keys
 FirstKeyboardOverlayFileExplorer := KeyboardOverlay()
@@ -224,10 +227,10 @@ FirstKeyboardOverlayFileExplorer.AddStaticColumn("3", "Github")
 FirstKeyboardOverlayFileExplorer.AddStaticColumn("4", "Down loads")
 FirstKeyboardOverlayFileExplorer.AddStaticColumn("5", "School")
 FirstKeyboardOverlayFileExplorer.AddStaticColumn("6", "Mappe")
-FirstKeyboardOverlayFileExplorer.AddStaticColumn("7", "")
-FirstKeyboardOverlayFileExplorer.AddStaticColumn("8", "")
-FirstKeyboardOverlayFileExplorer.AddStaticColumn("9", "")
-FirstKeyboardOverlayFileExplorer.AddStaticColumn("0", "")
+; FirstKeyboardOverlayFileExplorer.AddStaticColumn("7", "")
+; FirstKeyboardOverlayFileExplorer.AddStaticColumn("8", "")
+; FirstKeyboardOverlayFileExplorer.AddStaticColumn("9", "")
+; FirstKeyboardOverlayFileExplorer.AddStaticColumn("0", "")
 
 
 ; Shows an on screen overlay for the first keyboard layer which shows which number keys to press to enable/disable devices
@@ -237,6 +240,12 @@ SecondKeyboardOverlayDevices.AddColumnToggleValue("1", "Touch Screen", DeviceMan
 SecondKeyboardOverlayDevices.AddColumnToggleValue("2", "Camera", DeviceManipulator.GetCameraActionToToggle())
 SecondKeyboardOverlayDevices.AddColumnToggleValue("3", "Blue tooth", DeviceManipulator.GetBluetoothActionToToggle())
 SecondKeyboardOverlayDevices.AddColumnToggleValue("4", "Touch Pad", DeviceManipulator.GetTouchPadActionToToggle())
+
+
+OverlayRegistry := KeyboardOverlayRegistry()
+OverlayRegistry.addKeyboardOverlay(FirstKeyboardOverlayWebsites)
+OverlayRegistry.addKeyboardOverlay(FirstKeyboardOverlayFileExplorer)
+OverlayRegistry.addKeyboardOverlay(SecondKeyboardOverlayDevices)
 
 ; Used to switch the active layer
 layers := LayerIndicatorController()
@@ -301,8 +310,9 @@ CapsLock::{
         layers.setCurrentLayerIndicator(2)
         layers.showLayerIndicator(2)
 
-        FirstKeyboardOverlayWebsites.HideGui()
-        SecondKeyboardOverlayDevices.ShowGui()
+        OverlayRegistry.showKeyboardOverlay(SecondKeyboardOverlayDevices)
+        ; FirstKeyboardOverlayWebsites.HideGui()
+        ; SecondKeyboardOverlayDevices.ShowGui()
 
         SetCapsLockState("on")
     }
@@ -315,12 +325,14 @@ CapsLock::{
         layers.hideInactiveLayers()
 
         if (newActiveLayer == 1){
-            FirstKeyboardOverlayWebsites.ShowGui()
-            SecondKeyboardOverlayDevices.HideGui()
+            OverlayRegistry.showKeyboardOverlay(FirstKeyboardOverlayWebsites)
+            ; FirstKeyboardOverlayWebsites.ShowGui()
+            ; SecondKeyboardOverlayDevices.HideGui()
         }
         else if (newActiveLayer == 2){
-            SecondKeyboardOverlayDevices.ShowGui()
-            FirstKeyboardOverlayWebsites.HideGui()
+            OverlayRegistry.showKeyboardOverlay(SecondKeyboardOverlayDevices)
+            ; SecondKeyboardOverlayDevices.ShowGui()
+            ; FirstKeyboardOverlayWebsites.HideGui()
         }
     }
 }
@@ -364,19 +376,20 @@ StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
 #HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 1
 
     ; Shows first keyboard overlay for websites when a shift is held down
-    ~Shift:: FirstKeyboardOverlayWebsites.ShowGui() 
+    ~Shift:: OverlayRegistry.showKeyboardOverlay(FirstKeyboardOverlayWebsites) ;FirstKeyboardOverlayWebsites.ShowGui() 
 
     ; Shows first keyboard overlay for file explorer when a shift is held down
-    ~Ctrl:: FirstKeyboardOverlayFileExplorer.ShowGui()
+    ~Ctrl::  OverlayRegistry.showKeyboardOverlay(FirstKeyboardOverlayFileExplorer)  ;FirstKeyboardOverlayFileExplorer.ShowGui()
 
     ; Hides first keyboard overlay for file explorer 
-    Ctrl up:: FirstKeyboardOverlayFileExplorer.HideGui()
+    Ctrl up:: OverlayRegistry.hideKeyboardOverlay(FirstKeyboardOverlayFileExplorer) ;FirstKeyboardOverlayFileExplorer.HideGui()
 
     ; Hides first keyboard overlay for websites (and second overlay for devices just in case)
     Shift up::{ 
-        SecondKeyboardOverlayDevices.HideGui()
-        FirstKeyboardOverlayWebsites.HideGui()
-        FirstKeyboardOverlayFileExplorer.HideGui()
+        OverlayRegistry.hideAllLayers()
+        ; SecondKeyboardOverlayDevices.HideGui()
+        ; FirstKeyboardOverlayWebsites.HideGui()
+        ; FirstKeyboardOverlayFileExplorer.HideGui()
     }
     
     ; Go to study plan (from current week to end of first semester currently)
@@ -499,12 +512,13 @@ StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
     b::KeyHistory
     
     ; Shows second keyboard overlay when shift is held down
-    ~Shift:: SecondKeyboardOverlayDevices.ShowGui() 
+    ~Shift:: OverlayRegistry.showKeyboardOverlay(SecondKeyboardOverlayDevices) ;SecondKeyboardOverlayDevices.ShowGui() 
 
     ; Hides second keyboard overlay (and first just in case)
     Shift up::{
-        FirstKeyboardOverlayWebsites.HideGui()
-        SecondKeyboardOverlayDevices.HideGui()
+        OverlayRegistry.hideAllLayers()
+        ; FirstKeyboardOverlayWebsites.HideGui()
+        ; SecondKeyboardOverlayDevices.HideGui()
     } 
 
     ; Toggles touch-screen
