@@ -282,9 +282,11 @@ SetNumLockState("off")
 ; changes the layer to 0 if it is not zero, or 1 if it is zero
 NumLock::
 CapsLock::{ 
+    ; if capslock is on, turn it off
+    if (GetKeyState("CapsLock", "T") == 1){
+        SetCapsLockState("off")
+    }
     layers.toggleLayerIndicator(1)
-    ; Toggles capslock state
-    SetCapsLockState(!GetKeyState("CapsLock", "T"))
 }
 
 ; Changes the layer to 2 if it is zero, and then cycles through the layers if it is not zero
@@ -296,7 +298,7 @@ CapsLock::{
         layers.setCurrentLayerIndicator(2)
         layers.showLayerIndicator(2)
 
-        OverlayRegistry.showKeyboardOverlay(SecondKeyboardOverlayDevices)
+        ; OverlayRegistry.showKeyboardOverlay(SecondKeyboardOverlayDevices)
         ; FirstKeyboardOverlayWebsites.HideGui()
         ; SecondKeyboardOverlayDevices.ShowGui()
 
@@ -359,7 +361,7 @@ StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
 ; |-----------Layers-------------|
 ; |------------------------------|
 
-#HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 1
+#HotIf layers.getActiveLayer() == 1
 
     ; Shows first keyboard overlay for websites when a shift is held down
     ~Shift:: OverlayRegistry.showKeyboardOverlay(FirstKeyboardOverlayWebsites) ;FirstKeyboardOverlayWebsites.ShowGui() 
@@ -492,7 +494,7 @@ StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
 #HotIf
 
 
-#HotIf GetKeyState("CapsLock","T") && layers.getActiveLayer() == 2 
+#HotIf layers.getActiveLayer() == 2 
 
     ; Shows key history, used for debugging
     b::KeyHistory
