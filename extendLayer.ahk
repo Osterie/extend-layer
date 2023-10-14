@@ -174,6 +174,13 @@ if (not A_IsAdmin){
     Send FormatTime(, "d.M.yyyy")  ; It will look like 9/1/2005 3:53 PM
 }
 
+name := IniRead("PrivateConfig.ini", "PrivateInfo", "Name")
+eMail := IniRead("PrivateConfig.ini", "PrivateInfo", "Email")
+
+Hotstring "::agb", StrReplace(name, "Ã¸", "ø")
+Hotstring "::a@", eMail
+
+
 
 ; |-------------------------------------------|
 ; |----------- OBJECT CREATION ---------------|

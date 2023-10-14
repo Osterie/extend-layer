@@ -1,5 +1,8 @@
 #Requires AutoHotkey v2.0
 
+; TODO the ini file reader class, which is currently empty i believe, should read ini files.
+; "æ ø å" and such are replaced with other values, since the ini file cant be utf-8 with bom encoding, therefore the result should replace these wrong characters with "æøå" respectively.
+
 Class Configurator{
 
     iniFile := ""
