@@ -22,13 +22,33 @@ Class Configurator{
         this.defaultIniFile := defaultIniFile
     }
 
-    InitializeKeyboardOverlay(keyboardOverlay){
 
-    }
-    ReadKeyboardOverlaySection(section){
+    ReadKeyboardOverlaySection(KeyboardOverlay, section){
+        
         modifierKey := IniRead(this.iniFile, section, "LayerModifier")
         
+        iniFileSection := IniRead(this.iniFile, section)
+        KeyboardOverlayColumns := StrSplit(iniFileSection, "`n")
+        KeyboardOverlayColumns.RemoveAt(1)
+
+        ; This splits section, using "`n" as a delimiter, which is new line in ahk.
+        ; A_LoopField is the current item in the loop.
+        Loop KeyboardOverlayColumns.Length{
+            ColumnValues := this.GetKeyValue(KeyboardOverlayColumns[A_Index])
+            KeyboardOverlayColumnHelperKey := StrSplit(ColumnValues, ",")[1]
+            KeyboardOverlayColumnFriendlyName := StrSplit(ColumnValues, ",")[2]
+            this.SetKeyboardOverlayColumn(KeyboardOverlay, KeyboardOverlayColumnHelperKey, KeyboardOverlayColumnFriendlyName )
+        }
     }
+
+    SetKeyboardOverlayColumn(KeyboardOverlay, ColumnHelperKey, ColumnFriendlyName){
+        KeyboardOverlay.AddStaticColumn(ColumnHelperKey, ColumnFriendlyName)
+    }
+
+    GetKeyValue(key){
+        return StrSplit(key, "=")[2]
+    }
+
     ReadArray(section, key){
         values := IniRead(this.iniFile, section, key)
         valueArray := values.StrSplit(values, ",")

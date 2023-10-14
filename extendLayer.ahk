@@ -231,18 +231,18 @@ DeviceManipulator := DeviceController()
 FirstKeyboardOverlayWebsites := KeyboardOverlay()
 FirstKeyboardOverlayWebsites.CreateGui()
 
-; StartupConfigurator.
 
-FirstKeyboardOverlayWebsites.AddStaticColumn("1", "Time Table")
-FirstKeyboardOverlayWebsites.AddStaticColumn("2", "Black Board")
-FirstKeyboardOverlayWebsites.AddStaticColumn("3", "Prog 1")
-FirstKeyboardOverlayWebsites.AddStaticColumn("4", "Team")
-FirstKeyboardOverlayWebsites.AddStaticColumn("5", "Math")
-FirstKeyboardOverlayWebsites.AddStaticColumn("6", "Prog Num Sec")
-FirstKeyboardOverlayWebsites.AddStaticColumn("7", "Jupyter Hub")
-FirstKeyboardOverlayWebsites.AddStaticColumn("8", "Capquiz")
-FirstKeyboardOverlayWebsites.AddStaticColumn("9", "")
-FirstKeyboardOverlayWebsites.AddStaticColumn("0", "")
+
+; FirstKeyboardOverlayWebsites.AddStaticColumn("1", "Time Table")
+; FirstKeyboardOverlayWebsites.AddStaticColumn("2", "Black Board")
+; FirstKeyboardOverlayWebsites.AddStaticColumn("3", "Prog 1")
+; FirstKeyboardOverlayWebsites.AddStaticColumn("4", "Team")
+; FirstKeyboardOverlayWebsites.AddStaticColumn("5", "Math")
+; FirstKeyboardOverlayWebsites.AddStaticColumn("6", "Prog Num Sec")
+; FirstKeyboardOverlayWebsites.AddStaticColumn("7", "Jupyter Hub")
+; FirstKeyboardOverlayWebsites.AddStaticColumn("8", "Capquiz")
+; FirstKeyboardOverlayWebsites.AddStaticColumn("9", "")
+; FirstKeyboardOverlayWebsites.AddStaticColumn("0", "")
 
 
 ; Shows an on screen overlay for the first keyboard layer which shows which file explorer paths can be went to using the number keys
@@ -354,14 +354,14 @@ CapsLock::{
 ; Is used to initialize all hotkeys, if hotkeys are changed by the user, these changes are stored in the Config.ini file.
 ; This file is then read by StartupConfigurator and the default hotkeys are changed accordingly
 StartupConfigurator.InitializeAllHotkeys("Hotkeys")
+StartupConfigurator.ReadKeyboardOverlaySection(FirstKeyboardOverlayWebsites, "FirstKeyboardOverlayHotkeysHelper") 
+
 
 ; Shows/hides gui which can be written in to help classmates/colleagues or whatever
 ; #0:: OnScreenWriter.ToggleShowKeysPressed()
 
-
 ; close tabs to the right
 ; !^!w:: WebSearcher.CloseTabsToTheRight() 
-
 
 ; Works as Alt+f4
 ; !^q:: ApplicationManipulatorInstance.CloseActiveApplication()
@@ -461,12 +461,10 @@ StartupConfigurator.InitializeHotkey1("Hotkeys", "SuspendActiveAutohotkeyScript"
     e:: Browser_Back
     r:: Browser_Forward
 
-
-
     ; opens a new tab in chrome which searches for the highlited content, if no content is highlighted, clipboard content is sent.
     t:: WebSearcher.LookUpHighlitedTextOrClipboardContent()
     
-    ; Searches in the same manner as above, but in a chat with GPT-3
+    ; Searches in the same manner as above, but in a chat with chat-gpt
     +t:: WebSearcher.AskChatGptAboutHighligtedTextOrClipboardContent(3000)
     
     ; Ctrl + t translates highlighted text or clipboard content from a detected language to english 
@@ -517,10 +515,10 @@ StartupConfigurator.InitializeHotkey1("Hotkeys", "SuspendActiveAutohotkeyScript"
 
 #HotIf
 
-HotIf "layers.getActiveLayer() == 1"
-    Hotkey("r", "t")
-    Hotkey("t", "off")
-HotIf
+; HotIf "layers.getActiveLayer() == 1"
+;     Hotkey("r", "t")
+;     Hotkey("t", "off")
+; HotIf
 
 
 
