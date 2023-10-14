@@ -28,8 +28,9 @@ Class KeyboardOverlayRegistry{
     }
 
     hideAllLayers(){
-        loop this.keyboardOverlays.Length
+        loop this.keyboardOverlays.Length{
             this.keyboardOverlays[A_Index].HideGui()
+        }
     }
 
     getKeyboardOverlay(){
@@ -43,30 +44,6 @@ Class KeyboardOverlayRegistry{
     setCurrentKeyboardOverlay(keyboardOverlay){
         this.activeOverlay := keyboardOverlay
     }
-
-    ; sets the keyboardOverlay to toggleValue if keyboardOverlay is 0, or to 0 if active laye is not zero
-    ; toggleKeyboardOverlay(toggleValue){
-    ;     if (this.activeOverlay == 0){
-    ;         this.activeOverlay := toggleValue
-    ;     }
-    ;     else{
-    ;         this.activeOverlay := 0
-    ;     }
-    ; }
-
-    ; increases activeOverlay by 1, if upperLimit is reached, it is set back to 1 (Note, not does not go back to 0)
-    ; cycleExtraKeyboardOverlays(){
-    ;     layersAmount := this.keyboardOverlays.Length
-    ;     this.activeOverlay := this.activeOverlay+1 
-    ;     if( this.activeOverlay == layersAmount+1){
-    ;         this.activeOverlay := 1
-    ;     }
-    ; }
-
-    ; sets activeOverlay to 0
-    ; resetKeyboardOverlays(){
-    ;     this.activeOverlay := 0
-    ; }
 
     getIndexOf(givenKeyboardOverlay){
         loop this.keyboardOverlays.Length{
