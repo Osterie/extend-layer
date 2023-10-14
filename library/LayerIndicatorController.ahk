@@ -17,17 +17,18 @@ Class LayerIndicatorController{
     showLayerIndicator(layer){
         this.activeLayer := layer
         this.layers[layer].showGui()
+        this.hideInactiveLayers()
     }
     hideLayerIndicator(layer){
-        this.activeLayer := 0
         this.layers[layer].hideGui()
     }
 
     hideInactiveLayers(){
-        loop this.layers.Length
+        loop this.layers.Length{
             if (A_Index != this.activeLayer){
-                this.layers[A_Index].hideGui()
+                this.hideLayerIndicator(A_Index)
             }
+        }
     }
 
     getLayerIndicator(){

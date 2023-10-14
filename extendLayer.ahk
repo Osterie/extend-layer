@@ -284,20 +284,22 @@ NumLock::
 CapsLock::{ 
     layers.toggleLayerIndicator(1)
     activeLayer := layers.getActiveLayer()
+    ; Toggles capslock state
+    SetCapsLockState(!GetKeyState("CapsLock", "T"))
 
     if (activeLayer == 0){
-        ; hides layers wh ich are not the active layer
+        ; hides layers which are not the active layer
         layers.hideInactiveLayers()
-        ; toggles capslock
-        SetCapsLockState("off")
+        ; Disables capslock
+        ; SetCapsLockState("off")
     }
     else{
         ; shows the active layer (which should be layer 1)
         layers.showLayerIndicator(layers.getActiveLayer())
         ; hides layers which are not the acrive layer
         layers.hideInactiveLayers()
-        ; toggles capslock
-        SetCapsLockState("on")
+        ; Enables capslock
+        ; SetCapsLockState("on")
     }
 }
 
