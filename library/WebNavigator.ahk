@@ -13,19 +13,19 @@ Class WebNavigator{
         ; These sends could be compressed to just one, but for readability they are all seperated to each their line
         ; Focuses search bar
         Send("^l")
-        Sleep(50)
+        Sleep(70)
         ; Focuses active tab
         Send("{F6}")
-        Sleep(50)
+        Sleep(70)
         ; Right clicks active tab, opening a dropdown meny with actions
         Send("{AppsKey}")
-        Sleep(50)
+        Sleep(70)
         ; Focuses the option to close tabs to the right
         Send("{Up}")
-        Sleep(50)
+        Sleep(70)
         ; Performs said action
         Send("{Enter}")
-        Sleep(50)
+        Sleep(70)
         ; Goes back to the body of the page
         Send("{F6}") 
 

@@ -9,7 +9,6 @@
 ; CloseTabsToTheRightHotkey := IniRead("Config.ini", "Hotkeys", "CloseTabsToTheRight") ; Default key is ^!W
 ; Hotkey(CloseTabsToTheRightHotkey, CloseTabsToTheRight)
 
-
 #Requires Autohotkey v2.0
 #Include ".\library\CountdownGUI.ahk"
 #Include ".\library\MonitorController.ahk"
@@ -166,6 +165,16 @@ if (not A_IsAdmin){
 
 ; Layers and keyboard overlay could possibly be used in a class, since they work for the same thing, the layers.
 
+; |-----------------------------------|
+; |------------HOTSTRINGS-------------|
+; |-----------------------------------|
+
+::]d::  ; This hotstring replaces "]d" with the current date and time via the statement below.
+{
+    Send FormatTime(, "d.M.yyyy")  ; It will look like 9/1/2005 3:53 PM
+}
+
+
 ; |-------------------------------------------|
 ; |----------- OBJECT CREATION ---------------|
 ; |-------------------------------------------|
@@ -201,20 +210,11 @@ DeviceManipulator := DeviceController()
 ; Having this activated will slow down the startup of the script significantly.
 ; !DeviceManipulator.UpdateDevicesActionToToggle()
 
-
-
 ; Shows an on screen overlay for the first keyboard layer which shows which urls can be went to using the number keys
 FirstKeyboardOverlayWebsites := KeyboardOverlay()
 FirstKeyboardOverlayWebsites.CreateGui()
 
-FirstKeyboardOverlayWebsites.AddStaticColumn("1", "Time Table")
-FirstKeyboardOverlayWebsites.AddStaticColumn("2", "Black Board")
-FirstKeyboardOverlayWebsites.AddStaticColumn("3", "Prog 1")
-FirstKeyboardOverlayWebsites.AddStaticColumn("4", "Team")
-FirstKeyboardOverlayWebsites.AddStaticColumn("5", "Math")
-FirstKeyboardOverlayWebsites.AddStaticColumn("6", "Prog Num Sec")
-FirstKeyboardOverlayWebsites.AddStaticColumn("7", "Jupyter Hub")
-FirstKeyboardOverlayWebsites.AddStaticColumn("8", "Capquiz")
+
 ; FirstKeyboardOverlayWebsites.AddStaticColumn("9", "")
 ; FirstKeyboardOverlayWebsites.AddStaticColumn("0", "")
 
@@ -351,6 +351,7 @@ StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
 
 #HotIf layers.getActiveLayer() == 1
 
+
     ; Shows first keyboard overlay for websites when a shift is held down
     ~Shift:: OverlayRegistry.showKeyboardOverlay(FirstKeyboardOverlayWebsites) ;FirstKeyboardOverlayWebsites.ShowGui() 
 
@@ -422,6 +423,8 @@ StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
     e:: Browser_Back
     r:: Browser_Forward
 
+
+
     ; opens a new tab in chrome which searches for the highlited content, if no content is highlighted, clipboard content is sent.
     t:: WebSearcher.LookUpHighlitedTextOrClipboardContent()
     
@@ -475,6 +478,12 @@ StartupConfigurator.InitializeHotkey("Hotkeys", "SuspendScript", "^!s")
     l:: Right
 
 #HotIf
+
+HotIf "layers.getActiveLayer() == 1"
+    Hotkey("r", "t")
+    Hotkey("t", "off")
+HotIf
+
 
 
 #HotIf layers.getActiveLayer() == 2 
