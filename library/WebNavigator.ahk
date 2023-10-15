@@ -6,7 +6,7 @@ Class WebNavigator{
 
     ; Public method
     ; Closes tabs to the right of the current tab, only works in chrome ATM
-    CloseTabsToTheRight(*){
+    CloseTabsToTheRight(){
 
         ComputerInput := ComputerInputController()
         Sleep(500)

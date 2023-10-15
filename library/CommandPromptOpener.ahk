@@ -9,7 +9,7 @@ Class CommandPromptOpener{
     }
 
     ; public method
-    OpenCmdPathedToCurrentLocation(*){
+    OpenCmdPathedToCurrentLocation(){
 
         if ( WinActive("ahk_class CabinetWClass") ){
             this.OpenCmdFileExplorer()

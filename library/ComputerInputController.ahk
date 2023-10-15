@@ -2,6 +2,10 @@
 
 Class ComputerInputController{
 
+    SendKey(key){
+        Send(key)
+    }
+
     BlockAllInput(){
         this.BlockKeyboard()
         this.BlockMouse()
@@ -45,7 +49,6 @@ Class ComputerInputController{
     DisableKey(key){
         Hotkey key, this.DoNothing, "On UseErrorLevel"
     }
-
 
     DoNothing(){
         return

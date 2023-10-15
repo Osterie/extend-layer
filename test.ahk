@@ -23,6 +23,17 @@ test2 := Tester()
 test2.setName("Adrian")
 
 
+test1.printName()
+
+
+; a::
+; <^>!::
+; SC138::
+; VKA5::
+; Ralt::{
+;     MsgBox("you pressed" . A_ThisHotKey)
+;     return
+; }
 
 
 ; ProfileInfo := {CloseTabsToTheRight: test1, CloseTabsToTheRight: test2}

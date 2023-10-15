@@ -101,7 +101,7 @@ Class Configurator{
         classMethodCall := ObjBindMethod(methodClass, iniFileMethod)
         newHotkey := IniRead(this.iniFile, section, iniFileMethod)
         ; OnScreenWriterHotkey := IniRead("Config.ini", "Hotkeys", iniFileMethod)
-        HotKey newHotkey, classMethodCall
+        HotKey newHotkey, (ThisHotkey) => classMethodCall()
 
         ; newHotkey := IniRead(this.iniFile, section, iniFileFunction)
         ; ; if the new hotkey is different from the new one, then the in use hotkey is replaced with the new hotkey

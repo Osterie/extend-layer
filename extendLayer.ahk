@@ -234,16 +234,6 @@ FirstKeyboardOverlayWebsites.CreateGui()
 ; Shows an on screen overlay for the first keyboard layer which shows which file explorer paths can be went to using the number keys
 FirstKeyboardOverlayFileExplorer := KeyboardOverlay()
 FirstKeyboardOverlayFileExplorer.CreateGui()
-; FirstKeyboardOverlayFileExplorer.AddStaticColumn("1", "Root")
-; FirstKeyboardOverlayFileExplorer.AddStaticColumn("2", "Adrian")
-; FirstKeyboardOverlayFileExplorer.AddStaticColumn("3", "Github")
-; FirstKeyboardOverlayFileExplorer.AddStaticColumn("4", "Down loads")
-; FirstKeyboardOverlayFileExplorer.AddStaticColumn("5", "School")
-; FirstKeyboardOverlayFileExplorer.AddStaticColumn("6", "Mappe")
-; FirstKeyboardOverlayFileExplorer.AddStaticColumn("7", "")
-; FirstKeyboardOverlayFileExplorer.AddStaticColumn("8", "")
-; FirstKeyboardOverlayFileExplorer.AddStaticColumn("9", "")
-; FirstKeyboardOverlayFileExplorer.AddStaticColumn("0", "")
 
 
 ; Shows an on screen overlay for the first keyboard layer which shows which number keys to press to enable/disable devices
@@ -290,11 +280,17 @@ methodsWithCorrespondingClasses := Map("ToggleShowKeysPressed", OnScreenWriter, 
 
 ; This is used to read ini files, and create hotkeys from them
 StartupConfigurator := Configurator("Config.ini", "DefaultConfig.ini", methodsWithCorrespondingClasses)
+; Is used to initialize all hotkeys, if hotkeys are changed by the user, these changes are stored in the Config.ini file.
+; This file is then read by StartupConfigurator and the default hotkeys are changed accordingly
+StartupConfigurator.InitializeAllHotkeys("Hotkeys")
+StartupConfigurator.ReadKeyboardOverlaySection(FirstKeyboardOverlayWebsites, "FirstKeyboardOverlayHotkeysHelper") 
+StartupConfigurator.ReadKeyboardOverlaySection(FirstKeyboardOverlayFileExplorer, "FirstKeyboardOverlayFileExplorer") 
 
 
 ; |-------------------------------------------|
 ; |------------Ensures consistency------------|
 ; |-------------------------------------------|
+
 SetCapsLockState("off")
 SetNumLockState("off")
 
@@ -337,11 +333,6 @@ CapsLock::{
     }
 }
 
-; Is used to initialize all hotkeys, if hotkeys are changed by the user, these changes are stored in the Config.ini file.
-; This file is then read by StartupConfigurator and the default hotkeys are changed accordingly
-StartupConfigurator.InitializeAllHotkeys("Hotkeys")
-StartupConfigurator.ReadKeyboardOverlaySection(FirstKeyboardOverlayWebsites, "FirstKeyboardOverlayHotkeysHelper") 
-StartupConfigurator.ReadKeyboardOverlaySection(FirstKeyboardOverlayFileExplorer, "FirstKeyboardOverlayFileExplorer") 
 
 
 ; Shows/hides gui which can be written in to help classmates/colleagues or whatever
@@ -422,17 +413,7 @@ StartupConfigurator.InitializeHotkey1("Hotkeys", "SuspendActiveAutohotkeyScript"
     ^6:: FileExplorer.NavigateToFolder("C:\Users\adria\github\University\Programmering 1\Mappe Vurdering\mappe-idata1003-traindispatchsystem-Osterie")
 
     ; Alt gr held down works like holding down the windows key
-    LControl & RAlt:: {
-        Send("{LWin Down}")
-        ComputerInput.DisableKey("#Capslock")
-        keywait("RAlt")
-    }
-
-    ; When Alt gr is released, the windows key is no longer active
-    LControl & RAlt up:: {
-        Send("{LWin Up}")
-        ComputerInput.EnableKey("#Capslock")
-    }
+    LControl & RAlt:: LWin
 
     q:: Esc
     å:: Esc
@@ -448,11 +429,13 @@ StartupConfigurator.InitializeHotkey1("Hotkeys", "SuspendActiveAutohotkeyScript"
     e:: Browser_Back
     r:: Browser_Forward
 
+
+
     ; opens a new tab in chrome which searches for the highlited content, if no content is highlighted, clipboard content is sent.
-    t:: WebSearcher.LookUpHighlitedTextOrClipboardContent()
+    ; t:: WebSearcher.LookUpHighlitedTextOrClipboardContent()
     
     ; Searches in the same manner as above, but in a chat with chat-gpt
-    +t:: WebSearcher.AskChatGptAboutHighligtedTextOrClipboardContent(3000)
+    ; +t:: WebSearcher.AskChatGptAboutHighligtedTextOrClipboardContent(3000)
     
     ; Ctrl + t translates highlighted text or clipboard content from a detected language to english 
     ^t::{
@@ -502,10 +485,32 @@ StartupConfigurator.InitializeHotkey1("Hotkeys", "SuspendActiveAutohotkeyScript"
 
 #HotIf
 
-; HotIf "layers.getActiveLayer() == 1"
-;     Hotkey("r", "t")
+HotIf "layers.getActiveLayer() == 1"
+
+    methodClass := methodsWithCorrespondingClasses["ToggleShowKeysPressed"]
+
+    ; way1 := OnScreenWriter.ToggleShowKeysPressed.Bind(OnScreenWriter)
+    ; way2 := ObjBindMethod(OnScreenWriter, "ToggleShowKeysPressed")
+    ; classMethodCall := ObjBindMethod(methodClass, "ToggleShowKeysPressed")
+    ; newHotkey := IniRead("Config.ini", "Hotkeys", "ToggleShowKeysPressed")
+    ; ; OnScreenWriterHotkey := IniRead("Config.ini", "Hotkeys", iniFileMethod)
+    ; msgbox(newHotkey . " " . classMethodCall)
+    ; SendKey.bind(SendKey)
+    ; HotKey("i", ("Up") => SendKey("Up")) ; SendKey.Bind("Up"))
+    HotKey("i", (ThisHotkey) => SendKey("Up")) ; SendKey.Bind("Up"))
+
+    ; HotKey "w", Send("{WheelUp}")
+    ; w:: WheelUp
+
+; Hotkey("r", "t")
 ;     Hotkey("t", "off")
-; HotIf
+HotIf
+
+SendKey(newKey){
+    ; msgbox(newKey)
+    ; msgbox(oldKey)
+    Send("{" . newKey . "}")
+}
 
 
 
