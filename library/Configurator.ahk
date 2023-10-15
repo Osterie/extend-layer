@@ -28,10 +28,13 @@ Class Configurator{
         modifierKey := IniRead(this.iniFile, section, "LayerModifier")
         
         iniFileSection := IniRead(this.iniFile, section)
-        KeyboardOverlayColumns := StrSplit(iniFileSection, "`n")
-        KeyboardOverlayColumns.RemoveAt(1)
 
-        ; This splits section, using "`n" as a delimiter, which is new line in ahk.
+        ; Reads where the columns start, and deletes everything before that.
+        startOfColumns := InStr(iniFileSection,"Column1")
+        iniFileSection := SubStr(iniFileSection,startOfColumns)
+
+        KeyboardOverlayColumns := StrSplit(iniFileSection, "`n")
+        
         ; A_LoopField is the current item in the loop.
         Loop KeyboardOverlayColumns.Length{
             ColumnValues := this.GetKeyValue(KeyboardOverlayColumns[A_Index])

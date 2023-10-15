@@ -231,29 +231,15 @@ DeviceManipulator := DeviceController()
 FirstKeyboardOverlayWebsites := KeyboardOverlay()
 FirstKeyboardOverlayWebsites.CreateGui()
 
-
-
-; FirstKeyboardOverlayWebsites.AddStaticColumn("1", "Time Table")
-; FirstKeyboardOverlayWebsites.AddStaticColumn("2", "Black Board")
-; FirstKeyboardOverlayWebsites.AddStaticColumn("3", "Prog 1")
-; FirstKeyboardOverlayWebsites.AddStaticColumn("4", "Team")
-; FirstKeyboardOverlayWebsites.AddStaticColumn("5", "Math")
-; FirstKeyboardOverlayWebsites.AddStaticColumn("6", "Prog Num Sec")
-; FirstKeyboardOverlayWebsites.AddStaticColumn("7", "Jupyter Hub")
-; FirstKeyboardOverlayWebsites.AddStaticColumn("8", "Capquiz")
-; FirstKeyboardOverlayWebsites.AddStaticColumn("9", "")
-; FirstKeyboardOverlayWebsites.AddStaticColumn("0", "")
-
-
 ; Shows an on screen overlay for the first keyboard layer which shows which file explorer paths can be went to using the number keys
 FirstKeyboardOverlayFileExplorer := KeyboardOverlay()
 FirstKeyboardOverlayFileExplorer.CreateGui()
-FirstKeyboardOverlayFileExplorer.AddStaticColumn("1", "Root")
-FirstKeyboardOverlayFileExplorer.AddStaticColumn("2", "Adrian")
-FirstKeyboardOverlayFileExplorer.AddStaticColumn("3", "Github")
-FirstKeyboardOverlayFileExplorer.AddStaticColumn("4", "Down loads")
-FirstKeyboardOverlayFileExplorer.AddStaticColumn("5", "School")
-FirstKeyboardOverlayFileExplorer.AddStaticColumn("6", "Mappe")
+; FirstKeyboardOverlayFileExplorer.AddStaticColumn("1", "Root")
+; FirstKeyboardOverlayFileExplorer.AddStaticColumn("2", "Adrian")
+; FirstKeyboardOverlayFileExplorer.AddStaticColumn("3", "Github")
+; FirstKeyboardOverlayFileExplorer.AddStaticColumn("4", "Down loads")
+; FirstKeyboardOverlayFileExplorer.AddStaticColumn("5", "School")
+; FirstKeyboardOverlayFileExplorer.AddStaticColumn("6", "Mappe")
 ; FirstKeyboardOverlayFileExplorer.AddStaticColumn("7", "")
 ; FirstKeyboardOverlayFileExplorer.AddStaticColumn("8", "")
 ; FirstKeyboardOverlayFileExplorer.AddStaticColumn("9", "")
@@ -355,6 +341,7 @@ CapsLock::{
 ; This file is then read by StartupConfigurator and the default hotkeys are changed accordingly
 StartupConfigurator.InitializeAllHotkeys("Hotkeys")
 StartupConfigurator.ReadKeyboardOverlaySection(FirstKeyboardOverlayWebsites, "FirstKeyboardOverlayHotkeysHelper") 
+StartupConfigurator.ReadKeyboardOverlaySection(FirstKeyboardOverlayFileExplorer, "FirstKeyboardOverlayFileExplorer") 
 
 
 ; Shows/hides gui which can be written in to help classmates/colleagues or whatever
