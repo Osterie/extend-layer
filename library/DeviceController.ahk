@@ -41,7 +41,7 @@ Class DeviceController{
 
     ToggleTouchPad(){
         RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-touchpad.exe")
-        this.ToggleToggle(this.touchPadActionToToggle)
+        this.Toggle(this.touchPadActionToToggle)
     }
 
     GetTouchScreenActionToToggle(){
@@ -60,7 +60,7 @@ Class DeviceController{
 
     ToggleCamera(){
         RunWait("powershell.exe -NoProfile -WindowStyle hidden -ExecutionPolicy Bypass " A_ScriptDir "\powerShellScripts\toggle-camera.exe")
-        this.ToggleToggle(this.cameraActionToToggle)
+        this.Toggle(this.cameraActionToToggle)
     }
 
     Toggle(Toggle){

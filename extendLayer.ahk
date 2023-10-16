@@ -25,7 +25,7 @@
 #Include ".\library\Configurator.ahk"
 #Include ".\library\KeyboardOverlayRegistry.ahk"
 #Include ".\library\ApplicationManipulator.ahk"
-
+#Include ".\library\Mouse.ahk"
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
 ; |--------------------------------------------------|
@@ -191,6 +191,7 @@ Hotstring( "::a@", eMail)
 ; |----------- OBJECT CREATION ---------------|
 ; |-------------------------------------------|
 
+MouseInstance := Mouse()
 
 ApplicationManipulatorInstance := ApplicationManipulator()
 
@@ -272,17 +273,14 @@ WebSearcher := WebNavigator()
 blackboardLoginImages := ["\imageSearchImages\feideBlackboardMaximized.png", "\imageSearchImages\feideBlackboardMinimized.png"]
 jupyterHubLoginImages := ["\imageSearchImages\jupyterHubMaximized.png", "\imageSearchImages\jupyterHubMinimized.png"]
 
-
-
 methodsWithCorrespondingClasses := Map("ToggleShowKeysPressed", OnScreenWriter, "CloseTabsToTheRight", WebSearcher, "CloseActiveApplication", ApplicationManipulatorInstance, 
 "CloseActiveAutohotkeyScript", ApplicationManipulatorInstance, "SuspendActiveAutohotkeyScript", ApplicationManipulatorInstance, "OpenCmdPathedToCurrentLocation", CommandPrompt)
-
 
 ; This is used to read ini files, and create hotkeys from them
 StartupConfigurator := Configurator("Config.ini", "DefaultConfig.ini", methodsWithCorrespondingClasses)
 ; Is used to initialize all hotkeys, if hotkeys are changed by the user, these changes are stored in the Config.ini file.
 ; This file is then read by StartupConfigurator and the default hotkeys are changed accordingly
-StartupConfigurator.InitializeAllHotkeys("Hotkeys")
+StartupConfigurator.InitializeAllDefaultKeyToFunctions("Hotkeys")
 StartupConfigurator.ReadKeyboardOverlaySection(FirstKeyboardOverlayWebsites, "FirstKeyboardOverlayHotkeysHelper") 
 StartupConfigurator.ReadKeyboardOverlaySection(FirstKeyboardOverlayFileExplorer, "FirstKeyboardOverlayFileExplorer") 
 
@@ -333,8 +331,6 @@ CapsLock::{
     }
 }
 
-
-
 ; Shows/hides gui which can be written in to help classmates/colleagues or whatever
 ; #0:: OnScreenWriter.ToggleShowKeysPressed()
 
@@ -358,8 +354,8 @@ CapsLock::{
 #SuspendExempt
 ; Even though all hotkeys should be initialized, this is necessary becaues the hotkey to suspend the
 ; script is required to be suspend exempt.
-StartupConfigurator.InitializeHotkey1("Hotkeys", "SuspendActiveAutohotkeyScript", "^!s")
-!^!s::Suspend  ; Ctrl+Alt+S
+; StartupConfigurator.InitializeDefaultKeyToFunction1("Hotkeys", "SuspendActiveAutohotkeyScript", "^!s")
+^!s::Suspend  ; Ctrl+Alt+S
 #SuspendExempt False
 
 ; |------------------------------|
@@ -413,81 +409,79 @@ StartupConfigurator.InitializeHotkey1("Hotkeys", "SuspendActiveAutohotkeyScript"
     ^6:: FileExplorer.NavigateToFolder("C:\Users\adria\github\University\Programmering 1\Mappe Vurdering\mappe-idata1003-traindispatchsystem-Osterie")
 
     ; Alt gr held down works like holding down the windows key
-    LControl & RAlt:: LWin
+    ; LControl & RAlt:: LWin
 
-    q:: Esc
-    å:: Esc
+    ; q:: Esc
+    ; å:: Esc
     
-    a:: Alt
-    d:: Shift
-    f:: Ctrl
-    n:: Tab
+    ; a:: Alt
+    ; d:: Shift
+    ; f:: Ctrl
+    ; n:: Tab
 
-    w:: WheelUp
-    s:: WheelDown
+    ; w:: WheelUp
+    ; s:: WheelDown
 
-    e:: Browser_Back
-    r:: Browser_Forward
+    ; e:: Browser_Back
+    ; r:: Browser_Forward
 
-
-
-    ; opens a new tab in chrome which searches for the highlited content, if no content is highlighted, clipboard content is sent.
-    ; t:: WebSearcher.LookUpHighlitedTextOrClipboardContent()
+    ; ; opens a new tab in chrome which searches for the highlited content, if no content is highlighted, clipboard content is sent.
+    ; ; t:: WebSearcher.LookUpHighlitedTextOrClipboardContent()
     
-    ; Searches in the same manner as above, but in a chat with chat-gpt
-    ; +t:: WebSearcher.AskChatGptAboutHighligtedTextOrClipboardContent(3000)
+    ; ; Searches in the same manner as above, but in a chat with chat-gpt
+    ; ; +t:: WebSearcher.AskChatGptAboutHighligtedTextOrClipboardContent(3000)
     
-    ; Ctrl + t translates highlighted text or clipboard content from a detected language to english 
-    ^t::{
-        translatedText := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "en")
-        MsgBox(translatedText)
-    }
+    ; ; Ctrl + t translates highlighted text or clipboard content from a detected language to english 
+    ; ; ^t::{
+    ; ;     translatedText := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "en")
+    ; ;     MsgBox(translatedText)
+    ; ; }
 
-    ; Ctrl Shift+ + t translates highlighted text or clipboard content from a detected language to norwegian
-    ^+t::{
-        translatedText := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "no")
-        MsgBox(translatedText)
-    }
+    ; ; Ctrl Shift+ + t translates highlighted text or clipboard content from a detected language to norwegian
+    ; ; ^+t::{
+    ; ;     translatedText := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "no")
+    ; ;     MsgBox(translatedText)
+    ; ; }
 
-    ; Creates an input box, which when confirm or enter is pressed, searches the web for its contents
-    b::{
-        inputBoxWebSearch := InputBox("What would you like to search in the browser?", "Web search", "w150 h150")
-        WebSearcher.SearchInBrowser(inputBoxWebSearch.Value)
-    }
+    ; ; Creates an input box, which when confirm or enter is pressed, searches the web for its contents
+    ; ; b::{
+    ; ;     inputBoxWebSearch := InputBox("What would you like to search in the browser?", "Web search", "w150 h150")
+    ; ;     WebSearcher.SearchInBrowser(inputBoxWebSearch.Value)
+    ; ; }
 
-    y:: PgUp
-    h:: PgDn
+    ; y:: PgUp
+    ; h:: PgDn
 
-    u:: Home
-    o:: End
+    ; u:: Home
+    ; o:: End
 
-    p:: Del
-    ø:: BackSpace
+    ; p:: Del
+    ; ø:: BackSpace
 
-    z:: ^z
-    x:: ^x
-    c:: ^c
-    v:: ^v
+    ; z:: ^z
+    ; x:: ^x
+    ; c:: ^c
+    ; v:: ^v
 
-    ; LeftClick
-    m:: Click()
-    ; RightClick
-    g:: AppsKey
-    ; Moves mouse to the center of the screen
-    <:: MouseMove((A_ScreenWidth//2), (A_ScreenHeight//2))
+    ; ; LeftClick
+    ; m:: Click
+    ; ; RightClick
+    ; g:: AppsKey
+    ; ; Moves mouse to the center of the screen
+    ; ; <:: MouseInstance.MoveMouseToCenterOfScreen()
     
-    ,:: F6
+    ; ,:: F6
 
-    i:: Up
-    j:: Left
-    k:: Down
-    l:: Right
+    ; i:: Up
+    ; j:: Left
+    ; k:: Down
+    ; l:: Right
 
 #HotIf
 
 HotIf "layers.getActiveLayer() == 1"
 
-    methodClass := methodsWithCorrespondingClasses["ToggleShowKeysPressed"]
+    ; methodClass := methodsWithCorrespondingClasses["ToggleShowKeysPressed"]
 
     ; way1 := OnScreenWriter.ToggleShowKeysPressed.Bind(OnScreenWriter)
     ; way2 := ObjBindMethod(OnScreenWriter, "ToggleShowKeysPressed")
@@ -497,20 +491,21 @@ HotIf "layers.getActiveLayer() == 1"
     ; msgbox(newHotkey . " " . classMethodCall)
     ; SendKey.bind(SendKey)
     ; HotKey("i", ("Up") => SendKey("Up")) ; SendKey.Bind("Up"))
-    HotKey("i", (ThisHotkey) => SendKey("Up")) ; SendKey.Bind("Up"))
-
+    
     ; HotKey "w", Send("{WheelUp}")
     ; w:: WheelUp
 
 ; Hotkey("r", "t")
 ;     Hotkey("t", "off")
-HotIf
+    StartupConfigurator.InitializeAllDefaultKeyToNewKeys("FirstLayer-DefaultKeys")
+    HotIf
 
-SendKey(newKey){
-    ; msgbox(newKey)
-    ; msgbox(oldKey)
-    Send("{" . newKey . "}")
-}
+
+; SendKey(newKey){
+;     ; msgbox(newKey)
+;     ; msgbox(oldKey)
+;     Send("{" . newKey . "}")
+; }
 
 
 

@@ -82,6 +82,11 @@ Class WebNavigator{
         A_Clipboard := rememberedClipboardValue
     }
 
+    SearchFromInputBox(){
+        inputBoxWebSearch := InputBox("What would you like to search in the browser?", "Web search", "w150 h150")
+        this.SearchInBrowser(inputBoxWebSearch.Value)
+    }
+
     SearchInBrowser(searchTerm){
         googleSearchUrl := "https://www.google.com/search?q="
         isUrl := this.isUrl(searchTerm)
@@ -120,6 +125,10 @@ Class WebNavigator{
         Send("{Enter}")
     }
 
+    ShowTranslatedText(fromLanguage := "auto", toLanguage := "en", &variants := ""){
+        translatedText := this.TranslateHighlightedTextOrClipboard(fromLanguage, toLanguage, &variants)
+        MsgBox(translatedText)
+    }
     ; Translates highligted text or the text in the clipboard
     ; if no fromLanguage is specified, then the language is automatically detected
     ; if no toLanguage is specified, then the language is translated to english

@@ -9,6 +9,7 @@ Class CommandPromptOpener{
     }
 
     ; public method
+    ; Works with vscode, and file explorer
     OpenCmdPathedToCurrentLocation(){
 
         if ( WinActive("ahk_class CabinetWClass") ){
