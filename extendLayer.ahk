@@ -156,6 +156,9 @@ if (not A_IsAdmin){
 
 ; TODO: i believe the promt which apperas when a powerhsell script runs can be hidden
 
+; TODO: for the keyboard overlays, if the amount of columns goes over an amount (set by user or chosen by me, f.ex 10 or 30% screen width)
+; then the columns should be placed below eachother instead of next to eachother
+
 ; add gui to show current power mode, auto switch for screen darkner and such maybe?
 
 ; TODO FUTURE: possible to integrate with real life appliances, for example to control lights in rooms, a third layer could be created for this
@@ -180,12 +183,6 @@ eMail := IniRead("PrivateConfig.ini", "PrivateInfo", "Email")
 
 Hotstring( "::agb", StrReplace(name, "Ã¸", "ø"))
 Hotstring( "::a@", eMail)
-
-; ::agb::{
-;     Send(StrReplace(name, "Ã¸", "ø"))
-; }
-
-
 
 ; |-------------------------------------------|
 ; |----------- OBJECT CREATION ---------------|
@@ -331,30 +328,11 @@ CapsLock::{
     }
 }
 
-; Shows/hides gui which can be written in to help classmates/colleagues or whatever
-; #0:: OnScreenWriter.ToggleShowKeysPressed()
-
-; close tabs to the right
-; !^!w:: WebSearcher.CloseTabsToTheRight() 
-
-; Works as Alt+f4
-; !^q:: ApplicationManipulatorInstance.CloseActiveApplication()
-
-; press f2 + any modifier to exit script
-; used as an emergency exitapp, since the script may have bugs which make it hard to exit.
-; *!f2::ApplicationManipulatorInstance.CloseActiveAutohotkeyScript()
-
-; Win+C Opens a command prompt at the current location
-; !#c:: CommandPrompt.OpenCmdPathedToCurrentLocation()
-
 ; Used to suspend script, suspending the script means noen of its functionalities are active.
 ; Pressing the same key combination again enables the script again
 ; SuspendExempt means this hotkey will not be suspended when the script is suspended.
 ; Since this hotkey suspends the script it is important that it is not suspended itself.
 #SuspendExempt
-; Even though all hotkeys should be initialized, this is necessary becaues the hotkey to suspend the
-; script is required to be suspend exempt.
-; StartupConfigurator.InitializeDefaultKeyToFunction1("Hotkeys", "SuspendActiveAutohotkeyScript", "^!s")
 ^!s::Suspend  ; Ctrl+Alt+S
 #SuspendExempt False
 
@@ -364,8 +342,13 @@ CapsLock::{
 
 #HotIf layers.getActiveLayer() == 1
 
+    ; !Layer modifier, or layer switch key
+
     ; Shows first keyboard overlay for websites when a shift is held down
     ~Shift:: OverlayRegistry.showKeyboardOverlay(FirstKeyboardOverlayWebsites) ;FirstKeyboardOverlayWebsites.ShowGui() 
+    
+    ; Hides first keyboard overlay for websites (and second overlay for devices just in case)
+    Shift up:: OverlayRegistry.hideAllLayers()
 
     ; Shows first keyboard overlay for file explorer when a shift is held down
     ~Ctrl::  OverlayRegistry.showKeyboardOverlay(FirstKeyboardOverlayFileExplorer)  ;FirstKeyboardOverlayFileExplorer.ShowGui()
@@ -373,9 +356,11 @@ CapsLock::{
     ; Hides first keyboard overlay for file explorer 
     Ctrl up:: OverlayRegistry.hideKeyboardOverlay(FirstKeyboardOverlayFileExplorer) ;FirstKeyboardOverlayFileExplorer.HideGui()
 
-    ; Hides first keyboard overlay for websites (and second overlay for devices just in case)
-    Shift up:: OverlayRegistry.hideAllLayers()
 
+    ; ......................................
+
+
+    
     ; Go to study plan (from current week to end of first semester currently)
     +1::WebSearcher.OpenUrl("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&") 
 
@@ -408,106 +393,41 @@ CapsLock::{
     ^5:: FileExplorer.NavigateToFolder("C:\Users\adria\github\University")
     ^6:: FileExplorer.NavigateToFolder("C:\Users\adria\github\University\Programmering 1\Mappe Vurdering\mappe-idata1003-traindispatchsystem-Osterie")
 
-    ; Alt gr held down works like holding down the windows key
-    ; LControl & RAlt:: LWin
-
-    ; q:: Esc
-    ; å:: Esc
+    ; opens a new tab in chrome which searches for the highlited content, if no content is highlighted, clipboard content is sent.
+    t:: WebSearcher.LookUpHighlitedTextOrClipboardContent()
     
-    ; a:: Alt
-    ; d:: Shift
-    ; f:: Ctrl
-    ; n:: Tab
-
-    ; w:: WheelUp
-    ; s:: WheelDown
-
-    ; e:: Browser_Back
-    ; r:: Browser_Forward
-
-    ; ; opens a new tab in chrome which searches for the highlited content, if no content is highlighted, clipboard content is sent.
-    ; ; t:: WebSearcher.LookUpHighlitedTextOrClipboardContent()
+    ; Searches in the same manner as above, but in a chat with chat-gpt
+    +t:: WebSearcher.AskChatGptAboutHighligtedTextOrClipboardContent(3000)
     
-    ; ; Searches in the same manner as above, but in a chat with chat-gpt
-    ; ; +t:: WebSearcher.AskChatGptAboutHighligtedTextOrClipboardContent(3000)
+    ; Ctrl + t translates highlighted text or clipboard content from a detected language to english 
+    ^t::{
+        translatedText := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "en")
+        MsgBox(translatedText)
+    }
+
+    ; Ctrl Shift+ + t translates highlighted text or clipboard content from a detected language to norwegian
+    ^+t::{
+        translatedText := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "no")
+        MsgBox(translatedText)
+    }
+
+    ; Creates an input box, which when confirm or enter is pressed, searches the web for its contents
+    b::{
+        inputBoxWebSearch := InputBox("What would you like to search in the browser?", "Web search", "w150 h150")
+        WebSearcher.SearchInBrowser(inputBoxWebSearch.Value)
+    }
+
+    <:: MouseInstance.MoveMouseToCenterOfScreen()
     
-    ; ; Ctrl + t translates highlighted text or clipboard content from a detected language to english 
-    ; ; ^t::{
-    ; ;     translatedText := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "en")
-    ; ;     MsgBox(translatedText)
-    ; ; }
-
-    ; ; Ctrl Shift+ + t translates highlighted text or clipboard content from a detected language to norwegian
-    ; ; ^+t::{
-    ; ;     translatedText := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "no")
-    ; ;     MsgBox(translatedText)
-    ; ; }
-
-    ; ; Creates an input box, which when confirm or enter is pressed, searches the web for its contents
-    ; ; b::{
-    ; ;     inputBoxWebSearch := InputBox("What would you like to search in the browser?", "Web search", "w150 h150")
-    ; ;     WebSearcher.SearchInBrowser(inputBoxWebSearch.Value)
-    ; ; }
-
-    ; y:: PgUp
-    ; h:: PgDn
-
-    ; u:: Home
-    ; o:: End
-
-    ; p:: Del
-    ; ø:: BackSpace
-
-    ; z:: ^z
-    ; x:: ^x
-    ; c:: ^c
-    ; v:: ^v
-
-    ; ; LeftClick
-    ; m:: Click
-    ; ; RightClick
-    ; g:: AppsKey
-    ; ; Moves mouse to the center of the screen
-    ; ; <:: MouseInstance.MoveMouseToCenterOfScreen()
-    
-    ; ,:: F6
-
-    ; i:: Up
-    ; j:: Left
-    ; k:: Down
-    ; l:: Right
-
 #HotIf
 
+
 HotIf "layers.getActiveLayer() == 1"
-
-    ; methodClass := methodsWithCorrespondingClasses["ToggleShowKeysPressed"]
-
-    ; way1 := OnScreenWriter.ToggleShowKeysPressed.Bind(OnScreenWriter)
-    ; way2 := ObjBindMethod(OnScreenWriter, "ToggleShowKeysPressed")
-    ; classMethodCall := ObjBindMethod(methodClass, "ToggleShowKeysPressed")
-    ; newHotkey := IniRead("Config.ini", "Hotkeys", "ToggleShowKeysPressed")
-    ; ; OnScreenWriterHotkey := IniRead("Config.ini", "Hotkeys", iniFileMethod)
-    ; msgbox(newHotkey . " " . classMethodCall)
-    ; SendKey.bind(SendKey)
-    ; HotKey("i", ("Up") => SendKey("Up")) ; SendKey.Bind("Up"))
     
-    ; HotKey "w", Send("{WheelUp}")
-    ; w:: WheelUp
-
-; Hotkey("r", "t")
-;     Hotkey("t", "off")
     StartupConfigurator.InitializeAllDefaultKeyToNewKeys("FirstLayer-DefaultKeys")
-    HotIf
+    
 
-
-; SendKey(newKey){
-;     ; msgbox(newKey)
-;     ; msgbox(oldKey)
-;     Send("{" . newKey . "}")
-; }
-
-
+HotIf
 
 #HotIf layers.getActiveLayer() == 2 
 

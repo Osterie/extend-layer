@@ -1,5 +1,22 @@
 #Requires AutoHotkey v2.0
 
+#Include ".\library\CountdownGUI.ahk"
+#Include ".\library\MonitorController.ahk"
+#Include ".\library\LayerIndicatorController.ahk"
+#Include ".\library\BatteryController.ahk"
+#Include ".\library\PrivacyGUIController.ahk"
+#Include ".\library\ComputerInputController.ahk"
+#Include ".\library\KeysPressedGui.ahk"
+#Include ".\library\WebNavigator.ahk"
+#Include ".\library\KeyboardOverlay.ahk"
+#Include ".\library\DeviceController.ahk"
+#Include ".\library\CommandPromptOpener.ahk"
+#Include ".\library\FileExplorerNavigator.ahk"
+#Include ".\library\Configurator.ahk"
+#Include ".\library\KeyboardOverlayRegistry.ahk"
+#Include ".\library\ApplicationManipulator.ahk"
+#Include ".\library\Mouse.ahk"
+
 
 A_MaxHotkeysPerInterval := 99000000
 A_HotkeyInterval := 99000000
@@ -107,7 +124,7 @@ Loop Parse, test, ""{
 }
 
 
-MsgBox("Key: " . key . "`nModifiers: " . modifiers)
+; MsgBox("Key: " . key . "`nModifiers: " . modifiers)
 
 
 
@@ -142,6 +159,20 @@ MsgBox("Key: " . key . "`nModifiers: " . modifiers)
 ; }
 
 
+
+WebSearcher := WebNavigator()
+
+
+way1 := WebSearcher.OpenUrl.Bind(WebSearcher, "https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&")
+way2 := ObjBindMethod(WebSearcher, "OpenUrl", "https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&")
+; HotKey "t", (ThisHotkey) => (way1)()
+HotKey "t", (ThisHotkey) => (way2)()
+; Hotkey("t",(ThisHotkey) => WebSearcher.OpenUrl("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&") )
+
+
+; CloseTabsToTheRight := ObjBindMethod(WebSearcher, "CloseTabsToTheRight")
+; CloseTabsToTheRightHotkey := IniRead("Config.ini", "Hotkeys", "CloseTabsToTheRight") ; Default key is ^!W
+; Hotkey(CloseTabsToTheRightHotkey, CloseTabsToTheRight)
 
 
 
