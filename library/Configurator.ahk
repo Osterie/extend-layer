@@ -126,15 +126,7 @@ Class Configurator{
         ; way2 := ObjBindMethod(OnScreenWriter, "ToggleShowKeysPressed")
         classMethodCall := ObjBindMethod(methodClass, iniFileMethod)
         newHotkey := this.IniReader.ReadLine(this.iniFile, section, iniFileMethod)
-        ; OnScreenWriterHotkey := this.IniReader.ReadLine("Config.ini", "Hotkeys", iniFileMethod)
         HotKey newHotkey, (ThisHotkey) => classMethodCall()
-
-        ; newHotkey := this.IniReader.ReadLine(this.iniFile, section, iniFileFunction)
-        ; ; if the new hotkey is different from the new one, then the in use hotkey is replaced with the new hotkey
-        ; if (newHotkey != inUseHotkey){
-        ;     Hotkey(inUseHotkey, "off")
-        ;     Hotkey(newHotkey, inUseHotkey)
-        ; }
     }
 
 
@@ -156,7 +148,11 @@ Class Configurator{
     }
 
     InitializeDefaultKeyToFunctionGeneral(section, key){
-        readLine := (IniRead(this.iniFile, section, key))
+        readLine := this.IniReader.readLine(this.iniFile, section, key)
+        
+        ; TODO add method for key validation
+        key := StrReplace(key, "win+", "#")
+
         ; Reads the Class name, which is the text before the first period
         UsedClass := SubStr(readLine, 1, InStr(readLine, ".")-1)
         ; Removes the class name from the expression

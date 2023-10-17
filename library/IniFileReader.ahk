@@ -35,6 +35,8 @@ Class IniFileReader{
         pairValue := StrReplace(pairValue, "Ã¦", "æ")
         pairValue := StrReplace(pairValue, "Ã¸", "ø")
         pairValue := StrReplace(pairValue, "Ã¥", "å")
+        ; pairValue := StrReplace(pairValue, "win+", "#")
+        ; TODO handle if win is with upper or lower case w
         return pairValue
     }
 
