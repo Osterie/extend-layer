@@ -33,25 +33,46 @@ Class WebNavigator{
         ComputerInput.UnBlockKeyboard()
     }
 
-    LoginToSite(url, loginButtonImagePaths, loadTime, loginRedirect){
+    LoginToSite(url, loginButtonImagePaths, loadTime){
+
+        rememberedClipboardValue := A_Clipboard
+        trimmedUrl := StrReplace(url, "https://www", "")
+        trimmedUrl := StrReplace(trimmedUrl, "https://", "")
+        trimmedUrl := StrReplace(trimmedUrl, "http://www", "")
+        trimmedUrl := StrReplace(trimmedUrl, "http://", "")
 
         loginButtonClicked := false
         index := 1
 
         this.OpenUrl(url)
         Sleep(loadTime)
+
+
         
         while ( (index <= loginButtonImagePaths.Length) && !loginButtonClicked ){
             try{
                 this.ClickLoginButton(loginButtonImagePaths[index])
+                ; if it reaches here, the login button is clicked
                 loginButtonClicked := true
 
-                if(loginRedirect){
-                    Sleep(loadTime/2)
+                Sleep(loadTime/2)
+                Send("^l")
+                Send("^c")
+                Send("{F6 2}")
+
+                trimmedClipboard := StrReplace(A_Clipboard, "https://www", "")
+                trimmedClipboard := StrReplace(trimmedClipboard, "https://", "")
+                trimmedClipboard := StrReplace(trimmedClipboard, "http://www", "")
+                trimmedClipboard := StrReplace(trimmedClipboard, "http://", "")
+
+                ; this checks if the clipboard content (which is the new site url, after logging in) is the same as the given url.
+                if (!InStr(trimmedClipboard, trimmedUrl)){
                     Send("^l")
                     Send(url)
                     Send("{Enter}")
                 }
+        
+                A_Clipboard := rememberedClipboardValue
             }
             catch{
                 index += 1
@@ -60,14 +81,8 @@ Class WebNavigator{
     }
 
     ClickLoginButton(loginButtonImagePath){
-
         ErrorLevel := !ImageSearch(&loginButtonXCoordinate, &loginButtonYCoordinate, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir loginButtonImagePath)
-        if (ErrorLevel = 1){
-            ; Icon could not be found on the screen.
-        }
-        else{
-            MouseClick("left", loginButtonXCoordinate, loginButtonYCoordinate)
-        }
+        MouseClick("left", loginButtonXCoordinate, loginButtonYCoordinate)
     }
 
     ; Searches google for the currently highlighteded text, or the text stored in the clipboard
@@ -75,6 +90,7 @@ Class WebNavigator{
         
         rememberedClipboardValue := A_Clipboard
         Send("^c")
+        Sleep(100)
 
         this.SearchInBrowser(A_Clipboard)
         
@@ -84,7 +100,10 @@ Class WebNavigator{
 
     SearchFromInputBox(){
         inputBoxWebSearch := InputBox("What would you like to search in the browser?", "Web search", "w150 h150")
-        this.SearchInBrowser(inputBoxWebSearch.Value)
+        ; Only if the search is not cancelled will it search
+        if (inputBoxWebSearch.Result = "Ok"){
+            this.SearchInBrowser(inputBoxWebSearch.Value)
+        }
     }
 
     SearchInBrowser(searchTerm){
@@ -101,15 +120,17 @@ Class WebNavigator{
         }
     }
 
-    AskChatGptAboutHighligtedTextOrClipboardContent(loadTime){
+    ; TODO instead of using loadtime = 3000, it should be a setting in the ini file, but i dont want to do this right now, easy fix
+    AskChatGptAboutHighligtedTextOrClipboardContent(){
         ; saves current clipboard value to a variable
         clipboardValue := A_Clipboard
         ; saves a new value to the clipboard, if any text is highligted
         Send("^c")
         
+        
         ; Opens the chat-gpt site and then pastes the clipboard value (which could be the text which was highlighted)
         Run("https://chat.openai.com/")
-        Sleep(loadTime)
+        Sleep(3000)
         Send(A_Clipboard)
         Send("{Enter}")
         
@@ -138,6 +159,7 @@ Class WebNavigator{
         clipboardValue := A_Clipboard
         ; saves a new value to the clipboard, if any text is highligted
         Send("^c")
+        Sleep(100)
 
         ; Takes a text to translate, the language to translate from, the language to translate to, and the variants of the text(optional)
         translatedText := this.TranslateText(A_Clipboard, fromLanguage, toLanguage, &variants)

@@ -25,7 +25,6 @@ Class Configurator{
         this.defaultIniFile := defaultIniFile
     }
 
-
     ReadKeyboardOverlaySection(KeyboardOverlay, section){
         
         modifierKey := this.IniReader.ReadLine(this.iniFile, section, "LayerModifier")
@@ -138,27 +137,68 @@ Class Configurator{
         ; }
     }
 
-    ; InitializeAllDefaultKeyToKeys(section){
 
-    ;     iniFileSection := this.IniReader.ReadSection(this.iniFile, section)
-    ;     iniFileSectionArray := StrSplit(iniFileSection, "`n")
+    InitializeAllDefaultKeysToFunctionsGeneral(section){
+        iniFileSection := this.IniReader.ReadSection(this.iniFile, section)
 
-    ;     ; This splits section, using "`n" as a delimiter, which is new line in ahk.
-    ;     ; A_LoopField is the current item in the loop.
-    ;     Loop iniFileSectionArray.Length{
-    ;         ; This is the function that is in the ini file, for example EmergencyClose is a function.
-    ;         iniFileDefaultKey := StrSplit(iniFileSectionArray[A_Index], "=")[1]
-    ;         this.InitializeDefaultKeyToKey(section, iniFileDefaultKey)
-    ;     }
-    ; }
+        iniFileSectionArray := StrSplit(iniFileSection, "`n")
 
-    ; InitializeDefaultKeyToKey(section, defaultKey){
-    ;     newKey := this.IniReader.ReadLine(this.iniFile, section, defaultKey)
-    ;     HotKey(defaultKey, (ThisHotkey) => SendKey(newKey)) ; SendKey.Bind("Up"))
-    ; }
+        ; A_LoopField is the current item in the loop.
+        Loop iniFileSectionArray.Length{
 
-    SendKey(key){
-        Send("{" . key . "}")
+            ; This is the function that is in the ini file, for example EmergencyClose is a function.
+            iniFileKey := StrSplit(iniFileSectionArray[A_Index], "=")[1]
+            ; This is the hotkey that is currently in use (found in the DefaultConfig.ini file)
+            ; inUseHotkey := StrSplit(defaultIniFileSectionArray[A_Index], "=")[2]
+            this.InitializeDefaultKeyToFunctionGeneral(section, iniFileKey)
+
+        }
+    }
+
+    InitializeDefaultKeyToFunctionGeneral(section, key){
+        readLine := (IniRead(this.iniFile, section, key))
+        ; Reads the Class name, which is the text before the first period
+        UsedClass := SubStr(readLine, 1, InStr(readLine, ".")-1)
+        ; Removes the class name from the expression
+        readLine := SubStr(readLine, InStr(readLine, ".")+1)
+
+        UsedMethod := SubStr(readLine, 1, InStr(readLine, "(")-1)
+        ; Removes the method name from the expression, and also the first and last character, which are "(" and ")"
+        ; This leaves only the arguments remainig, which is split into an array, splitting by "," since comma seperates arguments
+        readLine := SubStr(readLine, InStr(readLine, "(")+1, -1)
+
+        Arguments := StrSplit(readLine, ",")
+        ; msgbox(UsedClass . " " . UsedMethod . " " . Arguments) 
+        validatedArguments := []
+        temporaryArray := []
+        inArray := false
+
+        for argument in Arguments{
+            
+            argument := StrReplace(argument, A_Space, "")
+
+            if (SubStr(argument, 1, 1) == "["){
+                inArray := true
+                temporaryArray.Push(SubStr(argument, 1,))
+            }
+            else if(SubStr(argument, -1) == "]"){
+                inArray := false
+                temporaryArray.Push(SubStr(argument, 1, -1))
+                validatedArguments.Push(temporaryArray)
+            }
+            else if(inArray){
+                temporaryArray.Push(argument)
+            }
+            else{
+                validatedArguments.Push(argument)
+            }
+        }
+
+        methodClass := this.methodsWithCorrespondingClasses[UsedMethod]
+
+        secondColumn := ObjBindMethod(methodClass, UsedMethod, validatedArguments*)
+        HotKey key, (ThisHotkey) => (secondColumn)()
+
     }
 
     InitializeAllDefaultKeyToNewKeys(section){

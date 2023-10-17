@@ -271,7 +271,9 @@ blackboardLoginImages := ["\imageSearchImages\feideBlackboardMaximized.png", "\i
 jupyterHubLoginImages := ["\imageSearchImages\jupyterHubMaximized.png", "\imageSearchImages\jupyterHubMinimized.png"]
 
 methodsWithCorrespondingClasses := Map("ToggleShowKeysPressed", OnScreenWriter, "CloseTabsToTheRight", WebSearcher, "CloseActiveApplication", ApplicationManipulatorInstance, 
-"CloseActiveAutohotkeyScript", ApplicationManipulatorInstance, "SuspendActiveAutohotkeyScript", ApplicationManipulatorInstance, "OpenCmdPathedToCurrentLocation", CommandPrompt)
+"CloseActiveAutohotkeyScript", ApplicationManipulatorInstance, "SuspendActiveAutohotkeyScript", ApplicationManipulatorInstance, "OpenCmdPathedToCurrentLocation", CommandPrompt, 
+"OpenUrl", WebSearcher, "LoginToSite", WebSearcher, "LookUpHighlitedTextOrClipboardContent", WebSearcher, "AskChatGptAboutHighligtedTextOrClipboardContent", WebSearcher,
+"ShowTranslatedText", WebSearcher, "SearchFromInputBox", WebSearcher, "NavigateToFolder", FileExplorer, "MoveMouseToCenterOfScreen", MouseInstance)
 
 ; This is used to read ini files, and create hotkeys from them
 StartupConfigurator := Configurator("Config.ini", "DefaultConfig.ini", methodsWithCorrespondingClasses)
@@ -342,7 +344,7 @@ CapsLock::{
 
 #HotIf layers.getActiveLayer() == 1
 
-    ; !Layer modifier, or layer switch key
+    ; ---------------------------
 
     ; Shows first keyboard overlay for websites when a shift is held down
     ~Shift:: OverlayRegistry.showKeyboardOverlay(FirstKeyboardOverlayWebsites) ;FirstKeyboardOverlayWebsites.ShowGui() 
@@ -356,75 +358,13 @@ CapsLock::{
     ; Hides first keyboard overlay for file explorer 
     Ctrl up:: OverlayRegistry.hideKeyboardOverlay(FirstKeyboardOverlayFileExplorer) ;FirstKeyboardOverlayFileExplorer.HideGui()
 
-
-    ; ......................................
-
-
-    
-    ; Go to study plan (from current week to end of first semester currently)
-    +1::WebSearcher.OpenUrl("https://tp.educloud.no/ntnu/timeplan/?id[]=38726&type=student&weekTo=52&ar=2023&") 
-
-    ; Go to blackboard
-    +2::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/course" , blackboardLoginImages, 3000, false) 
-    
-    ; Go to programming 1, try to login if not logged in
-    +3::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_39969_1/cl/outline" , blackboardLoginImages, 3000, true) 
-
-    ; Go to team class, try to login if not logged in
-    +4::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_39995_1/cl/outline" , blackboardLoginImages, 3000, true) 
-
-    ; Go to Math, try to login if not logged in
-    +5::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_44996_1/cl/outline" , blackboardLoginImages, 3000, true) 
-    
-    ; Go to programming, numeric and safety, try to login if not logged in
-    +6::WebSearcher.LoginToSite("https://ntnu.blackboard.com/ultra/courses/_43055_1/cl/outline" , blackboardLoginImages, 3000, true) 
-
-    ; Go to jupyterhub, try to login if not logged in
-    +7::WebSearcher.LoginToSite("https://inga1002.apps.stack.it.ntnu.no/user/adriangb/lab" , jupyterHubLoginImages, 4000, false) 
-
-    ; Go to capquiz
-    +8::WebSearcher.OpenUrl("https://capquiz.math.ntnu.no/my/")
-    
-    ; opens the file explorer in the given location
-    ^1:: FileExplorer.NavigateToFolder("C:\") 
-    ^2:: FileExplorer.NavigateToFolder("C:\Users\adria")
-    ^3:: FileExplorer.NavigateToFolder("C:\Users\adria\github")
-    ^4:: FileExplorer.NavigateToFolder("C:\Users\adria\Downloads")
-    ^5:: FileExplorer.NavigateToFolder("C:\Users\adria\github\University")
-    ^6:: FileExplorer.NavigateToFolder("C:\Users\adria\github\University\Programmering 1\Mappe Vurdering\mappe-idata1003-traindispatchsystem-Osterie")
-
-    ; opens a new tab in chrome which searches for the highlited content, if no content is highlighted, clipboard content is sent.
-    t:: WebSearcher.LookUpHighlitedTextOrClipboardContent()
-    
-    ; Searches in the same manner as above, but in a chat with chat-gpt
-    +t:: WebSearcher.AskChatGptAboutHighligtedTextOrClipboardContent(3000)
-    
-    ; Ctrl + t translates highlighted text or clipboard content from a detected language to english 
-    ^t::{
-        translatedText := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "en")
-        MsgBox(translatedText)
-    }
-
-    ; Ctrl Shift+ + t translates highlighted text or clipboard content from a detected language to norwegian
-    ^+t::{
-        translatedText := WebSearcher.TranslateHighlightedTextOrClipboard("auto", "no")
-        MsgBox(translatedText)
-    }
-
-    ; Creates an input box, which when confirm or enter is pressed, searches the web for its contents
-    b::{
-        inputBoxWebSearch := InputBox("What would you like to search in the browser?", "Web search", "w150 h150")
-        WebSearcher.SearchInBrowser(inputBoxWebSearch.Value)
-    }
-
-    <:: MouseInstance.MoveMouseToCenterOfScreen()
-    
 #HotIf
 
 
 HotIf "layers.getActiveLayer() == 1"
     
     StartupConfigurator.InitializeAllDefaultKeyToNewKeys("FirstLayer-DefaultKeys")
+    StartupConfigurator.InitializeAllDefaultKeysToFunctionsGeneral("FirstLayer-Functions")
     
 
 HotIf
