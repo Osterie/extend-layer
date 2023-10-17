@@ -279,8 +279,7 @@ methodsWithCorrespondingClasses := Map("ToggleShowKeysPressed", OnScreenWriter, 
 StartupConfigurator := Configurator("Config.ini", "DefaultConfig.ini", methodsWithCorrespondingClasses)
 ; Is used to initialize all hotkeys, if hotkeys are changed by the user, these changes are stored in the Config.ini file.
 ; This file is then read by StartupConfigurator and the default hotkeys are changed accordingly
-; StartupConfigurator.InitializeAllDefaultKeyToFunctions("Hotkeys")
-StartupConfigurator.InitializeAllDefaultKeysToFunctionsGeneral("Hotkeys")
+StartupConfigurator.InitializeAllDefaultKeysToFunctions("Hotkeys")
 StartupConfigurator.ReadKeyboardOverlaySection(FirstKeyboardOverlayWebsites, "FirstKeyboardOverlayHotkeysHelper") 
 StartupConfigurator.ReadKeyboardOverlaySection(FirstKeyboardOverlayFileExplorer, "FirstKeyboardOverlayFileExplorer") 
 
@@ -365,7 +364,7 @@ CapsLock::{
 HotIf "layers.getActiveLayer() == 1"
     
     StartupConfigurator.InitializeAllDefaultKeyToNewKeys("FirstLayer-DefaultKeys")
-    StartupConfigurator.InitializeAllDefaultKeysToFunctionsGeneral("FirstLayer-Functions")
+    StartupConfigurator.InitializeAllDefaultKeysToFunctions("FirstLayer-Functions")
     
 
 HotIf

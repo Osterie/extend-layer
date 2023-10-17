@@ -21,6 +21,7 @@ Class Configurator{
     ChangeIniFile(iniFile){
         this.iniFile := iniFile
     }
+    
     ChangeDefaultIniFile(defaultIniFile){
         this.defaultIniFile := defaultIniFile
     }
@@ -50,87 +51,7 @@ Class Configurator{
         KeyboardOverlay.AddStaticColumn(ColumnHelperKey, ColumnFriendlyName)
     }
 
-    GetKeyValue(key){
-        return StrSplit(key, "=")[2]
-    }
-
-    ReadArray(section, key){
-        values := this.IniReader.ReadLine(this.iniFile, section, key)
-        valueArray := values.StrSplit(values, ",")
-        return valueArray
-    }
-
-    InitializeAllDefaultKeyToFunctions(section){
-
-        iniFileSection := this.IniReader.ReadSection(this.iniFile, section)
-        defaultIniFileSection := this.IniReader.ReadSection(this.defaultIniFile, section)
-
-        iniFileSectionArray := StrSplit(iniFileSection, "`n")
-        defaultIniFileSectionArray := StrSplit(defaultIniFileSection, "`n")
-
-        ; This splits section, using "`n" as a delimiter, which is new line in ahk.
-        ; A_LoopField is the current item in the loop.
-        Loop iniFileSectionArray.Length{
-            ; This is the function that is in the ini file, for example EmergencyClose is a function.
-            iniFileFunction := StrSplit(iniFileSectionArray[A_Index], "=")[1]
-            ; This is the hotkey that is currently in use (found in the DefaultConfig.ini file)
-            inUseHotkey := StrSplit(defaultIniFileSectionArray[A_Index], "=")[2]
-            this.InitializeDefaultKeyToFunction2(section, iniFileFunction)
-        }
-    }
-
-    InitializeAllDefaultKeyToFunctions1(section){
-
-        iniFileSection := this.IniReader.ReadSection(this.iniFile, section)
-        defaultIniFileSection := this.IniReader.ReadSection(this.defaultIniFile, section)
-
-        iniFileSectionArray := StrSplit(iniFileSection, "`n")
-        defaultIniFileSectionArray := StrSplit(defaultIniFileSection, "`n")
-
-        ; This splits section, using "`n" as a delimiter, which is new line in ahk.
-        ; A_LoopField is the current item in the loop.
-        Loop iniFileSectionArray.Length{
-            ; This is the function that is in the ini file, for example EmergencyClose is a function.
-            newHotkey := StrSplit(iniFileSectionArray[A_Index], "=")[1]
-            ; This is the hotkey that is currently in use (found in the DefaultConfig.ini file)
-            inUseHotkey := StrSplit(defaultIniFileSectionArray[A_Index], "=")[1]
-            this.InitializeDefaultKeyToFunction1(section, newHotkey, inUseHotkey)
-        }
-    }
-
-    ; iniFileFunction is the function found in the Config.ini file, whilst inUseHotkey is the hotkey that is currently in by default used in the script, which is also stored in the DefaultConfig.ini file.
-    ; This function is used to initialize the hotkeys, there are default keys for hotkeys, but the user can change them.
-    ; Section specifies the section in the ini file to look.
-    ; inUseHotkey is the hotkey that is currently in use.
-    ; iniFileFunction is the function that is in the ini file, for example EmergencyClose is a function, and its default inUseHotkey is F2
-    ; Often inUseHotkey may be the same as iniFileFunction, but not always.
-    InitializeDefaultKeyToFunction1(section, newHotkey, inUseHotkey){
-        ; newHotkey := this.IniReader.ReadLine(this.iniFile, section, newHotkey)
-        ; if the new hotkey is different from the new one, then the in use hotkey is replaced with the new hotkey
-        ; msgbox(newHotkey . " " . inUseHotkey)
-        ; msgbox(newHotkey . " " . inUseHotkey)
-        ; msgbox(newHotKey)
-        
-        if (newHotkey != inUseHotkey){
-            ; msgbox(newHotkey . " " . inUseHotkey)
-            Hotkey(newHotkey, inUseHotkey)
-            Hotkey(inUseHotkey, "off")
-        }
-    }
-
-    InitializeDefaultKeyToFunction2(section, iniFileMethod){
-
-        methodClass := this.methodsWithCorrespondingClasses[iniFileMethod]
-
-        ; way1 := OnScreenWriter.ToggleShowKeysPressed.Bind(OnScreenWriter)
-        ; way2 := ObjBindMethod(OnScreenWriter, "ToggleShowKeysPressed")
-        classMethodCall := ObjBindMethod(methodClass, iniFileMethod)
-        newHotkey := this.IniReader.ReadLine(this.iniFile, section, iniFileMethod)
-        HotKey newHotkey, (ThisHotkey) => classMethodCall()
-    }
-
-
-    InitializeAllDefaultKeysToFunctionsGeneral(section){
+    InitializeAllDefaultKeysToFunctions(section){
         iniFileSection := this.IniReader.ReadSection(this.iniFile, section)
 
         iniFileSectionArray := StrSplit(iniFileSection, "`n")
@@ -142,12 +63,12 @@ Class Configurator{
             iniFileKey := StrSplit(iniFileSectionArray[A_Index], "=")[1]
             ; This is the hotkey that is currently in use (found in the DefaultConfig.ini file)
             ; inUseHotkey := StrSplit(defaultIniFileSectionArray[A_Index], "=")[2]
-            this.InitializeDefaultKeyToFunctionGeneral(section, iniFileKey)
+            this.InitializeDefaultKeyToFunction(section, iniFileKey)
 
         }
     }
 
-    InitializeDefaultKeyToFunctionGeneral(section, key){
+    InitializeDefaultKeyToFunction(section, key){
         readLine := this.IniReader.readLine(this.iniFile, section, key)
         
         ; TODO add method for key validation
@@ -233,5 +154,15 @@ Class Configurator{
     
     SendKeyUp(key, modifiers){
         Send("{blind}{" . key . " Up}")                                                           
+    }
+
+    GetKeyValue(key){
+        return StrSplit(key, "=")[2]
+    }
+
+    ReadArray(section, key){
+        values := this.IniReader.ReadLine(this.iniFile, section, key)
+        valueArray := values.StrSplit(values, ",")
+        return valueArray
     }
 }
