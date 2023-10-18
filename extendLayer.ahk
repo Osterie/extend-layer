@@ -255,9 +255,6 @@ ObjectRegister.AddObject("Battery", Battery)
 WebSearcher := WebNavigator()
 chatGptLoadTime := IniRead("Config.ini", "WebNavigator", "chatGptLoadTime")
 WebSearcher.SetChatGptLoadTime(chatGptLoadTime)
-; paths to urls of images used to click login buttons
-; blackboardLoginImages := ["\imageSearchImages\feideBlackboardMaximized.png", "\imageSearchImages\feideBlackboardMinimized.png"]
-; jupyterHubLoginImages := ["\imageSearchImages\jupyterHubMaximized.png", "\imageSearchImages\jupyterHubMinimized.png"]
 ObjectRegister.AddObject("WebSearcher", WebSearcher)
 
 ; |---------------------------------|
@@ -431,55 +428,6 @@ HotIf
 
     ; Shows key history, used for debugging
     ; b:: KeyHistory
-
-    ; Hides screen
-    a:: privacyController.HideScreen()
-    
-    ; Hides windows
-    s:: privacyController.HideWindow()
-    
-    ; Hides tabs
-    d:: privacyController.HideTabs()
-    
-    ; Hides the gui which is used to hide tabs, windows and the screen
-    f:: privacyController.HideGui()
-    
-    ; {"HideScreen", privacyController, "HideWindow", privacyController, "HideTabs", privacyController, "HideGui", privacyController,
-    ;     "BlockAllInput", ComputerInput, "UnBlockAllInput",  ComputerInput, "TogglePowerSaverMode", Battery, "ToggleHighestBrightness", Monitor, "ToggleLowestBrightness", Monitor,
-    ; }
-    
-    ; Blocks input from keyboard and mouse, can be deactivated with Home + End
-    Home:: ComputerInput.BlockAllInput()
-    
-    ; Re-Enables input
-    Home & End:: ComputerInput.UnBlockAllInput()
-
-    ; Switches power saver on, or off(wont turn off if Battery is 50% or lower)
-    p:: Battery.TogglePowerSaverMode()
-
-    ; Switches brightness to 100 or 50
-    u:: Monitor.ToggleHighestBrightness() 
-    
-    ; ; Switches brightness to 0 or 50
-    j:: Monitor.ToggleLowestBrightness() 
-
-    ; Switches gamma values (r, g, b) to 256,256,256 or 128,128,128
-    o:: Monitor.ToggleHighestGamma() 
-
-    ; Switches gamma values (r, g, b) to 0,0,0 or 128,128,128
-    i:: Monitor.ToggleLowestGamma()     
-
-    ; Increases red by 63 until it reaches 255, then it starts over
-    k:: Monitor.CycleRed(63, 255) 
-
-    ; Increases green by 63 until it reaches 255, then it starts over
-    l:: Monitor.CycleGreen(63, 255)
-    
-    ; Increases blue by 63 until it reaches 255, then it starts over
-    ø:: Monitor.CycleBlue(63, 255)
-
-    ; Closes script
-    Esc:: ApplicationManipulatorInstance.CloseActiveAutohotkeyScript()
 
 #HotIf
 
