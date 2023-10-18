@@ -8,13 +8,13 @@ Class Configurator{
 
     iniFile := ""
     defaultIniFile := ""
-    methodsWithCorrespondingClasses := ""
+    ObjectRegistry := ""
     IniReader := ""
 
-    __New(iniFile, defaultIniFile, methodsWithCorrespondingClasses){
+    __New(iniFile, defaultIniFile, ObjectRegistry){
         this.iniFile := iniFile
         this.defaultIniFile := defaultIniFile
-        this.methodsWithCorrespondingClasses := methodsWithCorrespondingClasses
+        this.ObjectRegistry := ObjectRegistry
         this.IniReader := IniFileReader()
     }
 
@@ -50,6 +50,7 @@ Class Configurator{
     SetKeyboardOverlayColumn(KeyboardOverlay, ColumnHelperKey, ColumnFriendlyName){
         KeyboardOverlay.AddStaticColumn(ColumnHelperKey, ColumnFriendlyName)
     }
+
 
     InitializeAllDefaultKeysToFunctions(section){
         iniFileSection := this.IniReader.ReadSection(this.iniFile, section)
@@ -111,12 +112,13 @@ Class Configurator{
             }
         }
 
-        methodClass := this.methodsWithCorrespondingClasses[UsedMethod]
+        methodClass := this.ObjectRegistry.GetObject(UsedClass)
 
         secondColumn := ObjBindMethod(methodClass, UsedMethod, validatedArguments*)
         HotKey key, (ThisHotkey) => (secondColumn)()
 
     }
+
 
     InitializeAllDefaultKeyToNewKeys(section){
 
@@ -129,11 +131,11 @@ Class Configurator{
             ; This is the function that is in the ini file, for example EmergencyClose is a function.
             iniFileDefaultKey := StrSplit(iniFileSectionArray[A_Index], "=")[1]
             iniFileNewKey := StrSplit(iniFileSectionArray[A_Index], "=")[2]
-            this.InitializeDefaultKeyToKey(iniFileDefaultKey, iniFileNewKey)
+            this.InitializeDefaultKeyToNewKey(iniFileDefaultKey, iniFileNewKey)
         }
     }
 
-    InitializeDefaultKeyToKey(iniFileDefaultKey, iniFileNewKey){
+    InitializeDefaultKeyToNewKey(iniFileDefaultKey, iniFileNewKey){
         KeyboardKeyAndModifers := this.IniReader.SeperateKeyboardKeyAndModifiers(iniFileNewKey)
         KeyboardKey := KeyboardKeyAndModifers[1]
         KeyboardModifiers := KeyboardKeyAndModifers[2]

@@ -26,7 +26,7 @@
 #Include ".\library\KeyboardOverlayRegistry.ahk"
 #Include ".\library\ApplicationManipulator.ahk"
 #Include ".\library\Mouse.ahk"
-#Include ".\libarya\ObjectRegistry.ahk"
+#Include ".\library\ObjectRegistry.ahk"
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -196,9 +196,6 @@ Hotstring( "::a@", eMail)
 
 ObjectRegister := ObjectRegistry()
 
-
-
-
 MouseInstance := Mouse()
 ObjectRegister.AddObject("MouseInstance", MouseInstance)
 
@@ -209,31 +206,63 @@ ObjectRegister.AddObject("ApplicationManipulatorInstance", ApplicationManipulato
 ; Allows opening cmd pathed to the current file location for vs code and file explorer.
 commandPromptDefaultPath := IniRead("Config.ini", "CommandPrompt", "DefaultPath")
 CommandPrompt := CommandPromptOpener(commandPromptDefaultPath)
+ObjectRegister.AddObject("CommandPrompt", CommandPrompt)
 
 ; Allows navigating the file explorer and opening the file explorer pathed to a given file location
 FileExplorer := FileExplorerNavigator()
+ObjectRegister.AddObject("FileExplorer", FileExplorer)
 
 ; Allows to write on the screen in a textarea
 OnScreenWriter := KeysPressedGui()
 OnScreenWriter.CreateGUI()
+ObjectRegister.AddObject("OnScreenWriter", OnScreenWriter)
 
 ; Enables / disables input (mouse or keyboard)
 ComputerInput := ComputerInputController()
+ObjectRegister.AddObject("ComputerInput", ComputerInput)
 
 ; Used to hide screen and parts of the screen
 privacyController := PrivacyGUIController()
 privacyController.CreateGui()
-
 ; Sets the countdown for the screen hider to 3 minutes. (change to your screen sleep time)
 ; This shows a countdown on the screen, and when it reaches 0, the screen goes to sleep
 ; TODO probably should create a setting for this in ini file
 privacyController.ChangeCountdown(3,0)
+ObjectRegister.AddObject("privacyController", privacyController)
 
 ; Used to get the states of devices, like if bluetooth and such is enabled, also able to disable/enable these devices
 DeviceManipulator := DeviceController()
 ; launches a powershell script which gets the states of some devices, like if the mouse is enabled.
 ; Having this activated will slow down the startup of the script significantly.
 ; !DeviceManipulator.UpdateDevicesActionToToggle()
+ObjectRegister.AddObject("DeviceManipulator", DeviceManipulator)
+
+
+; Used to change brightness and gamma settings of the monitor
+Monitor := MonitorController()
+ObjectRegister.AddObject("Monitor", Monitor)
+
+; Used to switch between power saver mode and normal power mode (does not work as expected currently, percentage to switch to power saver is changed, but power saver is never turned on...)
+powerSaverModeGUID := IniRead("Config.ini", "Battery", "PowerSaverModeGUID")
+defaultPowerModeGUID := IniRead("Config.ini", "Battery", "DefaultPowerModeGUID")
+Battery := BatteryController(50, 50)
+Battery.setPowerSaverModeGUID(powerSaverModeGUID)
+Battery.setDefaultPowerModeGUID(defaultPowerModeGUID)
+Battery.ActivateNormalPowerMode()
+ObjectRegister.AddObject("Battery", Battery)
+
+; Used to search for stuff in the browser, translate, and excecute shortcues like close tabs to the right in browser
+WebSearcher := WebNavigator()
+; paths to urls of images used to click login buttons
+; blackboardLoginImages := ["\imageSearchImages\feideBlackboardMaximized.png", "\imageSearchImages\feideBlackboardMinimized.png"]
+; jupyterHubLoginImages := ["\imageSearchImages\jupyterHubMaximized.png", "\imageSearchImages\jupyterHubMinimized.png"]
+ObjectRegister.AddObject("WebSearcher", WebSearcher)
+
+; |---------------------------------|
+; |-------Keyboard Overlays---------|
+; |---------------------------------|
+
+; |----------First layer------------|
 
 ; Shows an on screen overlay for the first keyboard layer which shows which urls can be went to using the number keys
 FirstKeyboardOverlayWebsites := KeyboardOverlay()
@@ -243,6 +272,7 @@ FirstKeyboardOverlayWebsites.CreateGui()
 FirstKeyboardOverlayFileExplorer := KeyboardOverlay()
 FirstKeyboardOverlayFileExplorer.CreateGui()
 
+; |----------Second layer-----------|
 
 ; Shows an on screen overlay for the first keyboard layer which shows which number keys to press to enable/disable devices
 SecondKeyboardOverlayDevices := KeyboardOverlay()
@@ -252,44 +282,26 @@ SecondKeyboardOverlayDevices.AddColumnToggleValue("2", "Camera", DeviceManipulat
 SecondKeyboardOverlayDevices.AddColumnToggleValue("3", "Blue tooth", DeviceManipulator.GetBluetoothActionToToggle())
 SecondKeyboardOverlayDevices.AddColumnToggleValue("4", "Touch Pad", DeviceManipulator.GetTouchPadActionToToggle())
 
+; |---------Overlay registry--------|
 
 OverlayRegistry := KeyboardOverlayRegistry()
 OverlayRegistry.addKeyboardOverlay(FirstKeyboardOverlayWebsites)
 OverlayRegistry.addKeyboardOverlay(FirstKeyboardOverlayFileExplorer)
 OverlayRegistry.addKeyboardOverlay(SecondKeyboardOverlayDevices)
 
+; |------------Layer indicators------------|
+
 ; Used to switch the active layer
 layers := LayerIndicatorController()
 layers.addLayerIndicator(1, "Green")
 layers.addLayerIndicator(2, "Red")
 
-; Used to change brightness and gamma settings of the monitor
-Monitor := MonitorController()
-
-; Used to switch between power saver mode and normal power mode (does not work as expected currently, percentage to switch to power saver is changed, but power saver is never turned on...)
-powerSaverModeGUID := IniRead("Config.ini", "Battery", "PowerSaverModeGUID")
-defaultPowerModeGUID := IniRead("Config.ini", "Battery", "DefaultPowerModeGUID")
-Battery := BatteryController(50, 50)
-Battery.setPowerSaverModeGUID(powerSaverModeGUID)
-Battery.setDefaultPowerModeGUID(defaultPowerModeGUID)
-Battery.ActivateNormalPowerMode()
-
-; Used to search for stuff in the browser, translate, and excecute shortcues like close tabs to the right in browser
-WebSearcher := WebNavigator()
-; paths to urls of images used to click login buttons
-blackboardLoginImages := ["\imageSearchImages\feideBlackboardMaximized.png", "\imageSearchImages\feideBlackboardMinimized.png"]
-jupyterHubLoginImages := ["\imageSearchImages\jupyterHubMaximized.png", "\imageSearchImages\jupyterHubMinimized.png"]
-
-; TODO, should probably create a class instead of having this mappp...
-methodsWithCorrespondingClasses := Map("OnScreenWriter", OnScreenWriter, "WebSearcher", WebSearcher, "ApplicationManipulatorInstance", ApplicationManipulatorInstance, 
-"CommandPrompt", CommandPrompt, "NavigateToFolder", FileExplorer, "MoveMouseToCenterOfScreen", MouseInstance)
-; methodsWithCorrespondingClasses := Map("ToggleShowKeysPressed", OnScreenWriter, "CloseTabsToTheRight", WebSearcher, "CloseActiveApplication", ApplicationManipulatorInstance, 
-; "CloseActiveAutohotkeyScript", ApplicationManipulatorInstance, "SuspendActiveAutohotkeyScript", ApplicationManipulatorInstance, "OpenCmdPathedToCurrentLocation", CommandPrompt, 
-; "OpenUrl", WebSearcher, "LoginToSite", WebSearcher, "LookUpHighlitedTextOrClipboardContent", WebSearcher, "AskChatGptAboutHighligtedTextOrClipboardContent", WebSearcher,
-; "ShowTranslatedText", WebSearcher, "SearchFromInputBox", WebSearcher, "NavigateToFolder", FileExplorer, "MoveMouseToCenterOfScreen", MouseInstance)
+; |----------------------------------|
+; |--------Startup Configurator------|
+; |----------------------------------|
 
 ; This is used to read ini files, and create hotkeys from them
-StartupConfigurator := Configurator("Config.ini", "DefaultConfig.ini", methodsWithCorrespondingClasses)
+StartupConfigurator := Configurator("Config.ini", "DefaultConfig.ini", ObjectRegister)
 ; Is used to initialize all hotkeys, if hotkeys are changed by the user, these changes are stored in the Config.ini file.
 ; This file is then read by StartupConfigurator and the default hotkeys are changed accordingly
 StartupConfigurator.InitializeAllDefaultKeysToFunctions("Hotkeys")
@@ -305,8 +317,12 @@ SetCapsLockState("off")
 SetNumLockState("off")
 
 ; |------------------------------|
-; |----------Hotkeys-------------|
+; |------Hotkeys (OBSOLETE)------|
 ; |------------------------------|
+
+; |-----------------------------------|
+; |----------Layer switchers----------|
+; |-----------------------------------|
 
 ; changes the layer to 0 if it is not zero, or 1 if it is zero
 NumLock::
@@ -357,8 +373,6 @@ CapsLock::{
 
 #HotIf layers.getActiveLayer() == 1
 
-    ; ---------------------------
-
     ; Shows first keyboard overlay for websites when a shift is held down
     ~Shift:: OverlayRegistry.showKeyboardOverlay(FirstKeyboardOverlayWebsites) ;FirstKeyboardOverlayWebsites.ShowGui() 
     
@@ -378,7 +392,6 @@ HotIf "layers.getActiveLayer() == 1"
     
     StartupConfigurator.InitializeAllDefaultKeyToNewKeys("FirstLayer-DefaultKeys")
     StartupConfigurator.InitializeAllDefaultKeysToFunctions("FirstLayer-Functions")
-    
 
 HotIf
 
@@ -429,9 +442,9 @@ HotIf
     ; Hides the gui which is used to hide tabs, windows and the screen
     f:: privacyController.HideGui()
     
-    {"HideScreen", privacyController, "HideWindow", privacyController, "HideTabs", privacyController, "HideGui", privacyController,
-        "BlockAllInput", ComputerInput, "UnBlockAllInput",  ComputerInput, "TogglePowerSaverMode", Battery, "ToggleHighestBrightness", Monitor, "ToggleLowestBrightness", Monitor,
-    }
+    ; {"HideScreen", privacyController, "HideWindow", privacyController, "HideTabs", privacyController, "HideGui", privacyController,
+    ;     "BlockAllInput", ComputerInput, "UnBlockAllInput",  ComputerInput, "TogglePowerSaverMode", Battery, "ToggleHighestBrightness", Monitor, "ToggleLowestBrightness", Monitor,
+    ; }
     
     ; Blocks input from keyboard and mouse, can be deactivated with Home + End
     Home:: ComputerInput.BlockAllInput()

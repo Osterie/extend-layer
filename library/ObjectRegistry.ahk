@@ -2,7 +2,7 @@
 
 Class ObjectRegistry{
 
-    this.ObjectMap = Map()
+    ObjectMap := Map()
 
     AddObject(objectName, objectInstance){
         this.ObjectMap[objectName] := objectInstance
