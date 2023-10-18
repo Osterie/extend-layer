@@ -26,6 +26,8 @@
 #Include ".\library\KeyboardOverlayRegistry.ahk"
 #Include ".\library\ApplicationManipulator.ahk"
 #Include ".\library\Mouse.ahk"
+#Include ".\libarya\ObjectRegistry.ahk"
+
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
 ; |--------------------------------------------------|
@@ -169,6 +171,8 @@ if (not A_IsAdmin){
 
 ; Layers and keyboard overlay could possibly be used in a class, since they work for the same thing, the layers.
 
+; TODO; create a website for this program. it should have pages for stuff such as "classes and methods", which explain which classes there are and how to use them. i.e which methods they have and what parameteres they take
+
 ; |-----------------------------------|
 ; |------------HOTSTRINGS-------------|
 ; |-----------------------------------|
@@ -188,9 +192,19 @@ Hotstring( "::a@", eMail)
 ; |----------- OBJECT CREATION ---------------|
 ; |-------------------------------------------|
 
+; THIS SHOULD BE AT TOP!
+
+ObjectRegister := ObjectRegistry()
+
+
+
+
 MouseInstance := Mouse()
+ObjectRegister.AddObject("MouseInstance", MouseInstance)
 
 ApplicationManipulatorInstance := ApplicationManipulator()
+ObjectRegister.AddObject("ApplicationManipulatorInstance", ApplicationManipulatorInstance)
+
 
 ; Allows opening cmd pathed to the current file location for vs code and file explorer.
 commandPromptDefaultPath := IniRead("Config.ini", "CommandPrompt", "DefaultPath")
@@ -203,17 +217,13 @@ FileExplorer := FileExplorerNavigator()
 OnScreenWriter := KeysPressedGui()
 OnScreenWriter.CreateGUI()
 
-; CloseTabsToTheRight := ObjBindMethod(WebSearcher, "CloseTabsToTheRight")
-; CloseTabsToTheRightHotkey := IniRead("Config.ini", "Hotkeys", "CloseTabsToTheRight") ; Default key is ^!W
-; Hotkey(CloseTabsToTheRightHotkey, CloseTabsToTheRight)
-
-
 ; Enables / disables input (mouse or keyboard)
 ComputerInput := ComputerInputController()
 
 ; Used to hide screen and parts of the screen
 privacyController := PrivacyGUIController()
 privacyController.CreateGui()
+
 ; Sets the countdown for the screen hider to 3 minutes. (change to your screen sleep time)
 ; This shows a countdown on the screen, and when it reaches 0, the screen goes to sleep
 ; TODO probably should create a setting for this in ini file
@@ -270,10 +280,13 @@ WebSearcher := WebNavigator()
 blackboardLoginImages := ["\imageSearchImages\feideBlackboardMaximized.png", "\imageSearchImages\feideBlackboardMinimized.png"]
 jupyterHubLoginImages := ["\imageSearchImages\jupyterHubMaximized.png", "\imageSearchImages\jupyterHubMinimized.png"]
 
-methodsWithCorrespondingClasses := Map("ToggleShowKeysPressed", OnScreenWriter, "CloseTabsToTheRight", WebSearcher, "CloseActiveApplication", ApplicationManipulatorInstance, 
-"CloseActiveAutohotkeyScript", ApplicationManipulatorInstance, "SuspendActiveAutohotkeyScript", ApplicationManipulatorInstance, "OpenCmdPathedToCurrentLocation", CommandPrompt, 
-"OpenUrl", WebSearcher, "LoginToSite", WebSearcher, "LookUpHighlitedTextOrClipboardContent", WebSearcher, "AskChatGptAboutHighligtedTextOrClipboardContent", WebSearcher,
-"ShowTranslatedText", WebSearcher, "SearchFromInputBox", WebSearcher, "NavigateToFolder", FileExplorer, "MoveMouseToCenterOfScreen", MouseInstance)
+; TODO, should probably create a class instead of having this mappp...
+methodsWithCorrespondingClasses := Map("OnScreenWriter", OnScreenWriter, "WebSearcher", WebSearcher, "ApplicationManipulatorInstance", ApplicationManipulatorInstance, 
+"CommandPrompt", CommandPrompt, "NavigateToFolder", FileExplorer, "MoveMouseToCenterOfScreen", MouseInstance)
+; methodsWithCorrespondingClasses := Map("ToggleShowKeysPressed", OnScreenWriter, "CloseTabsToTheRight", WebSearcher, "CloseActiveApplication", ApplicationManipulatorInstance, 
+; "CloseActiveAutohotkeyScript", ApplicationManipulatorInstance, "SuspendActiveAutohotkeyScript", ApplicationManipulatorInstance, "OpenCmdPathedToCurrentLocation", CommandPrompt, 
+; "OpenUrl", WebSearcher, "LoginToSite", WebSearcher, "LookUpHighlitedTextOrClipboardContent", WebSearcher, "AskChatGptAboutHighligtedTextOrClipboardContent", WebSearcher,
+; "ShowTranslatedText", WebSearcher, "SearchFromInputBox", WebSearcher, "NavigateToFolder", FileExplorer, "MoveMouseToCenterOfScreen", MouseInstance)
 
 ; This is used to read ini files, and create hotkeys from them
 StartupConfigurator := Configurator("Config.ini", "DefaultConfig.ini", methodsWithCorrespondingClasses)
@@ -335,7 +348,7 @@ CapsLock::{
 ; SuspendExempt means this hotkey will not be suspended when the script is suspended.
 ; Since this hotkey suspends the script it is important that it is not suspended itself.
 #SuspendExempt
-^!s::Suspend  ; Ctrl+Alt+S
+^!s:: ApplicationManipulatorInstance.SuspendActiveAutohotkeyScript()  ; Ctrl+Alt+S
 #SuspendExempt False
 
 ; |------------------------------|
@@ -371,9 +384,6 @@ HotIf
 
 #HotIf layers.getActiveLayer() == 2 
 
-    ; Shows key history, used for debugging
-    b::KeyHistory
-    
     ; Shows second keyboard overlay when shift is held down
     ~Shift:: OverlayRegistry.showKeyboardOverlay(SecondKeyboardOverlayDevices) ;SecondKeyboardOverlayDevices.ShowGui() 
 
@@ -402,20 +412,27 @@ HotIf
     +4::{ 
         SecondKeyboardOverlayDevices.ToggleState("TouchPad")
         DeviceManipulator.ToggleTouchPad()
-    } 
+    }
+
+    ; Shows key history, used for debugging
+    ; b:: KeyHistory
 
     ; Hides screen
     a:: privacyController.HideScreen()
-
+    
     ; Hides windows
     s:: privacyController.HideWindow()
-
+    
     ; Hides tabs
     d:: privacyController.HideTabs()
-
+    
     ; Hides the gui which is used to hide tabs, windows and the screen
     f:: privacyController.HideGui()
-
+    
+    {"HideScreen", privacyController, "HideWindow", privacyController, "HideTabs", privacyController, "HideGui", privacyController,
+        "BlockAllInput", ComputerInput, "UnBlockAllInput",  ComputerInput, "TogglePowerSaverMode", Battery, "ToggleHighestBrightness", Monitor, "ToggleLowestBrightness", Monitor,
+    }
+    
     ; Blocks input from keyboard and mouse, can be deactivated with Home + End
     Home:: ComputerInput.BlockAllInput()
     
@@ -447,9 +464,16 @@ HotIf
     ø:: Monitor.CycleBlue(63, 255)
 
     ; Closes script
-    Esc:: ExitApp
+    Esc:: ApplicationManipulatorInstance.CloseActiveAutohotkeyScript()
 
 #HotIf
+
+HotIf "layers.getActiveLayer() == 2"
+    
+    StartupConfigurator.InitializeAllDefaultKeyToNewKeys("SecondLayer-DefaultKeys")
+    StartupConfigurator.InitializeAllDefaultKeysToFunctions("SecondLayer-Functions")
+
+HotIf
 
 ; Used to show user the script is enabled
 ToolTip "Script enabled!"

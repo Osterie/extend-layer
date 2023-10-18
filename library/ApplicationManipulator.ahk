@@ -9,6 +9,7 @@ Class ApplicationManipulator{
     CloseActiveAutohotkeyScript(){
         Exitapp
     }
+    
     SuspendActiveAutohotkeyScript(){
         Suspend
     }
