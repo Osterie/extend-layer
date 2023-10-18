@@ -122,7 +122,7 @@ if (not A_IsAdmin){
 
 ; *Make a method in monitor class for adding a transparent black layer over the screen, to be used as a screen dimmer.
 
-; !FUTURE make a simple version which is just the first layer, can be used when main not working
+; !FUTURE make a simple version which is just the main layer, can be used when main not working
 
 ; todo: would be possible to have some hotkeys that open a gui where several options are chosen from.
 ; for example for changing performance mode, a dropdown menu for high, normal, low performance nad such can be chosen.
@@ -261,19 +261,23 @@ ObjectRegister.AddObject("WebSearcher", WebSearcher)
 ; |-------Keyboard Overlays---------|
 ; |---------------------------------|
 
-; |----------First layer------------|
+; |----------Main layer------------|
 
-; Shows an on screen overlay for the first keyboard layer which shows which urls can be went to using the number keys
-FirstKeyboardOverlayWebsites := KeyboardOverlay()
-FirstKeyboardOverlayWebsites.CreateGui()
+; Shows an on screen overlay for the main keyboard layer which shows which urls can be went to using the number keys
+MainKeyboardOverlayWebsites := KeyboardOverlay()
+MainKeyboardOverlayWebsites.CreateGui()
+ObjectRegister.AddObject("MainKeyboardOverlayWebsites", MainKeyboardOverlayWebsites)
 
-; Shows an on screen overlay for the first keyboard layer which shows which file explorer paths can be went to using the number keys
-FirstKeyboardOverlayFileExplorer := KeyboardOverlay()
-FirstKeyboardOverlayFileExplorer.CreateGui()
+
+
+; Shows an on screen overlay for the main keyboard layer which shows which file explorer paths can be went to using the number keys
+MainKeyboardOverlayFileExplorer := KeyboardOverlay()
+MainKeyboardOverlayFileExplorer.CreateGui()
+ObjectRegister.AddObject("MainKeyboardOverlayFileExplorer", MainKeyboardOverlayFileExplorer)
 
 ; |----------Second layer-----------|
 
-; Shows an on screen overlay for the first keyboard layer which shows which number keys to press to enable/disable devices
+; Shows an on screen overlay for the main keyboard layer which shows which number keys to press to enable/disable devices
 SecondKeyboardOverlayDevices := KeyboardOverlay()
 SecondKeyboardOverlayDevices.CreateGui()
 SecondKeyboardOverlayDevices.AddColumnToggleValue("1", "Touch Screen", DeviceManipulator.GetTouchScreenActionToToggle())
@@ -284,9 +288,10 @@ SecondKeyboardOverlayDevices.AddColumnToggleValue("4", "Touch Pad", DeviceManipu
 ; |---------Overlay registry--------|
 
 OverlayRegistry := KeyboardOverlayRegistry()
-OverlayRegistry.addKeyboardOverlay(FirstKeyboardOverlayWebsites)
-OverlayRegistry.addKeyboardOverlay(FirstKeyboardOverlayFileExplorer)
+OverlayRegistry.addKeyboardOverlay(MainKeyboardOverlayWebsites)
+OverlayRegistry.addKeyboardOverlay(MainKeyboardOverlayFileExplorer)
 OverlayRegistry.addKeyboardOverlay(SecondKeyboardOverlayDevices)
+ObjectRegister.AddObject("OverlayRegistry", OverlayRegistry)
 
 ; |------------Layer indicators------------|
 
@@ -304,9 +309,8 @@ StartupConfigurator := Configurator("Config.ini", "DefaultConfig.ini", ObjectReg
 ; Is used to initialize all hotkeys, if hotkeys are changed by the user, these changes are stored in the Config.ini file.
 ; This file is then read by StartupConfigurator and the default hotkeys are changed accordingly
 StartupConfigurator.InitializeAllDefaultKeysToFunctions("Hotkeys")
-StartupConfigurator.ReadKeyboardOverlaySection(FirstKeyboardOverlayWebsites, "FirstKeyboardOverlayHotkeysHelper") 
-StartupConfigurator.ReadKeyboardOverlaySection(FirstKeyboardOverlayFileExplorer, "FirstKeyboardOverlayFileExplorer") 
-
+StartupConfigurator.ReadKeyboardOverlaySection(MainKeyboardOverlayWebsites, "MainKeyboardOverlayHotkeysHelper") 
+StartupConfigurator.ReadKeyboardOverlaySection(MainKeyboardOverlayFileExplorer, "MainKeyboardOverlayFileExplorer") 
 
 ; |-------------------------------------------|
 ; |------------Ensures consistency------------|
@@ -325,16 +329,12 @@ SetNumLockState("off")
 
 ; changes the layer to 0 if it is not zero, or 1 if it is zero
 NumLock::
-CapsLock::{ 
-    ; if capslock is on, turn it off
-    if (GetKeyState("CapsLock", "T") == 1){
-        SetCapsLockState("off")
-    }
-    layers.toggleLayerIndicator(1)
-}
+CapsLock:: layers.toggleLayerIndicator(1)
 
 ; Changes the layer to 2 if it is zero, and then cycles through the layers if it is not zero
 +CapsLock:: {
+
+    ; layers.CycleLayers(2)
 
     activeLayer := layers.getActiveLayer()
     
@@ -343,14 +343,14 @@ CapsLock::{
     }
     else{
 
-        layers.cycleExtraLayerIndicators()
+        layers.cycleLayerIndicators()
 
         newActiveLayer := layers.getActiveLayer()
         layers.showLayerIndicator(newActiveLayer)
         layers.hideInactiveLayers()
 
         if (newActiveLayer == 1){
-            OverlayRegistry.showKeyboardOverlay(FirstKeyboardOverlayWebsites)
+            OverlayRegistry.showKeyboardOverlay(MainKeyboardOverlayWebsites)
         }
         else if (newActiveLayer == 2){
             OverlayRegistry.showKeyboardOverlay(SecondKeyboardOverlayDevices)
@@ -372,25 +372,27 @@ CapsLock::{
 
 #HotIf layers.getActiveLayer() == 1
 
-    ; Shows first keyboard overlay for websites when a shift is held down
-    ~Shift:: OverlayRegistry.showKeyboardOverlay(FirstKeyboardOverlayWebsites) ;FirstKeyboardOverlayWebsites.ShowGui() 
+    ; ; Shows main keyboard overlay for websites when a shift is held down
+    ; ~Shift:: OverlayRegistry.showKeyboardOverlay(MainKeyboardOverlayWebsites) ;MainKeyboardOverlayWebsites.ShowGui() 
     
-    ; Hides first keyboard overlay for websites (and second overlay for devices just in case)
-    Shift up:: OverlayRegistry.hideAllLayers()
+    ; ; Hides main keyboard overlay for websites (and second overlay for devices just in case)
+    ; Shift up:: OverlayRegistry.hideAllLayers()
 
-    ; Shows first keyboard overlay for file explorer when a shift is held down
-    ~Ctrl::  OverlayRegistry.showKeyboardOverlay(FirstKeyboardOverlayFileExplorer)  ;FirstKeyboardOverlayFileExplorer.ShowGui()
+    ; ; Shows main keyboard overlay for file explorer when a shift is held down
+    ; ~Ctrl::  OverlayRegistry.showKeyboardOverlay(MainKeyboardOverlayFileExplorer)  ;MainKeyboardOverlayFileExplorer.ShowGui()
 
-    ; Hides first keyboard overlay for file explorer 
-    Ctrl up:: OverlayRegistry.hideKeyboardOverlay(FirstKeyboardOverlayFileExplorer) ;FirstKeyboardOverlayFileExplorer.HideGui()
+    ; ; Hides main keyboard overlay for file explorer 
+    ; Ctrl up:: OverlayRegistry.hideKeyboardOverlay(MainKeyboardOverlayFileExplorer) ;MainKeyboardOverlayFileExplorer.HideGui()
 
 #HotIf
 
 
 HotIf "layers.getActiveLayer() == 1"
     
-    StartupConfigurator.InitializeAllDefaultKeyToNewKeys("FirstLayer-DefaultKeys")
-    StartupConfigurator.InitializeAllDefaultKeysToFunctions("FirstLayer-Functions")
+    StartupConfigurator.InitializeAllDefaultKeysToFunctions("MainLayer")
+
+    StartupConfigurator.InitializeAllDefaultKeyToNewKeys("MainLayer-DefaultKeys")
+    StartupConfigurator.InitializeAllDefaultKeysToFunctions("MainLayer-Functions")
 
 HotIf
 
@@ -399,7 +401,7 @@ HotIf
     ; Shows second keyboard overlay when shift is held down
     ~Shift:: OverlayRegistry.showKeyboardOverlay(SecondKeyboardOverlayDevices) ;SecondKeyboardOverlayDevices.ShowGui() 
 
-    ; Hides second keyboard overlay (and first just in case)
+    ; Hides second keyboard overlay (and main just in case)
     Shift up:: OverlayRegistry.hideAllLayers() 
 
     ; Toggles touch-screen

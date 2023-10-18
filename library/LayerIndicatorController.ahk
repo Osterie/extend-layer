@@ -19,6 +19,7 @@ Class LayerIndicatorController{
         this.layers[layer].showGui()
         this.hideInactiveLayers()
     }
+
     hideLayerIndicator(layer){
         this.layers[layer].hideGui()
     }
@@ -29,18 +30,6 @@ Class LayerIndicatorController{
                 this.hideLayerIndicator(A_Index)
             }
         }
-    }
-
-    getLayerIndicator(){
-        return this.layers[this.activeLayer]
-    }
-
-    getActiveLayer(){
-        return this.activeLayer
-    }
-
-    setCurrentLayerIndicator(layer){
-        this.activeLayer := layer
     }
 
     ; sets the layer to toggleValue if layer is 0, or to 0 if active laye is not zero
@@ -57,7 +46,7 @@ Class LayerIndicatorController{
     }
 
     ; increases activeLayer by 1, if upperLimit is reached, it is set back to 1 (Note, not does not go back to 0)
-    cycleExtraLayerIndicators(){
+    cycleLayerIndicators(){
         layersAmount := this.layers.Length
         this.activeLayer := this.activeLayer+1 
         if( this.activeLayer == layersAmount+1){
@@ -68,5 +57,17 @@ Class LayerIndicatorController{
     ; sets activeLayer to 0
     resetLayerIndicators(){
         this.activeLayer := 0
+    }
+
+    getLayerIndicator(){
+        return this.layers[this.activeLayer]
+    }
+
+    getActiveLayer(){
+        return this.activeLayer
+    }
+
+    setActiveLayer(activeLayer){
+        this.activeLayer := activeLayer
     }
 }

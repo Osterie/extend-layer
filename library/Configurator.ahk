@@ -95,10 +95,12 @@ Class Configurator{
             
             argument := StrReplace(argument, A_Space, "")
 
+            ; Start of array
             if (SubStr(argument, 1, 1) == "["){
                 inArray := true
                 temporaryArray.Push(SubStr(argument, 1,))
             }
+            ; End of array, push the created array to the validated arguments
             else if(SubStr(argument, -1) == "]"){
                 inArray := false
                 temporaryArray.Push(SubStr(argument, 1, -1))
@@ -108,7 +110,23 @@ Class Configurator{
                 temporaryArray.Push(argument)
             }
             else{
-                validatedArguments.Push(argument)
+                
+                if(SubStr(argument, 1, 1) == "`"" && SubStr(argument, -1) == "`""){
+                    ; Argument is a string,
+                    validatedArguments.Push(argument)
+                }
+                else{
+
+                    ; Argument might be a string, but perhaps it is a class?
+                    if (this.ObjectRegistry.GetMap().Get(argument)){
+                        argumentObject := this.ObjectRegistry.GetObject(argument)
+                        validatedArguments.Push(argumentObject)
+                    }
+
+                    else{
+                        validatedArguments.Push(argument)
+                    }
+                }
             }
         }
 
