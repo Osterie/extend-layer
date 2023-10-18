@@ -252,8 +252,8 @@ Battery.ActivateNormalPowerMode()
 ObjectRegister.AddObject("Battery", Battery)
 
 ; Used to search for stuff in the browser, translate, and excecute shortcues like close tabs to the right in browser
-WebSearcher := WebNavigator()
 chatGptLoadTime := IniRead("Config.ini", "WebNavigator", "chatGptLoadTime")
+WebSearcher := WebNavigator()
 WebSearcher.SetChatGptLoadTime(chatGptLoadTime)
 ObjectRegister.AddObject("WebSearcher", WebSearcher)
 
@@ -267,8 +267,6 @@ ObjectRegister.AddObject("WebSearcher", WebSearcher)
 MainKeyboardOverlayWebsites := KeyboardOverlay()
 MainKeyboardOverlayWebsites.CreateGui()
 ObjectRegister.AddObject("MainKeyboardOverlayWebsites", MainKeyboardOverlayWebsites)
-
-
 
 ; Shows an on screen overlay for the main keyboard layer which shows which file explorer paths can be went to using the number keys
 MainKeyboardOverlayFileExplorer := KeyboardOverlay()

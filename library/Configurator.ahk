@@ -98,35 +98,27 @@ Class Configurator{
             ; Start of array
             if (SubStr(argument, 1, 1) == "["){
                 inArray := true
-                temporaryArray.Push(SubStr(argument, 1,))
+                firstElement := SubStr(argument, 1,)
+                firstElement := this.GetStringWithoutQuotes(firstElement)
+                temporaryArray.Push(firstElement)
             }
             ; End of array, push the created array to the validated arguments
             else if(SubStr(argument, -1) == "]"){
                 inArray := false
-                temporaryArray.Push(SubStr(argument, 1, -1))
+                lastElement := SubStr(argument, 1, -1)
+                lastElement := this.GetStringWithoutQuotes(lastElement)
+                temporaryArray.Push(lastElement)
                 validatedArguments.Push(temporaryArray)
             }
             else if(inArray){
-                temporaryArray.Push(argument)
+                ; nthElement just means the n'th element in the array (so maybe 2nd 3rd... millionth...)
+                nthElement := SubStr(argument, 1, -1)
+                nthElement := this.GetStringWithoutQuotes(nthElement)
+                temporaryArray.Push(nthElement)
             }
             else{
-                
-                if(SubStr(argument, 1, 1) == "`"" && SubStr(argument, -1) == "`""){
-                    ; Argument is a string,
-                    validatedArguments.Push(argument)
-                }
-                else{
-
-                    ; Argument might be a string, but perhaps it is a class?
-                    if (this.ObjectRegistry.GetMap().Get(argument)){
-                        argumentObject := this.ObjectRegistry.GetObject(argument)
-                        validatedArguments.Push(argumentObject)
-                    }
-
-                    else{
-                        validatedArguments.Push(argument)
-                    }
-                }
+                validatedArgument := this.GetValidatedStringOrObject(argument)
+                validatedArguments.Push(validatedArgument)
             }
         }
 
@@ -137,6 +129,29 @@ Class Configurator{
 
     }
 
+    GetValidatedStringOrObject(argument){
+        validatedArgument := ""
+        if(SubStr(argument, 1, 1) == "`"" && SubStr(argument, -1) == "`""){
+            ; Argument is a string,
+            validatedArgument := this.GetStringWithoutQuotes(argument)
+        }
+        else{
+            ; Argument might be a string, but perhaps it is a class?
+            if (this.ObjectRegistry.GetMap().Get(argument)){
+                validatedArgument := this.ObjectRegistry.GetObject(argument)
+            }
+            else{
+                validatedArgument := this.GetStringWithoutQuotes(argument)
+            }
+        }
+        return validatedArgument
+    }
+
+    GetStringWithoutQuotes(text){
+        textWithoutQutoes := StrReplace(text, "`"", "")
+        textWithoutQutoes := StrReplace(text, "`'", "")
+        return textWithoutQutoes
+    }
 
     InitializeAllDefaultKeyToNewKeys(section){
 
