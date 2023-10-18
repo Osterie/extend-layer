@@ -1,5 +1,6 @@
 #Requires AutoHotkey v2.0
 #Include "iniFileReader.ahk"
+#Include "KeyboardOverlay.ahk"
 
 ; TODO the ini file reader class, which is currently empty i believe, should read ini files.
 ; "æ ø å" and such are replaced with other values, since the ini file cant be utf-8 with bom encoding, therefore the result should replace these wrong characters with "æøå" respectively.
@@ -7,13 +8,11 @@
 Class Configurator{
 
     iniFile := ""
-    defaultIniFile := ""
     ObjectRegistry := ""
     IniReader := ""
 
-    __New(iniFile, defaultIniFile, ObjectRegistry){
+    __New(iniFile, ObjectRegistry){
         this.iniFile := iniFile
-        this.defaultIniFile := defaultIniFile
         this.ObjectRegistry := ObjectRegistry
         this.IniReader := IniFileReader()
     }
@@ -21,14 +20,46 @@ Class Configurator{
     ChangeIniFile(iniFile){
         this.iniFile := iniFile
     }
-    
-    ChangeDefaultIniFile(defaultIniFile){
-        this.defaultIniFile := defaultIniFile
+
+    ChangeObjectRegistry(ObjectRegistry){
+        this.ObjectRegistry := ObjectRegistry
+    }
+
+    CreateHotkeyForKeyboardOverlay(sectionName, showKeyboardOverlayKey){
+        ; instanceOfOverlay := this.ObjectRegistry.GetObject("OverlayRegistry").GetKeyboardOverlay(sectionName)
+        instanceOfRegistry := this.ObjectRegistry.GetObject("OverlayRegistry")
+        HotKey(showKeyboardOverlayKey, (ThisHotkey) => instanceOfRegistry.ShowKeyboardOverlay(sectionName))
+        ; TODO, this " up" should be added for all layers...
+        HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => instanceOfRegistry.hideAllLayers())
+    }
+
+    ; TODO add method to read which keys are used to show keyboard overlays, should be in the correct layer section, because only then should they activate
+    ReadAllKeyboardOverlays(){
+
+        SectionNames := IniRead("Config.ini")
+        SectionNames := StrSplit(SectionNames, "`n")
+        Loop SectionNames.Length{
+            SectionName := SectionNames[A_Index]
+            if (InStr(SectionName, "KeyboardOverlay")){
+
+                ; OverlayRegistry := this.ObjectRegistry.GetObject("OverlayRegistry")
+
+                NewKeyboardOverlay := KeyboardOverlay()
+                NewKeyboardOverlay.CreateGui()
+                this.ReadKeyboardOverlaySection(NewKeyboardOverlay, SectionName)
+
+                ; OverlayRegistry.addKeyboardOverlay(NewKeyboardOverlay, SectionName)
+                this.ObjectRegistry.GetObject("OverlayRegistry").addKeyboardOverlay(NewKeyboardOverlay, SectionName)
+                ; TODO use the keyboardOVelray class to create a new keyboard overlay, which then columns are added to
+                ; TODO, each layer should have the "KeyboardOverlayKey" in it, which is then created there and such blah blah blah
+            }
+        }
+
     }
 
     ReadKeyboardOverlaySection(KeyboardOverlay, section){
         
-        modifierKey := this.IniReader.ReadLine(this.iniFile, section, "LayerModifier")
+        ; modifierKey := this.IniReader.ReadLine(this.iniFile, section, "ShowOverlayKey")
         
         iniFileSection := this.IniReader.ReadSection(this.iniFile, section)
 
@@ -45,9 +76,6 @@ Class Configurator{
             KeyboardOverlayColumnHelperKey := this.GetStringWithoutQuotes(KeyboardOverlayColumnHelperKey)
             KeyboardOverlayColumnFriendlyName := StrSplit(ColumnValues, ",")[2]
             KeyboardOverlayColumnFriendlyName := this.GetStringWithoutQuotes(KeyboardOverlayColumnFriendlyName)
-            
-            ; KeyboardOverlayColumnFriendlyName := StrReplace(KeyboardOverlayColumnFriendlyName, "`"", "")
-            ; msgbox(KeyboardOverlayColumnFriendlyName)  
             this.SetKeyboardOverlayColumn(KeyboardOverlay, KeyboardOverlayColumnHelperKey, KeyboardOverlayColumnFriendlyName )
         }
     }
@@ -64,13 +92,9 @@ Class Configurator{
 
         ; A_LoopField is the current item in the loop.
         Loop iniFileSectionArray.Length{
-
             ; This is the function that is in the ini file, for example EmergencyClose is a function.
             iniFileKey := StrSplit(iniFileSectionArray[A_Index], "=")[1]
-            ; This is the hotkey that is currently in use (found in the DefaultConfig.ini file)
-            ; inUseHotkey := StrSplit(defaultIniFileSectionArray[A_Index], "=")[2]
             this.InitializeDefaultKeyToFunction(section, iniFileKey)
-
         }
     }
 
@@ -90,13 +114,24 @@ Class Configurator{
         ; This leaves only the arguments remainig, which is split into an array, splitting by "," since comma seperates arguments
         readLine := SubStr(readLine, InStr(readLine, "(")+1, -1)
 
-        Arguments := StrSplit(readLine, ",")
-        ; msgbox(UsedClass . " " . UsedMethod . " " . Arguments) 
+        arguments := StrSplit(readLine, ",")
+
+        validatedArguments := this.ValidateArguments(arguments)
+
+
+        methodClass := this.ObjectRegistry.GetObject(UsedClass)
+
+        secondColumn := ObjBindMethod(methodClass, UsedMethod, validatedArguments*)
+        HotKey key, (ThisHotkey) => (secondColumn)()
+
+    }
+
+    ValidateArguments(arguments){
         validatedArguments := []
         temporaryArray := []
         inArray := false
 
-        for argument in Arguments{
+        for argument in arguments{
             
             argument := StrReplace(argument, A_Space, "")
 
@@ -126,12 +161,7 @@ Class Configurator{
                 validatedArguments.Push(validatedArgument)
             }
         }
-
-        methodClass := this.ObjectRegistry.GetObject(UsedClass)
-
-        secondColumn := ObjBindMethod(methodClass, UsedMethod, validatedArguments*)
-        HotKey key, (ThisHotkey) => (secondColumn)()
-
+        return validatedArguments
     }
 
     GetValidatedStringOrObject(argument){

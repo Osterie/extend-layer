@@ -264,31 +264,31 @@ ObjectRegister.AddObject("WebSearcher", WebSearcher)
 ; |----------Main layer------------|
 
 ; Shows an on screen overlay for the main keyboard layer which shows which urls can be went to using the number keys
-MainKeyboardOverlayWebsites := KeyboardOverlay()
-MainKeyboardOverlayWebsites.CreateGui()
-ObjectRegister.AddObject("MainKeyboardOverlayWebsites", MainKeyboardOverlayWebsites)
+SecondaryLayerKeyboardOverlay1 := KeyboardOverlay()
+SecondaryLayerKeyboardOverlay1.CreateGui()
+ObjectRegister.AddObject("SecondaryLayerKeyboardOverlay1", SecondaryLayerKeyboardOverlay1)
 
-; Shows an on screen overlay for the main keyboard layer which shows which file explorer paths can be went to using the number keys
-MainKeyboardOverlayFileExplorer := KeyboardOverlay()
-MainKeyboardOverlayFileExplorer.CreateGui()
-ObjectRegister.AddObject("MainKeyboardOverlayFileExplorer", MainKeyboardOverlayFileExplorer)
+; Shows an on screen overlay for the SecondaryLayer keyboard layer which shows which file explorer paths can be went to using the number keys
+SecondaryLayerKeyboardOverlay2 := KeyboardOverlay()
+SecondaryLayerKeyboardOverlay2.CreateGui()
+ObjectRegister.AddObject("SecondaryLayerKeyboardOverlay2", SecondaryLayerKeyboardOverlay2)
 
 ; |----------Second layer-----------|
 
 ; Shows an on screen overlay for the main keyboard layer which shows which number keys to press to enable/disable devices
-SecondKeyboardOverlayDevices := KeyboardOverlay()
-SecondKeyboardOverlayDevices.CreateGui()
-SecondKeyboardOverlayDevices.AddColumnToggleValue("1", "Touch Screen", DeviceManipulator.GetTouchScreenActionToToggle())
-SecondKeyboardOverlayDevices.AddColumnToggleValue("2", "Camera", DeviceManipulator.GetCameraActionToToggle())
-SecondKeyboardOverlayDevices.AddColumnToggleValue("3", "Blue tooth", DeviceManipulator.GetBluetoothActionToToggle())
-SecondKeyboardOverlayDevices.AddColumnToggleValue("4", "Touch Pad", DeviceManipulator.GetTouchPadActionToToggle())
+TertiaryLayerKeyboardOverlay1 := KeyboardOverlay()
+TertiaryLayerKeyboardOverlay1.CreateGui()
+TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("1", "Touch Screen", DeviceManipulator.GetTouchScreenActionToToggle())
+TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("2", "Camera", DeviceManipulator.GetCameraActionToToggle())
+TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("3", "Blue tooth", DeviceManipulator.GetBluetoothActionToToggle())
+TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("4", "Touch Pad", DeviceManipulator.GetTouchPadActionToToggle())
 
 ; |---------Overlay registry--------|
 
 OverlayRegistry := KeyboardOverlayRegistry()
-OverlayRegistry.addKeyboardOverlay(MainKeyboardOverlayWebsites)
-OverlayRegistry.addKeyboardOverlay(MainKeyboardOverlayFileExplorer)
-OverlayRegistry.addKeyboardOverlay(SecondKeyboardOverlayDevices)
+; OverlayRegistry.addKeyboardOverlay(SecondaryLayerKeyboardOverlay1)
+; OverlayRegistry.addKeyboardOverlay(SecondaryLayerKeyboardOverlay2)
+; OverlayRegistry.addKeyboardOverlay(TertiaryLayerKeyboardOverlay1)
 ObjectRegister.AddObject("OverlayRegistry", OverlayRegistry)
 
 ; |------------Layer indicators------------|
@@ -303,12 +303,14 @@ layers.addLayerIndicator(2, "Red")
 ; |----------------------------------|
 
 ; This is used to read ini files, and create hotkeys from them
-StartupConfigurator := Configurator("Config.ini", "DefaultConfig.ini", ObjectRegister)
+StartupConfigurator := Configurator("Config.ini", ObjectRegister)
 ; Is used to initialize all hotkeys, if hotkeys are changed by the user, these changes are stored in the Config.ini file.
 ; This file is then read by StartupConfigurator and the default hotkeys are changed accordingly
-StartupConfigurator.InitializeAllDefaultKeysToFunctions("Hotkeys")
-StartupConfigurator.ReadKeyboardOverlaySection(MainKeyboardOverlayWebsites, "MainKeyboardOverlayHotkeysHelper") 
-StartupConfigurator.ReadKeyboardOverlaySection(MainKeyboardOverlayFileExplorer, "MainKeyboardOverlayFileExplorer") 
+StartupConfigurator.InitializeAllDefaultKeysToFunctions("PrimaryLayer-Functions")
+; StartupConfigurator.ReadKeyboardOverlaySection(SecondaryLayerKeyboardOverlay1, "SecondaryLayerKeyboardOverlay1") 
+; StartupConfigurator.ReadKeyboardOverlaySection(SecondaryLayerKeyboardOverlay2, "SecondaryLayerKeyboardOverlay2") 
+
+StartupConfigurator.ReadAllKeyboardOverlays()
 
 ; |-------------------------------------------|
 ; |------------Ensures consistency------------|
@@ -347,12 +349,12 @@ CapsLock:: layers.toggleLayerIndicator(1)
         layers.showLayerIndicator(newActiveLayer)
         layers.hideInactiveLayers()
 
-        if (newActiveLayer == 1){
-            OverlayRegistry.showKeyboardOverlay(MainKeyboardOverlayWebsites)
-        }
-        else if (newActiveLayer == 2){
-            OverlayRegistry.showKeyboardOverlay(SecondKeyboardOverlayDevices)
-        }
+        ; if (newActiveLayer == 1){
+        ;     OverlayRegistry.showKeyboardOverlay(MainKeyboardOverlayWebsites)
+        ; }
+        ; else if (newActiveLayer == 2){
+        ;     OverlayRegistry.showKeyboardOverlay(SecondKeyboardOverlayDevices)
+        ; }
     }
 }
 
@@ -369,46 +371,61 @@ CapsLock:: layers.toggleLayerIndicator(1)
 ; |------------------------------|
 
 #HotIf layers.getActiveLayer() == 1
+
+    ; ; Shows first keyboard overlay for websites when a shift is held down
+    ; ~Shift:: OverlayRegistry.showKeyboardOverlay(SecondaryLayerKeyboardOverlay1) 
+
+    ; ; Hides first keyboard overlay for websites (and second overlay for devices just in case)
+    ; Shift Up:: OverlayRegistry.hideAllLayers()
+
+    ; ; Shows first keyboard overlay for file explorer when a shift is held down
+    ; ~Ctrl::  OverlayRegistry.showKeyboardOverlay(SecondaryLayerKeyboardOverlay2) 
+
+    ; ; Hides first keyboard overlay for file explorer 
+    ; Ctrl Up:: OverlayRegistry.hideAllLayers()
+
 #HotIf
 
 
 HotIf "layers.getActiveLayer() == 1"
     
-    StartupConfigurator.InitializeAllDefaultKeysToFunctions("MainLayer")
-    StartupConfigurator.InitializeAllDefaultKeyToNewKeys("MainLayer-DefaultKeys")
-    StartupConfigurator.InitializeAllDefaultKeysToFunctions("MainLayer-Functions")
+    ; StartupConfigurator.InitializeAllDefaultKeysToFunctions("SecondaryLayer")
+    StartupConfigurator.InitializeAllDefaultKeyToNewKeys("SecondaryLayer-DefaultKeys")
+    StartupConfigurator.InitializeAllDefaultKeysToFunctions("SecondaryLayer-Functions")
 
+    StartupConfigurator.CreateHotkeyForKeyboardOverlay("SecondaryLayer-KeyboardOverlay1", "~Shift")
+    StartupConfigurator.CreateHotkeyForKeyboardOverlay("SecondaryLayer-KeyboardOverlay2", "~Control")
 HotIf
 
 #HotIf layers.getActiveLayer() == 2 
 
     ; Shows second keyboard overlay when shift is held down
-    ~Shift:: OverlayRegistry.showKeyboardOverlay(SecondKeyboardOverlayDevices) ;SecondKeyboardOverlayDevices.ShowGui() 
+    ~Shift:: OverlayRegistry.showKeyboardOverlay(TertiaryLayerKeyboardOverlay1) ;SecondKeyboardOverlayDevices.ShowGui() 
 
     ; Hides second keyboard overlay (and main just in case)
     Shift up:: OverlayRegistry.hideAllLayers() 
 
     ; Toggles touch-screen
     +1::{ 
-        SecondKeyboardOverlayDevices.ToggleState("TouchScreen")
+        TertiaryLayerKeyboardOverlay1.ToggleState("TouchScreen")
         DeviceManipulator.ToggleTouchScreenToggle()
     } 
 
     ; Toggles camera
     +2::{ 
-        SecondKeyboardOverlayDevices.ToggleState("Camera")
+        TertiaryLayerKeyboardOverlay1.ToggleState("Camera")
         DeviceManipulator.ToggleCameraToggle()
     } 
 
     ; Toggles bluetooth
     +3::{ 
-        SecondKeyboardOverlayDevices.ToggleState("Bluetooth")
+        TertiaryLayerKeyboardOverlay1.ToggleState("Bluetooth")
         DeviceManipulator.ToggleBluetooth()
     } 
 
     ; Toggles touchpad
     +4::{ 
-        SecondKeyboardOverlayDevices.ToggleState("TouchPad")
+        TertiaryLayerKeyboardOverlay1.ToggleState("TouchPad")
         DeviceManipulator.ToggleTouchPad()
     }
 
@@ -419,8 +436,8 @@ HotIf
 
 HotIf "layers.getActiveLayer() == 2"
     
-    StartupConfigurator.InitializeAllDefaultKeyToNewKeys("SecondLayer-DefaultKeys")
-    StartupConfigurator.InitializeAllDefaultKeysToFunctions("SecondLayer-Functions")
+    StartupConfigurator.InitializeAllDefaultKeyToNewKeys("TertiaryLayer-DefaultKeys")
+    StartupConfigurator.InitializeAllDefaultKeysToFunctions("TertiaryLayer-Functions")
 
 HotIf
 

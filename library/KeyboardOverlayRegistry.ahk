@@ -2,54 +2,51 @@
 
 Class KeyboardOverlayRegistry{
     
-    keyboardOverlays := []
+    keyboardOverlays := Map()
     activeOverlay := ""
 
-    addKeyboardOverlay(keyboardOverlay){
-        this.keyboardOverlays.Push(keyboardOverlay) 
+    AddKeyboardOverlay(keyboardOverlay, keyboardOverlayName){
+        this.keyboardOverlays[keyboardOverlayName] := keyboardOverlay
     }
 
-    showKeyboardOverlay(keyboardOverlay){
-        this.activeOverlay := this.getIndexOf(keyboardOverlay)
-        this.keyboardOverlays[this.activeOverlay].ShowGui()
-        this.hideInactiveLayers()
+    ShowKeyboardOverlay(keyboardOverlayName){
+        this.activeOverlay := keyboardOverlayName
+        this.keyboardOverlays[keyboardOverlayName].ShowGui()
+        this.HideInactiveLayers()
     }
-    hideKeyboardOverlay(keyboardOverlay){
-        this.activeOverlay := this.getIndexOf(keyboardOverlay)
-        this.keyboardOverlays[this.activeOverlay].HideGui()
+    
+    HideKeyboardOverlay(keyboardOverlayName){
+        this.activeOverlay := keyboardOverlayName
+        this.keyboardOverlays[keyboardOverlayName].HideGui()
     }
 
-    hideInactiveLayers(){
-        loop this.keyboardOverlays.Length{
-            if (A_index != this.activeOverlay){
-                this.keyboardOverlays[A_Index].HideGui()
+    HideInactiveLayers(){
+        for keyboardOverlayName, KeyboardOverlayObject in this.keyboardOverlays{
+            if (keyboardOverlayName != this.activeOverlay){
+                KeyboardOverlayObject.HideGui()
             }
         }
     }
 
-    hideAllLayers(){
-        loop this.keyboardOverlays.Length{
-            this.keyboardOverlays[A_Index].HideGui()
+    HideAllLayers(){
+        for keyboardOverlayName, KeyboardOverlayObject in this.keyboardOverlays{
+            KeyboardOverlayObject.HideGui()
         }
     }
 
-    getKeyboardOverlay(){
+    GetActiveKeyboardOverlay(){
         return this.keyboardOverlays[this.activeOverlay]
     }
 
-    getActiveLayer(){
+    GetActiveLayer(){
         return this.activeOverlay
     }
 
-    setCurrentKeyboardOverlay(keyboardOverlay){
-        this.activeOverlay := keyboardOverlay
+    GetKeyboardOverlay(keyboardOverlayName){
+        return this.keyboardOverlays[keyboardOverlayName]
     }
 
-    getIndexOf(givenKeyboardOverlay){
-        loop this.keyboardOverlays.Length{
-            if (this.keyboardOverlays[A_Index] == givenKeyboardOverlay){
-                return A_Index
-            }
-        }
+    SetCurrentKeyboardOverlay(keyboardOverlay){
+        this.activeOverlay := keyboardOverlay
     }
 }
