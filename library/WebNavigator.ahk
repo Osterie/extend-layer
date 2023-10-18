@@ -4,6 +4,8 @@
 
 Class WebNavigator{
 
+    chatGptLoadTime := 3000
+
     ; Public method
     ; Closes tabs to the right of the current tab, only works in chrome ATM
     CloseTabsToTheRight(){
@@ -126,13 +128,10 @@ Class WebNavigator{
         clipboardValue := A_Clipboard
         ; saves a new value to the clipboard, if any text is highligted
         Send("^c")
-        
+        Sleep(100)
         
         ; Opens the chat-gpt site and then pastes the clipboard value (which could be the text which was highlighted)
-        Run("https://chat.openai.com/")
-        Sleep(3000)
-        Send(A_Clipboard)
-        Send("{Enter}")
+        this.AskChatGpt(A_Clipboard, this.chatGptLoadTime)
         
         ;put the last copied thing back in the clipboard
         A_Clipboard := clipboardValue
@@ -144,6 +143,10 @@ Class WebNavigator{
         Sleep(loadTime)
         Send(question)
         Send("{Enter}")
+    }
+
+    SetChatGptLoadTime(loadTime){
+        this.chatGptLoadTime := loadTime
     }
 
     ShowTranslatedText(fromLanguage := "auto", toLanguage := "en", &variants := ""){
@@ -199,4 +202,5 @@ Class WebNavigator{
     OpenUrl(url){
         Run("chrome.exe " url)
     }
+
 }

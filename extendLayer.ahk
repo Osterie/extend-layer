@@ -1,4 +1,10 @@
-﻿; [^ = Ctrl] [+ = Shift] [! = Alt] [# = Win]
+﻿; TODO add great documentation for this script, and make it easy to understand and learn for others or for myself in the future
+; AUTHOR: Adrian Gjøsund Bjørge
+; Github: https://github.com/Osterie
+
+
+
+; [^ = Ctrl] [+ = Shift] [! = Alt] [# = Win]
 ; I found two ways to make a hotkey which excecutes a class method:
 ; way1 := OnScreenWriter.ToggleShowKeysPressed.Bind(OnScreenWriter)
 ; way2 := ObjBindMethod(OnScreenWriter, "ToggleShowKeysPressed")
@@ -100,12 +106,6 @@ if (not A_IsAdmin){
 
 ;! checkout: https://www.autohotkey.com/docs/v1/scripts/#EasyWindowDrag 
 ;! move a window from anywhere, can be combined with "move window without activating it" so the window can be moved from anywhere, without being activated
-
-; *checkout https://github.com/GorvGoyl/Autohotkey-Scripts-Windows/blob/master/win_key_to_show_taskbar.ahk
-; *show taskbar when holding windows key, could test for a week and see if it is faster or slower....
-; *might be bad since i cant show which app to quick switch to. Might not be an issue
-
-; *try and explore how to turn on battery-saver. however seems impossible
 
 ; ?make it possible to easily create more or remove shortcuts for keyboard overlays, a simple gui/menu to add/remove filepaths/text, 
 
@@ -253,6 +253,8 @@ ObjectRegister.AddObject("Battery", Battery)
 
 ; Used to search for stuff in the browser, translate, and excecute shortcues like close tabs to the right in browser
 WebSearcher := WebNavigator()
+chatGptLoadTime := IniRead("Config.ini", "WebNavigator", "chatGptLoadTime")
+WebSearcher.SetChatGptLoadTime(chatGptLoadTime)
 ; paths to urls of images used to click login buttons
 ; blackboardLoginImages := ["\imageSearchImages\feideBlackboardMaximized.png", "\imageSearchImages\feideBlackboardMinimized.png"]
 ; jupyterHubLoginImages := ["\imageSearchImages\jupyterHubMaximized.png", "\imageSearchImages\jupyterHubMinimized.png"]
