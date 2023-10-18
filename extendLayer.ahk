@@ -371,26 +371,12 @@ CapsLock:: layers.toggleLayerIndicator(1)
 ; |------------------------------|
 
 #HotIf layers.getActiveLayer() == 1
-
-    ; ; Shows main keyboard overlay for websites when a shift is held down
-    ; ~Shift:: OverlayRegistry.showKeyboardOverlay(MainKeyboardOverlayWebsites) ;MainKeyboardOverlayWebsites.ShowGui() 
-    
-    ; ; Hides main keyboard overlay for websites (and second overlay for devices just in case)
-    ; Shift up:: OverlayRegistry.hideAllLayers()
-
-    ; ; Shows main keyboard overlay for file explorer when a shift is held down
-    ; ~Ctrl::  OverlayRegistry.showKeyboardOverlay(MainKeyboardOverlayFileExplorer)  ;MainKeyboardOverlayFileExplorer.ShowGui()
-
-    ; ; Hides main keyboard overlay for file explorer 
-    ; Ctrl up:: OverlayRegistry.hideKeyboardOverlay(MainKeyboardOverlayFileExplorer) ;MainKeyboardOverlayFileExplorer.HideGui()
-
 #HotIf
 
 
 HotIf "layers.getActiveLayer() == 1"
     
     StartupConfigurator.InitializeAllDefaultKeysToFunctions("MainLayer")
-
     StartupConfigurator.InitializeAllDefaultKeyToNewKeys("MainLayer-DefaultKeys")
     StartupConfigurator.InitializeAllDefaultKeysToFunctions("MainLayer-Functions")
 
