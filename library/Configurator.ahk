@@ -42,7 +42,12 @@ Class Configurator{
         Loop KeyboardOverlayColumns.Length{
             ColumnValues := this.GetKeyValue(KeyboardOverlayColumns[A_Index])
             KeyboardOverlayColumnHelperKey := StrSplit(ColumnValues, ",")[1]
+            KeyboardOverlayColumnHelperKey := this.GetStringWithoutQuotes(KeyboardOverlayColumnHelperKey)
             KeyboardOverlayColumnFriendlyName := StrSplit(ColumnValues, ",")[2]
+            KeyboardOverlayColumnFriendlyName := this.GetStringWithoutQuotes(KeyboardOverlayColumnFriendlyName)
+            
+            ; KeyboardOverlayColumnFriendlyName := StrReplace(KeyboardOverlayColumnFriendlyName, "`"", "")
+            ; msgbox(KeyboardOverlayColumnFriendlyName)  
             this.SetKeyboardOverlayColumn(KeyboardOverlay, KeyboardOverlayColumnHelperKey, KeyboardOverlayColumnFriendlyName )
         }
     }
@@ -149,7 +154,7 @@ Class Configurator{
 
     GetStringWithoutQuotes(text){
         textWithoutQutoes := StrReplace(text, "`"", "")
-        textWithoutQutoes := StrReplace(text, "`'", "")
+        textWithoutQutoes := StrReplace(textWithoutQutoes, "'", "")
         return textWithoutQutoes
     }
 
