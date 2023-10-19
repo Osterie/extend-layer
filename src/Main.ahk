@@ -403,16 +403,9 @@ CapsLock:: layers.toggleLayerIndicator(1)
 
 HotIf "layers.getActiveLayer() == 1"
     
-    ; StartupConfigurator.InitializeAllDefaultKeysToFunctions("SecondaryLayer")
-    StartupConfigurator.ReadKeysToFunctionsBySection("SecondaryLayer-Functions")
-    StartupConfigurator.ReadKeysToNewKeysBySection("SecondaryLayer-DefaultKeys")
-
-    ; StartupConfigurator.InitializeAllDefaultKeyToNewKeys("SecondaryLayer-DefaultKeys")
-    ; StartupConfigurator.InitializeAllDefaultKeysToFunctions("SecondaryLayer-Functions")
-
+    StartupConfigurator.ReadKeysToNewActionsBySection("SecondaryLayer")
     StartupConfigurator.ReadKeysToShowKeyboardOverlaysByLayerSection("SecondaryLayer")
-    ; StartupConfigurator.CreateHotkeyForKeyboardOverlay("SecondaryLayer-KeyboardOverlay1", "~Shift")
-    ; StartupConfigurator.CreateHotkeyForKeyboardOverlay("SecondaryLayer-KeyboardOverlay2", "~Control")
+
 HotIf
 
 #HotIf layers.getActiveLayer() == 2 
@@ -454,8 +447,7 @@ HotIf
 
 HotIf "layers.getActiveLayer() == 2"
     
-    StartupConfigurator.ReadKeysToNewKeysBySection("TertiaryLayer-DefaultKeys")
-    StartupConfigurator.ReadKeysToFunctionsBySection("TertiaryLayer-Functions")
+    StartupConfigurator.ReadKeysToNewActionsBySection("TertiaryLayer")
 
 HotIf
 

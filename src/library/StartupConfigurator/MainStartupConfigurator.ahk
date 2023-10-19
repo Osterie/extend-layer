@@ -30,6 +30,11 @@ Class MainStartupConfigurator{
         this.KeyboardOverlayInitializerInstance.CreateHotkeyForKeyboardOverlayByLayerSection(layerSection)
     }
 
+    ReadKeysToNewActionsBySection(section){
+        this.HotkeyInitializerInstance.InitializeAllDefaultKeyToNewKeys(section . "-DefaultKeys")
+        this.HotkeyInitializerInstance.InitializeAllDefaultKeysToFunctions(section . "-Functions")
+    }
+
     ReadKeysToNewKeysBySection(section){
         this.HotkeyInitializerInstance.InitializeAllDefaultKeyToNewKeys(section)
     }
