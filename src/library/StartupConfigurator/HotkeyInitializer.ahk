@@ -1,96 +1,25 @@
 #Requires AutoHotkey v2.0
-#Include "iniFileReader.ahk"
-#Include "KeyboardOverlay.ahk"
 
-; TODO the ini file reader class, which is currently empty i believe, should read ini files.
-; "æ ø å" and such are replaced with other values, since the ini file cant be utf-8 with bom encoding, therefore the result should replace these wrong characters with "æøå" respectively.
-; TODO this class is too complex... use more modularization!
+#Include "IniFileReader.ahk"
 
-
-Class Configurator{
+Class HotkeyInitializer{
 
     iniFile := ""
     ObjectRegistry := ""
     IniReader := ""
 
-    __New(iniFile, ObjectRegistry){
+
+    __New(iniFile, objectRegistry){
         this.iniFile := iniFile
-        this.ObjectRegistry := ObjectRegistry
+        this.ObjectRegistry := objectRegistry
         this.IniReader := IniFileReader()
-    }
-
-    ChangeIniFile(iniFile){
-        this.iniFile := iniFile
-    }
-
-    ChangeObjectRegistry(ObjectRegistry){
-        this.ObjectRegistry := ObjectRegistry
-    }
-
-    ; TODO add method to read which keys are used to show keyboard overlays, should be in the correct layer section, because only then should they activate
-    ReadAllKeyboardOverlays(){
-
-        SectionNames := IniRead("Config.ini")
-        SectionNames := StrSplit(SectionNames, "`n")
-        Loop SectionNames.Length{
-            SectionName := SectionNames[A_Index]
-            if (InStr(SectionName, "KeyboardOverlay")){
-
-                ; OverlayRegistry := this.ObjectRegistry.GetObject("OverlayRegistry")
-
-                NewKeyboardOverlay := KeyboardOverlay()
-                NewKeyboardOverlay.CreateGui()
-                this.ReadKeyboardOverlaySection(NewKeyboardOverlay, SectionName)
-
-                ; OverlayRegistry.addKeyboardOverlay(NewKeyboardOverlay, SectionName)
-                this.ObjectRegistry.GetObject("OverlayRegistry").addKeyboardOverlay(NewKeyboardOverlay, SectionName)
-                ; TODO use the keyboardOVelray class to create a new keyboard overlay, which then columns are added to
-                ; TODO, each layer should have the "KeyboardOverlayKey" in it, which is then created there and such blah blah blah
-            
-            }
-        }
 
     }
 
-    ReadKeyboardOverlaySection(KeyboardOverlay, section){
-        
-        ; modifierKey := this.IniReader.ReadLine(this.iniFile, section, "ShowOverlayKey")
-        
-        
-        iniFileSection := this.IniReader.ReadSection(this.iniFile, section)
-
-        ; Reads where the columns start, and deletes everything before that.
-        startOfColumns := InStr(iniFileSection,"Column1")
-        iniFileSection := SubStr(iniFileSection,startOfColumns)
-
-        KeyboardOverlayColumns := StrSplit(iniFileSection, "`n")
-        
-        ; A_LoopField is the current item in the loop.
-        Loop KeyboardOverlayColumns.Length{
-            ColumnValues := this.GetKeyValue(KeyboardOverlayColumns[A_Index])
-            KeyboardOverlayColumnHelperKey := StrSplit(ColumnValues, ",")[1]
-            KeyboardOverlayColumnHelperKey := this.GetStringWithoutQuotes(KeyboardOverlayColumnHelperKey)
-            KeyboardOverlayColumnFriendlyName := StrSplit(ColumnValues, ",")[2]
-            KeyboardOverlayColumnFriendlyName := this.GetStringWithoutQuotes(KeyboardOverlayColumnFriendlyName)
-            this.SetKeyboardOverlayColumn(KeyboardOverlay, KeyboardOverlayColumnHelperKey, KeyboardOverlayColumnFriendlyName )
-        }
-    }
-
-    SetKeyboardOverlayColumn(KeyboardOverlay, ColumnHelperKey, ColumnFriendlyName){
-        KeyboardOverlay.AddStaticColumn(ColumnHelperKey, ColumnFriendlyName)
-    }
-
-    CreateHotkeyForKeyboardOverlay(sectionName, showKeyboardOverlayKey){
-        ; instanceOfOverlay := this.ObjectRegistry.GetObject("OverlayRegistry").GetKeyboardOverlay(sectionName)
-        instanceOfRegistry := this.ObjectRegistry.GetObject("OverlayRegistry")
-        HotKey(showKeyboardOverlayKey, (ThisHotkey) => instanceOfRegistry.ShowKeyboardOverlay(sectionName))
-        ; TODO, this " up" should be added for all layers...
-        HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => instanceOfRegistry.hideAllLayers())
-    }
-
+    
     InitializeAllDefaultKeysToFunctions(section){
+        
         iniFileSection := this.IniReader.ReadSection(this.iniFile, section)
-
         iniFileSectionArray := StrSplit(iniFileSection, "`n")
 
         ; A_LoopField is the current item in the loop.
@@ -185,6 +114,10 @@ Class Configurator{
         return validatedArgument
     }
 
+    ; |-----------DEFAULT KEYS TO FUNCTIONS SECTIONS END-----------|
+
+    ; |-----------DEFAULT KEYS TO NEW KEYS SECTIONS-----------|
+
     InitializeAllDefaultKeyToNewKeys(section){
 
         iniFileSection := this.IniReader.ReadSection(this.iniFile, section)
@@ -219,6 +152,13 @@ Class Configurator{
     SendKeyUp(key, modifiers){
         Send("{blind}{" . key . " Up}")                                                           
     }
+
+    ; |-----------DEFAULT KEYS TO NEW KEYS END-----------|
+
+
+    ; |-----------GENERAL-----------|
+
+    ; Only used one place!
 
     GetKeyValue(key){
         return StrSplit(key, "=")[2]

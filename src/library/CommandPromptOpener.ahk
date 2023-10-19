@@ -44,7 +44,12 @@ Class CommandPromptOpener{
         ; The absolute path to the folder of the currently open file.
         pathToCurrentWorkFile := SubStr(A_Clipboard, 1, lastBackSlashPosition)
         ; Opens command prompt in the found path.
-        run("cmd", pathToCurrentWorkFile)
+        try{
+            run("cmd", pathToCurrentWorkFile)
+        }
+        catch{
+            run("cmd", this.defaultPath)
+        }
         ;put the last copied thing back in the clipboard
         A_Clipboard := clipboardValue 
     }

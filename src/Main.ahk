@@ -12,7 +12,7 @@
 ; HotKey OnScreenWriterHotkey, way2
 
 ; CloseTabsToTheRight := ObjBindMethod(WebSearcher, "CloseTabsToTheRight")
-; CloseTabsToTheRightHotkey := IniRead("Config.ini", "Hotkeys", "CloseTabsToTheRight") ; Default key is ^!W
+; CloseTabsToTheRightHotkey := IniRead("../config/config.ini", "Hotkeys", "CloseTabsToTheRight") ; Default key is ^!W
 ; Hotkey(CloseTabsToTheRightHotkey, CloseTabsToTheRight)
 
 #Requires Autohotkey v2.0
@@ -28,11 +28,14 @@
 #Include ".\library\DeviceController.ahk"
 #Include ".\library\CommandPromptOpener.ahk"
 #Include ".\library\FileExplorerNavigator.ahk"
-#Include ".\library\Configurator.ahk"
+; #Include ".\library\Configurator.ahk"
 #Include ".\library\KeyboardOverlayRegistry.ahk"
 #Include ".\library\ApplicationManipulator.ahk"
 #Include ".\library\Mouse.ahk"
 #Include ".\library\ObjectRegistry.ahk"
+#Include ".\library\StartupConfigurator\MainStartupConfigurator.ahk"
+; #Include ".\library\Battery.ahk"
+; #Include ".\library\DeviceManipulator.ahk"
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -87,6 +90,8 @@ if (not A_IsAdmin){
 
 ; * Could make it possible to write anywhere on screen.
 
+
+; !TODO make it possible for user to create macros, use the macro creater you have worked on to do this maybe
 
 ; !Future, for other users or just for good practice, make the script more easily understandable and learnable for others.
 ; !do this by creating a meny or gui or markdown file or all of the above! which contains enough information for a decent understanding
@@ -182,8 +187,10 @@ if (not A_IsAdmin){
     Send(FormatTime(, "d.M.yyyy"))  ; It will look like 13.7.2005
 }
 
-name := IniRead("PrivateConfig.ini", "PrivateInfo", "Name")
-eMail := IniRead("PrivateConfig.ini", "PrivateInfo", "Email")
+
+
+name := IniRead("../config/privateConfig.ini", "PrivateInfo", "Name")
+eMail := IniRead("../config/privateConfig.ini", "PrivateInfo", "Email")
 
 Hotstring( "::agb", StrReplace(name, "Ã¸", "ø"))
 Hotstring( "::a@", eMail)
@@ -204,7 +211,7 @@ ObjectRegister.AddObject("ApplicationManipulatorInstance", ApplicationManipulato
 
 
 ; Allows opening cmd pathed to the current file location for vs code and file explorer.
-commandPromptDefaultPath := IniRead("Config.ini", "CommandPrompt", "DefaultPath")
+commandPromptDefaultPath := IniRead("../config/config.ini", "CommandPrompt", "DefaultPath")
 CommandPrompt := CommandPromptOpener(commandPromptDefaultPath)
 ObjectRegister.AddObject("CommandPrompt", CommandPrompt)
 
@@ -243,8 +250,8 @@ Monitor := MonitorController()
 ObjectRegister.AddObject("Monitor", Monitor)
 
 ; Used to switch between power saver mode and normal power mode (does not work as expected currently, percentage to switch to power saver is changed, but power saver is never turned on...)
-powerSaverModeGUID := IniRead("Config.ini", "Battery", "PowerSaverModeGUID")
-defaultPowerModeGUID := IniRead("Config.ini", "Battery", "DefaultPowerModeGUID")
+powerSaverModeGUID := IniRead("../config/config.ini", "Battery", "PowerSaverModeGUID")
+defaultPowerModeGUID := IniRead("../config/config.ini", "Battery", "DefaultPowerModeGUID")
 Battery := BatteryController(50, 50)
 Battery.setPowerSaverModeGUID(powerSaverModeGUID)
 Battery.setDefaultPowerModeGUID(defaultPowerModeGUID)
@@ -252,7 +259,7 @@ Battery.ActivateNormalPowerMode()
 ObjectRegister.AddObject("Battery", Battery)
 
 ; Used to search for stuff in the browser, translate, and excecute shortcues like close tabs to the right in browser
-chatGptLoadTime := IniRead("Config.ini", "WebNavigator", "chatGptLoadTime")
+chatGptLoadTime := IniRead("../config/config.ini", "WebNavigator", "chatGptLoadTime")
 WebSearcher := WebNavigator()
 WebSearcher.SetChatGptLoadTime(chatGptLoadTime)
 ObjectRegister.AddObject("WebSearcher", WebSearcher)
@@ -303,14 +310,21 @@ layers.addLayerIndicator(2, "Red")
 ; |----------------------------------|
 
 ; This is used to read ini files, and create hotkeys from them
-StartupConfigurator := Configurator("Config.ini", ObjectRegister)
-; Is used to initialize all hotkeys, if hotkeys are changed by the user, these changes are stored in the Config.ini file.
+; StartupConfigurator := Configurator("../config/config.ini", ObjectRegister)
+StartupConfigurator := MainStartupConfigurator("../config/config.ini", ObjectRegister)
+
+StartupConfigurator.ReadAllKeyboardOverlays()
+
+; Is used to initialize all hotkeys, if hotkeys are changed by the user, these changes are stored in the ../config/config.ini file.
 ; This file is then read by StartupConfigurator and the default hotkeys are changed accordingly
-StartupConfigurator.InitializeAllDefaultKeysToFunctions("PrimaryLayer-Functions")
+; StartupConfigurator.InitializeAllDefaultKeysToFunctions("PrimaryLayer-Functions")
 ; StartupConfigurator.ReadKeyboardOverlaySection(SecondaryLayerKeyboardOverlay1, "SecondaryLayerKeyboardOverlay1") 
 ; StartupConfigurator.ReadKeyboardOverlaySection(SecondaryLayerKeyboardOverlay2, "SecondaryLayerKeyboardOverlay2") 
 
-StartupConfigurator.ReadAllKeyboardOverlays()
+
+StartupConfigurator.ReadKeysToFunctionsBySection("PrimaryLayer-Functions")
+
+; StartupConfigurator.ReadAllKeyboardOverlays()
 
 ; |-------------------------------------------|
 ; |------------Ensures consistency------------|
@@ -390,11 +404,15 @@ CapsLock:: layers.toggleLayerIndicator(1)
 HotIf "layers.getActiveLayer() == 1"
     
     ; StartupConfigurator.InitializeAllDefaultKeysToFunctions("SecondaryLayer")
-    StartupConfigurator.InitializeAllDefaultKeyToNewKeys("SecondaryLayer-DefaultKeys")
-    StartupConfigurator.InitializeAllDefaultKeysToFunctions("SecondaryLayer-Functions")
+    StartupConfigurator.ReadKeysToFunctionsBySection("SecondaryLayer-Functions")
+    StartupConfigurator.ReadKeysToNewKeysBySection("SecondaryLayer-DefaultKeys")
 
-    StartupConfigurator.CreateHotkeyForKeyboardOverlay("SecondaryLayer-KeyboardOverlay1", "~Shift")
-    StartupConfigurator.CreateHotkeyForKeyboardOverlay("SecondaryLayer-KeyboardOverlay2", "~Control")
+    ; StartupConfigurator.InitializeAllDefaultKeyToNewKeys("SecondaryLayer-DefaultKeys")
+    ; StartupConfigurator.InitializeAllDefaultKeysToFunctions("SecondaryLayer-Functions")
+
+    StartupConfigurator.ReadKeysToShowKeyboardOverlaysByLayerSection("SecondaryLayer")
+    ; StartupConfigurator.CreateHotkeyForKeyboardOverlay("SecondaryLayer-KeyboardOverlay1", "~Shift")
+    ; StartupConfigurator.CreateHotkeyForKeyboardOverlay("SecondaryLayer-KeyboardOverlay2", "~Control")
 HotIf
 
 #HotIf layers.getActiveLayer() == 2 
@@ -436,8 +454,8 @@ HotIf
 
 HotIf "layers.getActiveLayer() == 2"
     
-    StartupConfigurator.InitializeAllDefaultKeyToNewKeys("TertiaryLayer-DefaultKeys")
-    StartupConfigurator.InitializeAllDefaultKeysToFunctions("TertiaryLayer-Functions")
+    StartupConfigurator.ReadKeysToNewKeysBySection("TertiaryLayer-DefaultKeys")
+    StartupConfigurator.ReadKeysToFunctionsBySection("TertiaryLayer-Functions")
 
 HotIf
 
