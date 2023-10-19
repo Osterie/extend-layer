@@ -25,9 +25,8 @@ Class IniFileReader{
     }
 
     ValidateKey(key){
-        key := StrReplace(key, "æ", "Ã¦")
-        key := StrReplace(key, "ø", "Ã¸")
-        key := StrReplace(key, "å", "Ã¥")
+        key := StrReplace(key, "win+", "#")
+        key := StrReplace(key, "win +", "#")
         return key
     }
 
@@ -38,6 +37,20 @@ Class IniFileReader{
         ; pairValue := StrReplace(pairValue, "win+", "#")
         ; TODO handle if win is with upper or lower case w
         return pairValue
+    }
+
+    GetValidatedKeyFromLine(iniFileLine){
+        validatedKey := this.GetKeyFromLine(iniFileLine)
+        validatedKey := this.ValidateKey(validatedKey)
+        return validatedKey
+    }
+
+    GetKeyFromLine(iniFileLine){
+        return StrSplit(iniFileLine, "=")[1]
+    }
+
+    GetValueFromLine(iniFileLine){
+        return StrSplit(iniFileLine, "=")[2]
     }
 
     SeperateKeyboardKeyAndModifiers(givenKeyboradKeyWithModifier){

@@ -8,53 +8,57 @@ Class HotkeyInitializer{
     ObjectRegistry := ""
     IniReader := ""
 
-
     __New(iniFile, objectRegistry){
         this.iniFile := iniFile
         this.ObjectRegistry := objectRegistry
         this.IniReader := IniFileReader()
-
     }
-
     
+    ; this method is used to change a every normal keyboard key in a section, into a key which triggers a method call.
+    ; Could be for example a method call which changes screen brightness
     InitializeAllDefaultKeysToFunctions(section){
         
+        ; the contents of the entire section
         iniFileSection := this.IniReader.ReadSection(this.iniFile, section)
+        ; the contents of the entire section, but split into an array, using "`n" as a delimiter, which is new line in ahk.
         iniFileSectionArray := StrSplit(iniFileSection, "`n")
 
         ; A_LoopField is the current item in the loop.
         Loop iniFileSectionArray.Length{
-            ; This is the function that is in the ini file, for example EmergencyClose is a function.
-            iniFileKey := StrSplit(iniFileSectionArray[A_Index], "=")[1]
-            this.InitializeDefaultKeyToFunction(section, iniFileKey)
+            ; keyboardKey is the left side of the expression in the ini file.
+            ; which is a keyboard key, for example "a, b, c, d" and so on.
+            ; they can also be modified, for example "win+a, shift+b, control+c" and such
+            keyboardKey := this.IniReader.GetValidatedKeyFromLine(iniFileSectionArray[A_Index])
+            methodCall := this.IniReader.GetValueFromLine(iniFileSectionArray[A_Index])
+            ; Turns the keyboard key into a hotkey, which triggers a method call.
+            this.InitializeDefaultKeyToFunction(keyboardKey, methodCall)
         }
     }
 
-    InitializeDefaultKeyToFunction(section, key){
-        readLine := this.IniReader.readLine(this.iniFile, section, key)
+    ; Used to change a single keyboard key into a key which triggers a class method call.
+    InitializeDefaultKeyToFunction(keyboardKey, methodCall){
         
-        ; TODO add method for key validation
-        key := StrReplace(key, "win+", "#")
+        ; todo create a class or method which is able to extract all these pieces of information
 
         ; Reads the Class name, which is the text before the first period
-        UsedClass := SubStr(readLine, 1, InStr(readLine, ".")-1)
+        UsedClass := SubStr(methodCall, 1, InStr(methodCall, ".")-1)
         ; Removes the class name from the expression
-        readLine := SubStr(readLine, InStr(readLine, ".")+1)
+        methodCall := SubStr(methodCall, InStr(methodCall, ".")+1)
 
-        UsedMethod := SubStr(readLine, 1, InStr(readLine, "(")-1)
+        UsedMethod := SubStr(methodCall, 1, InStr(methodCall, "(")-1)
         ; Removes the method name from the expression, and also the first and last character, which are "(" and ")"
         ; This leaves only the arguments remainig, which is split into an array, splitting by "," since comma seperates arguments
-        readLine := SubStr(readLine, InStr(readLine, "(")+1, -1)
+        methodCall := SubStr(methodCall, InStr(methodCall, "(")+1, -1)
 
-        arguments := StrSplit(readLine, ",")
+        arguments := StrSplit(methodCall, ",")
 
         validatedArguments := this.ValidateArguments(arguments)
 
+        ClassOfMethod := this.ObjectRegistry.GetObject(UsedClass)
 
-        methodClass := this.ObjectRegistry.GetObject(UsedClass)
+        secondColumn := ObjBindMethod(ClassOfMethod, UsedMethod, validatedArguments*)
 
-        secondColumn := ObjBindMethod(methodClass, UsedMethod, validatedArguments*)
-        HotKey key, (ThisHotkey) => (secondColumn)()
+        HotKey keyboardKey, (ThisHotkey) => (secondColumn)()
 
     }
 
@@ -113,10 +117,6 @@ Class HotkeyInitializer{
         }
         return validatedArgument
     }
-
-    ; |-----------DEFAULT KEYS TO FUNCTIONS SECTIONS END-----------|
-
-    ; |-----------DEFAULT KEYS TO NEW KEYS SECTIONS-----------|
 
     InitializeAllDefaultKeyToNewKeys(section){
 
