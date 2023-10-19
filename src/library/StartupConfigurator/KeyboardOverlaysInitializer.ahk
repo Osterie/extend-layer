@@ -64,12 +64,12 @@ Class KeyboardOverlaysInitializer{
         KeyboardOverlay.AddStaticColumn(ColumnHelperKey, ColumnFriendlyName)
     }
 
-    CreateHotkeyForKeyboardOverlayByLayerSection(layerSection){
+    CreateHotkeysForKeyboardOverlaysByLayerSection(layerSection){
         sectionNames := IniRead(this.iniFile)
         sectionNames := StrSplit(sectionNames, "`n")
         Loop sectionNames.Length{
             sectionName := sectionNames[A_Index]
-            if (InStr(sectionName, layerSection . "-KeyboardOverlay")){
+            if (InStr(sectionName, layerSection)){
 
                 ; NewKeyboardOverlay := KeyboardOverlay()
                 ; NewKeyboardOverlay.CreateGui()

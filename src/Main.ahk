@@ -404,7 +404,6 @@ CapsLock:: layers.toggleLayerIndicator(1)
 HotIf "layers.getActiveLayer() == 1"
     
     StartupConfigurator.ReadKeysToNewActionsBySection("SecondaryLayer")
-    StartupConfigurator.ReadKeysToShowKeyboardOverlaysByLayerSection("SecondaryLayer")
 
 HotIf
 
