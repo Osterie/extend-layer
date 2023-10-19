@@ -4,6 +4,8 @@
 
 ; TODO the ini file reader class, which is currently empty i believe, should read ini files.
 ; "æ ø å" and such are replaced with other values, since the ini file cant be utf-8 with bom encoding, therefore the result should replace these wrong characters with "æøå" respectively.
+; TODO this class is too complex... use more modularization!
+
 
 Class Configurator{
 
@@ -25,14 +27,6 @@ Class Configurator{
         this.ObjectRegistry := ObjectRegistry
     }
 
-    CreateHotkeyForKeyboardOverlay(sectionName, showKeyboardOverlayKey){
-        ; instanceOfOverlay := this.ObjectRegistry.GetObject("OverlayRegistry").GetKeyboardOverlay(sectionName)
-        instanceOfRegistry := this.ObjectRegistry.GetObject("OverlayRegistry")
-        HotKey(showKeyboardOverlayKey, (ThisHotkey) => instanceOfRegistry.ShowKeyboardOverlay(sectionName))
-        ; TODO, this " up" should be added for all layers...
-        HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => instanceOfRegistry.hideAllLayers())
-    }
-
     ; TODO add method to read which keys are used to show keyboard overlays, should be in the correct layer section, because only then should they activate
     ReadAllKeyboardOverlays(){
 
@@ -52,6 +46,7 @@ Class Configurator{
                 this.ObjectRegistry.GetObject("OverlayRegistry").addKeyboardOverlay(NewKeyboardOverlay, SectionName)
                 ; TODO use the keyboardOVelray class to create a new keyboard overlay, which then columns are added to
                 ; TODO, each layer should have the "KeyboardOverlayKey" in it, which is then created there and such blah blah blah
+            
             }
         }
 
@@ -60,6 +55,7 @@ Class Configurator{
     ReadKeyboardOverlaySection(KeyboardOverlay, section){
         
         ; modifierKey := this.IniReader.ReadLine(this.iniFile, section, "ShowOverlayKey")
+        
         
         iniFileSection := this.IniReader.ReadSection(this.iniFile, section)
 
@@ -84,6 +80,13 @@ Class Configurator{
         KeyboardOverlay.AddStaticColumn(ColumnHelperKey, ColumnFriendlyName)
     }
 
+    CreateHotkeyForKeyboardOverlay(sectionName, showKeyboardOverlayKey){
+        ; instanceOfOverlay := this.ObjectRegistry.GetObject("OverlayRegistry").GetKeyboardOverlay(sectionName)
+        instanceOfRegistry := this.ObjectRegistry.GetObject("OverlayRegistry")
+        HotKey(showKeyboardOverlayKey, (ThisHotkey) => instanceOfRegistry.ShowKeyboardOverlay(sectionName))
+        ; TODO, this " up" should be added for all layers...
+        HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => instanceOfRegistry.hideAllLayers())
+    }
 
     InitializeAllDefaultKeysToFunctions(section){
         iniFileSection := this.IniReader.ReadSection(this.iniFile, section)
@@ -182,12 +185,6 @@ Class Configurator{
         return validatedArgument
     }
 
-    GetStringWithoutQuotes(text){
-        textWithoutQutoes := StrReplace(text, "`"", "")
-        textWithoutQutoes := StrReplace(textWithoutQutoes, "'", "")
-        return textWithoutQutoes
-    }
-
     InitializeAllDefaultKeyToNewKeys(section){
 
         iniFileSection := this.IniReader.ReadSection(this.iniFile, section)
@@ -211,11 +208,8 @@ Class Configurator{
     }
 
     ChangeKeyToNewKey(normalKey, newKey, newKeyModifiers){
-        ; *a = normalKey
-        ; Left = newKey
         HotKey(normalKey, (ThisHotkey) => this.SendKeyDown(newKey, newKeyModifiers)) 
         HotKey(normalKey . " Up", (ThisHotkey) => this.SendKeyUp(newKey, newKeyModifiers))
-
     }
 
     SendKeyDown(key, modifiers){
@@ -230,9 +224,9 @@ Class Configurator{
         return StrSplit(key, "=")[2]
     }
 
-    ReadArray(section, key){
-        values := this.IniReader.ReadLine(this.iniFile, section, key)
-        valueArray := values.StrSplit(values, ",")
-        return valueArray
+    GetStringWithoutQuotes(text){
+        textWithoutQutoes := StrReplace(text, "`"", "")
+        textWithoutQutoes := StrReplace(textWithoutQutoes, "'", "")
+        return textWithoutQutoes
     }
 }
