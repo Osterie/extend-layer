@@ -1,5 +1,5 @@
 ﻿#Requires Autohotkey v2.0
-#Include "%A_ScriptDir%\library\NumberDisplay.ahk"
+#Include ".\NumberDisplay.ahk"
 
 Class ClockDisplay{
 

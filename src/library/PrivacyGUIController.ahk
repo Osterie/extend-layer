@@ -1,8 +1,9 @@
 #Requires Autohotkey v2.0
-#Include "./CountdownGUI.ahk"
+#Include ".\Clock\CountdownGUI.ahk"
 
 Class PrivacyGUIController{
 
+    ; TODO, perhaps this could be combined with monitor.ahk, or something similar with a different name?
     GUIPrivacyBox := ""
     minutes := 3
     seconds := 0
@@ -36,6 +37,7 @@ Class PrivacyGUIController{
     }
     ; Covers the entire screen with a gui.
     ; Includes a countown to when screen turns off
+    ; TODO: should have the timer on the same gui, not a different one, creates bug if the screen hider part is clicked.
     HideScreen(){
         this.GUIPrivacyBox.Show("x0 y0 w" . A_ScreenWidth . " h" . A_ScreenHeight . " NoActivate")
         

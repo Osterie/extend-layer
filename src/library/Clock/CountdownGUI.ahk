@@ -1,7 +1,9 @@
 ﻿#Requires Autohotkey v2.0
-#Include "%A_ScriptDir%\library\ClockDisplay.ahk"
+#Include ".\ClockDisplay.ahk"
 ; #Include ".\library\CountdownGUI.ahk"
 
+; TODO: this should only be called CountdownDisplay.ahk
+; TODO: could create a clock gui class, which can create a gui for countdown or clock
 
 Class CountdownGUI{
 

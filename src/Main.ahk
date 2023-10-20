@@ -16,26 +16,23 @@
 ; Hotkey(CloseTabsToTheRightHotkey, CloseTabsToTheRight)
 
 #Requires Autohotkey v2.0
-#Include ".\library\CountdownGUI.ahk"
+#Include ".\library\Clock\CountdownGUI.ahk"
 #Include ".\library\MonitorController.ahk"
-#Include ".\library\LayerIndicatorController.ahk"
+#Include ".\library\LayerIndication\LayerIndicatorController.ahk"
 #Include ".\library\BatteryController.ahk"
 #Include ".\library\PrivacyGUIController.ahk"
 #Include ".\library\ComputerInputController.ahk"
 #Include ".\library\KeysPressedGui.ahk"
-#Include ".\library\WebNavigator.ahk"
+#Include ".\library\WebNavigation\WebNavigator.ahk"
 #Include ".\library\KeyboardOverlay.ahk"
-#Include ".\library\DeviceController.ahk"
+#Include ".\library\DeviceManager.ahk"
 #Include ".\library\CommandPromptOpener.ahk"
 #Include ".\library\FileExplorerNavigator.ahk"
-; #Include ".\library\Configurator.ahk"
 #Include ".\library\KeyboardOverlayRegistry.ahk"
 #Include ".\library\ApplicationManipulator.ahk"
 #Include ".\library\Mouse.ahk"
 #Include ".\library\ObjectRegistry.ahk"
 #Include ".\library\StartupConfigurator\MainStartupConfigurator.ahk"
-; #Include ".\library\Battery.ahk"
-; #Include ".\library\DeviceManipulator.ahk"
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -238,7 +235,7 @@ privacyController.ChangeCountdown(3,0)
 ObjectRegister.AddObject("privacyController", privacyController)
 
 ; Used to get the states of devices, like if bluetooth and such is enabled, also able to disable/enable these devices
-DeviceManipulator := DeviceController()
+DeviceManipulator := DeviceManager()
 ; launches a powershell script which gets the states of some devices, like if the mouse is enabled.
 ; Having this activated will slow down the startup of the script significantly.
 ; !DeviceManipulator.UpdateDevicesActionToToggle()

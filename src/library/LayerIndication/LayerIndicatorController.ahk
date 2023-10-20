@@ -1,6 +1,8 @@
 ﻿#Requires Autohotkey v2.0
 
-#Include "%A_ScriptDir%\library\LayerIndicator.ahk"
+#Include ".\LayerIndicator.ahk"
+
+; TODO: perhaps it should be called registry?
 
 ; TODO; instead of multiple guis, it would be possible to just change the color and have the same gui no change...
 Class LayerIndicatorController{
