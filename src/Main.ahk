@@ -16,21 +16,21 @@
 ; Hotkey(CloseTabsToTheRightHotkey, CloseTabsToTheRight)
 
 #Requires Autohotkey v2.0
+#Include ".\library\IODevices\DeviceManager.ahk"
+#Include ".\library\IODevices\ComputerInputController.ahk"
+#Include ".\library\IODevices\Monitor.ahk"
+#Include ".\library\IODevices\Mouse.ahk"
 #Include ".\library\Clock\CountdownGUI.ahk"
-#Include ".\library\MonitorController.ahk"
 #Include ".\library\LayerIndication\LayerIndicatorController.ahk"
-#Include ".\library\BatteryController.ahk"
+#Include ".\library\BatteryAndPower\BatteryController.ahk"
 #Include ".\library\PrivacyGUIController.ahk"
-#Include ".\library\ComputerInputController.ahk"
 #Include ".\library\KeysPressedGui.ahk"
 #Include ".\library\WebNavigation\WebNavigator.ahk"
 #Include ".\library\KeyboardOverlay.ahk"
-#Include ".\library\DeviceManager.ahk"
 #Include ".\library\CommandPromptOpener.ahk"
 #Include ".\library\FileExplorerNavigator.ahk"
 #Include ".\library\KeyboardOverlayRegistry.ahk"
 #Include ".\library\ApplicationManipulator.ahk"
-#Include ".\library\Mouse.ahk"
 #Include ".\library\ObjectRegistry.ahk"
 #Include ".\library\StartupConfigurator\MainStartupConfigurator.ahk"
 
@@ -243,8 +243,8 @@ ObjectRegister.AddObject("DeviceManipulator", DeviceManipulator)
 
 
 ; Used to change brightness and gamma settings of the monitor
-Monitor := MonitorController()
-ObjectRegister.AddObject("Monitor", Monitor)
+MonitorInstance := Monitor()
+ObjectRegister.AddObject("MonitorInstance", MonitorInstance)
 
 ; Used to switch between power saver mode and normal power mode (does not work as expected currently, percentage to switch to power saver is changed, but power saver is never turned on...)
 powerSaverModeGUID := IniRead("../config/config.ini", "Battery", "PowerSaverModeGUID")

@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 #Include ".\Translator.ahk"
-#Include "..\ComputerInputController.ahk"
+#Include "..\IODevices\ComputerInputController.ahk"
 
 Class WebNavigator{
 
