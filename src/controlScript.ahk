@@ -11,7 +11,7 @@ if not A_IsAdmin
 ; Extra layers script
 ^!l::Run("*RunAs " A_ScriptDir "\Main.ahk")
 ; For testing
-^!i::Run(A_ScriptDir "\test.ahk")
+^!i::Run(A_ScriptDir "\..\tests\test.ahk")
 
 ^!|::Reload()
 ^!Esc::ExitApp()
