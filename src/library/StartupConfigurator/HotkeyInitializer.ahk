@@ -74,7 +74,7 @@ Class HotkeyInitializer{
             ; Start of array
             if (SubStr(argument, 1, 1) == "["){
                 inArray := true
-                firstElement := SubStr(argument, 1,)
+                firstElement := SubStr(argument, 2)
                 firstElement := this.GetStringWithoutQuotes(firstElement)
                 temporaryArray.Push(firstElement)
             }
