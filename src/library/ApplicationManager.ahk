@@ -1,10 +1,15 @@
 #Requires AutoHotkey v2.0
 
-Class ApplicationManipulator{
+Class ProcessManager{
 
-    CloseActiveApplication(){
+    CloseFocusedProcess(){
         Send("!{f4}")
     }
+
+    CloseProcessByPID(pid){
+        ; TODO: Implement
+    }
+
 
     CloseActiveAutohotkeyScript(){
         Exitapp

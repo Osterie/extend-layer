@@ -30,7 +30,7 @@
 #Include ".\library\CommandPromptOpener.ahk"
 #Include ".\library\Navigation\FileNavigation\FileExplorerNavigator.ahk"
 #Include ".\library\KeyboardOverlay\KeyboardOverlayRegistry.ahk"
-#Include ".\library\ApplicationManipulator.ahk"
+#Include ".\library\ProcessManager.ahk"
 #Include ".\library\ObjectRegistry.ahk"
 #Include ".\library\StartupConfigurator\MainStartupConfigurator.ahk"
 
@@ -203,8 +203,8 @@ ObjectRegister := ObjectRegistry()
 MouseInstance := Mouse()
 ObjectRegister.AddObject("MouseInstance", MouseInstance)
 
-ApplicationManipulatorInstance := ApplicationManipulator()
-ObjectRegister.AddObject("ApplicationManipulatorInstance", ApplicationManipulatorInstance)
+ProcessManagerInstance := ProcessManager()
+ObjectRegister.AddObject("ProcessManagerInstance", ProcessManagerInstance)
 
 
 ; Allows opening cmd pathed to the current file location for vs code and file explorer.
@@ -374,7 +374,7 @@ CapsLock:: layers.toggleLayerIndicator(1)
 ; SuspendExempt means this hotkey will not be suspended when the script is suspended.
 ; Since this hotkey suspends the script it is important that it is not suspended itself.
 #SuspendExempt
-^!s:: ApplicationManipulatorInstance.SuspendActiveAutohotkeyScript()  ; Ctrl+Alt+S
+^!s:: ProcessManagerInstance.SuspendActiveAutohotkeyScript()  ; Ctrl+Alt+S
 #SuspendExempt False
 
 ; |------------------------------|
