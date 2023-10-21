@@ -23,13 +23,13 @@
 #Include ".\library\Clock\CountdownGUI.ahk"
 #Include ".\library\LayerIndication\LayerIndicatorController.ahk"
 #Include ".\library\BatteryAndPower\BatteryController.ahk"
-#Include ".\library\PrivacyGUIController.ahk"
+#Include ".\library\Privacy\ScreenPrivacyController.ahk"
 #Include ".\library\KeysPressedGui.ahk"
 #Include ".\library\Navigation\WebNavigation\WebNavigator.ahk"
-#Include ".\library\KeyboardOverlay.ahk"
+#Include ".\library\KeyboardOverlay\KeyboardOverlay.ahk"
 #Include ".\library\CommandPromptOpener.ahk"
 #Include ".\library\Navigation\FileNavigation\FileExplorerNavigator.ahk"
-#Include ".\library\KeyboardOverlayRegistry.ahk"
+#Include ".\library\KeyboardOverlay\KeyboardOverlayRegistry.ahk"
 #Include ".\library\ApplicationManipulator.ahk"
 #Include ".\library\ObjectRegistry.ahk"
 #Include ".\library\StartupConfigurator\MainStartupConfigurator.ahk"
@@ -226,13 +226,13 @@ ComputerInput := ComputerInputController()
 ObjectRegister.AddObject("ComputerInput", ComputerInput)
 
 ; Used to hide screen and parts of the screen
-privacyController := PrivacyGUIController()
-privacyController.CreateGui()
+PrivacyController := ScreenPrivacyController()
+PrivacyController.CreateGui()
 ; Sets the countdown for the screen hider to 3 minutes. (change to your screen sleep time)
 ; This shows a countdown on the screen, and when it reaches 0, the screen goes to sleep
-; TODO probably should create a setting for this in ini file
-privacyController.ChangeCountdown(3,0)
-ObjectRegister.AddObject("privacyController", privacyController)
+monitorSleepTimeMinutes := IniRead("../config/config.ini", "PrivacyController", "MonitorSleepTimeMinutes")
+PrivacyController.ChangeCountdown(monitorSleepTimeMinutes,0)
+ObjectRegister.AddObject("PrivacyController", PrivacyController)
 
 ; Used to get the states of devices, like if bluetooth and such is enabled, also able to disable/enable these devices
 DeviceManipulator := DeviceManager()

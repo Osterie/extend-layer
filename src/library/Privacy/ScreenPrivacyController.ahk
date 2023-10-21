@@ -1,7 +1,7 @@
 #Requires Autohotkey v2.0
-#Include ".\Clock\CountdownGUI.ahk"
+#Include "..\Clock\CountdownGUI.ahk"
 
-Class PrivacyGUIController{
+Class ScreenPrivacyController{
 
     ; TODO, perhaps this could be combined with monitor.ahk, or something similar with a different name?
     GUIPrivacyBox := ""
