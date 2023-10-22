@@ -32,7 +32,7 @@
 #Include ".\library\KeyboardOverlay\KeyboardOverlayRegistry.ahk"
 #Include ".\library\ProcessManager.ahk"
 #Include ".\library\ObjectRegistry.ahk"
-#Include ".\library\StartupConfigurator\MainStartupConfigurator.ahk"
+#Include ".\library\Configuration\StartupConfiguration\MainStartupConfigurator.ahk"
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -174,6 +174,8 @@ if (not A_IsAdmin){
 ; Layers and keyboard overlay could possibly be used in a class, since they work for the same thing, the layers.
 
 ; TODO; create a website for this program. it should have pages for stuff such as "classes and methods", which explain which classes there are and how to use them. i.e which methods they have and what parameteres they take
+
+; TODO; is it possible to instantly send backticks? i.e. `
 
 ; |-----------------------------------|
 ; |------------HOTSTRINGS-------------|
@@ -376,6 +378,7 @@ CapsLock:: layers.toggleLayerIndicator(1)
 #SuspendExempt
 ^!s:: ProcessManagerInstance.SuspendActiveAutohotkeyScript()  ; Ctrl+Alt+S
 #SuspendExempt False
+
 
 ; |------------------------------|
 ; |-----------Layers-------------|

@@ -12,6 +12,7 @@ if not A_IsAdmin
 ^!l::Run("*RunAs " A_ScriptDir "\Main.ahk")
 ; For testing
 ^!i::Run(A_ScriptDir "\..\tests\test.ahk")
+^!u::Run(A_ScriptDir "\..\tests\mainGui.ahk")
 
 ^!|::Reload()
 ^!Esc::ExitApp()

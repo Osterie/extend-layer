@@ -21,6 +21,7 @@ Class Monitor{
     }
     
     GetCurrentBrightness(){
+        ; TODO fixme, might not work on all monitors idk, did not work on my desktop
         For property in ComObjGet( "winmgmts:\\.\root\WMI" ).ExecQuery( "SELECT * FROM WmiMonitorBrightness" )
             currentBrightness := property.CurrentBrightness	
     
