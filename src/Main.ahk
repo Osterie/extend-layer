@@ -3,6 +3,7 @@
 ; Github: https://github.com/Osterie
 
 
+; TODO: places where lists and such are returned, return an iterator instead
 
 ; [^ = Ctrl] [+ = Shift] [! = Alt] [# = Win]
 ; I found two ways to make a hotkey which excecutes a class method:
