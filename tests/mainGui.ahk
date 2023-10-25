@@ -1,4 +1,6 @@
-; #Requires AutoHotkey v2.0
+#Requires AutoHotkey v2.0
+
+#Include ".\TreeViewMaker.ahk"
 
 MyGui := Gui()
 MyGui.Opt("+Resize +MinSize640x480")
@@ -12,9 +14,9 @@ addProfileButton := MyGui.Add("Button", "Default w80", "Add profile")
 importProfileButton := MyGui.Add("Button", "Default w80", "Import profile")
 exportProfileButton := MyGui.Add("Button", "Default w80", "Export profile")
 
-addProfileButton.OnEvent("Click", addProfileButton_Click)
-importProfileButton.OnEvent("Click", importProfileButton_Click)
-exportProfileButton.OnEvent("Click", exportProfileButton_Click)
+; addProfileButton.OnEvent("Click", addProfileButton_Click)
+; importProfileButton.OnEvent("Click", importProfileButton_Click)
+; exportProfileButton.OnEvent("Click", exportProfileButton_Click)
 
 ; MyBtn.OnEvent("Click", MyBtn_Click)  ; Call MyBtn_Click when clicked.
 
@@ -33,23 +35,31 @@ Tab.UseTab(2)
 ; Then a function or something is called which creates the treeview.
 ; This would rely on object registry perhaps needing some added functionality
 
-; MyGui.Add("TreeView", "r10")
-ImageListID := IL_Create(10)  ; Create an ImageList with initial capacity for 10 icons.
-Loop 10  ; Load the ImageList with some standard system icons.
-    IL_Add(ImageListID, "shell32.dll", A_Index)
-TV := MyGui.Add("TreeView", "ImageList" . ImageListID)
-TV.Add("Name of Item", 0, "Icon4")  ; Add an item to the TreeView and give it a folder icon.
+; ImageListID := IL_Create(10)  ; Create an ImageList with initial capacity for 10 icons.
+; Loop 10  ; Load the ImageList with some standard system icons.
+;     IL_Add(ImageListID, "shell32.dll", A_Index)
+; TV := MyGui.Add("TreeView", "ImageList" . ImageListID)
+; TV.Add("Name of Item", 0, "Icon4")  ; Add an item to the TreeView and give it a folder icon.
+
+; CreateTreeViewFromIniFile()
+
+iniFile := "..\config\UserProfiles\Profile1\ClassObjects.ini"
+SectionNames := IniRead(iniFile)
+
+TreeViewCreator := TreeViewMaker()
+TreeViewCreator.AddTreeViewFromIniFile(MyGui, iniFile)
+
+
+; SectionNames := StrSplit(SectionNames, "`n")
+; Loop SectionNames.Length{
+;     SectionName := SectionNames[A_Index]
+;     msgbox(SectionName)
+; }
+
+
+
 
 ; TODO: to create the treeview, read the ini file sections
-
-; TV := MyGui.Add("TreeView", "r10")
-; P1 := TV.Add("First parent")
-; P1C1 := TV.Add("Parent 1's first child", P1)  ; Specify P1 to be this item's parent.
-; P2 := TV.Add("Second parent")
-; P2C1 := TV.Add("Parent 2's first child", P2)
-; P2C2 := TV.Add("Parent 2's second child", P2)
-; P2C2C1 := TV.Add("Child 2's first child", P2C2)
-
 
 
 Tab.UseTab(3)
@@ -76,11 +86,8 @@ ProcessUserInput(*)
     ; MsgBox("You entered:`n" Saved.MyCheckBox "`n" Saved.MyRadio "`n" Saved.MyEdit)
 }
 
-
-
-
-; ; The following folder will be the root folder for the TreeView. Note that loading might take a long
-; ; time if an entire drive such as C:\ is specified:
+; The following folder will be the root folder for the TreeView. Note that loading might take a long
+; time if an entire drive such as C:\ is specified:
 ; TreeRoot := A_MyDocuments
 ; TreeViewWidth := 280
 ; ListViewWidth := A_ScreenWidth/2 - TreeViewWidth - 30
