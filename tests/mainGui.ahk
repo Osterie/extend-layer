@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include ".\TreeViewMaker.ahk"
+#Include ".\TreeViewFromIniFile.ahk"
 
 MyGui := Gui()
 MyGui.Opt("+Resize +MinSize640x480")
@@ -46,8 +46,8 @@ Tab.UseTab(2)
 iniFile := "..\config\UserProfiles\Profile1\ClassObjects.ini"
 SectionNames := IniRead(iniFile)
 
-TreeViewCreator := TreeViewMaker()
-TreeViewCreator.AddTreeViewFromIniFile(MyGui, iniFile)
+NewTreeView := TreeViewFromIniFile(iniFile)
+NewTreeView.CreateTreeView(MyGui)
 
 
 ; SectionNames := StrSplit(SectionNames, "`n")

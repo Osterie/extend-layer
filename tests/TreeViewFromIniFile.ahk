@@ -2,9 +2,16 @@
 
 ; Used to create a treeview for a gui based on the values of an ini file
 
-Class TreeViewMaker{
+Class TreeViewFromIniFile{
 
-    AddTreeViewFromIniFile(guiObject, iniFile){
+    iniFile := ""
+    treeViewName := ""
+
+    __New(iniFile){
+        this.iniFile := iniFile
+    }
+
+    CreateTreeView(guiObject){
         ; guiObject.Add("TreeView", treeViewName, "x" x " y" y " w" w " h" h)
         treeView := guiObject.Add("TreeView")
         listView := guiObject.Add("ListView", "grid r20 w400 x+10", ["Key","Value"])
@@ -18,14 +25,14 @@ Class TreeViewMaker{
 
         ; Read sections
         ; Todo this logic should be handled by another class or method
-        iniFileSections := IniRead(iniFile)
+        iniFileSections := IniRead(this.iniFile)
         iniFileSections := StrSplit(iniFileSections, "`n")
         Loop iniFileSections.Length{
             
             sectionName := iniFileSections[A_Index]
             treeView.Add(sectionName)
             
-            ; sectionValues := IniRead(iniFile, sectionName)
+            ; sectionValues := IniRead(this.iniFile, sectionName)
 
         }
 
@@ -43,7 +50,7 @@ Class TreeViewMaker{
         ; Gets the ini file section of the clicked treeView item
         iniFileSection := treeView.GetText(item)
         ; Gets the ini file section values
-        iniFileSectionValues := IniRead(iniFile, iniFileSection)
+        iniFileSectionValues := IniRead(this.iniFile, iniFileSection)
         ; Splits the ini file section values into an array
         iniFileSectionValues := StrSplit(iniFileSectionValues, "`n")
         ; Loops through the ini file section values
@@ -56,21 +63,40 @@ Class TreeViewMaker{
         }
     }
 
-    test(listView, item){
+    test(listView, rowNumber){
 
-        listViewFirstColum := listView.GetText(item, 1)
-        listViewSecondColum := listView.GetText(item, 2)
-        if (listViewFirstColum = "Key"){
+        msgbox(rowNumber)
+        msgbox(listView.GetText(rowNumber, 1))
+        listViewFirstColum := listView.GetText(rowNumber, 1)
+        listViewSecondColum := listView.GetText(rowNumber, 2)
+        if (rowNumber != 0){
 
-        }
-        else{
-
-            IB := InputBox("Value name: " . listViewFirstColum . "`n" . "Value data:", "Edit object value",, listViewSecondColum)
-            if IB.Result = "Cancel"{
-                MsgBox "You entered '" IB.Value "' but then cancelled."
+            inputPrompt := InputBox("Value name: " . listViewFirstColum . "`n" . "Value data:", "Edit object value",, listViewSecondColum)
+            if inputPrompt.Result = "Cancel"{
+                ; Do nothing
+            }
+            else if(inputPrompt.Value = ""){
+                ; Do Nothing
             }
             else{
-                MsgBox "You entered '" IB.Value "'."
+                listView.Modify(rowNumber,,, inputPrompt.Value)
+                ; TODO then modify the ini file, perhaps should use a class for this
+                ; TODO could also change the objectRegistry objects from here...
+                ; TODO to implement this, probably just have a method called "update objects" or something in the objectRegistry class
+
+                ; iniFileSection := treeView.GetText(treeView.GetSelection())
+                ; iniFileSectionValues := IniRead(this.iniFile, iniFileSection)
+                ; iniFileSectionValues := StrSplit(iniFileSectionValues, "`n")
+                ; Loop iniFileSectionValues.Length{
+                ;     temporarySectionValues := StrSplit(iniFileSectionValues[A_Index], "=")
+                ;     lineKey := temporarySectionValues[1]
+                ;     lineValue := temporarySectionValues[2]
+                ;     if (lineKey = listViewFirstColum){
+                ;         iniFileSectionValues[A_Index] := lineKey "=" inputPrompt.Value
+                ;     }
+                ; }
+                ; iniFileSectionValues := StrJoin(iniFileSectionValues, "`n")
+                ; IniWrite(this.iniFile, iniFileSection, iniFileSectionValues)
             }
             
 
