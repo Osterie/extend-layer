@@ -7,6 +7,12 @@ MyGui.Add("Text", , "Current Profile:")
 MyGui.Add("DropDownList", "vColorChoice", ["Black","White","Red"])
 
 
+; TODO when add profile is clicked, user can choose a pre made profile, or create their own from scratch
+addProfileButton := MyGui.Add("Button", "Default w80", "Add profile")
+importProfileButton := MyGui.Add("Button", "Default w80", "Import profile")
+exportProfileButton := MyGui.Add("Button", "Default w80", "Export profile")
+
+; MyBtn.OnEvent("Click", MyBtn_Click)  ; Call MyBtn_Click when clicked.
 
 
 Tab := MyGui.AddTab3(, ["Keyboards","Change Functions Settings","Third Tab"])
@@ -39,6 +45,8 @@ TV.Add("Name of Item", 0, "Icon4")  ; Add an item to the TreeView and give it a 
 ; P2C1 := TV.Add("Parent 2's first child", P2)
 ; P2C2 := TV.Add("Parent 2's second child", P2)
 ; P2C2C1 := TV.Add("Child 2's first child", P2C2)
+
+
 
 Tab.UseTab(3)
 MyGui.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.
