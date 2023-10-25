@@ -12,6 +12,10 @@ addProfileButton := MyGui.Add("Button", "Default w80", "Add profile")
 importProfileButton := MyGui.Add("Button", "Default w80", "Import profile")
 exportProfileButton := MyGui.Add("Button", "Default w80", "Export profile")
 
+addProfileButton.OnEvent("Click", addProfileButton_Click)
+importProfileButton.OnEvent("Click", importProfileButton_Click)
+exportProfileButton.OnEvent("Click", exportProfileButton_Click)
+
 ; MyBtn.OnEvent("Click", MyBtn_Click)  ; Call MyBtn_Click when clicked.
 
 
