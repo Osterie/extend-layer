@@ -3,8 +3,11 @@
 Class ListViewMaker{
 
     listView := ""
+    activeTreeViewItem := ""
+    iniFile := ""
 
-    CreateListView(guiObject, columnNames){
+    CreateListView(guiObject, columnNames, iniFile){
+        this.iniFile := iniFile
         this.listView := guiObject.Add("ListView", "grid r20 w400 x+10", columnNames)
         
         this.listView.ModifyCol(1, 200)
@@ -17,6 +20,7 @@ Class ListViewMaker{
 
     SetNewListViewItemsByIniFileSection(iniFile, section, item){
         if (section is Gui.TreeView){
+            this.activeTreeViewItem := section.GetText(item)
             keyPairValuesArray := iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(iniFile, section.GetText(item))
             this.SetNewListViewItems(keyPairValuesArray)
         }
@@ -41,6 +45,7 @@ Class ListViewMaker{
         this.listView.Add(, item*)        
     }
 
+    ; 
     ListViewDoubleClickEvent(listView, rowNumber){
 
         listViewFirstColum := this.listView.GetText(rowNumber, 1)
@@ -60,7 +65,8 @@ Class ListViewMaker{
                 ; TODO then modify the ini file, perhaps should use a class for this
                 ; TODO could also change the objectRegistry objects from here or somewhere...
                 ; TODO to implement this, probably just have a method called "update objects" or something in the objectRegistry class
-                iniFileSection := this.treeView.GetText(this.treeView.GetSelection())
+
+                iniFileSection := this.activeTreeViewItem
                 IniWrite(inputPrompt.Value, this.iniFile, iniFileSection, listViewFirstColum)
     
             }
@@ -70,4 +76,5 @@ Class ListViewMaker{
     AddEventAction(eventType, action){
         this.listView.OnEvent(eventType, action)
     }
+
 }

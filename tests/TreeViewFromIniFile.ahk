@@ -15,9 +15,16 @@ Class TreeViewFromIniFile{
         this.iniFileRead := IniFileReader()
     }
 
+    ; SetImage(imageList){
+    ;     this.treeView.SetImageList(imageList)
+    ; }
+
     CreateTreeView(guiObject){
         ; guiObject.Add("TreeView", treeViewName, "x" x " y" y " w" w " h" h)
-        this.treeView := guiObject.Add("TreeView")
+        ImageListID := IL_Create(10)  ; Create an ImageList with initial capacity for 10 icons.
+        Loop 10  ; Load the ImageList with some standard system icons.
+            IL_Add(ImageListID, "shell32.dll", A_Index)
+        this.treeView := guiObject.Add("TreeView", "ImageList" . ImageListID)
 
         ; Read sections
         ; Todo this logic should be handled by another class or method
@@ -25,7 +32,7 @@ Class TreeViewFromIniFile{
         iniFileSections := StrSplit(iniFileSections, "`n")
         Loop iniFileSections.Length{
             sectionName := iniFileSections[A_Index]
-            this.treeView.Add(sectionName)
+            this.treeView.Add(sectionName, 0, "Icon4")
         }
     }
 
