@@ -50,7 +50,8 @@ Class IniFileReader{
     }
 
     GetValueFromLine(iniFileLine){
-        return StrSplit(iniFileLine, "=")[2]
+        firstEqualsSignPosition := InStr(iniFileLine, "=")
+        return SubStr(iniFileLine, firstEqualsSignPosition+1)
     }
 
     SeperateKeyboardKeyAndModifiers(givenKeyboradKeyWithModifier){

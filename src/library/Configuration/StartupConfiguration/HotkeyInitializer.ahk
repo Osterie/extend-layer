@@ -28,8 +28,10 @@ Class HotkeyInitializer{
             ; keyboardKey is the left side of the expression in the ini file.
             ; which is a keyboard key, for example "a, b, c, d" and so on.
             ; they can also be modified, for example "win+a, shift+b, control+c" and such
+            
             keyboardKey := this.IniReader.GetValidatedKeyFromLine(iniFileSectionArray[A_Index])
             methodCall := this.IniReader.GetValueFromLine(iniFileSectionArray[A_Index])
+
             ; Turns the keyboard key into a hotkey, which triggers a method call.
             this.InitializeDefaultKeyToFunction(keyboardKey, methodCall)
         }
@@ -39,7 +41,7 @@ Class HotkeyInitializer{
     InitializeDefaultKeyToFunction(keyboardKey, methodCall){
         
         ; todo create a class or method which is able to extract all these pieces of information
-
+        
         ; Reads the Class name, which is the text before the first period
         UsedClass := SubStr(methodCall, 1, InStr(methodCall, ".")-1)
         ; Removes the class name from the expression
@@ -87,6 +89,7 @@ Class HotkeyInitializer{
                 validatedArguments.Push(temporaryArray)
             }
             else if(inArray){
+
                 ; nthElement just means the n'th element in the array (so maybe 2nd 3rd... millionth...)
                 nthElement := SubStr(argument, 1, -1)
                 nthElement := this.GetStringWithoutQuotes(nthElement)

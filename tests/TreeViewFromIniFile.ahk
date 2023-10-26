@@ -5,7 +5,7 @@
 Class TreeViewFromIniFile{
 
     iniFile := ""
-    treeViewName := ""
+    treeView := ""
 
     __New(iniFile){
         this.iniFile := iniFile
@@ -13,7 +13,7 @@ Class TreeViewFromIniFile{
 
     CreateTreeView(guiObject){
         ; guiObject.Add("TreeView", treeViewName, "x" x " y" y " w" w " h" h)
-        treeView := guiObject.Add("TreeView")
+        this.treeView := guiObject.Add("TreeView")
         listView := guiObject.Add("ListView", "grid r20 w400 x+10", ["Key","Value"])
         
         test := ObjBindMethod(this, "test")
@@ -30,14 +30,14 @@ Class TreeViewFromIniFile{
         Loop iniFileSections.Length{
             
             sectionName := iniFileSections[A_Index]
-            treeView.Add(sectionName)
+            this.treeView.Add(sectionName)
             
             ; sectionValues := IniRead(this.iniFile, sectionName)
 
         }
 
         TreeViewItemSelectEventMethod := ObjBindMethod(this, "TreeViewItemSelectEvent", listView)
-        treeView.OnEvent("ItemSelect", TreeViewItemSelectEventMethod)
+        this.treeView.OnEvent("ItemSelect", TreeViewItemSelectEventMethod)
 
     }
 
@@ -48,7 +48,7 @@ Class TreeViewFromIniFile{
         
 
         ; Gets the ini file section of the clicked treeView item
-        iniFileSection := treeView.GetText(item)
+        iniFileSection := this.treeView.GetText(item)
         ; Gets the ini file section values
         iniFileSectionValues := IniRead(this.iniFile, iniFileSection)
         ; Splits the ini file section values into an array
@@ -79,21 +79,22 @@ Class TreeViewFromIniFile{
                 ; Do Nothing
             }
             else{
+
                 listView.Modify(rowNumber,,, inputPrompt.Value)
                 ; TODO then modify the ini file, perhaps should use a class for this
                 ; TODO could also change the objectRegistry objects from here...
                 ; TODO to implement this, probably just have a method called "update objects" or something in the objectRegistry class
 
-                ; iniFileSection := treeView.GetText(treeView.GetSelection())
-                ; iniFileSectionValues := IniRead(this.iniFile, iniFileSection)
-                ; iniFileSectionValues := StrSplit(iniFileSectionValues, "`n")
-                ; Loop iniFileSectionValues.Length{
-                ;     temporarySectionValues := StrSplit(iniFileSectionValues[A_Index], "=")
-                ;     lineKey := temporarySectionValues[1]
-                ;     lineValue := temporarySectionValues[2]
-                ;     if (lineKey = listViewFirstColum){
-                ;         iniFileSectionValues[A_Index] := lineKey "=" inputPrompt.Value
-                ;     }
+                iniFileSection := treeView.GetText(treeView.GetSelection())
+                iniFileSectionValues := IniRead(this.iniFile, iniFileSection)
+                iniFileSectionValues := StrSplit(iniFileSectionValues, "`n")
+                Loop iniFileSectionValues.Length{
+                    temporarySectionValues := StrSplit(iniFileSectionValues[A_Index], "=")
+                    lineKey := temporarySectionValues[1]
+                    lineValue := temporarySectionValues[2]
+                    if (lineKey = listViewFirstColum){
+                        iniFileSectionValues[A_Index] := lineKey "=" inputPrompt.Value
+                    }
                 ; }
                 ; iniFileSectionValues := StrJoin(iniFileSectionValues, "`n")
                 ; IniWrite(this.iniFile, iniFileSection, iniFileSectionValues)
