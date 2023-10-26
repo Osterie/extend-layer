@@ -1,6 +1,10 @@
 #Requires AutoHotkey v2.0
 
 #Include ".\TreeViewFromIniFile.ahk"
+#Include ".\ListViewMaker.ahk"
+#Include "..\src\library\IniFileReading\IniFileReader.ahk"
+
+iniFileRead := IniFileReader()
 
 MyGui := Gui()
 MyGui.Opt("+Resize +MinSize640x480")
@@ -50,16 +54,23 @@ NewTreeView := TreeViewFromIniFile(iniFile)
 NewTreeView.CreateTreeView(MyGui)
 
 
-; SectionNames := StrSplit(SectionNames, "`n")
-; Loop SectionNames.Length{
-;     SectionName := SectionNames[A_Index]
-;     msgbox(SectionName)
-; }
+NewListView := ListViewMaker()
+NewListView.CreateListView(MyGui, ["Key","Value"])
+
+CreateListViewItems := ObjBindMethod(NewListView, "SetNewListViewItemsByIniFileSection", iniFile)
+NewTreeView.AddEventAction("ItemSelect", CreateListViewItems)
 
 
 
 
-; TODO: to create the treeview, read the ini file sections
+
+; listView := guiObject.Add("ListView", "grid r20 w400 x+10", ["Key","Value"])
+        
+; ListViewDoubleClickEvent := ObjBindMethod(this, "ListViewDoubleClickEvent")
+; listView.OnEvent("DoubleClick", ListViewDoubleClickEvent)
+; listView.ModifyCol(1, 200)
+; listView.ModifyCol(2, 200)
+
 
 
 Tab.UseTab(3)

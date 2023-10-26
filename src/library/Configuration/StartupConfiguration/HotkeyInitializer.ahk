@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include "IniFileReader.ahk"
+#Include "..\..\IniFileReading\IniFileReader.ahk"
 
 Class HotkeyInitializer{
 
@@ -29,7 +29,7 @@ Class HotkeyInitializer{
             ; which is a keyboard key, for example "a, b, c, d" and so on.
             ; they can also be modified, for example "win+a, shift+b, control+c" and such
             
-            keyboardKey := this.IniReader.GetValidatedKeyFromLine(iniFileSectionArray[A_Index])
+            keyboardKey := this.IniReader.GetKeyFromLine(iniFileSectionArray[A_Index])
             methodCall := this.IniReader.GetValueFromLine(iniFileSectionArray[A_Index])
 
             ; Turns the keyboard key into a hotkey, which triggers a method call.

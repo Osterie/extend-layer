@@ -187,8 +187,6 @@ if (not A_IsAdmin){
     Send(FormatTime(, "d.M.yyyy"))  ; It will look like 13.7.2005
 }
 
-
-
 name := IniRead("../config/privateConfig.ini", "PrivateInfo", "Name")
 eMail := IniRead("../config/privateConfig.ini", "PrivateInfo", "Email")
 
@@ -386,18 +384,6 @@ CapsLock:: layers.toggleLayerIndicator(1)
 ; |------------------------------|
 
 #HotIf layers.getActiveLayer() == 1
-
-    ; ; Shows first keyboard overlay for websites when a shift is held down
-    ; ~Shift:: OverlayRegistry.showKeyboardOverlay(SecondaryLayerKeyboardOverlay1) 
-
-    ; ; Hides first keyboard overlay for websites (and second overlay for devices just in case)
-    ; Shift Up:: OverlayRegistry.hideAllLayers()
-
-    ; ; Shows first keyboard overlay for file explorer when a shift is held down
-    ; ~Ctrl::  OverlayRegistry.showKeyboardOverlay(SecondaryLayerKeyboardOverlay2) 
-
-    ; ; Hides first keyboard overlay for file explorer 
-    ; Ctrl Up:: OverlayRegistry.hideAllLayers()
 
 #HotIf
 
