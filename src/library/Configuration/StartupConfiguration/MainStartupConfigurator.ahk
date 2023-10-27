@@ -7,19 +7,20 @@
 
 Class MainStartupConfigurator{
 
-    iniFile := ""
+    profile := ""
     ObjectRegistry := ""
 
     KeyboardOverlayInitializerInstance := ""
     HotkeyInitializerInstance := ""
 
 
-    __New(iniFile, objectRegistry){
-        this.iniFile := iniFile
+    __New(profile, objectRegistry){
+        this.profile := profile
         this.objectRegistry := objectRegistry
 
-        this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(this.iniFile, this.objectRegistry)
-        this.HotkeyInitializerInstance := HotkeyInitializer(this.iniFile, this.objectRegistry)
+        keyboardsSettings := this.profile . "\Keyboards.ini"
+        this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(keyboardsSettings, this.objectRegistry)
+        this.HotkeyInitializerInstance := HotkeyInitializer(keyboardsSettings, this.objectRegistry)
     }
 
     ReadKeysToNewActionsBySection(section){

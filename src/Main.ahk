@@ -39,6 +39,7 @@
 ; |------------------- OPTIMIZATIONS ----------------|
 ; |--------------------------------------------------|
 
+#SingleInstance Force ; skips the dialog box and replaces the old instance automatically
 A_MaxHotkeysPerInterval := 99000000
 A_HotkeyInterval := 99000000
 KeyHistory 0
@@ -199,6 +200,7 @@ Hotstring( "::a@", eMail)
 
 ; THIS SHOULD BE AT TOP!
 
+
 ObjectRegister := ObjectRegistry()
 
 MouseInstance := Mouse()
@@ -233,7 +235,16 @@ PrivacyController.CreateGui()
 ; This shows a countdown on the screen, and when it reaches 0, the screen goes to sleep
 monitorSleepTimeMinutes := IniRead("../config/config.ini", "PrivacyController", "MonitorSleepTimeMinutes")
 PrivacyController.ChangeCountdown(monitorSleepTimeMinutes,0)
+
 ObjectRegister.AddObject("PrivacyController", PrivacyController)
+
+
+
+; GUIPrivacyBox := ""
+; minutes := 3
+; seconds := 0
+; GUICountdown := CountdownGUI(3,0)
+
 
 ; Used to get the states of devices, like if bluetooth and such is enabled, also able to disable/enable these devices
 DeviceManipulator := DeviceManager()
@@ -253,7 +264,7 @@ defaultPowerModeGUID := IniRead("../config/config.ini", "Battery", "DefaultPower
 Battery := BatteryController(50, 50)
 Battery.setPowerSaverModeGUID(powerSaverModeGUID)
 Battery.setDefaultPowerModeGUID(defaultPowerModeGUID)
-Battery.ActivateNormalPowerMode()
+; Battery.ActivateNormalPowerMode()
 ObjectRegister.AddObject("Battery", Battery)
 
 ; Used to search for stuff in the browser, translate, and excecute shortcues like close tabs to the right in browser
@@ -296,6 +307,11 @@ OverlayRegistry := KeyboardOverlayRegistry()
 ; OverlayRegistry.addKeyboardOverlay(TertiaryLayerKeyboardOverlay1)
 ObjectRegister.AddObject("OverlayRegistry", OverlayRegistry)
 
+
+; ObjectAndProperties = [{object: [property: value, property: value, property: value]}]
+
+
+
 ; |------------Layer indicators------------|
 
 ; Used to switch the active layer
@@ -309,7 +325,9 @@ layers.addLayerIndicator(2, "Red")
 
 ; This is used to read ini files, and create hotkeys from them
 ; StartupConfigurator := Configurator("../config/config.ini", ObjectRegister)
-StartupConfigurator := MainStartupConfigurator("../config/config.ini", ObjectRegister)
+; StartupConfigurator := MainStartupConfigurator("../config/config.ini", ObjectRegister)
+; TODO this should not path to profile1, but rathre the active profile which is chosen in the gui portion of the application
+StartupConfigurator := MainStartupConfigurator("../config/UserProfiles/Profile1", ObjectRegister)
 
 StartupConfigurator.ReadAllKeyboardOverlays()
 
