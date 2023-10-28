@@ -113,3 +113,9 @@
 ; TODO; create a website for this program. it should have pages for stuff such as "classes and methods", which explain which classes there are and how to use them. i.e which methods they have and what parameteres they take
 
 ; TODO; is it possible to instantly send backticks? i.e. `
+
+; TODO add great documentation for this script, and make it easy to understand and learn for others or for myself in the future
+
+; TODO; perhaps powershell scripts should be in assets, or maybe they should be in the script itself, since you can run powershell scripts directrly from ahk...
+
+; TODO: places where lists and such are returned, return an iterator instead

@@ -1,10 +1,6 @@
-﻿; TODO add great documentation for this script, and make it easy to understand and learn for others or for myself in the future
+﻿
 ; AUTHOR: Adrian Gjøsund Bjørge
 ; Github: https://github.com/Osterie
-
-; TODO; perhaps powershell scripts should be in assets, or maybe they should be in the script itself, since you can run powershell scripts directrly from ahk...
-
-; TODO: places where lists and such are returned, return an iterator instead
 
 ; [^ = Ctrl] [+ = Shift] [! = Alt] [# = Win]
 #Requires Autohotkey v2.0
