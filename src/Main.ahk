@@ -208,7 +208,6 @@ CapsLock:: layers.toggleLayerIndicator(1)
     else{
 
         layers.cycleLayerIndicators()
-
         newActiveLayer := layers.getActiveLayer()
         layers.showLayerIndicator(newActiveLayer)
         layers.hideInactiveLayers()

@@ -7,13 +7,25 @@
 ; TODO add event for DropFiles, so that user can drag and drop exported user profiles into the program to load them.
 ; TODO add a mouse section also, so user can change mouse easily
 
+; iniWrite
+
 iniFileRead := IniFileReader()
 
 MyGui := Gui()
 MyGui.Opt("+Resize +MinSize640x480")
 
 MyGui.Add("Text", , "Current Profile:")
-MyGui.Add("DropDownList", "vColorChoice ym+1", ["Black","White","Red"])
+
+pathToProfiles := "..\config\UserProfiles"
+
+profiles := []
+
+Loop Files pathToProfiles . "\*", "D"
+{
+    profiles.push(A_LoopFileName)
+}
+
+MyGui.Add("DropDownList", "vColorChoice ym+1", profiles)
 
 
 ; TODO when add profile is clicked, user can choose a pre made profile, or create their own from scratch

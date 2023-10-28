@@ -52,6 +52,7 @@ Class ListViewMaker{
         listViewSecondColum := this.listView.GetText(rowNumber, 2)
         if (rowNumber != 0){
     
+            ; TODO should be set to on top, can not be not top ever...
             inputPrompt := InputBox("Value name: " . listViewFirstColum . "`n" . "Value data:", "Edit object value",, listViewSecondColum)
             if inputPrompt.Result = "Cancel"{
                 ; Do nothing
