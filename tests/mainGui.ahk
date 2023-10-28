@@ -10,7 +10,6 @@
 ; iniWrite
 
 currentProfile := iniRead("..\config\meta.ini", "General", "activeUserProfile")
-
 iniFileRead := IniFileReader()
 
 MyGui := Gui()
@@ -42,6 +41,7 @@ profilesDropDownMenu := MyGui.Add("DropDownList", "ym+1 Choose" . currentProfile
 if (profilesDropDownMenu.Text == "")
 {
     profilesDropDownMenu.Value := 1
+    currentProfile := profilesDropDownMenu.Text
 }
 
 profilesDropDownMenu.OnEvent("Change", (*) => 
