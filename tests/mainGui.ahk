@@ -41,7 +41,7 @@ profilesDropDownMenu.OnEvent("Change", (*) =>
     MsgBox("Changed profile, you will see it in meta.ini")
     iniWrite(profilesDropDownMenu.Text, "..\config\meta.ini", "General", "activeUserProfile")
     ; TODO after changing profile, need to reload EVERYTHING, or perhaps not.
-    )
+)
 
 
 
@@ -70,7 +70,9 @@ RadioButtonKeybindsTextView.OnEvent("Click", (*) => MsgBox("Text view"))
 RadioButtonKeybindsKeyboardView.OnEvent("Click", (*) => MsgBox("Keyboard view"))
 
 
-iniFileKeyboards := "..\config\UserProfiles\Profile1\Keyboards.ini"
+
+
+iniFileKeyboards := "..\config\UserProfiles\" . profilesDropDownMenu.Text . "\Keyboards.ini"
 ; SectionNames := IniRead(iniFileKeyboards)
 
 TreeViewKeyboards := TreeViewFromIniFile(iniFileKeyboards)
@@ -97,7 +99,7 @@ Tab.UseTab(2)
 
 ; TODO: for treeview, perhaps it would be a good idea to pass object registry to the treeview.
 
-iniFileClassObjects := "..\config\UserProfiles\Profile1\ClassObjects.ini"
+iniFileClassObjects := "..\config\UserProfiles\" . profilesDropDownMenu.Text . "\ClassObjects.ini"
 ; SectionNames := IniRead(iniFileClassObjects)
 
 NewTreeView := TreeViewFromIniFile(iniFileClassObjects)
