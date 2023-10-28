@@ -29,7 +29,7 @@ Loop Files pathToProfiles . "\*", "D"
 {
     if (currentProfile == A_LoopFileName)
     {
-        currentProfileIndex := A_index
+        ; currentProfileIndex := A_index
     }
     profiles.push(A_LoopFileName)
 }
@@ -37,6 +37,13 @@ Loop Files pathToProfiles . "\*", "D"
 
 
 profilesDropDownMenu := MyGui.Add("DropDownList", "ym+1 Choose" . currentProfileIndex, profiles)
+
+; If for some reason a profile is not selected, then select the first one.
+if (profilesDropDownMenu.Text == "")
+{
+    profilesDropDownMenu.Value := 1
+}
+
 profilesDropDownMenu.OnEvent("Change", (*) => 
     MsgBox("Changed profile, you will see it in meta.ini")
     iniWrite(profilesDropDownMenu.Text, "..\config\meta.ini", "General", "activeUserProfile")
