@@ -71,6 +71,9 @@ Hotstring( "::a@", eMail)
 ; |----------- OBJECT CREATION ---------------|
 ; |-------------------------------------------|
 
+currentProfile := iniRead("..\config\meta.ini", "General", "activeUserProfile")
+
+
 ObjectRegister := ObjectRegistry()
 
 MouseInstance := Mouse()
@@ -80,7 +83,7 @@ ProcessManagerInstance := ProcessManager()
 ObjectRegister.AddObject("ProcessManagerInstance", ProcessManagerInstance)
 
 ; Allows opening cmd pathed to the current file location for vs code and file explorer.
-commandPromptDefaultPath := IniRead("../config/UserProfiles/Profile1/ClassObjects.ini", "CommandPrompt", "DefaultPath")
+commandPromptDefaultPath := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "CommandPrompt", "DefaultPath")
 CommandPrompt := CommandPromptOpener(commandPromptDefaultPath)
 ObjectRegister.AddObject("CommandPrompt", CommandPrompt)
 
@@ -102,7 +105,7 @@ PrivacyController := ScreenPrivacyController()
 PrivacyController.CreateGui()
 ; Sets the countdown for the screen hider to 3 minutes. (change to your screen sleep time)
 ; This shows a countdown on the screen, and when it reaches 0, the screen goes to sleep
-monitorSleepTimeMinutes := IniRead("../config/UserProfiles/Profile1/ClassObjects.ini", "PrivacyController", "MonitorSleepTimeMinutes")
+monitorSleepTimeMinutes := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "PrivacyController", "MonitorSleepTimeMinutes")
 PrivacyController.ChangeCountdown(monitorSleepTimeMinutes,0)
 
 ObjectRegister.AddObject("PrivacyController", PrivacyController)
@@ -120,8 +123,8 @@ MonitorInstance := Monitor()
 ObjectRegister.AddObject("MonitorInstance", MonitorInstance)
 
 ; Used to switch between power saver mode and normal power mode (does not work as expected currently, percentage to switch to power saver is changed, but power saver is never turned on...)
-powerSaverModeGUID := IniRead("../config/UserProfiles/Profile1/ClassObjects.ini", "Battery", "PowerSaverModeGUID")
-defaultPowerModeGUID := IniRead("../config/UserProfiles/Profile1/ClassObjects.ini", "Battery", "DefaultPowerModeGUID")
+powerSaverModeGUID := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "Battery", "PowerSaverModeGUID")
+defaultPowerModeGUID := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "Battery", "DefaultPowerModeGUID")
 Battery := BatteryController(50, 50)
 Battery.setPowerSaverModeGUID(powerSaverModeGUID)
 Battery.setDefaultPowerModeGUID(defaultPowerModeGUID)
@@ -129,7 +132,7 @@ Battery.setDefaultPowerModeGUID(defaultPowerModeGUID)
 ObjectRegister.AddObject("Battery", Battery)
 
 ; Used to search for stuff in the browser, translate, and excecute shortcues like close tabs to the right in browser
-chatGptLoadTime := IniRead("../config/UserProfiles/Profile1/ClassObjects.ini", "WebNavigator", "chatGptLoadTime")
+chatGptLoadTime := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "WebNavigator", "chatGptLoadTime")
 WebSearcher := WebNavigator()
 WebSearcher.SetChatGptLoadTime(chatGptLoadTime)
 ObjectRegister.AddObject("WebSearcher", WebSearcher)
@@ -178,8 +181,7 @@ layers.addLayerIndicator(2, "Red")
 ; |----------------------------------|
 
 ; This is used to read ini files, and create hotkeys from them
-; TODO this should not path to profile1, but rathre the active profile which is chosen in the gui portion of the application
-StartupConfigurator := MainStartupConfigurator("../config/UserProfiles/Profile1", ObjectRegister)
+StartupConfigurator := MainStartupConfigurator("../config/UserProfiles/" . currentProfile, ObjectRegister)
 
 ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
 StartupConfigurator.ReadAllKeyboardOverlays()

@@ -28,7 +28,7 @@ Loop Files pathToProfiles . "\*", "D"
 {
     if (currentProfile == A_LoopFileName)
     {
-        ; currentProfileIndex := A_index
+        currentProfileIndex := A_index
     }
     profiles.push(A_LoopFileName)
 }
@@ -40,15 +40,21 @@ profilesDropDownMenu := MyGui.Add("DropDownList", "ym+1 Choose" . currentProfile
 ; If for some reason a profile is not selected, then select the first one.
 if (profilesDropDownMenu.Text == "")
 {
+    msgbox("error, profile not found, selecting first existing profile")
     profilesDropDownMenu.Value := 1
     currentProfile := profilesDropDownMenu.Text
 }
 
-profilesDropDownMenu.OnEvent("Change", (*) => 
+profilesDropDownMenu.OnEvent("Change", ProfileChangedFromDropDownMenu)
+
+ProfileChangedFromDropDownMenu(*){
     MsgBox("Changed profile, you will see it in meta.ini")
     iniWrite(profilesDropDownMenu.Text, "..\config\meta.ini", "General", "activeUserProfile")
     ; TODO after changing profile, need to reload EVERYTHING, or perhaps not.
-)
+    Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
+    reload
+
+}
 
 
 

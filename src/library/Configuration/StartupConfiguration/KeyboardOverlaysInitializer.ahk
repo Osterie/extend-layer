@@ -71,15 +71,12 @@ Class KeyboardOverlaysInitializer{
             sectionName := sectionNames[A_Index]
             if (InStr(sectionName, layerSection)){
 
-                ; NewKeyboardOverlay := KeyboardOverlay()
-                ; NewKeyboardOverlay.CreateGui()
-                ; this.ReadKeyboardOverlaySection(NewKeyboardOverlay, sectionName)
-                showKeyboardOverlayKey := IniRead(this.iniFile, sectionName, "ShowKeyboardOverlayKey")
-                ; OverlayRegistry.addKeyboardOverlay(NewKeyboardOverlay, sectionName)
-                ; this.ObjectRegistry.GetObject("OverlayRegistry").addKeyboardOverlay(NewKeyboardOverlay, sectionName)
                 ; TODO use the keyboardOVelray class to create a new keyboard overlay, which then columns are added to
                 ; TODO, each layer should have the "KeyboardOverlayKey" in it, which is then created there and such blah blah blah
-                this.CreateHotkeyForKeyboardOverlay(sectionName, showKeyboardOverlayKey)
+                try{
+                    showKeyboardOverlayKey := IniRead(this.iniFile, sectionName, "ShowKeyboardOverlayKey")
+                    this.CreateHotkeyForKeyboardOverlay(sectionName, showKeyboardOverlayKey)
+                }
 
             }
         }
