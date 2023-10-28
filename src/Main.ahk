@@ -1,5 +1,4 @@
-﻿
-; AUTHOR: Adrian Gjøsund Bjørge
+﻿; AUTHOR: Adrian Gjøsund Bjørge
 ; Github: https://github.com/Osterie
 
 ; [^ = Ctrl] [+ = Shift] [! = Alt] [# = Win]
@@ -52,10 +51,10 @@ if (not A_IsAdmin){
 	Run("*RunAs `"" A_ScriptFullPath "`"") 
 }
 
-
 ; |-----------------------------------|
 ; |------------HOTSTRINGS-------------|
 ; |-----------------------------------|
+; TODO hotstrings should be in ini file and yeah
 
 ; This hotstring replaces "]d" with the current date and time via the statement below.
 :*:]d::{
@@ -72,9 +71,6 @@ Hotstring( "::a@", eMail)
 ; |----------- OBJECT CREATION ---------------|
 ; |-------------------------------------------|
 
-; THIS SHOULD BE AT TOP!
-
-
 ObjectRegister := ObjectRegistry()
 
 MouseInstance := Mouse()
@@ -82,7 +78,6 @@ ObjectRegister.AddObject("MouseInstance", MouseInstance)
 
 ProcessManagerInstance := ProcessManager()
 ObjectRegister.AddObject("ProcessManagerInstance", ProcessManagerInstance)
-
 
 ; Allows opening cmd pathed to the current file location for vs code and file explorer.
 commandPromptDefaultPath := IniRead("../config/UserProfiles/Profile1/ClassObjects.ini", "CommandPrompt", "DefaultPath")
@@ -111,14 +106,6 @@ monitorSleepTimeMinutes := IniRead("../config/UserProfiles/Profile1/ClassObjects
 PrivacyController.ChangeCountdown(monitorSleepTimeMinutes,0)
 
 ObjectRegister.AddObject("PrivacyController", PrivacyController)
-
-
-
-; GUIPrivacyBox := ""
-; minutes := 3
-; seconds := 0
-; GUICountdown := CountdownGUI(3,0)
-
 
 ; Used to get the states of devices, like if bluetooth and such is enabled, also able to disable/enable these devices
 DeviceManipulator := DeviceManager()
@@ -150,7 +137,7 @@ ObjectRegister.AddObject("WebSearcher", WebSearcher)
 ; |---------------------------------|
 ; |-------Keyboard Overlays---------|
 ; |---------------------------------|
-
+; TODO should be done in ini file and such
 ; |----------Main layer------------|
 
 ; Shows an on screen overlay for the main keyboard layer which shows which urls can be went to using the number keys
@@ -176,10 +163,8 @@ TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("4", "Touch Pad", DeviceManip
 ; |---------Overlay registry--------|
 
 OverlayRegistry := KeyboardOverlayRegistry()
-; OverlayRegistry.addKeyboardOverlay(TertiaryLayerKeyboardOverlay1)
+OverlayRegistry.addKeyboardOverlay(TertiaryLayerKeyboardOverlay1, "TertiaryLayerKeyboardOverlay1")
 ObjectRegister.AddObject("OverlayRegistry", OverlayRegistry)
-
-
 
 ; |------------Layer indicators------------|
 
@@ -244,7 +229,6 @@ CapsLock:: layers.toggleLayerIndicator(1)
 ; |------------------------------|
 
 #HotIf layers.getActiveLayer() == 1
-
 #HotIf
 
 
@@ -257,7 +241,7 @@ HotIf
 #HotIf layers.getActiveLayer() == 2 
 
     ; Shows second keyboard overlay when shift is held down
-    ~Shift:: OverlayRegistry.showKeyboardOverlay(TertiaryLayerKeyboardOverlay1) ;SecondKeyboardOverlayDevices.ShowGui() 
+    ~Shift:: OverlayRegistry.showKeyboardOverlay("TertiaryLayerKeyboardOverlay1") ;SecondKeyboardOverlayDevices.ShowGui() 
 
     ; Hides second keyboard overlay (and main just in case)
     Shift up:: OverlayRegistry.hideAllLayers() 
