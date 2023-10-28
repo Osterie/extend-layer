@@ -4,6 +4,8 @@
 #Include ".\ListViewMaker.ahk"
 #Include "..\src\library\IniFileReading\IniFileReader.ahk"
 
+; TODO add event for DropFiles, so that user can drag and drop exported user profiles into the program to load them.
+; TODO add a mouse section also, so user can change mouse easily
 
 iniFileRead := IniFileReader()
 
@@ -25,12 +27,29 @@ Tab.UseTab(1)
 
 ; DifferentKeyboardsTab := MyGui.AddTab3(, ["Primary Keyboard","Secondary Keyboard","Tertiary Keyboard"])
 
-RadioButtonKeybindsTextView := MyGui.Add("Radio", "vRadioButtonKeybindsTextView", "Text View")
+RadioButtonKeybindsTextView := MyGui.Add("Radio", "Checked vRadioButtonKeybindsTextView", "Text View")
 RadioButtonKeybindsKeyboardView := MyGui.Add("Radio", "vRadioButtonKeybindsKeyboardView", "Keyboard View")
 
 RadioButtonKeybindsTextView.OnEvent("Click", (*) => MsgBox("Text view"))
 RadioButtonKeybindsKeyboardView.OnEvent("Click", (*) => MsgBox("Keyboard view"))
 
+
+iniFileKeyboards := "..\config\UserProfiles\Profile1\Keyboards.ini"
+; SectionNames := IniRead(iniFileKeyboards)
+
+TreeViewKeyboards := TreeViewFromIniFile(iniFileKeyboards)
+
+TreeViewKeyboards.CreateTreeView(MyGui)
+
+
+ListViewKeyboards := ListViewMaker()
+ListViewKeyboards.CreateListView(MyGui, ["Key","Value"], iniFileKeyboards)
+
+
+CreateListViewItems := ObjBindMethod(ListViewKeyboards, "SetNewListViewItemsByIniFileSection", iniFileKeyboards)
+TreeViewKeyboards.AddEventAction("ItemSelect", CreateListViewItems)
+; CreateListViewItems := ObjBindMethod(ListViewKeybinds, "SetNewListViewItemsByIniFileSection", iniFileKeyboards)
+; TreeViewKeyboards.AddEventAction("ItemSelect", CreateListViewItems)
 
 ; MyGui.AddHotkey("vChosenHotkey")
 ; MyGui.Add("CheckBox", "vMyCheckBox", "Win key") 
@@ -42,19 +61,19 @@ Tab.UseTab(2)
 
 ; TODO: for treeview, perhaps it would be a good idea to pass object registry to the treeview.
 
-iniFile := "..\config\UserProfiles\Profile1\ClassObjects.ini"
-SectionNames := IniRead(iniFile)
+iniFileClassObjects := "..\config\UserProfiles\Profile1\ClassObjects.ini"
+; SectionNames := IniRead(iniFileClassObjects)
 
-NewTreeView := TreeViewFromIniFile(iniFile)
+NewTreeView := TreeViewFromIniFile(iniFileClassObjects)
 
 NewTreeView.CreateTreeView(MyGui)
 
 
 NewListView := ListViewMaker()
-NewListView.CreateListView(MyGui, ["Key","Value"], iniFile)
+NewListView.CreateListView(MyGui, ["Key","Value"], iniFileClassObjects)
 
 
-CreateListViewItems := ObjBindMethod(NewListView, "SetNewListViewItemsByIniFileSection", iniFile)
+CreateListViewItems := ObjBindMethod(NewListView, "SetNewListViewItemsByIniFileSection", iniFileClassObjects)
 NewTreeView.AddEventAction("ItemSelect", CreateListViewItems)
 
     
