@@ -4,53 +4,50 @@
 #Include ".\ListViewMaker.ahk"
 #Include "..\src\library\IniFileReading\IniFileReader.ahk"
 
+
 iniFileRead := IniFileReader()
 
 MyGui := Gui()
 MyGui.Opt("+Resize +MinSize640x480")
 
 MyGui.Add("Text", , "Current Profile:")
-MyGui.Add("DropDownList", "vColorChoice", ["Black","White","Red"])
+MyGui.Add("DropDownList", "vColorChoice ym+1", ["Black","White","Red"])
 
 
 ; TODO when add profile is clicked, user can choose a pre made profile, or create their own from scratch
-addProfileButton := MyGui.Add("Button", "Default w80", "Add profile")
-importProfileButton := MyGui.Add("Button", "Default w80", "Import profile")
-exportProfileButton := MyGui.Add("Button", "Default w80", "Export profile")
-
-; addProfileButton.OnEvent("Click", addProfileButton_Click)
-; importProfileButton.OnEvent("Click", importProfileButton_Click)
-; exportProfileButton.OnEvent("Click", exportProfileButton_Click)
-
-; MyBtn.OnEvent("Click", MyBtn_Click)  ; Call MyBtn_Click when clicked.
+addProfileButton := MyGui.Add("Button", "Default w80 ym+1", "Add profile")
+importProfileButton := MyGui.Add("Button", "Default w80 ym+1", "Import profile")
+exportProfileButton := MyGui.Add("Button", "Default w80 ym+1", "Export profile")
 
 
-Tab := MyGui.AddTab3(, ["Keyboards","Change Functions Settings","Third Tab"])
+Tab := MyGui.AddTab3("ys+20 xm", ["Keyboards","Change Functions Settings","Third Tab"])
 Tab.UseTab(1)
-MyGui.AddGroupBox("w200 h100", "Geographic Criteria")
 
-MyGui.AddHotkey("vChosenHotkey")
-MyGui.Add("CheckBox", "vMyCheckBox", "Win key") 
+; DifferentKeyboardsTab := MyGui.AddTab3(, ["Primary Keyboard","Secondary Keyboard","Tertiary Keyboard"])
+MyGui.Add("Radio", "vMyRadio", "Text View")
+MyGui.Add("Radio",, "Keyboard View")
+
+; ProcessUserInput(*)
+; {
+;     Saved := MyGui.Submit()  ; Save the contents of named controls into an object.
+;     MsgBox("You entered:`n" Saved.MyCheckBox "`n" Saved.MyRadio "`n" Saved.MyEdit)
+; }
+
+; MyGui.AddHotkey("vChosenHotkey")
+; MyGui.Add("CheckBox", "vMyCheckBox", "Win key") 
+
+
 Tab.UseTab(2)
 
 ; TODO: ability to search
 
 ; TODO: for treeview, perhaps it would be a good idea to pass object registry to the treeview.
-; Then a function or something is called which creates the treeview.
-; This would rely on object registry perhaps needing some added functionality
-
-; ImageListID := IL_Create(10)  ; Create an ImageList with initial capacity for 10 icons.
-; Loop 10  ; Load the ImageList with some standard system icons.
-;     IL_Add(ImageListID, "shell32.dll", A_Index)
-; TV := MyGui.Add("TreeView", "ImageList" . ImageListID)
-; TV.Add("Name of Item", 0, "Icon4")  ; Add an item to the TreeView and give it a folder icon.
-
-; CreateTreeViewFromIniFile()
 
 iniFile := "..\config\UserProfiles\Profile1\ClassObjects.ini"
 SectionNames := IniRead(iniFile)
 
 NewTreeView := TreeViewFromIniFile(iniFile)
+
 NewTreeView.CreateTreeView(MyGui)
 
 
