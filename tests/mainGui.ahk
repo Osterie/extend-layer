@@ -24,14 +24,13 @@ Tab := MyGui.AddTab3("ys+20 xm", ["Keyboards","Change Functions Settings","Third
 Tab.UseTab(1)
 
 ; DifferentKeyboardsTab := MyGui.AddTab3(, ["Primary Keyboard","Secondary Keyboard","Tertiary Keyboard"])
-MyGui.Add("Radio", "vMyRadio", "Text View")
-MyGui.Add("Radio",, "Keyboard View")
 
-; ProcessUserInput(*)
-; {
-;     Saved := MyGui.Submit()  ; Save the contents of named controls into an object.
-;     MsgBox("You entered:`n" Saved.MyCheckBox "`n" Saved.MyRadio "`n" Saved.MyEdit)
-; }
+RadioButtonKeybindsTextView := MyGui.Add("Radio", "vRadioButtonKeybindsTextView", "Text View")
+RadioButtonKeybindsKeyboardView := MyGui.Add("Radio", "vRadioButtonKeybindsKeyboardView", "Keyboard View")
+
+RadioButtonKeybindsTextView.OnEvent("Click", (*) => MsgBox("Text view"))
+RadioButtonKeybindsKeyboardView.OnEvent("Click", (*) => MsgBox("Keyboard view"))
+
 
 ; MyGui.AddHotkey("vChosenHotkey")
 ; MyGui.Add("CheckBox", "vMyCheckBox", "Win key") 
