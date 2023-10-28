@@ -22,7 +22,7 @@ importProfileButton := MyGui.Add("Button", "Default w80 ym+1", "Import profile")
 exportProfileButton := MyGui.Add("Button", "Default w80 ym+1", "Export profile")
 
 
-Tab := MyGui.AddTab3("ys+20 xm", ["Keyboards","Change Functions Settings","Third Tab"])
+Tab := MyGui.AddTab3("ys+20 xm", ["Keyboards","Change Functions Settings","Documentation"])
 Tab.UseTab(1)
 
 ; DifferentKeyboardsTab := MyGui.AddTab3(, ["Primary Keyboard","Secondary Keyboard","Tertiary Keyboard"])
