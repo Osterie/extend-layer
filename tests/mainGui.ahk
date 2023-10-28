@@ -9,6 +9,8 @@
 
 ; iniWrite
 
+currentProfile := iniRead("..\config\meta.ini", "General", "activeUserProfile")
+
 iniFileRead := IniFileReader()
 
 MyGui := Gui()
@@ -16,22 +18,44 @@ MyGui.Opt("+Resize +MinSize640x480")
 
 MyGui.Add("Text", , "Current Profile:")
 
-pathToProfiles := "..\config\UserProfiles"
 
 profiles := []
+pathToProfiles := "..\config\UserProfiles"
+
+currentProfileIndex := 0
+
 
 Loop Files pathToProfiles . "\*", "D"
 {
+    if (currentProfile == A_LoopFileName)
+    {
+        currentProfileIndex := A_index
+    }
     profiles.push(A_LoopFileName)
 }
 
-MyGui.Add("DropDownList", "vColorChoice ym+1", profiles)
+
+
+profilesDropDownMenu := MyGui.Add("DropDownList", "ym+1 Choose" . currentProfileIndex, profiles)
+profilesDropDownMenu.OnEvent("Change", (*) => 
+    MsgBox("Changed profile, you will see it in meta.ini")
+    iniWrite(profilesDropDownMenu.Text, "..\config\meta.ini", "General", "activeUserProfile")
+    ; TODO after changing profile, need to reload EVERYTHING, or perhaps not.
+    )
+
 
 
 ; TODO when add profile is clicked, user can choose a pre made profile, or create their own from scratch
 addProfileButton := MyGui.Add("Button", "Default w80 ym+1", "Add profile")
 importProfileButton := MyGui.Add("Button", "Default w80 ym+1", "Import profile")
 exportProfileButton := MyGui.Add("Button", "Default w80 ym+1", "Export profile")
+
+addProfileButton.OnEvent("Click", AddProfile)
+
+AddProfile(button, test2){
+    MsgBox("Add profile")
+}
+
 
 
 Tab := MyGui.AddTab3("ys+20 xm", ["Keyboards","Change Functions Settings","Documentation"])
@@ -94,7 +118,7 @@ Tab.UseTab(3)
 MyGui.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.
 Tab.UseTab(0)  ; i.e. subsequently-added controls will not belong to the tab control.
 
-; OkButton := MyGui.Add("Button", "default xm", "OK")  ; xm puts it at the bottom left corner.
+OkButton := MyGui.Add("Button", "default xm", "OK")  ; xm puts it at the bottom left corner.
 ; OkButton.OnEvent("Click", ProcessUserInput)
 ; MyGui.OnEvent("Close", ProcessUserInput)
 ; MyGui.OnEvent("Escape", ProcessUserInput)
