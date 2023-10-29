@@ -93,17 +93,30 @@ Class ListViewMaker{
             ; TODO should be set to on top, can not be not top ever...
             
             inputGui := Gui()
-            inputGui.opt("+Resize +MinSize300x560 ")
+            inputGui.opt("+Resize +MinSize300x560 +AlwaysOnTop")
+            
             inputGui.Add("Text", "w300 h20", "Value From Key:")
-            inputGui.Add("Edit", "xm w300 h20", listViewSecondColum)
+            inputKey := inputGui.Add("Edit", "xm w300 h20", listViewSecondColum)
+            
             inputGui.Add("Text", "xm w300 h20", "Value New Key Action:")
-            inputGui.Add("Edit", "xm w300 h20", listViewSecondColum)
-            inputGui.Add("Button", "w100 h20", "Save")
-            inputGui.Add("Button", "w100 h20", "Cancel")
+            inputValue := inputGui.Add("Edit", "xm w300 h20", listViewSecondColum)
+            
+            SaveButton := inputGui.Add("Button", "w100 h20", "Save")
+            CancelButton := inputGui.Add("Button", "w100 h20", "Cancel")
             inputGui.Show()
 
-            ; SetOnTop := ObjBindMethod(this, "SetOnTop", "ahk_class #32770")
-            ; SetTimer(SetOnTop, -100)
+            iniFileSection := this.activeTreeViewItem
+            SaveButton.onEvent("Click", (*) =>
+
+                
+                msgbox(iniFileSection)
+                IniWrite(inputValue.Value, this.iniFile, iniFileSection, inputKey.Value)
+                inputGui.Destroy()
+                Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
+            )
+            CancelButton.onEvent("Click", (*) =>inputGui.Destroy())
+
+
             ; inputPrompt := InputBox("Value name: " . listViewFirstColum . "`n" . "Value data:", "Edit object value",, listViewSecondColum)
 
             ; if inputPrompt.Result = "Cancel"{
