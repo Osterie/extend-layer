@@ -94,7 +94,7 @@ TreeViewKeyboards.CreateTreeView(MyGui)
 
 
 ListViewKeyboards := ListViewMaker()
-ListViewKeyboards.CreateListView(MyGui, ["Key","Value"], iniFileKeyboards)
+ListViewKeyboards.CreateListView(MyGui, ["Key","Value"], iniFileKeyboards, "Keyboards")
 
 
 CreateListViewItems := ObjBindMethod(ListViewKeyboards, "SetNewListViewItemsByIniFileSection", iniFileKeyboards)
@@ -121,7 +121,7 @@ NewTreeView.CreateTreeView(MyGui)
 
 
 NewListView := ListViewMaker()
-NewListView.CreateListView(MyGui, ["Key","Value"], iniFileClassObjects)
+NewListView.CreateListView(MyGui, ["Key","Value"], iniFileClassObjects, "Objects")
 
 
 CreateListViewItems := ObjBindMethod(NewListView, "SetNewListViewItemsByIniFileSection", iniFileClassObjects)
