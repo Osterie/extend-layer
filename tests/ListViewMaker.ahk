@@ -61,6 +61,7 @@ Class ListViewMaker{
             SetOnTop := ObjBindMethod(this, "SetOnTop", "ahk_class #32770")
             SetTimer(SetOnTop, -100)
             inputPrompt := InputBox("Value name: " . listViewFirstColum . "`n" . "Value data:", "Edit object value",, listViewSecondColum)
+                        
             if inputPrompt.Result = "Cancel"{
                 ; Do nothing
             }
@@ -87,32 +88,47 @@ Class ListViewMaker{
         listViewFirstColum := this.listView.GetText(rowNumber, 1)
         listViewSecondColum := this.listView.GetText(rowNumber, 2)
 
-        if (rowNumber != 0){
+        ; if (rowNumber != 0){
     
             ; TODO should be set to on top, can not be not top ever...
-            SetOnTop := ObjBindMethod(this, "SetOnTop", "ahk_class #32770")
-            SetTimer(SetOnTop, -100)
-            inputPrompt := InputBox("Value name: " . listViewFirstColum . "`n" . "Value data:", "Edit object value",, listViewSecondColum)
+            
+            inputGui := Gui()
+            inputGui.opt("+Resize +MinSize300x560 ")
+            inputGui.Add("Text", "w300 h20", "Value From Key:")
+            inputGui.Add("Edit", "xm w300 h20", listViewSecondColum)
+            inputGui.Add("Text", "xm w300 h20", "Value New Key Action:")
+            inputGui.Add("Edit", "xm w300 h20", listViewSecondColum)
+            inputGui.Add("Button", "w100 h20", "Save")
+            inputGui.Add("Button", "w100 h20", "Cancel")
+            inputGui.Show()
 
-            if inputPrompt.Result = "Cancel"{
-                ; Do nothing
-            }
-            else if(inputPrompt.Value = ""){
-                ; Do Nothing
-            }
-            else{
+            ; SetOnTop := ObjBindMethod(this, "SetOnTop", "ahk_class #32770")
+            ; SetTimer(SetOnTop, -100)
+            ; inputPrompt := InputBox("Value name: " . listViewFirstColum . "`n" . "Value data:", "Edit object value",, listViewSecondColum)
+
+            ; if inputPrompt.Result = "Cancel"{
+            ;     ; Do nothing
+            ; }
+            ; else if(inputPrompt.Value = ""){
+            ;     ; Do Nothing
+            ; }
+            ; else{
     
-                this.listView.Modify(rowNumber,,, inputPrompt.Value)
-                ; TODO then modify the ini file, perhaps should use a class for this
-                ; TODO could also change the objectRegistry objects from here or somewhere...
-                ; TODO to implement this, probably just have a method called "update objects" or something in the objectRegistry class
+            ;     this.listView.Modify(rowNumber,,, inputPrompt.Value)
+            ;     ; TODO then modify the ini file, perhaps should use a class for this
+            ;     ; TODO could also change the objectRegistry objects from here or somewhere...
+            ;     ; TODO to implement this, probably just have a method called "update objects" or something in the objectRegistry class
 
-                iniFileSection := this.activeTreeViewItem
-                IniWrite(inputPrompt.Value, this.iniFile, iniFileSection, listViewFirstColum)
-                Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
+            ;     iniFileSection := this.activeTreeViewItem
+            ;     IniWrite(inputPrompt.Value, this.iniFile, iniFileSection, listViewFirstColum)
+            ;     Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
 
-            }
-        }
+            ; }
+        ; }
+        ; An empty row is double clicked and the user may want to add another key pair value (change a key to a new one)
+        ; else{
+
+        ; }
     }
 
     SetOnTop(identifier){

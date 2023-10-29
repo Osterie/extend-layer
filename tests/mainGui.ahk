@@ -48,7 +48,6 @@ if (profilesDropDownMenu.Text == "")
 profilesDropDownMenu.OnEvent("Change", ProfileChangedFromDropDownMenu)
 
 ProfileChangedFromDropDownMenu(*){
-    MsgBox("Changed profile, you will see it in meta.ini")
     iniWrite(profilesDropDownMenu.Text, "..\config\meta.ini", "General", "activeUserProfile")
     ; TODO after changing profile, need to reload EVERYTHING, or perhaps not.
     Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
@@ -131,6 +130,7 @@ NewTreeView.AddEventAction("ItemSelect", CreateListViewItems)
 
 Tab.UseTab(3)
 MyGui.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.
+
 Tab.UseTab(0)  ; i.e. subsequently-added controls will not belong to the tab control.
 
 OkButton := MyGui.Add("Button", "default xm", "OK")  ; xm puts it at the bottom left corner.
