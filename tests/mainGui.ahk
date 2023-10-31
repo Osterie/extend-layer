@@ -75,8 +75,17 @@ EditProfiles(*){
     profilesToEditDropDownMenu := editProfilesGui.Add("DropDownList", "ym Choose" . currentProfileIndex, FolderManagement.getFolderNames())
     
     renameProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Change profile name")
-    
-    renameProfileButton.OnEvent("Click", (*) => RenameProfile(profilesToEditDropDownMenu.Text))
+    indexOfProfile := ""
+    renameProfileButton.OnEvent("Click", (*) => 
+
+        
+        RenameProfile(profilesToEditDropDownMenu.Text)
+        profilesToEditDropDownMenu.Delete()
+        profilesToEditDropDownMenu.Add(FolderManagement.getFolderNames())
+
+        profilesToEditDropDownMenu.Choose(FolderManagement.getMostRecentlyAddedFolder())
+    )
+
 
 
     ; TODO should ask the user if they are really sure they want to delete the profile
@@ -98,22 +107,15 @@ RenameProfile(currentProfile){
         ; Do Nothing
     }
     else{
-        ; TODO check if a profile with that name already exists
+
         if (FolderManagement.RenameFolder(currentProfile, inputPrompt.Value)){
             ; Changed profile name succesfully
             iniWrite(inputPrompt.Value, "..\config\meta.ini", "General", "activeUserProfile")
         }
         else{
-            msgbox("failed to change profile name, perhaps name already exists")
+            msgbox("failed to change profile name, perhaps name already exists or illegal characters were used.")
         }
-        
-        ; iniFileSection := this.activeTreeViewItem
-        ; IniWrite(inputPrompt.Value, this.iniFile, iniFileSection, listViewFirstColum)
-        ; inputPrompt.Value
-        ; Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
     }
-    ; msgbox(profile)
-    ; MsgBox("Rename profile")
 } 
 
 DeleteProfile(*){

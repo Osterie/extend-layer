@@ -24,9 +24,6 @@ class FolderManager{
     renameFolder(oldName, newName) {
 
         folderChanged := false
-
-
-
         if (this.isInRegistry(newName)) {
             folderChanged := false
         }
@@ -35,11 +32,15 @@ class FolderManager{
                 oldPath := this.folders[oldName]
                 newPath := this.getNewPath(oldPath, oldName, newName)
 
-                DirMove oldPath, newPath, "R"
-
-                this.folders[newName] := this.folders[oldName]
-                this.folders.Delete(oldName)
-                folderChanged := true
+                try{
+                    DirMove oldPath, newPath, "R"
+                    this.folders[newName] := newPath
+                    this.folders.Delete(oldName)
+                    folderChanged := true
+                }
+                catch{
+                    folderChanged := false
+                }
             }
             else{
                 folderChanged := false
@@ -58,6 +59,15 @@ class FolderManager{
             folderDeleted := false
         }
         return folderDeleted
+    }
+
+    getMostRecentlyAddedFolder() {
+        lastKey := ""
+        For key in this.folders{
+            lastKey := key
+        }
+
+        return lastKey
     }
 
     getfolderPathByName(folderName) {
