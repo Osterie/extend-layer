@@ -3,6 +3,7 @@
 #Include ".\TreeViewFromIniFile.ahk"
 #Include ".\ListViewMaker.ahk"
 #Include "..\src\library\IniFileReading\IniFileReader.ahk"
+#Include ".\ProfilesRegistry.ahk"
 
 ; TODO add event for DropFiles, so that user can drag and drop exported user profiles into the program to load them.
 ; TODO add a mouse section also, so user can change mouse easily
@@ -17,7 +18,7 @@ MyGui.Opt("+Resize +MinSize640x480")
 
 MyGui.Add("Text", , "Current Profile:")
 
-
+ProfilesRegister := ProfilesRegistry()
 profiles := []
 pathToProfiles := "..\config\UserProfiles"
 
@@ -30,12 +31,13 @@ Loop Files pathToProfiles . "\*", "D"
     {
         currentProfileIndex := A_index
     }
+    ProfilesRegister.AddProfile(A_LoopFileName, pathToProfiles . "\" . A_LoopFileName)
     profiles.push(A_LoopFileName)
 }
 
 
 
-profilesDropDownMenu := MyGui.Add("DropDownList", "ym+1 Choose" . currentProfileIndex, profiles)
+profilesDropDownMenu := MyGui.Add("DropDownList", "ym+1 Choose" . currentProfileIndex, ProfilesRegister.getProfileNames())
 
 ; If for some reason a profile is not selected, then select the first one.
 if (profilesDropDownMenu.Text == "")

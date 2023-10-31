@@ -1,11 +1,11 @@
 #Requires AutoHotkey v2.0
 
 class ProfilesRegistry {
-    
-    profiles := {}
+
+    profiles := ""
     
     __New() {
-        this.profiles := {}
+        this.profiles := Map()
     }
 
     addProfile(profileName, profilePath) {
@@ -30,7 +30,7 @@ class ProfilesRegistry {
         else{
             if (this.isInRegistry(oldName)) {
                 this.profiles[newName] := this.profiles[oldName]
-                this.profiles.DeleteKey(oldName)
+                this.profiles.Delete(oldName)
                 profileChanged := true
             }
             else{
@@ -43,7 +43,7 @@ class ProfilesRegistry {
     removeProfile(profileName) {
         profileDeleted := false
         if (this.isInRegistry(profileName)) {
-            this.profiles.DeleteKey(profileName)
+            this.profiles.Delete(profileName)
             profileDeleted := true
         }
         else{
@@ -52,13 +52,21 @@ class ProfilesRegistry {
         return profileDeleted
     }
 
-    getProfileByName(name) {
-        return this.profiles[name]
+    getProfilePathByName(profileName) {
+        return this.profiles[profileName]
+    }
+
+    getProfileNames() {
+        profileNames := []
+        for key in this.profiles {
+            profileNames.Push(key)
+        }
+        return profileNames
     }
 
     ; Returns true if the given profile is already in the registry
-    isInRegistry(profile){
-        return this.profiles.HasKey(profile.Name)
+    isInRegistry(profileName){
+        return this.profiles.Has(profileName)
     }
 
 }
