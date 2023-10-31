@@ -56,13 +56,65 @@ ProfileChangedFromDropDownMenu(*){
 }
 
 
-
 ; TODO when add profile is clicked, user can choose a pre made profile, or create their own from scratch
+editProfilesButton := MyGui.Add("Button", "Default w80 ym+1", "Edit profiles")
 addProfileButton := MyGui.Add("Button", "Default w80 ym+1", "Add profile")
 importProfileButton := MyGui.Add("Button", "Default w80 ym+1", "Import profile")
 exportProfileButton := MyGui.Add("Button", "Default w80 ym+1", "Export profile")
 
+editProfilesButton.OnEvent("Click", EditProfiles)
 addProfileButton.OnEvent("Click", AddProfile)
+
+
+
+EditProfiles(button, test2){
+
+    editProfilesGui := Gui()
+
+    editProfilesGui.OnEvent("Close", (*) => editProfilesGui.Destroy())
+
+    editProfilesGui.Opt("+Resize +MinSize320x240")
+    editProfilesGui.Add("Text", , "Selected Profile:")
+    profilesToEditDropDownMenu := editProfilesGui.Add("DropDownList", "ym Choose" . currentProfileIndex, profiles)
+    
+    renameProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Change profile name")
+    renameProfileButton.OnEvent("Click", (*) =>
+        RenameProfile(profilesToEditDropDownMenu.Text, profilesToEditDropDownMenu)
+    )
+
+    ; TODO should ask the user if they are really sure they want to delete the profile
+    deleteProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Delete profile")
+    deleteProfileButton.OnEvent("Click", (*) =>
+        DeleteProfile(profilesToEditDropDownMenu.Text)
+    )
+
+    editProfilesGui.Show()
+
+    MsgBox("Edit profile")
+}
+
+RenameProfile(profile, guiElement){
+    inputPrompt := InputBox("Please write the new name for the profile!", "Edit object value",, profile)
+
+    if inputPrompt.Result = "Cancel"{
+        ; Do nothing
+    }
+    else if(inputPrompt.Value = ""){
+        ; Do Nothing
+    }
+    else{
+        ; TODO check if a profile with that name already exists
+        ; iniFileSection := this.activeTreeViewItem
+        ; IniWrite(inputPrompt.Value, this.iniFile, iniFileSection, listViewFirstColum)
+        ; Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
+    }
+    ; msgbox(profile)
+    ; MsgBox("Rename profile")
+} 
+
+DeleteProfile(*){
+    MsgBox("Delete profile")
+}
 
 AddProfile(button, test2){
     MsgBox("Add profile")

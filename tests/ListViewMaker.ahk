@@ -135,7 +135,6 @@ Class ListViewMaker{
             ;     iniFileSection := this.activeTreeViewItem
             ;     IniWrite(inputPrompt.Value, this.iniFile, iniFileSection, listViewFirstColum)
             ;     Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
-
             ; }
         ; }
         ; An empty row is double clicked and the user may want to add another key pair value (change a key to a new one)
