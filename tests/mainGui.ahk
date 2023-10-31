@@ -19,7 +19,6 @@ MyGui.Opt("+Resize +MinSize640x480")
 MyGui.Add("Text", , "Current Profile:")
 
 ProfilesRegister := ProfilesRegistry()
-profiles := []
 pathToProfiles := "..\config\UserProfiles"
 
 currentProfileIndex := 0
@@ -32,7 +31,6 @@ Loop Files pathToProfiles . "\*", "D"
         currentProfileIndex := A_index
     }
     ProfilesRegister.AddProfile(A_LoopFileName, pathToProfiles . "\" . A_LoopFileName)
-    profiles.push(A_LoopFileName)
 }
 
 
@@ -77,7 +75,7 @@ EditProfiles(button, test2){
 
     editProfilesGui.Opt("+Resize +MinSize320x240")
     editProfilesGui.Add("Text", , "Selected Profile:")
-    profilesToEditDropDownMenu := editProfilesGui.Add("DropDownList", "ym Choose" . currentProfileIndex, profiles)
+    profilesToEditDropDownMenu := editProfilesGui.Add("DropDownList", "ym Choose" . currentProfileIndex, ProfilesRegister.getProfileNames()
     
     renameProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Change profile name")
     renameProfileButton.OnEvent("Click", (*) =>
