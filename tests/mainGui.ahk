@@ -3,14 +3,11 @@
 #Include ".\TreeViewFromIniFile.ahk"
 #Include ".\ListViewMaker.ahk"
 #Include "..\src\library\IniFileReading\IniFileReader.ahk"
-#Include ".\ProfilesRegistry.ahk"
+#Include ".\FolderManager.ahk"
 
 ; TODO add event for DropFiles, so that user can drag and drop exported user profiles into the program to load them.
 ; TODO add a mouse section also, so user can change mouse easily
 
-; iniWrite
-
-currentProfile := iniRead("..\config\meta.ini", "General", "activeUserProfile")
 iniFileRead := IniFileReader()
 
 MyGui := Gui()
@@ -18,10 +15,11 @@ MyGui.Opt("+Resize +MinSize640x480")
 
 MyGui.Add("Text", , "Current Profile:")
 
-ProfilesRegister := ProfilesRegistry()
+FolderManagement := FolderManager()
 pathToProfiles := "..\config\UserProfiles"
 
-currentProfileIndex := 0
+currentProfile := iniRead("..\config\meta.ini", "General", "activeUserProfile")
+currentProfileIndex := ""
 
 
 Loop Files pathToProfiles . "\*", "D"
@@ -30,12 +28,12 @@ Loop Files pathToProfiles . "\*", "D"
     {
         currentProfileIndex := A_index
     }
-    ProfilesRegister.AddProfile(A_LoopFileName, pathToProfiles . "\" . A_LoopFileName)
+    FolderManagement.addFolder(A_LoopFileName, pathToProfiles . "\" . A_LoopFileName)
 }
 
 
 
-profilesDropDownMenu := MyGui.Add("DropDownList", "ym+1 Choose" . currentProfileIndex, ProfilesRegister.getProfileNames())
+profilesDropDownMenu := MyGui.Add("DropDownList", "ym+1 Choose" . currentProfileIndex, FolderManagement.getFolderNames())
 
 ; If for some reason a profile is not selected, then select the first one.
 if (profilesDropDownMenu.Text == "")
@@ -66,8 +64,7 @@ editProfilesButton.OnEvent("Click", EditProfiles)
 addProfileButton.OnEvent("Click", AddProfile)
 
 
-
-EditProfiles(button, test2){
+EditProfiles(*){
 
     editProfilesGui := Gui()
 
@@ -75,12 +72,12 @@ EditProfiles(button, test2){
 
     editProfilesGui.Opt("+Resize +MinSize320x240")
     editProfilesGui.Add("Text", , "Selected Profile:")
-    profilesToEditDropDownMenu := editProfilesGui.Add("DropDownList", "ym Choose" . currentProfileIndex, ProfilesRegister.getProfileNames()
+    profilesToEditDropDownMenu := editProfilesGui.Add("DropDownList", "ym Choose" . currentProfileIndex, FolderManagement.getFolderNames())
     
     renameProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Change profile name")
-    renameProfileButton.OnEvent("Click", (*) =>
-        RenameProfile(profilesToEditDropDownMenu.Text, profilesToEditDropDownMenu)
-    )
+    
+    renameProfileButton.OnEvent("Click", (*) => RenameProfile(profilesToEditDropDownMenu.Text))
+
 
     ; TODO should ask the user if they are really sure they want to delete the profile
     deleteProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Delete profile")
@@ -89,12 +86,10 @@ EditProfiles(button, test2){
     )
 
     editProfilesGui.Show()
-
-    MsgBox("Edit profile")
 }
 
-RenameProfile(profile, guiElement){
-    inputPrompt := InputBox("Please write the new name for the profile!", "Edit object value",, profile)
+RenameProfile(currentProfile){
+    inputPrompt := InputBox("Please write the new name for the profile!", "Edit object value",, currentProfile)
 
     if inputPrompt.Result = "Cancel"{
         ; Do nothing
@@ -104,8 +99,17 @@ RenameProfile(profile, guiElement){
     }
     else{
         ; TODO check if a profile with that name already exists
+        if (FolderManagement.RenameFolder(currentProfile, inputPrompt.Value)){
+            ; Changed profile name succesfully
+            iniWrite(inputPrompt.Value, "..\config\meta.ini", "General", "activeUserProfile")
+        }
+        else{
+            msgbox("failed to change profile name, perhaps name already exists")
+        }
+        
         ; iniFileSection := this.activeTreeViewItem
         ; IniWrite(inputPrompt.Value, this.iniFile, iniFileSection, listViewFirstColum)
+        ; inputPrompt.Value
         ; Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
     }
     ; msgbox(profile)
