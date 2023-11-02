@@ -64,6 +64,7 @@ editProfilesButton.OnEvent("Click", EditProfiles)
 addProfileButton.OnEvent("Click", AddProfile)
 
 
+
 EditProfiles(*){
 
     editProfilesGui := Gui()
@@ -144,8 +145,25 @@ DeleteProfile(*){
     }
 }
 
-AddProfile(button, test2){
-    MsgBox("Add profile")
+AddProfile(*){
+    addProfileGui := Gui()
+
+    addProfileGui.OnEvent("Close", (*) => addProfileGui.Destroy())
+
+    addProfileGui.Opt("+Resize +MinSize320x240")
+    addProfileGui.Add("Text", , "Selected Profile:")
+
+    addPresetProfileButton := addProfileGui.Add("Button", "Default w80 xm+1", "Add preset profile")
+    addPresetProfileButton.OnEvent("Click", (*) => 
+        msgbox("add preset profile")
+    )
+
+    addCustomProfileButton := addProfileGui.Add("Button", "Default w80 xm+1", "Add custom profile")
+    addCustomProfileButton.OnEvent("Click", (*) => 
+        msgbox("add custom profile")
+    )
+    
+    addProfileGui.Show()
 }
 
 

@@ -5,6 +5,8 @@
 ; |---------------------------------------------------|
 ; !add a priority rating for all the todos, using !, ?, and *
 
+; !TODO add a spam class, which takes an input and can spam it at a given interval, and stopped at the press of a button obv.
+
 ; ! .ini file. Should have settings for guis, like this:
 ; [Notepad]
 ; Width=580
