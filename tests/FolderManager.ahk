@@ -49,7 +49,7 @@ class FolderManager{
         return folderChanged
     }
 
-    deleteFolder(folderName) {
+    DeleteFolder(folderName) {
         folderDeleted := false
         if (this.isInRegistry(folderName)) {
             this.folders.Delete(folderName)

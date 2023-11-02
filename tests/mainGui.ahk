@@ -80,10 +80,15 @@ EditProfiles(*){
 
         
         RenameProfile(profilesToEditDropDownMenu.Text)
+
         profilesToEditDropDownMenu.Delete()
         profilesToEditDropDownMenu.Add(FolderManagement.getFolderNames())
-
         profilesToEditDropDownMenu.Choose(FolderManagement.getMostRecentlyAddedFolder())
+        
+        profilesDropDownMenu.Delete()
+        profilesDropDownMenu.Add(FolderManagement.getFolderNames())
+        profilesDropDownMenu.Choose(FolderManagement.getMostRecentlyAddedFolder())
+
     )
 
 
@@ -119,7 +124,24 @@ RenameProfile(currentProfile){
 } 
 
 DeleteProfile(*){
-    MsgBox("Delete profile")
+    inputPrompt := InputBox("Are you sure you want to delete this profile? Deleted profiles cannot be resuscitated. Type yes to confirm", "Edit object value",, currentProfile)
+
+    if inputPrompt.Result = "Cancel"{
+        ; Do nothing
+    }
+    else if(inputPrompt.Value = ""){
+        ; Do Nothing
+    }
+    else if (StrLower(inputPrompt.Value) = "yes"){
+
+        if (FolderManagement.DeleteFolder(currentProfile)){
+            ; Deleted profile succesfully
+            iniWrite(inputPrompt.Value, "..\config\meta.ini", "General", "activeUserProfile")
+        }
+        else{
+            msgbox("failed to delete profile")
+        }
+    }
 }
 
 AddProfile(button, test2){
@@ -140,8 +162,6 @@ RadioButtonKeybindsTextView.OnEvent("Click", (*) => MsgBox("Text view"))
 RadioButtonKeybindsKeyboardView.OnEvent("Click", (*) => MsgBox("Keyboard view"))
 
 
-
-
 iniFileKeyboards := "..\config\UserProfiles\" . profilesDropDownMenu.Text . "\Keyboards.ini"
 ; SectionNames := IniRead(iniFileKeyboards)
 
@@ -156,11 +176,6 @@ ListViewKeyboards.CreateListView(MyGui, ["Key","Value"], iniFileKeyboards, "Keyb
 
 CreateListViewItems := ObjBindMethod(ListViewKeyboards, "SetNewListViewItemsByIniFileSection", iniFileKeyboards)
 TreeViewKeyboards.AddEventAction("ItemSelect", CreateListViewItems)
-; CreateListViewItems := ObjBindMethod(ListViewKeybinds, "SetNewListViewItemsByIniFileSection", iniFileKeyboards)
-; TreeViewKeyboards.AddEventAction("ItemSelect", CreateListViewItems)
-
-; MyGui.AddHotkey("vChosenHotkey")
-; MyGui.Add("CheckBox", "vMyCheckBox", "Win key") 
 
 
 Tab.UseTab(2)
