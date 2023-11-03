@@ -12,28 +12,35 @@ iniFileRead := IniFileReader()
 
 MyGui := Gui()
 MyGui.Opt("+Resize +MinSize640x480")
-
 MyGui.Add("Text", , "Current Profile:")
 
-FolderManagement := FolderManager()
-pathToProfiles := "..\config\UserProfiles"
+PresetProfilesManager := FolderManager()
+pathToPresetProfiles := "..\config\CustomProfiles"
+
+Loop Files pathToPresetProfiles . "\*", "D"
+{
+    PresetProfilesManager.addFolder(A_LoopFileName, pathToPresetProfiles . "\" . A_LoopFileName)
+}
+
+ExistingProfilesManager := FolderManager()
+pathToExistingProfiles := "..\config\UserProfiles"
 
 currentProfile := iniRead("..\config\meta.ini", "General", "activeUserProfile")
 currentProfileIndex := ""
 
 
-Loop Files pathToProfiles . "\*", "D"
+Loop Files pathToExistingProfiles . "\*", "D"
 {
     if (currentProfile == A_LoopFileName)
     {
         currentProfileIndex := A_index
     }
-    FolderManagement.addFolder(A_LoopFileName, pathToProfiles . "\" . A_LoopFileName)
+    ExistingProfilesManager.addFolder(A_LoopFileName, pathToExistingProfiles . "\" . A_LoopFileName)
 }
 
 
 
-profilesDropDownMenu := MyGui.Add("DropDownList", "ym+1 Choose" . currentProfileIndex, FolderManagement.getFolderNames())
+profilesDropDownMenu := MyGui.Add("DropDownList", "ym+1 Choose" . currentProfileIndex, ExistingProfilesManager.getFolderNames())
 
 ; If for some reason a profile is not selected, then select the first one.
 if (profilesDropDownMenu.Text == "")
@@ -73,7 +80,7 @@ EditProfiles(*){
 
     editProfilesGui.Opt("+Resize +MinSize320x240")
     editProfilesGui.Add("Text", , "Selected Profile:")
-    profilesToEditDropDownMenu := editProfilesGui.Add("DropDownList", "ym Choose" . currentProfileIndex, FolderManagement.getFolderNames())
+    profilesToEditDropDownMenu := editProfilesGui.Add("DropDownList", "ym Choose" . currentProfileIndex, ExistingProfilesManager.getFolderNames())
     
     renameProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Change profile name")
     indexOfProfile := ""
@@ -83,12 +90,12 @@ EditProfiles(*){
         RenameProfile(profilesToEditDropDownMenu.Text)
 
         profilesToEditDropDownMenu.Delete()
-        profilesToEditDropDownMenu.Add(FolderManagement.getFolderNames())
-        profilesToEditDropDownMenu.Choose(FolderManagement.getMostRecentlyAddedFolder())
+        profilesToEditDropDownMenu.Add(ExistingProfilesManager.getFolderNames())
+        profilesToEditDropDownMenu.Choose(ExistingProfilesManager.getMostRecentlyAddedFolder())
         
         profilesDropDownMenu.Delete()
-        profilesDropDownMenu.Add(FolderManagement.getFolderNames())
-        profilesDropDownMenu.Choose(FolderManagement.getMostRecentlyAddedFolder())
+        profilesDropDownMenu.Add(ExistingProfilesManager.getFolderNames())
+        profilesDropDownMenu.Choose(ExistingProfilesManager.getMostRecentlyAddedFolder())
 
     )
 
@@ -114,7 +121,7 @@ RenameProfile(currentProfile){
     }
     else{
 
-        if (FolderManagement.RenameFolder(currentProfile, inputPrompt.Value)){
+        if (PresetProfilesManager.RenameFolder(currentProfile, inputPrompt.Value)){
             ; Changed profile name succesfully
             iniWrite(inputPrompt.Value, "..\config\meta.ini", "General", "activeUserProfile")
         }
@@ -135,7 +142,7 @@ DeleteProfile(*){
     }
     else if (StrLower(inputPrompt.Value) = "yes"){
 
-        if (FolderManagement.DeleteFolder(currentProfile)){
+        if (PresetProfilesManager.DeleteFolder(currentProfile)){
             ; Deleted profile succesfully
             iniWrite(inputPrompt.Value, "..\config\meta.ini", "General", "activeUserProfile")
         }
@@ -155,7 +162,8 @@ AddProfile(*){
 
     addPresetProfileButton := addProfileGui.Add("Button", "Default w80 xm+1", "Add preset profile")
     addPresetProfileButton.OnEvent("Click", (*) => 
-        msgbox("add preset profile")
+        customProfilesDropDownMenu := addProfileGui.Add("DropDownList", "ym+1 Choose1", PresetProfilesManager.getFolderNames())
+
     )
 
     addCustomProfileButton := addProfileGui.Add("Button", "Default w80 xm+1", "Add custom profile")
@@ -224,8 +232,5 @@ MyGui.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.
 
 Tab.UseTab(0)  ; i.e. subsequently-added controls will not belong to the tab control.
 
-OkButton := MyGui.Add("Button", "default xm", "OK")  ; xm puts it at the bottom left corner.
-; OkButton.OnEvent("Click", ProcessUserInput)
-; MyGui.OnEvent("Close", ProcessUserInput)
-; MyGui.OnEvent("Escape", ProcessUserInput)
+
 MyGui.Show()

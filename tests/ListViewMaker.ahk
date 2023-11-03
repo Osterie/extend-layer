@@ -96,26 +96,33 @@ Class ListViewMaker{
             inputGui.opt("+Resize +MinSize300x560 +AlwaysOnTop")
             
             inputGui.Add("Text", "w300 h20", "Value From Key:")
-            inputKey := inputGui.Add("Edit", "xm w300 h20", listViewSecondColum)
+            inputKey := inputGui.Add("Edit", "xm w300 h20", listViewFirstColum)
             
             inputGui.Add("Text", "xm w300 h20", "Value New Key Action:")
             inputValue := inputGui.Add("Edit", "xm w300 h20", listViewSecondColum)
             
             SaveButton := inputGui.Add("Button", "w100 h20", "Save")
             CancelButton := inputGui.Add("Button", "w100 h20", "Cancel")
+            DeleteButton := inputGui.Add("Button", "w100 h20", "Delete")
+
             inputGui.Show()
 
             iniFileSection := this.activeTreeViewItem
             SaveButton.onEvent("Click", (*) =>
-
-                
-                msgbox(iniFileSection)
+            
                 IniWrite(inputValue.Value, this.iniFile, iniFileSection, inputKey.Value)
                 inputGui.Destroy()
                 Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
             )
-            CancelButton.onEvent("Click", (*) =>inputGui.Destroy())
 
+            CancelButton.onEvent("Click", (*) =>inputGui.Destroy())
+            
+            DeleteButton.onEvent("Click", (*) => 
+
+                IniDelete(this.iniFile, iniFileSection, inputKey.Value)
+                inputGui.Destroy()
+                Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
+            )
 
             ; inputPrompt := InputBox("Value name: " . listViewFirstColum . "`n" . "Value data:", "Edit object value",, listViewSecondColum)
 
