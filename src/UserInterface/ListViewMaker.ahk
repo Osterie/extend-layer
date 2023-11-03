@@ -1,10 +1,19 @@
 #Requires AutoHotkey v2.0
 
+#Include "..\library\IniFileReading\IniFileReader.ahk"
+
+
 Class ListViewMaker{
 
     listView := ""
     activeTreeViewItem := ""
     iniFile := ""
+
+    iniFileRead := ""
+
+    __New(){
+        this.iniFileRead := IniFileReader()
+    }
 
     CreateListView(guiObject, columnNames, iniFile, doubleClickEventType){
         this.iniFile := iniFile
@@ -27,11 +36,11 @@ Class ListViewMaker{
     SetNewListViewItemsByIniFileSection(iniFile, section, item){
         if (section is Gui.TreeView){
             this.activeTreeViewItem := section.GetText(item)
-            keyPairValuesArray := iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(iniFile, section.GetText(item))
+            keyPairValuesArray := this.iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(iniFile, section.GetText(item))
             this.SetNewListViewItems(keyPairValuesArray)
         }
         else{
-            keyPairValuesArray := iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(iniFile, section)
+            keyPairValuesArray := this.iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(iniFile, section)
             this.SetNewListViewItems(keyPairValuesArray)
         }
     }

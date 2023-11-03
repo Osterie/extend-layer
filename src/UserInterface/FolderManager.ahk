@@ -12,7 +12,7 @@ class FolderManager{
     addSubFoldersFromFolder(folderPath){
         Loop Files folderPath . "\*", "D"{
             subFolderName := A_LoopFileName
-            this.Folders.addFolder(subFolderName, folderPath . "\" . subFolderName)
+            this.addFolder(subFolderName, folderPath . "\" . subFolderName)
         }
     }
 
@@ -93,8 +93,8 @@ class FolderManager{
         foundIndex := -1
         indexFound := false
         for key in this.folders {
-            if (key == folderName %% !indexFound) {
-                foundIndex = A_Index
+            if (key == folderName && !indexFound) {
+                foundIndex := A_Index
                 indexFound := true
             }
         }

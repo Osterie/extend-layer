@@ -7,7 +7,9 @@ Class ExtraKeyboardsApp{
     __New(){
         pathToExistingProfiles := "..\config\UserProfiles"
         pathToPresetProfiles := "..\config\PresetProfiles"
-        this.UserInterface := ExtraKeyboardsAppgui(pathToExistingProfiles, pathToPresetProfiles)
+        pathToMetaFile := "..\config\meta.ini"
+        pathToMainScript := A_ScriptDir "\..\src\Main.ahk"
+        this.UserInterface := ExtraKeyboardsAppgui(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript)
     }
 
 
@@ -15,3 +17,6 @@ Class ExtraKeyboardsApp{
         this.UserInterface.CreateMain()
     }
 }
+
+app := ExtraKeyboardsApp()
+app.Start()
