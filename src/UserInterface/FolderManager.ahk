@@ -9,6 +9,13 @@ class FolderManager{
         this.Folders := Map()
     }
 
+    addSubFoldersFromFolder(folderPath){
+        Loop Files folderPath . "\*", "D"{
+            subFolderName := A_LoopFileName
+            this.Folders.addFolder(subFolderName, folderPath . "\" . subFolderName)
+        }
+    }
+
     addFolder(folderName, folderPath) {
         folderAdded := false
         if (this.isInRegistry(folderName)) {
@@ -70,11 +77,11 @@ class FolderManager{
         return lastKey
     }
 
-    getfolderPathByName(folderName) {
+    getFolderPathByName(folderName) {
         return this.folders[folderName]
     }
 
-    getfolderNames() {
+    getFolderNames() {
         folderNames := []
         for key in this.folders {
             folderNames.Push(key)
@@ -82,11 +89,25 @@ class FolderManager{
         return folderNames
     }
 
+    getFirstFoundFolderIndex(folderName){
+        foundIndex := -1
+        indexFound := false
+        for key in this.folders {
+            if (key == folderName %% !indexFound) {
+                foundIndex = A_Index
+                indexFound := true
+            }
+        }
+        return foundIndex
+    }
+
     ; Returns true if the given folder is already in the registry
+    ; Private method
     isInRegistry(folderName){
         return this.folders.Has(folderName)
     }
 
+    ; Private method
     getNewPath(oldPath, oldName, newName){
 
         lastPositionFoundOfOldNameInOldPath := InStr(oldPath, oldName,,-1, -1)

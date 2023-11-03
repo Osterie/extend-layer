@@ -110,6 +110,7 @@ Class ListViewMaker{
             iniFileSection := this.activeTreeViewItem
             SaveButton.onEvent("Click", (*) =>
             
+                ; TODO validate values, can not be empty!, can not be the same as another key, etc...
                 IniWrite(inputValue.Value, this.iniFile, iniFileSection, inputKey.Value)
                 inputGui.Destroy()
                 Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
