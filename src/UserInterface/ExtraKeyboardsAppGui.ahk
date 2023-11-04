@@ -30,6 +30,9 @@ Class ExtraKeyboardsAppGui{
     currentProfile := ""
     currentProfileIndex := ""
 
+    ; Gui part
+    profilesDropDownMenu := ""
+
 
     __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript){
         this.iniFileRead := IniFileReader()
@@ -59,7 +62,7 @@ Class ExtraKeyboardsAppGui{
         this.ExtraKeyboardsAppGui.Add("Text", , "Current Profile:")
         
         
-        profilesDropDownMenu := this.createProfilesDropDownMenu()
+        this.profilesDropDownMenu := this.createProfilesDropDownMenu()
         
         
         ; TODO when add profile is clicked, user can choose a pre made profile, or create their own from scratch
@@ -71,9 +74,15 @@ Class ExtraKeyboardsAppGui{
 
         editProfilesButton.OnEvent("Click", (*) =>  this.EditProfiles())
         addProfileButton.OnEvent("Click", (*) => this.AddProfile())
+        importProfileButton.OnEvent("Click", (*) => this.ImportProfile())
+        exportProfileButton.OnEvent("Click", (*) => this.exportProfile())
               
         
-        this.CreateTabs(profilesDropDownMenu)        
+        pathToKeyboardsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profilesDropDownMenu.Text . "\Keyboards.ini"
+        pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profilesDropDownMenu.Text . "\ClassObjects.ini"
+
+
+        this.CreateTabs(pathToKeyboardsIniFile, pathToObjectsIniFile)
         
         
         this.ExtraKeyboardsAppGui.Show()
@@ -104,60 +113,68 @@ Class ExtraKeyboardsAppGui{
         reload
     }
 
-    CreateTabs(profilesDropDownMenu){
+    CreateTabs(pathToKeyboardsIniFile, pathToObjectsIniFile){
         
         Tab := this.ExtraKeyboardsAppGui.AddTab3("ys+20 xm", ["Keyboards","Change Functions Settings","Documentation"])
         Tab.UseTab(1)
-        this.CreateKeyboardsTab(profilesDropDownMenu)
+
+        this.CreateKeyboardsTab(pathToKeyboardsIniFile)
+
         Tab.UseTab(2)
-        this.CreateObjectsTab(profilesDropDownMenu)
+        this.CreateObjectsTab(pathToObjectsIniFile)
+
         Tab.UseTab(3)
         this.CreateDocumentationTab()
         Tab.UseTab(0)  ; i.e. subsequently-added controls will not belong to the tab control.
 
     }
 
-    CreateKeyboardsTab(profilesDropDownMenu){
-        iniFileKeyboards := this.PATH_TO_EXISTING_PROFILES . "\" . profilesDropDownMenu.Text . "\Keyboards.ini"
-        TreeViewKeyboards := TreeViewFromIniFile(iniFileKeyboards)
-        TreeViewKeyboards.CreateTreeView(this.ExtraKeyboardsAppGui)
+    CreateTreeViewWithAssociatedListViewFromIniFile(iniFilePath, guiObject){
+        treeViewElement := TreeViewFromIniFile(iniFilePath)
+        treeViewElement.CreateTreeView(guiObject)
         
-        ListViewKeyboards := ListViewMaker()
-        ListViewKeyboards.CreateListView(this.ExtraKeyboardsAppGui, ["Key","Value"], iniFileKeyboards, "Keyboards")
+        listViewElement := ListViewMaker()
+        listViewElement.CreateListView(guiObject, ["Key","Value"], iniFilePath)
         
-        CreateListViewItems := ObjBindMethod(ListViewKeyboards, "SetNewListViewItemsByIniFileSection", iniFileKeyboards)
-        TreeViewKeyboards.AddEventAction("ItemSelect", CreateListViewItems)
+        CreateListViewItems := ObjBindMethod(listViewElement, "SetNewListViewItemsByIniFileSection", iniFilePath)
+        treeViewElement.AddEventAction("ItemSelect", CreateListViewItems)
+
     }
 
-    CreateObjectsTab(profilesDropDownMenu){
-        ; TODO: ability to search
+    ; CreateKeyboardsTab(pathToKeyboardsIniFile){
         
-        ; TODO: for treeview, perhaps it would be a good idea to pass object registry to the treeview.
+    ;     TreeViewKeyboards := TreeViewFromIniFile(pathToKeyboardsIniFile)
+    ;     TreeViewKeyboards.CreateTreeView(this.ExtraKeyboardsAppGui)
         
-        iniFileClassObjects := this.PATH_TO_EXISTING_PROFILES . "\" . profilesDropDownMenu.Text . "\ClassObjects.ini"
-        ; SectionNames := IniRead(iniFileClassObjects)
+    ;     ListViewKeyboards := ListViewMaker()
+    ;     ListViewKeyboards.CreateListView(this.ExtraKeyboardsAppGui, ["Key","Value"], pathToKeyboardsIniFile, "Keyboards")
         
-        NewTreeView := TreeViewFromIniFile(iniFileClassObjects)
+    ;     CreateListViewItems := ObjBindMethod(ListViewKeyboards, "SetNewListViewItemsByIniFileSection", pathToKeyboardsIniFile)
+    ;     TreeViewKeyboards.AddEventAction("ItemSelect", CreateListViewItems)
+    ; }
+
+    ; CreateObjectsTab(pathToObjectsIniFile){
+    ;     ; TODO: ability to search
         
-        NewTreeView.CreateTreeView(this.ExtraKeyboardsAppGui)
+    ;     ; TODO: for treeview, perhaps it would be a good idea to pass object registry to the treeview.
         
-        NewListView := ListViewMaker()
-        NewListView.CreateListView(this.ExtraKeyboardsAppGui, ["Key","Value"], iniFileClassObjects, "Objects")
+    ;     NewTreeView := TreeViewFromIniFile(pathToObjectsIniFile)
+    ;     NewTreeView.CreateTreeView(this.ExtraKeyboardsAppGui)
+        
+    ;     NewListView := ListViewMaker()
+    ;     NewListView.CreateListView(this.ExtraKeyboardsAppGui, ["Key","Value"], pathToObjectsIniFile, "Objects")
         
         
-        CreateListViewItems := ObjBindMethod(NewListView, "SetNewListViewItemsByIniFileSection", iniFileClassObjects)
-        NewTreeView.AddEventAction("ItemSelect", CreateListViewItems)
+    ;     CreateListViewItems := ObjBindMethod(NewListView, "SetNewListViewItemsByIniFileSection", pathToObjectsIniFile)
+    ;     NewTreeView.AddEventAction("ItemSelect", CreateListViewItems)
         
             
-    }
+    ; }
 
     CreateDocumentationTab(){
         this.ExtraKeyboardsAppGui.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.
     }
 
-    ; CreateTreeView(iniFile){
-
-    ; }
 
     EditProfiles(*){
         
@@ -170,9 +187,8 @@ Class ExtraKeyboardsAppGui{
         profilesToEditDropDownMenu := editProfilesGui.Add("DropDownList", "ym Choose" . this.currentProfileIndex, this.ExistingProfilesManager.getFolderNames())
         
         renameProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Change profile name")
-        indexOfProfile := ""
+
         renameProfileButton.OnEvent("Click", (*) => 
-    
             
             this.RenameProfile(profilesToEditDropDownMenu.Text)
     
@@ -180,9 +196,9 @@ Class ExtraKeyboardsAppGui{
             profilesToEditDropDownMenu.Add(this.ExistingProfilesManager.getFolderNames())
             profilesToEditDropDownMenu.Choose(this.ExistingProfilesManager.getMostRecentlyAddedFolder())
             
-            ; profilesDropDownMenu.Delete()
-            ; profilesDropDownMenu.Add(this.ExistingProfilesManager.getFolderNames())
-            ; profilesDropDownMenu.Choose(this.ExistingProfilesManager.getMostRecentlyAddedFolder())
+            this.profilesDropDownMenu.Delete()
+            this.profilesDropDownMenu.Add(this.ExistingProfilesManager.getFolderNames())
+            this.profilesDropDownMenu.Choose(this.ExistingProfilesManager.getMostRecentlyAddedFolder())
     
         )
     
@@ -248,7 +264,6 @@ Class ExtraKeyboardsAppGui{
         addPresetProfileButton := addProfileGui.Add("Button", "Default w80 xm+1", "Add preset profile")
         addPresetProfileButton.OnEvent("Click", (*) => 
             customProfilesDropDownMenu := addProfileGui.Add("DropDownList", "ym+1 Choose1", this.PresetProfilesManager.getFolderNames())
-    
         )
     
         addCustomProfileButton := addProfileGui.Add("Button", "Default w80 xm+1", "Add custom profile")

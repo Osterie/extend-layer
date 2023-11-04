@@ -15,21 +15,15 @@ Class ListViewMaker{
         this.iniFileRead := IniFileReader()
     }
 
-    CreateListView(guiObject, columnNames, iniFile, doubleClickEventType){
+    CreateListView(guiObject, columnNames, iniFile){
         this.iniFile := iniFile
         this.listView := guiObject.Add("ListView", "grid r20 w400 x+10", columnNames)
         
         this.listView.ModifyCol(1, 200)
         this.listView.ModifyCol(2, 200)
 
-        if (doubleClickEventType == "Objects"){
-            ListViewDoubleClickEventObjects := ObjBindMethod(this, "ListViewDoubleClickEventObjects")
-            this.listView.OnEvent("DoubleClick", ListViewDoubleClickEventObjects)
-        }
-        else if (doubleClickEventType == "Keyboards"){
-            ListViewDoubleClickEventKeyboards := ObjBindMethod(this, "ListViewDoubleClickEventKeyboards")
-            this.listView.OnEvent("DoubleClick", ListViewDoubleClickEventKeyboards)
-        }
+        ListViewDoubleClickEvent := ObjBindMethod(this, "ListViewDoubleClickEvent")
+        this.listView.OnEvent("DoubleClick", ListViewDoubleClickEvent)
         
     }
 
@@ -60,39 +54,7 @@ Class ListViewMaker{
         this.listView.Add(, item*)        
     }
 
-    ListViewDoubleClickEventObjects(listView, rowNumber){
-
-        listViewFirstColum := this.listView.GetText(rowNumber, 1)
-        listViewSecondColum := this.listView.GetText(rowNumber, 2)
-        if (rowNumber != 0){
-    
-            ; TODO should be set to on top, can not be not top ever...
-            SetOnTop := ObjBindMethod(this, "SetOnTop", "ahk_class #32770")
-            SetTimer(SetOnTop, -100)
-            inputPrompt := InputBox("Value name: " . listViewFirstColum . "`n" . "Value data:", "Edit object value",, listViewSecondColum)
-                        
-            if inputPrompt.Result = "Cancel"{
-                ; Do nothing
-            }
-            else if(inputPrompt.Value = ""){
-                ; Do Nothing
-            }
-            else{
-    
-                this.listView.Modify(rowNumber,,, inputPrompt.Value)
-                ; TODO then modify the ini file, perhaps should use a class for this
-                ; TODO could also change the objectRegistry objects from here or somewhere...
-                ; TODO to implement this, probably just have a method called "update objects" or something in the objectRegistry class
-
-                iniFileSection := this.activeTreeViewItem
-                IniWrite(inputPrompt.Value, this.iniFile, iniFileSection, listViewFirstColum)
-                Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
-
-            }
-        }
-    }
-
-    ListViewDoubleClickEventKeyboards(listView, rowNumber){
+    ListViewDoubleClickEvent(listView, rowNumber){
 
         listViewFirstColum := this.listView.GetText(rowNumber, 1)
         listViewSecondColum := this.listView.GetText(rowNumber, 2)

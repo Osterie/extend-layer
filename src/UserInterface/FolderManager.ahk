@@ -40,7 +40,6 @@ class FolderManager{
 
                 oldPath := this.folders[oldName]
                 newPath := this.getNewPath(oldPath, oldName, newName)
-
                 
                 try{
                     DirMove oldPath, newPath, "R"
