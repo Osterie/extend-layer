@@ -1,34 +1,38 @@
 #Requires AutoHotkey v2.0
 
+#Include ".\FolderRegistry.ahk"
+
 class FolderManager{
 
     ; A map of folders with folder name as key and folder path as value
     Folders := ""
 
     __New(){
-        this.Folders := Map()
+        this.Folders := FolderRegistry()
     }
 
-    addSubFoldersFromFolder(folderPath){
-        Loop Files folderPath . "\*", "D"{
-            subFolderName := A_LoopFileName
-            this.addFolder(subFolderName, folderPath . "\" . subFolderName)
-        }
+    addSubFoldersToRegistryFromFolder(folderPath){
+        this.Folders.addSubFoldersFromFolder(folderPath)
     }
 
-    addFolder(folderName, folderPath) {
-        folderAdded := false
-        if (this.isInRegistry(folderName)) {
-            folderAdded := false
+    addFolderToRegistry(folderName, folderPath) {
+        this.Folders.addFolder(folderName, folderPath)
+    }
+
+    RemoveFolderFromRegistry(folderName) {
+        folderRemoved := false
+        if (this.Folders.DeleteFolder(folderName)) {
+            folderRemoved := true
         }
         else{
-            this.folders[folderName] := folderPath
-            folderAdded := true
+            folderRemoved := false
         }
-        return folderAdded
+        return folderRemoved
     }
 
-    renameFolder(oldName, newName) {
+    ; Takes the old name of the folder and gives it the new name, this will change the folder name in the registry and on the disk
+    ; Renames a folder and returns true if the folder was renamed successfully
+    RenameFolder(oldName, newName) {
 
         folderChanged := false
         if (this.isInRegistry(newName)) {
@@ -58,65 +62,52 @@ class FolderManager{
         return folderChanged
     }
 
+    ; MoveFolder(){}
+
+    CopyFolderToNewLocation(fromFolderPath, toFolderPath, folderName){
+        
+        copiedFolder := false
+        
+        if(this.Folders.isInRegistry(folderName)){
+            copiedFolder := false
+        }
+        else{
+            DirCopy(fromFolderPath, toFolderPath)
+            this.addFolderToRegistry(folderName, toFolderPath)
+            copiedFolder := true
+        }
+        
+        return copiedFolder
+    }
+
     DeleteFolder(folderName) {
-        folderDeleted := false
-        if (this.isInRegistry(folderName)) {
-            this.folders.Delete(folderName)
+
+        pathToFolderToBeDeleted := this.Folders[folderName]
+
+        if (this.RemoveFolderFromRegistry(folderName)) {
+            DirDelete(pathToFolderToBeDeleted, true)
             folderDeleted := true
         }
         else{
             folderDeleted := false
         }
+
         return folderDeleted
     }
 
     getMostRecentlyAddedFolder() {
-        lastKey := ""
-        For key in this.folders{
-            lastKey := key
-        }
-
-        return lastKey
+        return this.folders.getMostRecentlyAddedFolder()
     }
 
     getFolderPathByName(folderName) {
-        return this.folders[folderName]
+        return this.folders.getFolderPathByName(folderName)
     }
 
     getFolderNames() {
-        folderNames := []
-        for key in this.folders {
-            folderNames.Push(key)
-        }
-        return folderNames
+        return this.folders.getFolderNames()
     }
 
     getFirstFoundFolderIndex(folderName){
-        foundIndex := -1
-        indexFound := false
-        for key in this.folders {
-            if (key == folderName && !indexFound) {
-                foundIndex := A_Index
-                indexFound := true
-            }
-        }
-        return foundIndex
-    }
-
-    ; Returns true if the given folder is already in the registry
-    ; Private method
-    isInRegistry(folderName){
-        return this.folders.Has(folderName)
-    }
-
-    ; Private method
-    getNewPath(oldPath, oldName, newName){
-
-        lastPositionFoundOfOldNameInOldPath := InStr(oldPath, oldName,,-1, -1)
-        ; The absolute path to the folder of the currently open file.
-        pathWithoutOldOrNewName := SubStr(oldPath, 1, lastPositionFoundOfOldNameInOldPath-1)
-        pathWithNewName := pathWithoutOldOrNewName . newName
-        return pathWithNewName
-
+        return this.folders.getFirstFoundFolderIndex(folderName)
     }
 }

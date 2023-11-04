@@ -76,6 +76,20 @@ Hotstring( "::a@", eMail)
 ; |----------- OBJECT CREATION ---------------|
 ; |-------------------------------------------|
 
+Class Main{
+
+
+
+    __New(){
+
+
+    }
+
+    Start(){
+
+
+    }
+}
 currentProfile := iniRead("..\config\meta.ini", "General", "activeUserProfile")
 
 ObjectRegister := ObjectRegistry()

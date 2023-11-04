@@ -42,8 +42,8 @@ Class ExtraKeyboardsAppGui{
 
         this.PATH_TO_EXISTING_PROFILES := pathToExistingProfiles
         this.PATH_TO_PRESET_PROFILES := pathToPresetProfiles
-        this.PresetProfilesManager.addSubFoldersFromFolder(this.PATH_TO_PRESET_PROFILES)
-        this.ExistingProfilesManager.addSubFoldersFromFolder(this.PATH_TO_EXISTING_PROFILES)
+        this.PresetProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_PRESET_PROFILES)
+        this.ExistingProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_EXISTING_PROFILES)
 
         this.PATH_TO_META_FILE := pathToMetaFile
 
@@ -237,13 +237,37 @@ Class ExtraKeyboardsAppGui{
         presetProfileAddingGui := Gui()
         presetProfileAddingGui.Opt("+Resize +MinSize160x120")
         presetProfileAddingGui.Add("Text", , "Selected Profile:")
+        
         customProfilesDropDownMenu := presetProfileAddingGui.Add("DropDownList", "ym+1 Choose1", this.PresetProfilesManager.getFolderNames())
+        addProfileButton := presetProfileAddingGui.Add("Button", "Default w80 ym+1", "Add profile")
+        cancelButton := presetProfileAddingGui.Add("Button", "Default w80 ym+1", "Cancel")
+
+        addProfileButton.onEvent("Click", (*) => 
+            
+            this.AddPresetProfileAddButtonClickedEvent(customProfilesDropDownMenu)
+            presetProfileAddingGui.Destroy()
+
+        )
+        
+        cancelButton.onEvent("Click", (*) => 
+            presetProfileAddingGui.Destroy()
+        )
+
         presetProfileAddingGui.Show()
 
     }
 
+    AddPresetProfileAddButtonClickedEvent(dropDownMenuGui){
+        profileName := dropDownMenuGui.Text 
+        profilePath := this.PresetProfilesManager.getFolderPathByName(profileName)
+        ; this.ExistingProfilesManager.addFolder(profileName, profilePath)
+        this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, this.PATH_TO_EXISTING_PROFILES . "\" . profileName, profileName)
+        this.UpdateProfileDropDownMenu(this.profilesDropDownMenu)
+    }
+
     AddCustomProfile(){
 
+        
     }
 
     UpdateProfileDropDownMenu(guiObject){
