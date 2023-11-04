@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include "..\library\IniFileReading\IniFileReader.ahk"
+#Include "..\library\FoldersAndFiles\IniFileReader.ahk"
 
 ; Used to create a treeview for a gui based on the values of an ini file
 

@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include "..\library\IniFileReading\IniFileReader.ahk"
+#Include "..\library\FoldersAndFiles\IniFileReader.ahk"
 
 
 Class ListViewMaker{

@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include "..\..\IniFileReading\IniFileReader.ahk"
+#Include "..\..\FoldersAndFiles\IniFileReader.ahk"
 #Include "KeyboardOverlaysInitializer.ahk"
 #Include "HotkeyInitializer.ahk"
 

@@ -2,8 +2,8 @@
 
 #Include ".\TreeViewFromIniFile.ahk"
 #Include ".\ListViewMaker.ahk"
-#Include "..\library\IniFileReading\IniFileReader.ahk"
-#Include ".\FolderManager.ahk"
+#Include "..\library\FoldersAndFiles\IniFileReader.ahk"
+#Include "..\library\FoldersAndFiles\FolderManager.ahk"
 
 ; TODO have a hotkey which sends a given key(or hotkey) after a given delay.
 ; TODO could also have a hotkey/key which is excecuted if a loud enough sound is caught by the mic.

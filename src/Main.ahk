@@ -61,18 +61,22 @@ if (not A_IsAdmin){
     Send(FormatTime(, "d.M.yyyy"))  ; It will look like 13.7.2005
 }
 
+; |-----------------------------------|
+; |----------PRIVATE PERSONAL---------|
+; |-----------------------------------|
+
 name := IniRead("../config/privateConfig.ini", "PrivateInfo", "Name")
 eMail := IniRead("../config/privateConfig.ini", "PrivateInfo", "Email")
 
 Hotstring( "::agb", StrReplace(name, "Ã¸", "ø"))
 Hotstring( "::a@", eMail)
 
+
 ; |-------------------------------------------|
 ; |----------- OBJECT CREATION ---------------|
 ; |-------------------------------------------|
 
 currentProfile := iniRead("..\config\meta.ini", "General", "activeUserProfile")
-
 
 ObjectRegister := ObjectRegistry()
 
