@@ -5,6 +5,10 @@
 #Include "..\library\IniFileReading\IniFileReader.ahk"
 #Include ".\FolderManager.ahk"
 
+; TODO have a hotkey which sends a given key(or hotkey) after a given delay.
+; TODO could also have a hotkey/key which is excecuted if a loud enough sound is caught by the mic.
+
+; TODO make it possible for the user to add own ahk scripts to the program, and then use them as functions. 
 
 Class ExtraKeyboardsAppGui{
 
