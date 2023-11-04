@@ -125,8 +125,8 @@ Class ExtraKeyboardsAppGui{
 
         Tab.UseTab(3)
         this.CreateDocumentationTab()
-        Tab.UseTab(0)  ; i.e. subsequently-added controls will not belong to the tab control.
 
+        Tab.UseTab(0)  ; i.e. subsequently-added controls will not belong to the tab control.
     }
 
     CreateTreeViewWithAssociatedListViewFromIniFile(iniFilePath){
@@ -141,40 +141,9 @@ Class ExtraKeyboardsAppGui{
 
     }
 
-    ; CreateKeyboardsTab(pathToKeyboardsIniFile){
-        
-    ;     TreeViewKeyboards := TreeViewFromIniFile(pathToKeyboardsIniFile)
-    ;     TreeViewKeyboards.CreateTreeView(this.ExtraKeyboardsAppGui)
-        
-    ;     ListViewKeyboards := ListViewMaker()
-    ;     ListViewKeyboards.CreateListView(this.ExtraKeyboardsAppGui, ["Key","Value"], pathToKeyboardsIniFile, "Keyboards")
-        
-    ;     CreateListViewItems := ObjBindMethod(ListViewKeyboards, "SetNewListViewItemsByIniFileSection", pathToKeyboardsIniFile)
-    ;     TreeViewKeyboards.AddEventAction("ItemSelect", CreateListViewItems)
-    ; }
-
-    ; CreateObjectsTab(pathToObjectsIniFile){
-    ;     ; TODO: ability to search
-        
-    ;     ; TODO: for treeview, perhaps it would be a good idea to pass object registry to the treeview.
-        
-    ;     NewTreeView := TreeViewFromIniFile(pathToObjectsIniFile)
-    ;     NewTreeView.CreateTreeView(this.ExtraKeyboardsAppGui)
-        
-    ;     NewListView := ListViewMaker()
-    ;     NewListView.CreateListView(this.ExtraKeyboardsAppGui, ["Key","Value"], pathToObjectsIniFile, "Objects")
-        
-        
-    ;     CreateListViewItems := ObjBindMethod(NewListView, "SetNewListViewItemsByIniFileSection", pathToObjectsIniFile)
-    ;     NewTreeView.AddEventAction("ItemSelect", CreateListViewItems)
-        
-            
-    ; }
-
     CreateDocumentationTab(){
         this.ExtraKeyboardsAppGui.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.
     }
-
 
     EditProfiles(*){
         
