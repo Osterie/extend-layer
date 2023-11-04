@@ -216,7 +216,7 @@ Class ExtraKeyboardsAppGui{
         }
     }
     
-    AddProfile(*){
+    AddProfile(){
         addProfileGui := Gui()
     
         addProfileGui.OnEvent("Close", (*) => addProfileGui.Destroy())
@@ -225,16 +225,25 @@ Class ExtraKeyboardsAppGui{
         addProfileGui.Add("Text", , "Selected Profile:")
     
         addPresetProfileButton := addProfileGui.Add("Button", "Default w80 xm+1", "Add preset profile")
-        addPresetProfileButton.OnEvent("Click", (*) => 
-            customProfilesDropDownMenu := addProfileGui.Add("DropDownList", "ym+1 Choose1", this.PresetProfilesManager.getFolderNames())
-        )
+        addPresetProfileButton.OnEvent("Click", (*) => this.AddPresetProfile())
     
         addCustomProfileButton := addProfileGui.Add("Button", "Default w80 xm+1", "Add custom profile")
-        addCustomProfileButton.OnEvent("Click", (*) => 
-            msgbox("add custom profile")
-        )
+        addCustomProfileButton.OnEvent("Click", (*) => this.AddCustomProfile())
         
         addProfileGui.Show()
+    }
+
+    AddPresetProfile(){
+        presetProfileAddingGui := Gui()
+        presetProfileAddingGui.Opt("+Resize +MinSize160x120")
+        presetProfileAddingGui.Add("Text", , "Selected Profile:")
+        customProfilesDropDownMenu := presetProfileAddingGui.Add("DropDownList", "ym+1 Choose1", this.PresetProfilesManager.getFolderNames())
+        presetProfileAddingGui.Show()
+
+    }
+
+    AddCustomProfile(){
+
     }
 
     UpdateProfileDropDownMenu(guiObject){
