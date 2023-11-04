@@ -37,7 +37,6 @@ Class ExtraKeyboardsAppGui{
         this.PresetProfilesManager := FolderManager()
 
 
-
         this.PATH_TO_EXISTING_PROFILES := pathToExistingProfiles
         this.PATH_TO_PRESET_PROFILES := pathToPresetProfiles
         this.PresetProfilesManager.addSubFoldersFromFolder(this.PATH_TO_PRESET_PROFILES)
@@ -120,7 +119,6 @@ Class ExtraKeyboardsAppGui{
 
     CreateKeyboardsTab(profilesDropDownMenu){
         iniFileKeyboards := this.PATH_TO_EXISTING_PROFILES . "\" . profilesDropDownMenu.Text . "\Keyboards.ini"
-        
         TreeViewKeyboards := TreeViewFromIniFile(iniFileKeyboards)
         TreeViewKeyboards.CreateTreeView(this.ExtraKeyboardsAppGui)
         
@@ -136,7 +134,7 @@ Class ExtraKeyboardsAppGui{
         
         ; TODO: for treeview, perhaps it would be a good idea to pass object registry to the treeview.
         
-        iniFileClassObjects := "..\config\UserProfiles\" . profilesDropDownMenu.Text . "\ClassObjects.ini"
+        iniFileClassObjects := this.PATH_TO_EXISTING_PROFILES . "\" . profilesDropDownMenu.Text . "\ClassObjects.ini"
         ; SectionNames := IniRead(iniFileClassObjects)
         
         NewTreeView := TreeViewFromIniFile(iniFileClassObjects)
@@ -188,8 +186,6 @@ Class ExtraKeyboardsAppGui{
     
         )
     
-    
-    
         ; TODO should ask the user if they are really sure they want to delete the profile
         deleteProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Delete profile")
         deleteProfileButton.OnEvent("Click", (*) =>
@@ -210,7 +206,7 @@ Class ExtraKeyboardsAppGui{
         }
         else{
     
-            if (this.PresetProfilesManager.RenameFolder(currentProfile, inputPrompt.Value)){
+            if (this.ExistingProfilesManager.RenameFolder(currentProfile, inputPrompt.Value)){
                 ; Changed profile name succesfully
                 iniWrite(inputPrompt.Value, this.PATH_TO_META_FILE, "General", "activeUserProfile")
             }
@@ -231,7 +227,7 @@ Class ExtraKeyboardsAppGui{
         }
         else if (StrLower(inputPrompt.Value) = "yes"){
     
-            if (this.PresetProfilesManager.DeleteFolder(this.currentProfile)){
+            if (this.ExistingProfilesManager.DeleteFolder(this.currentProfile)){
                 ; Deleted profile succesfully
                 iniWrite(inputPrompt.Value, this.PATH_TO_META_FILE, "General", "activeUserProfile")
             }
@@ -262,5 +258,4 @@ Class ExtraKeyboardsAppGui{
         
         addProfileGui.Show()
     }
-    
 }

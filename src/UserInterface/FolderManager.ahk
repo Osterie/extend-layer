@@ -35,10 +35,13 @@ class FolderManager{
             folderChanged := false
         }
         else{
+
             if (this.isInRegistry(oldName)) {
+
                 oldPath := this.folders[oldName]
                 newPath := this.getNewPath(oldPath, oldName, newName)
 
+                
                 try{
                     DirMove oldPath, newPath, "R"
                     this.folders[newName] := newPath

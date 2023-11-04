@@ -17,9 +17,8 @@ Class TreeViewFromIniFile{
 
     CreateTreeView(guiObject){
         ; guiObject.Add("TreeView", treeViewName, "x" x " y" y " w" w " h" h)
-        ImageListID := IL_Create(10)  ; Create an ImageList with initial capacity for 10 icons.
-        Loop 10  ; Load the ImageList with some standard system icons.
-            IL_Add(ImageListID, "shell32.dll", A_Index)
+
+        ImageListID := this.GetCustomImage()
         this.treeView := guiObject.Add("TreeView", "r20 ImageList" . ImageListID)
 
         ; Read sections
@@ -52,6 +51,14 @@ Class TreeViewFromIniFile{
             lineValue := this.iniFileRead.GetValueFromLine(iniFileSectionValues[A_Index])
             listView.Add(, lineKey, lineValue)
         }
+    }
+
+    GetCustomImage(){
+        ImageListID := IL_Create(10)  ; Create an ImageList with initial capacity for 10 icons.
+        Loop 10  ; Load the ImageList with some standard system icons.
+            IL_Add(ImageListID, "shell32.dll", A_Index)
+
+        return ImageListID
     }
 
 }
