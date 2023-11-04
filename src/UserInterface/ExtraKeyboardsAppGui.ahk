@@ -13,7 +13,7 @@
 Class ExtraKeyboardsAppGui{
 
     ; Used to read the contents of ini files
-    iniFileRead := ""
+    IniFileRead := ""
     ; Used to create the gui
     ExtraKeyboardsAppGui := ""
     ; Used to manage the preset user profiles, the user is only allowed to add a preset profile as a new profile
@@ -35,7 +35,7 @@ Class ExtraKeyboardsAppGui{
 
 
     __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript){
-        this.iniFileRead := IniFileReader()
+        this.IniFileRead := IniFileReader()
         this.ExistingProfilesManager := FolderManager()
         this.PresetProfilesManager := FolderManager()
 
