@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 #Include ".\UserInterface\ExtraKeyboardsAppgui.ahk"
-#Include ".\Main.ahk"
+; #Include ".\Main.ahk"
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -32,12 +32,13 @@ Class ExtraKeyboardsApp{
         pathToPresetProfiles := "..\config\PresetProfiles"
         pathToMetaFile := "..\config\meta.ini"
         pathToMainScript := A_ScriptDir "\..\src\Main.ahk"
-        this.UserInterface := ExtraKeyboardsAppgui(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript)
+        pathToEmptyProfile := "..\config\EmptyProfile"
+        this.UserInterface := ExtraKeyboardsAppgui(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile)
     }
 
     Start(){
         this.UserInterface.CreateMain()
-        Run("*RunAs " A_ScriptDir "\Main.ahk")
+        ; Run("*RunAs " A_ScriptDir "\Main.ahk")
     }
 }
 

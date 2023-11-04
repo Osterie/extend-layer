@@ -35,12 +35,12 @@ class FolderManager{
     RenameFolder(oldName, newName) {
 
         folderChanged := false
-        if (this.isInRegistry(newName)) {
+        if (this.FoldersisInRegistry(newName)) {
             folderChanged := false
         }
         else{
 
-            if (this.isInRegistry(oldName)) {
+            if (this.Folders.isInRegistry(oldName)) {
 
                 oldPath := this.folders[oldName]
                 newPath := this.getNewPath(oldPath, oldName, newName)
@@ -62,18 +62,20 @@ class FolderManager{
         return folderChanged
     }
 
-    ; MoveFolder(){}
+    ; MoveFolder(){
+        ; Todo implement
+    ; }
 
-    CopyFolderToNewLocation(fromFolderPath, toFolderPath, folderName){
+    CopyFolderToNewLocation(fromFolderPath, toFolderPath, oldFolderName, newFolderName){
         
         copiedFolder := false
         
-        if(this.Folders.isInRegistry(folderName)){
+        if(this.Folders.isInRegistry(newFolderName)){
             copiedFolder := false
         }
         else{
             DirCopy(fromFolderPath, toFolderPath)
-            this.addFolderToRegistry(folderName, toFolderPath)
+            this.addFolderToRegistry(newFolderName, toFolderPath)
             copiedFolder := true
         }
         
@@ -82,7 +84,7 @@ class FolderManager{
 
     DeleteFolder(folderName) {
 
-        pathToFolderToBeDeleted := this.Folders[folderName]
+        pathToFolderToBeDeleted := this.Folders.getFolderPathByName(folderName)
 
         if (this.RemoveFolderFromRegistry(folderName)) {
             DirDelete(pathToFolderToBeDeleted, true)
