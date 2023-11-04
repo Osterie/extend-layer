@@ -160,14 +160,8 @@ Class ExtraKeyboardsAppGui{
         renameProfileButton.OnEvent("Click", (*) => 
             
             this.RenameProfile(profilesToEditDropDownMenu.Text)
-    
-            profilesToEditDropDownMenu.Delete()
-            profilesToEditDropDownMenu.Add(this.ExistingProfilesManager.getFolderNames())
-            profilesToEditDropDownMenu.Choose(this.ExistingProfilesManager.getMostRecentlyAddedFolder())
-            
-            this.profilesDropDownMenu.Delete()
-            this.profilesDropDownMenu.Add(this.ExistingProfilesManager.getFolderNames())
-            this.profilesDropDownMenu.Choose(this.ExistingProfilesManager.getMostRecentlyAddedFolder())
+            this.UpdateProfileDropDownMenu(profilesToEditDropDownMenu)
+            this.UpdateProfileDropDownMenu(this.profilesDropDownMenu)
     
         )
     
@@ -241,5 +235,11 @@ Class ExtraKeyboardsAppGui{
         )
         
         addProfileGui.Show()
+    }
+
+    UpdateProfileDropDownMenu(guiObject){
+        guiObject.Delete()
+        guiObject.Add(this.ExistingProfilesManager.getFolderNames())
+        guiObject.Choose(this.ExistingProfilesManager.getMostRecentlyAddedFolder())
     }
 }
