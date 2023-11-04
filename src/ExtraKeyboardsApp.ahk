@@ -12,7 +12,6 @@ Class ExtraKeyboardsApp{
         this.UserInterface := ExtraKeyboardsAppgui(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript)
     }
 
-
     Start(){
         this.UserInterface.CreateMain()
     }

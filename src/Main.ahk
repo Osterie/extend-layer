@@ -37,7 +37,7 @@ SetWinDelay(-1)
 SetControlDelay(-1)
 SetWorkingDir(A_ScriptDir)
 ProcessSetPriority "High"
-; Not changing SendMode defaults it to "input", which makes hotkeys super mega terrible (super   ø)
+; Not changing SendMode defaults it to "input", which makes hotkeys super mega terrible (super)
 SendMode "Event"
 
 ; |----------------------------------------------------------|
