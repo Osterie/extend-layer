@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include ".\TreeViewFromIniFile.ahk"
-#Include ".\ListViewMaker.ahk"
+#Include ".\ListViewFromIniFileContent.ahk"
 #Include "..\library\FoldersAndFiles\IniFileReader.ahk"
 #Include "..\library\FoldersAndFiles\FolderManager.ahk"
 
@@ -133,7 +133,7 @@ Class ExtraKeyboardsAppGui{
         treeViewElement := TreeViewFromIniFile(iniFilePath)
         treeViewElement.CreateTreeView(this.ExtraKeyboardsAppGui)
         
-        listViewElement := ListViewMaker()
+        listViewElement := ListViewFromIniFileContent()
         listViewElement.CreateListView(this.ExtraKeyboardsAppGui, ["Key","Value"], iniFilePath)
         
         CreateListViewItems := ObjBindMethod(listViewElement, "SetNewListViewItemsByIniFileSection", iniFilePath)

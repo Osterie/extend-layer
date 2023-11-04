@@ -3,7 +3,7 @@
 #Include "..\library\FoldersAndFiles\IniFileReader.ahk"
 
 
-Class ListViewMaker{
+Class ListViewFromIniFileContent{
 
     listView := ""
     activeTreeViewItem := ""
