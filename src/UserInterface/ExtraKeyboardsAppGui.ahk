@@ -118,10 +118,10 @@ Class ExtraKeyboardsAppGui{
         Tab := this.ExtraKeyboardsAppGui.AddTab3("ys+20 xm", ["Keyboards","Change Functions Settings","Documentation"])
         Tab.UseTab(1)
 
-        this.CreateKeyboardsTab(pathToKeyboardsIniFile)
+        this.CreateTreeViewWithAssociatedListViewFromIniFile(pathToKeyboardsIniFile)
 
         Tab.UseTab(2)
-        this.CreateObjectsTab(pathToObjectsIniFile)
+        this.CreateTreeViewWithAssociatedListViewFromIniFile(pathToObjectsIniFile)
 
         Tab.UseTab(3)
         this.CreateDocumentationTab()
@@ -129,12 +129,12 @@ Class ExtraKeyboardsAppGui{
 
     }
 
-    CreateTreeViewWithAssociatedListViewFromIniFile(iniFilePath, guiObject){
+    CreateTreeViewWithAssociatedListViewFromIniFile(iniFilePath){
         treeViewElement := TreeViewFromIniFile(iniFilePath)
-        treeViewElement.CreateTreeView(guiObject)
+        treeViewElement.CreateTreeView(this.ExtraKeyboardsAppGui)
         
         listViewElement := ListViewMaker()
-        listViewElement.CreateListView(guiObject, ["Key","Value"], iniFilePath)
+        listViewElement.CreateListView(this.ExtraKeyboardsAppGui, ["Key","Value"], iniFilePath)
         
         CreateListViewItems := ObjBindMethod(listViewElement, "SetNewListViewItemsByIniFileSection", iniFilePath)
         treeViewElement.AddEventAction("ItemSelect", CreateListViewItems)
