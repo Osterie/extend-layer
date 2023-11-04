@@ -93,6 +93,13 @@ Class ExtraKeyboardsAppGui{
         this.ExtraKeyboardsAppGui.Show()
     }
 
+    ; UpdateprofilesDropDownMenu(){
+    ;     this.profilesDropDownMenu.Delete()
+    ;     this.profilesDropDownMenu.Add(this.ExistingProfilesManager.getFolderNames())
+    ;     this.profilesDropDownMenu.Choose(this.ExistingProfilesManager.getMostRecentlyAddedFolder())
+    ;     this.currentProfile := this.ExistingProfilesManager.getMostRecentlyAddedFolder()
+    ; }
+
     CreateProfilesDropDownMenu(){
         
         ; If for some reason a profile is not selected, then select the first one.
@@ -219,9 +226,9 @@ Class ExtraKeyboardsAppGui{
             if (this.ExistingProfilesManager.DeleteFolder(profilesDropDownMenu.Text)){
                 ; Deleted profile succesfully
                 iniWrite(inputPrompt.Value, this.PATH_TO_META_FILE, "General", "activeUserProfile")
-                
                 this.UpdateProfileDropDownMenu(this.profilesDropDownMenu)
                 this.UpdateProfileDropDownMenu(profilesDropDownMenu)
+                this.ProfileChangedFromDropDownMenuEvent(profilesDropDownMenu)
             }
             else{
                 msgbox("failed to delete profile")
@@ -320,5 +327,6 @@ Class ExtraKeyboardsAppGui{
         guiObject.Delete()
         guiObject.Add(this.ExistingProfilesManager.getFolderNames())
         guiObject.Choose(this.ExistingProfilesManager.getMostRecentlyAddedFolder())
+        this.currentProfile := this.ExistingProfilesManager.getMostRecentlyAddedFolder()
     }
 }
