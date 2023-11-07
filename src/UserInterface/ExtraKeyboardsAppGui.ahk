@@ -326,7 +326,6 @@ Class ExtraKeyboardsAppGui{
     UpdateProfileDropDownMenu(guiObject){
         guiObject.Delete()
         guiObject.Add(this.ExistingProfilesManager.getFolderNames())
-        guiObject.Choose(this.ExistingProfilesManager.getMostRecentlyAddedFolder())
-        this.currentProfile := this.ExistingProfilesManager.getMostRecentlyAddedFolder()
+        guiObject.Choose(this.currentProfile)
     }
 }

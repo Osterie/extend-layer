@@ -67,9 +67,11 @@ if (not A_IsAdmin){
 
 name := IniRead("../config/privateConfig.ini", "PrivateInfo", "Name")
 eMail := IniRead("../config/privateConfig.ini", "PrivateInfo", "Email")
+password := IniRead("../config/privateConfig.ini", "PrivateInfo", "Password")
 
 Hotstring( "::agb", StrReplace(name, "Ã¸", "ø"))
 Hotstring( "::a@", eMail)
+Hotstring("::@p", password)
 
 
 ; |-------------------------------------------|

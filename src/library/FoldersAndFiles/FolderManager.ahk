@@ -5,23 +5,23 @@
 class FolderManager{
 
     ; A map of folders with folder name as key and folder path as value
-    Folders := ""
+    folders := ""
 
     __New(){
-        this.Folders := FolderRegistry()
+        this.folders := FolderRegistry()
     }
 
     addSubFoldersToRegistryFromFolder(folderPath){
-        this.Folders.addSubFoldersFromFolder(folderPath)
+        this.folders.addSubFoldersFromFolder(folderPath)
     }
 
     addFolderToRegistry(folderName, folderPath) {
-        this.Folders.addFolder(folderName, folderPath)
+        this.folders.addFolder(folderName, folderPath)
     }
 
     RemoveFolderFromRegistry(folderName) {
         folderRemoved := false
-        if (this.Folders.DeleteFolder(folderName)) {
+        if (this.folders.DeleteFolder(folderName)) {
             folderRemoved := true
         }
         else{
@@ -35,20 +35,19 @@ class FolderManager{
     RenameFolder(oldName, newName) {
 
         folderChanged := false
-        if (this.FoldersisInRegistry(newName)) {
+        if (this.folders.isInRegistry(newName)) {
             folderChanged := false
         }
         else{
 
-            if (this.Folders.isInRegistry(oldName)) {
+            if (this.folders.isInRegistry(oldName)) {
 
-                oldPath := this.folders[oldName]
-                newPath := this.getNewPath(oldPath, oldName, newName)
+                oldPath := this.folders.getFolderPathByName(oldName)
+                newPath := this.folders.getNewPath(oldPath, oldName, newName)
                 
                 try{
                     DirMove oldPath, newPath, "R"
-                    this.folders[newName] := newPath
-                    this.folders.Delete(oldName)
+                    this.folders.renameFolder(oldName, newName)
                     folderChanged := true
                 }
                 catch{
@@ -70,7 +69,7 @@ class FolderManager{
         
         copiedFolder := false
         
-        if(this.Folders.isInRegistry(newFolderName)){
+        if(this.folders.isInRegistry(newFolderName)){
             copiedFolder := false
         }
         else{
@@ -84,7 +83,7 @@ class FolderManager{
 
     DeleteFolder(folderName) {
 
-        pathToFolderToBeDeleted := this.Folders.getFolderPathByName(folderName)
+        pathToFolderToBeDeleted := this.folders.getFolderPathByName(folderName)
 
         if (this.RemoveFolderFromRegistry(folderName)) {
             DirDelete(pathToFolderToBeDeleted, true)

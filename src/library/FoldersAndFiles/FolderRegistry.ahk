@@ -30,35 +30,35 @@ Class FolderRegistry{
 
     ; Takes the old name of the folder and gives it the new name, this will change the folder name in the registry and on the disk
     ; Renames a folder and returns true if the folder was renamed successfully
-    ; RenameFolder(oldName, newName) {
+    RenameFolder(oldName, newName) {
 
-    ;     folderChanged := false
-    ;     if (this.isInRegistry(newName)) {
-    ;         folderChanged := false
-    ;     }
-    ;     else{
+        folderChanged := false
 
-    ;         if (this.isInRegistry(oldName)) {
+        if (this.isInRegistry(newName)) {
+            folderChanged := false
+        }
+        else{
 
-    ;             oldPath := this.folders[oldName]
-    ;             newPath := this.getNewPath(oldPath, oldName, newName)
+            if (this.isInRegistry(oldName)) {
+
+                oldPath := this.folders[oldName]
+                newPath := this.getNewPath(oldPath, oldName, newName)
                 
-    ;             try{
-    ;                 DirMove oldPath, newPath, "R"
-    ;                 this.folders[newName] := newPath
-    ;                 this.folders.Delete(oldName)
-    ;                 folderChanged := true
-    ;             }
-    ;             catch{
-    ;                 folderChanged := false
-    ;             }
-    ;         }
-    ;         else{
-    ;             folderChanged := false
-    ;         }
-    ;     }
-    ;     return folderChanged
-    ; }
+                try{
+                    this.folders[newName] := newPath
+                    this.folders.Delete(oldName)
+                    folderChanged := true
+                }
+                catch{
+                    folderChanged := false
+                }
+            }
+            else{
+                folderChanged := false
+            }
+        }
+        return folderChanged
+    }
 
     DeleteFolder(folderName) {
         folderDeleted := false
