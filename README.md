@@ -1,5 +1,6 @@
 # Extend layer
 ## What does Extend-layer do?
+[Jump to installation](getting-started)
 ### Extra virtual keyboards
 Choose a key which can be used to switch to a different layer, by default this key is caps-lock, because what else would you use it for?
 ### Rebinding keys to a new key
@@ -13,14 +14,18 @@ When rebinding a key you have to give a modifier for the original key you are re
 - \#
 
 ### Rebinding keys to special functionalities
+There are many premade special functionalities in this program, for example changing screen brightness, traveling to a url, excecuting scripts, and much more.
 #### Rebinding a key to a shortcut
-#### 
+#### Rebinding a key to self-created script
+#### Rebinding a key to launch a program
 #### Creating macros
 ### Create your own autohotkey script and bind it to a key
 
+## How to use this program?
+After following the getting started guide [Go to getting started](#getting-started).
 
 
-# Getting started - Autohotkey
+# Getting started
 To run this script, do the following:
 
 1. __Download and install Autohotkey v2.0__ <br>
