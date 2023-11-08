@@ -1,3 +1,25 @@
+# Extend layer
+## What does Extend-layer do?
+### Extra virtual keyboards
+Choose a key which can be used to switch to a different layer, by default this key is caps-lock, because what else would you use it for?
+### Rebinding keys to a new key
+#### Key modifiers
+There are a couple key modifiers,
+When rebinding a key you have to give a modifier for the original key you are remapping. Lets say you want to rebind "p" to "esc". If you want always want "p" to act as "esc", then you have to specify "*p", (ADD PICTURES FROM GUI!) which will change "p" to "esc" for any modifier, but if you only want Shift+p to act as "esc", then you must specify "+p".
+- *
+- ^
+- !
+- +
+- #
+
+### Rebinding keys to special functionalities
+#### Rebinding a key to a shortcut
+#### 
+#### Creating macros
+### Create your own autohotkey script and bind it to a key
+
+
+
 # Getting started - Autohotkey
 To run this script, do the following:
 
