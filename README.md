@@ -1,3 +1,7 @@
+<pre>
+  An autohotkey program to change key binds and create extra keyboards
+</pre>
+
 # Extend layer
 ## What does Extend-layer do?
 [Jump to installation](#getting-started)
