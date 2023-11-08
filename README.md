@@ -1,6 +1,6 @@
 # Extend layer
 ## What does Extend-layer do?
-[Jump to installation](getting-started)
+[Jump to installation](#getting-started)
 ### Extra virtual keyboards
 Choose a key which can be used to switch to a different layer, by default this key is caps-lock, because what else would you use it for?
 ### Rebinding keys to a new key
