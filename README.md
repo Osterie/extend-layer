@@ -9,6 +9,10 @@
 3. [What does Extend-layer do?](#what-does-extend-layer-do)
 4. [How to use this program](#how-to-use-this-program)
 ## Summary
+1. Remap keys to new keys or new functionalities using a Gui.
+2. Create Multiple virtual keyboards.
+3. Create your own scripts and run them with a key bind.
+
 ## What does Extend-layer do?
 ### Extra virtual keyboards
 Choose a key which can be used to switch to a different layer, by default this key is caps-lock, because what else would you use it for?
