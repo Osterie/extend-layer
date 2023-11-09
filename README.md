@@ -3,8 +3,13 @@
 </pre>
 
 # Extend layer
+## Quick links
+1. [Getting started](#getting-started)
+2. [Summary](#summary)
+3. [What does Extend-layer do?](#what-does-extend-layer-do)
+4. [How to use this program](#how-to-use-this-program)
+## Summary
 ## What does Extend-layer do?
-[Jump to installation](#getting-started)
 ### Extra virtual keyboards
 Choose a key which can be used to switch to a different layer, by default this key is caps-lock, because what else would you use it for?
 ### Rebinding keys to a new key
@@ -29,7 +34,7 @@ There are many premade special functionalities in this program, for example chan
 After following the getting started guide [Go to getting started](#getting-started).
 
 
-# Getting started
+## Getting started
 To run this script, do the following:
 
 1. __Download and install Autohotkey v2.0__ <br>
