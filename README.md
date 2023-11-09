@@ -8,6 +8,7 @@
 2. [Summary](#summary)
 3. [What does Extend-layer do?](#what-does-extend-layer-do)
 4. [How to use this program](#how-to-use-this-program)
+5. [Functions and how to use them](#functions-and-how-to-use-them)
 ## Summary
 1. Remap keys to new keys or new functionalities using a Gui.
 2. Create Multiple virtual keyboards.
@@ -35,7 +36,12 @@ There are many premade special functionalities in this program, for example chan
 ### Create your own autohotkey script and bind it to a key
 
 ## How to use this program?
-After following the getting started guide [Go to getting started](#getting-started).
+After following the [getting started guide](#getting-started).
+Run ExtraKeyboardsApp.ahk. This will open a gui where you can change you profile and edit keybinds.
+### How to change a key bind?
+
+#### Changing a key to a normal key
+#### Changing a key to a functionality
 
 
 ## Getting started
@@ -49,3 +55,6 @@ To run this script, do the following:
 3. How to run script on startup.
    On Windows:
    Use the shortcut Win+R to run windows utility, and then write "shell:startup" and press enter
+
+
+## Functions and how to use them
