@@ -52,7 +52,7 @@ To run this script, do the following:
   Alternatively, you can [download it here.](https://www.autohotkey.com/download/) <br>
   Or go to the official [autohotkey website](https://www.autohotkey.com/) and click the download button then choose Download v2.0. <br>
 
-3. How to run script on startup.
+3. __How to run script on startup.__<br>
    On Windows:
    Use the shortcut Win+R to run windows utility, and then write "shell:startup" and press enter
 
