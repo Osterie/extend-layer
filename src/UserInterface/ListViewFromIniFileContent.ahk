@@ -56,6 +56,9 @@ Class ListViewFromIniFileContent{
 
     ListViewDoubleClickEvent(listView, rowNumber){
 
+        originalFirstColumnValue := this.listView.GetText(rowNumber, 1)
+        originalSecondColumnValue := this.listView.GetText(rowNumber, 2)
+
         listViewFirstColum := this.listView.GetText(rowNumber, 1)
         listViewSecondColum := this.listView.GetText(rowNumber, 2)
 
@@ -79,47 +82,35 @@ Class ListViewFromIniFileContent{
             inputGui.Show()
 
             iniFileSection := this.activeTreeViewItem
-            SaveButton.onEvent("Click", (*) =>
-            
-                ; TODO validate values, can not be empty!, can not be the same as another key, etc...
-                IniWrite(inputValue.Value, this.iniFile, iniFileSection, inputKey.Value)
-                inputGui.Destroy()
-                Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
-            )
+            SaveButton.onEvent("Click", (*) => this.SaveButtonClickEvent(inputGui, rowNumber, inputKey, iniFileSection, inputValue))
 
             CancelButton.onEvent("Click", (*) =>inputGui.Destroy())
             
             DeleteButton.onEvent("Click", (*) => 
 
-                IniDelete(this.iniFile, iniFileSection, inputKey.Value)
+                this.listView.Delete(rowNumber)
+                IniDelete(this.iniFile, iniFileSection, listViewFirstColum)
                 inputGui.Destroy()
+                ; TODO change this
                 Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
             )
+    }
 
-            ; inputPrompt := InputBox("Value name: " . listViewFirstColum . "`n" . "Value data:", "Edit object value",, listViewSecondColum)
+    SaveButtonClickEvent(inputGui, rowNumber, inputKey, iniFileSection, inputValue){
+        ; TODO validate values, can not be empty!, can not be the same as another key, etc...
+        if(rowNumber != 0){
+            oldIniFileKey := this.listView.GetText(rowNumber)
+            IniDelete this.iniFile, iniFileSection, oldIniFileKey
+            this.listView.Modify(rowNumber, , inputKey.Value, inputValue.Value)
+        }
+        else{
+            this.listView.Add(, inputKey.Value, inputValue.Value)
 
-            ; if inputPrompt.Result = "Cancel"{
-            ;     ; Do nothing
-            ; }
-            ; else if(inputPrompt.Value = ""){
-            ;     ; Do Nothing
-            ; }
-            ; else{
-    
-            ;     this.listView.Modify(rowNumber,,, inputPrompt.Value)
-            ;     ; TODO then modify the ini file, perhaps should use a class for this
-            ;     ; TODO could also change the objectRegistry objects from here or somewhere...
-            ;     ; TODO to implement this, probably just have a method called "update objects" or something in the objectRegistry class
-
-            ;     iniFileSection := this.activeTreeViewItem
-            ;     IniWrite(inputPrompt.Value, this.iniFile, iniFileSection, listViewFirstColum)
-            ;     Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
-            ; }
-        ; }
-        ; An empty row is double clicked and the user may want to add another key pair value (change a key to a new one)
-        ; else{
-
-        ; }
+        }
+        IniWrite(inputValue.Value, this.iniFile, iniFileSection, inputKey.Value)
+        inputGui.Destroy()
+        ; TODO change this
+        Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
     }
 
     SetOnTop(identifier){
