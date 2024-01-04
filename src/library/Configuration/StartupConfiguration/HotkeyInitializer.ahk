@@ -138,28 +138,47 @@ Class HotkeyInitializer{
 
     InitializeDefaultKeyToNewKey(iniFileDefaultKey, iniFileNewKey){
         KeyboardKeyAndModifers := this.IniReader.SeperateKeyboardKeyAndModifiers(iniFileNewKey)
-        KeyboardKey := KeyboardKeyAndModifers[1]
+        newKeyboardKeys := KeyboardKeyAndModifers[1]
         KeyboardModifiers := KeyboardKeyAndModifers[2]
-        this.ChangeKeyToNewKeys(iniFileDefaultKey, KeyboardKey, KeyboardModifiers)
+        this.ChangeKeyToNewKeys(iniFileDefaultKey, newKeyboardKeys, KeyboardModifiers)
     }
 
     ; a double pipe symbol (||) can be used to separate when one key is going to be changed to multiple keys.
     ; for example original key "a" to "b||c" means that when "a" is pressed, "b" and "c" will be pressed as well.
-    ChangeKeyToNewKeys(normalKey, newKey, newKeyModifiers){
-        HotKey(normalKey, (ThisHotkey) => this.SendKeysDown(newKey, newKeyModifiers)) 
-        HotKey(normalKey . " Up", (ThisHotkey) => this.SendKeysUp(newKey, newKeyModifiers))
+    ChangeKeyToNewKeys(normalKey, newKeys, newKeyModifiers){
+        newKeysDown := this.CreateExcecutableKeysDown(newKeys)
+        newKeysUp := this.CreateExcecutableKeysUp(newKeys)
+
+        HotKey(normalKey, (ThisHotkey) => this.SendKeysDown(newKeysDown, newKeyModifiers)) 
+        HotKey(normalKey . " Up", (ThisHotkey) => this.SendKeysUp(newKeysUp, newKeyModifiers))
     }
 
-    
+    CreateExcecutableKeysDown(keys){
+        keysList := StrSplit(keys, "||")
+        excecutableKeysDown := ""
+        for key in keysList{
+            excecutableKeysDown .= "{" . key . " Down}"
+        }
+        return excecutableKeysDown
+    }
+
+    CreateExcecutableKeysUp(keys){
+        keysList := StrSplit(keys, "||")
+        excecutableKeysUp := ""
+        for key in keysList{
+            excecutableKeysUp .= "{" . key . " Up}"
+        }
+        return excecutableKeysUp
+    }
 
     ; Sends key(s) down, including possible modifiers
-    SendKeysDown(key, modifiers){
-        Send("{blind}" . modifiers . "{" . key . " Down}")
+    SendKeysDown(keysDown, modifiers){
+        Send("{blind}" . modifiers . keysDown)
     }
     
     ; Sends key(s) up, including possible modifiers
-    SendKeysUp(key, modifiers){
-        Send("{blind}" . modifiers . "{" . key . " Up}")
+    SendKeysUp(keysUp, modifiers){
+        Send("{blind}" . modifiers . keysUp)
     }
 
     ; |-----------DEFAULT KEYS TO NEW KEYS END-----------|
