@@ -28,7 +28,7 @@
 #SingleInstance Force ; skips the dialog box and replaces the old instance automatically
 A_MaxHotkeysPerInterval := 99000000
 A_HotkeyInterval := 99000000
-KeyHistory 0
+KeyHistory 100
 ListLines(False)
 SetKeyDelay(-1, -1)
 SetMouseDelay(-1)
@@ -80,8 +80,6 @@ Hotstring("::@p", password)
 
 Class Main{
 
-
-
     __New(){
 
 
@@ -92,6 +90,7 @@ Class Main{
 
     }
 }
+
 currentProfile := iniRead("..\config\meta.ini", "General", "activeUserProfile")
 
 ObjectRegister := ObjectRegistry()
@@ -292,7 +291,7 @@ HotIf
     }
 
     ; Shows key history, used for debugging
-    ; b:: KeyHistory
+    b:: KeyHistory
 
 #HotIf
 

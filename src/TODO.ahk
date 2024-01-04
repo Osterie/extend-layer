@@ -5,6 +5,12 @@
 ; |---------------------------------------------------|
 ; !add a priority rating for all the todos, using !, ?, and *
 
+; ! TODO add detection for clicking icons on the taskbar, since i would never do such a thing. If such an instance is detected, a dump file containing information about all the events which have recently occured should be created.
+; ! When clicked, a dump file or just a gui popup should be created and the computer must lock itself. The dump file should contain information about all the events which have recently occured, such as mouse clicks, key presses, and so on.
+; ! information to include: time clicked
+
+; TODO add ability to search for functionality in the gui 
+
 ; TODO create a hotkey to show a simple dropdown menu where the user can change to another user profile, which changes the settings for the script, like which keys do what, and so on...
 
 ; !TODO add a spam class, which takes an input and can spam it at a given interval, and stopped at the press of a button obv.

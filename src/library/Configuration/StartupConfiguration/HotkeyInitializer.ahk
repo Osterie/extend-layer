@@ -140,20 +140,26 @@ Class HotkeyInitializer{
         KeyboardKeyAndModifers := this.IniReader.SeperateKeyboardKeyAndModifiers(iniFileNewKey)
         KeyboardKey := KeyboardKeyAndModifers[1]
         KeyboardModifiers := KeyboardKeyAndModifers[2]
-        this.ChangeKeyToNewKey(iniFileDefaultKey, KeyboardKey, KeyboardModifiers)
+        this.ChangeKeyToNewKeys(iniFileDefaultKey, KeyboardKey, KeyboardModifiers)
     }
 
-    ChangeKeyToNewKey(normalKey, newKey, newKeyModifiers){
-        HotKey(normalKey, (ThisHotkey) => this.SendKeyDown(newKey, newKeyModifiers)) 
-        HotKey(normalKey . " Up", (ThisHotkey) => this.SendKeyUp(newKey, newKeyModifiers))
+    ; a double pipe symbol (||) can be used to separate when one key is going to be changed to multiple keys.
+    ; for example original key "a" to "b||c" means that when "a" is pressed, "b" and "c" will be pressed as well.
+    ChangeKeyToNewKeys(normalKey, newKey, newKeyModifiers){
+        HotKey(normalKey, (ThisHotkey) => this.SendKeysDown(newKey, newKeyModifiers)) 
+        HotKey(normalKey . " Up", (ThisHotkey) => this.SendKeysUp(newKey, newKeyModifiers))
     }
 
-    SendKeyDown(key, modifiers){
+    
+
+    ; Sends key(s) down, including possible modifiers
+    SendKeysDown(key, modifiers){
         Send("{blind}" . modifiers . "{" . key . " Down}")
     }
     
-    SendKeyUp(key, modifiers){
-        Send("{blind}{" . key . " Up}")                                                           
+    ; Sends key(s) up, including possible modifiers
+    SendKeysUp(key, modifiers){
+        Send("{blind}" . modifiers . "{" . key . " Up}")
     }
 
     ; |-----------DEFAULT KEYS TO NEW KEYS END-----------|
@@ -162,7 +168,6 @@ Class HotkeyInitializer{
     ; |-----------GENERAL-----------|
 
     ; Only used one place!
-
     GetKeyValue(key){
         return StrSplit(key, "=")[2]
     }
