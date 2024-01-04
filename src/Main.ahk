@@ -95,7 +95,12 @@ currentProfile := iniRead("..\config\meta.ini", "General", "activeUserProfile")
 
 ObjectRegister := ObjectRegistry()
 
+; Used to control mouse actions, and disable/enable mouse
 MouseInstance := Mouse()
+; Sets the click speed of the auto clicker
+mouseCps := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "Mouse", "AutoClickerClickCps")
+MouseInstance.SetAutoClickerClickCps(mouseCps)
+; Adds the mouse object to the registry
 ObjectRegister.AddObject("MouseInstance", MouseInstance)
 
 ProcessManagerInstance := ProcessManager()

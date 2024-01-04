@@ -2,7 +2,7 @@
 
 Class Mouse{
 
-    autoClickerCPS := 1
+    autoClickerCPS := 10
     autoClickerEnabled := false
     SendClickObj := ObjBindMethod(this, "SendClick")
 
@@ -27,22 +27,22 @@ Class Mouse{
             clickDelay := 10
         }
         SetTimer this.SendClickObj, clickDelay
-
     }
+
     StopAutoClicker(){
         SetTimer this.SendClickObj, 0
     }
 
-    SetAutoClickerClickDelay(delay){
-        this.autoClickerClickDelay := delay
-    }
-
-    MoveMouseTo(x, y){
-        MouseMove(x, y)
+    SetAutoClickerClickCps(Cps){
+        this.autoClickerCPS := Cps
     }
 
     SendClick(){
         Click
+    }
+
+    MoveMouseTo(x, y){
+        MouseMove(x, y)
     }
 
     BlockMovementInput(){
