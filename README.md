@@ -1,5 +1,5 @@
 <pre>
-  An autohotkey program to change key binds and create extra keyboards
+  An autohotkey program to change key binds and create extra keyboards.
 </pre>
 
 # Extend layer
