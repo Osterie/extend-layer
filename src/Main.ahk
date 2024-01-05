@@ -210,9 +210,6 @@ StartupConfigurator := MainStartupConfigurator("../config/UserProfiles/" . curre
 ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
 StartupConfigurator.ReadAllKeyboardOverlays()
 
-; Reads and initializes all the hotkeys for the normal keyboard layer, based on how they are created in the ini file
-StartupConfigurator.ReadKeysToNewActionsBySection("NormalLayer")
-
 ; |-----------------------------------|
 ; |----------Layer switchers----------|
 ; |-----------------------------------|
@@ -252,6 +249,15 @@ CapsLock:: layers.toggleLayerIndicator(1)
 ; |------------------------------|
 ; |-----------Layers-------------|
 ; |------------------------------|
+
+
+#HotIf layers.getActiveLayer() == 0
+#HotIf
+
+HotIf "layers.getActiveLayer() == 0"
+    ; Reads and initializes all the hotkeys for the normal keyboard layer, based on how they are created in the ini file
+    StartupConfigurator.ReadKeysToNewActionsBySection("NormalLayer")
+HotIf
 
 #HotIf layers.getActiveLayer() == 1
 #HotIf

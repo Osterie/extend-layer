@@ -2,4 +2,12 @@
 
 Class UnauthorizedUseDetector{
     
+    ActivateTaskBarClickDetection(){
+
+    }
+    
+    DisableTaskBarClickDetection(){
+
+    }
+
 }

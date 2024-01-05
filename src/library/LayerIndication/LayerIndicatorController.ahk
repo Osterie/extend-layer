@@ -43,7 +43,6 @@ Class LayerIndicatorController{
         else{
             this.activeLayer := 0
             this.hideInactiveLayers()
-
         }
     }
 
