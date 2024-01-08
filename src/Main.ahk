@@ -165,7 +165,16 @@ ObjectRegister.AddObject("WebSearcher", WebSearcher)
 
 UnautorizedUserDetector := UnauthorizedUseDetector()
 ObjectRegister.AddObject("UnautorizedUserDetector", UnautorizedUserDetector)
-UnautorizedUserDetector.ActivateLockComputerOnTaskBarClick()
+
+lockComputerOnTaskBarClick := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "UnauthorizedUseDetector", "lockComputerOnTaskBarClick")
+
+if (lockComputerOnTaskBarClick){
+    UnautorizedUserDetector.ActivateLockComputerOnTaskBarClick()
+}
+else{
+    UnautorizedUserDetector.DisableLockComputerOnTaskBarClick()
+}
+
 
 ; |---------------------------------|
 ; |-------Keyboard Overlays---------|
@@ -261,24 +270,24 @@ CapsLock:: layers.toggleLayerIndicator(1)
 ; }
 
 
-LButton::{
-    Send("{LButton Down}")
-    try{
-        WinWait("A")
-        if (WinGetClass("A") == "Shell_TrayWnd"){
-            Sleep(100)
-            DllCall("LockWorkStation")
-        }
-    }
-    catch{
-        ToolTip "Error something wrong!"
-        SetTimer () => ToolTip(), -3000
-    }
-}
+; LButton::{
+;     Send("{LButton Down}")
+;     try{
+;         WinWait("A")
+;         if (WinGetClass("A") == "Shell_TrayWnd"){
+;             Sleep(100)
+;             DllCall("LockWorkStation")
+;         }
+;     }
+;     catch{
+;         ToolTip "Error something wrong!"
+;         SetTimer () => ToolTip(), -3000
+;     }
+; }
 
-LButton Up::{
-    Send("{LButton Up}")
-}
+; LButton Up::{
+;     Send("{LButton Up}")
+; }
 
 #HotIf layers.getActiveLayer() == 0
 #HotIf
