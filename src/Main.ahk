@@ -168,7 +168,7 @@ ObjectRegister.AddObject("UnautorizedUserDetector", UnautorizedUserDetector)
 
 lockComputerOnTaskBarClick := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "UnauthorizedUseDetector", "lockComputerOnTaskBarClick")
 
-if (lockComputerOnTaskBarClick){
+if (lockComputerOnTaskBarClick = "true"){
     UnautorizedUserDetector.ActivateLockComputerOnTaskBarClick()
 }
 else{

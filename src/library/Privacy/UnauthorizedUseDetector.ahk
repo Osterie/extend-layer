@@ -27,6 +27,10 @@ Class UnauthorizedUseDetector{
     }
 
     DisableLockComputerOnTaskBarClick(){
-        Hotkey("~LButton Down", , "off")
+        try{
+            Hotkey("*LButton", , "off")
+            Hotkey("*LButton Up", , "off")
+        }
+
     }
 }
