@@ -9,7 +9,7 @@ Class UnauthorizedUseDetector{
     }
 
     LockComputerOnTaskBarClickDown(params){
-        Send("*{LButton Down}")
+        Send("{blind}{LButton Down}")
         try{
             WinWait("A")
             if (WinGetClass("A") == "Shell_TrayWnd"){
@@ -22,8 +22,8 @@ Class UnauthorizedUseDetector{
             SetTimer () => ToolTip(), -3000
         }
     }
-    SendClickUp(params){*
-        Send("{blind}{*}*{LButton Up}")
+    SendClickUp(params){
+        Send("{blind}{LButton Up}")
     }
 
     DisableLockComputerOnTaskBarClick(){
