@@ -2,6 +2,7 @@
 
 #Include ".\KeysAndMouseAction.ahk"
 #Include ".\KeysAndMouseActions.ahk"
+#Include ".\InputSender.ahk"
 
 
 ;         DllCall("QueryPerformanceFrequency", "Int64*", &this.freq := 0)
@@ -130,7 +131,9 @@ Class InputRecorder{
     }
 }
 
-recorder := InputRecorder("{p}")
+; recorder := InputRecorder("{p}")
+sender := InputSender()
+sender.SendInputsForGivenTime()
 
 
 
