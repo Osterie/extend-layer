@@ -101,7 +101,7 @@ Class InputRecorder{
 
     EndRecording(inputHookObject){
         this.inputHook.Stop()
-        msgbox(this.actions.GetActionsAsString()    )
+        msgbox(this.actions.GetActionsAsString())
     }
 
     AddPressedKeyToTempArray(char){
