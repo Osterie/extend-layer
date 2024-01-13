@@ -16,21 +16,15 @@
 Class InputRecorder{
 
     inputHook := ""
-    keysAndKeyDownTime := ""
-    keyIsPressedDown := false
     keysPressedDownTemp := []
-    action := ""
     actions := ""
-    actionTimer := ""
 
-    freq := 100
+    freq := 0
     CounterBefore := 0
     CounterAfter := 0
 
     __New(EndKeys := ""){
 
-
-        ; action := KeysAndMouseAction()
         this.actions := KeysAndMouseActions()
 
         this.inputHook := InputHook("V", EndKeys)
@@ -42,49 +36,33 @@ Class InputRecorder{
         
         this.StartRecording()
         this.inputHook.Wait()
-        msgbox(this.inputHook.Input)
-        ; return ih.EndKey  ; Return the key name
     }
 
-    ; IsDown := GetKeyState(KeyName , Mode)
-
-
     KeyUp(inputHookObject, virtualKeyCode, scanCode){
-        keyName := GetKeyName(Format("sc{:X}", scanCode))
 
+        keyName := GetKeyName(Format("sc{:X}", scanCode))
         inputHookObject.KeysDown[keyName] := 0
+
+        action := KeysAndMouseAction()
+        this.CounterAfter := A_TickCount
+        action.setTime((this.CounterAfter - this.CounterBefore)) ; should be the timer for the started char
+        this.CounterBefore := A_TickCount
 
         if (this.keysPressedDownTemp.Length > 1){
 
-            action := KeysAndMouseAction()
             action.SetAction(this.TempArrayToString())
-
-            this.CounterAfter := A_TickCount
-            action.setTime((this.CounterAfter - this.CounterBefore)) ; should be the timer for the started char
-            this.CounterBefore := A_TickCount
-
-
-            this.actions.AddAction(action)
-            ToolTip(this.TempArrayToString())
-
             indexOfKey := this.GetIndexOfValue(this.keysPressedDownTemp, "{" . keyName . "}")
             this.keysPressedDownTemp.RemoveAt(indexOfKey)
-
         }
         else{
-
-            action := KeysAndMouseAction()
-            action.SetAction(keyName)
-            
-            this.CounterAfter := A_TickCount
-            action.setTime((this.CounterAfter - this.CounterBefore)) ; should be the timer for the started char
-            this.CounterBefore := A_TickCount
-
-
-            this.actions.AddAction(action)
-            ToolTip(this.TempArrayToString())
-
+        
+            action.SetAction("{" . keyName . "}")
+        
         }
+
+        this.actions.AddAction(action)
+        ToolTip(this.TempArrayToString())
+
     }
 
     KeyDown(inputHookObject, virtualKeyCode, scanCode){
@@ -102,20 +80,16 @@ Class InputRecorder{
 
             action := KeysAndMouseAction()
 
-            action.SetAction(this.TempArrayToString() . " asdfsdf s")
-
+            action.SetAction(this.TempArrayToString())
 
             this.CounterAfter := A_TickCount
             action.setTime((this.CounterAfter - this.CounterBefore)) ; should be the timer for the started char
-            this.CounterBefore := A_TickCount
-
             
             this.actions.AddAction(action)
             ToolTip(this.TempArrayToString())
         }
-        else{
-            this.CounterBefore := A_TickCount
-        }
+
+        this.CounterBefore := A_TickCount
 
         this.AddPressedKeyToTempArray(keyName) 
         keyWait(Format("sc{:X}", scanCode), )
