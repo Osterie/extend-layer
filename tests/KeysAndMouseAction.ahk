@@ -1,14 +1,14 @@
 #Requires AutoHotkey v2.0
 
 class KeysAndMouseAction{
-    action := ""
+    action := []
     time := ""
 
     ; TODO should find some good way to validate parameters...
 
     __New(){
-        this.action := ""
-        this.time := ""
+        ; this.action := []
+        ; this.time := ""
     }
 
     setAction(action){
@@ -28,6 +28,16 @@ class KeysAndMouseAction{
     }
 
     getToString(){
-        return "Action: " . this.action . " Time: " . this.time
+        return "Action: " . this.arrayToString(this.action) . this.action.Length . " Time: " . this.time
+    }
+
+    arrayToString(arrayToTurnToString){
+        stringToReturn := ""
+
+        Loop arrayToTurnToString.Length{
+            stringToReturn .= " " . arrayToTurnToString[A_Index] . " "
+        }
+
+        return stringToReturn
     }
 }

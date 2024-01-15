@@ -234,6 +234,7 @@ NumLock::
 CapsLock:: layers.toggleLayerIndicator(1)
 
 ; Changes the layer to 2 if it is zero, and then cycles through the layers if it is not zero
++NumLock::
 +CapsLock:: {
 
     ; layers.CycleLayers(2)

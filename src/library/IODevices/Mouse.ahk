@@ -24,7 +24,7 @@ Class Mouse{
     StartAutoClicker(){
         clickDelay := 1000/this.autoClickerCPS
         if (clickDelay < 10){
-            clickDelay := 10
+            clickDelay := 0
         }
         SetTimer this.SendClickObj, clickDelay
     }

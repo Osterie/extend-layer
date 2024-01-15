@@ -3,6 +3,7 @@
 #Include ".\KeysAndMouseAction.ahk"
 #Include ".\KeysAndMouseActions.ahk"
 #Include ".\InputSender.ahk"
+#Include ".\KeysAndMouseActionsTranslator.ahk"
 
 
 ;         DllCall("QueryPerformanceFrequency", "Int64*", &this.freq := 0)
@@ -34,9 +35,6 @@ Class InputRecorder{
         this.inputHook.OnKeyDown := this.KeyDown.Bind(this)
         this.inputHook.OnKeyUp := this.KeyUp.Bind(this)
         this.inputHook.OnEnd := this.EndRecording.Bind(this)
-        
-        this.StartRecording()
-        this.inputHook.Wait()
     }
 
     KeyUp(inputHookObject, virtualKeyCode, scanCode){
@@ -51,14 +49,12 @@ Class InputRecorder{
 
         if (this.keysPressedDownTemp.Length > 1){
 
-            action.SetAction(this.TempArrayToString())
-            indexOfKey := this.GetIndexOfValue(this.keysPressedDownTemp, "{" . keyName . "}")
+            action.SetAction(this.keysPressedDownTemp.Clone())
+            indexOfKey := this.GetIndexOfValue(this.keysPressedDownTemp, keyName)
             this.keysPressedDownTemp.RemoveAt(indexOfKey)
         }
         else{
-        
-            action.SetAction("{" . keyName . "}")
-        
+            action.SetAction([keyName])
         }
 
         this.actions.AddAction(action)
@@ -81,7 +77,7 @@ Class InputRecorder{
 
             action := KeysAndMouseAction()
 
-            action.SetAction(this.TempArrayToString())
+            action.SetAction(this.keysPressedDownTemp.Clone())
 
             this.CounterAfter := A_TickCount
             action.setTime((this.CounterAfter - this.CounterBefore)) ; should be the timer for the started char
@@ -98,15 +94,21 @@ Class InputRecorder{
 
     StartRecording(){
         this.inputHook.Start()
+        this.inputHook.Wait()
     }
 
     EndRecording(inputHookObject){
-        this.inputHook.Stop()
         msgbox(this.actions.GetActionsAsString())
+        msgbox("heiabdp")
+        this.inputHook.Stop()
+    }
+
+    GetActions(){
+        return this.actions
     }
 
     AddPressedKeyToTempArray(char){
-        this.keysPressedDownTemp.Push("{" . char . "}")
+        this.keysPressedDownTemp.Push(char)
     }
 
     TempArrayToString(){
@@ -131,10 +133,24 @@ Class InputRecorder{
     }
 }
 
-; recorder := InputRecorder("{p}")
-sender := InputSender()
-sender.SendInputsForGivenTime()
+recorder := InputRecorder("{p}")
+recorder.StartRecording()
+actionsWithTimes := recorder.GetActions()
 
+; translator := KeysAndMouseActionsTranslator()
+; translator.TranslateFromActions(actions)
+
+actions := actionsWithTimes.GetActions()
+times := actionsWithTimes.GetTimes()
+
+
+msgbox("press okay to repear actions")
+Sleep(2000)
+
+sender := InputSender()
+sender.SetInputsAndTimes(actions, times)
+sender.SendAllInputsForGivenTimes()
+sender.SendInputForGivenTime("a", "b")
 
 
 *esc::ExitApp

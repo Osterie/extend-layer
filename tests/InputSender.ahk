@@ -11,19 +11,26 @@ class InputSender{
     }
 
     SetInputsAndTimes(inputs, times){
-
+        this.inputs := inputs
+        this.times := times
     }
 
     SendAllInputsForGivenTimes(){
-        Loop inputs.Length{
-            SendInputForGivenTime(inputs[A_Index], times[A_Index])
+        Loop this.inputs.Length{
+            this.SendInputForGivenTime(this.inputs[A_Index], this.times[A_Index])
         }
     }
 
     SendInputForGivenTime(input, time){
-        Send("{Click 900 900 down}")
-        Sleep(900)
-        Send("{Click 900 900 up}")
+        for action in input{
+            Send("{" . action . " Down}")
+        }
+        
+        Sleep(time)
+
+        for action in input{
+            Send("{" . action . " Up}")
+        }
     }
 
 }
