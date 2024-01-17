@@ -104,6 +104,11 @@ MouseInstance.SetAutoClickerClickCps(mouseCps)
 ; Adds the mouse object to the registry
 ObjectRegister.AddObject("MouseInstance", MouseInstance)
 
+KeyboardInstance := Keyboard()
+ObjectRegister.AddObject("KeyboardInstance", KeyboardInstance)
+
+
+
 ProcessManagerInstance := ProcessManager()
 ObjectRegister.AddObject("ProcessManagerInstance", ProcessManagerInstance)
 
@@ -319,13 +324,13 @@ HotIf
     ; Toggles touch-screen
     +1::{ 
         TertiaryLayerKeyboardOverlay1.ToggleState("TouchScreen")
-        DeviceManipulator.ToggleTouchScreenToggle()
+        DeviceManipulator.ToggleTouchScreen()
     } 
 
     ; Toggles camera
     +2::{ 
         TertiaryLayerKeyboardOverlay1.ToggleState("Camera")
-        DeviceManipulator.ToggleCameraToggle()
+        DeviceManipulator.ToggleCamera()
     } 
 
     ; Toggles bluetooth

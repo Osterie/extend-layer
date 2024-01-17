@@ -31,4 +31,8 @@ class Keyboard{
     DoNothing(){
         return
     }
+
+    SendKeyBoardInput(key){
+        SendInput(key)
+    }
 }

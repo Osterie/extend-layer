@@ -51,7 +51,7 @@ Class WebNavigator{
 
 
         
-        while ( (index <= loginButtonImagePaths.Length) && !loginButtonClicked ){
+        while ( (index <= loginButtonImagePaths.Length+1) && !loginButtonClicked ){
             try{
                 this.ClickLoginButton(loginButtonImagePaths[index])
                 ; if it reaches here, the login button is clicked
