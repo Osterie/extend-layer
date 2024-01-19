@@ -2,6 +2,10 @@
 
 class Keyboard{
 
+
+    sendInputRepeatedly := false
+    sendKeyObj := ObjBindMethod(this, "SendKey")
+    
     BlockKeyInput(){
         Loop 512{
             Key := Format("SC{:X}",A_Index)
@@ -33,6 +37,36 @@ class Keyboard{
     }
 
     SendKeyBoardInput(key){
+        SendInput(key)
+    }
+
+    SendRepeatInput(key, sendsPerSecond){
+        this.sendInputRepeatedly := !this.sendInputRepeatedly
+
+        if (this.sendInputRepeatedly){
+            this.StartRepeatSendInput(key, sendsPerSecond)
+        } else {
+            this.StopRepeatSendInput()
+        }
+    }
+
+    StartRepeatSendInput(key, sendsPerSecond){
+        this.sendKeyObj := ObjBindMethod(this, "SendKey", key)
+        
+        sendDelay := 1000/sendsPerSecond
+        if (sendDelay < 10){
+            sendDelay := 0
+        }
+        
+
+        SetTimer this.sendKeyObj, sendDelay
+    }
+
+    StopRepeatSendInput(){
+        SetTimer(this.sendKeyObj, 0)
+    }
+
+    SendKey(key){
         SendInput(key)
     }
 }
