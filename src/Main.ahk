@@ -18,7 +18,7 @@
 #Include ".\library\Navigation\FileNavigation\FileExplorerNavigator.ahk"
 #Include ".\library\KeyboardOverlay\KeyboardOverlayRegistry.ahk"
 #Include ".\library\ProcessManager.ahk"
-#Include ".\library\ObjectRegistry.ahk"
+#Include ".\library\MetaInfoStorage\ObjectRegistry.ahk"
 #Include ".\library\Configuration\StartupConfiguration\MainStartupConfigurator.ahk"
 #Include ".\library\Privacy\UnauthorizedUseDetector.ahk"
 
@@ -284,30 +284,6 @@ CapsLock:: layers.toggleLayerIndicator(1)
 ; |------------------------------|
 ; |-----------Layers-------------|
 ; |------------------------------|
-
-; LButton::{
-;     MsgBox("The active window's class is " WinGetClass("A"))
-; }
-
-
-; LButton::{
-;     Send("{LButton Down}")
-;     try{
-;         WinWait("A")
-;         if (WinGetClass("A") == "Shell_TrayWnd"){
-;             Sleep(100)
-;             DllCall("LockWorkStation")
-;         }
-;     }
-;     catch{
-;         ToolTip "Error something wrong!"
-;         SetTimer () => ToolTip(), -3000
-;     }
-; }
-
-; LButton Up::{
-;     Send("{LButton Up}")
-; }
 
 #HotIf layers.getActiveLayer() == 0
 #HotIf
