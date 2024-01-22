@@ -96,6 +96,20 @@ currentProfile := iniRead("..\config\meta.ini", "General", "activeUserProfile")
 
 ObjectRegister := ObjectRegistry()
 
+; TODO, create a custom object to be added to the registry, instead of adding a instance of a class.
+; TODO, a class could be created to make these objects hold more information. 
+; TODO, a class should also be created for storing the objects methods.
+; I suggest having these fields in the main class:
+; - Object name (the name of the created object, for example MouseInstance, which is an instance of a Mouse())
+; - Method name(s) with description(s)
+
+; To have in the class to store methods information:
+; - Method name(s)
+; - Method description(s)
+; - Method parameters(s) for each method
+
+
+
 ; Used to control mouse actions, and disable/enable mouse
 MouseInstance := Mouse()
 ; Sets the click speed of the auto clicker
