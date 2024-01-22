@@ -18,7 +18,7 @@ class MethodInfo{
     }
 
     addParameter(name, description){
-        this.parameters[name] := description
+        this.methodParameters[name] := description
     }
 
     getMethodName(){
