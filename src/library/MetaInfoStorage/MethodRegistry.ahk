@@ -9,5 +9,15 @@ class MethodRegistry{
     ; This field will store method names and their descriptions.
     Methods := Map()
 
-    
+    __New(){
+        ; Nothing to do here.
+        Methods.Default = 1
+    }
+
+    ; Takes the parameter MethodInfo, which is of the datatype MethodInfo.
+    AddMethod(methodName, methodInfo){
+        Methods[methodName] = methodInfo
+    }
+
+
 }

@@ -2,18 +2,32 @@
 
 class ObjectInfo{
 
+    ; Name of the object (String)
     objectName := ""
+    ; The instance of the object (the datatype is the one of the given object)
     objectInstance := ""
+    ; The methods of the object, which should be of the datatype MethodRegistry.
     methodsWithDescriptions := ""
 
     ; Try to add, if already exists, send a msgbox informing of such...
-    ; ObjectName is a string. Which is the name of the object.
-    ; ObjectInstance is an instance of the class. AKA the object itself to add.
-    ; MethodsWithDescriptions is an instance of a MethodsDescriptions class, which is basically a hashmap of the methods and their descriptions for the given object.
     __New(objectName, objectInstance, methodsWithDescriptions){
         this.objectName := objectName
+        this.objectInstance := objectInstance
         this.methodsWithDescriptions := methodsWithDescriptions
     }
+
+    getObjectName(){
+        return this.objectName
+    }
+
+    getObjectInstance(){
+        return this.objectInstance
+    }
+
+    getMethodsWithDescriptions(){
+        return this.methodsWithDescriptions
+    }
+    
     ; {objectName, methodsWithDescriptions}
     ; Hashmap (objectName, methodsWithDescriptions)
     ; ObjectName

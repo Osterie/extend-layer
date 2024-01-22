@@ -21,4 +21,19 @@ class MethodInfo{
         this.parameters[name] := description
     }
 
+    getMethodName(){
+        return this.methodName
+    }
+
+    getMethodDescription(){
+        return this.methodDescription
+    }
+
+    getMethodParameters(){
+        return this.methodParameters
+    }
+
+    getMethodParameterDescription(parameterName){
+        return this.methodParameters[parameterName]
+    }
 }

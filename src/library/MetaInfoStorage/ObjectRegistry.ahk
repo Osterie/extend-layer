@@ -10,11 +10,11 @@ Class ObjectRegistry{
         this.ObjectMap.Default := 0
     }
 
-    AddObject(objectName, objectInstance){
-        this.ObjectMap[objectName] := objectInstance
+    AddObject(objectName, ObjectInfo){
+        this.ObjectMap[objectName] := ObjectInfo
     }
 
-    GetObject(objectName){
+    GetObjectInfo(objectName){
         return this.ObjectMap[objectName]
     }
 
