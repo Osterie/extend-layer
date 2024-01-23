@@ -5,7 +5,7 @@ class MethodInfo{
 
 
     ; A method also (somethimes) has paramaters.
-    ; These parameters should have a description as well.
+    ; These methodParameters should have a description as well.
 
     methodName := ""
     methodDescription := ""
@@ -18,7 +18,7 @@ class MethodInfo{
     }
 
     addParameter(name, description){
-        this.parameters[name] := description
+        this.methodParameters[name] := description
     }
 
     getMethodName(){

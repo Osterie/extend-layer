@@ -64,7 +64,7 @@ Class ScreenPrivacyController{
             this.GUICountdown.StopCountdown()
             this.GUICountdown.DestroyGui()
         }
-
+        ; TODO make this work for more browsers 
         Title := WinGetTitle("A")
         WinGetPos(&X, &Y, &Width, &Height, "A")
         if (InStr(Title, "Google Chrome") || InStr(Title, "Mozilla Firefox") || InStr(Title, "Edge")){

@@ -11,12 +11,12 @@ class MethodRegistry{
 
     __New(){
         ; Nothing to do here.
-        Methods.Default = 1
+        this.Methods.Default := 1
     }
 
     ; Takes the parameter MethodInfo, which is of the datatype MethodInfo.
     AddMethod(methodName, methodInfo){
-        Methods[methodName] = methodInfo
+        this.Methods[methodName] = methodInfo
     }
 
 
