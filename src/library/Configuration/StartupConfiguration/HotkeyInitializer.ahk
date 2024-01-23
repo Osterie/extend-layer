@@ -56,11 +56,11 @@ Class HotkeyInitializer{
 
         validatedArguments := this.ValidateArguments(arguments)
 
-        ClassOfMethod := this.ObjectRegistry.GetObjectInfo(UsedClass)
+        ClassOfMethod := this.ObjectRegistry.GetObject(UsedClass)
 
-        newFunctionality := ObjBindMethod(ClassOfMethod, UsedMethod, validatedArguments*)
+        secondColumn := ObjBindMethod(ClassOfMethod, UsedMethod, validatedArguments*)
 
-        HotKey keyboardKey, (ThisHotkey) => (newFunctionality)()
+        HotKey keyboardKey, (ThisHotkey) => (secondColumn)()
 
     }
 
@@ -112,7 +112,7 @@ Class HotkeyInitializer{
         else{
             ; Argument might be a string, but perhaps it is a class?
             if (this.ObjectRegistry.GetMap().Get(argument)){
-                validatedArgument := this.ObjectRegistry.GetObjectInfo(argument)
+                validatedArgument := this.ObjectRegistry.GetObject(argument)
             }
             else{
                 validatedArgument := this.GetStringWithoutQuotes(argument)
@@ -120,8 +120,6 @@ Class HotkeyInitializer{
         }
         return validatedArgument
     }
-
-    ; |-----------DEFAULT KEYS TO NEW KEYS START?-----------|
 
     InitializeAllDefaultKeyToNewKeys(section){
 

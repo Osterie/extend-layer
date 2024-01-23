@@ -22,11 +22,6 @@
 #Include ".\library\Configuration\StartupConfiguration\MainStartupConfigurator.ahk"
 #Include ".\library\Privacy\UnauthorizedUseDetector.ahk"
 
-#Include ".\library\MetaInfoStorage\ObjectInfo.ahk"
-#Include ".\library\MetaInfoStorage\MethodInfo.ahk"
-#Include ".\library\MetaInfoStorage\MethodRegistry.ahk"
-
-
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
 ; |--------------------------------------------------|
@@ -121,43 +116,7 @@ MouseInstance := Mouse()
 mouseCps := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "Mouse", "AutoClickerClickCps")
 MouseInstance.SetAutoClickerClickCps(mouseCps)
 ; Adds the mouse object to the registry
-
-; ----Mouse methods----
-
-
-MouseMethodMoveMouseToCenter := MethodInfo("MoveMouseToCenterOfScreen", "Moves the mouse to the center of the screen")
-MouseMethodToggleAutoClick := MethodInfo("ToggleAutoClicker", "Toggles an auto clicker on/off, the click speed can be set in the function settings")
-MouseMethodStartAutoClick := MethodInfo("StartAutoClicker", "Starts an auto clicker, the click speed can be set in the function settings")
-MouseMethodStopAutoClick := MethodInfo("StopAutoClicker", "Stops an auto clicker, the click speed can be set in the function settings")
-
-MouseMethodSendClick := MethodInfo("SendClick", "Sends a mouse click.")
-
-MouseMethodMoveMouse := MethodInfo("MoveMouseTo", "Sends a mouse click to a specified location")
-MouseMethodMoveMouse.addParameter("x", "The x coordinate to click")
-MouseMethodMoveMouse.addParameter("y", "The y coordinate to click")
-
-
-
-MouseMethods := MethodRegistry()
-
-MouseMethods.addMethod(MouseMethodMoveMouseToCenter.getMethodName(), MouseMethodMoveMouseToCenter)
-MouseMethods.addMethod(MouseMethodToggleAutoClick.getMethodName(), MouseMethodToggleAutoClick)
-MouseMethods.addMethod(MouseMethodStartAutoClick.getMethodName() , MouseMethodStartAutoClick)
-MouseMethods.addMethod(MouseMethodStopAutoClick.getMethodName(), MouseMethodStopAutoClick)
-MouseMethods.addMethod(MouseMethodSendClick.getMethodName(), MouseMethodSendClick)
-MouseMethods.addMethod(MouseMethodMoveMouse.getMethodName(), MouseMethodMoveMouse)
-
-
-
-
-MouseObjectInfo := ObjectInfo("MouseInstance", MouseInstance, MouseMethods)
-
-ObjectRegister.AddObject(MouseObjectInfo.getObjectName(), MouseObjectInfo)
-
-
-
-; ---Mouse methods done---
-
+ObjectRegister.AddObject("MouseInstance", MouseInstance)
 
 KeyboardInstance := Keyboard()
 ObjectRegister.AddObject("KeyboardInstance", KeyboardInstance)
