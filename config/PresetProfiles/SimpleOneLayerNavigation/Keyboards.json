@@ -1,0 +1,201 @@
+{
+    "NormalLayer-DefaultKeys": {},
+    "NormalLayer-Functions": {
+        "win+0": {
+            "ObjectName": "OnScreenWriter",
+            "MethodName": "ToggleShowKeysPressed",
+            "Parameters": []
+        },
+        "*f1": {
+            "ObjectName": "ProcessManagerInstance",
+            "MethodName": "CloseActiveAutohotkeyScript",
+            "Parameters": []
+        },
+        "^!w": {
+            "ObjectName": "WebSearcher",
+            "MethodName": "CloseTabsToTheRight",
+            "Parameters": []
+        },
+        "^q": {
+            "ObjectName": "ProcessManagerInstance",
+            "MethodName": "CloseFocusedProcess",
+            "Parameters": []
+        },
+        "win+c": {
+            "ObjectName": "CommandPrompt",
+            "MethodName": "OpenCmdPathedToCurrentLocation",
+            "Parameters": []
+        },
+        "^!s": {
+            "ObjectName": "ProcessManagerInstance",
+            "MethodName": "SuspendActiveAutohotkeyScript",
+            "Parameters": []
+        }
+    },
+    "SecondaryLayer": {
+        "ToggleKey": "CapsLock"
+    },
+    "SecondaryLayer-DefaultKeys": {
+        "LControl & RAlt": {
+            "key": "LWin",
+            "modifiers": ""
+        },
+        "*q": {
+            "key": "Esc",
+            "modifiers": ""
+        },
+        "*å": {
+            "key": "Esc",
+            "modifiers": ""
+        },
+        "*a": {
+            "key": "Alt",
+            "modifiers": ""
+        },
+        "*d": {
+            "key": "Shift",
+            "modifiers": ""
+        },
+        "*f": {
+            "key": "Ctrl",
+            "modifiers": ""
+        },
+        "*n": {
+            "key": "Tab",
+            "modifiers": ""
+        },
+        "*w": {
+            "key": "WheelUp",
+            "modifiers": ""
+        },
+        "*s": {
+            "key": "WheelDown",
+            "modifiers": ""
+        },
+        "*e": {
+            "key": "Browser_Back",
+            "modifiers": ""
+        },
+        "*r": {
+            "key": "Browser_Forward",
+            "modifiers": ""
+        },
+        "*y": {
+            "key": "PgUp",
+            "modifiers": ""
+        },
+        "*h": {
+            "key": "PgDn",
+            "modifiers": ""
+        },
+        "*u": {
+            "key": "Home",
+            "modifiers": ""
+        },
+        "*o": {
+            "key": "End",
+            "modifiers": ""
+        },
+        "*p": {
+            "key": "Del",
+            "modifiers": ""
+        },
+        "*ø": {
+            "key": "BackSpace",
+            "modifiers": ""
+        },
+        "^s": {
+            "key": "s",
+            "modifiers": "^"
+        },
+        "^d": {
+            "key": "d",
+            "modifiers": "^"
+        },
+        "^a": {
+            "key": "a",
+            "modifiers": "^"
+        },
+        "*z": {
+            "key": "z",
+            "modifiers": "^"
+        },
+        "*x": {
+            "key": "x",
+            "modifiers": "^"
+        },
+        "*c": {
+            "key": "c",
+            "modifiers": "^"
+        },
+        "*v": {
+            "key": "v",
+            "modifiers": "^"
+        },
+        "*m": {
+            "key": "Click",
+            "modifiers": ""
+        },
+        "*g": {
+            "key": "AppsKey",
+            "modifiers": ""
+        },
+        "*,": {
+            "key": "F6",
+            "modifiers": ""
+        },
+        "*i": {
+            "key": "Up",
+            "modifiers": ""
+        },
+        "*j": {
+            "key": "Left",
+            "modifiers": ""
+        },
+        "*k": {
+            "key": "Down",
+            "modifiers": ""
+        },
+        "*l": {
+            "key": "Right",
+            "modifiers": ""
+        }
+    },
+    "SecondaryLayer-Functions": {
+        "<": {
+            "ObjectName": "MouseInstance",
+            "MethodName": "MoveMouseToCenterOfScreen",
+            "Parameters": []
+        },
+        "t": {
+            "ObjectName": "WebSearcher",
+            "MethodName": "LookUpHighlitedTextOrClipboardContent",
+            "Parameters": []
+        },
+        "*t": {
+            "ObjectName": "WebSearcher",
+            "MethodName": "AskChatGptAboutHighligtedTextOrClipboardContent",
+            "Parameters": []
+        },
+        "^t": {
+            "ObjectName": "WebSearcher",
+            "MethodName": "ShowTranslatedText",
+            "Parameters": ["auto", "en"]
+        },
+        "^+t": {
+            "ObjectName": "WebSearcher",
+            "MethodName": "ShowTranslatedText",
+            "Parameters": ["auto", "no"]
+        },
+        "b": {
+            "ObjectName": "WebSearcher",
+            "MethodName": "SearchFromInputBox",
+            "Parameters": []
+        }
+    },
+    "SecondaryLayer-KeyboardOverlay1": {},
+    "SecondaryLayer-KeyboardOverlay2": {},
+    "TertiaryLayer": {},
+    "TertiaryLayer-DefaultKeys": {},
+    "TertiaryLayer-Functions": {}
+}
