@@ -271,23 +271,69 @@
     },
     "SecondaryLayer-KeyboardOverlay1": {
         "ShowKeyboardOverlayKey": "~Shift",
-        "Column1": "1, \"Open Time Table\"",
-        "Column2": "2, \"Black Board\"",
-        "Column3": "3, \"Prog 2\"",
-        "Column4": "4, \"System\"",
-        "Column5": "5, \"Math\"",
-        "Column6": "6, \"Data\"",
-        "Column7": "7, \"Jupyter Hub\"",
-        "Column8": "8, \"Capquiz\""
+        "overlayElements":{
+            "Column1": {
+                "key": "1",
+                "description": "Open Time Table\""
+            },
+            "Column2": {
+                "key": "2",
+                "description": "Black Board\""
+            },
+            "Column3": {
+                "key": "3",
+                "description": "Prog 2\""
+            },
+            "Column4": {
+                "key": "4",
+                "description": "System\""
+            },
+            "Column5": {
+                "key": "5",
+                "description": "Math\""
+            },
+            "Column6": {
+                "key": "6",
+                "description": "Data\""
+            },
+            "Column7": {
+                "key": "7",
+                "description": "Jupyter Hub\""
+            },
+            "Column8": {
+                "key": "8",
+                "description": "Capquiz\""
+            }
+        }
     },
     "SecondaryLayer-KeyboardOverlay2": {
         "ShowKeyboardOverlayKey": "~Control",
-        "Column1": "1, \"Root\"",
-        "Column2": "2, \"Adrian\"",
-        "Column3": "3, \"Github\"",
-        "Column4": "4, \"Down loads\"",
-        "Column5": "5, \"School\"",
-        "Column6": "6, \"Mappe\""
+        "overlayElements":{
+            "Column1": {
+                "key": "1",
+                "description": "Root"
+            },
+            "Column2": {
+                "key": "2",
+                "description": "Adrian"
+            },
+            "Column3": {
+                "key": "3",
+                "description": "Github"
+            },
+            "Column4": {
+                "key": "4",
+                "description": "Down loads"
+            },
+            "Column5": {
+                "key": "5",
+                "description": "School"
+            },
+            "Column6": {
+                "key": "6",
+                "description": "Mappe"
+            }
+        }
     },
     "TertiaryLayer-DefaultKeys": {
         

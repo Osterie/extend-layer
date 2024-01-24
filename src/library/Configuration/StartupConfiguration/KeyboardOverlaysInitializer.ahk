@@ -4,60 +4,53 @@
 
 Class KeyboardOverlaysInitializer{
     
-    iniFile := ""
+    jsonFile := ""
     objectRegistry := ""
 
 
-    __New(iniFile, objectRegistry){
-        this.iniFile := iniFile
+    __New(jsonFile, objectRegistry){
+        this.jsonFile := jsonFile
         this.objectRegistry := objectRegistry
-        this.IniReader := IniFileReader()
     }
 
     ; TODO add method to read which keys are used to show keyboard overlays, should be in the correct layer section, because only then should they activate
     ReadAllKeyboardOverlays(){
 
-        SectionNames := IniRead(this.iniFile)
-        SectionNames := StrSplit(SectionNames, "`n")
-        Loop SectionNames.Length{
-            SectionName := SectionNames[A_Index]
-            if (InStr(SectionName, "KeyboardOverlay")){
+        For key, value in this.jsonFile{
+            if (InStr(key, "KeyboardOverlay")){
 
                 ; OverlayRegistry := this.ObjectRegistry.GetObjectInfo("OverlayRegistry")
 
                 NewKeyboardOverlay := KeyboardOverlay()
                 NewKeyboardOverlay.CreateGui()
-                this.ReadKeyboardOverlaySection(NewKeyboardOverlay, SectionName)
+                this.ReadKeyboardOverlaySection(NewKeyboardOverlay, value["overlayElements"])
 
-                ; OverlayRegistry.addKeyboardOverlay(NewKeyboardOverlay, SectionName)
-                this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance().addKeyboardOverlay(NewKeyboardOverlay, SectionName)
+                instanceOfRegistry := this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance()
+
+                instanceOfRegistry.addKeyboardOverlay(NewKeyboardOverlay, key)
                 ; TODO use the keyboardOVelray class to create a new keyboard overlay, which then columns are added to
                 ; TODO, each layer should have the "KeyboardOverlayKey" in it, which is then created there and such blah blah blah
-            
+                
+                showKeyboardOverlayKey := value["ShowKeyboardOverlayKey"]
+                
+                ; HotKey(oldHotKey, (ThisHotkey) => this.SendKeysDown(newKeysDown, newHotKeyModifiers)) 
+
+                ; HotKey(oldHotKey . " Up", (ThisHotkey) => this.SendKeysUp(newKeysUp, newHotKeyModifiers))
+                
+                ; HotKey(showKeyboardOverlayKey, (ThisHotkey) => instanceOfRegistry.ShowKeyboardOverlay(key))
+                ; ; TODO, this " up" should be added for all layers...
+                ; HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => instanceOfRegistry.hideAllLayers())
             }
         }
-
     }
 
-    ReadKeyboardOverlaySection(KeyboardOverlay, section){
-        
-        iniFileSection := this.IniReader.ReadSection(this.iniFile, section)
-
-        ; Reads where the columns start, and deletes everything before that.
-        startOfColumns := InStr(iniFileSection,"Column1")
-        iniFileSection := SubStr(iniFileSection,startOfColumns)
-
-        KeyboardOverlayColumns := StrSplit(iniFileSection, "`n")
-        
-        ; A_LoopField is the current item in the loop.
-        Loop KeyboardOverlayColumns.Length{
-            ColumnValues := this.GetKeyValue(KeyboardOverlayColumns[A_Index])
-            KeyboardOverlayColumnHelperKey := StrSplit(ColumnValues, ",")[1]
-            KeyboardOverlayColumnHelperKey := this.GetStringWithoutQuotes(KeyboardOverlayColumnHelperKey)
-            KeyboardOverlayColumnFriendlyName := StrSplit(ColumnValues, ",")[2]
-            KeyboardOverlayColumnFriendlyName := this.GetStringWithoutQuotes(KeyboardOverlayColumnFriendlyName)
-            this.SetKeyboardOverlayColumn(KeyboardOverlay, KeyboardOverlayColumnHelperKey, KeyboardOverlayColumnFriendlyName )
+    ReadKeyboardOverlaySection(KeyboardOverlay, KeyboardOverlayElements){
+        For overlayElementName, overlayElementInformation in KeyboardOverlayElements{
+            key := overlayElementInformation["key"]
+            description := overlayElementInformation["description"]
+            this.SetKeyboardOverlayColumn(KeyboardOverlay, key, description)
         }
+        
     }
 
     SetKeyboardOverlayColumn(KeyboardOverlay, ColumnHelperKey, ColumnFriendlyName){
@@ -65,40 +58,31 @@ Class KeyboardOverlaysInitializer{
     }
 
     CreateHotkeysForKeyboardOverlaysByLayerSection(layerSection){
-        sectionNames := IniRead(this.iniFile)
-        sectionNames := StrSplit(sectionNames, "`n")
-        Loop sectionNames.Length{
-            sectionName := sectionNames[A_Index]
-            if (InStr(sectionName, layerSection)){
 
-                ; TODO use the keyboardOVelray class to create a new keyboard overlay, which then columns are added to
-                ; TODO, each layer should have the "KeyboardOverlayKey" in it, which is then created there and such blah blah blah
-                try{
-                    showKeyboardOverlayKey := IniRead(this.iniFile, sectionName, "ShowKeyboardOverlayKey")
-                    this.CreateHotkeyForKeyboardOverlay(sectionName, showKeyboardOverlayKey)
+        try{
+            for key, value in this.jsonFile{
+                if (InStr(key, layerSection)){
+
+                    showKeyboardOverlayKey := this.jsonFile[key]["ShowKeyboardOverlayKey"]
+                    ; TODO use the keyboardOVelray class to create a new keyboard overlay, which then columns are added to
+                    ; TODO, each layer should have the "KeyboardOverlayKey" in it, which is then created there and such blah blah blah
+                    this.CreateHotkeyForKeyboardOverlay(layerSection, showKeyboardOverlayKey)
                 }
-
             }
+            msgbox("created hotkey for " . layerSection)
+
+        }
+        catch{
+            ; overlay does not exist...
         }
     }
 
     CreateHotkeyForKeyboardOverlay(sectionName, showKeyboardOverlayKey){
-        ; instanceOfOverlay := this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetKeyboardOverlay(sectionName)
         instanceOfRegistry := this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance()
         
 
         HotKey(showKeyboardOverlayKey, (ThisHotkey) => instanceOfRegistry.ShowKeyboardOverlay(sectionName))
         ; TODO, this " up" should be added for all layers...
         HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => instanceOfRegistry.hideAllLayers())
-    }
-
-    GetKeyValue(key){
-        return StrSplit(key, "=")[2]
-    }
-
-    GetStringWithoutQuotes(text){
-        textWithoutQutoes := StrReplace(text, "`"", "")
-        textWithoutQutoes := StrReplace(textWithoutQutoes, "'", "")
-        return textWithoutQutoes
     }
 }

@@ -4,6 +4,9 @@
 #Include "KeyboardOverlaysInitializer.ahk"
 #Include "HotkeyInitializer.ahk"
 
+#Include "..\..\JsonParsing\JXON\JXON.ahk"
+
+
 
 Class MainStartupConfigurator{
 
@@ -18,13 +21,14 @@ Class MainStartupConfigurator{
         this.profile := profile
         this.objectRegistry := objectRegistry
 
-        keyboardsSettings := this.profile . "\Keyboards.ini"
-        this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(keyboardsSettings, this.objectRegistry)
+        keyboardsSettingsFileLocation := this.profile . "\Keyboards.json"
 
-        jsonStringFunctionalityInformation := FileRead(".\library\JsonTesting\keyBinds.json", "UTF-8")
-        json := jxon_load(&jsonStringFunctionalityInformation)
+        keyboardSettingsString := FileRead(keyboardsSettingsFileLocation, "UTF-8")
+        keyboardSettingsJson := jxon_load(&keyboardSettingsString)
 
-        this.HotkeyInitializerInstance := HotkeyInitializer(json, this.objectRegistry)
+        this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(keyboardSettingsJson, this.objectRegistry)
+
+        this.HotkeyInitializerInstance := HotkeyInitializer(keyboardSettingsJson, this.objectRegistry)
     }
 
     ReadKeysToNewActionsBySection(section){
@@ -36,23 +40,5 @@ Class MainStartupConfigurator{
     ; Reads the ini file for keyboard overlays, and then creates them based on the information in the ini file
     ReadAllKeyboardOverlays(){
         this.KeyboardOverlayInitializerInstance.ReadAllKeyboardOverlays()
-    }
-
-    ; Reads the ini file to find which keys are used to show the keyboard overlays, and then creates the hotkeys for them
-    ; this is its own method because it has to be called in the correct hotifs in the main script
-    ReadKeysToShowKeyboardOverlaysByLayerSection(layerSection){
-        this.KeyboardOverlayInitializerInstance.CreateHotkeysForKeyboardOverlaysByLayerSection(layerSection)
-    }
-
-    ; Reads all the keys in a specific section of the ini file, and then creates hotkeys for them.
-    ; Onlye works for keys which are changed into new keys
-    ReadKeysToNewKeysBySection(section){
-        this.HotkeyInitializerInstance.InitializeAllDefaultKeyToNewKeys(section)
-    }
-
-    ; Reads all the keys in a specific section of the ini file, and then creates hotkeys for them.
-    ; Onlye works for keys which are changed into functions
-    ReadKeysToFunctionsBySection(section){
-        this.HotkeyInitializerInstance.InitializeAllDefaultKeysToFunctions(section)
     }
 }
