@@ -10,11 +10,13 @@ Class KeysPressedGui{
     storedKeys := ""
     guiHidden := true
 
+    ; TODO add method to change font size...
+
     CreateGui(){
         this.GuiShowKeysPressed := Gui()
         this.GuiShowKeysPressed.Opt("-Caption +AlwaysOnTop +Owner +LastFound")
         this.GuiShowKeysPressed.BackColor := "EEAA99"
-        this.GuiShowKeysPressed.SetFont("s20 w70 q4", "Times New Roman")
+        this.GuiShowKeysPressed.SetFont("s40 w70 q4", "Times New Roman")
         this.showKeysPressedControl := this.GuiShowKeysPressed.AddText(, "")
     }
 
