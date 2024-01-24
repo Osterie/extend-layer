@@ -56,9 +56,10 @@ Class HotkeyInitializer{
 
         validatedArguments := this.ValidateArguments(arguments)
 
-        ClassOfMethod := this.ObjectRegistry.GetObjectInfo(UsedClass)
+        msgbox(UsedClass)
+        objectInstance := this.ObjectRegistry.GetObjectInfo(UsedClass).GetObjectInstance()
 
-        secondColumn := ObjBindMethod(ClassOfMethod, UsedMethod, validatedArguments*)
+        secondColumn := ObjBindMethod(objectInstance, UsedMethod, validatedArguments*)
 
         HotKey keyboardKey, (ThisHotkey) => (secondColumn)()
 
@@ -111,7 +112,8 @@ Class HotkeyInitializer{
         }
         else{
             ; Argument might be a string, but perhaps it is a class?
-            if (this.ObjectRegistry.GetMap().Get(argument)){
+            ; TODO fixme what the frick
+            if (this.ObjectRegistry.GetObjectInfo(argument)){
                 validatedArgument := this.ObjectRegistry.GetObjectInfo(argument)
             }
             else{

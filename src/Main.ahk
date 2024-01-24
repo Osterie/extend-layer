@@ -26,6 +26,7 @@
 #Include ".\library\MetaInfoStorage\MethodInfo.ahk"
 #Include ".\library\MetaInfoStorage\MethodRegistry.ahk"
 
+#Include ".\library\JsonParsing\JXON\JXON.ahk"
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -97,9 +98,10 @@ Class Main{
     }
 }
 
+Objects := Map()
+
 currentProfile := iniRead("..\config\meta.ini", "General", "activeUserProfile")
 
-ObjectRegister := ObjectRegistry()
 
 ; TODO, create a custom object to be added to the registry, instead of adding a instance of a class.
 ; TODO, a class could be created to make these objects hold more information. 
@@ -151,37 +153,49 @@ MouseMethods.addMethod(MouseMethodMoveMouse.getMethodName(), MouseMethodMoveMous
 
 MouseObjectInfo := ObjectInfo("MouseInstance", MouseInstance, MouseMethods)
 
-ObjectRegister.AddObject(MouseObjectInfo.getObjectName(), MouseObjectInfo)
+; ObjectRegister.AddObject(MouseObjectInfo.getObjectName(), MouseObjectInfo)
 
+Objects["MouseInstance"] := MouseInstance
 
 
 ; ---Mouse methods done---
 
 KeyboardInstance := Keyboard()
-ObjectRegister.AddObject("KeyboardInstance", KeyboardInstance)
+; ObjectRegister.AddObject("KeyboardInstance", KeyboardInstance)
 
+Objects["KeyboardInstance"] := KeyboardInstance
 
 
 ProcessManagerInstance := ProcessManager()
-ObjectRegister.AddObject("ProcessManagerInstance", ProcessManagerInstance)
+; ObjectRegister.AddObject("ProcessManagerInstance", ProcessManagerInstance)
+
+Objects["ProcessManagerInstance"] := ProcessManagerInstance
 
 ; Allows opening cmd pathed to the current file location for vs code and file explorer.
 commandPromptDefaultPath := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "CommandPrompt", "DefaultPath")
 CommandPrompt := CommandPromptOpener(commandPromptDefaultPath)
-ObjectRegister.AddObject("CommandPrompt", CommandPrompt)
+; ObjectRegister.AddObject("CommandPrompt", CommandPrompt)
+
+Objects["CommandPrompt"] := CommandPrompt
 
 ; Allows navigating the file explorer and opening the file explorer pathed to a given file location
 FileExplorer := FileExplorerNavigator()
-ObjectRegister.AddObject("FileExplorer", FileExplorer)
+; ObjectRegister.AddObject("FileExplorer", FileExplorer)
+
+Objects["FileExplorer"] := FileExplorer
 
 ; Allows to write on the screen in a textarea
 OnScreenWriter := KeysPressedGui()
 OnScreenWriter.CreateGUI()
-ObjectRegister.AddObject("OnScreenWriter", OnScreenWriter)
+; ObjectRegister.AddObject("OnScreenWriter", OnScreenWriter)
+
+Objects["OnScreenWriter"] := OnScreenWriter
 
 ; Enables / disables input (mouse or keyboard)
 ComputerInput := ComputerInputController()
-ObjectRegister.AddObject("ComputerInput", ComputerInput)
+; ObjectRegister.AddObject("ComputerInput", ComputerInput)
+
+Objects["ComputerInput"] := ComputerInput
 
 ; Used to hide screen and parts of the screen
 PrivacyController := ScreenPrivacyController()
@@ -191,19 +205,25 @@ PrivacyController.CreateGui()
 monitorSleepTimeMinutes := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "PrivacyController", "MonitorSleepTimeMinutes")
 PrivacyController.ChangeCountdown(monitorSleepTimeMinutes,0)
 
-ObjectRegister.AddObject("PrivacyController", PrivacyController)
+; ObjectRegister.AddObject("PrivacyController", PrivacyController)
+
+Objects["PrivacyController"] := PrivacyController
 
 ; Used to get the states of devices, like if bluetooth and such is enabled, also able to disable/enable these devices
 DeviceManipulator := DeviceManager()
 ; launches a powershell script which gets the states of some devices, like if the mouse is enabled.
 ; Having this activated will slow down the startup of the script significantly.
 ; !DeviceManipulator.UpdateDevicesActionToToggle()
-ObjectRegister.AddObject("DeviceManipulator", DeviceManipulator)
+; ObjectRegister.AddObject("DeviceManipulator", DeviceManipulator)
+
+Objects["DeviceManipulator"] := DeviceManipulator
 
 
 ; Used to change brightness and gamma settings of the monitor
 MonitorInstance := Monitor()
-ObjectRegister.AddObject("MonitorInstance", MonitorInstance)
+; ObjectRegister.AddObject("MonitorInstance", MonitorInstance)
+
+Objects["MonitorInstance"] := MonitorInstance
 
 ; Used to switch between power saver mode and normal power mode (does not work as expected currently, percentage to switch to power saver is changed, but power saver is never turned on...)
 powerSaverModeGUID := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "Battery", "PowerSaverModeGUID")
@@ -212,17 +232,23 @@ Battery := BatteryController(50, 50)
 Battery.setPowerSaverModeGUID(powerSaverModeGUID)
 Battery.setDefaultPowerModeGUID(defaultPowerModeGUID)
 ; Battery.ActivateNormalPowerMode()
-ObjectRegister.AddObject("Battery", Battery)
+; ObjectRegister.AddObject("Battery", Battery)
+
+Objects["Battery"] := Battery
 
 ; Used to search for stuff in the browser, translate, and excecute shortcues like close tabs to the right in browser
 chatGptLoadTime := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "WebNavigator", "chatGptLoadTime")
 WebSearcher := WebNavigator()
 WebSearcher.SetChatGptLoadTime(chatGptLoadTime)
-ObjectRegister.AddObject("WebSearcher", WebSearcher)
+; ObjectRegister.AddObject("WebSearcher", WebSearcher)
+
+Objects["WebSearcher"] := WebSearcher
 
 
 UnautorizedUserDetector := UnauthorizedUseDetector()
-ObjectRegister.AddObject("UnautorizedUserDetector", UnautorizedUserDetector)
+; ObjectRegister.AddObject("UnautorizedUserDetector", UnautorizedUserDetector)
+
+Objects["UnautorizedUserDetector"] := UnautorizedUserDetector
 
 lockComputerOnTaskBarClick := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "UnauthorizedUseDetector", "lockComputerOnTaskBarClick")
 
@@ -243,12 +269,16 @@ else{
 ; Shows an on screen overlay for the main keyboard layer which shows which urls can be went to using the number keys
 SecondaryLayerKeyboardOverlay1 := KeyboardOverlay()
 SecondaryLayerKeyboardOverlay1.CreateGui()
-ObjectRegister.AddObject("SecondaryLayerKeyboardOverlay1", SecondaryLayerKeyboardOverlay1)
+; ObjectRegister.AddObject("SecondaryLayerKeyboardOverlay1", SecondaryLayerKeyboardOverlay1)
+
+Objects["SecondaryLayerKeyboardOverlay1"] := SecondaryLayerKeyboardOverlay1
 
 ; Shows an on screen overlay for the SecondaryLayer keyboard layer which shows which file explorer paths can be went to using the number keys
 SecondaryLayerKeyboardOverlay2 := KeyboardOverlay()
 SecondaryLayerKeyboardOverlay2.CreateGui()
-ObjectRegister.AddObject("SecondaryLayerKeyboardOverlay2", SecondaryLayerKeyboardOverlay2)
+; ObjectRegister.AddObject("SecondaryLayerKeyboardOverlay2", SecondaryLayerKeyboardOverlay2)
+
+Objects["SecondaryLayerKeyboardOverlay2"] := SecondaryLayerKeyboardOverlay2
 
 ; |----------Second layer-----------|
 
@@ -264,7 +294,9 @@ TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("4", "Touch Pad", DeviceManip
 
 OverlayRegistry := KeyboardOverlayRegistry()
 OverlayRegistry.addKeyboardOverlay(TertiaryLayerKeyboardOverlay1, "TertiaryLayerKeyboardOverlay1")
-ObjectRegister.AddObject("OverlayRegistry", OverlayRegistry)
+; ObjectRegister.AddObject("OverlayRegistry", OverlayRegistry)
+
+Objects["OverlayRegistry"] := OverlayRegistry
 
 ; |------------Layer indicators------------|
 
@@ -273,9 +305,68 @@ layers := LayerIndicatorController()
 layers.addLayerIndicator(1, "Green")
 layers.addLayerIndicator(2, "Red")
 
+
+
+
+
+; -----------Read JSON----------------
+
+ObjectRegister := ObjectRegistry()
+
+
+jsonStringFunctionalityInformation := FileRead(".\library\JsonTesting\Json.json")
+json := jxon_load(&jsonStringFunctionalityInformation)
+
+; TODO! add try catch to all of these. If one of these informations are missing something wrong will happen!
+For ClassName , ClassInformation in json{
+
+    ObjectName := ClassInformation["ObjectName"]
+    className := ClassInformation["ClassName"]
+    
+    allMethodsOfClass := ClassInformation["Methods"]
+
+    objectMethods := MethodRegistry()
+
+    For MethodName, MethodInformation in allMethodsOfClass{
+        
+        methodDescription := MethodInformation["Description"]
+        allMethodParameters := MethodInformation["Parameters"]
+        
+        methodInformation := MethodInfo(methodName, methodDescription)
+
+        For ParameterName, ParameterInformation in allMethodParameters{
+            
+            parameterType := ParameterInformation["Type"]
+            parameterDescription := ParameterInformation["Description"]
+            
+            methodInformation.addParameter(ParameterName, parameterDescription)
+
+        }
+
+        objectMethods.addMethod(MethodName, methodInformation)
+    }
+
+    ; Create the finished object
+    ObjectInstance := Objects[ObjectName]
+    objectInformation := ObjectInfo(ObjectName, ObjectInstance, objectMethods)
+
+    ; Add the completed object to the registry.
+    ObjectRegister.AddObject(ObjectName, objectInformation)
+}
+
+
+
+
+
+
+
+
 ; |----------------------------------|
 ; |--------Startup Configurator------|
 ; |----------------------------------|
+
+
+
 
 ; This is used to read ini files, and create hotkeys from them
 StartupConfigurator := MainStartupConfigurator("../config/UserProfiles/" . currentProfile, ObjectRegister)

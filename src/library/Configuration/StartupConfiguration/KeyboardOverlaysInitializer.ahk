@@ -30,7 +30,7 @@ Class KeyboardOverlaysInitializer{
                 this.ReadKeyboardOverlaySection(NewKeyboardOverlay, SectionName)
 
                 ; OverlayRegistry.addKeyboardOverlay(NewKeyboardOverlay, SectionName)
-                this.ObjectRegistry.GetObjectInfo("OverlayRegistry").addKeyboardOverlay(NewKeyboardOverlay, SectionName)
+                this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance().addKeyboardOverlay(NewKeyboardOverlay, SectionName)
                 ; TODO use the keyboardOVelray class to create a new keyboard overlay, which then columns are added to
                 ; TODO, each layer should have the "KeyboardOverlayKey" in it, which is then created there and such blah blah blah
             
@@ -84,7 +84,9 @@ Class KeyboardOverlaysInitializer{
 
     CreateHotkeyForKeyboardOverlay(sectionName, showKeyboardOverlayKey){
         ; instanceOfOverlay := this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetKeyboardOverlay(sectionName)
-        instanceOfRegistry := this.ObjectRegistry.GetObjectInfo("OverlayRegistry")
+        instanceOfRegistry := this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance()
+        
+
         HotKey(showKeyboardOverlayKey, (ThisHotkey) => instanceOfRegistry.ShowKeyboardOverlay(sectionName))
         ; TODO, this " up" should be added for all layers...
         HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => instanceOfRegistry.hideAllLayers())

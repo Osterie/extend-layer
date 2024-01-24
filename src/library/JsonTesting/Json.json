@@ -108,6 +108,28 @@
         }
     },
 
+    "BatteryController":{
+        "ObjectName": "Battery",
+        "ClassName": "BatteryController",
+        "Methods": {
+            "ToggleBatterySaver": {
+                "MethodName": "ToggleBatterySaver",
+                "Description": "Toggles the battery saver on and off",
+                "Parameters": []
+            },
+            "TurnOnBatterySaver": {
+                "MethodName": "TurnOnBatterySaver",
+                "Description": "Turns on the battery saver",
+                "Parameters": []
+            },
+            "TurnOffBatterySaver": {
+                "MethodName": "TurnOffBatterySaver",
+                "Description": "Turns off the battery saver",
+                "Parameters": []
+            }
+        }
+    },
+
     "FileExplorerNavigator":{
         "ObjectName": "FileExplorer",
         "ClassName": "FileExplorerNavigator",
@@ -122,6 +144,30 @@
                         "Description": "A path to a folder. from the root. Example: C:\\Users\\User\\Desktop\\Folder"
                     }
                 ]
+            }
+        }
+    },
+
+    "KeyboardOverlayRegistry": {
+        "ObjectName": "OverlayRegistry",
+        "ClassName": "KeyboardOverlayRegistry",
+        "Methods": {
+            "ToggleKeyboardOverlay": {
+                "MethodName": "ToggleKeyboardOverlay",
+                "Description": "Toggles the keyboard overlay",
+                "Parameters": []
+            }
+        }
+    },
+
+    "WebNavigator":{
+        "ObjectName": "WebSearcher",
+        "ClassName": "WebNavigator",
+        "Methods": {
+            "CloseTabsToTheRight": {
+                "MethodName": "CloseTabsToTheRight",
+                "Description": "Closes all tabs to the right of the active tab in google chrome",
+                "Parameters": []
             }
         }
     },
