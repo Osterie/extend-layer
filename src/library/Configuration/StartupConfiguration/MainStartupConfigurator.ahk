@@ -20,7 +20,11 @@ Class MainStartupConfigurator{
 
         keyboardsSettings := this.profile . "\Keyboards.ini"
         this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(keyboardsSettings, this.objectRegistry)
-        this.HotkeyInitializerInstance := HotkeyInitializer(keyboardsSettings, this.objectRegistry)
+
+        jsonStringFunctionalityInformation := FileRead(".\library\JsonTesting\keyBinds.json", "UTF-8")
+        json := jxon_load(&jsonStringFunctionalityInformation)
+
+        this.HotkeyInitializerInstance := HotkeyInitializer(json, this.objectRegistry)
     }
 
     ReadKeysToNewActionsBySection(section){

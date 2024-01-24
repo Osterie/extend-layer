@@ -289,9 +289,6 @@
         "Column5": "5, \"School\"",
         "Column6": "6, \"Mappe\""
     },
-    "TertiaryLayer-DefaultKeys": {
-        
-    },
     "TertiaryLayer": {
         "ToggleKey": "+CapsLock"
     },
