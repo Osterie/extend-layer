@@ -91,7 +91,7 @@ PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := "../config/UserProfiles/" . CURRENT
 PATH_TO_CURRENT_KEYBOARD_LAYOUT := "../config/UserProfiles/" . CURRENT_PROFILE_NAME . "\Keyboards.json"
 
 jsonStringFunctionalityInformation := FileRead(PATH_TO_OBJECT_INFO, "UTF-8")
-json := jxon_load(&jsonStringFunctionalityInformation)
+allClassesInformationJson := jxon_load(&jsonStringFunctionalityInformation)
 
 
 keyboardSettingsString := FileRead(PATH_TO_CURRENT_KEYBOARD_LAYOUT, "UTF-8")
@@ -250,7 +250,7 @@ layers.addLayerIndicator(2, "Red")
 ObjectRegister := ObjectRegistry()
 
 ; TODO! add try catch to all of these. If one of these informations are missing something wrong will happen!
-For ClassName , ClassInformation in json{
+For ClassName , ClassInformation in allClassesInformationJson{
     
     ObjectName := ClassInformation["ObjectName"]
     className := ClassInformation["ClassName"]
