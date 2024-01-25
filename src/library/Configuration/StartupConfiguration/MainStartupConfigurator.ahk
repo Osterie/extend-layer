@@ -10,21 +10,13 @@
 
 Class MainStartupConfigurator{
 
-    profile := ""
     ObjectRegistry := ""
-
     KeyboardOverlayInitializerInstance := ""
     HotkeyInitializerInstance := ""
 
 
-    __New(profile, objectRegistry){
-        this.profile := profile
+    __New(keyboardSettingsJsonObject, objectRegistry){
         this.objectRegistry := objectRegistry
-
-        keyboardsSettingsFileLocation := this.profile . "\Keyboards.json"
-
-        keyboardSettingsString := FileRead(keyboardsSettingsFileLocation, "UTF-8")
-        keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
 
         this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(keyboardSettingsJsonObject, this.objectRegistry)
 

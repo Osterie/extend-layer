@@ -81,6 +81,23 @@ Hotstring( "::a@", eMail)
 Hotstring("::@p", password)
 
 
+; ------------Global or whatever stusff----------------
+
+PATH_TO_OBJECT_INFO := "..\config\ObjectInfo.json"
+PATH_TO_META_INI_FILE := "..\config\meta.ini"
+CURRENT_PROFILE_NAME := iniRead(PATH_TO_META_INI_FILE, "General", "activeUserProfile")
+PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := "../config/UserProfiles/" . CURRENT_PROFILE_NAME . "/ClassObjects.ini"
+
+PATH_TO_CURRENT_KEYBOARD_LAYOUT := "../config/UserProfiles/" . CURRENT_PROFILE_NAME . "\Keyboards.json"
+
+jsonStringFunctionalityInformation := FileRead(PATH_TO_OBJECT_INFO, "UTF-8")
+json := jxon_load(&jsonStringFunctionalityInformation)
+
+
+keyboardSettingsString := FileRead(PATH_TO_CURRENT_KEYBOARD_LAYOUT, "UTF-8")
+keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
+
+
 ; |-------------------------------------------|
 ; |----------- OBJECT CREATION ---------------|
 ; |-------------------------------------------|
@@ -100,12 +117,11 @@ Class Main{
 
 Objects := Map()
 
-currentProfile := iniRead("..\config\meta.ini", "General", "activeUserProfile")
 
 ; Used to control mouse actions, and disable/enable mouse
 MouseInstance := Mouse()
 ; Sets the click speed of the auto clicker
-mouseCps := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "Mouse", "AutoClickerClickCps")
+mouseCps := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Mouse", "AutoClickerClickCps")
 MouseInstance.SetAutoClickerClickCps(mouseCps)
 Objects["MouseInstance"] := MouseInstance
 
@@ -119,7 +135,7 @@ Objects["ProcessManagerInstance"] := ProcessManagerInstance
 
 
 ; Allows opening cmd pathed to the current file location for vs code and file explorer.
-commandPromptDefaultPath := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "CommandPrompt", "DefaultPath")
+commandPromptDefaultPath := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "CommandPrompt", "DefaultPath")
 CommandPrompt := CommandPromptOpener(commandPromptDefaultPath)
 Objects["CommandPrompt"] := CommandPrompt
 
@@ -145,7 +161,7 @@ PrivacyController := ScreenPrivacyController()
 PrivacyController.CreateGui()
 ; Sets the countdown for the screen hider to 3 minutes. (change to your screen sleep time)
 ; This shows a countdown on the screen, and when it reaches 0, the screen goes to sleep
-monitorSleepTimeMinutes := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "PrivacyController", "MonitorSleepTimeMinutes")
+monitorSleepTimeMinutes := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "PrivacyController", "MonitorSleepTimeMinutes")
 PrivacyController.ChangeCountdown(monitorSleepTimeMinutes,0)
 Objects["PrivacyController"] := PrivacyController
 
@@ -162,8 +178,8 @@ MonitorInstance := Monitor()
 Objects["MonitorInstance"] := MonitorInstance
 
 ; Used to switch between power saver mode and normal power mode (does not work as expected currently, percentage to switch to power saver is changed, but power saver is never turned on...)
-powerSaverModeGUID := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "Battery", "PowerSaverModeGUID")
-defaultPowerModeGUID := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "Battery", "DefaultPowerModeGUID")
+powerSaverModeGUID := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Battery", "PowerSaverModeGUID")
+defaultPowerModeGUID := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Battery", "DefaultPowerModeGUID")
 Battery := BatteryController(50, 50)
 Battery.setPowerSaverModeGUID(powerSaverModeGUID)
 Battery.setDefaultPowerModeGUID(defaultPowerModeGUID)
@@ -171,7 +187,7 @@ Battery.setDefaultPowerModeGUID(defaultPowerModeGUID)
 Objects["Battery"] := Battery
 
 ; Used to search for stuff in the browser, translate, and excecute shortcues like close tabs to the right in browser
-chatGptLoadTime := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "WebNavigator", "chatGptLoadTime")
+chatGptLoadTime := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "WebNavigator", "chatGptLoadTime")
 WebSearcher := WebNavigator()
 WebSearcher.SetChatGptLoadTime(chatGptLoadTime)
 Objects["WebSearcher"] := WebSearcher
@@ -180,7 +196,7 @@ Objects["WebSearcher"] := WebSearcher
 UnautorizedUserDetector := UnauthorizedUseDetector()
 Objects["UnautorizedUserDetector"] := UnautorizedUserDetector
 
-lockComputerOnTaskBarClick := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "UnauthorizedUseDetector", "lockComputerOnTaskBarClick")
+lockComputerOnTaskBarClick := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "UnauthorizedUseDetector", "lockComputerOnTaskBarClick")
 
 if (lockComputerOnTaskBarClick = "true"){
     UnautorizedUserDetector.ActivateLockComputerOnTaskBarClick()
@@ -233,10 +249,6 @@ layers.addLayerIndicator(2, "Red")
 
 ObjectRegister := ObjectRegistry()
 
-
-jsonStringFunctionalityInformation := FileRead(".\library\JsonTesting\Json.json")
-json := jxon_load(&jsonStringFunctionalityInformation)
-
 ; TODO! add try catch to all of these. If one of these informations are missing something wrong will happen!
 For ClassName , ClassInformation in json{
     
@@ -274,7 +286,7 @@ For ClassName , ClassInformation in json{
 ; |----------------------------------|
 
 ; This is used to read ini files, and create hotkeys from them
-StartupConfigurator := MainStartupConfigurator("../config/UserProfiles/" . currentProfile, ObjectRegister)
+StartupConfigurator := MainStartupConfigurator(keyboardSettingsJsonObject, ObjectRegister)
 
 ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
 StartupConfigurator.ReadAllKeyboardOverlays()
