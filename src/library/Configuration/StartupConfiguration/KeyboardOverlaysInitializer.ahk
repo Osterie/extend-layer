@@ -28,18 +28,9 @@ Class KeyboardOverlaysInitializer{
                 instanceOfRegistry := this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance()
 
                 instanceOfRegistry.addKeyboardOverlay(NewKeyboardOverlay, key)
-                ; TODO use the keyboardOVelray class to create a new keyboard overlay, which then columns are added to
-                ; TODO, each layer should have the "KeyboardOverlayKey" in it, which is then created there and such blah blah blah
                 
                 showKeyboardOverlayKey := value["ShowKeyboardOverlayKey"]
                 
-                ; HotKey(oldHotKey, (ThisHotkey) => this.SendKeysDown(newKeysDown, newHotKeyModifiers)) 
-
-                ; HotKey(oldHotKey . " Up", (ThisHotkey) => this.SendKeysUp(newKeysUp, newHotKeyModifiers))
-                
-                ; HotKey(showKeyboardOverlayKey, (ThisHotkey) => instanceOfRegistry.ShowKeyboardOverlay(key))
-                ; ; TODO, this " up" should be added for all layers...
-                ; HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => instanceOfRegistry.hideAllLayers())
             }
         }
     }
@@ -66,11 +57,9 @@ Class KeyboardOverlaysInitializer{
                     showKeyboardOverlayKey := this.jsonFile[key]["ShowKeyboardOverlayKey"]
                     ; TODO use the keyboardOVelray class to create a new keyboard overlay, which then columns are added to
                     ; TODO, each layer should have the "KeyboardOverlayKey" in it, which is then created there and such blah blah blah
-                    this.CreateHotkeyForKeyboardOverlay(layerSection, showKeyboardOverlayKey)
+                    this.CreateHotkeyForKeyboardOverlay(key, showKeyboardOverlayKey)
                 }
             }
-            msgbox("created hotkey for " . layerSection)
-
         }
         catch{
             ; overlay does not exist...
