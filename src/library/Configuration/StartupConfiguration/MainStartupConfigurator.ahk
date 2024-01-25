@@ -32,8 +32,8 @@ Class MainStartupConfigurator{
     }
 
     ReadKeysToNewActionsBySection(section){
-        this.HotkeyInitializerInstance.InitializeAllDefaultKeyToNewKeys(section . "-DefaultKeys")
-        this.HotkeyInitializerInstance.InitializeAllDefaultKeysToFunctions(section . "-Functions")
+        this.HotkeyInitializerInstance.InitializeHotkeys(section . "-Hotkeys")
+        ; this.HotkeyInitializerInstance.InitializeAllDefaultKeysToFunctions(section . "-Functions")
         this.KeyboardOverlayInitializerInstance.CreateHotkeysForKeyboardOverlaysByLayerSection(section . "-KeyboardOverlay")
     }
 

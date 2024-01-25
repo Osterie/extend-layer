@@ -15,38 +15,32 @@ Class HotkeyInitializer{
     }
     
     InitializeHotkeys(keyboardLayerName){
-        currentKeyboardLayerInformation := this.jsonFile[section]
+        currentKeyboardLayerInformation := this.jsonFile[keyboardLayerName]
         For OriginalKeybind, newKeyBindInformation in currentKeyboardLayerInformation{
-            newKeyBind := newKeyBindInformation["key"]
-            newKeyBindModifiers := newKeyBindInformation["modifiers"]
-
             if (newKeyBindInformation["isObject"] == true){
                 this.InitializeDefaultKeyToFunction(OriginalKeybind, newKeyBindInformation)
             }
             else{
-                oldHotKey, newHotKey, newHotKeyModifiers := ""
-                this.InitializeDefaultKeyToNewKey(OriginalKeybind, newKeyBind, newKeyBindModifiers)
+                this.InitializeDefaultKeyToNewKey(OriginalKeybind, newKeyBindInformation)
             }
         }
-
-
     }
 
     ; this method is used to change a every normal keyboard key in a section, into a key which triggers a method call.
     ; Could be for example a method call which changes screen brightness
-    InitializeAllDefaultKeysToFunctions(section){
+    ; InitializeAllDefaultKeysToFunctions(section){
 
-        hotkeysToFunctions := this.jsonFile[section]
+    ;     hotkeysToFunctions := this.jsonFile[section]
 
-        For hotKeyStated , functionInformation in hotkeysToFunctions{
+    ;     For hotKeyStated , functionInformation in hotkeysToFunctions{
 
-            ; Turns the keyboard key into a hotkey, which triggers a method call.
-            this.InitializeDefaultKeyToFunction(hotKeyStated, functionInformation)
-        }
-    }
+    ;         ; Turns the keyboard key into a hotkey, which triggers a method call.
+    ;         this.InitializeDefaultKeyToFunction(hotKeyStated, functionInformation)
+    ;     }
+    ; }
 
     ; Used to change a single keyboard key into a key which triggers a class method call.
-    InitializeDefaultKeyToFunction(keyboardKey, functionInformation){
+    InitializeDefaultKeyToFunction(oldHotKey, functionInformation){
         
         objectName := functionInformation["ObjectName"]
 
@@ -58,24 +52,24 @@ Class HotkeyInitializer{
 
         objectMethodCall := ObjBindMethod(objectInstance, methodName, arguments*)
 
-        HotKey keyboardKey, (ThisHotkey) => (objectMethodCall)()
+        HotKey oldHotKey, (ThisHotkey) => (objectMethodCall)()
     }
 
-    InitializeAllDefaultKeyToNewKeys(section){
+    ; InitializeAllDefaultKeyToNewKeys(section){
 
-        hotKeyToNewHotKey := this.jsonFile[section]
+    ;     hotKeyToNewHotKey := this.jsonFile[section]
 
 
-        For hotKeyStated , newHotKeyInformation in hotKeyToNewHotKey{
+    ;     For hotKeyStated , newHotKeyInformation in hotKeyToNewHotKey{
 
-            newHotKey := newHotKeyInformation["key"]
-            newHotKeyModifiers := newHotKeyInformation["modifiers"]
+    ;         newHotKey := newHotKeyInformation["key"]
+    ;         newHotKeyModifiers := newHotKeyInformation["modifiers"]
 
-            ; Turns the keyboard key into a hotkey, which triggers a method call.
-            this.InitializeDefaultKeyToNewKey(hotKeyStated, newHotKey, newHotKeyModifiers)
-        }
+    ;         ; Turns the keyboard key into a hotkey, which triggers a method call.
+    ;         this.InitializeDefaultKeyToNewKey(hotKeyStated, newHotKey, newHotKeyModifiers)
+    ;     }
 
-    }
+    ; }
 
     ; !i am not sure if the below comments are true..
     ; a double pipe symbol (||) can be used to separate when one key is going to be changed to multiple keys.
@@ -83,6 +77,7 @@ Class HotkeyInitializer{
     InitializeDefaultKeyToNewKey(oldHotKey, newKeyInformation){
         newHotKey := newKeyInformation["key"]
         newHotKeyModifiers := newKeyInformation["modifiers"]
+        
         newKeysDown := this.CreateExcecutableKeysDown(newHotKey)
         newKeysUp := this.CreateExcecutableKeysUp(newHotKey)
 
