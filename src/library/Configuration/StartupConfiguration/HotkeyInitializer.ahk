@@ -14,6 +14,24 @@ Class HotkeyInitializer{
         this.IniReader := IniFileReader()
     }
     
+    InitializeHotkeys(keyboardLayerName){
+        currentKeyboardLayerInformation := this.jsonFile[section]
+        For OriginalKeybind, newKeyBindInformation in currentKeyboardLayerInformation{
+            newKeyBind := newKeyBindInformation["key"]
+            newKeyBindModifiers := newKeyBindInformation["modifiers"]
+
+            if (newKeyBindInformation["isObject"] == true){
+                this.InitializeDefaultKeyToFunction(OriginalKeybind, newKeyBindInformation)
+            }
+            else{
+                oldHotKey, newHotKey, newHotKeyModifiers := ""
+                this.InitializeDefaultKeyToNewKey(OriginalKeybind, newKeyBind, newKeyBindModifiers)
+            }
+        }
+
+
+    }
+
     ; this method is used to change a every normal keyboard key in a section, into a key which triggers a method call.
     ; Could be for example a method call which changes screen brightness
     InitializeAllDefaultKeysToFunctions(section){
@@ -62,7 +80,9 @@ Class HotkeyInitializer{
     ; !i am not sure if the below comments are true..
     ; a double pipe symbol (||) can be used to separate when one key is going to be changed to multiple keys.
     ; for example original key "a" to "b||c" means that when "a" is pressed, "b" and "c" will be pressed as well.
-    InitializeDefaultKeyToNewKey(oldHotKey, newHotKey, newHotKeyModifiers := ""){
+    InitializeDefaultKeyToNewKey(oldHotKey, newKeyInformation){
+        newHotKey := newKeyInformation["key"]
+        newHotKeyModifiers := newKeyInformation["modifiers"]
         newKeysDown := this.CreateExcecutableKeysDown(newHotKey)
         newKeysUp := this.CreateExcecutableKeysUp(newHotKey)
 

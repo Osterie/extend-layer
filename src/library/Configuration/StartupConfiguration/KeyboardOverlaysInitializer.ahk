@@ -11,6 +11,8 @@ Class KeyboardOverlaysInitializer{
     __New(jsonFile, objectRegistry){
         this.jsonFile := jsonFile
         this.objectRegistry := objectRegistry
+        this.instanceOfRegistry := this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance()
+
     }
 
     ; TODO add method to read which keys are used to show keyboard overlays, should be in the correct layer section, because only then should they activate
@@ -19,15 +21,14 @@ Class KeyboardOverlaysInitializer{
         For key, value in this.jsonFile{
             if (InStr(key, "KeyboardOverlay")){
 
-                ; OverlayRegistry := this.ObjectRegistry.GetObjectInfo("OverlayRegistry")
-
                 NewKeyboardOverlay := KeyboardOverlay()
                 NewKeyboardOverlay.CreateGui()
+                
                 this.ReadKeyboardOverlaySection(NewKeyboardOverlay, value["overlayElements"])
 
-                instanceOfRegistry := this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance()
+                this.instanceOfRegistry := this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance()
 
-                instanceOfRegistry.addKeyboardOverlay(NewKeyboardOverlay, key)
+                this.instanceOfRegistry.addKeyboardOverlay(NewKeyboardOverlay, key)
                 
                 showKeyboardOverlayKey := value["ShowKeyboardOverlayKey"]
                 
@@ -67,11 +68,7 @@ Class KeyboardOverlaysInitializer{
     }
 
     CreateHotkeyForKeyboardOverlay(sectionName, showKeyboardOverlayKey){
-        instanceOfRegistry := this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance()
-        
-
-        HotKey(showKeyboardOverlayKey, (ThisHotkey) => instanceOfRegistry.ShowKeyboardOverlay(sectionName))
-        ; TODO, this " up" should be added for all layers...
-        HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => instanceOfRegistry.hideAllLayers())
+        HotKey(showKeyboardOverlayKey, (ThisHotkey) => this.instanceOfRegistry.ShowKeyboardOverlay(sectionName))
+        HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => this.instanceOfRegistry.hideAllLayers())
     }
 }
