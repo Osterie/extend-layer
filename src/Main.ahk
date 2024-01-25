@@ -87,12 +87,10 @@ PATH_TO_OBJECT_INFO := "..\config\ObjectInfo.json"
 PATH_TO_META_INI_FILE := "..\config\meta.ini"
 CURRENT_PROFILE_NAME := iniRead(PATH_TO_META_INI_FILE, "General", "activeUserProfile")
 PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := "../config/UserProfiles/" . CURRENT_PROFILE_NAME . "/ClassObjects.ini"
-
 PATH_TO_CURRENT_KEYBOARD_LAYOUT := "../config/UserProfiles/" . CURRENT_PROFILE_NAME . "\Keyboards.json"
 
 jsonStringFunctionalityInformation := FileRead(PATH_TO_OBJECT_INFO, "UTF-8")
 allClassesInformationJson := jxon_load(&jsonStringFunctionalityInformation)
-
 
 keyboardSettingsString := FileRead(PATH_TO_CURRENT_KEYBOARD_LAYOUT, "UTF-8")
 keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
@@ -248,7 +246,7 @@ layers.addLayerIndicator(2, "Red")
 ; -----------Read JSON----------------
 
 ObjectRegister := ObjectRegistry()
-
+; TODO create a class for this and such....
 ; TODO! add try catch to all of these. If one of these informations are missing something wrong will happen!
 For ClassName , ClassInformation in allClassesInformationJson{
     

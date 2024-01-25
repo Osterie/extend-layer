@@ -2,7 +2,6 @@
 
 #Include ".\TreeViewFromIniFile.ahk"
 #Include ".\ListViewFromIniFileContent.ahk"
-#Include "..\library\FoldersAndFiles\IniFileReader.ahk"
 #Include "..\library\FoldersAndFiles\FolderManager.ahk"
 
 ; TODO have a hotkey which sends a given key(or hotkey) after a given delay.
@@ -12,8 +11,6 @@
 
 Class ExtraKeyboardsAppGui{
 
-    ; Used to read the contents of ini files
-    IniFileRead := ""
     ; Used to create the gui
     ExtraKeyboardsAppGui := ""
     ; Used to manage the preset user profiles, the user is only allowed to add a preset profile as a new profile
@@ -38,7 +35,6 @@ Class ExtraKeyboardsAppGui{
 
 
     __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile){
-        this.IniFileRead := IniFileReader()
         this.ExistingProfilesManager := FolderManager()
         this.PresetProfilesManager := FolderManager()
 

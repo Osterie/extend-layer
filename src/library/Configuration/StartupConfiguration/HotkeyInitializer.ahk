@@ -1,17 +1,13 @@
 #Requires AutoHotkey v2.0
 
-#Include "..\..\FoldersAndFiles\IniFileReader.ahk"
-
 Class HotkeyInitializer{
 
     jsonFile := ""
     ObjectRegistry := ""
-    IniReader := ""
 
     __New(jsonFile, objectRegistry){
         this.jsonFile := jsonFile
         this.ObjectRegistry := objectRegistry
-        this.IniReader := IniFileReader()
     }
     
     InitializeHotkeys(keyboardLayerName){
