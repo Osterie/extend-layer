@@ -24,16 +24,15 @@ Class MainStartupConfigurator{
         keyboardsSettingsFileLocation := this.profile . "\Keyboards.json"
 
         keyboardSettingsString := FileRead(keyboardsSettingsFileLocation, "UTF-8")
-        keyboardSettingsJson := jxon_load(&keyboardSettingsString)
+        keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
 
-        this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(keyboardSettingsJson, this.objectRegistry)
+        this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(keyboardSettingsJsonObject, this.objectRegistry)
 
-        this.HotkeyInitializerInstance := HotkeyInitializer(keyboardSettingsJson, this.objectRegistry)
+        this.HotkeyInitializerInstance := HotkeyInitializer(keyboardSettingsJsonObject, this.objectRegistry)
     }
 
     ReadKeysToNewActionsBySection(section){
         this.HotkeyInitializerInstance.InitializeHotkeys(section . "-Hotkeys")
-        ; this.HotkeyInitializerInstance.InitializeAllDefaultKeysToFunctions(section . "-Functions")
         this.KeyboardOverlayInitializerInstance.CreateHotkeysForKeyboardOverlaysByLayerSection(section . "-KeyboardOverlay")
     }
 
