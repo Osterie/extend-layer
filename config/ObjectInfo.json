@@ -312,5 +312,33 @@
                 "Parameters": []
             }
         }
+    },
+    "LayerIndicatorController":{
+        "ObjectName": "layers",
+        "ClassName": "LayerIndicatorController",
+        "Methods": {
+            "toggleLayerIndicator":{
+                "MethodName": "toggleLayerIndicator",
+                "Description": "Toggles the layer indicator for a given layer",
+                "Parameters": [
+                    {
+                        "Name": "layer",
+                        "Type": "int",
+                        "Description": "The layer to toggle the indicator for"
+                    }
+                ]
+            },
+            "cycleLayerIndicators":{
+                "MethodName": "cycleLayerIndicators",
+                "Description": "Cycles the layer indicators for a given layer",
+                "Parameters": [
+                    {
+                        "Name": "layer",
+                        "Type": "int",
+                        "Description": "The default layer to set if no layer is active."
+                    }
+                ]
+            }
+        }
     }
 }

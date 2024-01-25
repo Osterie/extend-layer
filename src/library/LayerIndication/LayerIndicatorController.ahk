@@ -58,8 +58,8 @@ Class LayerIndicatorController{
                 this.activeLayer := 1
             }
         }
-        this.layers.showLayerIndicator(this.activeLayer)
-        this.layers.hideInactiveLayers()
+        this.showLayerIndicator(this.activeLayer)
+        this.hideInactiveLayers()
     }
 
     ; sets activeLayer to 0

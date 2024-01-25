@@ -104,7 +104,7 @@ Class Main{
 
     Objects := Map()
     ObjectRegister := ObjectRegistry()
-
+    StartupConfigurator := ""
 
     __New(){
 
@@ -254,6 +254,8 @@ Class Main{
         layers.addLayerIndicator(1, "Green")
         layers.addLayerIndicator(2, "Red")
 
+        this.Objects["layers"] := layers
+
     }
 
     ReadObjectsInformationFromJson(){
@@ -300,10 +302,20 @@ Class Main{
         ; |----------------------------------|
 
         ; This is used to read ini files, and create hotkeys from them
-        StartupConfigurator := MainStartupConfigurator(keyboardSettingsJsonObject, this.ObjectRegister)
+        this.StartupConfigurator := MainStartupConfigurator(keyboardSettingsJsonObject, this.ObjectRegister)
 
         ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
-        StartupConfigurator.ReadAllKeyboardOverlays()
+        this.StartupConfigurator.ReadAllKeyboardOverlays()
+
+        
+    }
+
+    getStartupConfigurator(){
+        return this.StartupConfigurator
+    }
+
+    getLayerIndicatorController(){
+        return this.ObjectRegister.GetObjectInfo("layers").GetObjectInstance()
     }
 
     RunAppGui(){
@@ -338,6 +350,13 @@ Class Main{
 ; |-----------Layers-------------|
 ; |------------------------------|
 
+
+MainScript := Main()
+MainScript.Start()
+
+StartupConfigurator := MainScript.getStartupConfigurator()
+layers := MainScript.getLayerIndicatorController()
+
 StartupConfigurator.ReadKeysToNewActionsBySection("GlobalLayer")
 
 #HotIf layers.getActiveLayer() == 0
@@ -359,38 +378,38 @@ HotIf
 
 #HotIf layers.getActiveLayer() == 2 
 
-    ; Shows second keyboard overlay when shift is held down
-    ~Shift:: OverlayRegistry.showKeyboardOverlay("TertiaryLayerKeyboardOverlay1") ;SecondKeyboardOverlayDevices.ShowGui() 
+    ; ; Shows second keyboard overlay when shift is held down
+    ; ~Shift:: OverlayRegistry.showKeyboardOverlay("TertiaryLayerKeyboardOverlay1") ;SecondKeyboardOverlayDevices.ShowGui() 
 
-    ; Hides second keyboard overlay (and main just in case)
-    Shift up:: OverlayRegistry.hideAllLayers() 
+    ; ; Hides second keyboard overlay (and main just in case)
+    ; Shift up:: OverlayRegistry.hideAllLayers() 
 
     ; Toggles touch-screen
-    +1::{ 
-        TertiaryLayerKeyboardOverlay1.ToggleState("TouchScreen")
-        DeviceManipulator.ToggleTouchScreen()
-    } 
+    ; +1::{ 
+    ;     TertiaryLayerKeyboardOverlay1.ToggleState("TouchScreen")
+    ;     DeviceManipulator.ToggleTouchScreen()
+    ; } 
 
-    ; Toggles camera
-    +2::{ 
-        TertiaryLayerKeyboardOverlay1.ToggleState("Camera")
-        DeviceManipulator.ToggleCamera()
-    } 
+    ; ; Toggles camera
+    ; +2::{ 
+    ;     TertiaryLayerKeyboardOverlay1.ToggleState("Camera")
+    ;     DeviceManipulator.ToggleCamera()
+    ; } 
 
-    ; Toggles bluetooth
-    +3::{ 
-        TertiaryLayerKeyboardOverlay1.ToggleState("Bluetooth")
-        DeviceManipulator.ToggleBluetooth()
-    } 
+    ; ; Toggles bluetooth
+    ; +3::{ 
+    ;     TertiaryLayerKeyboardOverlay1.ToggleState("Bluetooth")
+    ;     DeviceManipulator.ToggleBluetooth()
+    ; } 
 
-    ; Toggles touchpad
-    +4::{ 
-        TertiaryLayerKeyboardOverlay1.ToggleState("TouchPad")
-        DeviceManipulator.ToggleTouchPad()
-    }
+    ; ; Toggles touchpad
+    ; +4::{ 
+    ;     TertiaryLayerKeyboardOverlay1.ToggleState("TouchPad")
+    ;     DeviceManipulator.ToggleTouchPad()
+    ; }
 
-    ; Shows key history, used for debugging
-    b:: KeyHistory
+    ; ; Shows key history, used for debugging
+    ; b:: KeyHistory
 
 #HotIf
 
