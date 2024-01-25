@@ -20,11 +20,8 @@ Class ExtraKeyboardsAppGui{
     ; A constant which is the path to the preset profiles
 
     PATH_TO_EMPTY_PROFILE := ""
-
     PATH_TO_PRESET_PROFILES := ""
-
     PATH_TO_EXISTING_PROFILES := ""
-
     PATH_TO_META_FILE := ""
 
     currentProfile := ""
@@ -67,23 +64,23 @@ Class ExtraKeyboardsAppGui{
         
         
         ; TODO when add profile is clicked, user can choose a pre made profile, or create their own from scratch
-        editProfilesButton := this.ExtraKeyboardsAppGui.Add("Button", "Default w80 ym+1", "Edit profiles")
-        addProfileButton := this.ExtraKeyboardsAppGui.Add("Button", "Default w80 ym+1", "Add profile")
-        importProfileButton := this.ExtraKeyboardsAppGui.Add("Button", "Default w80 ym+1", "Import profile")
-        exportProfileButton := this.ExtraKeyboardsAppGui.Add("Button", "Default w80 ym+1", "Export profile")
+        ; editProfilesButton := this.ExtraKeyboardsAppGui.Add("Button", "Default w80 ym+1", "Edit profiles")
+        ; addProfileButton := this.ExtraKeyboardsAppGui.Add("Button", "Default w80 ym+1", "Add profile")
+        ; importProfileButton := this.ExtraKeyboardsAppGui.Add("Button", "Default w80 ym+1", "Import profile")
+        ; exportProfileButton := this.ExtraKeyboardsAppGui.Add("Button", "Default w80 ym+1", "Export profile")
         
 
-        editProfilesButton.OnEvent("Click", (*) =>  this.EditProfiles())
-        addProfileButton.OnEvent("Click", (*) => this.AddProfile())
-        importProfileButton.OnEvent("Click", (*) => this.ImportProfile())
-        exportProfileButton.OnEvent("Click", (*) => this.exportProfile())
+        ; editProfilesButton.OnEvent("Click", (*) =>  this.EditProfiles())
+        ; addProfileButton.OnEvent("Click", (*) => this.AddProfile())
+        ; importProfileButton.OnEvent("Click", (*) => this.ImportProfile())
+        ; exportProfileButton.OnEvent("Click", (*) => this.exportProfile())
               
         
         pathToKeyboardsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profilesDropDownMenu.Text . "\Keyboards.ini"
         pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profilesDropDownMenu.Text . "\ClassObjects.ini"
 
 
-        this.CreateTabs(pathToKeyboardsIniFile, pathToObjectsIniFile)
+        ; this.CreateTabs(pathToKeyboardsIniFile, pathToObjectsIniFile)
         
         
         this.ExtraKeyboardsAppGui.Show()

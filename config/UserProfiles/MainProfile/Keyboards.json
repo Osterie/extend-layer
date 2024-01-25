@@ -1,4 +1,19 @@
 {
+    "GlobalLayer-Hotkeys":{
+
+        "CapsLock": {
+            "isObject": true,
+            "ObjectName": "layers",
+            "MethodName": "toggleLayerIndicator",
+            "Parameters": [1]
+        },
+        "+CapsLock": {
+            "isObject": true,
+            "ObjectName": "layers",
+            "MethodName": "cycleLayerIndicators",
+            "Parameters": [2]
+        }
+    },
     "NormalLayer-Hotkeys": {
         "win+0": {
             "isObject": true,
@@ -36,9 +51,6 @@
             "MethodName": "SuspendActiveAutohotkeyScript",
             "Parameters": []
         }
-    },
-    "SecondaryLayer": {
-        "ToggleKey": "CapsLock"
     },
     "SecondaryLayer-Hotkeys": {
         "*q": {
@@ -384,9 +396,6 @@
                 "description": "Mappe"
             }
         }
-    },
-    "TertiaryLayer": {
-        "ToggleKey": "+CapsLock"
     },
     "TertiaryLayer-Hotkeys": {
         "a": {

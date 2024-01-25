@@ -102,6 +102,10 @@ keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
 
 Class Main{
 
+    Objects := Map()
+    ObjectRegister := ObjectRegistry()
+
+
     __New(){
 
 
@@ -109,227 +113,236 @@ Class Main{
 
     Start(){
 
+        this.InitializeObjectsForKeybinds()
+        this.InitializeObjectsForKeyboardOverlays()
+        this.ReadObjectsInformationFromJson()
+        this.ActivateHotkeys()
+        this.RunAppGui()
+
 
     }
-}
-
-Objects := Map()
 
 
-; Used to control mouse actions, and disable/enable mouse
-MouseInstance := Mouse()
-; Sets the click speed of the auto clicker
-mouseCps := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Mouse", "AutoClickerClickCps")
-MouseInstance.SetAutoClickerClickCps(mouseCps)
-Objects["MouseInstance"] := MouseInstance
+
+    InitializeObjectsForKeybinds(){
+        ; Used to control mouse actions, and disable/enable mouse
+        MouseInstance := Mouse()
+        ; Sets the click speed of the auto clicker
+        mouseCps := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Mouse", "AutoClickerClickCps")
+        MouseInstance.SetAutoClickerClickCps(mouseCps)
+        this.Objects["MouseInstance"] := MouseInstance
 
 
-KeyboardInstance := Keyboard()
-Objects["KeyboardInstance"] := KeyboardInstance
+        KeyboardInstance := Keyboard()
+        this.Objects["KeyboardInstance"] := KeyboardInstance
 
 
-ProcessManagerInstance := ProcessManager()
-Objects["ProcessManagerInstance"] := ProcessManagerInstance
+        ProcessManagerInstance := ProcessManager()
+        this.Objects["ProcessManagerInstance"] := ProcessManagerInstance
 
 
-; Allows opening cmd pathed to the current file location for vs code and file explorer.
-commandPromptDefaultPath := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "CommandPrompt", "DefaultPath")
-CommandPrompt := CommandPromptOpener(commandPromptDefaultPath)
-Objects["CommandPrompt"] := CommandPrompt
+        ; Allows opening cmd pathed to the current file location for vs code and file explorer.
+        commandPromptDefaultPath := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "CommandPrompt", "DefaultPath")
+        CommandPrompt := CommandPromptOpener(commandPromptDefaultPath)
+        this.Objects["CommandPrompt"] := CommandPrompt
 
 
-; Allows navigating the file explorer and opening the file explorer pathed to a given file location
-FileExplorer := FileExplorerNavigator()
-Objects["FileExplorer"] := FileExplorer
+        ; Allows navigating the file explorer and opening the file explorer pathed to a given file location
+        FileExplorer := FileExplorerNavigator()
+        this.Objects["FileExplorer"] := FileExplorer
 
 
-; Allows to write on the screen in a textarea
-OnScreenWriter := KeysPressedGui()
-OnScreenWriter.CreateGUI()
-Objects["OnScreenWriter"] := OnScreenWriter
+        ; Allows to write on the screen in a textarea
+        OnScreenWriter := KeysPressedGui()
+        OnScreenWriter.CreateGUI()
+        this.Objects["OnScreenWriter"] := OnScreenWriter
 
 
-; Enables / disables input (mouse or keyboard)
-ComputerInput := ComputerInputController()
-Objects["ComputerInput"] := ComputerInput
+        ; Enables / disables input (mouse or keyboard)
+        ComputerInput := ComputerInputController()
+        this.Objects["ComputerInput"] := ComputerInput
 
 
-; Used to hide screen and parts of the screen
-PrivacyController := ScreenPrivacyController()
-PrivacyController.CreateGui()
-; Sets the countdown for the screen hider to 3 minutes. (change to your screen sleep time)
-; This shows a countdown on the screen, and when it reaches 0, the screen goes to sleep
-monitorSleepTimeMinutes := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "PrivacyController", "MonitorSleepTimeMinutes")
-PrivacyController.ChangeCountdown(monitorSleepTimeMinutes,0)
-Objects["PrivacyController"] := PrivacyController
+        ; Used to hide screen and parts of the screen
+        PrivacyController := ScreenPrivacyController()
+        PrivacyController.CreateGui()
+        ; Sets the countdown for the screen hider to 3 minutes. (change to your screen sleep time)
+        ; This shows a countdown on the screen, and when it reaches 0, the screen goes to sleep
+        monitorSleepTimeMinutes := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "PrivacyController", "MonitorSleepTimeMinutes")
+        PrivacyController.ChangeCountdown(monitorSleepTimeMinutes,0)
+        this.Objects["PrivacyController"] := PrivacyController
 
-; Used to get the states of devices, like if bluetooth and such is enabled, also able to disable/enable these devices
-DeviceManipulator := DeviceManager()
-; launches a powershell script which gets the states of some devices, like if the mouse is enabled.
-; Having this activated will slow down the startup of the script significantly.
-; !DeviceManipulator.UpdateDevicesActionToToggle()
-Objects["DeviceManipulator"] := DeviceManipulator
-
-
-; Used to change brightness and gamma settings of the monitor
-MonitorInstance := Monitor()
-Objects["MonitorInstance"] := MonitorInstance
-
-; Used to switch between power saver mode and normal power mode (does not work as expected currently, percentage to switch to power saver is changed, but power saver is never turned on...)
-powerSaverModeGUID := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Battery", "PowerSaverModeGUID")
-defaultPowerModeGUID := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Battery", "DefaultPowerModeGUID")
-Battery := BatteryController(50, 50)
-Battery.setPowerSaverModeGUID(powerSaverModeGUID)
-Battery.setDefaultPowerModeGUID(defaultPowerModeGUID)
-; Battery.ActivateNormalPowerMode()
-Objects["Battery"] := Battery
-
-; Used to search for stuff in the browser, translate, and excecute shortcues like close tabs to the right in browser
-chatGptLoadTime := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "WebNavigator", "chatGptLoadTime")
-WebSearcher := WebNavigator()
-WebSearcher.SetChatGptLoadTime(chatGptLoadTime)
-Objects["WebSearcher"] := WebSearcher
+        ; Used to get the states of devices, like if bluetooth and such is enabled, also able to disable/enable these devices
+        DeviceManipulator := DeviceManager()
+        ; launches a powershell script which gets the states of some devices, like if the mouse is enabled.
+        ; Having this activated will slow down the startup of the script significantly.
+        ; !DeviceManipulator.UpdateDevicesActionToToggle()
+        this.Objects["DeviceManipulator"] := DeviceManipulator
 
 
-UnautorizedUserDetector := UnauthorizedUseDetector()
-Objects["UnautorizedUserDetector"] := UnautorizedUserDetector
+        ; Used to change brightness and gamma settings of the monitor
+        MonitorInstance := Monitor()
+        this.Objects["MonitorInstance"] := MonitorInstance
 
-lockComputerOnTaskBarClick := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "UnauthorizedUseDetector", "lockComputerOnTaskBarClick")
+        ; Used to switch between power saver mode and normal power mode (does not work as expected currently, percentage to switch to power saver is changed, but power saver is never turned on...)
+        powerSaverModeGUID := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Battery", "PowerSaverModeGUID")
+        defaultPowerModeGUID := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Battery", "DefaultPowerModeGUID")
+        Battery := BatteryController(50, 50)
+        Battery.setPowerSaverModeGUID(powerSaverModeGUID)
+        Battery.setDefaultPowerModeGUID(defaultPowerModeGUID)
+        ; Battery.ActivateNormalPowerMode()
+        this.Objects["Battery"] := Battery
 
-if (lockComputerOnTaskBarClick = "true"){
-    UnautorizedUserDetector.ActivateLockComputerOnTaskBarClick()
-}
-else{
-    UnautorizedUserDetector.DisableLockComputerOnTaskBarClick()
-}
-
-; |---------------------------------|
-; |-------Keyboard Overlays---------|
-; |---------------------------------|
-
-; |----------Main layer------------|
-
-; Shows an on screen overlay for the main keyboard layer which shows which urls can be went to using the number keys
-SecondaryLayerKeyboardOverlay1 := KeyboardOverlay()
-SecondaryLayerKeyboardOverlay1.CreateGui()
-Objects["SecondaryLayerKeyboardOverlay1"] := SecondaryLayerKeyboardOverlay1
-
-; Shows an on screen overlay for the SecondaryLayer keyboard layer which shows which file explorer paths can be went to using the number keys
-SecondaryLayerKeyboardOverlay2 := KeyboardOverlay()
-SecondaryLayerKeyboardOverlay2.CreateGui()
-Objects["SecondaryLayerKeyboardOverlay2"] := SecondaryLayerKeyboardOverlay2
-
-; |----------Second layer-----------|
-
-; Shows an on screen overlay for the main keyboard layer which shows which number keys to press to enable/disable devices
-TertiaryLayerKeyboardOverlay1 := KeyboardOverlay()
-TertiaryLayerKeyboardOverlay1.CreateGui()
-TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("1", "Touch Screen", DeviceManipulator.GetTouchScreenActionToToggle())
-TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("2", "Camera", DeviceManipulator.GetCameraActionToToggle())
-TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("3", "Blue tooth", DeviceManipulator.GetBluetoothActionToToggle())
-TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("4", "Touch Pad", DeviceManipulator.GetTouchPadActionToToggle())
-
-; |---------Overlay registry--------|
-
-OverlayRegistry := KeyboardOverlayRegistry()
-OverlayRegistry.addKeyboardOverlay(TertiaryLayerKeyboardOverlay1, "TertiaryLayerKeyboardOverlay1")
-Objects["OverlayRegistry"] := OverlayRegistry
-
-; |------------Layer indicators------------|
-
-; Used to switch the active layer
-layers := LayerIndicatorController()
-layers.addLayerIndicator(1, "Green")
-layers.addLayerIndicator(2, "Red")
+        ; Used to search for stuff in the browser, translate, and excecute shortcues like close tabs to the right in browser
+        chatGptLoadTime := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "WebNavigator", "chatGptLoadTime")
+        WebSearcher := WebNavigator()
+        WebSearcher.SetChatGptLoadTime(chatGptLoadTime)
+        this.Objects["WebSearcher"] := WebSearcher
 
 
-; -----------Read JSON----------------
+        UnautorizedUserDetector := UnauthorizedUseDetector()
+        this.Objects["UnautorizedUserDetector"] := UnautorizedUserDetector
 
-ObjectRegister := ObjectRegistry()
-; TODO create a class for this and such....
-; TODO! add try catch to all of these. If one of these informations are missing something wrong will happen!
-For ClassName , ClassInformation in allClassesInformationJson{
-    
-    ObjectName := ClassInformation["ObjectName"]
-    className := ClassInformation["ClassName"]
+        lockComputerOnTaskBarClick := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "UnauthorizedUseDetector", "lockComputerOnTaskBarClick")
 
-    objectMethods := MethodRegistry()
-    allMethodsOfClass := ClassInformation["Methods"]
-
-    For MethodName, MethodInformation in allMethodsOfClass{
-        
-        methodDescription := MethodInformation["Description"]
-        allMethodParameters := MethodInformation["Parameters"]
-        methodInformation := MethodInfo(methodName, methodDescription)
-        
-        For ParameterName, ParameterInformation in allMethodParameters{
-            
-            parameterType := ParameterInformation["Type"]
-            parameterDescription := ParameterInformation["Description"]
-            methodInformation.addParameter(ParameterName, parameterDescription)
+        if (lockComputerOnTaskBarClick = "true"){
+            UnautorizedUserDetector.ActivateLockComputerOnTaskBarClick()
         }
-        objectMethods.addMethod(MethodName, methodInformation)
+        else{
+            UnautorizedUserDetector.DisableLockComputerOnTaskBarClick()
+        }
     }
 
-    ; Create the finished object
-    ObjectInstance := Objects[ObjectName]
-    objectInformation := ObjectInfo(ObjectName, ObjectInstance, objectMethods)
+    InitializeObjectsForKeyboardOverlays(){
 
-    ; Add the completed object to the registry.
-    ObjectRegister.AddObject(ObjectName, objectInformation)
+        ; |---------------------------------|
+        ; |-------Keyboard Overlays---------|
+        ; |---------------------------------|
+
+        ; |----------Main layer------------|
+
+        ; Shows an on screen overlay for the main keyboard layer which shows which urls can be went to using the number keys
+        SecondaryLayerKeyboardOverlay1 := KeyboardOverlay()
+        SecondaryLayerKeyboardOverlay1.CreateGui()
+        this.Objects["SecondaryLayerKeyboardOverlay1"] := SecondaryLayerKeyboardOverlay1
+
+        ; Shows an on screen overlay for the SecondaryLayer keyboard layer which shows which file explorer paths can be went to using the number keys
+        SecondaryLayerKeyboardOverlay2 := KeyboardOverlay()
+        SecondaryLayerKeyboardOverlay2.CreateGui()
+        this.Objects["SecondaryLayerKeyboardOverlay2"] := SecondaryLayerKeyboardOverlay2
+
+        ; |----------Second layer-----------|
+
+        ; Shows an on screen overlay for the main keyboard layer which shows which number keys to press to enable/disable devices
+        TertiaryLayerKeyboardOverlay1 := KeyboardOverlay()
+        TertiaryLayerKeyboardOverlay1.CreateGui()
+        ; TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("1", "Touch Screen", DeviceManipulator.GetTouchScreenActionToToggle())
+        ; TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("2", "Camera", DeviceManipulator.GetCameraActionToToggle())
+        ; TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("3", "Blue tooth", DeviceManipulator.GetBluetoothActionToToggle())
+        ; TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("4", "Touch Pad", DeviceManipulator.GetTouchPadActionToToggle())
+
+        ; |---------Overlay registry--------|
+
+        OverlayRegistry := KeyboardOverlayRegistry()
+        OverlayRegistry.addKeyboardOverlay(TertiaryLayerKeyboardOverlay1, "TertiaryLayerKeyboardOverlay1")
+        this.Objects["OverlayRegistry"] := OverlayRegistry
+
+        ; |------------Layer indicators------------|
+
+        ; Used to switch the active layer
+        layers := LayerIndicatorController()
+        layers.addLayerIndicator(1, "Green")
+        layers.addLayerIndicator(2, "Red")
+
+    }
+
+    ReadObjectsInformationFromJson(){
+
+        ; -----------Read JSON----------------
+
+        ; TODO create a class for this and such....
+        ; TODO! add try catch to all of these. If one of these informations are missing something wrong will happen!
+        For ClassName , ClassInformation in allClassesInformationJson{
+            
+            ObjectName := ClassInformation["ObjectName"]
+            className := ClassInformation["ClassName"]
+
+            objectMethods := MethodRegistry()
+            allMethodsOfClass := ClassInformation["Methods"]
+
+            For MethodName, MethodInformation in allMethodsOfClass{
+                
+                methodDescription := MethodInformation["Description"]
+                allMethodParameters := MethodInformation["Parameters"]
+                methodInformation := MethodInfo(methodName, methodDescription)
+                
+                For ParameterName, ParameterInformation in allMethodParameters{
+                    
+                    parameterType := ParameterInformation["Type"]
+                    parameterDescription := ParameterInformation["Description"]
+                    methodInformation.addParameter(ParameterName, parameterDescription)
+                }
+                objectMethods.addMethod(MethodName, methodInformation)
+            }
+
+            ; Create the finished object
+            ObjectInstance := this.Objects[ObjectName]
+            objectInformation := ObjectInfo(ObjectName, ObjectInstance, objectMethods)
+
+            ; Add the completed object to the registry.
+            this.ObjectRegister.AddObject(ObjectName, objectInformation)
+        }
+    }
+
+    ActivateHotkeys(){
+        ; |----------------------------------|
+        ; |--------Startup Configurator------|
+        ; |----------------------------------|
+
+        ; This is used to read ini files, and create hotkeys from them
+        StartupConfigurator := MainStartupConfigurator(keyboardSettingsJsonObject, this.ObjectRegister)
+
+        ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
+        StartupConfigurator.ReadAllKeyboardOverlays()
+    }
+
+    RunAppGui(){
+
+    }
 }
-
-; |----------------------------------|
-; |--------Startup Configurator------|
-; |----------------------------------|
-
-; This is used to read ini files, and create hotkeys from them
-StartupConfigurator := MainStartupConfigurator(keyboardSettingsJsonObject, ObjectRegister)
-
-; Reads and initializes all keyboard overlays, based on how they are created in the ini file
-StartupConfigurator.ReadAllKeyboardOverlays()
 
 ; |-----------------------------------|
 ; |----------Layer switchers----------|
 ; |-----------------------------------|
 
-; changes the layer to 0 if it is not zero, or 1 if it is zero
-NumLock::
-CapsLock:: layers.toggleLayerIndicator(1)
+; ; changes the layer to 0 if it is not zero, or 1 if it is zero
+; NumLock::
+; CapsLock:: layers.toggleLayerIndicator(1)
 
-; Changes the layer to 2 if it is zero, and then cycles through the layers if it is not zero
-+NumLock::
-+CapsLock:: {
-
-    activeLayer := layers.getActiveLayer()
-    
-    if (activeLayer == 0){
-        layers.showLayerIndicator(2)
-    }
-    else{
-
-        layers.cycleLayerIndicators()
-        newActiveLayer := layers.getActiveLayer()
-        layers.showLayerIndicator(newActiveLayer)
-        layers.hideInactiveLayers()
-    }
-}
+; ; Changes the layer to 2 if it is zero, and then cycles through the layers if it is not zero
+; +NumLock::
+; +CapsLock:: {
+;     layers.cycleLayerIndicators(2)
+; }
 
 ; Used to suspend script, suspending the script means noen of its functionalities are active.
 ; Pressing the same key combination again enables the script again
 ; SuspendExempt means this hotkey will not be suspended when the script is suspended.
 ; Since this hotkey suspends the script it is important that it is not suspended itself.
-#SuspendExempt
-^!s:: ProcessManagerInstance.SuspendActiveAutohotkeyScript()  ; Ctrl+Alt+S
-#SuspendExempt False
+; #SuspendExempt
+; ^!s:: ProcessManagerInstance.SuspendActiveAutohotkeyScript()  ; Ctrl+Alt+S
+; #SuspendExempt False
 
 
 ; |------------------------------|
 ; |-----------Layers-------------|
 ; |------------------------------|
 
+StartupConfigurator.ReadKeysToNewActionsBySection("GlobalLayer")
+
 #HotIf layers.getActiveLayer() == 0
 #HotIf
+
 
 HotIf "layers.getActiveLayer() == 0"
     ; Reads and initializes all the hotkeys for the normal keyboard layer, based on how they are created in the ini file

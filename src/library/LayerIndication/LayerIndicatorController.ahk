@@ -47,12 +47,19 @@ Class LayerIndicatorController{
     }
 
     ; increases activeLayer by 1, if upperLimit is reached, it is set back to 1 (Note, not does not go back to 0)
-    cycleLayerIndicators(){
+    cycleLayerIndicators(defaultSetLayer){
         layersAmount := this.layers.Length
-        this.activeLayer := this.activeLayer+1 
-        if( this.activeLayer == layersAmount+1){
-            this.activeLayer := 1
+        if (this.activeLayer == 0){
+            this.activeLayer := defaultSetLayer
         }
+        else{
+            this.activeLayer := this.activeLayer+1 
+            if(this.activeLayer == layersAmount+1){
+                this.activeLayer := 1
+            }
+        }
+        this.layers.showLayerIndicator(this.activeLayer)
+        this.layers.hideInactiveLayers()
     }
 
     ; sets activeLayer to 0
