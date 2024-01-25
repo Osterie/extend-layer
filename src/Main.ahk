@@ -378,40 +378,8 @@ HotIf "layers.getActiveLayer() == 1"
 HotIf
 
 #HotIf layers.getActiveLayer() == 2 
-
-    ; ; Shows second keyboard overlay when shift is held down
-    ; ~Shift:: OverlayRegistry.showKeyboardOverlay("TertiaryLayerKeyboardOverlay1") ;SecondKeyboardOverlayDevices.ShowGui() 
-
-    ; ; Hides second keyboard overlay (and main just in case)
-    ; Shift up:: OverlayRegistry.hideAllLayers() 
-
-    ; Toggles touch-screen
-    ; +1::{ 
-    ;     TertiaryLayerKeyboardOverlay1.ToggleState("TouchScreen")
-    ;     DeviceManipulator.ToggleTouchScreen()
-    ; } 
-
-    ; ; Toggles camera
-    ; +2::{ 
-    ;     TertiaryLayerKeyboardOverlay1.ToggleState("Camera")
-    ;     DeviceManipulator.ToggleCamera()
-    ; } 
-
-    ; ; Toggles bluetooth
-    ; +3::{ 
-    ;     TertiaryLayerKeyboardOverlay1.ToggleState("Bluetooth")
-    ;     DeviceManipulator.ToggleBluetooth()
-    ; } 
-
-    ; ; Toggles touchpad
-    ; +4::{ 
-    ;     TertiaryLayerKeyboardOverlay1.ToggleState("TouchPad")
-    ;     DeviceManipulator.ToggleTouchPad()
-    ; }
-
     ; ; Shows key history, used for debugging
     ; b:: KeyHistory
-
 #HotIf
 
 HotIf "layers.getActiveLayer() == 2"

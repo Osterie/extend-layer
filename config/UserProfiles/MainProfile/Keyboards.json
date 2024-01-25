@@ -512,5 +512,26 @@
             "MethodName": "ToggleAutoClicker",
             "Parameters": []
         }
+    },
+    "TertiaryLayer-KeyboardOverlay1": {
+        "ShowKeyboardOverlayKey": "~Control",
+        "overlayElements":{
+            "Column1": {
+                "key": "1",
+                "description": "Touch Screen"
+            },
+            "Column2": {
+                "key": "2",
+                "description": "Camera"
+            },
+            "Column3": {
+                "key": "3",
+                "description": "Blue tooth"
+            },
+            "Column4": {
+                "key": "4",
+                "description": "Touch Pad"
+            }
+        }
     }
 }
