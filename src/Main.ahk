@@ -102,21 +102,6 @@ Objects := Map()
 
 currentProfile := iniRead("..\config\meta.ini", "General", "activeUserProfile")
 
-
-; TODO, create a custom object to be added to the registry, instead of adding a instance of a class.
-; TODO, a class could be created to make these objects hold more information. 
-; TODO, a class should also be created for storing the objects methods.
-; I suggest having these fields in the main class:
-; - Object name (the name of the created object, for example MouseInstance, which is an instance of a Mouse())
-; - Method name(s) with description(s)
-
-; To have in the class to store methods information:
-; - Method name(s)
-; - Method description(s)
-; - Method parameters(s) for each method
-
-
-
 ; Used to control mouse actions, and disable/enable mouse
 MouseInstance := Mouse()
 ; Sets the click speed of the auto clicker
@@ -132,23 +117,28 @@ Objects["KeyboardInstance"] := KeyboardInstance
 ProcessManagerInstance := ProcessManager()
 Objects["ProcessManagerInstance"] := ProcessManagerInstance
 
+
 ; Allows opening cmd pathed to the current file location for vs code and file explorer.
 commandPromptDefaultPath := IniRead("../config/UserProfiles/" . currentProfile . "/ClassObjects.ini", "CommandPrompt", "DefaultPath")
 CommandPrompt := CommandPromptOpener(commandPromptDefaultPath)
 Objects["CommandPrompt"] := CommandPrompt
 
+
 ; Allows navigating the file explorer and opening the file explorer pathed to a given file location
 FileExplorer := FileExplorerNavigator()
 Objects["FileExplorer"] := FileExplorer
+
 
 ; Allows to write on the screen in a textarea
 OnScreenWriter := KeysPressedGui()
 OnScreenWriter.CreateGUI()
 Objects["OnScreenWriter"] := OnScreenWriter
 
+
 ; Enables / disables input (mouse or keyboard)
 ComputerInput := ComputerInputController()
 Objects["ComputerInput"] := ComputerInput
+
 
 ; Used to hide screen and parts of the screen
 PrivacyController := ScreenPrivacyController()
@@ -199,11 +189,10 @@ else{
     UnautorizedUserDetector.DisableLockComputerOnTaskBarClick()
 }
 
-
 ; |---------------------------------|
 ; |-------Keyboard Overlays---------|
 ; |---------------------------------|
-; TODO should be done in ini file and such
+
 ; |----------Main layer------------|
 
 ; Shows an on screen overlay for the main keyboard layer which shows which urls can be went to using the number keys
@@ -302,8 +291,6 @@ CapsLock:: layers.toggleLayerIndicator(1)
 +NumLock::
 +CapsLock:: {
 
-    ; layers.CycleLayers(2)
-
     activeLayer := layers.getActiveLayer()
     
     if (activeLayer == 0){
@@ -344,9 +331,7 @@ HotIf
 
 
 HotIf "layers.getActiveLayer() == 1"
-    
     StartupConfigurator.ReadKeysToNewActionsBySection("SecondaryLayer")
-
 HotIf
 
 #HotIf layers.getActiveLayer() == 2 
@@ -387,9 +372,7 @@ HotIf
 #HotIf
 
 HotIf "layers.getActiveLayer() == 2"
-    
     StartupConfigurator.ReadKeysToNewActionsBySection("TertiaryLayer")
-
 HotIf
 
 ; Used to show user the script is enabled
