@@ -12,7 +12,6 @@ Class KeyboardOverlaysInitializer{
         this.jsonFile := jsonFile
         this.objectRegistry := objectRegistry
         this.instanceOfRegistry := this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance()
-
     }
 
     ; TODO add method to read which keys are used to show keyboard overlays, should be in the correct layer section, because only then should they activate
@@ -20,37 +19,29 @@ Class KeyboardOverlaysInitializer{
 
         For key, value in this.jsonFile{
             if (InStr(key, "KeyboardOverlay")){
-
                 NewKeyboardOverlay := KeyboardOverlay()
                 NewKeyboardOverlay.CreateGui()
-                
-                this.ReadKeyboardOverlaySection(NewKeyboardOverlay, value["overlayElements"])
-
+                this.fillKeyboardOverlayInformation(NewKeyboardOverlay, value["overlayElements"])
                 this.instanceOfRegistry := this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance()
-
                 this.instanceOfRegistry.addKeyboardOverlay(NewKeyboardOverlay, key)
-                
-                showKeyboardOverlayKey := value["ShowKeyboardOverlayKey"]
-                
             }
         }
     }
 
-    ReadKeyboardOverlaySection(KeyboardOverlay, KeyboardOverlayElements){
+    fillKeyboardOverlayInformation(KeyboardOverlay, KeyboardOverlayElements){
         For overlayElementName, overlayElementInformation in KeyboardOverlayElements{
             key := overlayElementInformation["key"]
             description := overlayElementInformation["description"]
-            this.SetKeyboardOverlayColumn(KeyboardOverlay, key, description)
+            this.SetKeyboardOverlayValues(KeyboardOverlay, key, description)
         }
         
     }
 
-    SetKeyboardOverlayColumn(KeyboardOverlay, ColumnHelperKey, ColumnFriendlyName){
+    SetKeyboardOverlayValues(KeyboardOverlay, ColumnHelperKey, ColumnFriendlyName){
         KeyboardOverlay.AddStaticColumn(ColumnHelperKey, ColumnFriendlyName)
     }
 
     CreateHotkeysForKeyboardOverlaysByLayerSection(layerSection){
-
         try{
             for key, value in this.jsonFile{
                 if (InStr(key, layerSection)){
