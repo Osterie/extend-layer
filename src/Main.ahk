@@ -323,32 +323,10 @@ Class Main{
     }
 }
 
-; |-----------------------------------|
-; |----------Layer switchers----------|
-; |-----------------------------------|
 
-; ; changes the layer to 0 if it is not zero, or 1 if it is zero
-; NumLock::
-; CapsLock:: layers.toggleLayerIndicator(1)
-
-; ; Changes the layer to 2 if it is zero, and then cycles through the layers if it is not zero
-; +NumLock::
-; +CapsLock:: {
-;     layers.cycleLayerIndicators(2)
-; }
-
-; Used to suspend script, suspending the script means noen of its functionalities are active.
-; Pressing the same key combination again enables the script again
-; SuspendExempt means this hotkey will not be suspended when the script is suspended.
-; Since this hotkey suspends the script it is important that it is not suspended itself.
-; #SuspendExempt
-; ^!s:: ProcessManagerInstance.SuspendActiveAutohotkeyScript()  ; Ctrl+Alt+S
-; #SuspendExempt False
-
-
-; |------------------------------|
-; |-----------Layers-------------|
-; |------------------------------|
+#SuspendExempt
+^!s::Suspend  ; Ctrl+Alt+S
+#SuspendExempt False
 
 
 MainScript := Main()

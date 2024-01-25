@@ -43,8 +43,6 @@ Class ProcessManager{
     }
     
     SuspendActiveAutohotkeyScript(){
-        #SuspendExempt
-        Suspend
-        #SuspendExempt False    
+        Suspend    
     }
 }
