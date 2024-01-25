@@ -31,4 +31,8 @@ Class MainStartupConfigurator{
     ReadAllKeyboardOverlays(){
         this.KeyboardOverlayInitializerInstance.ReadAllKeyboardOverlays()
     }
+
+    CreateGlobalHotkeysForAllKeyboardOverlays(){
+        this.KeyboardOverlayInitializerInstance.HotKeyForHidingKeyboardOverlaysUseMeGlobally()
+    }
 }

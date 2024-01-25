@@ -60,4 +60,18 @@ Class KeyboardOverlaysInitializer{
         HotKey(showKeyboardOverlayKey, (ThisHotkey) => this.instanceOfRegistry.ShowKeyboardOverlay(sectionName))
         HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => this.instanceOfRegistry.hideAllLayers())
     }
+
+    HotKeyForHidingKeyboardOverlaysUseMeGlobally(){
+        try{
+            for key, value in this.jsonFile{
+                if (InStr(key, "KeyboardOverlay")){
+                    showKeyboardOverlayKey := this.jsonFile[key]["ShowKeyboardOverlayKey"]
+                    HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => this.instanceOfRegistry.hideAllLayers())
+                }
+            }
+        }
+        catch{
+            ; overlay does not exist...
+        }
+    }
 }

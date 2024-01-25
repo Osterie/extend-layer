@@ -358,6 +358,7 @@ StartupConfigurator := MainScript.getStartupConfigurator()
 layers := MainScript.getLayerIndicatorController()
 
 StartupConfigurator.ReadKeysToNewActionsBySection("GlobalLayer")
+StartupConfigurator.CreateGlobalHotkeysForAllKeyboardOverlays()
 
 #HotIf layers.getActiveLayer() == 0
 #HotIf
