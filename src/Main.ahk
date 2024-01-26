@@ -366,7 +366,7 @@ Class Main{
 
     RunAppGui(){
 
-        this.app := ExtraKeyboardsApp(this.keyboardSettingsJsonObject)
+        this.app := ExtraKeyboardsApp(this.keyboardSettingsJsonObject, this.ObjectRegister)
         this.app.Start()
 
         refreshHotkeys := ObjBindMethod(this, "eventProfileChanged")

@@ -3,6 +3,7 @@
 #Include ".\TreeViewFromIniFile.ahk"
 #Include ".\ProfileButtons.ahk"
 #Include ".\KeyboardLayerChanging.ahk"
+#Include ".\ListViewMaker.ahk"
 ; #Include ".\TreeViewFromJsonFile.ahk"
 ; #Include ".\ListViewFromJsonObject.ahk"
 #Include ".\ListViewFromIniFileContent.ahk"
@@ -34,10 +35,17 @@ Class ExtraKeyboardsAppGui{
     ; Gui part
     profilesDropDownMenu := ""
 
+    jsonFileConents := ""
+    activeObjectsRegistry := ""
 
-    __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonFileConents){
+
+    __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonFileConents, activeObjectsRegistry){
         this.ExistingProfilesManager := FolderManager()
         this.PresetProfilesManager := FolderManager()
+
+        this.activeObjectsRegistry := activeObjectsRegistry
+        this.jsonFileConents := jsonFileConents
+
 
 
         this.PATH_TO_EXISTING_PROFILES := pathToExistingProfiles
@@ -45,7 +53,6 @@ Class ExtraKeyboardsAppGui{
         this.PresetProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_PRESET_PROFILES)
         this.ExistingProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_EXISTING_PROFILES)
 
-        this.jsonFileConents := jsonFileConents
         this.PATH_TO_META_FILE := pathToMetaFile
 
         this.PATH_TO_MAIN_SCRIPT := pathToMainScript
@@ -93,12 +100,22 @@ Class ExtraKeyboardsAppGui{
 
         keyboardLayoutChanger := KeyboardLayerChanging()
         keyboardLayoutChanger.createElementsForGui(this.ExtraKeyboardsAppGui, jsonFileContents)
+        ; TODO use this.jsonwhatever ...
+        
+        
+        listViewElement := ListViewMaker(this.activeObjectsRegistry, jsonFileContents)
+        listViewElement.CreateListView(this.ExtraKeyboardsAppGui, ["KeyCombo","Action"])
+        
+        CreateListViewItems := ObjBindMethod(listViewElement, "SetNewListViewItemsByIniFileSection")
+        keyboardLayoutChanger.AddEventAction("ItemSelect", CreateListViewItems)
+
 
 
         ; this.CreateTreeViewWithAssociatedListViewFromJsonObject(jsonFileConents)
 
         Tab.UseTab(2)
         this.CreateTreeViewWithAssociatedListViewFromIniFile(pathToObjectsIniFile)
+
 
         Tab.UseTab(3)
         this.CreateDocumentationTab()
