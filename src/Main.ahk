@@ -120,10 +120,14 @@ Class Main{
 
     ; Main method used to start the script.
     Start(){
+        this.RunLogicalStartup()
+        ; this.RunAppGui()
+    }
+
+    RunLogicalStartup(*){
         this.UpdatePathsToInfo()
         this.InitializeMetaInfo()
         this.RunMainStartup()
-        this.RunAppGui()
     }
 
     UpdatePathsToInfo(){
@@ -138,23 +142,30 @@ Class Main{
         this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
     }
 
-    InitializeMetaInfo(*){
-
+    InitializeMetaInfo(){
         this.Objects := Map()
         this.ObjectRegister := ObjectRegistry()
         
         this.InitializeObjectsForKeybinds()
         this.InitializeObjectsForKeyboardOverlays()
         this.ReadObjectsInformationFromJson()
-
-    
-    
     }
 
     RunMainStartup(){
         this.InitializeMainStartupConfigurator()
         this.ReadAndMakeKeyboardOverlays()
         this.InitializeHotkeysForAllLayers()
+    }
+
+    InitializeMainStartupConfigurator(){
+        ; This is used to read ini files, and create hotkeys from them
+        this.StartupConfigurator := MainStartupConfigurator(this.keyboardSettingsJsonObject, this.ObjectRegister)
+    }
+
+    
+    ReadAndMakeKeyboardOverlays(){
+        ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
+        this.StartupConfigurator.ReadAllKeyboardOverlays()
     }
 
     InitializeHotkeysForAllLayers(){
@@ -179,9 +190,6 @@ Class Main{
         HotIf
     }
 
-    TestMethod(*){
-        msgbox("test")
-    }
 
     InitializeObjectsForKeybinds(){
         ; Used to control mouse actions, and disable/enable mouse
@@ -262,14 +270,14 @@ Class Main{
         UnautorizedUserDetector := UnauthorizedUseDetector()
         this.Objects["UnautorizedUserDetector"] := UnautorizedUserDetector
 
-        lockComputerOnTaskBarClick := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "UnauthorizedUseDetector", "lockComputerOnTaskBarClick")
+        ; lockComputerOnTaskBarClick := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "UnauthorizedUseDetector", "lockComputerOnTaskBarClick")
 
-        if (lockComputerOnTaskBarClick = "true"){
-            UnautorizedUserDetector.ActivateLockComputerOnTaskBarClick()
-        }
-        else{
-            UnautorizedUserDetector.DisableLockComputerOnTaskBarClick()
-        }
+        ; if (lockComputerOnTaskBarClick = "true"){
+        ;     UnautorizedUserDetector.ActivateLockComputerOnTaskBarClick()
+        ; }
+        ; else{
+        ;     UnautorizedUserDetector.DisableLockComputerOnTaskBarClick()
+        ; }
     }
 
     InitializeObjectsForKeyboardOverlays(){
@@ -279,6 +287,8 @@ Class Main{
         ; |---------------------------------|
 
         ; |----------Main layer------------|
+
+        ; TODO this is shit...
 
         ; Shows an on screen overlay for the main keyboard layer which shows which urls can be went to using the number keys
         SecondaryLayerKeyboardOverlay1 := KeyboardOverlay()
@@ -295,10 +305,6 @@ Class Main{
         ; Shows an on screen overlay for the main keyboard layer which shows which number keys to press to enable/disable devices
         TertiaryLayerKeyboardOverlay1 := KeyboardOverlay()
         TertiaryLayerKeyboardOverlay1.CreateGui()
-        ; TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("1", "Touch Screen", DeviceManipulator.GetTouchScreenActionToToggle())
-        ; TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("2", "Camera", DeviceManipulator.GetCameraActionToToggle())
-        ; TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("3", "Blue tooth", DeviceManipulator.GetBluetoothActionToToggle())
-        ; TertiaryLayerKeyboardOverlay1.AddColumnToggleValue("4", "Touch Pad", DeviceManipulator.GetTouchPadActionToToggle())
 
         ; |---------Overlay registry--------|
 
@@ -314,7 +320,6 @@ Class Main{
         layers.addLayerIndicator(2, "Red")
 
         this.Objects["layers"] := layers
-
     }
 
     ReadObjectsInformationFromJson(){
@@ -355,14 +360,13 @@ Class Main{
         }
     }
 
-    InitializeMainStartupConfigurator(){
-        ; This is used to read ini files, and create hotkeys from them
-        this.StartupConfigurator := MainStartupConfigurator(this.keyboardSettingsJsonObject, this.ObjectRegister)
-    }
+    RunAppGui(){
 
-    ReadAndMakeKeyboardOverlays(){
-        ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
-        this.StartupConfigurator.ReadAllKeyboardOverlays()
+        this.app := ExtraKeyboardsApp(this.keyboardSettingsJsonObject)
+        this.app.Start()
+
+        refreshHotkeys := ObjBindMethod(this, "RunLogicalStartup")
+        ; this.app.getExtraKeyboardsAppgui().getProfileButtonsObject().addProfileChangedEvent(refreshHotkeys)
     }
 
     getStartupConfigurator(){
@@ -373,19 +377,7 @@ Class Main{
         return this.ObjectRegister.GetObjectInfo("layers").GetObjectInstance()
     }
 
-    RunAppGui(){
 
-        this.app := ExtraKeyboardsApp(this.keyboardSettingsJsonObject)
-        this.app.Start()
-
-        refreshHotkeys := ObjBindMethod(this, "LogicalStartup")
-        this.app.getExtraKeyboardsAppgui().getProfileButtonsObject().addProfileChangedEvent(refreshHotkeys)
-
-
-        ; treeViewElement.AddEventAction("ItemSelect", refreshHotkeys)
-        ; this.app.elementCjhanged.onEvent("change")...
-
-    }
 }
 
 
@@ -393,11 +385,14 @@ Class Main{
 ^!s::Suspend  ; Ctrl+Alt+S
 #SuspendExempt False
 
+ExtraKeyboardsAppGui2 := Gui()
+ExtraKeyboardsAppGui2.Opt("+Resize +MinimizeBox ")
+ExtraKeyboardsAppGui2.Add("Text", , "this is a test:")
+ExtraKeyboardsAppGui2.Show()
 
 MainScript := Main()
 MainScript.Start()
 
-; StartupConfigurator := MainScript.getStartupConfigurator()
 layers := MainScript.getLayerIndicatorController()
 
 

@@ -115,7 +115,6 @@ class ProfileButtons{
     }
 
     AddProfileChangedEvent(profileChangedMethodToExcecute){
-        msgbox("changedingng...")
         ; this.listView.OnEvent("DoubleClick", ListViewDoubleClickEvent)
 
         this.profilesDropDownMenu.OnEvent("Change", profileChangedMethodToExcecute)
