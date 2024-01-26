@@ -121,13 +121,20 @@ Class Main{
     ; Main method used to start the script.
     Start(){
         this.RunLogicalStartup()
+        ; this.UpdatePathsToInfo()
+        ; this.InitializeMetaInfo()
         this.RunAppGui()
     }
 
-    RunLogicalStartup(*){
+    RunLogicalStartup(){
         this.UpdatePathsToInfo()
         this.InitializeMetaInfo()
         this.RunMainStartup()
+    }
+
+    eventProfileChanged(*){
+        this.RunMainStartup(false)
+        this.RunLogicalStartup()
     }
 
     UpdatePathsToInfo(){
@@ -151,10 +158,10 @@ Class Main{
         this.ReadObjectsInformationFromJson()
     }
 
-    RunMainStartup(){
+    RunMainStartup(enableHotkeys := true){
         this.InitializeMainStartupConfigurator()
         this.ReadAndMakeKeyboardOverlays()
-        this.InitializeHotkeysForAllLayers()
+        this.InitializeHotkeysForAllLayers(enableHotkeys)
     }
 
     InitializeMainStartupConfigurator(){
@@ -168,28 +175,25 @@ Class Main{
         this.StartupConfigurator.ReadAllKeyboardOverlays()
     }
 
-    InitializeHotkeysForAllLayers(){
-        
-        this.StartupConfigurator.ReadKeysToNewActionsBySection("GlobalLayer")
+    InitializeHotkeysForAllLayers(enableHotkeys := true){
         this.StartupConfigurator.CreateGlobalHotkeysForAllKeyboardOverlays()
+        this.StartupConfigurator.ReadKeysToNewActionsBySection("GlobalLayer", enableHotkeys)
         
         layers := this.getLayerIndicatorController()
-        
-        HotIf "layers.getActiveLayer() == 0"
+        HotIf "MainScript.getLayerIndicatorController().getActiveLayer() == 0"
             ; Reads and initializes all the hotkeys for the normal keyboard layer, based on how they are created in the ini file
-            this.StartupConfigurator.ReadKeysToNewActionsBySection("NormalLayer")
+            this.StartupConfigurator.ReadKeysToNewActionsBySection("NormalLayer", enableHotkeys)
         HotIf
         
-        HotIf "layers.getActiveLayer() == 1"
-            this.StartupConfigurator.ReadKeysToNewActionsBySection("SecondaryLayer")
+        HotIf "MainScript.getLayerIndicatorController().getActiveLayer() == 1"
+            this.StartupConfigurator.ReadKeysToNewActionsBySection("SecondaryLayer", enableHotkeys)
         HotIf
         
-        
-        HotIf "layers.getActiveLayer() == 2"
-            this.StartupConfigurator.ReadKeysToNewActionsBySection("TertiaryLayer")
+        HotIf "MainScript.getLayerIndicatorController().getActiveLayer() == 2"
+            this.StartupConfigurator.ReadKeysToNewActionsBySection("TertiaryLayer", enableHotkeys)
         HotIf
-    }
 
+    }
 
     InitializeObjectsForKeybinds(){
         ; Used to control mouse actions, and disable/enable mouse
@@ -365,7 +369,7 @@ Class Main{
         this.app := ExtraKeyboardsApp(this.keyboardSettingsJsonObject)
         this.app.Start()
 
-        refreshHotkeys := ObjBindMethod(this, "RunLogicalStartup")
+        refreshHotkeys := ObjBindMethod(this, "eventProfileChanged")
         this.app.getExtraKeyboardsAppgui().getProfileButtonsObject().addProfileChangedEvent(refreshHotkeys)
     }
 
@@ -376,8 +380,6 @@ Class Main{
     getLayerIndicatorController(){
         return this.ObjectRegister.GetObjectInfo("layers").GetObjectInstance()
     }
-
-
 }
 
 
@@ -388,16 +390,14 @@ Class Main{
 MainScript := Main()
 MainScript.Start()
 
-layers := MainScript.getLayerIndicatorController()
+#HotIf MainScript.getLayerIndicatorController().getActiveLayer() == 0
 
-
-#HotIf layers.getActiveLayer() == 0
 #HotIf
 
-#HotIf layers.getActiveLayer() == 1
+#HotIf MainScript.getLayerIndicatorController().getActiveLayer() == 1
 #HotIf
 
-#HotIf layers.getActiveLayer() == 2 
+#HotIf MainScript.getLayerIndicatorController().getActiveLayer() == 2 
     ; ; Shows key history, used for debugging
     ; b:: KeyHistory
 #HotIf

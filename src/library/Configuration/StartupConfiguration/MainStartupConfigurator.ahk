@@ -22,9 +22,9 @@ Class MainStartupConfigurator{
         this.HotkeyInitializerInstance := HotkeyInitializer(keyboardSettingsJsonObject, this.objectRegistry)
     }
 
-    ReadKeysToNewActionsBySection(section){
-        this.HotkeyInitializerInstance.InitializeHotkeys(section . "-Hotkeys")
-        this.KeyboardOverlayInitializerInstance.CreateHotkeysForKeyboardOverlaysByLayerSection(section . "-KeyboardOverlay")
+    ReadKeysToNewActionsBySection(section, enableHotkeys := "on"){
+        this.HotkeyInitializerInstance.InitializeHotkeys(section . "-Hotkeys", enableHotkeys)
+        this.KeyboardOverlayInitializerInstance.ChangeHotkeysStateForKeyboardOverlaysByLayerSection(section . "-KeyboardOverlay", enableHotkeys)
     }
 
     ; Reads the ini file for keyboard overlays, and then creates them based on the information in the ini file

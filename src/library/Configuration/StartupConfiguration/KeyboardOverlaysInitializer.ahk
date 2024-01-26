@@ -41,7 +41,7 @@ Class KeyboardOverlaysInitializer{
         KeyboardOverlay.AddStaticColumn(ColumnHelperKey, ColumnFriendlyName)
     }
 
-    CreateHotkeysForKeyboardOverlaysByLayerSection(layerSection){
+    ChangeHotkeysStateForKeyboardOverlaysByLayerSection(layerSection, enableHotkeys := true){
         try{
             for key, value in this.jsonFile{
                 if (InStr(key, layerSection)){
@@ -49,7 +49,7 @@ Class KeyboardOverlaysInitializer{
                     showKeyboardOverlayKey := this.jsonFile[key]["ShowKeyboardOverlayKey"]
                     ; TODO use the keyboardOVelray class to create a new keyboard overlay, which then columns are added to
                     ; TODO, each layer should have the "KeyboardOverlayKey" in it, which is then created there and such blah blah blah
-                    this.CreateHotkeyForKeyboardOverlay(key, showKeyboardOverlayKey)
+                    this.ChangeHotkeyStateForKeyboardOverlay(key, showKeyboardOverlayKey, enableHotkeys)
                 }
             }
         }
@@ -58,9 +58,18 @@ Class KeyboardOverlaysInitializer{
         }
     }
 
-    CreateHotkeyForKeyboardOverlay(sectionName, showKeyboardOverlayKey){
-        HotKey(showKeyboardOverlayKey, (ThisHotkey) => this.instanceOfRegistry.ShowKeyboardOverlay(sectionName))
-        HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => this.instanceOfRegistry.hideAllLayers())
+    ChangeHotkeyStateForKeyboardOverlay(sectionName, showKeyboardOverlayKey, enableHotkeys := true){
+        if (enableHotkeys){
+            HotKey(showKeyboardOverlayKey, (ThisHotkey) => this.instanceOfRegistry.ShowKeyboardOverlay(sectionName))
+            HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => this.instanceOfRegistry.hideAllLayers())
+        }
+        else if (enableHotkeys = false){
+            HotKey(showKeyboardOverlayKey, (ThisHotkey) => this.instanceOfRegistry.ShowKeyboardOverlay(sectionName), "off")
+            HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => this.instanceOfRegistry.hideAllLayers(), "off")
+        }
+        else {
+            msgbox("error in KeyboardOverlaysInitializer, state is not on or off")
+        }
     }
 
     HotKeyForHidingKeyboardOverlaysUseMeGlobally(){

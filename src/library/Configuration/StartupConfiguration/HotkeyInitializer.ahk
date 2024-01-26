@@ -10,20 +10,20 @@ Class HotkeyInitializer{
         this.ObjectRegistry := objectRegistry
     }
     
-    InitializeHotkeys(keyboardLayerName){
+    InitializeHotkeys(keyboardLayerName, enableHotkeys := true){
         currentKeyboardLayerInformation := this.jsonFile[keyboardLayerName]
         For OriginalKeybind, newKeyBindInformation in currentKeyboardLayerInformation{
             if (newKeyBindInformation["isObject"] == true){
-                this.InitializeDefaultKeyToFunction(OriginalKeybind, newKeyBindInformation)
+                this.InitializeDefaultKeyToFunction(OriginalKeybind, newKeyBindInformation, enableHotkeys)
             }
             else{
-                this.InitializeDefaultKeyToNewKey(OriginalKeybind, newKeyBindInformation)
+                this.InitializeDefaultKeyToNewKey(OriginalKeybind, newKeyBindInformation, enableHotkeys)
             }
         }
     }
 
     ; Used to change a single keyboard key into a key which triggers a class method call.
-    InitializeDefaultKeyToFunction(oldHotKey, functionInformation){
+    InitializeDefaultKeyToFunction(oldHotKey, functionInformation, enableHotkeys := true){
         
         objectName := functionInformation["ObjectName"]
         methodName := functionInformation["MethodName"]
@@ -32,20 +32,37 @@ Class HotkeyInitializer{
         objectInstance := this.ObjectRegistry.GetObjectInfo(objectName).GetObjectInstance()
         objectMethodCall := ObjBindMethod(objectInstance, methodName, arguments*)
         ; msgbox("creating hotkey")
-        HotKey oldHotKey, (ThisHotkey) => (objectMethodCall)()
+        if (enableHotkeys){
+            HotKey(oldHotKey, (ThisHotkey) => (objectMethodCall)(), "On")
+        }
+        else if (enableHotkeys = false){
+            HotKey(oldHotKey, (ThisHotkey) => (objectMethodCall)(), "Off")
+        }
+        else{
+            msgbox("error in InitializeDefaultKeyToFunction, enableHotkeys is not true or false in InitializeDefaultKeyToFunction")
+        }
     }
 
     ; a double pipe symbol (||) can be used to separate when one key is going to be changed to multiple keys.
     ; for example original key "a" to "b||c" means that when "a" is pressed, "b" and "c" will be pressed as well.
-    InitializeDefaultKeyToNewKey(oldHotKey, newKeyInformation){
+    InitializeDefaultKeyToNewKey(oldHotKey, newKeyInformation, enableHotkeys := true){
         newHotKey := newKeyInformation["key"]
         newHotKeyModifiers := newKeyInformation["modifiers"]
         
         newKeysDown := this.CreateExcecutableKeysDown(newHotKey)
         newKeysUp := this.CreateExcecutableKeysUp(newHotKey)
 
-        HotKey(oldHotKey, (ThisHotkey) => this.SendKeysDown(newKeysDown, newHotKeyModifiers)) 
-        HotKey(oldHotKey . " Up", (ThisHotkey) => this.SendKeysUp(newKeysUp, newHotKeyModifiers))
+        if (enableHotkeys){
+            HotKey(oldHotKey, (ThisHotkey) => this.SendKeysDown(newKeysDown, newHotKeyModifiers), "On") 
+            HotKey(oldHotKey . " Up", (ThisHotkey) => this.SendKeysUp(newKeysUp, newHotKeyModifiers), "On")
+        }
+        else if (enableHotkeys = false){
+            HotKey(oldHotKey, (ThisHotkey) => this.SendKeysUp(newKeysUp, newHotKeyModifiers), "Off") 
+            HotKey(oldHotKey . " Up", (ThisHotkey) => this.SendKeysDown(newKeysDown, newHotKeyModifiers), "Off")
+        } 
+        else {
+            msgbox("error in InitializeDefaultKeyToNewKey, state is not on or off")
+        }
     }
 
     ; Sends key(s) down, including possible modifiers
