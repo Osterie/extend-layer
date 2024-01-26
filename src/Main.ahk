@@ -3,6 +3,8 @@
 
 ; [^ = Ctrl] [+ = Shift] [! = Alt] [# = Win]
 #Requires Autohotkey v2.0
+
+#Include ".\ExtraKeyboardsApp.ahk"
 #Include ".\library\IODevices\DeviceManager.ahk"
 #Include ".\library\IODevices\ComputerInputController.ahk"
 #Include ".\library\IODevices\Monitor.ahk"
@@ -83,17 +85,7 @@ Hotstring("::@p", password)
 
 ; ------------Global or whatever stusff----------------
 
-PATH_TO_OBJECT_INFO := "..\config\ObjectInfo.json"
-PATH_TO_META_INI_FILE := "..\config\meta.ini"
-CURRENT_PROFILE_NAME := iniRead(PATH_TO_META_INI_FILE, "General", "activeUserProfile")
-PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := "../config/UserProfiles/" . CURRENT_PROFILE_NAME . "/ClassObjects.ini"
-PATH_TO_CURRENT_KEYBOARD_LAYOUT := "../config/UserProfiles/" . CURRENT_PROFILE_NAME . "\Keyboards.json"
 
-jsonStringFunctionalityInformation := FileRead(PATH_TO_OBJECT_INFO, "UTF-8")
-allClassesInformationJson := jxon_load(&jsonStringFunctionalityInformation)
-
-keyboardSettingsString := FileRead(PATH_TO_CURRENT_KEYBOARD_LAYOUT, "UTF-8")
-keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
 
 
 ; |-------------------------------------------|
@@ -102,9 +94,24 @@ keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
 
 Class Main{
 
+    PATH_TO_OBJECT_INFO := "..\config\ObjectInfo.json"
+    PATH_TO_META_INI_FILE := "..\config\meta.ini"
+    
+
+    CURRENT_PROFILE_NAME := ""
+    PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := ""
+    PATH_TO_CURRENT_KEYBOARD_LAYOUT := ""
+
+    jsonStringFunctionalityInformation := ""
+    allClassesInformationJson := ""
+
+    keyboardSettingsString := ""
+    keyboardSettingsJsonObject := ""
+
     Objects := Map()
     ObjectRegister := ObjectRegistry()
     StartupConfigurator := ""
+    app := ""
 
     __New(){
 
@@ -113,22 +120,72 @@ Class Main{
 
     Start(){
 
+        this.UpdatePathsToInfo()
+        this.RunHotkeys()
+        this.RunAppGui()
+
+        StartupConfigurator := MainScript.getStartupConfigurator()
+        layers := MainScript.getLayerIndicatorController()
+        
+        StartupConfigurator.ReadKeysToNewActionsBySection("GlobalLayer")
+        StartupConfigurator.CreateGlobalHotkeysForAllKeyboardOverlays()
+        
+        
+        HotIf "layers.getActiveLayer() == 0"
+            ; Reads and initializes all the hotkeys for the normal keyboard layer, based on how they are created in the ini file
+            StartupConfigurator.ReadKeysToNewActionsBySection("NormalLayer")
+        HotIf
+        
+        HotIf "layers.getActiveLayer() == 1"
+            StartupConfigurator.ReadKeysToNewActionsBySection("SecondaryLayer")
+        HotIf
+        
+        
+        HotIf "layers.getActiveLayer() == 2"
+            StartupConfigurator.ReadKeysToNewActionsBySection("TertiaryLayer")
+        HotIf
+    }
+
+    LogicalStartup(*){
+        this.UpdatePathsToInfo()
+        this.RunHotkeys()
+    }
+
+    UpdatePathsToInfo(){
+        this.CURRENT_PROFILE_NAME := iniRead(this.PATH_TO_META_INI_FILE, "General", "activeUserProfile")
+        this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := "../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "/ClassObjects.ini"
+        this.PATH_TO_CURRENT_KEYBOARD_LAYOUT := "../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "\Keyboards.json"
+    
+        jsonStringFunctionalityInformation := FileRead(this.PATH_TO_OBJECT_INFO, "UTF-8")
+        this.allClassesInformationJson := jxon_load(&jsonStringFunctionalityInformation)
+    
+        keyboardSettingsString := FileRead(this.PATH_TO_CURRENT_KEYBOARD_LAYOUT, "UTF-8")
+        this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
+
+        
+    }
+
+    RunHotkeys(*){
+
+        this.Objects := Map()
+        this.ObjectRegister := ObjectRegistry()
         this.InitializeObjectsForKeybinds()
         this.InitializeObjectsForKeyboardOverlays()
         this.ReadObjectsInformationFromJson()
         this.ActivateHotkeys()
-        this.RunAppGui()
-
-
+        msgbox(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE)
+        ; TODO remove previous hotkeys...
     }
 
-
+    TestMethod(*){
+        msgbox("test")
+    }
 
     InitializeObjectsForKeybinds(){
         ; Used to control mouse actions, and disable/enable mouse
         MouseInstance := Mouse()
         ; Sets the click speed of the auto clicker
-        mouseCps := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Mouse", "AutoClickerClickCps")
+        mouseCps := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Mouse", "AutoClickerClickCps")
         MouseInstance.SetAutoClickerClickCps(mouseCps)
         this.Objects["MouseInstance"] := MouseInstance
 
@@ -142,7 +199,7 @@ Class Main{
 
 
         ; Allows opening cmd pathed to the current file location for vs code and file explorer.
-        commandPromptDefaultPath := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "CommandPrompt", "DefaultPath")
+        commandPromptDefaultPath := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "CommandPrompt", "DefaultPath")
         CommandPrompt := CommandPromptOpener(commandPromptDefaultPath)
         this.Objects["CommandPrompt"] := CommandPrompt
 
@@ -168,7 +225,7 @@ Class Main{
         PrivacyController.CreateGui()
         ; Sets the countdown for the screen hider to 3 minutes. (change to your screen sleep time)
         ; This shows a countdown on the screen, and when it reaches 0, the screen goes to sleep
-        monitorSleepTimeMinutes := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "PrivacyController", "MonitorSleepTimeMinutes")
+        monitorSleepTimeMinutes := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "PrivacyController", "MonitorSleepTimeMinutes")
         PrivacyController.ChangeCountdown(monitorSleepTimeMinutes,0)
         this.Objects["PrivacyController"] := PrivacyController
 
@@ -185,8 +242,8 @@ Class Main{
         this.Objects["MonitorInstance"] := MonitorInstance
 
         ; Used to switch between power saver mode and normal power mode (does not work as expected currently, percentage to switch to power saver is changed, but power saver is never turned on...)
-        powerSaverModeGUID := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Battery", "PowerSaverModeGUID")
-        defaultPowerModeGUID := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Battery", "DefaultPowerModeGUID")
+        powerSaverModeGUID := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Battery", "PowerSaverModeGUID")
+        defaultPowerModeGUID := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Battery", "DefaultPowerModeGUID")
         Battery := BatteryController(50, 50)
         Battery.setPowerSaverModeGUID(powerSaverModeGUID)
         Battery.setDefaultPowerModeGUID(defaultPowerModeGUID)
@@ -194,7 +251,7 @@ Class Main{
         this.Objects["Battery"] := Battery
 
         ; Used to search for stuff in the browser, translate, and excecute shortcues like close tabs to the right in browser
-        chatGptLoadTime := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "WebNavigator", "chatGptLoadTime")
+        chatGptLoadTime := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "WebNavigator", "chatGptLoadTime")
         WebSearcher := WebNavigator()
         WebSearcher.SetChatGptLoadTime(chatGptLoadTime)
         this.Objects["WebSearcher"] := WebSearcher
@@ -203,7 +260,7 @@ Class Main{
         UnautorizedUserDetector := UnauthorizedUseDetector()
         this.Objects["UnautorizedUserDetector"] := UnautorizedUserDetector
 
-        lockComputerOnTaskBarClick := IniRead(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "UnauthorizedUseDetector", "lockComputerOnTaskBarClick")
+        lockComputerOnTaskBarClick := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "UnauthorizedUseDetector", "lockComputerOnTaskBarClick")
 
         if (lockComputerOnTaskBarClick = "true"){
             UnautorizedUserDetector.ActivateLockComputerOnTaskBarClick()
@@ -264,7 +321,7 @@ Class Main{
 
         ; TODO create a class for this and such....
         ; TODO! add try catch to all of these. If one of these informations are missing something wrong will happen!
-        For ClassName , ClassInformation in allClassesInformationJson{
+        For ClassName , ClassInformation in this.allClassesInformationJson{
             
             ObjectName := ClassInformation["ObjectName"]
             className := ClassInformation["ClassName"]
@@ -302,7 +359,7 @@ Class Main{
         ; |----------------------------------|
 
         ; This is used to read ini files, and create hotkeys from them
-        this.StartupConfigurator := MainStartupConfigurator(keyboardSettingsJsonObject, this.ObjectRegister)
+        this.StartupConfigurator := MainStartupConfigurator(this.keyboardSettingsJsonObject, this.ObjectRegister)
 
         ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
         this.StartupConfigurator.ReadAllKeyboardOverlays()
@@ -320,6 +377,16 @@ Class Main{
 
     RunAppGui(){
 
+        this.app := ExtraKeyboardsApp(this.keyboardSettingsJsonObject)
+        this.app.Start()
+
+        refreshHotkeys := ObjBindMethod(this, "LogicalStartup")
+        this.app.getExtraKeyboardsAppgui().getProfileButtonsObject().addProfileChangedEvent(refreshHotkeys)
+
+
+        ; treeViewElement.AddEventAction("ItemSelect", refreshHotkeys)
+        ; this.app.elementCjhanged.onEvent("change")...
+
     }
 }
 
@@ -332,37 +399,20 @@ Class Main{
 MainScript := Main()
 MainScript.Start()
 
-StartupConfigurator := MainScript.getStartupConfigurator()
+; StartupConfigurator := MainScript.getStartupConfigurator()
 layers := MainScript.getLayerIndicatorController()
 
-StartupConfigurator.ReadKeysToNewActionsBySection("GlobalLayer")
-StartupConfigurator.CreateGlobalHotkeysForAllKeyboardOverlays()
 
 #HotIf layers.getActiveLayer() == 0
 #HotIf
 
-
-HotIf "layers.getActiveLayer() == 0"
-    ; Reads and initializes all the hotkeys for the normal keyboard layer, based on how they are created in the ini file
-    StartupConfigurator.ReadKeysToNewActionsBySection("NormalLayer")
-HotIf
-
 #HotIf layers.getActiveLayer() == 1
 #HotIf
-
-
-HotIf "layers.getActiveLayer() == 1"
-    StartupConfigurator.ReadKeysToNewActionsBySection("SecondaryLayer")
-HotIf
 
 #HotIf layers.getActiveLayer() == 2 
     ; ; Shows key history, used for debugging
     ; b:: KeyHistory
 #HotIf
-
-HotIf "layers.getActiveLayer() == 2"
-    StartupConfigurator.ReadKeysToNewActionsBySection("TertiaryLayer")
-HotIf
 
 ; Used to show user the script is enabled
 ToolTip "Script enabled!"

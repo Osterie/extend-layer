@@ -1,8 +1,4 @@
 #Requires AutoHotkey v2.0
-
-#Include "..\library\FoldersAndFiles\IniFileReader.ahk"
-
-
 Class ListViewFromIniFileContent{
 
     listView := ""

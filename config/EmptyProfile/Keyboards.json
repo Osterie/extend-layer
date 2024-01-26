@@ -1,12 +1,9 @@
 {
-    "NormalLayer-DefaultKeys": {},
-    "NormalLayer-Functions": {},
-    "SecondaryLayer": {},
-    "SecondaryLayer-DefaultKeys": {},
-    "SecondaryLayer-Functions": {},
+    "GlobalLayer-Hotkeys":{},
+    "NormalLayer-Hotkeys": {},
+    "SecondaryLayer-Hotkeys": {},
     "SecondaryLayer-KeyboardOverlay1": {},
     "SecondaryLayer-KeyboardOverlay2": {},
-    "TertiaryLayer": {},
-    "TertiaryLayer-DefaultKeys": {},
-    "TertiaryLayer-Functions": {}
+    "TertiaryLayer-Hotkeys": {},
+    "TertiaryLayer-KeyboardOverlay1": {}
 }

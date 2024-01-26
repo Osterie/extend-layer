@@ -27,20 +27,21 @@ Class ExtraKeyboardsApp{
     UserInterface := ""
     MainScript := ""
 
-    __New(){
+    __New(jsonObject){
         pathToExistingProfiles := "..\config\UserProfiles"
         pathToPresetProfiles := "..\config\PresetProfiles"
         pathToMetaFile := "..\config\meta.ini"
         pathToMainScript := A_ScriptDir "\..\src\Main.ahk"
         pathToEmptyProfile := "..\config\EmptyProfile"
-        this.UserInterface := ExtraKeyboardsAppgui(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile)
+        this.UserInterface := ExtraKeyboardsAppgui(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonObject)
     }
 
     Start(){
         this.UserInterface.CreateMain()
         ; Run("*RunAs " A_ScriptDir "\Main.ahk")
     }
-}
 
-app := ExtraKeyboardsApp()
-app.Start()
+    getExtraKeyboardsAppgui(){
+        return this.UserInterface
+    }
+}

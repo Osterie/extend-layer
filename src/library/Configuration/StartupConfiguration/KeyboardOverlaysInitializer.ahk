@@ -19,9 +19,11 @@ Class KeyboardOverlaysInitializer{
             if (InStr(key, "KeyboardOverlay")){
                 NewKeyboardOverlay := KeyboardOverlay()
                 NewKeyboardOverlay.CreateGui()
-                this.fillKeyboardOverlayInformation(NewKeyboardOverlay, value["overlayElements"])
-                this.instanceOfRegistry := this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance()
-                this.instanceOfRegistry.addKeyboardOverlay(NewKeyboardOverlay, key)
+                if (value.has("overlayElements")){
+                    this.fillKeyboardOverlayInformation(NewKeyboardOverlay, value["overlayElements"])
+                    this.instanceOfRegistry := this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance()
+                    this.instanceOfRegistry.addKeyboardOverlay(NewKeyboardOverlay, key)
+                }
             }
         }
     }

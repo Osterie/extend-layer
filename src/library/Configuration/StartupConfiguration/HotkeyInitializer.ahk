@@ -28,9 +28,10 @@ Class HotkeyInitializer{
         objectName := functionInformation["ObjectName"]
         methodName := functionInformation["MethodName"]
         arguments := functionInformation["Parameters"]
-
+ 
         objectInstance := this.ObjectRegistry.GetObjectInfo(objectName).GetObjectInstance()
         objectMethodCall := ObjBindMethod(objectInstance, methodName, arguments*)
+        ; msgbox("creating hotkey")
         HotKey oldHotKey, (ThisHotkey) => (objectMethodCall)()
     }
 
