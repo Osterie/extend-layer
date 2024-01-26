@@ -121,7 +121,7 @@ Class Main{
     ; Main method used to start the script.
     Start(){
         this.RunLogicalStartup()
-        ; this.RunAppGui()
+        this.RunAppGui()
     }
 
     RunLogicalStartup(*){
@@ -366,7 +366,7 @@ Class Main{
         this.app.Start()
 
         refreshHotkeys := ObjBindMethod(this, "RunLogicalStartup")
-        ; this.app.getExtraKeyboardsAppgui().getProfileButtonsObject().addProfileChangedEvent(refreshHotkeys)
+        this.app.getExtraKeyboardsAppgui().getProfileButtonsObject().addProfileChangedEvent(refreshHotkeys)
     }
 
     getStartupConfigurator(){
@@ -385,11 +385,6 @@ Class Main{
 ^!s::Suspend  ; Ctrl+Alt+S
 #SuspendExempt False
 
-ExtraKeyboardsAppGui2 := Gui()
-ExtraKeyboardsAppGui2.Opt("+Resize +MinimizeBox ")
-ExtraKeyboardsAppGui2.Add("Text", , "this is a test:")
-ExtraKeyboardsAppGui2.Show()
-
 MainScript := Main()
 MainScript.Start()
 
@@ -407,14 +402,6 @@ layers := MainScript.getLayerIndicatorController()
     ; b:: KeyHistory
 #HotIf
 
-
-
-
-; WinWait("A")
-; if (WinGetClass("A") == "Shell_TrayWnd"){
-;     Sleep(100)
-;     DllCall("LockWorkStation")
-; }
 ; Used to show user the script is enabled
 ToolTip "Script enabled!"
 SetTimer () => ToolTip(), -3000
