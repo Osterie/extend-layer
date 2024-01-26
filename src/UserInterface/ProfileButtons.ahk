@@ -137,6 +137,7 @@ class ProfileButtons{
         editProfilesGui.Add("Text", , "Selected Profile:")
         profilesToEditDropDownMenu := editProfilesGui.Add("DropDownList", "ym Choose" . this.currentProfileIndex, this.ExistingProfilesManager.getFolderNames())
         
+        ; TODO bug with change profile name or something, changes user.
         renameProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Change profile name")
 
         renameProfileButton.OnEvent("Click", (*) => 
