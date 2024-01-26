@@ -270,14 +270,14 @@ Class Main{
         UnautorizedUserDetector := UnauthorizedUseDetector()
         this.Objects["UnautorizedUserDetector"] := UnautorizedUserDetector
 
-        ; lockComputerOnTaskBarClick := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "UnauthorizedUseDetector", "lockComputerOnTaskBarClick")
+        lockComputerOnTaskBarClick := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "UnauthorizedUseDetector", "lockComputerOnTaskBarClick")
 
-        ; if (lockComputerOnTaskBarClick = "true"){
-        ;     UnautorizedUserDetector.ActivateLockComputerOnTaskBarClick()
-        ; }
-        ; else{
-        ;     UnautorizedUserDetector.DisableLockComputerOnTaskBarClick()
-        ; }
+        if (lockComputerOnTaskBarClick = "true"){
+            UnautorizedUserDetector.ActivateLockComputerOnTaskBarClick()
+        }
+        else{
+            UnautorizedUserDetector.DisableLockComputerOnTaskBarClick()
+        }
     }
 
     InitializeObjectsForKeyboardOverlays(){
@@ -407,6 +407,14 @@ layers := MainScript.getLayerIndicatorController()
     ; b:: KeyHistory
 #HotIf
 
+
+
+
+; WinWait("A")
+; if (WinGetClass("A") == "Shell_TrayWnd"){
+;     Sleep(100)
+;     DllCall("LockWorkStation")
+; }
 ; Used to show user the script is enabled
 ToolTip "Script enabled!"
 SetTimer () => ToolTip(), -3000
