@@ -20,13 +20,13 @@
 #Include ".\library\Navigation\FileNavigation\FileExplorerNavigator.ahk"
 #Include ".\library\KeyboardOverlay\KeyboardOverlayRegistry.ahk"
 #Include ".\library\ProcessManager.ahk"
-#Include ".\library\MetaInfoStorage\ObjectRegistry.ahk"
+#Include ".\library\MetaInfo\MetaInfoStorage\Objects\ObjectRegistry.ahk"
 #Include ".\library\Configuration\StartupConfiguration\MainStartupConfigurator.ahk"
 #Include ".\library\Privacy\UnauthorizedUseDetector.ahk"
 
-#Include ".\library\MetaInfoStorage\ObjectInfo.ahk"
-#Include ".\library\MetaInfoStorage\MethodInfo.ahk"
-#Include ".\library\MetaInfoStorage\MethodRegistry.ahk"
+#Include ".\library\MetaInfo\MetaInfoStorage\Objects\ObjectInfo.ahk"
+#Include ".\library\MetaInfo\MetaInfoStorage\Objects\MethodInfo.ahk"
+#Include ".\library\MetaInfo\MetaInfoStorage\Objects\MethodRegistry.ahk"
 
 #Include ".\library\JsonParsing\JXON\JXON.ahk"
 

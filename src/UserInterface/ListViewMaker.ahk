@@ -29,12 +29,11 @@ class ListViewMaker{
         if (treeViewGui is Gui.TreeView){
             this.activeTreeViewItem := treeViewGui.GetText(selectedTreeViewItem)
             msgbox(this.activeTreeViewItem)
-            ; keyPairValuesArray := this.iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(iniFile, section.GetText(item))
-            ; this.SetNewListViewItems(keyPairValuesArray)
+            msgbox(this.jsonFileContents[this.activeTreeViewItem])
+            this.SetNewListViewItems([["key1", "value1"], ["key2", "value2"]])
         }
         else{
-            ; keyPairValuesArray := this.iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(iniFile, section)
-            ; this.SetNewListViewItems(keyPairValuesArray)
+            ; TODO, would need this if this class should be general. Among other stuff...
         }
     }
 
@@ -43,6 +42,7 @@ class ListViewMaker{
     SetNewListViewItems(items){
         
         this.listView.Delete()
+        msgbox(items.Length)
         Loop items.Length{
             this.listView.Add(, items[A_index]*)
         }
