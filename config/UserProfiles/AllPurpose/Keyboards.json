@@ -352,19 +352,19 @@
             },
             "Column5": {
                 "key": "5",
-                "description": "Math\""
+                "description": "Math"
             },
             "Column6": {
                 "key": "6",
-                "description": "Data\""
+                "description": "Data"
             },
             "Column7": {
                 "key": "7",
-                "description": "Jupyter Hub\""
+                "description": "Jupyter Hub"
             },
             "Column8": {
                 "key": "8",
-                "description": "Capquiz\""
+                "description": "Capquiz"
             }
         }
     },
