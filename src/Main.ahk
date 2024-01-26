@@ -118,37 +118,12 @@ Class Main{
 
     }
 
+    ; Main method used to start the script.
     Start(){
-
         this.UpdatePathsToInfo()
-        this.RunHotkeys()
+        this.InitializeMetaInfo()
+        this.RunMainStartup()
         this.RunAppGui()
-
-        StartupConfigurator := MainScript.getStartupConfigurator()
-        layers := MainScript.getLayerIndicatorController()
-        
-        StartupConfigurator.ReadKeysToNewActionsBySection("GlobalLayer")
-        StartupConfigurator.CreateGlobalHotkeysForAllKeyboardOverlays()
-        
-        
-        HotIf "layers.getActiveLayer() == 0"
-            ; Reads and initializes all the hotkeys for the normal keyboard layer, based on how they are created in the ini file
-            StartupConfigurator.ReadKeysToNewActionsBySection("NormalLayer")
-        HotIf
-        
-        HotIf "layers.getActiveLayer() == 1"
-            StartupConfigurator.ReadKeysToNewActionsBySection("SecondaryLayer")
-        HotIf
-        
-        
-        HotIf "layers.getActiveLayer() == 2"
-            StartupConfigurator.ReadKeysToNewActionsBySection("TertiaryLayer")
-        HotIf
-    }
-
-    LogicalStartup(*){
-        this.UpdatePathsToInfo()
-        this.RunHotkeys()
     }
 
     UpdatePathsToInfo(){
@@ -161,20 +136,47 @@ Class Main{
     
         keyboardSettingsString := FileRead(this.PATH_TO_CURRENT_KEYBOARD_LAYOUT, "UTF-8")
         this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
-
-        
     }
 
-    RunHotkeys(*){
+    InitializeMetaInfo(*){
 
         this.Objects := Map()
         this.ObjectRegister := ObjectRegistry()
+        
         this.InitializeObjectsForKeybinds()
         this.InitializeObjectsForKeyboardOverlays()
         this.ReadObjectsInformationFromJson()
-        this.ActivateHotkeys()
-        msgbox(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE)
-        ; TODO remove previous hotkeys...
+
+    
+    
+    }
+
+    RunMainStartup(){
+        this.InitializeMainStartupConfigurator()
+        this.ReadAndMakeKeyboardOverlays()
+        this.InitializeHotkeysForAllLayers()
+    }
+
+    InitializeHotkeysForAllLayers(){
+        
+        this.StartupConfigurator.ReadKeysToNewActionsBySection("GlobalLayer")
+        this.StartupConfigurator.CreateGlobalHotkeysForAllKeyboardOverlays()
+        
+        layers := this.getLayerIndicatorController()
+        
+        HotIf "layers.getActiveLayer() == 0"
+            ; Reads and initializes all the hotkeys for the normal keyboard layer, based on how they are created in the ini file
+            this.StartupConfigurator.ReadKeysToNewActionsBySection("NormalLayer")
+        HotIf
+        
+        HotIf "layers.getActiveLayer() == 1"
+            this.StartupConfigurator.ReadKeysToNewActionsBySection("SecondaryLayer")
+        HotIf
+        
+        
+        HotIf "layers.getActiveLayer() == 2"
+            this.StartupConfigurator.ReadKeysToNewActionsBySection("TertiaryLayer")
+        HotIf
     }
 
     TestMethod(*){
@@ -353,18 +355,14 @@ Class Main{
         }
     }
 
-    ActivateHotkeys(){
-        ; |----------------------------------|
-        ; |--------Startup Configurator------|
-        ; |----------------------------------|
-
+    InitializeMainStartupConfigurator(){
         ; This is used to read ini files, and create hotkeys from them
         this.StartupConfigurator := MainStartupConfigurator(this.keyboardSettingsJsonObject, this.ObjectRegister)
+    }
 
+    ReadAndMakeKeyboardOverlays(){
         ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
         this.StartupConfigurator.ReadAllKeyboardOverlays()
-
-        
     }
 
     getStartupConfigurator(){
