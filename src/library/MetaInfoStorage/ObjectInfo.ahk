@@ -27,9 +27,4 @@ class ObjectInfo{
     getMethodsWithDescriptions(){
         return this.methodsWithDescriptions
     }
-    
-    ; {objectName, methodsWithDescriptions}
-    ; Hashmap (objectName, methodsWithDescriptions)
-    ; ObjectName
-    ; Object methods (MethodsDescription instance)
 }
