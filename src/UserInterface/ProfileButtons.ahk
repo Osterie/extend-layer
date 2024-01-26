@@ -85,6 +85,10 @@ class ProfileButtons{
         guiObject.Show()
     }
 
+    getProfilesDropDownMenu(){
+        return this.profilesDropDownMenu
+    }
+
     ; UpdateprofilesDropDownMenu(){
     ;     this.profilesDropDownMenu.Delete()
     ;     this.profilesDropDownMenu.Add(this.ExistingProfilesManager.getFolderNames())

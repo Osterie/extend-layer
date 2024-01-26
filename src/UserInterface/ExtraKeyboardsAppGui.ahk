@@ -2,6 +2,7 @@
 
 #Include ".\TreeViewFromIniFile.ahk"
 #Include ".\ProfileButtons.ahk"
+#Include ".\KeyboardLayerChanging.ahk"
 ; #Include ".\TreeViewFromJsonFile.ahk"
 ; #Include ".\ListViewFromJsonObject.ahk"
 #Include ".\ListViewFromIniFileContent.ahk"
@@ -67,11 +68,11 @@ Class ExtraKeyboardsAppGui{
         this.profileButtonsObject.createProfileSettingsForGui(this.ExtraKeyboardsAppGui)
         
         ; TODO move somewhere else...
-        ; pathToKeyboardsJsonFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profilesDropDownMenu.Text . "\Keyboards.json"
-        ; pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profilesDropDownMenu.Text . "\ClassObjects.ini"
+        pathToKeyboardsJsonFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileButtonsObject.getProfilesDropDownMenu().Text . "\Keyboards.json"
+        pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileButtonsObject.getProfilesDropDownMenu().Text . "\ClassObjects.ini"
 
 
-        ; this.CreateTabs(pathToKeyboardsJsonFile, pathToObjectsIniFile, this.jsonFileConents)
+        this.CreateTabs(pathToKeyboardsJsonFile, pathToObjectsIniFile, this.jsonFileConents)
         
         
         this.ExtraKeyboardsAppGui.Show()
@@ -81,25 +82,29 @@ Class ExtraKeyboardsAppGui{
         return this.profileButtonsObject
     }
 
-    ; CreateDocumentationTab(){
-    ;     this.ExtraKeyboardsAppGui.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.
-    ; }
+    CreateDocumentationTab(){
+        this.ExtraKeyboardsAppGui.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.
+    }
 
-    ; CreateTabs(pathToKeyboardsJsonFile, pathToObjectsIniFile, jsonFileConents){
+    CreateTabs(pathToKeyboardsJsonFile, pathToObjectsIniFile, jsonFileContents){
         
-    ;     Tab := this.ExtraKeyboardsAppGui.AddTab3("ys+20 xm", ["Keyboards","Change Functions Settings","Documentation"])
-    ;     Tab.UseTab(1)
+        Tab := this.ExtraKeyboardsAppGui.AddTab3("ys+20 xm", ["Keyboards","Change Functions Settings","Documentation"])
+        Tab.UseTab(1)
 
-    ;     this.CreateTreeViewWithAssociatedListViewFromJsonObject(jsonFileConents)
+        keyboardLayoutChanger := KeyboardLayerChanging()
+        keyboardLayoutChanger.createElementsForGui(this.ExtraKeyboardsAppGui, jsonFileContents)
 
-    ;     Tab.UseTab(2)
-    ;     this.CreateTreeViewWithAssociatedListViewFromIniFile(pathToObjectsIniFile)
 
-    ;     Tab.UseTab(3)
-    ;     this.CreateDocumentationTab()
+        ; this.CreateTreeViewWithAssociatedListViewFromJsonObject(jsonFileConents)
 
-    ;     Tab.UseTab(0)  ; i.e. subsequently-added controls will not belong to the tab control.
-    ; }
+        Tab.UseTab(2)
+        this.CreateTreeViewWithAssociatedListViewFromIniFile(pathToObjectsIniFile)
+
+        Tab.UseTab(3)
+        this.CreateDocumentationTab()
+
+        Tab.UseTab(0)  ; i.e. subsequently-added controls will not belong to the tab control.
+    }
 
     ; CreateTreeViewWithAssociatedListViewFromJsonObject(jsonFileConents){
     ;     treeViewElement := TreeViewFromJsonFile(jsonFileConents)
@@ -112,15 +117,15 @@ Class ExtraKeyboardsAppGui{
     ;     treeViewElement.AddEventAction("ItemSelect", CreateListViewItems)
     ; }
 
-    ; CreateTreeViewWithAssociatedListViewFromIniFile(iniFilePath){
-    ;     treeViewElement := TreeViewFromIniFile(iniFilePath)
-    ;     treeViewElement.CreateTreeView(this.ExtraKeyboardsAppGui)
+    CreateTreeViewWithAssociatedListViewFromIniFile(iniFilePath){
+        treeViewElement := TreeViewFromIniFile(iniFilePath)
+        treeViewElement.CreateTreeView(this.ExtraKeyboardsAppGui)
         
-    ;     listViewElement := ListViewFromIniFileContent()
-    ;     listViewElement.CreateListView(this.ExtraKeyboardsAppGui, ["Key","Value"], iniFilePath)
+        listViewElement := ListViewFromIniFileContent()
+        listViewElement.CreateListView(this.ExtraKeyboardsAppGui, ["Key","Value"], iniFilePath)
         
-    ;     CreateListViewItems := ObjBindMethod(listViewElement, "SetNewListViewItemsByIniFileSection", iniFilePath)
-    ;     treeViewElement.AddEventAction("ItemSelect", CreateListViewItems)
+        CreateListViewItems := ObjBindMethod(listViewElement, "SetNewListViewItemsByIniFileSection", iniFilePath)
+        treeViewElement.AddEventAction("ItemSelect", CreateListViewItems)
 
-    ; }
+    }
 }
