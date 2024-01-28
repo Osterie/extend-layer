@@ -16,7 +16,37 @@ ProcessSetPriority "High"
 SendMode "Event"
 
 
-ExtraKeyboardsAppGui2 := Gui()
-ExtraKeyboardsAppGui2.Opt("+Resize +MinimizeBox ")
-ExtraKeyboardsAppGui2.Add("Text", , "this is a test:")
-ExtraKeyboardsAppGui2.Show()
+Class Test {
+    __New() {
+        this.x := 0
+    }
+
+    toString(){
+        return "Hello"
+    }
+}
+
+Class TestSecond{
+    __New() {
+        this.x := 1
+    }
+
+    toString(){
+        return "Hello2"
+    }
+}
+
+Class NotATest{
+    __New() {
+        this.x := 2
+    }
+
+    toString(){
+        return "Goodbye"
+    }
+
+}
+
+Values := [Test(), TestSecond(), NotATest()]
+Loop Values.Length
+    msgbox(Values[A_index].toString())
