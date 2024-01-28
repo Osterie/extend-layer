@@ -333,8 +333,8 @@ Class Main{
         ; -----------Read JSON----------------
 
         JsonReaderForObjects := ObjectsJsonReader(this.PATH_TO_OBJECT_INFO, this.Objects)
-        JsonReaderForObjects.ReadObjectsFromJson(this.allClassesInformationJson)
-        this.ObjectRegister := JsonReaderForObjects.getObjectRegister();
+        JsonReaderForObjects.ReadObjectsFromJson()
+        this.ObjectRegister := JsonReaderForObjects.getObjectRegister()
 
     }
 
