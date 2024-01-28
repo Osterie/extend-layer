@@ -7,18 +7,17 @@ class KeyboardOverlayElement{
     description := ""
 
     __New(elementName, key, description){
-        this.elementName = elementName
-        this.key = key
-        this.description = description
-        ; this.elementName = "Column1"
-        ; this.key = "1"
-        ; this.description = "Open Google Chrome"
+        this.elementName := elementName
+        this.key := key
+        this.description := description
+        ; this.elementName := "Column1"
+        ; this.key := "1"
+        ; this.description := "Open Google Chrome"
     }
 
     getElementName(){
         return this.elementName
     }
-
     getKey(){
         return this.key
     }

@@ -1,20 +1,20 @@
 #Requires AutoHotkey v2.0
 
-class OverlayLayerInfo{
+class KeyboardOverlayInfo{
 
     KeyboardLayerOverlayIdentifier := ""
     ShowKeyboardOverlayKey := ""
     OverlayElements := ""
 
     __New(ShowKeyboardOverlayKey, KeyboardLayerOverlayIdentifier, OverlayElements){
-        this.ShowKeyboardOverlayKey = ShowKeyboardOverlayKey
+        this.ShowKeyboardOverlayKey := ShowKeyboardOverlayKey
         this.KeyboardLayerOverlayIdentifier := KeyboardLayerOverlayIdentifier
         ; this.KeyboardLayerOverlayIdentifier := "SecondaryLayer-KeyboardOverlay1"
 
         this.OverlayElements := OverlayElements
     }
 
-    getKeyboardLayerOverlayIdentifier(){
+    GetLayerIdentifier(){
         return this.KeyboardLayerOverlayIdentifier
     }
 
@@ -24,6 +24,10 @@ class OverlayLayerInfo{
 
     getOverlayElement(OverlayElementName){
         return this.OverlayElements.getOverlay[OverlayElementName]
+    }
+
+    getKeyPairValuesToString(){
+        return this.OverlayElements.getKeyPairValuesToString()
     }
 
     ; "SecondaryLayer-KeyboardOverlay1": {

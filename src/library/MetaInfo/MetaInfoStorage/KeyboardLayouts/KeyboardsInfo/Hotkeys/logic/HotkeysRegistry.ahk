@@ -5,13 +5,17 @@ class HotkeysRegistry{
     hotkeys := ""
     layerIdentifier := ""
 
-    constructor(){
-        this.hotkeys = Map()
+    __New(layerIdentifier){
+        this.layerIdentifier := layerIdentifier
+        this.hotkeys := Map()
     }
 
-    AddHotkey(HotkeyInfo, layerIdentifier){
-        this.layerIdentifier := layerIdentifier
+    AddHotkey(HotkeyInfo){
         this.hotkeys[HotkeyInfo.getHotkeyName()] := HotkeyInfo
+    }
+
+    GetLayerIdentifier(){
+        return this.layerIdentifier
     }
 
     GetHotkey(hotkeyName){
@@ -20,6 +24,14 @@ class HotkeysRegistry{
 
     GetHotkeys(){
         return this.hotkeys
+    }
+
+    getKeyPairValuesToString(){
+        elements := []
+        for key, value in this.hotkeys
+            elements.push([key, value.ToString()])
+
+        return elements
     }
 
     ToString(){

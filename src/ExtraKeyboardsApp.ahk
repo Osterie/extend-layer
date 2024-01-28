@@ -27,14 +27,14 @@ Class ExtraKeyboardsApp{
     UserInterface := ""
     MainScript := ""
 
-    __New(jsonObject, activeObjectsRegistry){
+    __New(jsonObject, activeObjectsRegistry,  keyboardLayersInfoRegister){
 
         pathToExistingProfiles := "..\config\UserProfiles"
         pathToPresetProfiles := "..\config\PresetProfiles"
         pathToMetaFile := "..\config\meta.ini"
         pathToMainScript := A_ScriptDir "\..\src\Main.ahk"
         pathToEmptyProfile := "..\config\EmptyProfile"
-        this.UserInterface := ExtraKeyboardsAppgui(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonObject, activeObjectsRegistry)
+        this.UserInterface := ExtraKeyboardsAppgui(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonObject, activeObjectsRegistry, keyboardLayersInfoRegister)
     }
 
     Start(){

@@ -37,13 +37,15 @@ Class ExtraKeyboardsAppGui{
 
     jsonFileConents := ""
     activeObjectsRegistry := ""
+    keyboardLayersInfoRegister := ""
 
 
-    __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonFileConents, activeObjectsRegistry){
+    __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonFileConents, activeObjectsRegistry, keyboardLayersInfoRegister){
         this.ExistingProfilesManager := FolderManager()
         this.PresetProfilesManager := FolderManager()
 
         this.activeObjectsRegistry := activeObjectsRegistry
+        this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
         this.jsonFileConents := jsonFileConents
 
 
@@ -103,7 +105,7 @@ Class ExtraKeyboardsAppGui{
         ; TODO use this.jsonwhatever ...
         
         
-        listViewElement := ListViewMaker(this.activeObjectsRegistry, jsonFileContents)
+        listViewElement := ListViewMaker(this.activeObjectsRegistry, jsonFileContents, this.keyboardLayersInfoRegister)
         listViewElement.CreateListView(this.ExtraKeyboardsAppGui, ["KeyCombo","Action"])
         
         CreateListViewItems := ObjBindMethod(listViewElement, "SetNewListViewItemsByIniFileSection")

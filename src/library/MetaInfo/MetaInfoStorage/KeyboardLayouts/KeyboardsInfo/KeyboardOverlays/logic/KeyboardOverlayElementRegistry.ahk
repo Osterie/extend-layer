@@ -1,12 +1,12 @@
 #Requires AutoHotkey v2.0
 
-class OverlayElement{
+class KeyboardOverlayElementRegistry{
 
     overlayElementsIdentifier := ""
     KeyboardOverlayElements := Map()
 
     __New(overlayElementsIdentifier){
-        this.overlayElementsIdentifier = overlayElementsIdentifier
+        this.overlayElementsIdentifier := overlayElementsIdentifier
         ; this.overlayElementsIdentifier = "OverlayElements"
     }
 
@@ -18,6 +18,12 @@ class OverlayElement{
         return this.KeyboardOverlayElements.Get(keyboardElementName)
     }
     
+    getKeyPairValuesToString(){
+        elements := []
+        for elementNames, KeyboardOverlayElement in this.KeyboardOverlayElements
+            elements.push([KeyboardOverlayElement.getKey(), KeyboardOverlayElement.getDescription()])
+        return elements
 
+    }
 
 }

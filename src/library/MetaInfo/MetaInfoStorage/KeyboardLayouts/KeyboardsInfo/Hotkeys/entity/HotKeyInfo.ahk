@@ -12,7 +12,7 @@ class HotKeyInfo{
     modifiers := ""
 
     __New(hotkeyName){
-        this.hotkeyName = hotkeyName
+        this.hotkeyName := hotkeyName
     }
 
     setInfoForNormalHotKey(key, modifiers){
@@ -30,11 +30,31 @@ class HotKeyInfo{
 
     toString(){
         if(this.isObject){
-            return this.objectName + "." + this.methodName + "(" + this.parameters.join(", ") + ")"
+            return this.objectName . "." . this.methodName . "(" . this.parametersToString(this.parameters) . ")"
         }
         else{
-            return this.modifiers + " + " + this.key
+            return this.modifiers . " + " . this.key
         }
+    }
+
+    parametersToString(parameters){
+        if (this.parameters.length == 0){
+            return ""
+        }
+
+        stringToReturn := ""
+
+        for argument in this.parameters{
+            if (Type(argument) == "Array"){
+                For subArgument in argument{
+                    stringToReturn .= subArgument . ","
+                }
+            }
+            else{
+                stringToReturn .= argument . ","
+            }
+        }
+        return stringToReturn
     }
 
     getHotkeyName(){

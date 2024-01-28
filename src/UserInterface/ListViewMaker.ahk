@@ -6,11 +6,14 @@ class ListViewMaker{
     activeTreeViewItem := ""
     iniFile := ""
 
+    keyboardLayersInfoRegister := ""
+
     iniFileRead := ""
 
-    __New(jsonObject, jsonFileContents){
+    __New(jsonObject, jsonFileContents, keyboardLayersInfoRegister){
         this.jsonObject := jsonObject
         this.jsonFileContents := jsonFileContents
+        this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
     }
 
     CreateListView(guiObject, columnNames){
@@ -28,9 +31,10 @@ class ListViewMaker{
     SetNewListViewItemsByIniFileSection(treeViewGui, selectedTreeViewItem){
         if (treeViewGui is Gui.TreeView){
             this.activeTreeViewItem := treeViewGui.GetText(selectedTreeViewItem)
-            msgbox(this.activeTreeViewItem)
-            msgbox(this.jsonFileContents[this.activeTreeViewItem])
-            this.SetNewListViewItems([["key1", "value1"], ["key2", "value2"]])
+
+            itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.activeTreeViewItem)
+
+            this.SetNewListViewItems(itemsToShowForListView.getKeyPairValuesToString())
         }
         else{
             ; TODO, would need this if this class should be general. Among other stuff...
@@ -42,7 +46,6 @@ class ListViewMaker{
     SetNewListViewItems(items){
         
         this.listView.Delete()
-        msgbox(items.Length)
         Loop items.Length{
             this.listView.Add(, items[A_index]*)
         }

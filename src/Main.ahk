@@ -31,6 +31,8 @@
 #Include ".\library\JsonParsing\JXON\JXON.ahk"
 
 #Include ".\library\MetaInfo\MetaInfoReading\ObjectsJsonReader.ahk"
+#Include ".\library\MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader.ahk"
+
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -112,6 +114,7 @@ Class Main{
 
     Objects := Map()
     ObjectRegister := ObjectRegistry()
+    KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
     StartupConfigurator := ""
     app := ""
 
@@ -158,6 +161,7 @@ Class Main{
         this.InitializeObjectsForKeybinds()
         this.InitializeObjectsForKeyboardOverlays()
         this.ReadObjectsInformationFromJson()
+        this.ReadKeyboardLayersInfoFromJson()
     }
 
     RunMainStartup(enableHotkeys := true){
@@ -329,18 +333,21 @@ Class Main{
     }
 
     ReadObjectsInformationFromJson(){
-
-        ; -----------Read JSON----------------
-
         JsonReaderForObjects := ObjectsJsonReader(this.PATH_TO_OBJECT_INFO, this.Objects)
         JsonReaderForObjects.ReadObjectsFromJson()
         this.ObjectRegister := JsonReaderForObjects.getObjectRegister()
 
     }
 
+    ReadKeyboardLayersInfoFromJson(){
+        JsonReaderForKeyboardLayersInfo := KeyboardLayersInfoJsonReader(this.PATH_TO_CURRENT_KEYBOARD_LAYOUT)
+        JsonReaderForKeyboardLayersInfo.ReadKeyboardLayersInfoFromJson()
+        this.KeyboardLayersInfoRegister := JsonReaderForKeyboardLayersInfo.getKeyboardLayersInfoRegister()
+    }
+
     RunAppGui(){
 
-        this.app := ExtraKeyboardsApp(this.keyboardSettingsJsonObject, this.ObjectRegister)
+        this.app := ExtraKeyboardsApp(this.keyboardSettingsJsonObject, this.ObjectRegister, this.KeyboardLayersInfoRegister)
         this.app.Start()
 
         refreshHotkeys := ObjBindMethod(this, "eventProfileChanged")
