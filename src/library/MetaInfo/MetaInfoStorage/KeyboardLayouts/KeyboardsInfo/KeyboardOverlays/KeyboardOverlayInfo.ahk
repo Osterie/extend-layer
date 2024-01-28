@@ -2,17 +2,20 @@
 
 class OverlayLayerInfo{
 
-    keyboardLayerIdentifier := ""
-    overlayElementsIdentifier := ""
+    KeyboardLayerOverlayIdentifier := ""
     ShowKeyboardOverlayKey := ""
     OverlayElements := ""
 
-    __New(ShowKeyboardOverlayKey, overlayElementsIdentifier, keyboardLayerIdentifier){
+    __New(ShowKeyboardOverlayKey, KeyboardLayerOverlayIdentifier, OverlayElements){
         this.ShowKeyboardOverlayKey = ShowKeyboardOverlayKey
-        this.overlayElementsIdentifier := overlayElementsIdentifier
-        this.keyboardLayerIdentifier := keyboardLayerIdentifier
+        this.KeyboardLayerOverlayIdentifier := KeyboardLayerOverlayIdentifier
+        ; this.KeyboardLayerOverlayIdentifier := "SecondaryLayer-KeyboardOverlay1"
 
-        this.OverlayElements := Map()        
+        this.OverlayElements := OverlayElements
+    }
+
+    getKeyboardLayerOverlayIdentifier(){
+        return this.KeyboardLayerOverlayIdentifier
     }
 
     getOverlayElements(){
@@ -20,7 +23,7 @@ class OverlayLayerInfo{
     }
 
     getOverlayElement(OverlayElementName){
-        return this.OverlayElements[OverlayElementName]
+        return this.OverlayElements.getOverlay[OverlayElementName]
     }
 
     ; "SecondaryLayer-KeyboardOverlay1": {

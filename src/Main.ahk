@@ -30,6 +30,8 @@
 
 #Include ".\library\JsonParsing\JXON\JXON.ahk"
 
+#Include ".\library\MetaInfo\MetaInfoReading\ObjectsJsonReader.ahk"
+
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
 ; |--------------------------------------------------|
@@ -330,38 +332,10 @@ Class Main{
 
         ; -----------Read JSON----------------
 
-        ; TODO create a class for this and such....
-        ; TODO! add try catch to all of these. If one of these informations are missing something wrong will happen!
-        For ClassName , ClassInformation in this.allClassesInformationJson{
-            
-            ObjectName := ClassInformation["ObjectName"]
-            className := ClassInformation["ClassName"]
+        JsonReaderForObjects := ObjectsJsonReader(this.PATH_TO_OBJECT_INFO, this.Objects)
+        JsonReaderForObjects.ReadObjectsFromJson(this.allClassesInformationJson)
+        this.ObjectRegister := JsonReaderForObjects.getObjectRegister();
 
-            objectMethods := MethodRegistry()
-            allMethodsOfClass := ClassInformation["Methods"]
-
-            For MethodName, MethodInformation in allMethodsOfClass{
-                
-                methodDescription := MethodInformation["Description"]
-                allMethodParameters := MethodInformation["Parameters"]
-                methodInformation := MethodInfo(methodName, methodDescription)
-                
-                For ParameterName, ParameterInformation in allMethodParameters{
-                    
-                    parameterType := ParameterInformation["Type"]
-                    parameterDescription := ParameterInformation["Description"]
-                    methodInformation.addParameter(ParameterName, parameterDescription)
-                }
-                objectMethods.addMethod(MethodName, methodInformation)
-            }
-
-            ; Create the finished object
-            ObjectInstance := this.Objects[ObjectName]
-            objectInformation := ObjectInfo(ObjectName, ObjectInstance, objectMethods)
-
-            ; Add the completed object to the registry.
-            this.ObjectRegister.AddObject(ObjectName, objectInformation)
-        }
     }
 
     RunAppGui(){
