@@ -20,6 +20,10 @@ class HotKeyInfo{
         this.key := key
         this.modifiers := modifiers
     }
+    
+    hotkeyIsObject(){
+        return this.isObject
+    }
 
     setInfoForSpecialHotKey(objectName, MethodName, parameters){
         this.isObject := true
