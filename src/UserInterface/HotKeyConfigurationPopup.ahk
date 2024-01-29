@@ -2,16 +2,18 @@
 
 class HotKeyConfigurationPopup{
 
-
+    hotkeyElement := ""
+    hotkeyCommand := ""
+    manuallyCreatHotkeyElement := ""
 
     CreatePopupForHotkeyRegistry(data, rowNumber, hotkeyCommand, hotkeyAction){
 
+        this.hotkeyCommand := hotkeyCommand
 
         guiToAddTo := Gui()
         guiToAddTo.opt("+Resize +MinSize300x560 +AlwaysOnTop")
         
         guiToAddTo.Add("Text", "w300 h20", "Hotkey:")
-        inputKey := guiToAddTo.Add("Edit", "xm w300 h20", hotkeyCommand)
         
         currentHotkeyInfo := data.GetHotkey(hotkeyCommand)
         if (currentHotkeyInfo.hotkeyIsObject()){
@@ -33,17 +35,26 @@ class HotKeyConfigurationPopup{
         manuallyCreateHotkeyCheckbox := guiToAddTo.Add("CheckBox", , "Manually create hotkey")
         manuallyCreateHotkeyCheckbox.onEvent("Click", (*) => this.manuallyCreateHotkeyCheckboxClickEvent(manuallyCreateHotkeyCheckbox))
 
-        guiToAddTo.Add("Hotkey", "vChosenHotkey")
-        guiToAddTo.Add("CheckBox", "vShipToBillingAddress", "Add win key as modifier")
+        this.hotkeyElement := guiToAddTo.Add("Hotkey", )
+        this.manuallyCreatHotkeyElement := guiToAddTo.Add("Edit", "xm w300 h20", this.hotkeyCommand)
+        this.manuallyCreatHotkeyElement.Opt("Hidden1")
+
+        guiToAddTo.Add("CheckBox",, "Add win key as modifier")
 
     }
 
     manuallyCreateHotkeyCheckboxClickEvent(checkbox){
         if (checkbox.Value == 1){
             ; on, manually create hotkey
+            this.hotkeyElement.Opt("Hidden1")
+            this.manuallyCreatHotkeyElement.Opt("Hidden0")
+            this.manuallyCreatHotkeyElement.Value := this.hotkeyElement.Value
+
         }
         else{
             ; off create hotkey by pressing keys
+            this.hotkeyElement.Opt("Hidden0")
+            this.manuallyCreatHotkeyElement.Opt("Hidden1")
         }
     }
     
