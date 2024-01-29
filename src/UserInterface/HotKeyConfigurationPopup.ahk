@@ -5,6 +5,7 @@ class HotKeyConfigurationPopup{
     hotkeyElement := ""
     hotkeyCommand := ""
     manuallyCreatHotkeyElement := ""
+    addWinKeyAsModifierElement := ""
 
     CreatePopupForHotkeyRegistry(data, rowNumber, hotkeyCommand, hotkeyAction){
 
@@ -13,7 +14,8 @@ class HotKeyConfigurationPopup{
         guiToAddTo := Gui()
         guiToAddTo.opt("+Resize +MinSize300x560 +AlwaysOnTop")
         
-        guiToAddTo.Add("Text", "w300 h20", "Hotkey:")
+        guiToAddTo.Add("Text", "w300 h20", "Original hotkey:") 
+        guiToAddTo.Add("Text", "w300 h40", hotkeyCommand).SetFont("s20", "Arial")
         
         currentHotkeyInfo := data.GetHotkey(hotkeyCommand)
         if (currentHotkeyInfo.hotkeyIsObject()){
@@ -39,7 +41,7 @@ class HotKeyConfigurationPopup{
         this.manuallyCreatHotkeyElement := guiToAddTo.Add("Edit", "xm w300 h20", this.hotkeyCommand)
         this.manuallyCreatHotkeyElement.Opt("Hidden1")
 
-        guiToAddTo.Add("CheckBox",, "Add win key as modifier")
+        this.addWinKeyAsModifierElement := guiToAddTo.Add("CheckBox",, "Add win key as modifier")
 
     }
 
@@ -48,7 +50,11 @@ class HotKeyConfigurationPopup{
             ; on, manually create hotkey
             this.hotkeyElement.Opt("Hidden1")
             this.manuallyCreatHotkeyElement.Opt("Hidden0")
-            this.manuallyCreatHotkeyElement.Value := this.hotkeyElement.Value
+            if (this.addWinKeyAsModifierElement.Value == 1){
+                this.manuallyCreatHotkeyElement.Value := "#"    
+            }
+            this.manuallyCreatHotkeyElement.Value .= this.hotkeyElement.Value
+
 
         }
         else{
