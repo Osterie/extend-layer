@@ -20,16 +20,11 @@ class HotKeyConfigurationPopup{
         currentHotkeyInfo := data.GetHotkey(hotkeyCommand)
         if (currentHotkeyInfo.hotkeyIsObject()){
             this.CreateHotKeyMaker(guiToAddTo)
+            this.createHotkeyMethodCall(guiToAddTo, hotkeyAction)
         }
         else{
 
         }
-        guiToAddTo.Add("Text", "xm w300 h20", "New Action For Hotkey:")
-        inputValue := guiToAddTo.Add("Edit", "xm w300 h20", hotkeyAction)
-        
-        SaveButton := guiToAddTo.Add("Button", "w100 h20", "Save")
-        CancelButton := guiToAddTo.Add("Button", "w100 h20", "Cancel")
-        DeleteButton := guiToAddTo.Add("Button", "w100 h20", "Delete")
         guiToAddTo.Show()
     }
 
@@ -62,6 +57,16 @@ class HotKeyConfigurationPopup{
             this.hotkeyElement.Opt("Hidden0")
             this.manuallyCreatHotkeyElement.Opt("Hidden1")
         }
+    }
+
+    createHotkeyMethodCall(guiToAddTo, hotkeyAction){
+        ; inputValue := guiToAddTo.Add("Edit", "xm w300 h20", hotkeyAction)
+        guiToAddTo.Add("Text", "xm w300 h20", "New Action For Hotkey:")
+        inputValue := guiToAddTo.Add("Edit", "xm w300 h20", hotkeyAction)
+        
+        SaveButton := guiToAddTo.Add("Button", "w100 h20", "Save")
+        CancelButton := guiToAddTo.Add("Button", "w100 h20", "Cancel")
+        DeleteButton := guiToAddTo.Add("Button", "w100 h20", "Delete")
     }
     
     

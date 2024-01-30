@@ -34,6 +34,10 @@
 #Include ".\library\MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader.ahk"
 
 
+; TODO all these #includes are terribly time consuming to write out (for one). Find a way to do it better...
+
+; TODO add a functionality to change background image on computer...
+
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
 ; |--------------------------------------------------|
