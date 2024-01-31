@@ -3,22 +3,26 @@
 class HotKeyInfo{
 
     hotkeyName := ""
+    friendlyHotkeyName := ""
     isObject := ""
     objectName := ""
     methodName := ""
     parameters := []
     
-    key := ""
+    newHotKey := ""
+    newHotKeyFriendlyName := ""
     modifiers := ""
 
     __New(hotkeyName){
         this.hotkeyName := hotkeyName
+        this.friendlyHotkeyName := this.convertToFriendlyHotkeyName(hotkeyName)
     }
 
-    setInfoForNormalHotKey(key, modifiers){
+    setInfoForNormalHotKey(newHotKey, modifiers){
         this.isObject := false
-        this.key := key
+        this.newHotKey := newHotKey
         this.modifiers := modifiers
+        this.newHotKeyFriendlyName := this.convertToFriendlyHotkeyName(this.modifiers . this.newHotKey)
     }
     
     hotkeyIsObject(){
@@ -32,12 +36,46 @@ class HotKeyInfo{
         this.parameters := parameters
     }
 
+    convertToFriendlyHotkeyName(hotkeyNameWithModifiers){
+
+        tmpString := hotkeyNameWithModifiers
+
+        friendlyName := ""
+
+        possibleModifiers := Map()
+        possibleModifiers["^"] := "ctrl + "
+        possibleModifiers["#"] := "win + "
+        possibleModifiers["!"] := "alt + "
+        possibleModifiers["+"] := "shift + "
+        possibleModifiers["<"] := "left "
+        possibleModifiers[">"] := "right "
+        possibleModifiers["&"] := "and "
+        possibleModifiers["*"] := "any "
+
+        possibleModifiers.Default := ""
+
+
+        index := 0
+        stringLength := StrLen(tmpString)
+        Loop Parse tmpString{
+            index++
+            if ( (possibleModifiers[A_LoopField] == "") or index == stringLength) {
+                friendlyName .= A_LoopField
+            }
+            else{
+                friendlyName .= possibleModifiers[A_LoopField]
+            }
+        }
+
+        return friendlyName
+    }
+
     toString(){
         if(this.isObject){
             return this.objectName . "." . this.methodName . "(" . this.parametersToString(this.parameters) . ")"
         }
         else{
-            return this.modifiers . " + " . this.key
+            return this.newHotKeyFriendlyName
         }
     }
 
@@ -64,4 +102,9 @@ class HotKeyInfo{
     getHotkeyName(){
         return this.hotkeyName
     }
+
+    getFriendlyHotkeyName(){
+        return this.friendlyHotkeyName
+    }
+
 }

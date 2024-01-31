@@ -11,7 +11,7 @@ class HotkeysRegistry{
     }
 
     AddHotkey(HotkeyInfo){
-        this.hotkeys[HotkeyInfo.getHotkeyName()] := HotkeyInfo
+        this.hotkeys[HotkeyInfo.getFriendlyHotkeyName()] := HotkeyInfo
     }
 
     GetLayerIdentifier(){
