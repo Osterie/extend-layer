@@ -148,6 +148,7 @@ Class KeysPressedGui{
         return pressedKey
     }
     
+    ; TODO create a class for this...
     SetTextAndResize(textCtrl, text) {
         textCtrl.Move(,, GetTextSize(textCtrl, text)*)
         textCtrl.Value := text

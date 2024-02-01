@@ -15,8 +15,14 @@ class HotKeyConfigurationPopup{
         guiToAddTo.opt("+Resize +MinSize600x560")
         
         ; guiToAddTo.Add("Text", "w300 h20", "Original hotkey:") 
-        guiToAddTo.Add("Text", "w300 h200", "Original hotkey: `n" . hotkeyCommand).SetFont("s20", "Arial")
-        guiToAddTo.Add("Text", "w300 h200", "Original action: `n" . hotkeyAction).SetFont("s20", "Arial")
+        originalHotkeyText := guiToAddTo.AddText(" ", "Original hotkey: `n" . hotkeyCommand)
+        newActionText := guiToAddTo.AddText(" ", "Original action: `n" . hotkeyAction)
+
+        originalHotkeyText.SetFont("s10", "Arial")
+        newActionText.SetFont("s10", "Arial")
+
+        this.SetTextAndResize(originalHotkeyText, "Original hotkey: `n" . hotkeyCommand )
+        this.SetTextAndResize(newActionText, "Original action: `n" . hotkeyAction)
         
         ; currentHotkeyInfo := data.GetHotkey(hotkeyCommand)
         ; if (currentHotkeyInfo.hotkeyIsObject()){
@@ -75,6 +81,22 @@ class HotKeyConfigurationPopup{
     }
 
 
+    ; TODO creat a class for this...
+    SetTextAndResize(textCtrl, text) {
+        textCtrl.Move(,, GetTextSize(textCtrl, text)*)
+        textCtrl.Value := text
+        textCtrl.Gui.Show('AutoSize')
     
+        GetTextSize(textCtrl, text) {
+            static WM_GETFONT := 0x0031, DT_CALCRECT := 0x400
+            hDC := DllCall('GetDC', 'Ptr', textCtrl.Hwnd, 'Ptr')
+            hPrevObj := DllCall('SelectObject', 'Ptr', hDC, 'Ptr', SendMessage(WM_GETFONT,,, textCtrl), 'Ptr')
+            height := DllCall('DrawText', 'Ptr', hDC, 'Str', text, 'Int', -1, 'Ptr', buf := Buffer(16), 'UInt', DT_CALCRECT)
+            width := NumGet(buf, 8, 'Int') - NumGet(buf, 'Int')
+            DllCall('SelectObject', 'Ptr', hDC, 'Ptr', hPrevObj, 'Ptr')
+            DllCall('ReleaseDC', 'Ptr', textCtrl.Hwnd, 'Ptr', hDC)
+            return [Round(width * 96/A_ScreenDPI), Round(height * 96/A_ScreenDPI)]
+        }
+    }
     
 }
