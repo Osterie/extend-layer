@@ -70,7 +70,8 @@ Class ExtraKeyboardsAppGui{
     CreateMain(){
 
         this.ExtraKeyboardsAppGui := Gui()
-        this.ExtraKeyboardsAppGui.Opt("+Resize +MinSize640x480")
+        this.ExtraKeyboardsAppGui.Opt("+Resize ")
+        ; this.ExtraKeyboardsAppGui.Opt("+Resize +MinSize640x480")
         this.ExtraKeyboardsAppGui.Add("Text", , "Current Profile:")
 
         this.profileButtonsObject := ProfileButtons(this.PATH_TO_EXISTING_PROFILES, this.PATH_TO_META_FILE)
