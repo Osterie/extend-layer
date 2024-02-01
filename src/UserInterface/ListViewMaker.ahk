@@ -20,7 +20,7 @@ class ListViewMaker{
 
     CreateListView(guiObject, columnNames){
         
-        this.listView := guiObject.Add("ListView", "grid r20 w400 x+10", columnNames)
+        this.listView := guiObject.Add("ListView", "grid r20 w600 x+10", columnNames)
 
         ; Create an ImageList so that the ListView can display some icons:
         ; ImageListID1 := IL_Create(10)
@@ -37,7 +37,7 @@ class ListViewMaker{
         ; this.listView.SetImageList(ImageListID2)
         
         this.listView.ModifyCol(1, 200)
-        this.listView.ModifyCol(2, 200)
+        ; this.listView.ModifyCol(2, 200)
 
         ListViewDoubleClickEvent := ObjBindMethod(this, "ListViewDoubleClickEvent")
         this.listView.OnEvent("DoubleClick", ListViewDoubleClickEvent)
