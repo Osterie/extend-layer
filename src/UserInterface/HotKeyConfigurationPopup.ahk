@@ -23,6 +23,10 @@ class HotKeyConfigurationPopup{
 
         this.SetTextAndResize(originalHotkeyText, "Original hotkey: `n" . hotkeyCommand )
         this.SetTextAndResize(newActionText, "Original action: `n" . hotkeyAction)
+
+        buttonToChangeOriginalHotkey := guiToAddTo.AddButton("Default w80", "Change original hotkey")
+        buttonToChangeOriginalAction := guiToAddTo.AddButton("Default w80", "Change original action")
+
         
         ; currentHotkeyInfo := data.GetHotkey(hotkeyCommand)
         ; if (currentHotkeyInfo.hotkeyIsObject()){

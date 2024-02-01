@@ -38,6 +38,9 @@
 
 ; TODO add a functionality to change background image on computer...
 
+
+; TODO create a quick volume changer to change volume of different apps.
+
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
 ; |--------------------------------------------------|
