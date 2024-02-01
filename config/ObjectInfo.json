@@ -2,6 +2,7 @@
     "Mouse": {
         "ObjectName": "MouseInstance",
         "ClassName": "Mouse",
+        "Description": "Used for controlling the mouse, can click, move, autoclick and such",
         "Methods": {
             "MoveMouseToCenterOfScreen": {
                 "MethodName": "MoveMouseToCenterOfScreen",
@@ -49,6 +50,7 @@
     "Keyboard": {
         "ObjectName": "KeyboardInstance",
         "ClassName": "Keyboard",
+        "Description": "Can be used to send keyboard input, even repearedly",
         "Methods": {
             "SendKeyBoardInput": {
                 "MethodName": "SendKeyBoardInput",
@@ -77,9 +79,10 @@
     "ProcessManager":{
         "ObjectName": "ProcessManagerInstance",
         "ClassName": "ProcessManager",
+        "Description": "Can be used to close processes or close this script.",
         "Methods": {
-            "CloseActiveAutohotkeyScrip": {
-                "MethodName": "CloseActiveAutohotkeyScrip",
+            "CloseActiveAutohotkeyScript": {
+                "MethodName": "CloseActiveAutohotkeyScript",
                 "Description": "Closes this script",
                 "Parameters": []
             },
@@ -99,6 +102,7 @@
     "CommandPromptOpener": {
         "ObjectName": "CommandPrompt",
         "ClassName": "CommandPromptOpener",
+        "Description": "Used for opening cmd",
         "Methods": {
             "OpenCmdPathedToCurrentLocation": {
                 "MethodName": "OpenCmdPathedToCurrentLocation",
@@ -111,6 +115,7 @@
     "BatteryController":{
         "ObjectName": "Battery",
         "ClassName": "BatteryController",
+        "Description": "Change battery settings (WIP, don't use yet, probably wont work)",
         "Methods": {
             "ToggleBatterySaver": {
                 "MethodName": "ToggleBatterySaver",
@@ -133,6 +138,7 @@
     "FileExplorerNavigator":{
         "ObjectName": "FileExplorer",
         "ClassName": "FileExplorerNavigator",
+        "Description": "Used for navigating in the file explorer",
         "Methods": {
             "NavigatToFolder": {
                 "MethodName": "NavigatToFolder",
@@ -151,6 +157,7 @@
     "KeyboardOverlayRegistry": {
         "ObjectName": "OverlayRegistry",
         "ClassName": "KeyboardOverlayRegistry",
+        "Description": "No use yet",
         "Methods": {
             "ToggleKeyboardOverlay": {
                 "MethodName": "ToggleKeyboardOverlay",
@@ -163,6 +170,7 @@
     "WebNavigator":{
         "ObjectName": "WebSearcher",
         "ClassName": "WebNavigator",
+        "Description": "Used for navigating or other shortcuts in the web browser",
         "Methods": {
             "CloseTabsToTheRight": {
                 "MethodName": "CloseTabsToTheRight",
@@ -175,6 +183,7 @@
     "KeysPressedGui" : {
         "ObjectName": "OnScreenWriter",
         "ClassName": "KeysPressedGui",
+        "Description": "Used for showing keys pressed on screen",
         "Methods": {
             "ToggleShowKeysPressed": {
                 "MethodName": "ToggleShowKeysPressed",
@@ -187,6 +196,7 @@
     "ComputerInputController" : {
         "ObjectName": "ComputerInput",
         "ClassName": "ComputerInputController",
+        "Description": "Used for blocking input from the keyboard and/or mouse",
         "Methods": {
             "BlockAllInput": {
                 "MethodName": "BlockAllInput",
@@ -223,6 +233,7 @@
     "ScreenPrivacyController":{
         "ObjectName": "PrivacyController",
         "ClassName": "ScreenPrivacyController",
+        "Description": "Used for hiding content on screen",
         "Methods": {
             "HideScreen": {
                 "MethodName": "HideScreen",
@@ -236,7 +247,7 @@
             },
             "HideGui": {
                 "MethodName": "HideGui",
-                "Description": "Hides the active gui",
+                "Description": "Hides the screen hider itself",
                 "Parameters": []
             },
             "HideTabs": {
@@ -250,12 +261,14 @@
     "DeviceManager":{
         "ObjectName": "DeviceManipulator",
         "ClassName": "DeviceManager",
+        "Description": "Not in use yet. WIP",
         "Methods": {}
     },
 
     "Monitor":{
         "ObjectName": "MonitorInstance",
         "ClassName": "Monitor",
+        "Description": "Used for controlling the monitor, can change brightness and gamma",
         "Methods": {
             "SetBrightness": {
                 "MethodName": "SetBrightness",
@@ -316,10 +329,11 @@
     "LayerIndicatorController":{
         "ObjectName": "layers",
         "ClassName": "LayerIndicatorController",
+        "Description": "Used for changign the active keyboard laye and its layer indicator",
         "Methods": {
             "toggleLayerIndicator":{
                 "MethodName": "toggleLayerIndicator",
-                "Description": "Toggles the layer indicator for a given layer",
+                "Description": "Toggles the active layer between off and the given layer.",
                 "Parameters": [
                     {
                         "Name": "layer",

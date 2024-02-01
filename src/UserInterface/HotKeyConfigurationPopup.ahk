@@ -12,19 +12,20 @@ class HotKeyConfigurationPopup{
         this.hotkeyCommand := hotkeyCommand
 
         guiToAddTo := Gui()
-        guiToAddTo.opt("+Resize +MinSize300x560 +AlwaysOnTop")
+        guiToAddTo.opt("+Resize +MinSize600x560")
         
-        guiToAddTo.Add("Text", "w300 h20", "Original hotkey:") 
-        guiToAddTo.Add("Text", "w300 h40", hotkeyCommand).SetFont("s20", "Arial")
+        ; guiToAddTo.Add("Text", "w300 h20", "Original hotkey:") 
+        guiToAddTo.Add("Text", "w300 h200", "Original hotkey: `n" . hotkeyCommand).SetFont("s20", "Arial")
+        guiToAddTo.Add("Text", "w300 h200", "Original action: `n" . hotkeyAction).SetFont("s20", "Arial")
         
-        currentHotkeyInfo := data.GetHotkey(hotkeyCommand)
-        if (currentHotkeyInfo.hotkeyIsObject()){
-            this.CreateHotKeyMaker(guiToAddTo)
-            this.createHotkeyMethodCall(guiToAddTo, hotkeyAction)
-        }
-        else{
+        ; currentHotkeyInfo := data.GetHotkey(hotkeyCommand)
+        ; if (currentHotkeyInfo.hotkeyIsObject()){
+        ;     this.CreateHotKeyMaker(guiToAddTo)
+        ;     this.createHotkeyMethodCall(guiToAddTo, hotkeyAction)
+        ; }
+        ; else{
 
-        }
+        ; }
         guiToAddTo.Show()
     }
 
@@ -48,6 +49,7 @@ class HotKeyConfigurationPopup{
             if (this.addWinKeyAsModifierElement.Value == 1){
                 this.manuallyCreatHotkeyElement.Value := "#"    
             }
+            this.addWinKeyAsModifierElement.Opt("Hidden1")
             this.manuallyCreatHotkeyElement.Value .= this.hotkeyElement.Value
 
 
@@ -55,19 +57,24 @@ class HotKeyConfigurationPopup{
         else{
             ; off create hotkey by pressing keys
             this.hotkeyElement.Opt("Hidden0")
+            this.addWinKeyAsModifierElement.Opt("Hidden0")
             this.manuallyCreatHotkeyElement.Opt("Hidden1")
+
         }
     }
 
     createHotkeyMethodCall(guiToAddTo, hotkeyAction){
         ; inputValue := guiToAddTo.Add("Edit", "xm w300 h20", hotkeyAction)
         guiToAddTo.Add("Text", "xm w300 h20", "New Action For Hotkey:")
+
         inputValue := guiToAddTo.Add("Edit", "xm w300 h20", hotkeyAction)
         
         SaveButton := guiToAddTo.Add("Button", "w100 h20", "Save")
         CancelButton := guiToAddTo.Add("Button", "w100 h20", "Cancel")
         DeleteButton := guiToAddTo.Add("Button", "w100 h20", "Delete")
     }
+
+
     
     
 }

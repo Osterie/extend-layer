@@ -43,14 +43,14 @@ class HotKeyInfo{
         friendlyName := ""
 
         possibleModifiers := Map()
-        possibleModifiers["^"] := "ctrl + "
-        possibleModifiers["#"] := "win + "
-        possibleModifiers["!"] := "alt + "
-        possibleModifiers["+"] := "shift + "
-        possibleModifiers["<"] := "left "
-        possibleModifiers[">"] := "right "
-        possibleModifiers["&"] := "and "
-        possibleModifiers["*"] := "any "
+        possibleModifiers["^"] := "Ctrl + "
+        possibleModifiers["#"] := "Win + "
+        possibleModifiers["!"] := "Alt + "
+        possibleModifiers["+"] := "Shift + "
+        possibleModifiers["<"] := "Left "
+        possibleModifiers[">"] := "Right "
+        possibleModifiers["&"] := "And "
+        possibleModifiers["*"] := "Any + "
 
         possibleModifiers.Default := ""
 
