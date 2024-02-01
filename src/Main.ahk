@@ -40,6 +40,7 @@
 
 
 ; TODO create a quick volume changer to change volume of different apps.
+; TODO change volume of app for x minutes?
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
