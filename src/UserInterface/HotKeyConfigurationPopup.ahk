@@ -1,5 +1,8 @@
 #Requires AutoHotkey v2.0
 
+
+#Include ".\HotkeyCrafterGui.ahk"
+
 class HotKeyConfigurationPopup{
 
     hotkeyElement := ""
@@ -26,7 +29,9 @@ class HotKeyConfigurationPopup{
 
         buttonToChangeOriginalHotkey := guiToAddTo.AddButton("Default w80", "Change original hotkey")
         buttonToChangeOriginalAction := guiToAddTo.AddButton("Default w80", "Change original action")
+        saveButton := guiToAddTo.AddButton("Default w80", "Save+Done")
 
+        buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent(guiToAddTo, hotkeyCommand))
         
         ; currentHotkeyInfo := data.GetHotkey(hotkeyCommand)
         ; if (currentHotkeyInfo.hotkeyIsObject()){
@@ -37,6 +42,22 @@ class HotKeyConfigurationPopup{
 
         ; }
         guiToAddTo.Show()
+    }
+
+    buttonToChangeOriginalHotkeyClickedEvent(guiToAddTo, hotkeyCommand){
+        guiToAddTo.Hide()
+
+        hotkeyCrafter := HotkeyCrafterGui(hotkeyCommand)
+
+        hotkeyCrafter.Show()
+        ; guiToAddTo.Destroy()
+
+
+
+        ; this.CreateHotKeyMaker(guiToAddTo)
+        ; this.createHotkeyMethodCall(guiToAddTo, hotkeyCommand)
+        ; guiToAddTo.Show()
+
     }
 
     CreateHotKeyMaker(guiToAddTo){
