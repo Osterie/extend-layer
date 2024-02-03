@@ -20,15 +20,15 @@ class HotKeyConfigurationPopup{
         this.mainGui.opt("+Resize +MinSize600x560")
         
         ; this.mainGui.Add("Text", "w300 h20", "Original hotkey:") 
-        originalHotkeyText := this.mainGui.AddText(" ", "Original hotkey: `n" . hotkeyCommand)
-        newActionText := this.mainGui.AddText(" ", "Original action: `n" . hotkeyAction)
+        originalHotkeyText := this.mainGui.AddText(" ", "Hotkey: `n" . hotkeyCommand)
+        newActionText := this.mainGui.AddText(" ", "Action: `n" . hotkeyAction)
 
 
         originalHotkeyText.SetFont("s10", "Arial")
         newActionText.SetFont("s10", "Arial")
 
-        this.SetTextAndResize(originalHotkeyText, "Original hotkey: `n" . hotkeyCommand )
-        this.SetTextAndResize(newActionText, "Original action: `n" . hotkeyAction)
+        this.SetTextAndResize(originalHotkeyText, "Hotkey: `n" . hotkeyCommand )
+        this.SetTextAndResize(newActionText, "Action: `n" . hotkeyAction)
 
 
         ; revertButton := this.mainGui.AddButton("Default w80 ym", "Revert")
