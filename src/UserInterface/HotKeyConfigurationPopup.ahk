@@ -70,6 +70,7 @@ class HotKeyConfigurationPopup{
 
     hotkeyCrafterHotkeySavedEvent(hotkeyCrafter, savedButton, idk){
         newHotkey := hotkeyCrafter.getNewHotkey()
+        hotkeyCrafter.Destroy()
         
 
     }
