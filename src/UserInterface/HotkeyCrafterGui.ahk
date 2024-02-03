@@ -18,7 +18,7 @@ class HotkeyCrafterGui{
 
         advancedModeButton.onEvent("Click", (*) => this.advancedModeButtonChangedEvent(advancedModeButton, newHotKeyText))
 
-        this.hotkeyDynamicInput.Value := "^+Capslock"
+        this.hotkeyDynamicInput.Value := originalHotkey
 
         ; this.GuiObject.Add("Text", "w300 h20", "New Action For Hotkey:")
         this.hotkeyStaticInput := this.GuiObject.Add("Edit", "w300 h20 xp yp")
