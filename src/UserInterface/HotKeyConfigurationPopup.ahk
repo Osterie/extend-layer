@@ -47,7 +47,15 @@ class HotKeyConfigurationPopup{
     buttonToChangeOriginalHotkeyClickedEvent(guiToAddTo, hotkeyCommand){
         guiToAddTo.Hide()
 
+
         hotkeyCrafter := HotkeyCrafterGui(hotkeyCommand)
+        
+        hotkeySavedEventAction := ObjBindMethod(this, "hotkeyCrafterHotkeySavedEvent", hotkeyCrafter)
+
+        hotkeyCrafter.addSaveButtonClickEventAction(hotkeySavedEventAction)
+
+
+
 
         hotkeyCrafter.Show()
         ; guiToAddTo.Destroy()
@@ -58,6 +66,11 @@ class HotKeyConfigurationPopup{
         ; this.CreateHotKeyMaker(guiToAddTo)
         ; this.createHotkeyMethodCall(guiToAddTo, hotkeyCommand)
         ; guiToAddTo.Show()
+    }
+
+    hotkeyCrafterHotkeySavedEvent(hotkeyCrafter, savedButton, idk){
+        newHotkey := hotkeyCrafter.getNewHotkey()
+        
 
     }
 

@@ -7,16 +7,19 @@ class HotkeyCrafterGui{
     hotkeyStaticInput := ""
     hotkeyDynamicInput := ""
 
+    advancedModeButton := ""
+    saveButton := ""
+
     __New(originalHotkey){
         this.GuiObject := Gui()
         this.GuiObject.Add("Text", "h20", "Original hotkey: " . originalHotkey)
         
-        advancedModeButton := this.GuiObject.AddCheckBox("h50", "Advanced mode")
+        this.advancedModeButton := this.GuiObject.AddCheckBox("h50", "Advanced mode")
 
         newHotKeyText := this.GuiObject.Add("Text", "h20", "New hotkey:")
         this.hotkeyDynamicInput := this.GuiObject.Add("Hotkey", "w200 h20 yp") ;yp sets the control's position to the left of the previous one...
 
-        advancedModeButton.onEvent("Click", (*) => this.advancedModeButtonChangedEvent(advancedModeButton, newHotKeyText))
+        this.advancedModeButton.onEvent("Click", (*) => this.advancedModeButtonChangedEvent(newHotKeyText))
 
         this.hotkeyDynamicInput.Value := originalHotkey
 
@@ -24,14 +27,14 @@ class HotkeyCrafterGui{
         this.hotkeyStaticInput := this.GuiObject.Add("Edit", "w300 h20 xp yp")
         this.hotkeyStaticInput.Opt("Hidden1")
 
-        this.GuiObject.Add("Button", "w100 h20", "Save")
+        this.saveButton := this.GuiObject.Add("Button", "w100 h20", "Save")
         cancelButton := this.GuiObject.Add("Button", "w100 h20", "Cancel")
         cancelButton.onEvent("Click", (*) => this.Destroy())
         this.GuiObject.Add("Button", "w100 h20", "Delete")
     }
 
-    advancedModeButtonChangedEvent(advancedModeButton, newHotKeyText){
-        if(advancedModeButton.Value = true){
+    advancedModeButtonChangedEvent(newHotKeyText){
+        if(this.advancedModeButton.Value = true){
             this.hotkeyStaticInput.Opt("Hidden0")
             this.hotkeyDynamicInput.Opt("Hidden1")
             if (this.hotkeyDynamicInput.Value != ""){
@@ -45,6 +48,21 @@ class HotkeyCrafterGui{
         }
     }
 
+    getNewHotkey(*){
+        hotkeyValueToReturn := ""
+        if (this.advancedModeButton.Value = true){
+            hotkeyValueToReturn := this.hotkeyStaticInput.Value
+        }
+        else {
+            hotkeyValueToReturn := this.hotkeyDynamicInput.Value
+        }
+        return hotkeyValueToReturn
+    }
+
+    addSaveButtonClickEventAction(action){
+        this.saveButton.OnEvent("Click", action)
+    }
+
     Show(){
         this.GuiObject.Show()
     }
@@ -55,5 +73,5 @@ class HotkeyCrafterGui{
 }
 
 
-test := HotkeyCrafterGui("+Capslock")
-test.Show()
+; test := HotkeyCrafterGui("+Capslock")
+; test.Show()

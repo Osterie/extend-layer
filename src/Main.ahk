@@ -137,7 +137,7 @@ Class Main{
         this.RunLogicalStartup()
         ; this.UpdatePathsToInfo()
         ; this.InitializeMetaInfo()
-        ; this.RunAppGui()
+        this.RunAppGui()
     }
 
     RunLogicalStartup(){
