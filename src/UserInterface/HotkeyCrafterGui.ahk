@@ -25,7 +25,8 @@ class HotkeyCrafterGui{
         this.hotkeyStaticInput.Opt("Hidden1")
 
         this.GuiObject.Add("Button", "w100 h20", "Save")
-        this.GuiObject.Add("Button", "w100 h20", "Cancel")
+        cancelButton := this.GuiObject.Add("Button", "w100 h20", "Cancel")
+        cancelButton.onEvent("Click", (*) => this.Destroy())
         this.GuiObject.Add("Button", "w100 h20", "Delete")
     }
 
