@@ -33,6 +33,7 @@
 #Include ".\library\MetaInfo\MetaInfoReading\ObjectsJsonReader.ahk"
 #Include ".\library\MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader.ahk"
 
+; TODO perhaps should add a "description" for the hotkeys in the gui
 
 ; TODO all these #includes are terribly time consuming to write out (for one). Find a way to do it better...
 
@@ -136,7 +137,7 @@ Class Main{
         this.RunLogicalStartup()
         ; this.UpdatePathsToInfo()
         ; this.InitializeMetaInfo()
-        this.RunAppGui()
+        ; this.RunAppGui()
     }
 
     RunLogicalStartup(){
