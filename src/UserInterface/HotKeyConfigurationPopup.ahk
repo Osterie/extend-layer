@@ -5,6 +5,8 @@
 
 class HotKeyConfigurationPopup{
 
+    mainGui := ""
+
     hotkeyElement := ""
     hotkeyCommand := ""
     manuallyCreatHotkeyElement := ""
@@ -14,12 +16,13 @@ class HotKeyConfigurationPopup{
 
         this.hotkeyCommand := hotkeyCommand
 
-        guiToAddTo := Gui()
-        guiToAddTo.opt("+Resize +MinSize600x560")
+        this.mainGui := Gui()
+        this.mainGui.opt("+Resize +MinSize600x560")
         
-        ; guiToAddTo.Add("Text", "w300 h20", "Original hotkey:") 
-        originalHotkeyText := guiToAddTo.AddText(" ", "Original hotkey: `n" . hotkeyCommand)
-        newActionText := guiToAddTo.AddText(" ", "Original action: `n" . hotkeyAction)
+        ; this.mainGui.Add("Text", "w300 h20", "Original hotkey:") 
+        originalHotkeyText := this.mainGui.AddText(" ", "Original hotkey: `n" . hotkeyCommand)
+        newActionText := this.mainGui.AddText(" ", "Original action: `n" . hotkeyAction)
+
 
         originalHotkeyText.SetFont("s10", "Arial")
         newActionText.SetFont("s10", "Arial")
@@ -27,25 +30,30 @@ class HotKeyConfigurationPopup{
         this.SetTextAndResize(originalHotkeyText, "Original hotkey: `n" . hotkeyCommand )
         this.SetTextAndResize(newActionText, "Original action: `n" . hotkeyAction)
 
-        buttonToChangeOriginalHotkey := guiToAddTo.AddButton("Default w80", "Change original hotkey")
-        buttonToChangeOriginalAction := guiToAddTo.AddButton("Default w80", "Change original action")
-        saveButton := guiToAddTo.AddButton("Default w80", "Save+Done")
 
-        buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent(guiToAddTo, hotkeyCommand))
+        revertButton := this.mainGui.AddButton("Default w80 ym", "Revert")
+        undoButton := this.mainGui.AddButton("Default w80", "Undo")  
+
+
+        buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80", "Change original hotkey")
+        buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change original action")
+        saveButton := this.mainGui.AddButton("Default w80", "Save+Done")
+
+        buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent(hotkeyCommand))
         
         ; currentHotkeyInfo := data.GetHotkey(hotkeyCommand)
         ; if (currentHotkeyInfo.hotkeyIsObject()){
-        ;     this.CreateHotKeyMaker(guiToAddTo)
-        ;     this.createHotkeyMethodCall(guiToAddTo, hotkeyAction)
+        ;     this.CreateHotKeyMaker(this.mainGui)
+        ;     this.createHotkeyMethodCall(this.mainGui, hotkeyAction)
         ; }
         ; else{
 
         ; }
-        guiToAddTo.Show()
+        this.mainGui.Show()
     }
 
-    buttonToChangeOriginalHotkeyClickedEvent(guiToAddTo, hotkeyCommand){
-        guiToAddTo.Hide()
+    buttonToChangeOriginalHotkeyClickedEvent(hotkeyCommand){
+        this.mainGui.Hide()
 
 
         hotkeyCrafter := HotkeyCrafterGui(hotkeyCommand)
@@ -58,32 +66,33 @@ class HotKeyConfigurationPopup{
 
 
         hotkeyCrafter.Show()
-        ; guiToAddTo.Destroy()
+        ; this.mainGui.Destroy()
 
         ; this.GuiObject.Add("Text", "w300 h20", "New Action For Hotkey:")
         ; this.hotkeyStaticInput := this.GuiObject.Add("Edit", "w300 h20")
 
-        ; this.CreateHotKeyMaker(guiToAddTo)
-        ; this.createHotkeyMethodCall(guiToAddTo, hotkeyCommand)
-        ; guiToAddTo.Show()
+        ; this.CreateHotKeyMaker(this.mainGui)
+        ; this.createHotkeyMethodCall(this.mainGui, hotkeyCommand)
+        ; this.mainGui.Show()
     }
 
     hotkeyCrafterHotkeySavedEvent(hotkeyCrafter, savedButton, idk){
         newHotkey := hotkeyCrafter.getNewHotkey()
         hotkeyCrafter.Destroy()
+        this.mainGui.Show()
         
 
     }
 
-    CreateHotKeyMaker(guiToAddTo){
-        manuallyCreateHotkeyCheckbox := guiToAddTo.Add("CheckBox", , "Manually create hotkey")
+    CreateHotKeyMaker(){
+        manuallyCreateHotkeyCheckbox := this.mainGui.Add("CheckBox", , "Manually create hotkey")
         manuallyCreateHotkeyCheckbox.onEvent("Click", (*) => this.manuallyCreateHotkeyCheckboxClickEvent(manuallyCreateHotkeyCheckbox))
 
-        this.hotkeyElement := guiToAddTo.Add("Hotkey", )
-        this.manuallyCreatHotkeyElement := guiToAddTo.Add("Edit", "xm w300 h20", this.hotkeyCommand)
+        this.hotkeyElement := this.mainGui.Add("Hotkey", )
+        this.manuallyCreatHotkeyElement := this.mainGui.Add("Edit", "xm w300 h20", this.hotkeyCommand)
         this.manuallyCreatHotkeyElement.Opt("Hidden1")
 
-        this.addWinKeyAsModifierElement := guiToAddTo.Add("CheckBox",, "Add win key as modifier")
+        this.addWinKeyAsModifierElement := this.mainGui.Add("CheckBox",, "Add win key as modifier")
 
     }
 
@@ -109,15 +118,15 @@ class HotKeyConfigurationPopup{
         }
     }
 
-    createHotkeyMethodCall(guiToAddTo, hotkeyAction){
-        ; inputValue := guiToAddTo.Add("Edit", "xm w300 h20", hotkeyAction)
-        guiToAddTo.Add("Text", "xm w300 h20", "New Action For Hotkey:")
+    createHotkeyMethodCall(hotkeyAction){
+        ; inputValue := this.mainGui.Add("Edit", "xm w300 h20", hotkeyAction)
+        this.mainGui.Add("Text", "xm w300 h20", "New Action For Hotkey:")
 
-        inputValue := guiToAddTo.Add("Edit", "xm w300 h20", hotkeyAction)
+        inputValue := this.mainGui.Add("Edit", "xm w300 h20", hotkeyAction)
         
-        SaveButton := guiToAddTo.Add("Button", "w100 h20", "Save")
-        CancelButton := guiToAddTo.Add("Button", "w100 h20", "Cancel")
-        DeleteButton := guiToAddTo.Add("Button", "w100 h20", "Delete")
+        SaveButton := this.mainGui.Add("Button", "w100 h20", "Save")
+        CancelButton := this.mainGui.Add("Button", "w100 h20", "Cancel")
+        DeleteButton := this.mainGui.Add("Button", "w100 h20", "Delete")
     }
 
 
@@ -140,3 +149,8 @@ class HotKeyConfigurationPopup{
     }
     
 }
+
+
+test := HotKeyConfigurationPopup()
+
+test.CreatePopupForHotkeyRegistry(0, 0, "^!+a", "test")
