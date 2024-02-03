@@ -33,13 +33,14 @@ class HotkeyCrafterGui{
         if(advancedModeButton.Value = true){
             this.hotkeyStaticInput.Opt("Hidden0")
             this.hotkeyDynamicInput.Opt("Hidden1")
-            this.hotkeyStaticInput.Value := this.hotkeyDynamicInput.Value
+            if (this.hotkeyDynamicInput.Value != ""){
+                this.hotkeyStaticInput.Value := this.hotkeyDynamicInput.Value
+            }
         } 
         else {
             this.hotkeyStaticInput.Opt("Hidden1")
             this.hotkeyDynamicInput.Opt("Hidden0")
             this.hotkeyDynamicInput.Value := this.hotkeyStaticInput.Value
-            msgbox(this.hotkeyDynamicInput.Value)
         }
     }
 
