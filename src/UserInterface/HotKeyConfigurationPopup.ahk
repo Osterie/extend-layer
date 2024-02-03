@@ -31,14 +31,15 @@ class HotKeyConfigurationPopup{
         this.SetTextAndResize(newActionText, "Original action: `n" . hotkeyAction)
 
 
-        revertButton := this.mainGui.AddButton("Default w80 ym", "Revert")
-        undoButton := this.mainGui.AddButton("Default w80", "Undo")  
+        ; revertButton := this.mainGui.AddButton("Default w80 ym", "Revert")
+        ; undoButton := this.mainGui.AddButton("Default w80", "Undo")  
 
 
         buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80", "Change original hotkey")
         buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change original action")
         saveButton := this.mainGui.AddButton("Default w80", "Save+Done")
 
+        
         buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent(hotkeyCommand))
         
         ; currentHotkeyInfo := data.GetHotkey(hotkeyCommand)
@@ -52,17 +53,22 @@ class HotKeyConfigurationPopup{
         this.mainGui.Show()
     }
 
+
     buttonToChangeOriginalHotkeyClickedEvent(hotkeyCommand){
         this.mainGui.Hide()
 
-
         hotkeyCrafter := HotkeyCrafterGui(hotkeyCommand)
         
-        hotkeySavedEventAction := ObjBindMethod(this, "hotkeyCrafterHotkeySavedEvent", hotkeyCrafter)
+        hotkeySavedEventAction := ObjBindMethod(this, "saveButtonClickedForHotkeyCrafterEvent", hotkeyCrafter)
 
         hotkeyCrafter.addSaveButtonClickEventAction(hotkeySavedEventAction)
 
 
+
+
+        hotkeyCrafterClosedEvent := ObjBindMethod(this, "cancelButtonClickedForHotkeyCrafterEvent", hotkeyCrafter)
+        hotkeyCrafter.addCloseEventAction(hotkeyCrafterClosedEvent)
+        hotkeyCrafter.addCancelButtonClickEventAction(hotkeyCrafterClosedEvent)
 
 
         hotkeyCrafter.Show()
@@ -76,12 +82,17 @@ class HotKeyConfigurationPopup{
         ; this.mainGui.Show()
     }
 
-    hotkeyCrafterHotkeySavedEvent(hotkeyCrafter, savedButton, idk){
+    cancelButtonClickedForHotkeyCrafterEvent(hotkeyCrafter, *){
+        hotkeyCrafter.Destroy()
+        this.mainGui.Show()
+    }
+
+
+
+    saveButtonClickedForHotkeyCrafterEvent(hotkeyCrafter, savedButton, idk){
         newHotkey := hotkeyCrafter.getNewHotkey()
         hotkeyCrafter.Destroy()
         this.mainGui.Show()
-        
-
     }
 
     CreateHotKeyMaker(){
@@ -151,6 +162,6 @@ class HotKeyConfigurationPopup{
 }
 
 
-test := HotKeyConfigurationPopup()
+; test := HotKeyConfigurationPopup()
 
-test.CreatePopupForHotkeyRegistry(0, 0, "^!+a", "test")
+; test.CreatePopupForHotkeyRegistry(0, 0, "^!+a", "test")
