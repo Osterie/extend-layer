@@ -52,7 +52,8 @@ class HotKeyConfigurationPopup{
         hotkeyCrafter.Show()
         ; guiToAddTo.Destroy()
 
-
+        ; this.GuiObject.Add("Text", "w300 h20", "New Action For Hotkey:")
+        ; this.hotkeyStaticInput := this.GuiObject.Add("Edit", "w300 h20")
 
         ; this.CreateHotKeyMaker(guiToAddTo)
         ; this.createHotkeyMethodCall(guiToAddTo, hotkeyCommand)
