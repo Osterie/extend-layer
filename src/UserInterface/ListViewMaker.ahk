@@ -17,6 +17,7 @@ class ListViewMaker{
     popupForConfiguringHotkey := ""
 
     newHotKey := ""
+    originalHotkey := ""
 
     __New(jsonObject, jsonFileContents, keyboardLayersInfoRegister){
         this.jsonObject := jsonObject
@@ -55,7 +56,7 @@ class ListViewMaker{
             this.activeTreeViewItem := treeViewGui.GetText(selectedTreeViewItem)
             itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.activeTreeViewItem)
 
-            this.SetNewListViewItems(itemsToShowForListView.getKeyPairValuesToString())
+            this.SetNewListViewItems(itemsToShowForListView.getFriendlyHotkeyActionPairValues())
         }
         else{
             ; TODO, would need this if this class should be general. Among other stuff...
@@ -82,6 +83,7 @@ class ListViewMaker{
 
         hotkeyBuild := listView.GetText(rowNumber, 1)
         this.newHotkey := hotkeyBuild
+        this.originalHotkey := hotkeyBuild
         hotkeyAction := listView.GetText(rowNumber, 2)
 
         this.popupForConfiguringHotkey := HotKeyConfigurationPopup()
@@ -118,6 +120,10 @@ class ListViewMaker{
 
     getNewHotkey(){
         return this.newHotKey
+    }
+
+    getOriginalHotkey(){
+        return this.originalHotkey
     }
 
     SetOnTop(identifier){

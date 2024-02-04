@@ -20,6 +20,10 @@ class KeyboardLayersInfoRegistry{
         this.HotkeysRegistry[Hotkeys.GetLayerIdentifier()] := Hotkeys
     }
 
+    ChangeHotkey(layerIdentifier, hotkeyName, newHotkey){
+        msgbox(this.HotkeysRegistry[layerIdentifier].ChangeHotkeyKey(hotkeyName, newHotkey))
+    }
+
     GetRegistryByLayerIdentifier(layerIdentifier){
         registryToReturn := ""
         if (this.KeyboardOverlaysRegistry.Has(layerIdentifier)){
@@ -33,4 +37,6 @@ class KeyboardLayersInfoRegistry{
         }
         return registryToReturn
     }
+
+    
 }

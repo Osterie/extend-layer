@@ -11,7 +11,7 @@ class HotkeysRegistry{
     }
 
     AddHotkey(HotkeyInfo){
-        this.hotkeys[HotkeyInfo.getFriendlyHotkeyName()] := HotkeyInfo
+        this.hotkeys[HotkeyInfo.getHotkeyName()] := HotkeyInfo
     }
 
     GetLayerIdentifier(){
@@ -20,6 +20,10 @@ class HotkeysRegistry{
 
     GetHotkey(hotkeyName){
         return this.hotkeys.get(hotkeyName)
+    }
+
+    ChangeHotkeyKey(hotkeyName, newHotkey){
+        this.hotkeys[hotkeyName].changeHotkey(newHotkey)
     }
 
     GetHotkeys(){
@@ -33,6 +37,15 @@ class HotkeysRegistry{
 
         return elements
     }
+
+    getFriendlyHotkeyActionPairValues(){
+        elements := []
+        for key, value in this.hotkeys
+            elements.push([value.getFriendlyHotkeyName(), value.ToString()])
+
+        return elements
+    }
+
 
     ToString(){
 

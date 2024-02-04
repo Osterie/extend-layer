@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
 
+
+#Include "..\library\JsonParsing\JXON\JXON.ahk"
 #Include ".\TreeViewFromIniFile.ahk"
 #Include ".\ProfileButtons.ahk"
 #Include ".\KeyboardLayerChanging.ahk"
@@ -40,6 +42,8 @@ Class ExtraKeyboardsAppGui{
     keyboardLayersInfoRegister := ""
 
     MainScript := ""
+
+    currentLayer := ""
 
 
     __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonFileConents, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript){
@@ -112,8 +116,9 @@ Class ExtraKeyboardsAppGui{
         listViewElement := ListViewMaker(this.activeObjectsRegistry, jsonFileContents, this.keyboardLayersInfoRegister)
         listViewElement.CreateListView(this.ExtraKeyboardsAppGui, ["KeyCombo","Action"])
         
-        CreateListViewItems := ObjBindMethod(listViewElement, "SetNewListViewItemsByIniFileSection")
-        keyboardLayoutChanger.AddEventAction("ItemSelect", CreateListViewItems)
+        
+        keyboardLayoutChanger.AddEventAction("ItemSelect", ObjBindMethod(this, "TreeViewElementClickedEvent", listViewElement))
+
 
         saveEvent := ObjBindMethod(this, "hotkeySavedEvent", listViewElement)
         listViewElement.setHotkeySavedEvent(saveEvent)
@@ -131,8 +136,28 @@ Class ExtraKeyboardsAppGui{
         Tab.UseTab(0)  ; i.e. subsequently-added controls will not belong to the tab control.
     }
 
+    TreeViewElementClickedEvent(listViewElement, treeViewElement, treeViewElementSelectedItemID){
+
+        this.currentLayer := treeViewElement.GetText(treeViewElementSelectedItemID)
+        ; this.currentHotkey := 
+        listViewElement.SetNewListViewItemsByIniFileSection(treeViewElement, treeViewElementSelectedItemID)
+
+    }
+
     hotkeySavedEvent(listViewElement, *){
-        msgbox(listViewElement.getNewHotkey())
+        ; TODO now i must update the json file with the new hotkey if it is valid...
+
+        ; TODO keyboardLayersInfoRegister change a hotkey, turn into a json file, and then change the existing json file
+
+        oldHotkey := HotkeyFormatConverter.convertFromFriendlyName(listViewElement.getOriginalHotkey())
+        newHotkey := listViewElement.getNewHotkey()
+
+        this.keyboardLayersInfoRegister.ChangeHotkey(this.currentLayer, oldHotkey, newHotKey)
+
+        msgbox(Jxon_Dump(this.keyboardLayersInfoRegister))
+        ; this.MainScript.
+        
+        ;  Jxon_Dump
     }
 
 

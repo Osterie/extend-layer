@@ -30,6 +30,10 @@ class KeyboardOverlayInfo{
         return this.OverlayElements.getKeyPairValuesToString()
     }
 
+    getFriendlyHotkeyActionPairValues(){
+        return this.OverlayElements.getFriendlyHotkeyActionPairValues()
+    }
+
     ; "SecondaryLayer-KeyboardOverlay1": {
         ; "ShowKeyboardOverlayKey": "~Shift",
         ; "overlayElements":{

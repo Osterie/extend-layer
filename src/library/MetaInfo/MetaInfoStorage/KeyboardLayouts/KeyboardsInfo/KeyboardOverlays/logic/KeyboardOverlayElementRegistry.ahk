@@ -23,7 +23,13 @@ class KeyboardOverlayElementRegistry{
         for elementNames, KeyboardOverlayElement in this.KeyboardOverlayElements
             elements.push([KeyboardOverlayElement.getKey(), KeyboardOverlayElement.getDescription()])
         return elements
+    }
 
+    getFriendlyHotkeyActionPairValues(){
+        elements := []
+        for elementNames, KeyboardOverlayElement in this.KeyboardOverlayElements
+            elements.push([KeyboardOverlayElement.getKey(), KeyboardOverlayElement.getDescription()])
+        return elements
     }
 
 }

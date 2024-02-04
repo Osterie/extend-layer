@@ -1,21 +1,6 @@
 #Requires AutoHotkey v2.0
 
-; #Include "..\MetaInfoStorage\KeyboardLayouts\KeyboardLayersInfoRegistry.ahk"
-
-#Include ..\MetaInfoStorage
-
-#Include ".\KeyboardLayouts\KeyboardLayersInfoRegistry.ahk"
-#Include ".\KeyboardLayouts\KeyboardsInfo\Hotkeys\logic\HotkeysRegistry.ahk"
-#Include ".\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo.ahk"
-
-#Include ".\KeyboardLayouts\KeyboardsInfo\KeyboardOverlays\logic\KeyboardOverlayElementRegistry.ahk"
-#Include ".\KeyboardLayouts\KeyboardsInfo\KeyboardOverlays\entity\KeyboardOverlayElement.ahk"
-#Include ".\KeyboardLayouts\KeyboardsInfo\KeyboardOverlays\KeyboardOverlayInfo.ahk"
-
-
-
-class KeyboardLayersInfoJsonReader{
-    
+class KeyboardLayersInfoClassObjectReader{
 
     PATH_TO_KEYBOARD_INFO := ""
     keyboardInfo := ""
@@ -23,21 +8,12 @@ class KeyboardLayersInfoJsonReader{
     KeyboardLayersInfoRegister := ""
 
 
-    __New(jsonFilePath){
-        this.PATH_TO_KEYBOARD_INFO := jsonFilePath
-        this.KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
+    __New(KeyboardLayersInfoRegister){
+        this.KeyboardLayersInfoRegister := KeyboardLayersInfoRegister
     }
 
-    ReadKeyboardLayersInfoFromJson(){
-        try{
-            jsonStringKeyboardInfo := FileRead(this.PATH_TO_KEYBOARD_INFO, "UTF-8")
-        }
-        catch{
-            throw ("Could not read the file: " . this.PATH_TO_KEYBOARD_INFO)
-        }
-        this.keyboardInfo := jxon_load(&jsonStringKeyboardInfo)
-
-        ; -----------Read JSON----------------
+    ReadKeyboardLayersInfoFromKeyboardLayersInfoRegister(){
+        ; -----------Convert register to json file----------------
 
         ; TODO! add try catch to all of these. If one of these informations are missing something wrong will happen!
         For layerIdentifier , layerInfoContents in this.keyboardInfo{
