@@ -38,40 +38,6 @@ class HotKeyInfo{
         this.parameters := parameters
     }
 
-    ; ; TODO make it's own class
-    ; convertToFriendlyHotkeyName(hotkeyNameWithModifiers){
-
-    ;     tmpString := hotkeyNameWithModifiers
-
-    ;     friendlyName := ""
-
-    ;     possibleModifiers := Map()
-    ;     possibleModifiers["^"] := "Ctrl + "
-    ;     possibleModifiers["#"] := "Win + "
-    ;     possibleModifiers["!"] := "Alt + "
-    ;     possibleModifiers["+"] := "Shift + "
-    ;     possibleModifiers["<"] := "Left "
-    ;     possibleModifiers[">"] := "Right "
-    ;     possibleModifiers["&"] := "And "
-    ;     possibleModifiers["*"] := "Any + "
-
-    ;     possibleModifiers.Default := ""
-
-
-    ;     index := 0
-    ;     stringLength := StrLen(tmpString)
-    ;     Loop Parse tmpString{
-    ;         index++
-    ;         if ( (possibleModifiers[A_LoopField] == "") or index == stringLength) {
-    ;             friendlyName .= A_LoopField
-    ;         }
-    ;         else{
-    ;             friendlyName .= possibleModifiers[A_LoopField]
-    ;         }
-    ;     }
-    ;     return friendlyName
-    ; }
-
     toString(){
         if(this.isObject){
             return this.objectName . "." . this.methodName . "(" . this.parametersToString(this.parameters) . ")"
