@@ -38,6 +38,7 @@ class HotKeyConfigurationPopup{
         this.SetTextAndResize(newActionText, "Action: `n" . hotkeyAction)
 
         this.undoDeletionButton := this.mainGui.AddButton("Default w80 ym", "Undo deletion")
+        this.undoDeletionButton.onEvent("Click", (*) => this.undoDeletionButtonClickedEvent())
         this.undoDeletionButton.Opt("Hidden1")
         ; undoButton := this.mainGui.AddButton("Default w80", "Undo")  
 
@@ -80,6 +81,12 @@ class HotKeyConfigurationPopup{
 
 
         hotkeyCrafter.Show()
+    }
+
+    undoDeletionButtonClickedEvent(){
+        this.hotkeyDeleted := false
+        this.undoDeletionButton.Opt("Hidden1")
+        this.setCurrentHotkeyText(this.currentHotkeyCommand)
     }
 
     cancelButtonClickedForHotkeyCrafterEvent(hotkeyCrafter, *){
