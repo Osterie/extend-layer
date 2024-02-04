@@ -16,6 +16,7 @@ class HotKeyConfigurationPopup{
     originalHotkey := ""
     currentHotkeyCommand := ""
 
+    undoDeletionButton := ""
     hotkeyDeleted := false
 
     
@@ -36,11 +37,12 @@ class HotKeyConfigurationPopup{
         newActionText.SetFont("s10", "Arial")
         this.SetTextAndResize(newActionText, "Action: `n" . hotkeyAction)
 
-        ; revertButton := this.mainGui.AddButton("Default w80 ym", "Revert")
+        this.undoDeletionButton := this.mainGui.AddButton("Default w80 ym", "Undo deletion")
+        this.undoDeletionButton.Opt("Hidden1")
         ; undoButton := this.mainGui.AddButton("Default w80", "Undo")  
 
 
-        buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80", "Change original hotkey")
+        buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80 xm", "Change original hotkey")
         buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent())
         
         
@@ -88,6 +90,7 @@ class HotKeyConfigurationPopup{
     saveButtonClickedForHotkeyCrafterEvent(hotkeyCrafter, savedButton, idk){
         
         this.hotkeyDeleted := false
+        this.undoDeletionButton.Opt("Hidden1")
 
         newHotkey := HotkeyFormatConverter.convertToFriendlyHotkeyName(hotkeyCrafter.getNewHotkey(), " + ")
         this.setCurrentHotkeyText(newHotkey)
@@ -100,6 +103,7 @@ class HotKeyConfigurationPopup{
     deleteButtonClickedForHotkeyCrafterEvent(hotkeyCrafter, savedButton, idk){
         
         this.hotkeyDeleted := true
+        this.undoDeletionButton.Opt("Hidden0")
 
         this.setCurrentHotkeyText(this.currentHotkeyCommand)
         
