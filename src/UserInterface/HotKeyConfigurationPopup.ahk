@@ -8,46 +8,48 @@ class HotKeyConfigurationPopup{
 
     mainGui := ""
 
-    hotkeyElement := ""
-    hotkeyCommand := ""
-    originalHotkey := ""
     manuallyCreatHotkeyElement := ""
     addWinKeyAsModifierElement := ""
+    currentHotkeyTextElement := ""
 
-    currentHotkeyText := ""
+    hotkeyElement := ""
+    originalHotkey := ""
+    currentHotkeyCommand := ""
+
+    undoDeletionButton := ""
+    hotkeyDeleted := false
+
+    
 
     CreatePopupForHotkeyRegistry(data, rowNumber, hotkeyCommand, hotkeyAction){
 
         this.originalHotkey := hotkeyCommand
-
-        this.hotkeyCommand := hotkeyCommand
+        this.currentHotkeyCommand := hotkeyCommand
 
         this.mainGui := Gui()
         this.mainGui.opt("+Resize +MinSize600x560")
         
-        ; this.mainGui.Add("Text", "w300 h20", "Original hotkey:") 
-        this.currentHotkeyText := this.mainGui.AddText(" ", "Hotkey: `n" . hotkeyCommand)
-        newActionText := this.mainGui.AddText(" ", "Action: `n" . hotkeyAction)
-
-
+        this.currentHotkeyTextElement := this.mainGui.AddText(" ", "Hotkey: `n" . hotkeyCommand)
         this.setCurrentHotkeyText(hotkeyCommand)
         
+        
+        newActionText := this.mainGui.AddText(" ", "Action: `n" . hotkeyAction)
         newActionText.SetFont("s10", "Arial")
-
-
         this.SetTextAndResize(newActionText, "Action: `n" . hotkeyAction)
 
-
-        ; revertButton := this.mainGui.AddButton("Default w80 ym", "Revert")
+        this.undoDeletionButton := this.mainGui.AddButton("Default w80 ym", "Undo deletion")
+        this.undoDeletionButton.Opt("Hidden1")
         ; undoButton := this.mainGui.AddButton("Default w80", "Undo")  
 
 
-        buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80", "Change original hotkey")
+        buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80 xm", "Change original hotkey")
+        buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent())
+        
+        
         buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change original action")
         saveButton := this.mainGui.AddButton("Default w80", "Save+Done")
 
         
-        buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent())
         
         ; currentHotkeyInfo := data.GetHotkey(hotkeyCommand)
         ; if (currentHotkeyInfo.hotkeyIsObject()){
@@ -65,29 +67,19 @@ class HotKeyConfigurationPopup{
         this.mainGui.Hide()
 
         
-        hotkeyCrafter := HotkeyCrafterGui(this.hotkeyCommand)
-        
+        hotkeyCrafter := HotkeyCrafterGui(this.currentHotkeyCommand)
         hotkeySavedEventAction := ObjBindMethod(this, "saveButtonClickedForHotkeyCrafterEvent", hotkeyCrafter)
-
         hotkeyCrafter.addSaveButtonClickEventAction(hotkeySavedEventAction)
-
-
-
 
         hotkeyCrafterClosedEvent := ObjBindMethod(this, "cancelButtonClickedForHotkeyCrafterEvent", hotkeyCrafter)
         hotkeyCrafter.addCloseEventAction(hotkeyCrafterClosedEvent)
         hotkeyCrafter.addCancelButtonClickEventAction(hotkeyCrafterClosedEvent)
 
+        hotkeyDeleteEventAction := ObjBindMethod(this, "deleteButtonClickedForHotkeyCrafterEvent", hotkeyCrafter)
+        hotkeyCrafter.addDeleteButtonClickEventAction(hotkeyDeleteEventAction)
+
 
         hotkeyCrafter.Show()
-        ; this.mainGui.Destroy()
-
-        ; this.GuiObject.Add("Text", "w300 h20", "New Action For Hotkey:")
-        ; this.hotkeyStaticInput := this.GuiObject.Add("Edit", "w300 h20")
-
-        ; this.CreateHotKeyMaker(this.mainGui)
-        ; this.createHotkeyMethodCall(this.mainGui, hotkeyCommand)
-        ; this.mainGui.Show()
     }
 
     cancelButtonClickedForHotkeyCrafterEvent(hotkeyCrafter, *){
@@ -96,6 +88,10 @@ class HotKeyConfigurationPopup{
     }
 
     saveButtonClickedForHotkeyCrafterEvent(hotkeyCrafter, savedButton, idk){
+        
+        this.hotkeyDeleted := false
+        this.undoDeletionButton.Opt("Hidden1")
+
         newHotkey := HotkeyFormatConverter.convertToFriendlyHotkeyName(hotkeyCrafter.getNewHotkey(), " + ")
         this.setCurrentHotkeyText(newHotkey)
         
@@ -104,26 +100,24 @@ class HotKeyConfigurationPopup{
 
     }
 
-    setCurrentHotkeyText(newHotkey){
-        this.hotkeyCommand := newHotkey
-        this.currentHotkeyText.Value := ("Hotkey: `n" . newHotkey)
+    deleteButtonClickedForHotkeyCrafterEvent(hotkeyCrafter, savedButton, idk){
+        
+        this.hotkeyDeleted := true
+        this.undoDeletionButton.Opt("Hidden0")
 
-        if (this.originalHotkey != newHotkey){
-            this.currentHotkeyText.SetFont("s10 cBlue")
-        }
-        else{
-            this.currentHotkeyText.SetFont("s10 cBlack")
-        }
-
-        this.SetTextAndResize(this.currentHotkeyText, this.currentHotkeyText.Value )
+        this.setCurrentHotkeyText(this.currentHotkeyCommand)
+        
+        hotkeyCrafter.Destroy()
+        this.mainGui.Show()
     }
+
 
     CreateHotKeyMaker(){
         manuallyCreateHotkeyCheckbox := this.mainGui.Add("CheckBox", , "Manually create hotkey")
         manuallyCreateHotkeyCheckbox.onEvent("Click", (*) => this.manuallyCreateHotkeyCheckboxClickEvent(manuallyCreateHotkeyCheckbox))
 
         this.hotkeyElement := this.mainGui.Add("Hotkey", )
-        this.manuallyCreatHotkeyElement := this.mainGui.Add("Edit", "xm w300 h20", this.hotkeyCommand)
+        this.manuallyCreatHotkeyElement := this.mainGui.Add("Edit", "xm w300 h20", this.currentHotkeyCommand)
         this.manuallyCreatHotkeyElement.Opt("Hidden1")
 
         this.addWinKeyAsModifierElement := this.mainGui.Add("CheckBox",, "Add win key as modifier")
@@ -152,17 +146,22 @@ class HotKeyConfigurationPopup{
         }
     }
 
-    createHotkeyMethodCall(hotkeyAction){
-        ; inputValue := this.mainGui.Add("Edit", "xm w300 h20", hotkeyAction)
-        this.mainGui.Add("Text", "xm w300 h20", "New Action For Hotkey:")
+    setCurrentHotkeyText(newHotkey){
+        this.currentHotkeyCommand := newHotkey
+        this.currentHotkeyTextElement.Value := ("Hotkey: `n" . newHotkey)
 
-        inputValue := this.mainGui.Add("Edit", "xm w300 h20", hotkeyAction)
-        
-        SaveButton := this.mainGui.Add("Button", "w100 h20", "Save")
-        CancelButton := this.mainGui.Add("Button", "w100 h20", "Cancel")
-        DeleteButton := this.mainGui.Add("Button", "w100 h20", "Delete")
+        if (this.hotkeyDeleted = true){
+            this.currentHotkeyTextElement.SetFont("s10 cRed")
+        }
+        else if (this.originalHotkey != newHotkey){
+            this.currentHotkeyTextElement.SetFont("s10 cBlue")
+        }
+        else{
+            this.currentHotkeyTextElement.SetFont("s10 cBlack")
+        }
+
+        this.SetTextAndResize(this.currentHotkeyTextElement, this.currentHotkeyTextElement.Value )
     }
-
 
     ; TODO creat a class for this...
     SetTextAndResize(textCtrl, text) {
@@ -182,8 +181,3 @@ class HotKeyConfigurationPopup{
         }
     }
 }
-
-
-; test := HotKeyConfigurationPopup()
-
-; test.CreatePopupForHotkeyRegistry(0, 0, "^!+a", "test")
