@@ -184,7 +184,6 @@ Class Main{
         ; This is used to read ini files, and create hotkeys from them
         this.StartupConfigurator := MainStartupConfigurator(this.keyboardSettingsJsonObject, this.ObjectRegister)
     }
-
     
     ReadAndMakeKeyboardOverlays(){
         ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
@@ -357,7 +356,7 @@ Class Main{
 
     RunAppGui(){
 
-        this.app := ExtraKeyboardsApp(this.keyboardSettingsJsonObject, this.ObjectRegister, this.KeyboardLayersInfoRegister)
+        this.app := ExtraKeyboardsApp(this.keyboardSettingsJsonObject, this.ObjectRegister, this.KeyboardLayersInfoRegister, this)
         this.app.Start()
 
         refreshHotkeys := ObjBindMethod(this, "eventProfileChanged")

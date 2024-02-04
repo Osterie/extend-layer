@@ -39,16 +39,19 @@ Class ExtraKeyboardsAppGui{
     activeObjectsRegistry := ""
     keyboardLayersInfoRegister := ""
 
+    MainScript := ""
 
-    __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonFileConents, activeObjectsRegistry, keyboardLayersInfoRegister){
+
+    __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonFileConents, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript){
+        this.MainScript := mainScript
+        
+        
         this.ExistingProfilesManager := FolderManager()
         this.PresetProfilesManager := FolderManager()
 
         this.activeObjectsRegistry := activeObjectsRegistry
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
         this.jsonFileConents := jsonFileConents
-
-
 
         this.PATH_TO_EXISTING_PROFILES := pathToExistingProfiles
         this.PATH_TO_PRESET_PROFILES := pathToPresetProfiles
@@ -112,6 +115,8 @@ Class ExtraKeyboardsAppGui{
         CreateListViewItems := ObjBindMethod(listViewElement, "SetNewListViewItemsByIniFileSection")
         keyboardLayoutChanger.AddEventAction("ItemSelect", CreateListViewItems)
 
+        saveEvent := ObjBindMethod(this, "hotkeySavedEvent", listViewElement)
+        listViewElement.setHotkeySavedEvent(saveEvent)
 
 
         ; this.CreateTreeViewWithAssociatedListViewFromJsonObject(jsonFileConents)
@@ -125,6 +130,11 @@ Class ExtraKeyboardsAppGui{
 
         Tab.UseTab(0)  ; i.e. subsequently-added controls will not belong to the tab control.
     }
+
+    hotkeySavedEvent(listViewElement, *){
+        msgbox(listViewElement.getNewHotkey())
+    }
+
 
     ; CreateTreeViewWithAssociatedListViewFromJsonObject(jsonFileConents){
     ;     treeViewElement := TreeViewFromJsonFile(jsonFileConents)

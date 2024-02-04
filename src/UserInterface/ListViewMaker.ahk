@@ -12,6 +12,12 @@ class ListViewMaker{
 
     iniFileRead := ""
 
+    hotkeySavedEvent := ""
+
+    popupForConfiguringHotkey := ""
+
+    newHotKey := ""
+
     __New(jsonObject, jsonFileContents, keyboardLayersInfoRegister){
         this.jsonObject := jsonObject
         this.jsonFileContents := jsonFileContents
@@ -75,93 +81,43 @@ class ListViewMaker{
         data := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.activeTreeViewItem)
 
         hotkeyBuild := listView.GetText(rowNumber, 1)
+        this.newHotkey := hotkeyBuild
         hotkeyAction := listView.GetText(rowNumber, 2)
 
-        popup := HotKeyConfigurationPopup()
+        this.popupForConfiguringHotkey := HotKeyConfigurationPopup()
         if (Type(data) == "HotkeysRegistry"){
-            popup.CreatePopupForHotkeyRegistry(data, rowNumber, hotkeyBuild, hotkeyAction)
+            this.popupForConfiguringHotkey.CreatePopupForHotkeyRegistry(data, rowNumber, hotkeyBuild, hotkeyAction)
             
         }
         else if (Type(data) == "KeyboardOverlayInfo"){
-            popup.CreatePopupForKeyboardOverlayInfo(data, rowNumber)
+            this.popupForConfiguringHotkey.CreatePopupForKeyboardOverlayInfo(data, rowNumber)
         }
 
-        ; if (rowNumber != 0){
-    
-            ; TODO should be set to on top, can not be not top ever...
-            
+        saveButtonEvent := ObjBindMethod(this, "popupSaveButtonClickEvent")
+        this.popupForConfiguringHotkey.addSaveButtonClickedEvent(saveButtonEvent)
+        this.popupForConfiguringHotkey.addSaveButtonClickedEvent(this.hotkeySavedEvent)
 
-    ;         iniFileSection := this.activeTreeViewItem
-    ;         SaveButton.onEvent("Click", (*) => this.SaveButtonClickEvent(inputGui, rowNumber, inputKey, iniFileSection, inputValue))
 
-    ;         CancelButton.onEvent("Click", (*) =>inputGui.Destroy())
-            
-    ;         DeleteButton.onEvent("Click", (*) => 
-
-    ;             this.listView.Delete(rowNumber)
-    ;             IniDelete(this.iniFile, iniFileSection, listViewFirstColum)
-    ;             inputGui.Destroy()
-    ;             ; TODO change this
-    ;             Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
-    ;         )
     }
 
-    ; CreatePopupForHotkeyRegistry(data, rowNumber){
-    ;     hotkeyBuild := this.listView.GetText(rowNumber, 1)
-    ;     hotkeyAction := this.listView.GetText(rowNumber, 2)
-
-    ;     inputGui := Gui()
-    ;     inputGui.opt("+Resize +MinSize300x560 +AlwaysOnTop")
-        
-    ;     inputGui.Add("Text", "w300 h20", "Hotkey:")
-    ;     inputKey := inputGui.Add("Edit", "xm w300 h20", hotkeyBuild)
-        
-    ;     currentHotkeyInfo := data.GetHotkey(hotkeyBuild)
-    ;     if (currentHotkeyInfo.hotkeyIsObject()){
-    ;         this.CreateHotKeyMaker(inputGui)
-    ;     }
-    ;     else{
-
-    ;     }
-    ;     inputGui.Add("Text", "xm w300 h20", "New Action For Hotkey:")
-    ;     inputValue := inputGui.Add("Edit", "xm w300 h20", hotkeyAction)
-        
-    ;     SaveButton := inputGui.Add("Button", "w100 h20", "Save")
-    ;     CancelButton := inputGui.Add("Button", "w100 h20", "Cancel")
-    ;     DeleteButton := inputGui.Add("Button", "w100 h20", "Delete")
-    ;     inputGui.Show()
-    ; }
-
-    ; CreateHotKeyMaker(guiToAddTo){
-    ;     manually := guiToAddTo.Add("CheckBox", , "Manually create hotkey")
-    ;     manually.onEvent("Click", (*) => {
-    ;         if (manually.Value){
-    ;             this.CreateHotKeyMakerManually(guiToAddTo)
-    ;         }
-    ;         else{
-    ;             this.CreateHotKeyMakerFromGui(guiToAddTo)
-    ;         }
-    ;     })
-    ;     guiToAddTo.Add("Hotkey", "vChosenHotkey")
-    ;     guiToAddTo.Add("CheckBox", "vShipToBillingAddress", "Add win key as modifier")
-
-    ; }
-
-    SaveButtonClickEvent(inputGui, rowNumber, inputKey, iniFileSection, inputValue){
-        ; TODO validate values, can not be empty!, can not be the same as another key, etc...
-        if(rowNumber != 0){
-            oldIniFileKey := this.listView.GetText(rowNumber)
-            IniDelete this.iniFile, iniFileSection, oldIniFileKey
-            this.listView.Modify(rowNumber, , inputKey.Value, inputValue.Value)
+    popupSaveButtonClickEvent(*){
+        this.newHotkey := this.popupForConfiguringHotkey.getHotkeyFormatted()
+        if (this.newHotkey = ""){
+            ; Delete that shit
         }
-        else{
-            this.listView.Add(, inputKey.Value, inputValue.Value)
-
+        else {
+            ; Set that shit
         }
-        IniWrite(inputValue.Value, this.iniFile, iniFileSection, inputKey.Value)
-        inputGui.Destroy()
-        ; TODO change this
-        Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
+
+        ; msgbox(this.newHotkey)
+    }
+
+    setHotkeySavedEvent(event){
+        this.hotkeySavedEvent := event
+    }
+
+    getNewHotkey(){
+        return this.newHotKey
     }
 
     SetOnTop(identifier){

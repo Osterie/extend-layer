@@ -16,6 +16,8 @@ class HotKeyConfigurationPopup{
     originalHotkey := ""
     currentHotkeyCommand := ""
 
+    saveButton := ""
+
     undoDeletionButton := ""
     hotkeyDeleted := false
 
@@ -48,7 +50,7 @@ class HotKeyConfigurationPopup{
         
         
         buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change original action")
-        saveButton := this.mainGui.AddButton("Default w80", "Save+Done")
+        this.saveButton := this.mainGui.AddButton("Default w80", "Save+Done")
 
         
         
@@ -81,6 +83,10 @@ class HotKeyConfigurationPopup{
 
 
         hotkeyCrafter.Show()
+    }
+
+    addSaveButtonClickedEvent(event){
+        this.saveButton.onEvent("Click", event)
     }
 
     undoDeletionButtonClickedEvent(){
@@ -117,7 +123,6 @@ class HotKeyConfigurationPopup{
         hotkeyCrafter.Destroy()
         this.mainGui.Show()
     }
-
 
     CreateHotKeyMaker(){
         manuallyCreateHotkeyCheckbox := this.mainGui.Add("CheckBox", , "Manually create hotkey")
@@ -186,5 +191,25 @@ class HotKeyConfigurationPopup{
             DllCall('ReleaseDC', 'Ptr', textCtrl.Hwnd, 'Ptr', hDC)
             return [Round(width * 96/A_ScreenDPI), Round(height * 96/A_ScreenDPI)]
         }
+    }
+
+    getHotkey(){
+        hotkeyToReturn := ""
+        if (this.hotkeyDeleted != true){
+            hotkeyToReturn := this.currentHotkeyCommand
+        }
+
+        return hotkeyToReturn
+    }
+
+    getHotkeyFormatted(){
+        hotkeyToReturn := ""
+        if (this.hotkeyDeleted != true){
+            hotkeyToReturn := HotkeyFormatConverter.convertFromFriendlyName(this.currentHotkeyCommand)
+        }
+        else{
+            hotkeyToReturn := ""
+        }
+        return hotkeyToReturn
     }
 }
