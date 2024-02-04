@@ -10,12 +10,15 @@ class HotKeyConfigurationPopup{
 
     hotkeyElement := ""
     hotkeyCommand := ""
+    originalHotkey := ""
     manuallyCreatHotkeyElement := ""
     addWinKeyAsModifierElement := ""
 
     currentHotkeyText := ""
 
     CreatePopupForHotkeyRegistry(data, rowNumber, hotkeyCommand, hotkeyAction){
+
+        this.originalHotkey := hotkeyCommand
 
         this.hotkeyCommand := hotkeyCommand
 
@@ -27,10 +30,11 @@ class HotKeyConfigurationPopup{
         newActionText := this.mainGui.AddText(" ", "Action: `n" . hotkeyAction)
 
 
-        this.currentHotkeyText.SetFont("s10", "Arial")
+        this.setCurrentHotkeyText(hotkeyCommand)
+        
         newActionText.SetFont("s10", "Arial")
 
-        this.SetTextAndResize(this.currentHotkeyText, "Hotkey: `n" . hotkeyCommand )
+
         this.SetTextAndResize(newActionText, "Action: `n" . hotkeyAction)
 
 
@@ -43,7 +47,7 @@ class HotKeyConfigurationPopup{
         saveButton := this.mainGui.AddButton("Default w80", "Save+Done")
 
         
-        buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent(hotkeyCommand))
+        buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent())
         
         ; currentHotkeyInfo := data.GetHotkey(hotkeyCommand)
         ; if (currentHotkeyInfo.hotkeyIsObject()){
@@ -57,11 +61,11 @@ class HotKeyConfigurationPopup{
     }
 
 
-    buttonToChangeOriginalHotkeyClickedEvent(hotkeyCommand){
+    buttonToChangeOriginalHotkeyClickedEvent(){
         this.mainGui.Hide()
 
         
-        hotkeyCrafter := HotkeyCrafterGui(hotkeyCommand)
+        hotkeyCrafter := HotkeyCrafterGui(this.hotkeyCommand)
         
         hotkeySavedEventAction := ObjBindMethod(this, "saveButtonClickedForHotkeyCrafterEvent", hotkeyCrafter)
 
@@ -93,11 +97,25 @@ class HotKeyConfigurationPopup{
 
     saveButtonClickedForHotkeyCrafterEvent(hotkeyCrafter, savedButton, idk){
         newHotkey := HotkeyFormatConverter.convertToFriendlyHotkeyName(hotkeyCrafter.getNewHotkey(), " + ")
+        this.setCurrentHotkeyText(newHotkey)
+        
         hotkeyCrafter.Destroy()
-        this.currentHotkeyText.Value := ("Hotkey: `n" . newHotkey)
-        this.currentHotkeyText.SetFont("cBlue")
         this.mainGui.Show()
 
+    }
+
+    setCurrentHotkeyText(newHotkey){
+        this.hotkeyCommand := newHotkey
+        this.currentHotkeyText.Value := ("Hotkey: `n" . newHotkey)
+
+        if (this.originalHotkey != newHotkey){
+            this.currentHotkeyText.SetFont("s10 cBlue")
+        }
+        else{
+            this.currentHotkeyText.SetFont("s10 cBlack")
+        }
+
+        this.SetTextAndResize(this.currentHotkeyText, this.currentHotkeyText.Value )
     }
 
     CreateHotKeyMaker(){
