@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
 
+#Include "..\..\..\..\..\..\HotkeyFormatConverter.ahk"
+
 class HotKeyInfo{
 
     hotkeyName := ""
@@ -15,14 +17,14 @@ class HotKeyInfo{
 
     __New(hotkeyName){
         this.hotkeyName := hotkeyName
-        this.friendlyHotkeyName := this.convertToFriendlyHotkeyName(hotkeyName)
+        this.friendlyHotkeyName := HotkeyFormatConverter.convertToFriendlyHotkeyName(hotkeyName)
     }
 
     setInfoForNormalHotKey(newHotKey, modifiers){
         this.isObject := false
         this.newHotKey := newHotKey
         this.modifiers := modifiers
-        this.newHotKeyFriendlyName := this.convertToFriendlyHotkeyName(this.modifiers . this.newHotKey)
+        this.newHotKeyFriendlyName := HotkeyFormatConverter.convertToFriendlyHotkeyName(this.modifiers . this.newHotKey)
     }
     
     hotkeyIsObject(){
@@ -36,39 +38,39 @@ class HotKeyInfo{
         this.parameters := parameters
     }
 
-    convertToFriendlyHotkeyName(hotkeyNameWithModifiers){
+    ; ; TODO make it's own class
+    ; convertToFriendlyHotkeyName(hotkeyNameWithModifiers){
 
-        tmpString := hotkeyNameWithModifiers
+    ;     tmpString := hotkeyNameWithModifiers
 
-        friendlyName := ""
+    ;     friendlyName := ""
 
-        possibleModifiers := Map()
-        possibleModifiers["^"] := "Ctrl + "
-        possibleModifiers["#"] := "Win + "
-        possibleModifiers["!"] := "Alt + "
-        possibleModifiers["+"] := "Shift + "
-        possibleModifiers["<"] := "Left "
-        possibleModifiers[">"] := "Right "
-        possibleModifiers["&"] := "And "
-        possibleModifiers["*"] := "Any + "
+    ;     possibleModifiers := Map()
+    ;     possibleModifiers["^"] := "Ctrl + "
+    ;     possibleModifiers["#"] := "Win + "
+    ;     possibleModifiers["!"] := "Alt + "
+    ;     possibleModifiers["+"] := "Shift + "
+    ;     possibleModifiers["<"] := "Left "
+    ;     possibleModifiers[">"] := "Right "
+    ;     possibleModifiers["&"] := "And "
+    ;     possibleModifiers["*"] := "Any + "
 
-        possibleModifiers.Default := ""
+    ;     possibleModifiers.Default := ""
 
 
-        index := 0
-        stringLength := StrLen(tmpString)
-        Loop Parse tmpString{
-            index++
-            if ( (possibleModifiers[A_LoopField] == "") or index == stringLength) {
-                friendlyName .= A_LoopField
-            }
-            else{
-                friendlyName .= possibleModifiers[A_LoopField]
-            }
-        }
-
-        return friendlyName
-    }
+    ;     index := 0
+    ;     stringLength := StrLen(tmpString)
+    ;     Loop Parse tmpString{
+    ;         index++
+    ;         if ( (possibleModifiers[A_LoopField] == "") or index == stringLength) {
+    ;             friendlyName .= A_LoopField
+    ;         }
+    ;         else{
+    ;             friendlyName .= possibleModifiers[A_LoopField]
+    ;         }
+    ;     }
+    ;     return friendlyName
+    ; }
 
     toString(){
         if(this.isObject){

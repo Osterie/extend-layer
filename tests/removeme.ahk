@@ -15,75 +15,117 @@ ProcessSetPriority "High"
 ; Not changing SendMode defaults it to "input", which makes hotkeys super mega terrible (super)
 SendMode "Event"
 
-Class Test{
+class HotKeyInfo{
 
-    __New(){
+    hotkeyName := ""
+    friendlyHotkeyName := ""
+    isObject := ""
+    objectName := ""
+    methodName := ""
+    parameters := []
+    
+    newHotKey := ""
+    newHotKeyFriendlyName := ""
+    modifiers := ""
 
-        objectText := {}
-        objectText.key := "b"
-        objectText.modifiers := "^"
-
-        this.InitializeDefaultKeyToNewKey("<^Left", objectText)
+    __New(hotkeyName){
+        this.hotkeyName := hotkeyName
+        this.friendlyHotkeyName := this.convertToFriendlyHotkeyName(hotkeyName)
     }
 
-
-
-    ; for example original key "a" to "b||c" means that when "a" is pressed, "b" and "c" will be pressed as well.
-    InitializeDefaultKeyToNewKey(oldHotKey, newKeyInformation, enableHotkeys := true){
-        newHotKey := newKeyInformation.key
-        newHotKeyModifiers := newKeyInformation.modifiers
-        
-        newKeysDown := this.CreateExcecutableKeysDown(newHotKey)
-        newKeysUp := this.CreateExcecutableKeysUp(newHotKey)
-
-        if (enableHotkeys){
-            try{
-                HotKey(oldHotKey, (ThisHotkey) => this.SendKeysDown(newKeysDown, newHotKeyModifiers), "On") 
-                HotKey(oldHotKey . " Up", (ThisHotkey) => this.SendKeysUp(newKeysUp, newHotKeyModifiers), "On")
-                ; msgbox("going to try")
-            }
-            catch{
-                msgbox("error in InitializeDefaultKeyToNewKey, state is on")
-            }
-        }
-        else if (enableHotkeys = false){
-            HotKey(oldHotKey, (ThisHotkey) => this.SendKeysUp(newKeysUp, newHotKeyModifiers), "Off") 
-            HotKey(oldHotKey . " Up", (ThisHotkey) => this.SendKeysDown(newKeysDown, newHotKeyModifiers), "Off")
-        } 
-        else {
-            msgbox("error in InitializeDefaultKeyToNewKey, state is not on or off")
-        }
-    }
-
-    ; Sends key(s) down, including possible modifiers
-    SendKeysDown(keysDown, modifiers){
-        ; msgbox("going to sedn")
-        Send("{blind}" . modifiers . keysDown)
+    setInfoForNormalHotKey(newHotKey, modifiers){
+        this.isObject := false
+        this.newHotKey := newHotKey
+        this.modifiers := modifiers
+        this.newHotKeyFriendlyName := this.convertToFriendlyHotkeyName(this.modifiers . this.newHotKey)
     }
     
-    ; Sends key(s) up, including possible modifiers
-    SendKeysUp(keysUp, modifiers){
-        Send("{blind}" . modifiers . keysUp)
+    hotkeyIsObject(){
+        return this.isObject
     }
 
-    CreateExcecutableKeysDown(keys){
-        keysList := StrSplit(keys, "||")
-        excecutableKeysDown := ""
-        for key in keysList{
-            excecutableKeysDown .= "{" . key . " Down}"
-        }
-        return excecutableKeysDown
+    setInfoForSpecialHotKey(objectName, MethodName, parameters){
+        this.isObject := true
+        this.objectName := objectName
+        this.methodName := methodName
+        this.parameters := parameters
     }
 
-    CreateExcecutableKeysUp(keys){
-        keysList := StrSplit(keys, "||")
-        excecutableKeysUp := ""
-        for key in keysList{
-            excecutableKeysUp .= "{" . key . " Up}"
+    ; TODO make it's own class
+    convertToFriendlyHotkeyName(hotkeyNameWithModifiers){
+
+        tmpString := hotkeyNameWithModifiers
+
+        friendlyName := ""
+
+        possibleModifiers := Map()
+        possibleModifiers["^"] := "Ctrl + "
+        possibleModifiers["#"] := "Win + "
+        possibleModifiers["!"] := "Alt + "
+        possibleModifiers["+"] := "Shift + "
+        possibleModifiers["<"] := "Left "
+        possibleModifiers[">"] := "Right "
+        possibleModifiers["&"] := "And "
+        possibleModifiers["*"] := "Any + "
+
+        possibleModifiers.Default := ""
+
+
+        index := 0
+        stringLength := StrLen(tmpString)
+        Loop Parse tmpString{
+            index++
+            if ( (possibleModifiers[A_LoopField] == "") or index == stringLength) {
+                friendlyName .= A_LoopField
+            }
+            else{
+                friendlyName .= possibleModifiers[A_LoopField]
+            }
         }
-        return excecutableKeysUp
+        return friendlyName
+    }
+
+    toString(){
+        if(this.isObject){
+            return this.objectName . "." . this.methodName . "(" . this.parametersToString(this.parameters) . ")"
+        }
+        else{
+            return this.newHotKeyFriendlyName
+        }
+    }
+
+    parametersToString(parameters){
+        if (this.parameters.length == 0){
+            return ""
+        }
+
+        stringToReturn := ""
+
+        for argument in this.parameters{
+            if (Type(argument) == "Array"){
+                For subArgument in argument{
+                    stringToReturn .= subArgument . ","
+                }
+            }
+            else{
+                stringToReturn .= argument . ","
+            }
+        }
+        return stringToReturn
+    }
+
+    getHotkeyName(){
+        return this.hotkeyName
+    }
+
+    getFriendlyHotkeyName(){
+        return this.friendlyHotkeyName
     }
 
 }
+
+; test :=HotKeyInfo("!^Ctrl")
+
+msgbox(test.getFriendlyHotkeyName())
 
 ; test1 := Test()

@@ -12,6 +12,8 @@ class HotKeyConfigurationPopup{
     manuallyCreatHotkeyElement := ""
     addWinKeyAsModifierElement := ""
 
+    currentHotkeyText := ""
+
     CreatePopupForHotkeyRegistry(data, rowNumber, hotkeyCommand, hotkeyAction){
 
         this.hotkeyCommand := hotkeyCommand
@@ -20,14 +22,14 @@ class HotKeyConfigurationPopup{
         this.mainGui.opt("+Resize +MinSize600x560")
         
         ; this.mainGui.Add("Text", "w300 h20", "Original hotkey:") 
-        originalHotkeyText := this.mainGui.AddText(" ", "Hotkey: `n" . hotkeyCommand)
+        this.currentHotkeyText := this.mainGui.AddText(" ", "Hotkey: `n" . hotkeyCommand)
         newActionText := this.mainGui.AddText(" ", "Action: `n" . hotkeyAction)
 
 
-        originalHotkeyText.SetFont("s10", "Arial")
+        this.currentHotkeyText.SetFont("s10", "Arial")
         newActionText.SetFont("s10", "Arial")
 
-        this.SetTextAndResize(originalHotkeyText, "Hotkey: `n" . hotkeyCommand )
+        this.SetTextAndResize(this.currentHotkeyText, "Hotkey: `n" . hotkeyCommand )
         this.SetTextAndResize(newActionText, "Action: `n" . hotkeyAction)
 
 
@@ -92,7 +94,9 @@ class HotKeyConfigurationPopup{
     saveButtonClickedForHotkeyCrafterEvent(hotkeyCrafter, savedButton, idk){
         newHotkey := hotkeyCrafter.getNewHotkey()
         hotkeyCrafter.Destroy()
+        this.currentHotkeyText.SetFont("cBlue")
         this.mainGui.Show()
+
     }
 
     CreateHotKeyMaker(){
@@ -158,7 +162,6 @@ class HotKeyConfigurationPopup{
             return [Round(width * 96/A_ScreenDPI), Round(height * 96/A_ScreenDPI)]
         }
     }
-    
 }
 
 
