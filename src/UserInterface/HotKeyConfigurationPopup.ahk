@@ -16,7 +16,7 @@ class HotKeyConfigurationPopup{
     originalHotkey := ""
     currentHotkeyCommand := ""
 
-    
+    hotkeyDeleted := false
 
     
 
@@ -73,6 +73,9 @@ class HotKeyConfigurationPopup{
         hotkeyCrafter.addCloseEventAction(hotkeyCrafterClosedEvent)
         hotkeyCrafter.addCancelButtonClickEventAction(hotkeyCrafterClosedEvent)
 
+        hotkeyDeleteEventAction := ObjBindMethod(this, "deleteButtonClickedForHotkeyCrafterEvent", hotkeyCrafter)
+        hotkeyCrafter.addDeleteButtonClickEventAction(hotkeyDeleteEventAction)
+
 
         hotkeyCrafter.Show()
     }
@@ -83,6 +86,9 @@ class HotKeyConfigurationPopup{
     }
 
     saveButtonClickedForHotkeyCrafterEvent(hotkeyCrafter, savedButton, idk){
+        
+        this.hotkeyDeleted := false
+
         newHotkey := HotkeyFormatConverter.convertToFriendlyHotkeyName(hotkeyCrafter.getNewHotkey(), " + ")
         this.setCurrentHotkeyText(newHotkey)
         
@@ -90,6 +96,17 @@ class HotKeyConfigurationPopup{
         this.mainGui.Show()
 
     }
+
+    deleteButtonClickedForHotkeyCrafterEvent(hotkeyCrafter, savedButton, idk){
+        
+        this.hotkeyDeleted := true
+
+        this.setCurrentHotkeyText(this.currentHotkeyCommand)
+        
+        hotkeyCrafter.Destroy()
+        this.mainGui.Show()
+    }
+
 
     CreateHotKeyMaker(){
         manuallyCreateHotkeyCheckbox := this.mainGui.Add("CheckBox", , "Manually create hotkey")
@@ -129,7 +146,10 @@ class HotKeyConfigurationPopup{
         this.currentHotkeyCommand := newHotkey
         this.currentHotkeyTextElement.Value := ("Hotkey: `n" . newHotkey)
 
-        if (this.originalHotkey != newHotkey){
+        if (this.hotkeyDeleted = true){
+            this.currentHotkeyTextElement.SetFont("s10 cRed")
+        }
+        else if (this.originalHotkey != newHotkey){
             this.currentHotkeyTextElement.SetFont("s10 cBlue")
         }
         else{
