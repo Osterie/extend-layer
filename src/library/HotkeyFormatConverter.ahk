@@ -2,36 +2,71 @@
 
 class HotkeyFormatConverter{
 
-    static convertToFriendlyHotkeyName(hotkeyNameWithModifiers){
+    mapModifiersToFriendly := Map()
 
-        tmpString := hotkeyNameWithModifiers
+
+    static convertToFriendlyHotkeyName(hotkeyNameWithModifiers, delimiter := " + "){
 
         friendlyName := ""
 
-        possibleModifiers := Map()
-        possibleModifiers["^"] := "Ctrl + "
-        possibleModifiers["#"] := "Win + "
-        possibleModifiers["!"] := "Alt + "
-        possibleModifiers["+"] := "Shift + "
-        possibleModifiers["<"] := "Left "
-        possibleModifiers[">"] := "Right "
-        possibleModifiers["&"] := "And "
-        possibleModifiers["*"] := "Any + "
+        mapModifiersToFriendly := Map()
+        mapModifiersToFriendly.Default := ""
 
-        possibleModifiers.Default := ""
+        mapModifiersToFriendly["^"] := "Ctrl" . delimiter
+        mapModifiersToFriendly["#"] := "Win" . delimiter
+        mapModifiersToFriendly["!"] := "Alt" . delimiter
+        mapModifiersToFriendly["+"] := "Shift" . delimiter
+        mapModifiersToFriendly["<"] := "Left "
+        mapModifiersToFriendly[">"] := "Right "
+        mapModifiersToFriendly["&"] := "And "
+        mapModifiersToFriendly["*"] := "Any" . delimiter
+        
 
 
         index := 0
-        stringLength := StrLen(tmpString)
-        Loop Parse tmpString{
+        stringLength := StrLen(hotkeyNameWithModifiers)
+        Loop Parse hotkeyNameWithModifiers{
             index++
-            if ( (possibleModifiers[A_LoopField] == "") or index == stringLength) {
+            if ( (mapModifiersToFriendly[A_LoopField] == "") or index == stringLength) {
                 friendlyName .= A_LoopField
             }
             else{
-                friendlyName .= possibleModifiers[A_LoopField]
+                friendlyName .= mapModifiersToFriendly[A_LoopField]
             }
         }
         return friendlyName
+    }
+
+    static convertFromFriendlyName(friendlyHotkeyNameWithModifiers, delimiter := " + "){
+
+        friendlyName := ""
+
+        mapModifiersFromFriendly := Map()
+        mapModifiersFromFriendly.Default := ""
+
+        mapModifiersFromFriendly["Ctrl"] := "^"
+        mapModifiersFromFriendly["Win"] := "#"
+        mapModifiersFromFriendly["Alt"] := "!"
+        mapModifiersFromFriendly["Shift"] := "+"
+        mapModifiersFromFriendly["Left "] :=  "<"
+        mapModifiersFromFriendly["Right "] :=  ">"
+        mapModifiersFromFriendly["And "] :=  "&"
+        mapModifiersFromFriendly["Any"] := "*"
+
+        
+        parsedHotkey := StrSplit(friendlyHotkeyNameWithModifiers, delimiter)
+        stringLength := parsedHotkey.Length
+        
+        For index, modifierOrKey in parsedHotkey{
+
+            if ( (mapModifiersFromFriendly[modifierOrKey] == "") or index == stringLength) {
+                friendlyName .= modifierOrKey
+            }
+            else{
+                friendlyName .= mapModifiersFromFriendly[modifierOrKey]
+            }
+        }
+        return friendlyName
+
     }
 }

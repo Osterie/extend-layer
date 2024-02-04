@@ -2,6 +2,7 @@
 
 
 #Include ".\HotkeyCrafterGui.ahk"
+#Include "..\library\HotkeyFormatConverter.ahk"
 
 class HotKeyConfigurationPopup{
 
@@ -59,6 +60,7 @@ class HotKeyConfigurationPopup{
     buttonToChangeOriginalHotkeyClickedEvent(hotkeyCommand){
         this.mainGui.Hide()
 
+        
         hotkeyCrafter := HotkeyCrafterGui(hotkeyCommand)
         
         hotkeySavedEventAction := ObjBindMethod(this, "saveButtonClickedForHotkeyCrafterEvent", hotkeyCrafter)
@@ -89,11 +91,10 @@ class HotKeyConfigurationPopup{
         this.mainGui.Show()
     }
 
-
-
     saveButtonClickedForHotkeyCrafterEvent(hotkeyCrafter, savedButton, idk){
-        newHotkey := hotkeyCrafter.getNewHotkey()
+        newHotkey := HotkeyFormatConverter.convertToFriendlyHotkeyName(hotkeyCrafter.getNewHotkey(), " + ")
         hotkeyCrafter.Destroy()
+        this.currentHotkeyText.Value := ("Hotkey: `n" . newHotkey)
         this.currentHotkeyText.SetFont("cBlue")
         this.mainGui.Show()
 

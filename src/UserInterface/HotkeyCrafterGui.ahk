@@ -12,6 +12,11 @@ class HotkeyCrafterGui{
     cancelButton := ""
 
     __New(originalHotkey){
+
+
+        originalHotkeyFormatted := HotkeyFormatConverter.convertFromFriendlyName(originalHotkey, " + ")
+        
+
         this.GuiObject := Gui()
         this.GuiObject.Add("Text", "h20", "Original hotkey: " . originalHotkey)
         
@@ -20,9 +25,9 @@ class HotkeyCrafterGui{
         newHotKeyText := this.GuiObject.Add("Text", "h20", "New hotkey:")
         this.hotkeyDynamicInput := this.GuiObject.Add("Hotkey", "w200 h20 yp") ;yp sets the control's position to the left of the previous one...
 
-        this.advancedModeButton.onEvent("Click", (*) => this.cancelButtonClickEvent())
+        this.advancedModeButton.onEvent("Click", (*) => this.advancedModeButtonChangedEvent())
 
-        this.hotkeyDynamicInput.Value := originalHotkey
+        this.hotkeyDynamicInput.Value := originalHotkeyFormatted
 
         ; this.GuiObject.Add("Text", "w300 h20", "New Action For Hotkey:")
         this.hotkeyStaticInput := this.GuiObject.Add("Edit", "w300 h20 xp yp")
@@ -31,19 +36,19 @@ class HotkeyCrafterGui{
         this.saveButton := this.GuiObject.Add("Button", "w100 h20", "Save")
         
         this.cancelButton := this.GuiObject.Add("Button", "w100 h20", "Cancel")
+
         
         this.GuiObject.Add("Button", "w100 h20", "Delete")
     }
 
     cancelButtonClickEvent(){
 
-        this.GuiObject.Close()
         this.GuiObject.Destroy()
         this.Destroy()
 
     }
 
-    advancedModeButtonChangedEvent(newHotKeyText){
+    advancedModeButtonChangedEvent(){
         if(this.advancedModeButton.Value = true){
             this.hotkeyStaticInput.Opt("Hidden0")
             this.hotkeyDynamicInput.Opt("Hidden1")
