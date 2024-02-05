@@ -138,9 +138,7 @@ Class Main{
     ; Main method used to start the script.
     Start(){
         this.RunLogicalStartup()
-        ; this.UpdatePathsToInfo()
-        ; this.InitializeMetaInfo()
-        ; this.RunAppGui()
+        this.RunAppGui()
 
         test := KeyboadLayersInfoClassObjectReader()
         test.ReadObjectToJson(this.KeyboardLayersInfoRegister)

@@ -154,6 +154,8 @@ Class ExtraKeyboardsAppGui{
 
         this.keyboardLayersInfoRegister.ChangeHotkey(this.currentLayer, oldHotkey, newHotKey)
 
+        ; KeyboadLayersInfoClassObjectReader
+        ; TODO i
         msgbox(Jxon_Dump(this.keyboardLayersInfoRegister))
         ; this.MainScript.
         
