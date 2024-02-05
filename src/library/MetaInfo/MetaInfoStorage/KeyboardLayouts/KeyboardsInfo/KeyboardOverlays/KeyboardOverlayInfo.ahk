@@ -10,7 +10,7 @@ class KeyboardOverlayInfo{
         this.ShowKeyboardOverlayKey := ShowKeyboardOverlayKey
         this.KeyboardLayerOverlayIdentifier := KeyboardLayerOverlayIdentifier
         ; this.KeyboardLayerOverlayIdentifier := "SecondaryLayer-KeyboardOverlay1"
-
+        ; TODO add type checks...
         this.OverlayElements := OverlayElements
     }
 
@@ -30,21 +30,11 @@ class KeyboardOverlayInfo{
         return this.OverlayElements.getKeyPairValuesToString()
     }
 
+    getShowKeyboardOverlayKey(){
+        return this.ShowKeyboardOverlayKey
+    }
+
     getFriendlyHotkeyActionPairValues(){
         return this.OverlayElements.getFriendlyHotkeyActionPairValues()
     }
-
-    ; "SecondaryLayer-KeyboardOverlay1": {
-        ; "ShowKeyboardOverlayKey": "~Shift",
-        ; "overlayElements":{
-        ;     "Column1": {
-        ;         "key": "1",
-        ;         "description": "Open Time Table\""
-        ;     },
-        ;     "Column2": {
-        ;         "key": "2",
-        ;         "description": "Black Board\""
-        ;     },
-        ; }
-    ; }
 }

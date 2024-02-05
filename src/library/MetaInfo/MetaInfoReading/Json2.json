@@ -334,6 +334,60 @@
 			"isObject":1
 		}
 	},
+	"SecondaryLayer-KeyboardOverlay1":{
+		"ShowKeyboardOverlayKey":"~Shift",
+		"overlayElements":{
+			"Column1":{
+				"description":"Open Time Table\"",
+				"key":"1"
+			},
+			"Column2":{
+				"description":"Black Board\"",
+				"key":"2"
+			},
+			"Column3":{
+				"description":"Prog 2\"","key":"3"},"Column4":{"description":"System\"",
+				"key":"4"
+			},
+			"Column5":{
+				"description":"Math\"","key":"5"},"Column6":{"description":"Data\"",
+				"key":"6"
+			},
+			"Column7":{
+				"description":"Jupyter Hub\"","key":"7"},"Column8":{"description":"Capquiz\"",
+				"key":"8"
+			}
+		}
+	},
+	"SecondaryLayer-KeyboardOverlay2":{
+		"ShowKeyboardOverlayKey":"~Control",
+		"overlayElements":{
+			"Column1":{
+				"description":"Root",
+				"key":"1"
+			},
+			"Column2":{
+				"description":"Adrian",
+				"key":"2"
+			},
+			"Column3":{
+				"description":"Github",
+				"key":"3"
+			},
+			"Column4":{
+				"description":"Down loads",
+				"key":"4"
+			},
+			"Column5":{
+				"description":"School",
+				"key":"5"
+			},
+			"Column6":{
+				"description":"Mappe",
+				"key":"6"
+			}
+		}
+	},
 	"TertiaryLayer-Hotkeys":{
 		"+=":{
 			"MethodName":"SendRepeatInput",
@@ -452,6 +506,27 @@
 			"Parameters":[63,
 			255],
 			"isObject":1
+		}
+	},
+	"TertiaryLayer-KeyboardOverlay1":{
+		"ShowKeyboardOverlayKey":"~Control",
+		"overlayElements":{
+			"Column1":{
+				"description":"Touch Screen",
+				"key":"1"
+			},
+			"Column2":{
+				"description":"Camera",
+				"key":"2"
+			},
+			"Column3":{
+				"description":"Blue tooth",
+				"key":"3"
+			},
+			"Column4":{
+				"description":"Touch Pad",
+				"key":"4"
+			}
 		}
 	}
 }

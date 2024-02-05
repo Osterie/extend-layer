@@ -17,6 +17,10 @@ class KeyboardOverlayElementRegistry{
     getKeyboardOverlayElement(keyboardElementName){ 
         return this.KeyboardOverlayElements.Get(keyboardElementName)
     }
+
+    getKeyboardOverlayElements(){
+        return this.KeyboardOverlayElements
+    }
     
     getKeyPairValuesToString(){
         elements := []

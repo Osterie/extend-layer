@@ -46,6 +46,7 @@ class KeyboadLayersInfoClassObjectReader{
             hotkeysMap := this.KeyboardLayersInfoRegister.GetHotkeysRegistry()
             this.ReadVisualOverlay(visualOverlayMap)
             this.ReadHotkeys(hotkeysMap)
+            this.read()
             ; TODO loop visualOverlayMap
             ; TODO loop hotkeysMap
         }
@@ -53,10 +54,19 @@ class KeyboadLayersInfoClassObjectReader{
     }
 
     ReadVisualOverlay(visualOverlayMap){
-        ; For overlayIdentifier, overlayInfo in visualOverlayMap{
-        ;     msgbox(overlayIdentifier)
-        ;     this.ReadKeyboardOverlay(overlayIdentifier, overlayInfo)
-        ; }
+
+        For overlayIdentifier, visualOverlayInfo in visualOverlayMap{
+            this.jsonObject[overlayIdentifier] := Map()
+            this.jsonObject[overlayIdentifier]["ShowKeyboardOverlayKey"] := visualOverlayInfo.getShowKeyboardOverlayKey()
+            keyboardOverlayElements := (visualOverlayInfo.getOverlayElements().getKeyboardOverlayElements())
+            this.jsonObject[overlayIdentifier]["overlayElements"] := Map()
+            For elementName, elementInfo in keyboardOverlayElements{
+                this.jsonObject[overlayIdentifier]["overlayElements"][elementName] := Map()
+                this.jsonObject[overlayIdentifier]["overlayElements"][elementName]["key"] := elementInfo.getKey()
+                this.jsonObject[overlayIdentifier]["overlayElements"][elementName]["description"] := elementInfo.getDescription()
+
+            }
+        }
     }
     
     ReadHotkeys(hotkeysMap){
@@ -76,11 +86,6 @@ class KeyboadLayersInfoClassObjectReader{
                     this.jsonObject[hotkeyIdentifier][hotkeyName]["ObjectName"] := objectName
                     this.jsonObject[hotkeyIdentifier][hotkeyName]["MethodName"] := methodName
                     this.jsonObject[hotkeyIdentifier][hotkeyName]["Parameters"] := parameters
-                    ; For parameter in parameters{
-                    ;     msgbox(parameter)
-                    ; }
-
-
                 }
                 else{
                     this.jsonObject[hotkeyIdentifier][hotkeyName]["isObject"] := false
@@ -92,25 +97,27 @@ class KeyboadLayersInfoClassObjectReader{
                     this.jsonObject[hotkeyIdentifier][hotkeyName]["modifiers"] := newHotkeyModifiers
                 }
             }
-            ; this.ReadHotkey(hotkeyIdentifier, hotkeyInfo)
         }
+    }
 
-        test := Jxon_Dump(this.jsonObject)
+    read(){
+        jsonString := Jxon_Dump(this.jsonObject)
+    
         indentationLevel := 0
         textToReturn := ""
         previousValue := ""
         quotationMarkCount := 0
         inQuotes := false
-
-        Loop Parse test{
-
+    
+        Loop Parse jsonString{
+    
             if (Mod(quotationMarkCount, 2) = 1){
                 inQuotes := true
             }
             else{
                 inQuotes := false
             }
-
+    
             if(A_LoopField = "{" and inQuotes = false){
                 indentationLevel++
                 textToReturn .= "{`n"
@@ -142,37 +149,9 @@ class KeyboadLayersInfoClassObjectReader{
             }
             previousValue := A_LoopField
         }
-        ; msgbox(textToReturn)
 
         FileObj := FileOpen(".\library\MetaInfo\MetaInfoReading\Json2.json", "rw" , "UTF-8")
-
+        
         FileObj.WriteLine(textToReturn)
-
-
     }
-
-    ReadKeyboardOverlay(layerIdentifier, layerInfoContents){
-        ShowKeyboardOverlayKey := ""
-
-        For key, informationAboutKey in layerInfoContents{
-            if (key == "overlayElements"){
-                
-                elementRegistry := KeyboardOverlayElementRegistry(key)
-                For overlayElementName, informationAboutOverlayElement in informationAboutKey{
-                    elementName := overlayElementName
-                    overlayKeyToPress := informationAboutOverlayElement["key"]
-                    description := informationAboutOverlayElement["description"]
-                    element := KeyboardOverlayElement(elementName, overlayKeyToPress, description)
-                    elementRegistry.addKeyboardOverlayElement(element)
-                }
-            }
-        }
-        KeyboardOverlayInformation := KeyboardOverlayInfo(layerInfoContents["ShowKeyboardOverlayKey"], layerIdentifier, elementRegistry)
-        this.KeyboardLayersInfoRegister.AddKeyboardOverlayLayerInfo(KeyboardOverlayInformation)
-    }
-
-    getKeyboardLayersInfoRegister(){
-        return this.KeyboardLayersInfoRegister
-    }
-
 }
