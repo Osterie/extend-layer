@@ -22,7 +22,7 @@ class KeyboardLayersInfoRegistry{
 
     ; TODO remove me perhaps, a new and better method is being developed...
     ChangeHotkey(layerIdentifier, hotkeyName, newHotkey){
-        msgbox(this.HotkeysRegistry[layerIdentifier].ChangeHotkeyKey(hotkeyName, newHotkey))
+        this.HotkeysRegistry[layerIdentifier].ChangeHotkeyKey(hotkeyName, newHotkey)
     }
 
     GetRegistryByLayerIdentifier(layerIdentifier){
@@ -45,7 +45,5 @@ class KeyboardLayersInfoRegistry{
 
     GetHotkeysRegistry(){
         return this.HotkeysRegistry
-    }
-
-    
+    }    
 }

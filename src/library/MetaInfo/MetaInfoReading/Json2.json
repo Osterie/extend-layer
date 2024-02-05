@@ -6,7 +6,7 @@
 			"Parameters":[2],
 			"isObject":1
 		},
-		"CapsLock":{
+		"å":{
 			"MethodName":"toggleLayerIndicator",
 			"ObjectName":"layers",
 			"Parameters":[1],
@@ -542,35 +542,6 @@
 		}
 	}
 }
-Object":1
-		},
-		"ø":{
-			"MethodName":"CycleBlue",
-			"ObjectName":"MonitorInstance",
-			"Parameters":[63,
-			255],
-			"isObject":1
-		}
-	},
-	"TertiaryLayer-KeyboardOverlay1":{
-		"ShowKeyboardOverlayKey":"~Control",
-		"overlayElements":{
-			"Column1":{
-				"description":"Touch Screen",
-				"key":"1"
-			},
-			"Column2":{
-				"description":"Camera",
-				"key":"2"
-			},
-			"Column3":{
-				"description":"Blue tooth",
-				"key":"3"
-			},
-			"Column4":{
-				"description":"Touch Pad",
-				"key":"4"
-			}
-		}
+
 	}
 }

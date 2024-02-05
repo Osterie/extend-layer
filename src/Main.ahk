@@ -139,9 +139,6 @@ Class Main{
     Start(){
         this.RunLogicalStartup()
         this.RunAppGui()
-
-        test := KeyboadLayersInfoClassObjectReader()
-        test.ReadObjectToJson(this.KeyboardLayersInfoRegister)
     }
 
     RunLogicalStartup(){

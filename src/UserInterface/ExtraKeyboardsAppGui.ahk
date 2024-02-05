@@ -10,6 +10,7 @@
 ; #Include ".\ListViewFromJsonObject.ahk"
 #Include ".\ListViewFromIniFileContent.ahk"
 #Include "..\library\FoldersAndFiles\FolderManager.ahk"
+#Include "..\library\JsonParsing\JsonFormatter\JsonFormatter.ahk"
 
 ; TODO have a hotkey which sends a given key(or hotkey) after a given delay.
 ; TODO could also have a hotkey/key which is excecuted if a loud enough sound is caught by the mic.
@@ -64,13 +65,15 @@ Class ExtraKeyboardsAppGui{
 
         this.PATH_TO_META_FILE := pathToMetaFile
 
-        this.PATH_TO_MAIN_SCRIPT := pathToMainScript
+        ; this.PATH_TO_MAIN_SCRIPT := pathToMainScript
 
-        this.PATH_TO_EMPTY_PROFILE := pathToEmptyProfile
+        ; this.PATH_TO_EMPTY_PROFILE := pathToEmptyProfile
 
         this.currentProfile := iniRead(this.PATH_TO_META_FILE, "General", "activeUserProfile")
 
-        this.currentProfileIndex := this.ExistingProfilesManager.getFirstFoundFolderIndex(this.currentProfile)
+        
+
+        ; this.currentProfileIndex := this.ExistingProfilesManager.getFirstFoundFolderIndex(this.currentProfile)
 
     }
 
@@ -154,25 +157,25 @@ Class ExtraKeyboardsAppGui{
 
         this.keyboardLayersInfoRegister.ChangeHotkey(this.currentLayer, oldHotkey, newHotKey)
 
-        ; KeyboadLayersInfoClassObjectReader
-        ; TODO i
-        msgbox(Jxon_Dump(this.keyboardLayersInfoRegister))
-        ; this.MainScript.
+        ; msgbox(this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer).GetHotkey(oldHotkey).getHotkeyName())
+        toJsonReader := KeyboadLayersInfoClassObjectReader()
+        toJsonReader.ReadObjectToJson(this.keyboardLayersInfoRegister)
+        jsonObject := toJsonReader.getJsonObject()
+
+        currentProfileName := iniRead(this.PATH_TO_META_FILE, "General", "activeUserProfile")
+        pathToCurrentProfile := this.PATH_TO_EXISTING_PROFILES . "\" . currentProfileName
+
         
-        ;  Jxon_Dump
+        formatterForJson := JsonFormatter()
+        jsonString := formatterForJson.FormatJsonObject(jsonObject)
+        ; FileObj := FileOpen(pathToCurrentProfile . "\Keyboards.json", "rw", "UTF-8")
+        ; ; FileObj.Length := 0
+        ; FileObj.Write(jsonString)
+        ; FileObj.Close()
+        FileRecycle(pathToCurrentProfile . "\Keyboards.json")
+        FileAppend(jsonString, pathToCurrentProfile . "\Keyboards.json", "UTF-8")
+        this.MainScript.RunLogicalStartup()
     }
-
-
-    ; CreateTreeViewWithAssociatedListViewFromJsonObject(jsonFileConents){
-    ;     treeViewElement := TreeViewFromJsonFile(jsonFileConents)
-    ;     treeViewElement.CreateTreeView(this.ExtraKeyboardsAppGui)
-        
-    ;     listViewElement := ListViewFromJsonObject(jsonFileConents)
-    ;     listViewElement.CreateListView(this.ExtraKeyboardsAppGui, ["Key","Value"])
-        
-    ;     CreateListViewItems := ObjBindMethod(listViewElement, "SetNewListViewItemsByIniFileSection")
-    ;     treeViewElement.AddEventAction("ItemSelect", CreateListViewItems)
-    ; }
 
     CreateTreeViewWithAssociatedListViewFromIniFile(iniFilePath){
         treeViewElement := TreeViewFromIniFile(iniFilePath)

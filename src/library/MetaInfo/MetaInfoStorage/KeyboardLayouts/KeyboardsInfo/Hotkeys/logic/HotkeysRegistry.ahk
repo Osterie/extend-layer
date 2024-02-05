@@ -18,11 +18,16 @@ class HotkeysRegistry{
     }
 
     GetHotkey(hotkeyName){
+        msgbox(hotkeyName)
         return this.hotkeys.get(hotkeyName)
     }
 
     ChangeHotkeyKey(hotkeyName, newHotkey){
-        this.hotkeys[hotkeyName].changeHotkey(newHotkey)
+        if (hotkeyName != newHotkey){
+            this.hotkeys[hotkeyName].changeHotkey(newHotkey)
+            this.hotkeys[newHotKey] := this.hotkeys[hotkeyName]
+            this.hotkeys.Delete(hotkeyName).changeHotkey(newHotkey)
+        }
     }
 
     GetHotkeys(){
