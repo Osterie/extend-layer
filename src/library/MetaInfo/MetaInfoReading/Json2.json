@@ -338,23 +338,35 @@
 		"ShowKeyboardOverlayKey":"~Shift",
 		"overlayElements":{
 			"Column1":{
-				"description":"Open Time Table\"",
+				"description":"Open Time Table",
 				"key":"1"
 			},
 			"Column2":{
-				"description":"Black Board\"",
+				"description":"Black Board",
 				"key":"2"
 			},
 			"Column3":{
-				"description":"Prog 2\"","key":"3"},"Column4":{"description":"System\"",
+				"description":"Prog 2",
+				"key":"3"
+			},
+			"Column4":{
+				"description":"System",
 				"key":"4"
 			},
 			"Column5":{
-				"description":"Math\"","key":"5"},"Column6":{"description":"Data\"",
+				"description":"Math",
+				"key":"5"
+			},
+			"Column6":{
+				"description":"Data",
 				"key":"6"
 			},
 			"Column7":{
-				"description":"Jupyter Hub\"","key":"7"},"Column8":{"description":"Capquiz\"",
+				"description":"Jupyter Hub",
+				"key":"7"
+			},
+			"Column8":{
+				"description":"Capquiz",
 				"key":"8"
 			}
 		}

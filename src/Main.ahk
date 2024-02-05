@@ -140,10 +140,10 @@ Class Main{
         this.RunLogicalStartup()
         ; this.UpdatePathsToInfo()
         ; this.InitializeMetaInfo()
-        this.RunAppGui()
+        ; this.RunAppGui()
 
-        test := KeyboadLayersInfoClassObjectReader(this.KeyboardLayersInfoRegister)
-        test.ReadObjectToJson()
+        test := KeyboadLayersInfoClassObjectReader()
+        test.ReadObjectToJson(this.KeyboardLayersInfoRegister)
     }
 
     RunLogicalStartup(){

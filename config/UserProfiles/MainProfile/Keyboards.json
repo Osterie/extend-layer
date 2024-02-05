@@ -336,35 +336,35 @@
         "overlayElements":{
             "Column1": {
                 "key": "1",
-                "description": "Open Time Table\""
+                "description": "Open Time Table"
             },
             "Column2": {
                 "key": "2",
-                "description": "Black Board\""
+                "description": "Black Board"
             },
             "Column3": {
                 "key": "3",
-                "description": "Prog 2\""
+                "description": "Prog 2"
             },
             "Column4": {
                 "key": "4",
-                "description": "System\""
+                "description": "System"
             },
             "Column5": {
                 "key": "5",
-                "description": "Math\""
+                "description": "Math"
             },
             "Column6": {
                 "key": "6",
-                "description": "Data\""
+                "description": "Data"
             },
             "Column7": {
                 "key": "7",
-                "description": "Jupyter Hub\""
+                "description": "Jupyter Hub"
             },
             "Column8": {
                 "key": "8",
-                "description": "Capquiz\""
+                "description": "Capquiz"
             }
         }
     },
