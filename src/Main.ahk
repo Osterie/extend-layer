@@ -32,6 +32,8 @@
 
 #Include ".\library\MetaInfo\MetaInfoReading\ObjectsJsonReader.ahk"
 #Include ".\library\MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader.ahk"
+#Include ".\library\MetaInfo\MetaInfoReading\KeyboadLayersInfoClassObjectReader.ahk"
+
 
 ; TODO perhaps should add a "description" for the hotkeys in the gui
 
@@ -139,6 +141,9 @@ Class Main{
         ; this.UpdatePathsToInfo()
         ; this.InitializeMetaInfo()
         this.RunAppGui()
+
+        test := KeyboadLayersInfoClassObjectReader(this.KeyboardLayersInfoRegister)
+        test.ReadObjectToJson()
     }
 
     RunLogicalStartup(){

@@ -43,8 +43,6 @@ class HotKeyInfo{
         return this.isObject
     }
 
-
-
     toString(){
         if(this.isObject){
             return this.objectName . "." . this.methodName . "(" . this.parametersToString(this.parameters) . ")"
@@ -78,8 +76,26 @@ class HotKeyInfo{
         return this.hotkeyName
     }
 
+    getNewHotkeyName(){
+        return this.newHotKey
+    }
+    getNewHotkeyModifiers(){
+        return this.modifiers
+    }
     getFriendlyHotkeyName(){
         return this.friendlyHotkeyName
+    }
+
+    getObjectName(){
+        return this.objectName
+    }
+
+    getMethodName(){
+        return this.methodName
+    }
+
+    getParameters(){
+        return this.parameters
     }
 
 }

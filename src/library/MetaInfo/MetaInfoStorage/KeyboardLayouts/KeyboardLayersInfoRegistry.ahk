@@ -20,6 +20,7 @@ class KeyboardLayersInfoRegistry{
         this.HotkeysRegistry[Hotkeys.GetLayerIdentifier()] := Hotkeys
     }
 
+    ; TODO remove me perhaps, a new and better method is being developed...
     ChangeHotkey(layerIdentifier, hotkeyName, newHotkey){
         msgbox(this.HotkeysRegistry[layerIdentifier].ChangeHotkeyKey(hotkeyName, newHotkey))
     }
@@ -36,6 +37,14 @@ class KeyboardLayersInfoRegistry{
             throw ("No registry found for layer identifier: " . layerIdentifier)
         }
         return registryToReturn
+    }
+
+    GetKeyboardOverlaysRegistry(){
+        return this.KeyboardOverlaysRegistry
+    }
+
+    GetHotkeysRegistry(){
+        return this.HotkeysRegistry
     }
 
     

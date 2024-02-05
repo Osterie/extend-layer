@@ -2,12 +2,11 @@
 
 class HotkeysRegistry{
 
-    hotkeys := ""
+    hotkeys := Map()
     layerIdentifier := ""
 
     __New(layerIdentifier){
         this.layerIdentifier := layerIdentifier
-        this.hotkeys := Map()
     }
 
     AddHotkey(HotkeyInfo){
