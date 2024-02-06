@@ -97,7 +97,6 @@ Hotstring( "::agb", StrReplace(name, "Ã¸", "ø"))
 Hotstring( "::a@", eMail)
 Hotstring("::@p", password)
 
-
 ; ------------Global or whatever stusff----------------
 ; TODO add hotkey for creating tab to the right...
 
