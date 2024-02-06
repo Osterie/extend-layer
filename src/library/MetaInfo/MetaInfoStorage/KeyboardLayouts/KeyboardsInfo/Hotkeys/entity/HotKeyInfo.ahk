@@ -37,6 +37,7 @@ class HotKeyInfo{
     changeHotkey(newHotKeyName){
         this.hotkeyName := newHotKeyName
         this.friendlyHotkeyName := HotkeyFormatConverter.convertToFriendlyHotkeyName(newHotKeyName)
+        
     }
     
     hotkeyIsObject(){

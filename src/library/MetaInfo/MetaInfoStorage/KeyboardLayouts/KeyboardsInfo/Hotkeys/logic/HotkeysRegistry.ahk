@@ -27,6 +27,7 @@ class HotkeysRegistry{
             this.hotkeys[hotkeyName].changeHotkey(newHotkey)
             this.hotkeys[newHotKey] := this.hotkeys[hotkeyName]
             this.hotkeys.Delete(hotkeyName).changeHotkey(newHotkey)
+            Hotkey(hotkeyName, "Off")
         }
     }
 

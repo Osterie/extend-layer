@@ -6,7 +6,7 @@
 			"Parameters":[2],
 			"isObject":1
 		},
-		"CapsLock":{
+		"Capslock":{
 			"MethodName":"toggleLayerIndicator",
 			"ObjectName":"layers",
 			"Parameters":[1],
@@ -255,6 +255,12 @@
 			"Parameters":[],
 			"isObject":1
 		},
+		"1":{
+			"MethodName":"SearchFromInputBox",
+			"ObjectName":"WebSearcher",
+			"Parameters":[],
+			"isObject":1
+		},
 		"<":{
 			"MethodName":"MoveMouseToCenterOfScreen",
 			"ObjectName":"MouseInstance",
@@ -319,12 +325,6 @@
 			"ObjectName":"WebSearcher",
 			"Parameters":["auto",
 			"en"],
-			"isObject":1
-		},
-		"b":{
-			"MethodName":"SearchFromInputBox",
-			"ObjectName":"WebSearcher",
-			"Parameters":[],
 			"isObject":1
 		},
 		"t":{
