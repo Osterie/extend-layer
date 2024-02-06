@@ -55,10 +55,12 @@ class HotkeyCrafterGui{
         ; hotkeyText := this.GuiObject.Add("Text", "h100 xs+10 ys+10", "Advanced hotkey crafting:")
         
         groupBoxForModifiers := this.GuiObject.Add("GroupBox", "Section w300 h50 xp+30 yp+20", "Modifiers:")
-        controlCheckbox := this.GuiObject.Add("CheckBox","xs+15 ys+20", "Control")
-        shiftCheckbox := this.GuiObject.Add("CheckBox","xs+95 ys+20", "Shift")
-        altCheckbox := this.GuiObject.Add("CheckBox","xs+175 ys+20", "Alt")
-        winCheckbox := this.GuiObject.Add("CheckBox","xs+255 ys+20", "Win")
+        
+        anyModifierCheckbox := this.GuiObject.Add("CheckBox","xs+15 ys+20", "Any")
+        controlCheckbox := this.GuiObject.Add("CheckBox","xp+55 ys+20", "Control")
+        shiftCheckbox := this.GuiObject.Add("CheckBox","xp+55 ys+20", "Shift")
+        altCheckbox := this.GuiObject.Add("CheckBox","xp+55 ys+20", "Alt")
+        winCheckbox := this.GuiObject.Add("CheckBox","xp+55 ys+20", "Win")
         
         
         groupBoxForHotkey := this.GuiObject.Add("GroupBox", "w300 h50 xs ys+80", "Hotkey:")
