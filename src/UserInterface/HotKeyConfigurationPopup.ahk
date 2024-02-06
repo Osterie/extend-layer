@@ -202,6 +202,10 @@ class HotKeyConfigurationPopup{
         return hotkeyToReturn
     }
 
+    destroy(){
+        this.mainGui.Destroy()
+    }
+
     getHotkeyFormatted(){
         hotkeyToReturn := ""
         if (this.hotkeyDeleted != true){

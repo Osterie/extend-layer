@@ -114,6 +114,10 @@ class ListViewMaker{
         ; msgbox(this.newHotkey)
     }
 
+    getPopup(){
+        return this.popupForConfiguringHotkey
+    }
+
     setHotkeySavedEvent(event){
         this.hotkeySavedEvent := event
     }

@@ -5,12 +5,6 @@
 			"ObjectName":"layers",
 			"Parameters":[2],
 			"isObject":1
-		},
-		"Capslock":{
-			"MethodName":"toggleLayerIndicator",
-			"ObjectName":"layers",
-			"Parameters":[1],
-			"isObject":1
 		}
 	},
 	"NormalLayer-Hotkeys":{
@@ -533,6 +527,16 @@
 			},
 			"Column3":{
 				"description":"Blue tooth",
+				"key":"3"
+			},
+			"Column4":{
+				"description":"Touch Pad",
+				"key":"4"
+			}
+		}
+	}
+}
+	"description":"Blue tooth",
 				"key":"3"
 			},
 			"Column4":{

@@ -157,7 +157,6 @@ Class ExtraKeyboardsAppGui{
 
         this.keyboardLayersInfoRegister.ChangeHotkey(this.currentLayer, oldHotkey, newHotKey)
 
-        ; msgbox(this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer).GetHotkey(oldHotkey).getHotkeyName())
         toJsonReader := KeyboadLayersInfoClassObjectReader()
         toJsonReader.ReadObjectToJson(this.keyboardLayersInfoRegister)
         jsonObject := toJsonReader.getJsonObject()
@@ -168,13 +167,13 @@ Class ExtraKeyboardsAppGui{
         
         formatterForJson := JsonFormatter()
         jsonString := formatterForJson.FormatJsonObject(jsonObject)
-        ; FileObj := FileOpen(pathToCurrentProfile . "\Keyboards.json", "rw", "UTF-8")
-        ; ; FileObj.Length := 0
-        ; FileObj.Write(jsonString)
-        ; FileObj.Close()
         FileRecycle(pathToCurrentProfile . "\Keyboards.json")
         FileAppend(jsonString, pathToCurrentProfile . "\Keyboards.json", "UTF-8")
         this.MainScript.RunLogicalStartup()
+
+        
+        listViewElement.getPopup().Destroy()
+        
     }
 
     CreateTreeViewWithAssociatedListViewFromIniFile(iniFilePath){

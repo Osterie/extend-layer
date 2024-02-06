@@ -6,7 +6,7 @@
 			"Parameters":[2],
 			"isObject":1
 		},
-		"Capslock":{
+		"CapsLock":{
 			"MethodName":"toggleLayerIndicator",
 			"ObjectName":"layers",
 			"Parameters":[1],

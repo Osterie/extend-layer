@@ -18,15 +18,19 @@ class HotkeysRegistry{
     }
 
     GetHotkey(hotkeyName){
-        msgbox(hotkeyName)
         return this.hotkeys.get(hotkeyName)
     }
 
     ChangeHotkeyKey(hotkeyName, newHotkey){
         if (hotkeyName != newHotkey){
-            this.hotkeys[hotkeyName].changeHotkey(newHotkey)
-            this.hotkeys[newHotKey] := this.hotkeys[hotkeyName]
-            this.hotkeys.Delete(hotkeyName).changeHotkey(newHotkey)
+            
+            if (StrLen(newHotKey) != 0){
+                ; Replaces the old hotkey with the new one
+                this.hotkeys[hotkeyName].changeHotkey(newHotkey)
+                this.hotkeys[newHotKey] := this.hotkeys[hotkeyName]
+            }
+            ; If the new hotkey is empty, the original hotkey is just deleted instead of being replaced
+            this.hotkeys.Delete(hotkeyName)
             Hotkey(hotkeyName, "Off")
         }
     }
