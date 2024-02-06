@@ -99,7 +99,7 @@ Hotstring("::@p", password)
 
 
 ; ------------Global or whatever stusff----------------
-
+; TODO add hotkey for creating tab to the right...
 
 ; TODO when making a new hotkey, it should be temporarily green. When deleting a hotkey, it should be red for a short time, and possible to restore it.
 ; TODO when changing a hotkey, it should be yellow or blue or something indicating that it has been changed (temporary)
@@ -138,7 +138,7 @@ Class Main{
     ; Main method used to start the script.
     Start(){
         this.RunLogicalStartup()
-        this.RunAppGui()
+        ; this.RunAppGui()
     }
 
     RunLogicalStartup(){

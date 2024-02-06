@@ -293,3 +293,16 @@
 		"ObjectName":"WebSearcher"
 	}
 }
+	},
+	"WebNavigator":{
+		"ClassName":"WebNavigator",
+		"Methods":{
+			"CloseTabsToTheRight":{
+				"Description":"Closes all tabs to the right of the active tab in google chrome",
+				"MethodName":"CloseTabsToTheRight",
+				"Parameters":[]
+			}
+		},
+		"ObjectName":"WebSearcher"
+	}
+}

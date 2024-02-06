@@ -21,6 +21,7 @@ class HotkeysRegistry{
         return this.hotkeys.get(hotkeyName)
     }
 
+    ; TODO instead of reading the entire profile for keyboard again, perhaps i can just change the hotkey with this...
     ChangeHotkeyKey(hotkeyName, newHotkey){
         if (hotkeyName != newHotkey){
             
