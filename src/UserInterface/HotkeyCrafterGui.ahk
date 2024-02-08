@@ -1,6 +1,8 @@
 #Requires AutoHotkey v2.0
 #Include ".\guiControlsRegistry.ahk"
 
+#Include "..\library\MetaInfo\MetaInfoReading\KeyNamesReader.ahk"
+
 class HotkeyCrafterGui{
 
 
@@ -16,7 +18,16 @@ class HotkeyCrafterGui{
     saveButton := ""
     cancelButton := ""
 
-    __New(originalHotkey){
+    __New(originalHotkey, pathToKeyNamesFile){
+
+        ; TODO add path to keynames file as parameter
+
+        keyNamesFileObjReader := KeyNamesReader()
+        fileObjectOfKeyNames := FileOpen(pathToKeyNamesFile, "rw" , "UTF-8")
+
+        keyNames := keyNamesFileObjReader.ReadKeyNamesFromTxtFile(fileObjectOfKeyNames)
+
+        
 
         this.controlsForAdvancedHotkeys := guiControlsRegistry()
         this.controlsForSimpleHotkeys := guiControlsRegistry()
@@ -157,5 +168,5 @@ class HotkeyCrafterGui{
 }
 
 
-test := HotkeyCrafterGui("+Capslock")
+test := HotkeyCrafterGui("+Capslock", "..\resources\keyNames\keyNames.txt")
 test.Show()

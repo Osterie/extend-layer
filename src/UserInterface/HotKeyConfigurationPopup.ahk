@@ -51,7 +51,6 @@ class HotKeyConfigurationPopup{
         
         buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change original action")
         this.saveButton := this.mainGui.AddButton("Default w80", "Save+Done")
-
         
         
         ; currentHotkeyInfo := data.GetHotkey(hotkeyCommand)
@@ -69,8 +68,7 @@ class HotKeyConfigurationPopup{
     buttonToChangeOriginalHotkeyClickedEvent(){
         this.mainGui.Hide()
 
-        
-        hotkeyCrafter := HotkeyCrafterGui(this.currentHotkeyCommand)
+        hotkeyCrafter := HotkeyCrafterGui(this.currentHotkeyCommand, "..\..\resources\keyNames\keyNames.txt")
         hotkeySavedEventAction := ObjBindMethod(this, "saveButtonClickedForHotkeyCrafterEvent", hotkeyCrafter)
         hotkeyCrafter.addSaveButtonClickEventAction(hotkeySavedEventAction)
 
