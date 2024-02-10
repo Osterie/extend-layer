@@ -68,7 +68,7 @@ class HotKeyConfigurationPopup{
     buttonToChangeOriginalHotkeyClickedEvent(){
         this.mainGui.Hide()
 
-        hotkeyCrafter := HotkeyCrafterGui(this.currentHotkeyCommand, "..\..\resources\keyNames\keyNames.txt")
+        hotkeyCrafter := HotkeyCrafterGui(this.currentHotkeyCommand, "..\resources\keyNames\keyNames.txt")
         hotkeySavedEventAction := ObjBindMethod(this, "saveButtonClickedForHotkeyCrafterEvent", hotkeyCrafter)
         hotkeyCrafter.addSaveButtonClickEventAction(hotkeySavedEventAction)
 

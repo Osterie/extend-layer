@@ -12,6 +12,7 @@ class HotkeyCrafterGui{
 
     controlsForAdvancedHotkeys := ""
     controlsForSimpleHotkeys := ""
+    controlsForModifiers := ""
     groupBox := ""
     
     advancedModeButton := ""
@@ -30,6 +31,7 @@ class HotkeyCrafterGui{
         this.availableKeyNames := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
         this.controlsForAdvancedHotkeys := guiControlsRegistry()
         this.controlsForSimpleHotkeys := guiControlsRegistry()
+        this.controlsForModifiers := guiControlsRegistry()
 
         originalHotkeyFormatted := HotkeyFormatConverter.convertFromFriendlyName(originalHotkey, " + ")
 
@@ -48,9 +50,9 @@ class HotkeyCrafterGui{
 
 
         this.createAdvancedHotkeyCrafter()
-        ; this.hideAdvancedHotkeyCrafter()
+        this.hideAdvancedHotkeyCrafter()
 
-        this.hideSimpleHotkeyCrafter()
+        ; this.hideSimpleHotkeyCrafter()
 
         ; this.hotkeyStaticInput := this.GuiObject.Add("Edit", "w300 h20 xp yp")
         ; this.hotkeyStaticInput.Opt("Hidden1")
@@ -67,11 +69,19 @@ class HotkeyCrafterGui{
         groupBoxForModifiers := this.GuiObject.Add("GroupBox", "Section w300 h50 xp+30 yp+20", "Modifiers:")
         
         anyModifierCheckbox := this.GuiObject.Add("CheckBox","xs+15 ys+20", "Any")
+        anyModifierCheckbox.OnEvent("Click", (*) => this.anyModifierCheckboxClickEvent())
         controlCheckbox := this.GuiObject.Add("CheckBox","xp+55 ys+20", "Control")
         shiftCheckbox := this.GuiObject.Add("CheckBox","xp+55 ys+20", "Shift")
         altCheckbox := this.GuiObject.Add("CheckBox","xp+55 ys+20", "Alt")
         winCheckbox := this.GuiObject.Add("CheckBox","xp+55 ys+20", "Win")
         
+
+        this.controlsForModifiers.addControl("anyModifierCheckbox", anyModifierCheckbox)
+        this.controlsForModifiers.addControl("ControlCheckbox", controlCheckbox)
+        this.controlsForModifiers.addControl("ShiftCheckbox", shiftCheckbox)
+        this.controlsForModifiers.addControl("AltCheckbox", altCheckbox)
+        this.controlsForModifiers.addControl("WinCheckbox", winCheckbox)
+
         groupBoxForHotkey := this.GuiObject.Add("GroupBox", "section w300 h50 xs ys+80", "Hotkey:")
         availableKeyNamesDropDown := this.GuiObject.Add("DropDownList", "xs+20 ys+20", this.availableKeyNames)
 
@@ -91,8 +101,18 @@ class HotkeyCrafterGui{
         this.controlsForAdvancedHotkeys.addControl("AltCheckbox", altCheckbox)
         this.controlsForAdvancedHotkeys.addControl("WinCheckbox", winCheckbox)
         this.controlsForAdvancedHotkeys.addControl("AvailableKeyNamesDropDown", availableKeyNamesDropDown)
+    }
 
-
+    anyModifierCheckboxClickEvent(){
+        if (this.controlsForModifiers.getControl("anyModifierCheckbox").Value = true){
+            this.controlsForModifiers.setValuesFalse()
+            this.controlsForModifiers.disableControls()
+            this.controlsForModifiers.getControl("anyModifierCheckbox").Value := true
+            this.controlsForModifiers.getControl("anyModifierCheckbox").Enabled := true
+        }
+        else if (this.controlsForModifiers.getControl("anyModifierCheckbox").Value = false){
+            this.controlsForModifiers.enableControls()
+        }   
     }
 
     showAdvancedHotkeyCrafter(){
@@ -162,7 +182,6 @@ class HotkeyCrafterGui{
     addCloseEventAction(action){
         this.GuiObject.OnEvent("Close", action)
     }
-
 
     Show(){
         this.GuiObject.Show()
