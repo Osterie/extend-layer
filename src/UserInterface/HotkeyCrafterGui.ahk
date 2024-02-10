@@ -73,7 +73,7 @@ class HotkeyCrafterGui{
         winCheckbox := this.GuiObject.Add("CheckBox","xp+55 ys+20", "Win")
         
         groupBoxForHotkey := this.GuiObject.Add("GroupBox", "section w300 h50 xs ys+80", "Hotkey:")
-        this.GuiObject.Add("DropDownList", "xs+20 ys+20", this.availableKeyNames)
+        availableKeyNamesDropDown := this.GuiObject.Add("DropDownList", "xs+20 ys+20", this.availableKeyNames)
 
         
         keyDownRadio := this.GuiObject.Add("Radio","Checked xs+95 ys+120", "When key down")
@@ -81,10 +81,16 @@ class HotkeyCrafterGui{
 
         this.controlsForAdvancedHotkeys.addControl("GroupBoxAdvancedCrafting", groupBoxForAdvancedHotkeyCrafting)
         ; this.controlsForAdvancedHotkeys.addControl("HotkeyText", hotkeyText)
+        this.controlsForAdvancedHotkeys.addControl("GroupBoxForModifiers", groupBoxForModifiers)
+        this.controlsForAdvancedHotkeys.addControl("GroupBoxForHotkey", groupBoxForHotkey)
+        this.controlsForAdvancedHotkeys.addControl("KeyDownRadio", keyDownRadio)
+        this.controlsForAdvancedHotkeys.addControl("KeyUpRadio", keyUpRadio)
+        this.controlsForAdvancedHotkeys.addControl("AnyModifierCheckbox", anyModifierCheckbox)
         this.controlsForAdvancedHotkeys.addControl("ControlCheckbox", controlCheckbox)
         this.controlsForAdvancedHotkeys.addControl("ShiftCheckbox", shiftCheckbox)
         this.controlsForAdvancedHotkeys.addControl("AltCheckbox", altCheckbox)
         this.controlsForAdvancedHotkeys.addControl("WinCheckbox", winCheckbox)
+        this.controlsForAdvancedHotkeys.addControl("AvailableKeyNamesDropDown", availableKeyNamesDropDown)
 
 
     }
