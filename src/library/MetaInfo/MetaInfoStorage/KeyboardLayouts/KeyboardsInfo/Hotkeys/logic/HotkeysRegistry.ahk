@@ -7,6 +7,7 @@ class HotkeysRegistry{
 
     __New(layerIdentifier){
         this.layerIdentifier := layerIdentifier
+        this.hotkeys.Default = ""
     }
 
     AddHotkey(HotkeyInfo){
@@ -27,8 +28,14 @@ class HotkeysRegistry{
             
             if (StrLen(newHotKey) != 0){
                 ; Replaces the old hotkey with the new one
-                this.hotkeys[hotkeyName].changeHotkey(newHotkey)
-                this.hotkeys[newHotKey] := this.hotkeys[hotkeyName]
+                if (this.hotkeys.Has(newHotkey)){
+                    this.hotkeys[hotkeyName].changeHotkey(newHotkey)
+                    this.hotkeys[newHotKey] := this.hotkeys[hotkeyName]
+                }
+                else{
+                    ; TODO this method is not complete, it should have a parameter for hotkeyInfo, which is the hotkey that will be replaced and such... 
+                    ; this.hotkeys[newHotKey] := this.hotkeys[hotkeyName]
+                }
             }
             ; If the new hotkey is empty, the original hotkey is just deleted instead of being replaced
             this.hotkeys.Delete(hotkeyName)
