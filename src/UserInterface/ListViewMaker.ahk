@@ -99,12 +99,16 @@ class ListViewMaker{
         this.popupForConfiguringHotkey.addSaveButtonClickedEvent(saveButtonEvent)
         this.popupForConfiguringHotkey.addSaveButtonClickedEvent(this.hotkeySavedEvent)
 
+        cancelButtonEvent := ObjBindMethod(this, "popupCancelButtonClickEvent")
+        this.popupForConfiguringHotkey.addCancelButtonClickedEvent(cancelButtonEvent)
+
 
     }
 
     popupSaveButtonClickEvent(*){
         this.newHotkey := this.popupForConfiguringHotkey.getHotkeyFormatted()
         if (this.newHotkey = ""){
+            ; TODO implement
             ; Delete that shit
         }
         else {
@@ -112,6 +116,10 @@ class ListViewMaker{
         }
 
         ; msgbox(this.newHotkey)
+    }
+
+    popupCancelButtonClickEvent(*){
+        this.popupForConfiguringHotkey.Destroy()
     }
 
     getPopup(){

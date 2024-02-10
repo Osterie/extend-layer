@@ -10,11 +10,13 @@ class HotKeyConfigurationPopup{
 
     manuallyCreatHotkeyElement := ""
     addWinKeyAsModifierElement := ""
-    currentHotkeyTextElement := ""
+    currentHotkeyTextControl := ""
 
     hotkeyElement := ""
     originalHotkey := ""
     currentHotkeyCommand := ""
+
+    originalHotkeyAction := ""
 
     saveButton := ""
 
@@ -23,37 +25,22 @@ class HotKeyConfigurationPopup{
 
     
 
-    CreatePopupForHotkeyRegistry(data, rowNumber, hotkeyCommand, hotkeyAction){
+    CreatePopupForHotkeyRegistry(hotkeysRegistry, listViewColumn, hotkeyCommand, hotkeyAction){
 
         this.originalHotkey := hotkeyCommand
         this.currentHotkeyCommand := hotkeyCommand
 
+        this.originalHotkeyAction := hotkeyAction
+
         this.mainGui := Gui()
         this.mainGui.opt("+Resize +MinSize600x560")
-        
-        this.currentHotkeyTextElement := this.mainGui.AddText("r4", "Hotkey: `n" . hotkeyCommand)
-        this.setCurrentHotkeyText(hotkeyCommand)
-        
-        
-        newActionText := this.mainGui.AddText(" ", "Action: `n" . hotkeyAction)
-        newActionText.SetFont("s10", "Arial")
-        this.SetTextAndResize(newActionText, "Action: `n" . hotkeyAction)
 
-        this.undoDeletionButton := this.mainGui.AddButton("Default w80 ym", "Undo deletion")
-        this.undoDeletionButton.onEvent("Click", (*) => this.undoDeletionButtonClickedEvent())
-        this.undoDeletionButton.Opt("Hidden1")
-        ; undoButton := this.mainGui.AddButton("Default w80", "Undo")  
-
-
-        buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80 xm", "Change original hotkey")
-        buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent())
+        this.createCurrentHotkeyControl()
+        this.createCurrentActionControl()
         
+        this.createButtons()
         
-        buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change original action")
-        this.saveButton := this.mainGui.AddButton("Default w80", "Save+Done")
-        
-        
-        ; currentHotkeyInfo := data.GetHotkey(hotkeyCommand)
+        ; currentHotkeyInfo := hotkeysRegistry.GetHotkey(HotkeyFormatConverter.convertFromFriendlyName(hotkeyCommand))
         ; if (currentHotkeyInfo.hotkeyIsObject()){
         ;     this.CreateHotKeyMaker(this.mainGui)
         ;     this.createHotkeyMethodCall(this.mainGui, hotkeyAction)
@@ -62,6 +49,37 @@ class HotKeyConfigurationPopup{
 
         ; }
         this.mainGui.Show()
+    }
+
+    createCurrentHotkeyControl(){
+        this.currentHotkeyTextControl := this.mainGui.AddText("r4", "Hotkey: `n" . this.currentHotkeyCommand)
+        this.setCurrentHotkeyText(this.currentHotkeyCommand)
+    }
+
+    createCurrentActionControl(){
+        currentActionTextControl := this.mainGui.AddText(" ", "Action: `n" . this.originalHotkeyAction)
+        currentActionTextControl.SetFont("s10", "Arial")
+        this.SetTextAndResize(currentActionTextControl, "Action: `n" . this.originalHotkeyAction)
+    }
+
+    createButtons(){
+        this.undoDeletionButton := this.mainGui.AddButton("Default w80 ym", "Undo deletion")
+        this.undoDeletionButton.onEvent("Click", (*) => this.undoDeletionButtonClickedEvent())
+        this.undoDeletionButton.Opt("Hidden1")
+
+        this.createChangeButtons()
+        this.createFinalizationButtons()
+    }
+
+    createChangeButtons(){
+        buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80 xm", "Change original hotkey")
+        buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent())
+        buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change original action")
+    }
+
+    createFinalizationButtons(){
+        this.saveButton := this.mainGui.AddButton("Default w80", "Save+Done")
+        this.cancelButton := this.mainGui.AddButton("Default w80", "Cancel+Done")
     }
 
 
@@ -85,6 +103,10 @@ class HotKeyConfigurationPopup{
 
     addSaveButtonClickedEvent(event){
         this.saveButton.onEvent("Click", event)
+    }
+
+    addCancelButtonClickedEvent(event){
+        this.cancelButton.onEvent("Click", event)
     }
 
     undoDeletionButtonClickedEvent(){
@@ -158,19 +180,19 @@ class HotKeyConfigurationPopup{
 
     setCurrentHotkeyText(newHotkey){
         this.currentHotkeyCommand := newHotkey
-        this.currentHotkeyTextElement.Value := ("Hotkey: `n" . newHotkey)
+        this.currentHotkeyTextControl.Value := ("Hotkey: `n" . newHotkey)
 
         if (this.hotkeyDeleted = true){
-            this.currentHotkeyTextElement.SetFont("s10 cRed")
+            this.currentHotkeyTextControl.SetFont("s10 cRed")
         }
         else if (this.originalHotkey != newHotkey){
-            this.currentHotkeyTextElement.SetFont("s10 cBlue")
+            this.currentHotkeyTextControl.SetFont("s10 cBlue")
         }
         else{
-            this.currentHotkeyTextElement.SetFont("s10 cBlack")
+            this.currentHotkeyTextControl.SetFont("s10 cBlack")
         }
 
-        this.SetTextAndResize(this.currentHotkeyTextElement, this.currentHotkeyTextElement.Value )
+        this.SetTextAndResize(this.currentHotkeyTextControl, this.currentHotkeyTextControl.Value )
     }
 
     ; TODO creat a class for this...

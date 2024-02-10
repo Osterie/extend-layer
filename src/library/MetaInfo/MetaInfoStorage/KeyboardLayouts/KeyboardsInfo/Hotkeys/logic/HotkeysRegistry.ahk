@@ -7,7 +7,7 @@ class HotkeysRegistry{
 
     __New(layerIdentifier){
         this.layerIdentifier := layerIdentifier
-        this.hotkeys.Default = ""
+        this.hotkeys.Default := ""
     }
 
     AddHotkey(HotkeyInfo){
@@ -28,6 +28,7 @@ class HotkeysRegistry{
             
             if (StrLen(newHotKey) != 0){
                 ; Replaces the old hotkey with the new one
+                ; TODO can also check if hotkeyName is blank...
                 if (this.hotkeys.Has(newHotkey)){
                     this.hotkeys[hotkeyName].changeHotkey(newHotkey)
                     this.hotkeys[newHotKey] := this.hotkeys[hotkeyName]
