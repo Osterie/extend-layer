@@ -21,7 +21,15 @@ class HotkeyCrafterGui{
 
     availableKeyNames := []
 
-    __New(originalHotkey, pathToKeyNamesFile){
+    __New(originalHotkey, pathToKeyNamesFile, guiToAddTo := ""){
+
+        if (guiToAddTo = ""){
+            this.GuiObject := Gui()
+            this.GuiObject.Add("Text", "h20", "Original hotkey: " . originalHotkey)
+        }
+        else {
+            this.GuiObject := guiToAddTo
+        }
 
         ; TODO add path to keynames file as parameter
 
@@ -35,8 +43,6 @@ class HotkeyCrafterGui{
 
         originalHotkeyFormatted := HotkeyFormatConverter.convertFromFriendlyName(originalHotkey, " + ")
 
-        this.GuiObject := Gui()
-        this.GuiObject.Add("Text", "h20", "Original hotkey: " . originalHotkey)
         
         this.advancedModeButton := this.GuiObject.AddCheckBox("h50", "Advanced mode")
         this.advancedModeButton.onEvent("Click", (*) => this.advancedModeButtonChangedEvent())
