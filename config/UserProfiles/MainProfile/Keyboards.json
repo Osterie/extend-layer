@@ -14,6 +14,18 @@
 		}
 	},
 	"NormalLayer-Hotkeys":{
+		"#0":{
+			"MethodName":"ToggleShowKeysPressed",
+			"ObjectName":"OnScreenWriter",
+			"Parameters":[],
+			"isObject":1
+		},
+		"#c":{
+			"MethodName":"OpenCmdPathedToCurrentLocation",
+			"ObjectName":"CommandPrompt",
+			"Parameters":[],
+			"isObject":1
+		},
 		"*f1":{
 			"MethodName":"CloseActiveAutohotkeyScript",
 			"ObjectName":"ProcessManagerInstance",
@@ -35,18 +47,6 @@
 		"^q":{
 			"MethodName":"CloseFocusedProcess",
 			"ObjectName":"ProcessManagerInstance",
-			"Parameters":[],
-			"isObject":1
-		},
-		"#0":{
-			"MethodName":"ToggleShowKeysPressed",
-			"ObjectName":"OnScreenWriter",
-			"Parameters":[],
-			"isObject":1
-		},
-		"#c":{
-			"MethodName":"OpenCmdPathedToCurrentLocation",
-			"ObjectName":"CommandPrompt",
 			"Parameters":[],
 			"isObject":1
 		}

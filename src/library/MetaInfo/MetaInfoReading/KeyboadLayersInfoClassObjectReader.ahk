@@ -14,7 +14,6 @@ class KeyboadLayersInfoClassObjectReader{
             hotkeysMap := KeyboardLayersInfoRegister.GetHotkeysRegistry()
             this.ReadVisualOverlay(visualOverlayMap)
             this.ReadHotkeys(hotkeysMap)
-            this.read()
         }
         ; TODO handle an else...
     }
@@ -59,15 +58,5 @@ class KeyboadLayersInfoClassObjectReader{
                 }
             }
         }
-    }
-
-    ; TODO remove me...
-    read(){
-        formatterForJson := JsonFormatter()
-        jsonString := formatterForJson.FormatJsonObject(this.jsonObject)
-
-        FileObj := FileOpen(".\library\MetaInfo\MetaInfoReading\Json2.json", "rw" , "UTF-8")
-        
-        FileObj.WriteLine(jsonString)
     }
 }

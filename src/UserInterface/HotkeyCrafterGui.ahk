@@ -172,19 +172,19 @@ class HotkeyCrafterGui{
         hotkeyValueToReturn := ""
         if (this.advancedModeButton.Value = true){
             if (this.controlsForAdvancedHotkeys.getControl("AnyModifierCheckbox").Value = 1){
-                hotkeyValueToReturn .= "Any "    
+                hotkeyValueToReturn .= "*"    
             }
             if (this.controlsForAdvancedHotkeys.getControl("ControlCheckbox").Value = 1){
-                hotkeyValueToReturn .= "Ctrl "
+                hotkeyValueToReturn .= "^"
             }
             if (this.controlsForAdvancedHotkeys.getControl("ShiftCheckbox").Value = 1){
-                hotkeyValueToReturn .= "Shift "
+                hotkeyValueToReturn .= "+"
             }
             if (this.controlsForAdvancedHotkeys.getControl("AltCheckbox").Value = 1){
-                hotkeyValueToReturn .= "Alt "
+                hotkeyValueToReturn .= "!"
             }
             if (this.controlsForAdvancedHotkeys.getControl("WinCheckbox").Value = 1){
-                hotkeyValueToReturn .= "Win "
+                hotkeyValueToReturn .= "#"
             }
             hotkeyValueToReturn .= this.controlsForAdvancedHotkeys.getControl("AvailableKeyNamesDropDown").Text
 
