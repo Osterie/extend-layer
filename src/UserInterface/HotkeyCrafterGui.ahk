@@ -18,6 +18,8 @@ class HotkeyCrafterGui{
     saveButton := ""
     cancelButton := ""
 
+    availableKeyNames := []
+
     __New(originalHotkey, pathToKeyNamesFile){
 
         ; TODO add path to keynames file as parameter
@@ -25,10 +27,7 @@ class HotkeyCrafterGui{
         keyNamesFileObjReader := KeyNamesReader()
         fileObjectOfKeyNames := FileOpen(pathToKeyNamesFile, "rw" , "UTF-8")
 
-        keyNames := keyNamesFileObjReader.ReadKeyNamesFromTxtFile(fileObjectOfKeyNames)
-
-        
-
+        this.availableKeyNames := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
         this.controlsForAdvancedHotkeys := guiControlsRegistry()
         this.controlsForSimpleHotkeys := guiControlsRegistry()
 
@@ -73,8 +72,9 @@ class HotkeyCrafterGui{
         altCheckbox := this.GuiObject.Add("CheckBox","xp+55 ys+20", "Alt")
         winCheckbox := this.GuiObject.Add("CheckBox","xp+55 ys+20", "Win")
         
-        
-        groupBoxForHotkey := this.GuiObject.Add("GroupBox", "w300 h50 xs ys+80", "Hotkey:")
+        groupBoxForHotkey := this.GuiObject.Add("GroupBox", "section w300 h50 xs ys+80", "Hotkey:")
+        this.GuiObject.Add("DropDownList", "xs+20 ys+20", this.availableKeyNames)
+
         
         keyDownRadio := this.GuiObject.Add("Radio","Checked xs+95 ys+120", "When key down")
         keyUpRadio := this.GuiObject.Add("Radio",, "When key up")

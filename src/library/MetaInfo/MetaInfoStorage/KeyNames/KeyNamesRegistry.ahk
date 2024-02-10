@@ -2,26 +2,18 @@
 
 class KeyNamesRegistry{
 
-    keyNames 
+    keyNames := ""
 
     __New(){
-        this.keyNames := Map()
+        this.keyNames := Array()
         this.keyNames.Default := ""
     }
 
     AddKeyName(KeyName){
-        this.keyNames[KeyName] := KeyName
+        this.keyNames.Push(KeyName)
     }
 
-    GetKeyName(KeyName){
-        return this.keyNames[KeyName]
-    }
-    
     GetKeyNames(){
         return this.keyNames
-    }
-
-    GetKeyNamesAsArray(){
-        return this.keyNames.Keys()
     }
 }

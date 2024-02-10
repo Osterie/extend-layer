@@ -5,7 +5,7 @@
 class KeyNamesReader{
 
 
-    ReadKeyNamesFromTxtFile(fileObj){
+    ReadKeyNamesFromTextFileObject(fileObj){
         if (Type(fileObj) = "File"){
             registryOfKeyNames := KeyNamesRegistry()
 
@@ -14,7 +14,6 @@ class KeyNamesReader{
             Loop keyNamesSplitted.Length{
                 keyName := keyNamesSplitted[A_index]
                 if (keyName != ""){
-                    
                     registryOfKeyNames.AddKeyName(keyName)
                 }
             }
