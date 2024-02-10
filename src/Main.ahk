@@ -98,6 +98,9 @@ Hotstring( "::a@", eMail)
 Hotstring("::@p", password)
 
 ; ------------Global or whatever stusff----------------
+
+; TODO create a nice gui for user to create their own scripts. This is probably pretty hard, since i need to create an instance of the class they create and store it...
+
 ; TODO add hotkey for creating tab to the right...
 
 ; TODO when making a new hotkey, it should be temporarily green. When deleting a hotkey, it should be red for a short time, and possible to restore it.
@@ -137,7 +140,7 @@ Class Main{
     ; Main method used to start the script.
     Start(){
         this.RunLogicalStartup()
-        ; this.RunAppGui()
+        this.RunAppGui()
     }
 
     RunLogicalStartup(){

@@ -10,6 +10,7 @@ class KeyNamesRegistry{
     }
 
     AddKeyName(KeyName){
+        KeyName := StrReplace(KeyName, "`r", "")
         this.keyNames.Push(KeyName)
     }
 

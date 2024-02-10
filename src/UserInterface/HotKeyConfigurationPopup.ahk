@@ -31,7 +31,7 @@ class HotKeyConfigurationPopup{
         this.mainGui := Gui()
         this.mainGui.opt("+Resize +MinSize600x560")
         
-        this.currentHotkeyTextElement := this.mainGui.AddText(" ", "Hotkey: `n" . hotkeyCommand)
+        this.currentHotkeyTextElement := this.mainGui.AddText("r4", "Hotkey: `n" . hotkeyCommand)
         this.setCurrentHotkeyText(hotkeyCommand)
         
         
