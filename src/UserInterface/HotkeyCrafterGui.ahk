@@ -44,6 +44,7 @@ class HotkeyCrafterGui{
         groupBox := this.GuiObject.Add("GroupBox", "Section w300 h50", "Simple hotkey crafting:")
         this.hotkeyDynamicInput := this.GuiObject.Add("Hotkey", "w250 h20 xs+10 ys+20") ;yp sets the control's position to the left of the previous one...
         this.hotkeyDynamicInput.Value := originalHotkeyFormatted
+        this.hotkeyDynamicInput.OnEvent("Change", (*) => this.dynamicHotkeyInputChangedEvent())
 
         this.controlsForSimpleHotkeys.addControl("GroupBox", groupBox)
         this.controlsForSimpleHotkeys.addControl("HotkeyDynamicInput", this.hotkeyDynamicInput)
@@ -60,6 +61,15 @@ class HotkeyCrafterGui{
         this.saveButton := this.GuiObject.Add("Button", " w100 h20 xM yp+150", "Save")
         this.cancelButton := this.GuiObject.Add("Button", "w100 h20", "Cancel")
         this.deleteButton := this.GuiObject.Add("Button", "w100 h20", "Delete")
+    }
+
+    dynamicHotkeyInputChangedEvent(){
+        if (this.hotkeyDynamicInput.Value = ""){
+            this.saveButton.enabled := false
+        }
+        else{
+            this.saveButton.enabled := true
+        }
     }
 
     createAdvancedHotkeyCrafter(){
@@ -84,7 +94,7 @@ class HotkeyCrafterGui{
 
         groupBoxForHotkey := this.GuiObject.Add("GroupBox", "section w300 h50 xs ys+80", "Hotkey:")
         availableKeyNamesDropDown := this.GuiObject.Add("DropDownList", "xs+20 ys+20", this.availableKeyNames)
-
+        availableKeyNamesDropDown.OnEvent("Change", (*) => this.availableKeyNamesDropDownChangedEvent())
         
         keyDownRadio := this.GuiObject.Add("Radio","Checked xs+95 ys+120", "When key down")
         keyUpRadio := this.GuiObject.Add("Radio",, "When key up")
@@ -101,6 +111,16 @@ class HotkeyCrafterGui{
         this.controlsForAdvancedHotkeys.addControl("AltCheckbox", altCheckbox)
         this.controlsForAdvancedHotkeys.addControl("WinCheckbox", winCheckbox)
         this.controlsForAdvancedHotkeys.addControl("AvailableKeyNamesDropDown", availableKeyNamesDropDown)
+    }
+
+    availableKeyNamesDropDownChangedEvent(){
+        selectedKey := this.controlsForAdvancedHotkeys.getControl("AvailableKeyNamesDropDown").Value
+        if (selectedKey = ""){
+            this.saveButton.enabled := false
+        }
+        else{
+            this.saveButton.enabled := true
+        }
     }
 
     anyModifierCheckboxClickEvent(){
@@ -129,9 +149,6 @@ class HotkeyCrafterGui{
         this.controlsForSimpleHotkeys.hideControls()
     }
 
-
-
-
     cancelButtonClickEvent(){
 
         this.GuiObject.Destroy()
@@ -141,18 +158,12 @@ class HotkeyCrafterGui{
 
     advancedModeButtonChangedEvent(){
         if(this.advancedModeButton.Value = true){
-            ; this.hotkeyStaticInput.Opt("Hidden0")
             this.showAdvancedHotkeyCrafter()
             this.hideSimpleHotkeyCrafter()
-            ; if (this.hotkeyDynamicInput.Value != ""){
-            ;     this.hotkeyStaticInput.Value := this.hotkeyDynamicInput.Value
-            ; }
         } 
         else {
-            ; this.hotkeyStaticInput.Opt("Hidden1")
             this.hideAdvancedHotkeyCrafter()
             this.showSimpleHotkeyCrafter()
-            ; this.hotkeyDynamicInput.Value := this.hotkeyStaticInput.Value
         }
     }
 
