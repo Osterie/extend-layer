@@ -36,6 +36,7 @@ class ObjectsJsonReader{
             
             ObjectName := ClassInformation["ObjectName"]
             className := ClassInformation["ClassName"]
+            classDescription := ClassInformation["Description"]
 
             objectMethods := MethodRegistry()
             allMethodsOfClass := ClassInformation["Methods"]
@@ -43,8 +44,8 @@ class ObjectsJsonReader{
             For MethodName, MethodInformation in allMethodsOfClass{
                 
                 methodDescription := MethodInformation["Description"]
-                allMethodParameters := MethodInformation["Parameters"]
                 methodFriendlyName := MethodInformation["FriendlyName"]
+                allMethodParameters := MethodInformation["Parameters"]
                 methodInformation := MethodInfo(methodName, methodDescription, methodFriendlyName)
                 
                 For ParameterName, ParameterInformation in allMethodParameters{
@@ -53,19 +54,16 @@ class ObjectsJsonReader{
                     parameterDescription := ParameterInformation["Description"]
                     methodInformation.addParameter(ParameterName, parameterDescription)
                 }
-                objectMethods.addMethod(MethodName, methodInformation)
+                objectMethods.AddMethod(MethodName, methodInformation)
             }
 
             ; Create the finished object
             ObjectInstance := this.ObjectInstanceRegistry[ObjectName]
-            objectInformation := ObjectInfo(ObjectName, ObjectInstance, objectMethods)
+            objectInformation := ObjectInfo(ObjectName, ObjectInstance, classDescription, objectMethods)
 
             ; Add the completed object to the registry.
             this.ObjectRegister.AddObject(ObjectName, objectInformation)
         }
-    }
-
-    getObjectRegister(){
         return this.ObjectRegister
     }
 }

@@ -8,12 +8,14 @@ class ObjectInfo{
     objectInstance := ""
     ; The methods of the object, which should be of the datatype MethodRegistry.
     methodsWithDescriptions := ""
+    objectDescription := ""
 
     ; Try to add, if already exists, send a msgbox informing of such...
-    __New(objectName, objectInstance, methodsWithDescriptions){
+    __New(objectName, objectInstance, objectDescription, methodsWithDescriptions){
         this.objectName := objectName
         this.objectInstance := objectInstance
         this.methodsWithDescriptions := methodsWithDescriptions
+        this.objectDescription := objectDescription
     }
 
     getObjectName(){
@@ -22,6 +24,14 @@ class ObjectInfo{
 
     getObjectInstance(){
         return this.objectInstance
+    }
+
+    getObjectDescription(){
+        return this.objectDescription
+    }
+
+    getFriendlyNames(){
+        return this.methodsWithDescriptions.getMethodsFriendlyNames()
     }
 
     getMethodsWithDescriptions(){

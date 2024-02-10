@@ -12,6 +12,8 @@ class ListViewMaker{
 
     iniFileRead := ""
 
+    activeObjectsRegistry := ""
+
     hotkeySavedEvent := ""
 
     popupForConfiguringHotkey := ""
@@ -19,8 +21,8 @@ class ListViewMaker{
     newHotKey := ""
     originalHotkey := ""
 
-    __New(jsonObject, jsonFileContents, keyboardLayersInfoRegister){
-        this.jsonObject := jsonObject
+    __New(activeObjectsRegistry, jsonFileContents, keyboardLayersInfoRegister){
+        this.activeObjectsRegistry := activeObjectsRegistry
         this.jsonFileContents := jsonFileContents
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
     }
@@ -86,7 +88,7 @@ class ListViewMaker{
         this.originalHotkey := hotkeyBuild
         hotkeyAction := listView.GetText(rowNumber, 2)
 
-        this.popupForConfiguringHotkey := HotKeyConfigurationPopup()
+        this.popupForConfiguringHotkey := HotKeyConfigurationPopup(this.activeObjectsRegistry)
         if (Type(data) == "HotkeysRegistry"){
             this.popupForConfiguringHotkey.CreatePopupForHotkeyRegistry(data, rowNumber, hotkeyBuild, hotkeyAction)
             

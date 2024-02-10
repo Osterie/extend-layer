@@ -222,7 +222,3 @@ class HotkeyCrafterGui{
         this.GuiObject.Destroy()
     }
 }
-
-
-test := HotkeyCrafterGui("+Capslock", "..\resources\keyNames\keyNames.txt")
-test.Show()

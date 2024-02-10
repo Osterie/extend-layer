@@ -22,4 +22,17 @@ Class ObjectRegistry{
         return this.ObjectMap
     }
 
+    GetFriendlyNames(){
+        friendlyNames := Array()
+        For objectName, ObjectInfo in this.ObjectMap{
+            friendlyMethodNames := ObjectInfo.getFriendlyNames()
+
+            Loop friendlyMethodNames.Length{
+                friendlyNames.Push(friendlyMethodNames[A_index])
+            }
+        }
+                
+        return friendlyNames
+    }
+
 }

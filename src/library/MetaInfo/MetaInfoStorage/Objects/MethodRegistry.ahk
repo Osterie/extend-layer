@@ -16,8 +16,23 @@ class MethodRegistry{
 
     ; Takes the parameter MethodInfo, which is of the datatype MethodInfo.
     AddMethod(methodName, methodInfo){
-        this.Methods[methodName] = methodInfo
+        this.Methods[methodName] := methodInfo
     }
 
+    getMethod(methodName){
+        return this.Methods[methodName]
+    }
 
+    getMethods(){
+        return this.Methods
+    }
+
+    getMethodsFriendlyNames(){
+        friendlyNames := Array()
+        For methodName, methodInfo in this.Methods{
+            friendlyName := methodInfo.getFriendlyName()
+            friendlyNames.Push(friendlyName)
+        }
+        return friendlyNames
+    }
 }

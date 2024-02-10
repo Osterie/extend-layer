@@ -24,6 +24,11 @@ class HotKeyConfigurationPopup{
     undoDeletionButton := ""
     hotkeyDeleted := false
 
+    activeObjectsRegistry := ""
+
+    __New(activeObjectsRegistry){
+        this.activeObjectsRegistry := activeObjectsRegistry
+    }
     
 
     CreatePopupForHotkeyRegistry(hotkeysRegistry, listViewColumn, hotkeyCommand, hotkeyAction){
@@ -77,6 +82,8 @@ class HotKeyConfigurationPopup{
         buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80 xm", "Change original hotkey")
         buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent())
         
+        ; this.activeObjectsRegistry
+
         buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change original action")
         buttonToChangeOriginalAction.onEvent("Click", (*) => this.buttonToChangeOriginalActionClickedEvent())
     }
@@ -111,7 +118,7 @@ class HotKeyConfigurationPopup{
 
         ; actionCrafter := ActionCrafterGui(this.currentHotkeyAction)
 
-        actionCrafter := ActionCrafterGui(this.currentHotkeyAction, "..\resources\keyNames\keyNames.txt")
+        actionCrafter := ActionCrafterGui(this.currentHotkeyAction, "..\resources\keyNames\keyNames.txt", this.activeObjectsRegistry)
         hotkeySavedEventAction := ObjBindMethod(this, "saveButtonClickedForHotkeyCrafterEvent", actionCrafter)
         actionCrafter.addSaveButtonClickEventAction(hotkeySavedEventAction)
 

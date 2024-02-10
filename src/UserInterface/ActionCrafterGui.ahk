@@ -21,9 +21,11 @@ class ActionCrafterGui{
 
     availableKeyNames := []
 
-    __New(originalHotkey, pathToKeyNamesFile){
+    activeObjectsRegistry := ""
 
-        ; TODO add path to keynames file as parameter
+    __New(originalHotkey, pathToKeyNamesFile, activeObjectsRegistry){
+        this.activeObjectsRegistry := activeObjectsRegistry
+        ; test := this.activeObjectsRegistry.getFriendlyNames()
 
         keyNamesFileObjReader := KeyNamesReader()
         fileObjectOfKeyNames := FileOpen(pathToKeyNamesFile, "rw" , "UTF-8")
@@ -37,6 +39,8 @@ class ActionCrafterGui{
 
         this.GuiObject := Gui()
         this.GuiObject.Add("Text", "h20", "Original action: " . originalHotkey)
+
+        this.newActionIsAKeyButton := this.GuiObject.AddCheckBox("h50", "New action is a key")
         
         this.advancedModeButton := this.GuiObject.AddCheckBox("h50", "Advanced mode")
         this.advancedModeButton.onEvent("Click", (*) => this.advancedModeButtonChangedEvent())
@@ -223,6 +227,5 @@ class ActionCrafterGui{
     }
 }
 
-
-test := HotkeyCrafterGui("+Capslock", "..\resources\keyNames\keyNames.txt")
+test := ActionCrafterGui("+Capslock", "..\resources\keyNames\keyNames.txt", "")
 test.Show()
