@@ -21,14 +21,18 @@ class HotkeyCrafterGui{
 
     availableKeyNames := []
 
+    createdOnOtherGui := false
+
     __New(originalHotkey, pathToKeyNamesFile, guiToAddTo := ""){
 
         if (guiToAddTo = ""){
             this.GuiObject := Gui()
             this.GuiObject.Add("Text", "h20", "Original hotkey: " . originalHotkey)
+            this.createdOnOtherGui := true
         }
         else {
             this.GuiObject := guiToAddTo
+            createdOnOtherGui := false
         }
 
         ; TODO add path to keynames file as parameter
@@ -222,9 +226,20 @@ class HotkeyCrafterGui{
 
     Show(){
         this.GuiObject.Show()
+        this.advancedModeButton.Opt("Hidden0")
     }
 
     Destroy(){
         this.GuiObject.Destroy()
+    }
+
+    hide(){
+        this.GuiObject.Hide()
+    }
+
+    hideAllButFinalisationButtons(){
+        this.controlsForSimpleHotkeys.hideControls()
+        this.controlsForAdvancedHotkeys.hideControls()
+        this.advancedModeButton.Opt("Hidden1")
     }
 }

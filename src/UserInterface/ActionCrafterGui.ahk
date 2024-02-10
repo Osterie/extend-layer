@@ -36,6 +36,7 @@ class ActionCrafterGui{
         this.GuiObject := Gui()
         this.GuiObject.Add("Text", "h20", "Original Action: " . originalAction)
         this.hotkeyCrafter := HotkeyCrafterGui(originalAction, pathToKeyNamesFile, this.GuiObject)
+        this.hotkeyCrafter.hideAllButFinalisationButtons()
 
 
 
