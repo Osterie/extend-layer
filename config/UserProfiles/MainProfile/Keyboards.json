@@ -38,13 +38,13 @@
 			"Parameters":[],
 			"isObject":1
 		},
-		"win+0":{
+		"#0":{
 			"MethodName":"ToggleShowKeysPressed",
 			"ObjectName":"OnScreenWriter",
 			"Parameters":[],
 			"isObject":1
 		},
-		"win+c":{
+		"#c":{
 			"MethodName":"OpenCmdPathedToCurrentLocation",
 			"ObjectName":"CommandPrompt",
 			"Parameters":[],
