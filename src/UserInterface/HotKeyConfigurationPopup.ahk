@@ -2,6 +2,7 @@
 
 
 #Include ".\HotkeyCrafterGui.ahk"
+#Include ".\ActionCrafterGui.ahk"
 #Include "..\library\HotkeyFormatConverter.ahk"
 
 class HotKeyConfigurationPopup{
@@ -31,6 +32,7 @@ class HotKeyConfigurationPopup{
         this.currentHotkeyCommand := hotkeyCommand
 
         this.originalHotkeyAction := hotkeyAction
+        this.currentHotkeyAction := hotkeyAction
 
         this.mainGui := Gui()
         this.mainGui.opt("+Resize +MinSize600x560")
@@ -57,9 +59,9 @@ class HotKeyConfigurationPopup{
     }
 
     createCurrentActionControl(){
-        currentActionTextControl := this.mainGui.AddText(" ", "Action: `n" . this.originalHotkeyAction)
+        currentActionTextControl := this.mainGui.AddText(" ", "Action: `n" . this.currentHotkeyAction)
         currentActionTextControl.SetFont("s10", "Arial")
-        this.SetTextAndResize(currentActionTextControl, "Action: `n" . this.originalHotkeyAction)
+        this.SetTextAndResize(currentActionTextControl, "Action: `n" . this.currentHotkeyAction)
     }
 
     createButtons(){
@@ -74,7 +76,9 @@ class HotKeyConfigurationPopup{
     createChangeButtons(){
         buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80 xm", "Change original hotkey")
         buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent())
+        
         buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change original action")
+        buttonToChangeOriginalAction.onEvent("Click", (*) => this.buttonToChangeOriginalActionClickedEvent())
     }
 
     createFinalizationButtons(){
@@ -99,6 +103,27 @@ class HotKeyConfigurationPopup{
 
 
         hotkeyCrafter.Show()
+    }
+
+    buttonToChangeOriginalActionClickedEvent(){
+        this.mainGui.Hide()
+
+
+        ; actionCrafter := ActionCrafterGui(this.currentHotkeyAction)
+
+        actionCrafter := ActionCrafterGui(this.currentHotkeyAction, "..\resources\keyNames\keyNames.txt")
+        hotkeySavedEventAction := ObjBindMethod(this, "saveButtonClickedForHotkeyCrafterEvent", actionCrafter)
+        actionCrafter.addSaveButtonClickEventAction(hotkeySavedEventAction)
+
+        hotkeyCrafterClosedEvent := ObjBindMethod(this, "cancelButtonClickedForHotkeyCrafterEvent", actionCrafter)
+        actionCrafter.addCloseEventAction(hotkeyCrafterClosedEvent)
+        actionCrafter.addCancelButtonClickEventAction(hotkeyCrafterClosedEvent)
+
+        hotkeyDeleteEventAction := ObjBindMethod(this, "deleteButtonClickedForHotkeyCrafterEvent", actionCrafter)
+        actionCrafter.addDeleteButtonClickEventAction(hotkeyDeleteEventAction)
+
+
+        actionCrafter.Show()
     }
 
     addSaveButtonClickedEvent(event){

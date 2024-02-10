@@ -44,7 +44,8 @@ class ObjectsJsonReader{
                 
                 methodDescription := MethodInformation["Description"]
                 allMethodParameters := MethodInformation["Parameters"]
-                methodInformation := MethodInfo(methodName, methodDescription)
+                methodFriendlyName := MethodInformation["FriendlyName"]
+                methodInformation := MethodInfo(methodName, methodDescription, methodFriendlyName)
                 
                 For ParameterName, ParameterInformation in allMethodParameters{
                     
