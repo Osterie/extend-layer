@@ -48,7 +48,7 @@ class HotkeyCrafterGui{
         originalHotkeyFormatted := HotkeyFormatConverter.convertFromFriendlyName(originalHotkey, " + ")
 
         
-        this.advancedModeButton := this.GuiObject.AddCheckBox("h50", "Advanced mode")
+        this.advancedModeButton := this.GuiObject.AddCheckBox("h50 xp+15 yp+15", "Advanced mode")
         this.advancedModeButton.onEvent("Click", (*) => this.advancedModeButtonChangedEvent())
 
         groupBox := this.GuiObject.Add("GroupBox", "Section w300 h50", "Simple hotkey crafting:")

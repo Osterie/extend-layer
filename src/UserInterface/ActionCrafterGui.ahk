@@ -26,19 +26,42 @@ class ActionCrafterGui{
 
     hotkeyCrafter := ""
 
+    controlsForSpecialActionCrafting := ""
+
     __New(originalAction, pathToKeyNamesFile, activeObjectsRegistry){
+
+        this.controlsForSpecialActionCrafting := guiControlsRegistry()
+
         this.activeObjectsRegistry := activeObjectsRegistry
-        ; test := this.activeObjectsRegistry.getFriendlyNames()
+        ; allPossibleSpecialActions := this.activeObjectsRegistry.getFriendlyNames()
+        allPossibleSpecialActions := ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6LONGASSNAMEEE", "Test7", "Test8", "Test9", "Test10"]
 
         keyNamesFileObjReader := KeyNamesReader()
         fileObjectOfKeyNames := FileOpen(pathToKeyNamesFile, "rw" , "UTF-8")
 
-        this.GuiObject := Gui()
-        this.GuiObject.Add("Text", "h20", "Original Action: " . originalAction)
+        this.GuiObject := Gui(, "Action Crafter")
+        this.GuiObject.Opt("+Resize +MinSize640x480")
+        
+        originalActionControl := this.GuiObject.Add("Text", "", "Original Action: " . originalAction)
+        
         specialActionRadio := this.GuiObject.Add("Radio", "Checked", "Special Action")
-        specialActionRadio.OnEvent("Click", (*) => this.hotkeyCrafter.hideAllButFinalisationButtons())
+        specialActionRadio.OnEvent("Click", (*) => this.hotkeyCrafter.hideAllButFinalisationButtons() this.controlsForSpecialActionCrafting.showControls())
         newKeyRadio := this.GuiObject.Add("Radio", "", "New Key")
-        newKeyRadio.OnEvent("Click", (*) => this.hotkeyCrafter.show())
+        newKeyRadio.OnEvent("Click", (*) => this.hotkeyCrafter.show() this.controlsForSpecialActionCrafting.hideControls())
+
+        listViewOfSpecialAction := this.GuiObject.Add("ListView", "r20 Grid", ["Special Action"])
+        listViewOfSpecialAction.SetFont("s12", "Verdana")
+        ; listViewOfSpecialAction.ModifyCol()
+
+
+        Loop allPossibleSpecialActions.Length
+        {
+            listViewOfSpecialAction.Add("", allPossibleSpecialActions[A_Index])
+        }
+
+        listViewOfSpecialAction.ModifyCol(1, "Center AutoHdr", )
+
+        this.controlsForSpecialActionCrafting.AddControl("listViewOfSpecialAction", listViewOfSpecialAction)
 
         this.hotkeyCrafter := HotkeyCrafterGui(originalAction, pathToKeyNamesFile, this.GuiObject)
         this.hotkeyCrafter.hideAllButFinalisationButtons()
