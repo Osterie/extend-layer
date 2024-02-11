@@ -35,6 +35,8 @@ class ActionCrafterGui{
 
         this.GuiObject := Gui()
         this.GuiObject.Add("Text", "h20", "Original Action: " . originalAction)
+        specialActionRadio := this.GuiObject.Add("Radio", "Checked", "Special Action")
+        newKeyRadio := this.GuiObject.Add("Radio", "", "New Key")
         this.hotkeyCrafter := HotkeyCrafterGui(originalAction, pathToKeyNamesFile, this.GuiObject)
         this.hotkeyCrafter.hideAllButFinalisationButtons()
 
@@ -83,4 +85,5 @@ class ActionCrafterGui{
         this.GuiObject.destroy()
     }
 }
-
+test := ActionCrafterGui("+Capslock", "..\resources\keyNames\keyNames.txt", "")
+test.Show()
