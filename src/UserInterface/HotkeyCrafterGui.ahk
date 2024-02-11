@@ -23,6 +23,7 @@ class HotkeyCrafterGui{
 
     createdOnOtherGui := false
 
+    ; TODO pathToKeyNamesFile should instead just be a paramater which gives what you want immmediatly, (this.availableKeyNames = keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
     __New(originalHotkey, pathToKeyNamesFile, guiToAddTo := ""){
 
         if (guiToAddTo = ""){
