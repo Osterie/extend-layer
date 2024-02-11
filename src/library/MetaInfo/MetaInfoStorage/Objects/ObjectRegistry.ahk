@@ -35,4 +35,17 @@ Class ObjectRegistry{
         return friendlyNames
     }
 
+    GetObjectByFriendlyMethodName(friendlyMethodName){
+        For objectName, ObjectInfo in this.ObjectMap{
+            friendlyMethodNames := ObjectInfo.getFriendlyNames()
+
+            Loop friendlyMethodNames.Length{
+                if (friendlyMethodNames[A_index] = friendlyMethodName){
+                    return ObjectInfo
+                }
+            }
+        }
+
+    }
+
 }

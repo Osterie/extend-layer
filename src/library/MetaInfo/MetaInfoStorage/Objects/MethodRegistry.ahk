@@ -35,4 +35,13 @@ class MethodRegistry{
         }
         return friendlyNames
     }
+
+    getMethodByFriendlyName(friendlyName){
+        for methodName, methodInfo in this.Methods{
+            if (methodInfo.getFriendlyName() = friendlyName){
+                return methodInfo
+            }
+        }
+        return "Failed to retrieve friendly method name"
+    }
 }

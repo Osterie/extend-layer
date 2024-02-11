@@ -33,8 +33,8 @@ class ActionCrafterGui{
         this.controlsForSpecialActionCrafting := guiControlsRegistry()
 
         this.activeObjectsRegistry := activeObjectsRegistry
-        ; allPossibleSpecialActions := this.activeObjectsRegistry.getFriendlyNames()
-        allPossibleSpecialActions := ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6LONGASSNAMEEE", "Test7", "Test8", "Test9", "Test10"]
+        allPossibleSpecialActions := this.activeObjectsRegistry.getFriendlyNames()
+        ; allPossibleSpecialActions := ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6LONGASSNAMEEE turn off battery saver and such (WIP)", "Test7", "Test8", "Test9", "Test10"]
 
         keyNamesFileObjReader := KeyNamesReader()
         fileObjectOfKeyNames := FileOpen(pathToKeyNamesFile, "rw" , "UTF-8")
@@ -49,17 +49,33 @@ class ActionCrafterGui{
         newKeyRadio := this.GuiObject.Add("Radio", "", "New Key")
         newKeyRadio.OnEvent("Click", (*) => this.hotkeyCrafter.show() this.controlsForSpecialActionCrafting.hideControls())
 
-        listViewOfSpecialAction := this.GuiObject.Add("ListView", "r20 Grid", ["Special Action"])
-        listViewOfSpecialAction.SetFont("s12", "Verdana")
+        listViewOfSpecialAction := this.GuiObject.Add("ListView", "r20 Grid w400", ["Special Action"])
+        listViewOfSpecialAction.SetFont("s12 c333333", "Segoe UI")
+
+        specialActionSelectedEvent := ObjBindMethod(this, "listViewOfSpecialActionSelected")
+        listViewOfSpecialAction.OnEvent("ItemSelect", specialActionSelectedEvent)
         ; listViewOfSpecialAction.ModifyCol()
 
+
+
+
+        ; TODO what is needed for an action:
+        ; Object name
+        ; Method name
+        ; Method parameters (which would be an array)
+        ; .isObject true
+
+        ; TODO what is needed for a hotkey:
+        ; Key
+        ; Modifiers
+        ; .isObject false
 
         Loop allPossibleSpecialActions.Length
         {
             listViewOfSpecialAction.Add("", allPossibleSpecialActions[A_Index])
         }
 
-        listViewOfSpecialAction.ModifyCol(1, "Center AutoHdr", )
+        listViewOfSpecialAction.ModifyCol(1, "Center ", )
 
         this.controlsForSpecialActionCrafting.AddControl("listViewOfSpecialAction", listViewOfSpecialAction)
 
@@ -75,6 +91,17 @@ class ActionCrafterGui{
 
         ; originalHotkeyFormatted := HotkeyFormatConverter.convertFromFriendlyName(originalHotkey, " + ")
 
+    }
+
+    listViewOfSpecialActionSelected(listView, rowNumberSpecialAction, columnNumber){
+        friendlyNameOfAction := listView.GetText(rowNumberSpecialAction)
+        ObjectInfoOfAction := this.activeObjectsRegistry.GetObjectByFriendlyMethodName(friendlyNameOfAction)
+        MethodInfoOfAction := ObjectInfoOfAction.getMethodByFriendlyMethodName(friendlyNameOfAction)
+        msgbox(ObjectInfoOfAction.getObjectDescription())
+        msgbox(MethodInfoOfAction.getFriendlyName())
+        msgbox("that was friendly")
+        msgbox(MethodInfoOfAction.getMethodDescription())
+        msgbox(MethodInfoOfAction.getMethodName())
     }
 
     addSaveButtonClickEventAction(action){
@@ -111,5 +138,5 @@ class ActionCrafterGui{
         this.GuiObject.destroy()
     }
 }
-test := ActionCrafterGui("+Capslock", "..\resources\keyNames\keyNames.txt", "")
-test.Show()
+; test := ActionCrafterGui("+Capslock", "..\resources\keyNames\keyNames.txt", "")
+; test.Show()

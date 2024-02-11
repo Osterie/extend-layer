@@ -14,8 +14,8 @@ class MethodInfo{
 
     ; Since a method does not alw
     __New(name, description, friendlyName){
-        this.name := name
-        this.description := description
+        this.methodName := name
+        this.methodDescription := description
         this.friendlyName := friendlyName
     }
 

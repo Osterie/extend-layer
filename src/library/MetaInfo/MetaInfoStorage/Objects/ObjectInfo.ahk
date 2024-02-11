@@ -10,7 +10,7 @@ class ObjectInfo{
     methodsWithDescriptions := ""
     objectDescription := ""
 
-    ; Try to add, if already exists, send a msgbox informing of such...
+    ; TODO Try to add, if already exists, send a msgbox informing of such...
     __New(objectName, objectInstance, objectDescription, methodsWithDescriptions){
         this.objectName := objectName
         this.objectInstance := objectInstance
@@ -32,6 +32,10 @@ class ObjectInfo{
 
     getFriendlyNames(){
         return this.methodsWithDescriptions.getMethodsFriendlyNames()
+    }
+
+    getMethodByFriendlyMethodName(friendlyMethodName){
+        return this.methodsWithDescriptions.getMethodByFriendlyName(friendlyMethodName)
     }
 
     getMethodsWithDescriptions(){

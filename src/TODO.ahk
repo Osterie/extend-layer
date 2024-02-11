@@ -118,7 +118,7 @@
 ; TODO: a shortcut to turn the screen black(which alredy exists), but randomly change rgb values and then black. (so it looks like it is glitching.) Maybe have it connected to if mouse is used or clicked or something, maybe a certain keypress
 ; todo: text which converges and is mirrored along the middle cool effect only... used as a screensaver or something
 
-; Layers and keyboard overlay could possibly be used in a class, since they work for the same thing, the layers.
+; TODO Layers and keyboard overlay could possibly be used in a class, since they work for the same thing, the layers.
 
 ; TODO; create a website for this program. it should have pages for stuff such as "classes and methods", which explain which classes there are and how to use them. i.e which methods they have and what parameteres they take
 

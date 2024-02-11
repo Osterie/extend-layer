@@ -106,6 +106,8 @@ Hotstring("::@p", password)
 ; TODO when making a new hotkey, it should be temporarily green. When deleting a hotkey, it should be red for a short time, and possible to restore it.
 ; TODO when changing a hotkey, it should be yellow or blue or something indicating that it has been changed (temporary)
 
+; TODO to help the user learn how to use the script, a ghost keyboard should be made. All actions could have a short name, and when the key on the ghostkeyboard was hovered a description could be shown
+
 ; |-------------------------------------------|
 ; |----------- OBJECT CREATION ---------------|
 ; |-------------------------------------------|
@@ -140,7 +142,7 @@ Class Main{
     ; Main method used to start the script.
     Start(){
         this.RunLogicalStartup()
-        ; this.RunAppGui()
+        this.RunAppGui()
     }
 
     RunLogicalStartup(){
