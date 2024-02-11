@@ -227,6 +227,14 @@ class HotkeyCrafterGui{
     Show(){
         this.GuiObject.Show()
         this.advancedModeButton.Opt("Hidden0")
+        if (this.advancedModeButton.Value = true){
+            this.showAdvancedHotkeyCrafter()
+            this.hideSimpleHotkeyCrafter()
+        }
+        else {
+            this.showSimpleHotkeyCrafter()
+            this.hideAdvancedHotkeyCrafter()
+        }
     }
 
     Destroy(){

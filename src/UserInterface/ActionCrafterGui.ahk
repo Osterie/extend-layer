@@ -36,7 +36,10 @@ class ActionCrafterGui{
         this.GuiObject := Gui()
         this.GuiObject.Add("Text", "h20", "Original Action: " . originalAction)
         specialActionRadio := this.GuiObject.Add("Radio", "Checked", "Special Action")
+        specialActionRadio.OnEvent("Click", (*) => this.hotkeyCrafter.hideAllButFinalisationButtons())
         newKeyRadio := this.GuiObject.Add("Radio", "", "New Key")
+        newKeyRadio.OnEvent("Click", (*) => this.hotkeyCrafter.show())
+
         this.hotkeyCrafter := HotkeyCrafterGui(originalAction, pathToKeyNamesFile, this.GuiObject)
         this.hotkeyCrafter.hideAllButFinalisationButtons()
 
