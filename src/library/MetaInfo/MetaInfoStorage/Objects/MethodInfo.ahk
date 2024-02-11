@@ -19,8 +19,8 @@ class MethodInfo{
         this.friendlyName := friendlyName
     }
 
-    addParameter(name, description){
-        this.methodParameters[name] := description
+    addParameter(parameterInfo){
+        this.methodParameters[parameterInfo.getParameterName()] := parameterInfo
     }
 
     getMethodName(){

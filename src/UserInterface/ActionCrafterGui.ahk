@@ -93,15 +93,25 @@ class ActionCrafterGui{
 
     }
 
+    ; TODO what is needed for an action:
+        ; Object name
+        ; Method name
+        ; Method parameters (which would be an array)
+        ; .isObject true
+
     listViewOfSpecialActionSelected(listView, rowNumberSpecialAction, columnNumber){
         friendlyNameOfAction := listView.GetText(rowNumberSpecialAction)
         ObjectInfoOfAction := this.activeObjectsRegistry.GetObjectByFriendlyMethodName(friendlyNameOfAction)
         MethodInfoOfAction := ObjectInfoOfAction.getMethodByFriendlyMethodName(friendlyNameOfAction)
-        msgbox(ObjectInfoOfAction.getObjectDescription())
-        msgbox(MethodInfoOfAction.getFriendlyName())
-        msgbox("that was friendly")
-        msgbox(MethodInfoOfAction.getMethodDescription())
-        msgbox(MethodInfoOfAction.getMethodName())
+
+        objectName := ObjectInfoOfAction.getObjectName()
+        methodName := MethodInfoOfAction.getMethodName()
+        this.createTest()
+
+    }
+
+    createSpecialActionMaker(){
+        originalActionControl := this.GuiObject.Add("Text", "xm ym", "Original Action: " . "originalAction")
     }
 
     addSaveButtonClickEventAction(action){
@@ -138,5 +148,5 @@ class ActionCrafterGui{
         this.GuiObject.destroy()
     }
 }
-; test := ActionCrafterGui("+Capslock", "..\resources\keyNames\keyNames.txt", "")
-; test.Show()
+test := ActionCrafterGui("+Capslock", "..\resources\keyNames\keyNames.txt", "")
+test.Show()

@@ -13,6 +13,7 @@ Class ComputerInputController{
         this.KeyboardInput := Keyboard()
     }
 
+    ; TODO fix me, does not work when using a modifier key.
     BlockAllInput(){
         this.BlockKeyboard()
         this.BlockMouse()

@@ -5,6 +5,7 @@
 #Include "..\MetaInfoStorage\Objects\ObjectInfo.ahk"
 #Include "..\MetaInfoStorage\Objects\MethodInfo.ahk"
 #Include "..\MetaInfoStorage\Objects\MethodRegistry.ahk"
+#Include "..\MetaInfoStorage\Objects\ParameterInfo.ahk"
 
 
 class ObjectsJsonReader{
@@ -50,9 +51,13 @@ class ObjectsJsonReader{
                 
                 For ParameterName, ParameterInformation in allMethodParameters{
                     
+                    parameterName := ParameterInformation["Name"]
                     parameterType := ParameterInformation["Type"]
                     parameterDescription := ParameterInformation["Description"]
-                    methodInformation.addParameter(ParameterName, parameterDescription)
+
+                    parameterInformation := ParameterInfo(parameterName, parameterType, parameterDescription)
+
+                    methodInformation.addParameter(parameterInformation)
                 }
                 objectMethods.AddMethod(MethodName, methodInformation)
             }
