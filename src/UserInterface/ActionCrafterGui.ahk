@@ -148,7 +148,7 @@ class ActionCrafterGui{
         ; parameter3.description := "The brightness to set the monitor to. 0-100"
         ; parameters["Brightness"] := parameter3
 
-
+        this.hideParameterControls()
         this.setTextForSpecialActionMaker(friendlyNameOfAction, methodDescription, parameters)
 
     }
@@ -201,7 +201,6 @@ class ActionCrafterGui{
 
         this.setTextForParameterControls(parameters)
 
-
         this.controlsForSpecificSpecialActionCrafting.ShowControls()
     }
 
@@ -213,21 +212,25 @@ class ActionCrafterGui{
 
         Loop amountOfParameters{
             
-            parameterControl := this.GuiObject.Add("Text", "xs+10 yp+30 w335", "Parameter " . A_Index)
+            parameterControl := this.GuiObject.Add("Text", "xs+10 yp+30 w335", "")
             parameterControl.SetFont("Bold")
 
-            parameterEdit := this.GuiObject.Add("Edit", "xs+10 yp+30 w335", "Parameter " . A_Index)
+            parameterEdit := this.GuiObject.Add("Edit", "xs+10 yp+30 w335", "")
             
-            parameterDescription := this.GuiObject.Add("Text", "xs+10 yp+30 w335", "Parameter " . A_Index . " Description")
+            parameterDescription := this.GuiObject.Add("Text", "xs+10 yp+30 w335", "")
             parameterDescription.SetFont("Bold")
-
 
             parameterControls := ParameterControlsGroup(parameterControl, parameterEdit, parameterDescription)
             this.parameterControlsArray.Push(parameterControls)
 
             parameterControls.HideControls()
         }
+    }
 
+    hideParameterControls(){
+        For parameterControls in this.parameterControlsArray{
+            parameterControls.HideControls()
+        }
     }
 
     setTextForParameterControls(parameters){
@@ -235,15 +238,12 @@ class ActionCrafterGui{
         For parameter, parameterInfo in parameters{
             index++
             parameterControls := this.parameterControlsArray[index]
-            ; parameterName := "Parameter " . index . " - " . "Brightness"
-            ; parameterType := "String"
-            ; parameterDescription := "This is not really a description, but it is a test."
 
             parameterName := parameterInfo.getName()
             parameterType := parameterInfo.getType()
             parameterDescription := parameterInfo.getDescription()
             
-            parameterControls.setTextControlValue(parameterName . " - " . parameterType . " - " . parameterDescription)
+            parameterControls.setTextControlValue(parameterName)
 
             parameterControls.setEditControlType(parameterType)
 
