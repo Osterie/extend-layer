@@ -40,12 +40,12 @@
                 "Description": "Moves the mouse to the specified coordinates",
                 "Parameters": [
                     {
-                        "Name": "x",
+                        "Name": "x coordinate",
                         "Type": "int",
                         "Description": "The x coordinate to move the mouse to"
                     },
                     {
-                        "Name": "y",
+                        "Name": "y coordinate",
                         "Type": "int",
                         "Description": "The y coordinate to move the mouse to"
                     }
@@ -64,7 +64,7 @@
                 "Description": "Sends a key press",
                 "Parameters": [
                     {
-                        "Name": "key",
+                        "Name": "Keyboard key",
                         "Type": "string",
                         "Description": "The key to send"
                     }
@@ -76,9 +76,9 @@
                 "Description": "Sends a series of key presses",
                 "Parameters": [
                     {
-                        "Name": "keys",
+                        "Name": "Keyboard key",
                         "Type": "string",
-                        "Description": "The keys to send"
+                        "Description": "The key to repeatedly to send"
                     }
                 ]
             }
@@ -155,14 +155,14 @@
         "ClassName": "FileExplorerNavigator",
         "Description": "Used for navigating in the file explorer",
         "Methods": {
-            "NavigatToFolder": {
-                "MethodName": "NavigatToFolder",
+            "NavigateToFolder": {
+                "MethodName": "NavigateToFolder",
                 "FriendlyName": "Navigate to folder",
                 "Description": "Navigates to the specified folder",
                 "Parameters": [
                     {
-                        "Name": "FolderPath",
-                        "Type": "String",
+                        "Name": "Folder path",
+                        "Type": "string",
                         "Description": "A path to a folder. from the root. Example: C:\\Users\\User\\Desktop\\Folder"
                     }
                 ]

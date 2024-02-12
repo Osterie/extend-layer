@@ -4,8 +4,9 @@
 #Include "..\library\MetaInfo\MetaInfoReading\KeyNamesReader.ahk"
 #Include ".\HotkeyCrafterGui.ahk"
 
-class ActionCrafterGui{
+#Include ".\ParameterControlsGroup.ahk"
 
+class ActionCrafterGui{
 
     GuiObject := ""
     hotkeyStaticInput := ""
@@ -26,18 +27,22 @@ class ActionCrafterGui{
 
     hotkeyCrafter := ""
 
+
     controlsForAllSpecialActionCrafting := ""
 
     controlsForSpecificSpecialActionCrafting := ""
+
+    controlsForParameters := ""
 
     __New(originalAction, pathToKeyNamesFile, activeObjectsRegistry){
 
         this.controlsForAllSpecialActionCrafting := guiControlsRegistry()
         this.controlsForSpecificSpecialActionCrafting := guiControlsRegistry()
+        this.controlsForParameters := guiControlsRegistry()
 
         this.activeObjectsRegistry := activeObjectsRegistry
-        ; allPossibleSpecialActions := this.activeObjectsRegistry.getFriendlyNames()
-        allPossibleSpecialActions := ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6LONGASSNAMEEE turn off battery saver and such (WIP)", "Test7", "Test8", "Test9", "Test10"]
+        allPossibleSpecialActions := this.activeObjectsRegistry.getFriendlyNames()
+        ; allPossibleSpecialActions := ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6LONGASSNAMEEE turn off battery saver and such (WIP)", "Test7", "Test8", "Test9", "Test10"]
 
         keyNamesFileObjReader := KeyNamesReader()
         fileObjectOfKeyNames := FileOpen(pathToKeyNamesFile, "rw" , "UTF-8")
@@ -55,8 +60,7 @@ class ActionCrafterGui{
         listViewOfSpecialAction := this.GuiObject.Add("ListView", "r20 Grid w400", ["Special Action"])
         listViewOfSpecialAction.SetFont("s12 c333333", "Segoe UI")
 
-        specialActionSelectedEvent := ObjBindMethod(this, "listViewOfSpecialActionSelected")
-        listViewOfSpecialAction.OnEvent("ItemSelect", specialActionSelectedEvent)
+        ; listViewOfSpecialAction.OnEvent("ItemSelect", msgbox("test"))
         ; listViewOfSpecialAction.ModifyCol()
 
 
@@ -85,9 +89,12 @@ class ActionCrafterGui{
         this.hotkeyCrafter := HotkeyCrafterGui(originalAction, pathToKeyNamesFile, this.GuiObject)
         this.hotkeyCrafter.hideAllButFinalisationButtons()
 
+        ; validationText := this.guiObject.Add("Text", "x+20 y+20", "Validation Text")
 
         this.createSpecialActionMaker()
 
+        specialActionSelectedEvent := ObjBindMethod(this, "listViewOfSpecialActionSelected")
+        listViewOfSpecialAction.OnEvent("ItemSelect", specialActionSelectedEvent)
 
         ; this.availableKeyNames := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
         ; this.controlsForAdvancedHotkeys := guiControlsRegistry()
@@ -106,20 +113,43 @@ class ActionCrafterGui{
 
     listViewOfSpecialActionSelected(listView, rowNumberSpecialAction, columnNumber){
         friendlyNameOfAction := listView.GetText(rowNumberSpecialAction)
-        ; ObjectInfoOfAction := this.activeObjectsRegistry.GetObjectByFriendlyMethodName(friendlyNameOfAction)
-        ; MethodInfoOfAction := ObjectInfoOfAction.getMethodByFriendlyMethodName(friendlyNameOfAction)
+        ObjectInfoOfAction := this.activeObjectsRegistry.GetObjectByFriendlyMethodName(friendlyNameOfAction)
+        MethodInfoOfAction := ObjectInfoOfAction.getMethodByFriendlyMethodName(friendlyNameOfAction)
 
-        ; objectName := ObjectInfoOfAction.getObjectName()
-        ; methodName := MethodInfoOfAction.getMethodName()
+        objectName := ObjectInfoOfAction.getObjectName()
+        methodName := MethodInfoOfAction.getMethodName()
+        methodDescription := MethodInfoOfAction.getMethodDescription()
 
-        ; parameters := MethodInfoOfAction.getMethodParameters()
+        parameters := MethodInfoOfAction.getMethodParameters()
 
-        objectName := "layers"
-        methodName := "cycleLayerIndicators"
-        friendlyNameOfAction := "Cycle Layer Indicators"
-        methodDescription := "Cycles the layer indicators for a given layer, this is just some extra text i added because i needed a longer description.)"
 
-        this.setTextForSpecialActionMaker(friendlyNameOfAction, methodDescription)
+        ; objectName := "layers"
+        ; methodName := "cycleLayerIndicators"
+        ; friendlyNameOfAction := "Cycle Layer Indicators"
+        ; methodDescription := "Cycles the layer indicators for a given layer, this is just some extra text i added because i needed a longer description.)"
+
+        ; !TESTING
+        ; parameters := Map()
+        ; parameter1 := Object()
+        ; parameter1.name := "red"
+        ; parameter1.type := "int"
+        ; parameter1.description := "The red value to set the gamme. 0-255"
+        ; parameters["red"] := parameter1
+
+        ; parameter2 := Object()
+        ; parameter2.name := "Folder path"
+        ; parameter2.type := "string"
+        ; parameter2.description := "A path to a folder. from the root. Example: C:\\Users\\User\\Desktop\\Folder"
+        ; parameters["Folder path"] := parameter2
+
+        ; parameter3 := Object()
+        ; parameter3.name := "shit"
+        ; parameter3.type := "int"
+        ; parameter3.description := "The brightness to set the monitor to. 0-100"
+        ; parameters["Brightness"] := parameter3
+
+
+        this.setTextForSpecialActionMaker(friendlyNameOfAction, methodDescription, parameters)
 
     }
 
@@ -132,7 +162,9 @@ class ActionCrafterGui{
         friendlyNameOfActionControl.SetFont("s12 c333333", "Segoe UI")
         friendlyNameOfActionControl.Opt("Hidden1")
         
-        groupBoxForActionDescription := this.GuiObject.Add("GroupBox", " Section xp-15 yp+40 w360 h45", "Action Description")
+        this.createParameterControls(5)
+
+        groupBoxForActionDescription := this.GuiObject.Add("GroupBox", " Section xp yp+100 w360 h45", "Action Description")
         actionDescriptionControl := this.GuiObject.Add("Text", "Section xp+15 yp+15 w335", "")
         actionDescriptionControl.SetFont("s12 c333333", "Segoe UI")
         actionDescriptionControl.Opt("Hidden1")
@@ -148,12 +180,9 @@ class ActionCrafterGui{
         this.controlsForAllSpecialActionCrafting.AddControl("friendlyNameOfActionControl", friendlyNameOfActionControl)
         this.controlsForAllSpecialActionCrafting.AddControl("groupBoxForActionDescription", groupBoxForActionDescription)
         this.controlsForAllSpecialActionCrafting.AddControl("actionDescriptionControl", actionDescriptionControl)
-
-
-
     }
 
-    setTextForSpecialActionMaker(friendlyNameOfAction, actionDescription){
+    setTextForSpecialActionMaker(friendlyNameOfAction, actionDescription, parameters){
 
         friendlyNameOfActionControl := this.controlsForSpecificSpecialActionCrafting.getControl("friendlyNameOfActionControl")
         friendlyNameOfActionControl.Text := friendlyNameOfAction
@@ -170,8 +199,59 @@ class ActionCrafterGui{
         this.controlsForSpecificSpecialActionCrafting.getControl("groupBoxForActionDescription").Move(, , , newHeight)
         actionDescriptionControl.Move(, , , newHeight-30)
 
+        this.setTextForParameterControls(parameters)
+
 
         this.controlsForSpecificSpecialActionCrafting.ShowControls()
+    }
+
+    createParameterControls(amountOfParameters){
+
+        groupBoxForParameters := this.GuiObject.Add("GroupBox", " Section xp-15 yp+50 w360 h400", "Parameters")
+
+        this.parameterControlsArray := Array()
+
+        Loop amountOfParameters{
+            
+            parameterControl := this.GuiObject.Add("Text", "xs+10 yp+30 w335", "Parameter " . A_Index)
+            parameterControl.SetFont("Bold")
+
+            parameterEdit := this.GuiObject.Add("Edit", "xs+10 yp+30 w335", "Parameter " . A_Index)
+            
+            parameterDescription := this.GuiObject.Add("Text", "xs+10 yp+30 w335", "Parameter " . A_Index . " Description")
+            parameterDescription.SetFont("Bold")
+
+
+            parameterControls := ParameterControlsGroup(parameterControl, parameterEdit, parameterDescription)
+            this.parameterControlsArray.Push(parameterControls)
+
+            parameterControls.HideControls()
+        }
+
+    }
+
+    setTextForParameterControls(parameters){
+        index := 0
+        For parameter, parameterInfo in parameters{
+            index++
+            parameterControls := this.parameterControlsArray[index]
+            ; parameterName := "Parameter " . index . " - " . "Brightness"
+            ; parameterType := "String"
+            ; parameterDescription := "This is not really a description, but it is a test."
+
+            parameterName := parameterInfo.getName()
+            parameterType := parameterInfo.getType()
+            parameterDescription := parameterInfo.getDescription()
+            
+            parameterControls.setTextControlValue(parameterName . " - " . parameterType . " - " . parameterDescription)
+
+            parameterControls.setEditControlType(parameterType)
+
+            parameterControls.setDescriptionControlValue(parameterDescription)
+
+            parameterControls.ShowControls()
+
+        }
     }
 
     addSaveButtonClickEventAction(action){
@@ -228,5 +308,5 @@ class ActionCrafterGui{
         return [Round(width * 96/A_ScreenDPI), Round(height * 96/A_ScreenDPI)]
     }
 }
-test := ActionCrafterGui("+Capslock", "..\resources\keyNames\keyNames.txt", "")
-test.Show()
+; test := ActionCrafterGui("+Capslock", "..\resources\keyNames\keyNames.txt", "")
+; test.Show()

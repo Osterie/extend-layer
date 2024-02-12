@@ -15,15 +15,15 @@ class ParameterInfo{
         this.description := description
     }
 
-    getParameterName(){
+    getName(){
         return this.name
     }
 
-    getParameterType(){
+    getType(){
         return this.parameterType
     }
 
-    getParameterDescription(){
+    getDescription(){
         return this.description
     }
 }

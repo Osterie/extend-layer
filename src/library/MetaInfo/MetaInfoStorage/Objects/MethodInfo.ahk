@@ -20,7 +20,7 @@ class MethodInfo{
     }
 
     addParameter(parameterInfo){
-        this.methodParameters[parameterInfo.getParameterName()] := parameterInfo
+        this.methodParameters[parameterInfo.getName()] := parameterInfo
     }
 
     getMethodName(){

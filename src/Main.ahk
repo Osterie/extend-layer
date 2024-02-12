@@ -108,6 +108,8 @@ Hotstring("::@p", password)
 
 ; TODO to help the user learn how to use the script, a ghost keyboard should be made. All actions could have a short name, and when the key on the ghostkeyboard was hovered a description could be shown
 
+; TODO in objects.json or whatever, add a "Optional" field to parameters, which says if the parameter is optional or not.
+
 ; |-------------------------------------------|
 ; |----------- OBJECT CREATION ---------------|
 ; |-------------------------------------------|
@@ -142,7 +144,7 @@ Class Main{
     ; Main method used to start the script.
     Start(){
         this.RunLogicalStartup()
-        ; this.RunAppGui()
+        this.RunAppGui()
     }
 
     RunLogicalStartup(){
