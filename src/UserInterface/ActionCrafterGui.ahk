@@ -41,8 +41,8 @@ class ActionCrafterGui{
         this.controlsForParameters := guiControlsRegistry()
 
         this.activeObjectsRegistry := activeObjectsRegistry
-        allPossibleSpecialActions := this.activeObjectsRegistry.getFriendlyNames()
-        ; allPossibleSpecialActions := ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6LONGASSNAMEEE turn off battery saver and such (WIP)", "Test7", "Test8", "Test9", "Test10"]
+        ; allPossibleSpecialActions := this.activeObjectsRegistry.getFriendlyNames()
+        allPossibleSpecialActions := ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6LONGASSNAMEEE turn off battery saver and such (WIP)", "Test7", "Test8", "Test9", "Test10"]
 
         keyNamesFileObjReader := KeyNamesReader()
         fileObjectOfKeyNames := FileOpen(pathToKeyNamesFile, "rw" , "UTF-8")
@@ -113,40 +113,40 @@ class ActionCrafterGui{
 
     listViewOfSpecialActionSelected(listView, rowNumberSpecialAction, columnNumber){
         friendlyNameOfAction := listView.GetText(rowNumberSpecialAction)
-        ObjectInfoOfAction := this.activeObjectsRegistry.GetObjectByFriendlyMethodName(friendlyNameOfAction)
-        MethodInfoOfAction := ObjectInfoOfAction.getMethodByFriendlyMethodName(friendlyNameOfAction)
+        ; ObjectInfoOfAction := this.activeObjectsRegistry.GetObjectByFriendlyMethodName(friendlyNameOfAction)
+        ; MethodInfoOfAction := ObjectInfoOfAction.getMethodByFriendlyMethodName(friendlyNameOfAction)
 
-        objectName := ObjectInfoOfAction.getObjectName()
-        methodName := MethodInfoOfAction.getMethodName()
-        methodDescription := MethodInfoOfAction.getMethodDescription()
+        ; objectName := ObjectInfoOfAction.getObjectName()
+        ; methodName := MethodInfoOfAction.getMethodName()
+        ; methodDescription := MethodInfoOfAction.getMethodDescription()
 
-        parameters := MethodInfoOfAction.getMethodParameters()
+        ; parameters := MethodInfoOfAction.getMethodParameters()
 
 
-        ; objectName := "layers"
-        ; methodName := "cycleLayerIndicators"
-        ; friendlyNameOfAction := "Cycle Layer Indicators"
-        ; methodDescription := "Cycles the layer indicators for a given layer, this is just some extra text i added because i needed a longer description.)"
+        objectName := "layers"
+        methodName := "cycleLayerIndicators"
+        friendlyNameOfAction := "Cycle Layer Indicators"
+        methodDescription := "Cycles the layer indicators for a given layer, this is just some extra text i added because i needed a longer description.)"
 
         ; !TESTING
-        ; parameters := Map()
-        ; parameter1 := Object()
-        ; parameter1.name := "red"
-        ; parameter1.type := "int"
-        ; parameter1.description := "The red value to set the gamme. 0-255"
-        ; parameters["red"] := parameter1
+        parameters := Map()
+        parameter1 := Object()
+        parameter1.name := "red"
+        parameter1.type := "int"
+        parameter1.description := "The red value to set the gamme. 0-255"
+        parameters["red"] := parameter1
 
-        ; parameter2 := Object()
-        ; parameter2.name := "Folder path"
-        ; parameter2.type := "string"
-        ; parameter2.description := "A path to a folder. from the root. Example: C:\\Users\\User\\Desktop\\Folder"
-        ; parameters["Folder path"] := parameter2
+        parameter2 := Object()
+        parameter2.name := "Folder path"
+        parameter2.type := "string"
+        parameter2.description := "A path to a folder. from the root. Example: C:\\Users\\User\\Desktop\\Folder"
+        parameters["Folder path"] := parameter2
 
-        ; parameter3 := Object()
-        ; parameter3.name := "shit"
-        ; parameter3.type := "int"
-        ; parameter3.description := "The brightness to set the monitor to. 0-100"
-        ; parameters["Brightness"] := parameter3
+        parameter3 := Object()
+        parameter3.name := "shit"
+        parameter3.type := "int"
+        parameter3.description := "The brightness to set the monitor to. 0-100"
+        parameters["Brightness"] := parameter3
 
         this.hideParameterControls()
         this.setTextForSpecialActionMaker(friendlyNameOfAction, methodDescription, parameters)
@@ -154,6 +154,11 @@ class ActionCrafterGui{
     }
 
     createSpecialActionMaker(){
+
+        groupBoxForActionDescription := this.GuiObject.Add("GroupBox", " Section xp yp-185 w400 h45", "Action Description")
+        actionDescriptionControl := this.GuiObject.Add("Text", "xp+15 yp+15 w380", "")
+        actionDescriptionControl.SetFont("s12 c333333", "Segoe UI")
+        actionDescriptionControl.Opt("Hidden1")
 
         groupBoxForActionMaker := this.GuiObject.Add("GroupBox", " Section ym w400 h500", "Special Action Maker")
         
@@ -164,10 +169,7 @@ class ActionCrafterGui{
         
         this.createParameterControls(5)
 
-        groupBoxForActionDescription := this.GuiObject.Add("GroupBox", " Section xp yp+100 w360 h45", "Action Description")
-        actionDescriptionControl := this.GuiObject.Add("Text", "Section xp+15 yp+15 w335", "")
-        actionDescriptionControl.SetFont("s12 c333333", "Segoe UI")
-        actionDescriptionControl.Opt("Hidden1")
+
 
         this.controlsForSpecificSpecialActionCrafting.AddControl("friendlyNameOfActionControl", friendlyNameOfActionControl)
         this.controlsForSpecificSpecialActionCrafting.AddControl("groupBoxForActionDescription", groupBoxForActionDescription)
@@ -176,7 +178,7 @@ class ActionCrafterGui{
 
         this.controlsForAllSpecialActionCrafting.AddControl("groupBoxForActionMaker", groupBoxForActionMaker)
         this.controlsForAllSpecialActionCrafting.AddControl("groupBoxForActionToDo", groupBoxForActionToDo)
-        this.controlsForAllSpecialActionCrafting.AddControl("groupBoxForActionDescription", groupBoxForActionDescription)
+        ; this.controlsForAllSpecialActionCrafting.AddControl("groupBoxForActionDescription", groupBoxForActionDescription)
         this.controlsForAllSpecialActionCrafting.AddControl("friendlyNameOfActionControl", friendlyNameOfActionControl)
         this.controlsForAllSpecialActionCrafting.AddControl("groupBoxForActionDescription", groupBoxForActionDescription)
         this.controlsForAllSpecialActionCrafting.AddControl("actionDescriptionControl", actionDescriptionControl)
@@ -195,7 +197,7 @@ class ActionCrafterGui{
         ; this.SetTextAndResize(actionDescriptionControl, actionDescription)
 
 
-        newHeight := 45 + (textWidth/350)*20
+        newHeight := 50 + (textWidth/350)*20
         this.controlsForSpecificSpecialActionCrafting.getControl("groupBoxForActionDescription").Move(, , , newHeight)
         actionDescriptionControl.Move(, , , newHeight-30)
 
@@ -239,9 +241,13 @@ class ActionCrafterGui{
             index++
             parameterControls := this.parameterControlsArray[index]
 
-            parameterName := parameterInfo.getName()
-            parameterType := parameterInfo.getType()
-            parameterDescription := parameterInfo.getDescription()
+            ; parameterName := parameterInfo.getName()
+            ; parameterType := parameterInfo.getType()
+            ; parameterDescription := parameterInfo.getDescription()
+
+            parameterName := parameterInfo.name
+            parameterType := parameterInfo.type
+            parameterDescription := parameterInfo.description
             
             parameterControls.setTextControlValue(parameterName)
 
@@ -308,5 +314,5 @@ class ActionCrafterGui{
         return [Round(width * 96/A_ScreenDPI), Round(height * 96/A_ScreenDPI)]
     }
 }
-; test := ActionCrafterGui("+Capslock", "..\resources\keyNames\keyNames.txt", "")
-; test.Show()
+test := ActionCrafterGui("+Capslock", "..\resources\keyNames\keyNames.txt", "")
+test.Show()

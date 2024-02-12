@@ -144,7 +144,7 @@ Class Main{
     ; Main method used to start the script.
     Start(){
         this.RunLogicalStartup()
-        this.RunAppGui()
+        ; this.RunAppGui()
     }
 
     RunLogicalStartup(){
