@@ -44,6 +44,10 @@ class HotkeysRegistry{
         }
     }
 
+    ChangeHotkeyAction(hotkeyName, newHotkeyAction){
+        this.hotkeys[hotkeyName] := newHotkeyAction
+    }
+
     GetHotkeys(){
         return this.hotkeys
     }

@@ -25,6 +25,15 @@ class KeyboardLayersInfoRegistry{
         this.HotkeysRegistry[layerIdentifier].ChangeHotkeyKey(hotkeyName, newHotkey)
     }
 
+    ChangeAction(layerIdentifier, hotkeyName, newAction){
+        this.HotkeysRegistry[layerIdentifier].ChangeHotkeyAction(hotkeyName, newAction)
+    }
+
+    ; TODO implement this and use it for creating new actions/hotkeys with the gui.
+    ; SetAction(layerIdentifier, hotkeyName, action){
+    ;     this.HotkeysRegistry[layerIdentifier].SetHotkeyAction(hotkeyName, action)
+    ; }
+
     GetRegistryByLayerIdentifier(layerIdentifier){
         registryToReturn := ""
         if (this.KeyboardOverlaysRegistry.Has(layerIdentifier)){
