@@ -10,15 +10,17 @@ class MethodInfo{
     methodName := ""
     methodDescription := ""
     methodParameters := Map()
+    friendlyName := ""
 
     ; Since a method does not alw
-    __New(name, description){
-        this.name := name
-        this.description := description
+    __New(name, description, friendlyName){
+        this.methodName := name
+        this.methodDescription := description
+        this.friendlyName := friendlyName
     }
 
-    addParameter(name, description){
-        this.methodParameters[name] := description
+    addParameter(parameterInfo){
+        this.methodParameters[parameterInfo.getName()] := parameterInfo
     }
 
     getMethodName(){
@@ -35,5 +37,8 @@ class MethodInfo{
 
     getMethodParameterDescription(parameterName){
         return this.methodParameters[parameterName]
+    }
+    getFriendlyName(){
+        return this.friendlyName
     }
 }

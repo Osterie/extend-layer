@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
 
+
+#Include "..\library\JsonParsing\JXON\JXON.ahk"
 #Include ".\TreeViewFromIniFile.ahk"
 #Include ".\ProfileButtons.ahk"
 #Include ".\KeyboardLayerChanging.ahk"
@@ -8,6 +10,7 @@
 ; #Include ".\ListViewFromJsonObject.ahk"
 #Include ".\ListViewFromIniFileContent.ahk"
 #Include "..\library\FoldersAndFiles\FolderManager.ahk"
+#Include "..\library\JsonParsing\JsonFormatter\JsonFormatter.ahk"
 
 ; TODO have a hotkey which sends a given key(or hotkey) after a given delay.
 ; TODO could also have a hotkey/key which is excecuted if a loud enough sound is caught by the mic.
@@ -39,16 +42,21 @@ Class ExtraKeyboardsAppGui{
     activeObjectsRegistry := ""
     keyboardLayersInfoRegister := ""
 
+    MainScript := ""
 
-    __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonFileConents, activeObjectsRegistry, keyboardLayersInfoRegister){
+    currentLayer := ""
+
+
+    __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonFileConents, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript){
+        this.MainScript := mainScript
+        
+        
         this.ExistingProfilesManager := FolderManager()
         this.PresetProfilesManager := FolderManager()
 
         this.activeObjectsRegistry := activeObjectsRegistry
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
         this.jsonFileConents := jsonFileConents
-
-
 
         this.PATH_TO_EXISTING_PROFILES := pathToExistingProfiles
         this.PATH_TO_PRESET_PROFILES := pathToPresetProfiles
@@ -57,13 +65,15 @@ Class ExtraKeyboardsAppGui{
 
         this.PATH_TO_META_FILE := pathToMetaFile
 
-        this.PATH_TO_MAIN_SCRIPT := pathToMainScript
+        ; this.PATH_TO_MAIN_SCRIPT := pathToMainScript
 
-        this.PATH_TO_EMPTY_PROFILE := pathToEmptyProfile
+        ; this.PATH_TO_EMPTY_PROFILE := pathToEmptyProfile
 
         this.currentProfile := iniRead(this.PATH_TO_META_FILE, "General", "activeUserProfile")
 
-        this.currentProfileIndex := this.ExistingProfilesManager.getFirstFoundFolderIndex(this.currentProfile)
+        
+
+        ; this.currentProfileIndex := this.ExistingProfilesManager.getFirstFoundFolderIndex(this.currentProfile)
 
     }
 
@@ -109,9 +119,12 @@ Class ExtraKeyboardsAppGui{
         listViewElement := ListViewMaker(this.activeObjectsRegistry, jsonFileContents, this.keyboardLayersInfoRegister)
         listViewElement.CreateListView(this.ExtraKeyboardsAppGui, ["KeyCombo","Action"])
         
-        CreateListViewItems := ObjBindMethod(listViewElement, "SetNewListViewItemsByIniFileSection")
-        keyboardLayoutChanger.AddEventAction("ItemSelect", CreateListViewItems)
+        
+        keyboardLayoutChanger.AddEventAction("ItemSelect", ObjBindMethod(this, "TreeViewElementClickedEvent", listViewElement))
 
+
+        saveEvent := ObjBindMethod(this, "hotkeySavedEvent", listViewElement)
+        listViewElement.setHotkeySavedEvent(saveEvent)
 
 
         ; this.CreateTreeViewWithAssociatedListViewFromJsonObject(jsonFileConents)
@@ -126,16 +139,42 @@ Class ExtraKeyboardsAppGui{
         Tab.UseTab(0)  ; i.e. subsequently-added controls will not belong to the tab control.
     }
 
-    ; CreateTreeViewWithAssociatedListViewFromJsonObject(jsonFileConents){
-    ;     treeViewElement := TreeViewFromJsonFile(jsonFileConents)
-    ;     treeViewElement.CreateTreeView(this.ExtraKeyboardsAppGui)
+    TreeViewElementClickedEvent(listViewElement, treeViewElement, treeViewElementSelectedItemID){
+
+        this.currentLayer := treeViewElement.GetText(treeViewElementSelectedItemID)
+        ; this.currentHotkey := 
+        listViewElement.SetNewListViewItemsByIniFileSection(treeViewElement, treeViewElementSelectedItemID)
+
+    }
+
+    hotkeySavedEvent(listViewElement, *){
+        ; TODO now i must update the json file with the new hotkey if it is valid...
+
+        ; TODO keyboardLayersInfoRegister change a hotkey, turn into a json file, and then change the existing json file
+
+        oldHotkey := HotkeyFormatConverter.convertFromFriendlyName(listViewElement.getOriginalHotkey())
+        newHotkey := listViewElement.getNewHotkey()
+
+        this.keyboardLayersInfoRegister.ChangeHotkey(this.currentLayer, oldHotkey, newHotKey)
+
+        toJsonReader := KeyboadLayersInfoClassObjectReader()
+        toJsonReader.ReadObjectToJson(this.keyboardLayersInfoRegister)
+        jsonObject := toJsonReader.getJsonObject()
+
+        currentProfileName := iniRead(this.PATH_TO_META_FILE, "General", "activeUserProfile")
+        pathToCurrentProfile := this.PATH_TO_EXISTING_PROFILES . "\" . currentProfileName
+
         
-    ;     listViewElement := ListViewFromJsonObject(jsonFileConents)
-    ;     listViewElement.CreateListView(this.ExtraKeyboardsAppGui, ["Key","Value"])
+        formatterForJson := JsonFormatter()
+        jsonString := formatterForJson.FormatJsonObject(jsonObject)
+        FileRecycle(pathToCurrentProfile . "\Keyboards.json")
+        FileAppend(jsonString, pathToCurrentProfile . "\Keyboards.json", "UTF-8")
+        this.MainScript.RunLogicalStartup()
+
         
-    ;     CreateListViewItems := ObjBindMethod(listViewElement, "SetNewListViewItemsByIniFileSection")
-    ;     treeViewElement.AddEventAction("ItemSelect", CreateListViewItems)
-    ; }
+        listViewElement.getPopup().Destroy()
+        
+    }
 
     CreateTreeViewWithAssociatedListViewFromIniFile(iniFilePath){
         treeViewElement := TreeViewFromIniFile(iniFilePath)

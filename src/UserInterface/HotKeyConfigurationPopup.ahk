@@ -2,6 +2,7 @@
 
 
 #Include ".\HotkeyCrafterGui.ahk"
+#Include ".\ActionCrafterGui.ahk"
 #Include "..\library\HotkeyFormatConverter.ahk"
 
 class HotKeyConfigurationPopup{
@@ -10,48 +11,46 @@ class HotKeyConfigurationPopup{
 
     manuallyCreatHotkeyElement := ""
     addWinKeyAsModifierElement := ""
-    currentHotkeyTextElement := ""
+    currentHotkeyTextControl := ""
 
     hotkeyElement := ""
     originalHotkey := ""
     currentHotkeyCommand := ""
 
+    originalHotkeyAction := ""
+
+    saveButton := ""
+
     undoDeletionButton := ""
     hotkeyDeleted := false
+    actionDeleted := false
 
+    currentActionTextControl := ""
+
+    activeObjectsRegistry := ""
+
+    __New(activeObjectsRegistry){
+        this.activeObjectsRegistry := activeObjectsRegistry
+    }
     
 
-    CreatePopupForHotkeyRegistry(data, rowNumber, hotkeyCommand, hotkeyAction){
+    CreatePopupForHotkeyRegistry(hotkeysRegistry, listViewColumn, hotkeyCommand, hotkeyAction){
 
         this.originalHotkey := hotkeyCommand
         this.currentHotkeyCommand := hotkeyCommand
 
+        this.originalHotkeyAction := hotkeyAction
+        this.currentHotkeyAction := hotkeyAction
+
         this.mainGui := Gui()
         this.mainGui.opt("+Resize +MinSize600x560")
-        
-        this.currentHotkeyTextElement := this.mainGui.AddText(" ", "Hotkey: `n" . hotkeyCommand)
-        this.setCurrentHotkeyText(hotkeyCommand)
-        
-        
-        newActionText := this.mainGui.AddText(" ", "Action: `n" . hotkeyAction)
-        newActionText.SetFont("s10", "Arial")
-        this.SetTextAndResize(newActionText, "Action: `n" . hotkeyAction)
 
-        this.undoDeletionButton := this.mainGui.AddButton("Default w80 ym", "Undo deletion")
-        this.undoDeletionButton.Opt("Hidden1")
-        ; undoButton := this.mainGui.AddButton("Default w80", "Undo")  
-
-
-        buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80 xm", "Change original hotkey")
-        buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent())
+        this.createCurrentHotkeyControl()
+        this.createCurrentActionControl()
         
+        this.createButtons()
         
-        buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change original action")
-        saveButton := this.mainGui.AddButton("Default w80", "Save+Done")
-
-        
-        
-        ; currentHotkeyInfo := data.GetHotkey(hotkeyCommand)
+        ; currentHotkeyInfo := hotkeysRegistry.GetHotkey(HotkeyFormatConverter.convertFromFriendlyName(hotkeyCommand))
         ; if (currentHotkeyInfo.hotkeyIsObject()){
         ;     this.CreateHotKeyMaker(this.mainGui)
         ;     this.createHotkeyMethodCall(this.mainGui, hotkeyAction)
@@ -62,32 +61,98 @@ class HotKeyConfigurationPopup{
         this.mainGui.Show()
     }
 
+    createCurrentHotkeyControl(){
+        this.currentHotkeyTextControl := this.mainGui.AddText("r4", "Hotkey: `n" . this.currentHotkeyCommand)
+        this.setCurrentHotkeyText(this.currentHotkeyCommand)
+    }
+
+    createCurrentActionControl(){
+        this.currentActionTextControl := this.mainGui.AddText(" ", "Action: `n" . this.currentHotkeyAction)
+        this.setCurrentActionText(this.currentHotkeyAction)
+    }
+
+    createButtons(){
+        this.undoDeletionButton := this.mainGui.AddButton("Default w80 ym", "Undo deletion")
+        this.undoDeletionButton.onEvent("Click", (*) => this.undoDeletionButtonClickedEvent())
+        this.undoDeletionButton.Opt("Hidden1")
+
+        this.createChangeButtons()
+        this.createFinalizationButtons()
+    }
+
+    createChangeButtons(){
+        buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80 xm", "Change original hotkey")
+        buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent())
+        
+        ; this.activeObjectsRegistry
+
+        buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change original action")
+        buttonToChangeOriginalAction.onEvent("Click", (*) => this.buttonToChangeOriginalActionClickedEvent())
+    }
+
+    createFinalizationButtons(){
+        this.saveButton := this.mainGui.AddButton("Default w80", "Save+Done")
+        this.cancelButton := this.mainGui.AddButton("Default w80", "Cancel+Done")
+    }
+
 
     buttonToChangeOriginalHotkeyClickedEvent(){
         this.mainGui.Hide()
 
-        
-        hotkeyCrafter := HotkeyCrafterGui(this.currentHotkeyCommand)
-        hotkeySavedEventAction := ObjBindMethod(this, "saveButtonClickedForHotkeyCrafterEvent", hotkeyCrafter)
+        hotkeyCrafter := HotkeyCrafterGui(this.currentHotkeyCommand, "..\resources\keyNames\keyNames.txt")
+        hotkeySavedEventAction := ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent", hotkeyCrafter)
         hotkeyCrafter.addSaveButtonClickEventAction(hotkeySavedEventAction)
 
-        hotkeyCrafterClosedEvent := ObjBindMethod(this, "cancelButtonClickedForHotkeyCrafterEvent", hotkeyCrafter)
+        hotkeyCrafterClosedEvent := ObjBindMethod(this, "cancelButtonClickedForCrafterEvent", hotkeyCrafter)
         hotkeyCrafter.addCloseEventAction(hotkeyCrafterClosedEvent)
         hotkeyCrafter.addCancelButtonClickEventAction(hotkeyCrafterClosedEvent)
 
-        hotkeyDeleteEventAction := ObjBindMethod(this, "deleteButtonClickedForHotkeyCrafterEvent", hotkeyCrafter)
+        hotkeyDeleteEventAction := ObjBindMethod(this, "deleteButtonClickedForHotkeyChangeEvent", hotkeyCrafter)
         hotkeyCrafter.addDeleteButtonClickEventAction(hotkeyDeleteEventAction)
 
 
         hotkeyCrafter.Show()
     }
 
-    cancelButtonClickedForHotkeyCrafterEvent(hotkeyCrafter, *){
+    buttonToChangeOriginalActionClickedEvent(){
+        this.mainGui.Hide()
+
+
+        actionCrafter := ActionCrafterGui(this.currentHotkeyAction, "..\resources\keyNames\keyNames.txt", this.activeObjectsRegistry)
+        actionSavedEventAction := ObjBindMethod(this, "saveButtonClickedForActionChangeEvent", actionCrafter)
+        actionCrafter.addSaveButtonClickEventAction(actionSavedEventAction)
+
+        actionCrafterClosedEvent := ObjBindMethod(this, "cancelButtonClickedForCrafterEvent", actionCrafter)
+        actionCrafter.addCloseEventAction(actionCrafterClosedEvent)
+        actionCrafter.addCancelButtonClickEventAction(actionCrafterClosedEvent)
+
+        hotkeyDeleteEventAction := ObjBindMethod(this, "deleteButtonClickedForActionChangeEvent", actionCrafter)
+        actionCrafter.addDeleteButtonClickEventAction(hotkeyDeleteEventAction)
+
+
+        actionCrafter.Show()
+    }
+
+    addSaveButtonClickedEvent(event){
+        this.saveButton.onEvent("Click", event)
+    }
+
+    addCancelButtonClickedEvent(event){
+        this.cancelButton.onEvent("Click", event)
+    }
+
+    undoDeletionButtonClickedEvent(){
+        this.hotkeyDeleted := false
+        this.undoDeletionButton.Opt("Hidden1")
+        this.setCurrentHotkeyText(this.currentHotkeyCommand)
+    }
+
+    cancelButtonClickedForCrafterEvent(hotkeyCrafter, *){
         hotkeyCrafter.Destroy()
         this.mainGui.Show()
     }
 
-    saveButtonClickedForHotkeyCrafterEvent(hotkeyCrafter, savedButton, idk){
+    saveButtonClickedForHotkeyChangeEvent(hotkeyCrafter, savedButton, idk){
         
         this.hotkeyDeleted := false
         this.undoDeletionButton.Opt("Hidden1")
@@ -100,7 +165,24 @@ class HotKeyConfigurationPopup{
 
     }
 
-    deleteButtonClickedForHotkeyCrafterEvent(hotkeyCrafter, savedButton, idk){
+    saveButtonClickedForActionChangeEvent(actionCrafter, savedButton, idk){
+        
+        this.actionDeleted := false
+        this.undoDeletionButton.Opt("Hidden1")
+
+        newAction := actionCrafter.getNewAction()
+        this.setCurrentActionText(newAction)
+
+        ; TODO perhaps remove this line
+        this.currentHotkeyAction := newAction
+
+        
+        actionCrafter.Destroy()
+        this.mainGui.Show()
+    }
+
+
+    deleteButtonClickedForHotkeyChangeEvent(hotkeyCrafter, savedButton, idk){
         
         this.hotkeyDeleted := true
         this.undoDeletionButton.Opt("Hidden0")
@@ -111,6 +193,14 @@ class HotKeyConfigurationPopup{
         this.mainGui.Show()
     }
 
+    deleteButtonClickedForActionChangeEvent(actionCrafter, savedButton, idk){
+        
+        this.actionDeleted := true
+        this.undoDeletionButton.Opt("Hidden0")
+
+        actionCrafter.Destroy()
+        this.mainGui.Show()
+    }
 
     CreateHotKeyMaker(){
         manuallyCreateHotkeyCheckbox := this.mainGui.Add("CheckBox", , "Manually create hotkey")
@@ -148,19 +238,36 @@ class HotKeyConfigurationPopup{
 
     setCurrentHotkeyText(newHotkey){
         this.currentHotkeyCommand := newHotkey
-        this.currentHotkeyTextElement.Value := ("Hotkey: `n" . newHotkey)
+        this.currentHotkeyTextControl.Value := ("Hotkey: `n" . newHotkey)
 
         if (this.hotkeyDeleted = true){
-            this.currentHotkeyTextElement.SetFont("s10 cRed")
+            this.currentHotkeyTextControl.SetFont("s10 cRed")
         }
         else if (this.originalHotkey != newHotkey){
-            this.currentHotkeyTextElement.SetFont("s10 cBlue")
+            this.currentHotkeyTextControl.SetFont("s10 cBlue")
         }
         else{
-            this.currentHotkeyTextElement.SetFont("s10 cBlack")
+            this.currentHotkeyTextControl.SetFont("s10 cBlack")
         }
 
-        this.SetTextAndResize(this.currentHotkeyTextElement, this.currentHotkeyTextElement.Value )
+        this.SetTextAndResize(this.currentHotkeyTextControl, this.currentHotkeyTextControl.Value )
+    }
+
+    setCurrentActionText(newAction){
+        this.currentHotkeyAction := newAction
+        this.currentActionTextControl.Value := ("Action: `n" . newAction)
+
+        if (this.actionDeleted = true){
+            this.currentActionTextControl.SetFont("s10 cRed")
+        }
+        else if (this.originalHotkeyAction != newAction){
+            this.currentActionTextControl.SetFont("s10 cBlue")
+        }
+        else{
+            this.currentActionTextControl.SetFont("s10 cBlack")
+        }
+
+        this.SetTextAndResize(this.currentActionTextControl, this.currentActionTextControl.Value )
     }
 
     ; TODO creat a class for this...
@@ -179,5 +286,29 @@ class HotKeyConfigurationPopup{
             DllCall('ReleaseDC', 'Ptr', textCtrl.Hwnd, 'Ptr', hDC)
             return [Round(width * 96/A_ScreenDPI), Round(height * 96/A_ScreenDPI)]
         }
+    }
+
+    getHotkey(){
+        hotkeyToReturn := ""
+        if (this.hotkeyDeleted != true){
+            hotkeyToReturn := this.currentHotkeyCommand
+        }
+
+        return hotkeyToReturn
+    }
+
+    destroy(){
+        this.mainGui.Destroy()
+    }
+
+    getHotkeyFormatted(){
+        hotkeyToReturn := ""
+        if (this.hotkeyDeleted != true){
+            hotkeyToReturn := HotkeyFormatConverter.convertFromFriendlyName(this.currentHotkeyCommand)
+        }
+        else{
+            hotkeyToReturn := ""
+        }
+        return hotkeyToReturn
     }
 }

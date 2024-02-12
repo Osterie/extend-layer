@@ -26,7 +26,6 @@ class KeyboardLayersInfoJsonReader{
     __New(jsonFilePath){
         this.PATH_TO_KEYBOARD_INFO := jsonFilePath
         this.KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
-
     }
 
     ReadKeyboardLayersInfoFromJson(){
@@ -53,6 +52,7 @@ class KeyboardLayersInfoJsonReader{
             }
         }
     }
+    
     ReadHotkeys(layerIdentifier, layerInfoContents){
         HotkeysRegister := HotkeysRegistry(layerIdentifier)
         For hotkeyName, informationAboutHotkey in layerInfoContents{

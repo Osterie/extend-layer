@@ -32,6 +32,8 @@
 
 #Include ".\library\MetaInfo\MetaInfoReading\ObjectsJsonReader.ahk"
 #Include ".\library\MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader.ahk"
+#Include ".\library\MetaInfo\MetaInfoReading\KeyboadLayersInfoClassObjectReader.ahk"
+
 
 ; TODO perhaps should add a "description" for the hotkeys in the gui
 
@@ -95,12 +97,18 @@ Hotstring( "::agb", StrReplace(name, "Ã¸", "ø"))
 Hotstring( "::a@", eMail)
 Hotstring("::@p", password)
 
-
 ; ------------Global or whatever stusff----------------
 
+; TODO create a nice gui for user to create their own scripts. This is probably pretty hard, since i need to create an instance of the class they create and store it...
+
+; TODO add hotkey for creating tab to the right...
 
 ; TODO when making a new hotkey, it should be temporarily green. When deleting a hotkey, it should be red for a short time, and possible to restore it.
 ; TODO when changing a hotkey, it should be yellow or blue or something indicating that it has been changed (temporary)
+
+; TODO to help the user learn how to use the script, a ghost keyboard should be made. All actions could have a short name, and when the key on the ghostkeyboard was hovered a description could be shown
+
+; TODO in objects.json or whatever, add a "Optional" field to parameters, which says if the parameter is optional or not.
 
 ; |-------------------------------------------|
 ; |----------- OBJECT CREATION ---------------|
@@ -136,8 +144,6 @@ Class Main{
     ; Main method used to start the script.
     Start(){
         this.RunLogicalStartup()
-        ; this.UpdatePathsToInfo()
-        ; this.InitializeMetaInfo()
         this.RunAppGui()
     }
 
@@ -156,9 +162,6 @@ Class Main{
         this.CURRENT_PROFILE_NAME := iniRead(this.PATH_TO_META_INI_FILE, "General", "activeUserProfile")
         this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := "../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "/ClassObjects.ini"
         this.PATH_TO_CURRENT_KEYBOARD_LAYOUT := "../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "\Keyboards.json"
-    
-        jsonStringFunctionalityInformation := FileRead(this.PATH_TO_OBJECT_INFO, "UTF-8")
-        this.allClassesInformationJson := jxon_load(&jsonStringFunctionalityInformation)
     
         keyboardSettingsString := FileRead(this.PATH_TO_CURRENT_KEYBOARD_LAYOUT, "UTF-8")
         this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
@@ -184,7 +187,6 @@ Class Main{
         ; This is used to read ini files, and create hotkeys from them
         this.StartupConfigurator := MainStartupConfigurator(this.keyboardSettingsJsonObject, this.ObjectRegister)
     }
-
     
     ReadAndMakeKeyboardOverlays(){
         ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
@@ -344,8 +346,7 @@ Class Main{
 
     ReadObjectsInformationFromJson(){
         JsonReaderForObjects := ObjectsJsonReader(this.PATH_TO_OBJECT_INFO, this.Objects)
-        JsonReaderForObjects.ReadObjectsFromJson()
-        this.ObjectRegister := JsonReaderForObjects.getObjectRegister()
+        this.ObjectRegister := JsonReaderForObjects.ReadObjectsFromJson()
 
     }
 
@@ -357,7 +358,7 @@ Class Main{
 
     RunAppGui(){
 
-        this.app := ExtraKeyboardsApp(this.keyboardSettingsJsonObject, this.ObjectRegister, this.KeyboardLayersInfoRegister)
+        this.app := ExtraKeyboardsApp(this.keyboardSettingsJsonObject, this.ObjectRegister, this.KeyboardLayersInfoRegister, this)
         this.app.Start()
 
         refreshHotkeys := ObjBindMethod(this, "eventProfileChanged")

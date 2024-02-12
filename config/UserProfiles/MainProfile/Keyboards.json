@@ -1,537 +1,544 @@
-{
-    "GlobalLayer-Hotkeys":{
-
-        "CapsLock": {
-            "isObject": true,
-            "ObjectName": "layers",
-            "MethodName": "toggleLayerIndicator",
-            "Parameters": [1]
-        },
-        "+CapsLock": {
-            "isObject": true,
-            "ObjectName": "layers",
-            "MethodName": "cycleLayerIndicators",
-            "Parameters": [2]
-        }
-    },
-    "NormalLayer-Hotkeys": {
-        "win+0": {
-            "isObject": true,
-            "ObjectName": "OnScreenWriter",
-            "MethodName": "ToggleShowKeysPressed",
-            "Parameters": []
-        },
-        "*f1": {
-            "isObject": true,
-            "ObjectName": "ProcessManagerInstance",
-            "MethodName": "CloseActiveAutohotkeyScript",
-            "Parameters": []
-        },
-        "^!w": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "CloseTabsToTheRight",
-            "Parameters": []
-        },
-        "^q": {
-            "isObject": true,
-            "ObjectName": "ProcessManagerInstance",
-            "MethodName": "CloseFocusedProcess",
-            "Parameters": []
-        },
-        "win+c": {
-            "isObject": true,
-            "ObjectName": "CommandPrompt",
-            "MethodName": "OpenCmdPathedToCurrentLocation",
-            "Parameters": []
-        },
-        "^!s": {
-            "isObject": true,
-            "ObjectName": "ProcessManagerInstance",
-            "MethodName": "SuspendActiveAutohotkeyScript",
-            "Parameters": []
-        }
-    },
-    "SecondaryLayer-Hotkeys": {
-        "*q": {
-            "isObject": false,
-            "key": "Esc",
-            "modifiers": ""
-        },
-        "*å":{
-            "isObject": false,
-            "key": "Esc",
-            "modifiers": ""
-        } ,
-        "*a":{
-            "isObject": false,
-            "key": "Alt",
-            "modifiers": ""
-        },
-        "*d":{
-            "isObject": false,
-            "key": "Shift",
-            "modifiers": ""
-        },
-        "*f": {
-            "isObject": false,
-            "key": "Ctrl",
-            "modifiers": ""
-        },
-        "*n": {
-            "isObject": false,
-            "key": "Tab",
-            "modifiers": ""
-        },
-        "*w": {
-            "isObject": false,
-            "key": "WheelUp",
-            "modifiers": ""
-        },
-        "*s": {
-            "isObject": false,
-            "key": "WheelDown",
-            "modifiers": ""
-        },
-        "*e": {
-            "isObject": false,
-            "key": "Browser_Back",
-            "modifiers": ""
-        },
-        "*r": {
-            "isObject": false,
-            "key": "Browser_Forward",
-            "modifiers": ""
-        },
-        "*y": {
-            "isObject": false,
-            "key": "PgUp",
-            "modifiers": ""
-        },
-        "*h": {
-            "isObject": false,
-            "key": "PgDn",
-            "modifiers": ""
-        },
-        "*u": {
-            "isObject": false,
-            "key": "Home",
-            "modifiers": ""
-        },
-        "*o": {
-            "isObject": false,
-            "key": "End",
-            "modifiers": ""
-        },
-        "*p": {
-            "isObject": false,
-            "key": "Del",
-            "modifiers": ""
-        },
-        "*ø": {
-            "isObject": false,
-            "key": "BackSpace",
-            "modifiers": ""
-        },
-        "^s": {
-            "isObject": false,
-            "key": "s",
-            "modifiers": "^"
-        },
-        "^a": {
-            "isObject": false,
-            "key": "a",
-            "modifiers": "^"
-        },
-        "*z": {
-            "isObject": false,
-            "key": "z",
-            "modifiers": "^"
-        },
-        "*x": {
-            "isObject": false,
-            "key": "x",
-            "modifiers": "^"
-        },
-        "*c": {
-            "isObject": false,
-            "key": "c",
-            "modifiers": "^"
-        },
-        "*v": {
-            "isObject": false,
-            "key": "v",
-            "modifiers": "^"
-        },
-        "*m": {
-            "isObject": false,
-            "key": "Click",
-            "modifiers": ""
-        },
-        "*g": {
-            "isObject": false,
-            "key": "AppsKey",
-            "modifiers": ""
-        },
-        "*,": {
-            "isObject": false,
-            "key": "F6",
-            "modifiers": ""
-        },
-        "*i": {
-            "isObject": false,
-            "key": "Up",
-            "modifiers": ""
-        },
-        "*j": {
-            "isObject": false,
-            "key": "Left",
-            "modifiers": ""
-        },
-        "*k": {
-            "isObject": false,
-            "key": "Down",
-            "modifiers": ""
-        },
-        "*l": {
-            "isObject": false,
-            "key": "Right",
-            "modifiers": ""
-        },
-        "^1":{
-            "isObject": true,
-            "ObjectName": "FileExplorer",
-            "MethodName": "NavigateToFolder",
-            "Parameters": [
-                "C:\\"
-            ]
-        },
-        "^2":{
-            "isObject": true,
-            "ObjectName": "FileExplorer",
-            "MethodName": "NavigateToFolder",
-            "Parameters": [
-                "C:\\Users\\adria"
-            ]
-        },
-        "^3": {
-            "isObject": true,
-            "ObjectName": "FileExplorer",
-            "MethodName": "NavigateToFolder",
-            "Parameters": [
-                "C:\\Users\\adria\\github"
-            ]
-        },
-        "^4": {
-            "isObject": true,
-            "ObjectName": "FileExplorer",
-            "MethodName": "NavigateToFolder",
-            "Parameters": [
-                "C:\\Users\\adria\\Downloads"
-            ]
-        },
-        "^5": {
-            "isObject": true,
-            "ObjectName": "FileExplorer",
-            "MethodName": "NavigateToFolder",
-            "Parameters": [
-                "C:\\Users\\adria\\github\\University"
-            ]
-        },
-        "^6": {
-            "isObject": true,
-            "ObjectName": "FileExplorer",
-            "MethodName": "NavigateToFolder",
-            "Parameters": [
-                "C:\\Users\\adria\\github\\University\\Programmering 1\\Mappe Vurdering\\mappe-idata1003-traindispatchsystem-Osterie"
-            ]
-        },
-        "t":{
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "LookUpHighlitedTextOrClipboardContent",
-            "Parameters": []
-        },  
-        "+t": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "AskChatGptAboutHighligtedTextOrClipboardContent",
-            "Parameters": []
-        },
-        "^t": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "ShowTranslatedText",
-            "Parameters": ["auto", "en"]
-        },
-        "^+t": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "ShowTranslatedText",
-            "Parameters": ["auto", "no"]
-        },
-        "b": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "SearchFromInputBox",
-            "Parameters": []
-        },
-        "<": {
-            "isObject": true,
-            "ObjectName": "MouseInstance",
-            "MethodName": "MoveMouseToCenterOfScreen",
-            "Parameters": []
-        },
-        "+1": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "OpenUrl",
-            "Parameters": ["https://tp.educloud.no/ntnu/timeplan/?&type=student&weekTo=18&ar=2024&&id[]=35565"]
-        },
-        "+2": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "LoginToSite",
-            "Parameters": ["https://ntnu.blackboard.com/ultra/course", ["as", "..\\\\..\\\\..\\\\imageSearchImages\\\\BBLogin.png"], 5000]
-        },
-        "+3": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "LoginToSite",
-            "Parameters": ["https://ntnu.blackboard.com/ultra/courses/_40058_1/cl/outline", ["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\BBLogin.png"], 3000]
-        },
-        "+4": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "LoginToSite",
-            "Parameters": ["https://ntnu.blackboard.com/ultra/courses/_39985_1/cl/outline", ["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\BBLogin.png"], 3000]
-        },
-        "+5": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "LoginToSite",
-            "Parameters": ["https://ntnu.blackboard.com/ultra/courses/_45450_1/cl/outline", ["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\BBLogin.png"], 3000]
-        },
-        "+6": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "LoginToSite",
-            "Parameters": ["https://ntnu.blackboard.com/ultra/courses/_40179_1/cl/outline", ["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\BBLogin.png"], 3000]
-        },
-        "+7": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "LoginToSite",
-            "Parameters": ["https://s.ntnu.no/IMAx2024", ["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\jupyterHubMaximized.png", "..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\jupyterHubMinimized.png"], 4000]
-        },
-        "+8": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "OpenUrl",
-            "Parameters": ["https://capquiz.math.ntnu.no/my/"]
-        }
-    },
-    "SecondaryLayer-KeyboardOverlay1": {
-        "ShowKeyboardOverlayKey": "~Shift",
-        "overlayElements":{
-            "Column1": {
-                "key": "1",
-                "description": "Open Time Table\""
-            },
-            "Column2": {
-                "key": "2",
-                "description": "Black Board\""
-            },
-            "Column3": {
-                "key": "3",
-                "description": "Prog 2\""
-            },
-            "Column4": {
-                "key": "4",
-                "description": "System\""
-            },
-            "Column5": {
-                "key": "5",
-                "description": "Math\""
-            },
-            "Column6": {
-                "key": "6",
-                "description": "Data\""
-            },
-            "Column7": {
-                "key": "7",
-                "description": "Jupyter Hub\""
-            },
-            "Column8": {
-                "key": "8",
-                "description": "Capquiz\""
-            }
-        }
-    },
-    "SecondaryLayer-KeyboardOverlay2": {
-        "ShowKeyboardOverlayKey": "~Control",
-        "overlayElements":{
-            "Column1": {
-                "key": "1",
-                "description": "Root"
-            },
-            "Column2": {
-                "key": "2",
-                "description": "Adrian"
-            },
-            "Column3": {
-                "key": "3",
-                "description": "Github"
-            },
-            "Column4": {
-                "key": "4",
-                "description": "Down loads"
-            },
-            "Column5": {
-                "key": "5",
-                "description": "School"
-            },
-            "Column6": {
-                "key": "6",
-                "description": "Mappe"
-            }
-        }
-    },
-    "TertiaryLayer-Hotkeys": {
-        "a": {
-            "isObject": true,
-            "ObjectName": "PrivacyController",
-            "MethodName": "HideScreen",
-            "Parameters": []
-        },
-        "s": {
-            "isObject": true,
-            "ObjectName": "PrivacyController",
-            "MethodName": "HideWindow",
-            "Parameters": []
-        },
-        "d": {
-            "isObject": true,
-            "ObjectName": "PrivacyController",
-            "MethodName": "HideTabs",
-            "Parameters": []
-        },
-        "f": {
-            "isObject": true,
-            "ObjectName": "PrivacyController",
-            "MethodName": "HideGui",
-            "Parameters": []
-        },
-        "Home": {
-            "isObject": true,
-            "ObjectName": "ComputerInput",
-            "MethodName": "BlockAllInput",
-            "Parameters": []
-        },
-        "Home & End": {
-            "isObject": true,
-            "ObjectName": "ComputerInput",
-            "MethodName": "UnBlockAllInput",
-            "Parameters": []
-        },
-        "p": {
-            "isObject": true,
-            "ObjectName": "Battery",
-            "MethodName": "TogglePowerSaverMode",
-            "Parameters": []
-        },
-        "u": {
-            "isObject": true,
-            "ObjectName": "MonitorInstance",
-            "MethodName": "ToggleHighestBrightness",
-            "Parameters": []
-        },
-        "j": {
-            "isObject": true,
-            "ObjectName": "MonitorInstance",
-            "MethodName": "ToggleLowestBrightness",
-            "Parameters": []
-        },
-        "o": {
-            "isObject": true,
-            "ObjectName": "MonitorInstance",
-            "MethodName": "ToggleHighestGamma",
-            "Parameters": []
-        },
-        "i": {
-            "isObject": true,
-            "ObjectName": "MonitorInstance",
-            "MethodName": "ToggleLowestGamma",
-            "Parameters": []
-        },
-        "k": {
-            "isObject": true,
-            "ObjectName": "MonitorInstance",
-            "MethodName": "CycleRed",
-            "Parameters": [63, 255]
-        },
-        "l": {
-            "isObject": true,
-            "ObjectName": "MonitorInstance",
-            "MethodName": "CycleGreen",
-            "Parameters": [63, 255]
-        },
-        "ø": {
-            "isObject": true,
-            "ObjectName": "MonitorInstance",
-            "MethodName": "CycleBlue",
-            "Parameters": [63, 255]
-        },
-        "Esc": {
-            "isObject": true,
-            "ObjectName": "ProcessManagerInstance",
-            "MethodName": "CloseActiveAutohotkeyScript",
-            "Parameters": []
-        },
-        "1": {
-            "isObject": true,
-            "ObjectName": "KeyboardInstance",
-            "MethodName": "SendKeyBoardInput",
-            "Parameters": ["{raw}&#x2207;"]
-        },
-        "2": {
-            "isObject": true,
-            "ObjectName": "KeyboardInstance",
-            "MethodName": "SendKeyBoardInput",
-            "Parameters": ["{raw}&#8706;"]
-        },
-        "+=": {
-            "isObject": true,
-            "ObjectName": "KeyboardInstance",
-            "MethodName": "SendRepeatInput",
-            "Parameters": ["{Space}", 50]
-        },
-        "0": {
-            "isObject": true,
-            "ObjectName": "MouseInstance",
-            "MethodName": "ToggleAutoClicker",
-            "Parameters": []
-        }
-    },
-    "TertiaryLayer-KeyboardOverlay1": {
-        "ShowKeyboardOverlayKey": "~Control",
-        "overlayElements":{
-            "Column1": {
-                "key": "1",
-                "description": "Touch Screen"
-            },
-            "Column2": {
-                "key": "2",
-                "description": "Camera"
-            },
-            "Column3": {
-                "key": "3",
-                "description": "Blue tooth"
-            },
-            "Column4": {
-                "key": "4",
-                "description": "Touch Pad"
-            }
-        }
-    }
+﻿{
+	"GlobalLayer-Hotkeys":{
+		"+CapsLock":{
+			"MethodName":"cycleLayerIndicators",
+			"ObjectName":"layers",
+			"Parameters":[2],
+			"isObject":1
+		},
+		"CapsLock":{
+			"MethodName":"toggleLayerIndicator",
+			"ObjectName":"layers",
+			"Parameters":[1],
+			"isObject":1
+		}
+	},
+	"NormalLayer-Hotkeys":{
+		"#0":{
+			"MethodName":"ToggleShowKeysPressed",
+			"ObjectName":"OnScreenWriter",
+			"Parameters":[],
+			"isObject":1
+		},
+		"#c":{
+			"MethodName":"OpenCmdPathedToCurrentLocation",
+			"ObjectName":"CommandPrompt",
+			"Parameters":[],
+			"isObject":1
+		},
+		"*f1":{
+			"MethodName":"CloseActiveAutohotkeyScript",
+			"ObjectName":"ProcessManagerInstance",
+			"Parameters":[],
+			"isObject":1
+		},
+		"^!s":{
+			"MethodName":"SuspendActiveAutohotkeyScript",
+			"ObjectName":"ProcessManagerInstance",
+			"Parameters":[],
+			"isObject":1
+		},
+		"^!w":{
+			"MethodName":"CloseTabsToTheRight",
+			"ObjectName":"WebSearcher",
+			"Parameters":[],
+			"isObject":1
+		},
+		"^q":{
+			"MethodName":"CloseFocusedProcess",
+			"ObjectName":"ProcessManagerInstance",
+			"Parameters":[],
+			"isObject":1
+		}
+	},
+	"SecondaryLayer-Hotkeys":{
+		"*,":{
+			"isObject":0,
+			"key":"F6",
+			"modifiers":""
+		},
+		"*a":{
+			"isObject":0,
+			"key":"Alt",
+			"modifiers":""
+		},
+		"*c":{
+			"isObject":0,
+			"key":"c",
+			"modifiers":"^"
+		},
+		"*d":{
+			"isObject":0,
+			"key":"Shift",
+			"modifiers":""
+		},
+		"*e":{
+			"isObject":0,
+			"key":"Browser_Back",
+			"modifiers":""
+		},
+		"*f":{
+			"isObject":0,
+			"key":"Ctrl",
+			"modifiers":""
+		},
+		"*g":{
+			"isObject":0,
+			"key":"AppsKey",
+			"modifiers":""
+		},
+		"*h":{
+			"isObject":0,
+			"key":"PgDn",
+			"modifiers":""
+		},
+		"*i":{
+			"isObject":0,
+			"key":"Up",
+			"modifiers":""
+		},
+		"*j":{
+			"isObject":0,
+			"key":"Left",
+			"modifiers":""
+		},
+		"*k":{
+			"isObject":0,
+			"key":"Down",
+			"modifiers":""
+		},
+		"*l":{
+			"isObject":0,
+			"key":"Right",
+			"modifiers":""
+		},
+		"*m":{
+			"isObject":0,
+			"key":"Click",
+			"modifiers":""
+		},
+		"*n":{
+			"isObject":0,
+			"key":"Tab",
+			"modifiers":""
+		},
+		"*o":{
+			"isObject":0,
+			"key":"End",
+			"modifiers":""
+		},
+		"*p":{
+			"isObject":0,
+			"key":"Del",
+			"modifiers":""
+		},
+		"*q":{
+			"isObject":0,
+			"key":"Esc",
+			"modifiers":""
+		},
+		"*r":{
+			"isObject":0,
+			"key":"Browser_Forward",
+			"modifiers":""
+		},
+		"*s":{
+			"isObject":0,
+			"key":"WheelDown",
+			"modifiers":""
+		},
+		"*u":{
+			"isObject":0,
+			"key":"Home",
+			"modifiers":""
+		},
+		"*v":{
+			"isObject":0,
+			"key":"v",
+			"modifiers":"^"
+		},
+		"*w":{
+			"isObject":0,
+			"key":"WheelUp",
+			"modifiers":""
+		},
+		"*x":{
+			"isObject":0,
+			"key":"x",
+			"modifiers":"^"
+		},
+		"*y":{
+			"isObject":0,
+			"key":"PgUp",
+			"modifiers":""
+		},
+		"*z":{
+			"isObject":0,
+			"key":"z",
+			"modifiers":"^"
+		},
+		"*å":{
+			"isObject":0,
+			"key":"Esc",
+			"modifiers":""
+		},
+		"*ø":{
+			"isObject":0,
+			"key":"BackSpace",
+			"modifiers":""
+		},
+		"+1":{
+			"MethodName":"OpenUrl",
+			"ObjectName":"WebSearcher",
+			"Parameters":["https:\/\/tp.educloud.no\/ntnu\/timeplan\/?&type=student&weekTo=18&ar=2024&&id[]=35565"],
+			"isObject":1
+		},
+		"+2":{
+			"MethodName":"LoginToSite",
+			"ObjectName":"WebSearcher",
+			"Parameters":["https:\/\/ntnu.blackboard.com\/ultra\/course",
+			["as",
+			"..\\\\..\\\\..\\\\imageSearchImages\\\\BBLogin.png"],
+			5000],
+			"isObject":1
+		},
+		"+3":{
+			"MethodName":"LoginToSite",
+			"ObjectName":"WebSearcher",
+			"Parameters":["https:\/\/ntnu.blackboard.com\/ultra\/courses\/_40058_1\/cl\/outline",
+			["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\BBLogin.png"],
+			3000],
+			"isObject":1
+		},
+		"+4":{
+			"MethodName":"LoginToSite",
+			"ObjectName":"WebSearcher",
+			"Parameters":["https:\/\/ntnu.blackboard.com\/ultra\/courses\/_39985_1\/cl\/outline",
+			["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\BBLogin.png"],
+			3000],
+			"isObject":1
+		},
+		"+5":{
+			"MethodName":"LoginToSite",
+			"ObjectName":"WebSearcher",
+			"Parameters":["https:\/\/ntnu.blackboard.com\/ultra\/courses\/_45450_1\/cl\/outline",
+			["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\BBLogin.png"],
+			3000],
+			"isObject":1
+		},
+		"+6":{
+			"MethodName":"LoginToSite",
+			"ObjectName":"WebSearcher",
+			"Parameters":["https:\/\/ntnu.blackboard.com\/ultra\/courses\/_40179_1\/cl\/outline",
+			["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\BBLogin.png"],
+			3000],
+			"isObject":1
+		},
+		"+7":{
+			"MethodName":"LoginToSite",
+			"ObjectName":"WebSearcher",
+			"Parameters":["https:\/\/s.ntnu.no\/IMAx2024",
+			["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\jupyterHubMaximized.png",
+			"..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\jupyterHubMinimized.png"],
+			4000],
+			"isObject":1
+		},
+		"+8":{
+			"MethodName":"OpenUrl",
+			"ObjectName":"WebSearcher",
+			"Parameters":["https:\/\/capquiz.math.ntnu.no\/my\/"],
+			"isObject":1
+		},
+		"+t":{
+			"MethodName":"AskChatGptAboutHighligtedTextOrClipboardContent",
+			"ObjectName":"WebSearcher",
+			"Parameters":[],
+			"isObject":1
+		},
+		"1":{
+			"MethodName":"SearchFromInputBox",
+			"ObjectName":"WebSearcher",
+			"Parameters":[],
+			"isObject":1
+		},
+		"<":{
+			"MethodName":"MoveMouseToCenterOfScreen",
+			"ObjectName":"MouseInstance",
+			"Parameters":[],
+			"isObject":1
+		},
+		"^+t":{
+			"MethodName":"ShowTranslatedText",
+			"ObjectName":"WebSearcher",
+			"Parameters":["auto",
+			"no"],
+			"isObject":1
+		},
+		"^1":{
+			"MethodName":"NavigateToFolder",
+			"ObjectName":"FileExplorer",
+			"Parameters":["C:\\"],
+			"isObject":1
+		},
+		"^2":{
+			"MethodName":"NavigateToFolder",
+			"ObjectName":"FileExplorer",
+			"Parameters":["C:\\Users\\adria"],
+			"isObject":1
+		},
+		"^3":{
+			"MethodName":"NavigateToFolder",
+			"ObjectName":"FileExplorer",
+			"Parameters":["C:\\Users\\adria\\github"],
+			"isObject":1
+		},
+		"^4":{
+			"MethodName":"NavigateToFolder",
+			"ObjectName":"FileExplorer",
+			"Parameters":["C:\\Users\\adria\\Downloads"],
+			"isObject":1
+		},
+		"^5":{
+			"MethodName":"NavigateToFolder",
+			"ObjectName":"FileExplorer",
+			"Parameters":["C:\\Users\\adria\\github\\University"],
+			"isObject":1
+		},
+		"^6":{
+			"MethodName":"NavigateToFolder",
+			"ObjectName":"FileExplorer",
+			"Parameters":["C:\\Users\\adria\\github\\University\\Programmering 1\\Mappe Vurdering\\mappe-idata1003-traindispatchsystem-Osterie"],
+			"isObject":1
+		},
+		"^a":{
+			"isObject":0,
+			"key":"a",
+			"modifiers":"^"
+		},
+		"^s":{
+			"isObject":0,
+			"key":"s",
+			"modifiers":"^"
+		},
+		"^t":{
+			"MethodName":"ShowTranslatedText",
+			"ObjectName":"WebSearcher",
+			"Parameters":["auto",
+			"en"],
+			"isObject":1
+		},
+		"t":{
+			"MethodName":"LookUpHighlitedTextOrClipboardContent",
+			"ObjectName":"WebSearcher",
+			"Parameters":[],
+			"isObject":1
+		}
+	},
+	"SecondaryLayer-KeyboardOverlay1":{
+		"ShowKeyboardOverlayKey":"~Shift",
+		"overlayElements":{
+			"Column1":{
+				"description":"Open Time Table",
+				"key":"1"
+			},
+			"Column2":{
+				"description":"Black Board",
+				"key":"2"
+			},
+			"Column3":{
+				"description":"Prog 2",
+				"key":"3"
+			},
+			"Column4":{
+				"description":"System",
+				"key":"4"
+			},
+			"Column5":{
+				"description":"Math",
+				"key":"5"
+			},
+			"Column6":{
+				"description":"Data",
+				"key":"6"
+			},
+			"Column7":{
+				"description":"Jupyter Hub",
+				"key":"7"
+			},
+			"Column8":{
+				"description":"Capquiz",
+				"key":"8"
+			}
+		}
+	},
+	"SecondaryLayer-KeyboardOverlay2":{
+		"ShowKeyboardOverlayKey":"~Control",
+		"overlayElements":{
+			"Column1":{
+				"description":"Root",
+				"key":"1"
+			},
+			"Column2":{
+				"description":"Adrian",
+				"key":"2"
+			},
+			"Column3":{
+				"description":"Github",
+				"key":"3"
+			},
+			"Column4":{
+				"description":"Down loads",
+				"key":"4"
+			},
+			"Column5":{
+				"description":"School",
+				"key":"5"
+			},
+			"Column6":{
+				"description":"Mappe",
+				"key":"6"
+			}
+		}
+	},
+	"TertiaryLayer-Hotkeys":{
+		"+=":{
+			"MethodName":"SendRepeatInput",
+			"ObjectName":"KeyboardInstance",
+			"Parameters":["{Space}",
+			50],
+			"isObject":1
+		},
+		"0":{
+			"MethodName":"ToggleAutoClicker",
+			"ObjectName":"MouseInstance",
+			"Parameters":[],
+			"isObject":1
+		},
+		"1":{
+			"MethodName":"SendKeyBoardInput",
+			"ObjectName":"KeyboardInstance",
+			"Parameters":["{raw}&#x2207;"],
+			"isObject":1
+		},
+		"2":{
+			"MethodName":"SendKeyBoardInput",
+			"ObjectName":"KeyboardInstance",
+			"Parameters":["{raw}&#8706;"],
+			"isObject":1
+		},
+		"Esc":{
+			"MethodName":"CloseActiveAutohotkeyScript",
+			"ObjectName":"ProcessManagerInstance",
+			"Parameters":[],
+			"isObject":1
+		},
+		"Home":{
+			"MethodName":"BlockAllInput",
+			"ObjectName":"ComputerInput",
+			"Parameters":[],
+			"isObject":1
+		},
+		"Home & End":{
+			"MethodName":"UnBlockAllInput",
+			"ObjectName":"ComputerInput",
+			"Parameters":[],
+			"isObject":1
+		},
+		"a":{
+			"MethodName":"HideScreen",
+			"ObjectName":"PrivacyController",
+			"Parameters":[],
+			"isObject":1
+		},
+		"d":{
+			"MethodName":"HideTabs",
+			"ObjectName":"PrivacyController",
+			"Parameters":[],
+			"isObject":1
+		},
+		"f":{
+			"MethodName":"HideGui",
+			"ObjectName":"PrivacyController",
+			"Parameters":[],
+			"isObject":1
+		},
+		"i":{
+			"MethodName":"ToggleLowestGamma",
+			"ObjectName":"MonitorInstance",
+			"Parameters":[],
+			"isObject":1
+		},
+		"j":{
+			"MethodName":"ToggleLowestBrightness",
+			"ObjectName":"MonitorInstance",
+			"Parameters":[],
+			"isObject":1
+		},
+		"k":{
+			"MethodName":"CycleRed",
+			"ObjectName":"MonitorInstance",
+			"Parameters":[63,
+			255],
+			"isObject":1
+		},
+		"l":{
+			"MethodName":"CycleGreen",
+			"ObjectName":"MonitorInstance",
+			"Parameters":[63,
+			255],
+			"isObject":1
+		},
+		"o":{
+			"MethodName":"ToggleHighestGamma",
+			"ObjectName":"MonitorInstance",
+			"Parameters":[],
+			"isObject":1
+		},
+		"p":{
+			"MethodName":"TogglePowerSaverMode",
+			"ObjectName":"Battery",
+			"Parameters":[],
+			"isObject":1
+		},
+		"s":{
+			"MethodName":"HideWindow",
+			"ObjectName":"PrivacyController",
+			"Parameters":[],
+			"isObject":1
+		},
+		"u":{
+			"MethodName":"ToggleHighestBrightness",
+			"ObjectName":"MonitorInstance",
+			"Parameters":[],
+			"isObject":1
+		},
+		"ø":{
+			"MethodName":"CycleBlue",
+			"ObjectName":"MonitorInstance",
+			"Parameters":[63,
+			255],
+			"isObject":1
+		}
+	},
+	"TertiaryLayer-KeyboardOverlay1":{
+		"ShowKeyboardOverlayKey":"~Control",
+		"overlayElements":{
+			"Column1":{
+				"description":"Touch Screen",
+				"key":"1"
+			},
+			"Column2":{
+				"description":"Camera",
+				"key":"2"
+			},
+			"Column3":{
+				"description":"Blue tooth",
+				"key":"3"
+			},
+			"Column4":{
+				"description":"Touch Pad",
+				"key":"4"
+			}
+		}
+	}
 }

@@ -14,5 +14,7 @@ if not A_IsAdmin
 ^!i::Run(A_ScriptDir "\..\tests\removeme.ahk")
 ^!u::Run(A_ScriptDir "\ExtraKeyboardsApp.ahk")
 
+^!p::Run(A_ScriptDir "\library\JsonTesting\jsonTest.ahk")
+
 ^!|::Reload()
 ^!Esc::ExitApp()

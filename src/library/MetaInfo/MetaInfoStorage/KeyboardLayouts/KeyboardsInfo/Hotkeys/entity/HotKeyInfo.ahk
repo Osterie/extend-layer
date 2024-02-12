@@ -26,16 +26,21 @@ class HotKeyInfo{
         this.modifiers := modifiers
         this.newHotKeyFriendlyName := HotkeyFormatConverter.convertToFriendlyHotkeyName(this.modifiers . this.newHotKey)
     }
-    
-    hotkeyIsObject(){
-        return this.isObject
-    }
 
     setInfoForSpecialHotKey(objectName, MethodName, parameters){
         this.isObject := true
         this.objectName := objectName
         this.methodName := methodName
         this.parameters := parameters
+    }
+
+    changeHotkey(newHotKeyName){
+        this.hotkeyName := newHotKeyName
+        this.friendlyHotkeyName := HotkeyFormatConverter.convertToFriendlyHotkeyName(newHotKeyName)
+    }
+
+    hotkeyIsObject(){
+        return this.isObject
     }
 
     toString(){
@@ -71,8 +76,26 @@ class HotKeyInfo{
         return this.hotkeyName
     }
 
+    getNewHotkeyName(){
+        return this.newHotKey
+    }
+    getNewHotkeyModifiers(){
+        return this.modifiers
+    }
     getFriendlyHotkeyName(){
         return this.friendlyHotkeyName
+    }
+
+    getObjectName(){
+        return this.objectName
+    }
+
+    getMethodName(){
+        return this.methodName
+    }
+
+    getParameters(){
+        return this.parameters
     }
 
 }

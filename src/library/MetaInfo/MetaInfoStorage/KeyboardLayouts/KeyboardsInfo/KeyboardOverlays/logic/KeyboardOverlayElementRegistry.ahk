@@ -17,13 +17,23 @@ class KeyboardOverlayElementRegistry{
     getKeyboardOverlayElement(keyboardElementName){ 
         return this.KeyboardOverlayElements.Get(keyboardElementName)
     }
+
+    getKeyboardOverlayElements(){
+        return this.KeyboardOverlayElements
+    }
     
     getKeyPairValuesToString(){
         elements := []
         for elementNames, KeyboardOverlayElement in this.KeyboardOverlayElements
             elements.push([KeyboardOverlayElement.getKey(), KeyboardOverlayElement.getDescription()])
         return elements
+    }
 
+    getFriendlyHotkeyActionPairValues(){
+        elements := []
+        for elementNames, KeyboardOverlayElement in this.KeyboardOverlayElements
+            elements.push([KeyboardOverlayElement.getKey(), KeyboardOverlayElement.getDescription()])
+        return elements
     }
 
 }
