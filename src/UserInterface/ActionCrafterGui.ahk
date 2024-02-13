@@ -4,6 +4,8 @@
 #Include "..\library\MetaInfo\MetaInfoReading\KeyNamesReader.ahk"
 #Include ".\HotkeyCrafterGui.ahk"
 
+#Include "..\library\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo.ahk"
+
 #Include ".\ParameterControlsGroup.ahk"
 
 class ActionCrafterGui{
@@ -27,6 +29,12 @@ class ActionCrafterGui{
 
     hotkeyCrafter := ""
 
+    specialActionRadio := ""
+    newKeyRadio := ""
+
+    currentObjectName := ""
+    currentMethodName := ""
+
 
     controlsForAllSpecialActionCrafting := ""
 
@@ -34,7 +42,13 @@ class ActionCrafterGui{
 
     controlsForParameters := ""
 
-    __New(originalAction, pathToKeyNamesFile, activeObjectsRegistry){
+    currentHotkeyToExcecuteAction := ""
+
+    amountOfParametersToBeFilled := 0
+
+    __New(originalAction, pathToKeyNamesFile, activeObjectsRegistry, currentHotkeyToExcecuteAction){
+
+        this.currentHotkeyToExcecuteAction := currentHotkeyToExcecuteAction
 
         this.controlsForAllSpecialActionCrafting := guiControlsRegistry()
         this.controlsForSpecificSpecialActionCrafting := guiControlsRegistry()
@@ -52,10 +66,10 @@ class ActionCrafterGui{
         
         originalActionControl := this.GuiObject.Add("Text", "", "Original Action: " . originalAction)
         
-        specialActionRadio := this.GuiObject.Add("Radio", "Checked", "Special Action")
-        specialActionRadio.OnEvent("Click", (*) => this.hotkeyCrafter.hideAllButFinalisationButtons() this.controlsForAllSpecialActionCrafting.showControls())
-        newKeyRadio := this.GuiObject.Add("Radio", "", "New Key")
-        newKeyRadio.OnEvent("Click", (*) => this.hotkeyCrafter.show() this.controlsForAllSpecialActionCrafting.hideControls())
+        this.specialActionRadio := this.GuiObject.Add("Radio", "Checked", "Special Action")
+        this.specialActionRadio.OnEvent("Click", (*) => this.hotkeyCrafter.hideAllButFinalisationButtons() this.controlsForAllSpecialActionCrafting.showControls())
+        this.newKeyRadio := this.GuiObject.Add("Radio", "", "New Key")
+        this.newKeyRadio.OnEvent("Click", (*) => this.hotkeyCrafter.show() this.controlsForAllSpecialActionCrafting.hideControls())
 
         listViewOfSpecialAction := this.GuiObject.Add("ListView", "r20 Grid w400", ["Special Action"])
         listViewOfSpecialAction.SetFont("s12 c333333", "Segoe UI")
@@ -116,12 +130,13 @@ class ActionCrafterGui{
         ObjectInfoOfAction := this.activeObjectsRegistry.GetObjectByFriendlyMethodName(friendlyNameOfAction)
         MethodInfoOfAction := ObjectInfoOfAction.getMethodByFriendlyMethodName(friendlyNameOfAction)
 
-        objectName := ObjectInfoOfAction.getObjectName()
-        methodName := MethodInfoOfAction.getMethodName()
+        this.currentObjectName := ObjectInfoOfAction.getObjectName()
+        this.currentMethodName := MethodInfoOfAction.getMethodName()
         methodDescription := MethodInfoOfAction.getMethodDescription()
 
         parameters := MethodInfoOfAction.getMethodParameters()
 
+        this.setAmountOfParametersToBeFilled(parameters.count)
 
         ; objectName := "layers"
         ; methodName := "cycleLayerIndicators"
@@ -153,10 +168,12 @@ class ActionCrafterGui{
 
     }
 
+    setAmountOfParametersToBeFilled(parameterCount){
+        this.amountOfParametersToBeFilled := parameterCount
+    }
+
     createSpecialActionMaker(){
 
-
-    
         groupBoxForActionDescription := this.GuiObject.Add("GroupBox", " Section xp yp-185 w400 h45", "Action Description")
         actionDescriptionControl := this.GuiObject.Add("Text", "xp+15 yp+15 w380", "")
         actionDescriptionControl.SetFont("s12 c333333", "Segoe UI")
@@ -164,7 +181,6 @@ class ActionCrafterGui{
 
         groupBoxForActionMaker := this.GuiObject.Add("GroupBox", " Section ym w400 h500", "Special Action Maker")
 
-        
         
         groupBoxForActionToDo := this.GuiObject.Add("GroupBox", " Section xp+20 yp+20 w360 h45", "Action to do")
         friendlyNameOfActionControl := this.GuiObject.Add("Text", "xs+15 ys+15 wrap", "")
@@ -177,10 +193,6 @@ class ActionCrafterGui{
         noParametersForActionText := this.guiObject.Add("Text", "xs+40 ys+60 w200 h200", "THIS ACTION HAS NO PARAMETERS:)")
         noParametersForActionText.SetFont("s20")
         noParametersForActionText.Opt("Hidden1")
-
-        
-
-
 
         this.controlsForSpecificSpecialActionCrafting.AddControl("friendlyNameOfActionControl", friendlyNameOfActionControl)
         this.controlsForSpecificSpecialActionCrafting.AddControl("groupBoxForActionDescription", groupBoxForActionDescription)
@@ -302,7 +314,26 @@ class ActionCrafterGui{
 
     getNewAction(){
         ; TODO add conditionals to check which crafter
-        return this.hotkeyCrafter.getNewHotkey()
+        ; TODO check if the values to return are correct perhaps...
+        if (this.specialActionRadio.Value = true){
+            ; TODO return a action
+            return this.getNewSpecialActionHotkey()
+        }
+        else if (this.newKeyRadio.Value = true){
+            return this.hotkeyCrafter.getNewHotkey()
+        }
+    }
+
+    getNewSpecialActionHotkey(){
+        hotkeyToReturn := HotKeyInfo(this.currentHotkeyToExcecuteAction)
+        parameters := []
+        Loop this.amountOfParametersToBeFilled{
+            parameterControls := this.parameterControlsArray[A_index]
+            parameterValue := parameterControls.getEditControlValue()
+            parameters.Push(parameterValue)
+        }
+        hotkeyToReturn.setInfoForSpecialHotKey(this.currentObjectName, this.currentMethodName, parameters)
+        return hotkeyToReturn
     }
 
     show(){

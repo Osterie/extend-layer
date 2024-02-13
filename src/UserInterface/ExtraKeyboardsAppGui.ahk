@@ -147,6 +147,7 @@ Class ExtraKeyboardsAppGui{
 
     }
 
+    ; TODO change name of this method to reflect that it (maybe) changes both hotkey and action...
     hotkeySavedEvent(listViewElement, *){
         ; TODO now i must update the json file with the new hotkey if it is valid...
 
@@ -154,8 +155,12 @@ Class ExtraKeyboardsAppGui{
 
         oldHotkey := HotkeyFormatConverter.convertFromFriendlyName(listViewElement.getOriginalHotkey())
         newHotkey := listViewElement.getNewHotkey()
+        newAction := listViewElement.getNewAction()
 
         this.keyboardLayersInfoRegister.ChangeHotkey(this.currentLayer, oldHotkey, newHotKey)
+        this.keyboardLayersInfoRegister.ChangeAction(this.currentLayer, oldHotkey, newAction)
+
+
 
         toJsonReader := KeyboadLayersInfoClassObjectReader()
         toJsonReader.ReadObjectToJson(this.keyboardLayersInfoRegister)
@@ -173,7 +178,34 @@ Class ExtraKeyboardsAppGui{
 
         
         listViewElement.getPopup().Destroy()
+    }
+
+    actionSavedEvent(listViewElement, *){
+        ; ; TODO now i must update the json file with the new hotkey if it is valid...
+
+        ; ; TODO keyboardLayersInfoRegister change a hotkey, turn into a json file, and then change the existing json file
+
+        ; oldHotkey := HotkeyFormatConverter.convertFromFriendlyName(listViewElement.getOriginalHotkey())
+        ; newHotkey := listViewElement.getNewHotkey()
+
+        ; this.keyboardLayersInfoRegister.ChangeHotkey(this.currentLayer, oldHotkey, newHotKey)
+
+        ; toJsonReader := KeyboadLayersInfoClassObjectReader()
+        ; toJsonReader.ReadObjectToJson(this.keyboardLayersInfoRegister)
+        ; jsonObject := toJsonReader.getJsonObject()
+
+        ; currentProfileName := iniRead(this.PATH_TO_META_FILE, "General", "activeUserProfile")
+        ; pathToCurrentProfile := this.PATH_TO_EXISTING_PROFILES . "\" . currentProfileName
+
         
+        ; formatterForJson := JsonFormatter()
+        ; jsonString := formatterForJson.FormatJsonObject(jsonObject)
+        ; FileRecycle(pathToCurrentProfile . "\Keyboards.json")
+        ; FileAppend(jsonString, pathToCurrentProfile . "\Keyboards.json", "UTF-8")
+        ; this.MainScript.RunLogicalStartup()
+
+        
+        ; listViewElement.getPopup().Destroy() 
     }
 
     CreateTreeViewWithAssociatedListViewFromIniFile(iniFilePath){

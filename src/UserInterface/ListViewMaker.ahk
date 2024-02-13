@@ -21,6 +21,8 @@ class ListViewMaker{
     newHotKey := ""
     originalHotkey := ""
 
+    newAction := ""
+
     __New(activeObjectsRegistry, jsonFileContents, keyboardLayersInfoRegister){
         this.activeObjectsRegistry := activeObjectsRegistry
         this.jsonFileContents := jsonFileContents
@@ -109,6 +111,7 @@ class ListViewMaker{
 
     popupSaveButtonClickEvent(*){
         this.newHotkey := this.popupForConfiguringHotkey.getHotkeyFormatted()
+        this.newAction := this.popupForConfiguringHotkey.getAction()
         if (this.newHotkey = ""){
             ; TODO implement
             ; Delete that shit
@@ -117,7 +120,6 @@ class ListViewMaker{
             ; Set that shit
         }
 
-        ; msgbox(this.newHotkey)
     }
 
     popupCancelButtonClickEvent(*){
@@ -134,6 +136,10 @@ class ListViewMaker{
 
     getNewHotkey(){
         return this.newHotKey
+    }
+
+    getNewAction(){
+        return this.newAction
     }
 
     getOriginalHotkey(){

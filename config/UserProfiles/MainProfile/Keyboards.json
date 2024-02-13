@@ -7,9 +7,9 @@
 			"isObject":1
 		},
 		"CapsLock":{
-			"MethodName":"toggleLayerIndicator",
-			"ObjectName":"layers",
-			"Parameters":[1],
+			"MethodName":"CloseActiveAutohotkeyScript",
+			"ObjectName":"ProcessManagerInstance",
+			"Parameters":[],
 			"isObject":1
 		}
 	},

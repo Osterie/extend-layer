@@ -21,6 +21,8 @@ class HotKeyConfigurationPopup{
 
     saveButton := ""
 
+    deleteButton := ""
+
     undoDeletionButton := ""
     hotkeyDeleted := false
     actionDeleted := false
@@ -93,8 +95,8 @@ class HotKeyConfigurationPopup{
     createFinalizationButtons(){
         this.saveButton := this.mainGui.AddButton("Default w80", "Save+Done")
         this.cancelButton := this.mainGui.AddButton("Default w80", "Cancel+Done")
+        this.deleteButton := this.mainGui.AddButton("Default w80", "Delete+Done")
     }
-
 
     buttonToChangeOriginalHotkeyClickedEvent(){
         this.mainGui.Hide()
@@ -118,7 +120,7 @@ class HotKeyConfigurationPopup{
         this.mainGui.Hide()
 
 
-        actionCrafter := ActionCrafterGui(this.currentHotkeyAction, "..\resources\keyNames\keyNames.txt", this.activeObjectsRegistry)
+        actionCrafter := ActionCrafterGui(this.currentHotkeyAction, "..\resources\keyNames\keyNames.txt", this.activeObjectsRegistry, this.currentHotkeyCommand)
         actionSavedEventAction := ObjBindMethod(this, "saveButtonClickedForActionChangeEvent", actionCrafter)
         actionCrafter.addSaveButtonClickEventAction(actionSavedEventAction)
 
@@ -171,7 +173,7 @@ class HotKeyConfigurationPopup{
         this.undoDeletionButton.Opt("Hidden1")
 
         newAction := actionCrafter.getNewAction()
-        this.setCurrentActionText(newAction)
+        this.setCurrentActionText(newAction.toString())
 
         ; TODO perhaps remove this line
         this.currentHotkeyAction := newAction
@@ -180,7 +182,6 @@ class HotKeyConfigurationPopup{
         actionCrafter.Destroy()
         this.mainGui.Show()
     }
-
 
     deleteButtonClickedForHotkeyChangeEvent(hotkeyCrafter, savedButton, idk){
         
@@ -254,7 +255,6 @@ class HotKeyConfigurationPopup{
     }
 
     setCurrentActionText(newAction){
-        this.currentHotkeyAction := newAction
         this.currentActionTextControl.Value := ("Action: `n" . newAction)
 
         if (this.actionDeleted = true){
@@ -295,6 +295,15 @@ class HotKeyConfigurationPopup{
         }
 
         return hotkeyToReturn
+    }
+
+    getAction(){
+        actionToReturn := ""
+        if (this.actionDeleted != true){
+            actionToReturn := this.currentHotkeyAction
+        }
+
+        return actionToReturn
     }
 
     destroy(){
