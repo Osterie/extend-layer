@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
 
-#Include <JsonParsing\JXON\JXON>
+; #Include <JsonParsing\JXON\JXON>
 #Include "Main\util\ListViewFromIniFileContent.ahk"
 #Include "Main\ProfileEditing\ProfileButtons.ahk"
 #Include "Main\Functionality\Keyboard\TreeViewForLayers.ahk"
@@ -64,8 +64,6 @@ Class ExtraKeyboardsAppGui{
         this.ExistingProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_EXISTING_PROFILES)
 
         this.PATH_TO_META_FILE := pathToMetaFile
-
-        ; this.PATH_TO_MAIN_SCRIPT := pathToMainScript
 
         ; this.PATH_TO_EMPTY_PROFILE := pathToEmptyProfile
 
@@ -178,34 +176,6 @@ Class ExtraKeyboardsAppGui{
 
         
         listViewElement.getPopup().Destroy()
-    }
-
-    actionSavedEvent(listViewElement, *){
-        ; ; TODO now i must update the json file with the new hotkey if it is valid...
-
-        ; ; TODO keyboardLayersInfoRegister change a hotkey, turn into a json file, and then change the existing json file
-
-        ; oldHotkey := HotkeyFormatConverter.convertFromFriendlyName(listViewElement.getOriginalHotkey())
-        ; newHotkey := listViewElement.getNewHotkey()
-
-        ; this.keyboardLayersInfoRegister.ChangeHotkey(this.currentLayer, oldHotkey, newHotKey)
-
-        ; toJsonReader := KeyboadLayersInfoClassObjectReader()
-        ; toJsonReader.ReadObjectToJson(this.keyboardLayersInfoRegister)
-        ; jsonObject := toJsonReader.getJsonObject()
-
-        ; currentProfileName := iniRead(this.PATH_TO_META_FILE, "General", "activeUserProfile")
-        ; pathToCurrentProfile := this.PATH_TO_EXISTING_PROFILES . "\" . currentProfileName
-
-        
-        ; formatterForJson := JsonFormatter()
-        ; jsonString := formatterForJson.FormatJsonObject(jsonObject)
-        ; FileRecycle(pathToCurrentProfile . "\Keyboards.json")
-        ; FileAppend(jsonString, pathToCurrentProfile . "\Keyboards.json", "UTF-8")
-        ; this.MainScript.RunLogicalStartup()
-
-        
-        ; listViewElement.getPopup().Destroy() 
     }
 
     CreateTreeViewWithAssociatedListViewFromIniFile(iniFilePath){

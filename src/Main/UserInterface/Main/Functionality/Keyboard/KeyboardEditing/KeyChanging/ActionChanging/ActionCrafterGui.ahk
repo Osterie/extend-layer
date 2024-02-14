@@ -1,14 +1,10 @@
 #Requires AutoHotkey v2.0
+
 #Include "..\..\..\..\..\util\GuiControlsRegistry.ahk"
-
-; #Include "..\library\MetaInfo\MetaInfoReading\KeyNamesReader.ahk"
-#Include <MetaInfo\MetaInfoReading\KeyNamesReader>
 #Include "..\HotkeyChanging\HotkeyCrafterGui.ahk"
-
-; #Include "..\library\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo.ahk"
-#Include <MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
-
 #Include ".\ParameterControlsGroup.ahk"
+#Include <MetaInfo\MetaInfoReading\KeyNamesReader>
+#Include <MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
 class ActionCrafterGui{
 
@@ -78,18 +74,6 @@ class ActionCrafterGui{
         listViewOfSpecialAction.SetFont("s12 c333333", "Segoe UI")
 
 
-
-        ; TODO what is needed for an action:
-        ; Object name
-        ; Method name
-        ; Method parameters (which would be an array)
-        ; .isObject true
-
-        ; TODO what is needed for a hotkey:
-        ; Key
-        ; Modifiers
-        ; .isObject false
-
         Loop allPossibleSpecialActions.Length
         {
             listViewOfSpecialAction.Add("", allPossibleSpecialActions[A_Index])
@@ -113,16 +97,7 @@ class ActionCrafterGui{
         ; this.controlsForAdvancedHotkeys := guiControlsRegistry()
         ; this.controlsForSimpleHotkeys := guiControlsRegistry()
         ; this.controlsForModifiers := guiControlsRegistry()
-
-        ; originalHotkeyFormatted := HotkeyFormatConverter.convertFromFriendlyName(originalHotkey, " + ")
-
     }
-
-    ; TODO what is needed for an action:
-        ; Object name
-        ; Method name
-        ; Method parameters (which would be an array)
-        ; .isObject true
 
     listViewOfSpecialActionSelected(listView, rowNumberSpecialAction, columnNumber){
         friendlyNameOfAction := listView.GetText(rowNumberSpecialAction)
@@ -136,32 +111,6 @@ class ActionCrafterGui{
         parameters := MethodInfoOfAction.getMethodParameters()
 
         this.setAmountOfParametersToBeFilled(parameters.count)
-
-        ; objectName := "layers"
-        ; methodName := "cycleLayerIndicators"
-        ; friendlyNameOfAction := "Cycle Layer Indicators"
-        ; methodDescription := "Cycles the layer indicators for a given layer, this is just some extra text i added because i needed a longer description.)"
-
-        ; ; !TESTING
-        ; parameters := Map()
-        ; parameter1 := Object()
-        ; parameter1.name := "red"
-        ; parameter1.type := "int"
-        ; parameter1.description := "The red value to set the gamme. 0-255"
-        ; parameters["red"] := parameter1
-
-        ; parameter2 := Object()
-        ; parameter2.name := "Folder path"
-        ; parameter2.type := "string"
-        ; parameter2.description := "A path to a folder. from the root. Example: C:\\Users\\User\\Desktop\\Folder"
-        ; parameters["Folder path"] := parameter2
-
-        ; parameter3 := Object()
-        ; parameter3.name := "shit"
-        ; parameter3.type := "int"
-        ; parameter3.description := "The brightness to set the monitor to. 0-100"
-        ; parameters["Brightness"] := parameter3
-
         this.hideParameterControls()
         this.setTextForSpecialActionMaker(friendlyNameOfAction, methodDescription, parameters)
 
@@ -274,11 +223,6 @@ class ActionCrafterGui{
             parameterType := parameterInfo.getType()
             parameterDescription := parameterInfo.getDescription()
 
-            ; !TESTING
-            ; parameterName := parameterInfo.name
-            ; parameterType := parameterInfo.type
-            ; parameterDescription := parameterInfo.description
-            
             parameterControls.setTextControlValue(parameterName)
 
             parameterControls.setEditControlType(parameterType)
@@ -312,10 +256,8 @@ class ActionCrafterGui{
     }
 
     getNewAction(){
-        ; TODO add conditionals to check which crafter
         ; TODO check if the values to return are correct perhaps...
         if (this.specialActionRadio.Value = true){
-            ; TODO return a action
             return this.getNewSpecialActionHotkey()
         }
         else if (this.newKeyRadio.Value = true){
@@ -348,8 +290,6 @@ class ActionCrafterGui{
         textCtrl.Move(,, this.GetTextSize(textCtrl, text)*)
         textCtrl.Value := text
         textCtrl.Gui.Show('AutoSize')
-    
-
     }
 
     GetTextSize(textCtrl, text) {
@@ -363,5 +303,3 @@ class ActionCrafterGui{
         return [Round(width * 96/A_ScreenDPI), Round(height * 96/A_ScreenDPI)]
     }
 }
-; test := ActionCrafterGui("+Capslock", "..\resources\keyNames\keyNames.txt", "")
-; test.Show()
