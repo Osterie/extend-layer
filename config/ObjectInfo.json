@@ -1,0 +1,395 @@
+{
+    "Mouse": {
+        "ObjectName": "MouseInstance",
+        "ClassName": "Mouse",
+        "Description": "Used for controlling the mouse, can click, move, autoclick and such",
+        "Methods": {
+            "MoveMouseToCenterOfScreen": {
+                "MethodName": "MoveMouseToCenterOfScreen",
+                "FriendlyName": "Move mouse to center of screen",
+                "Description": "Moves the mouse to the center of the screen",
+                "Parameters": []
+            },
+            "ToggleAutoClicker": {
+                "MethodName": "ToggleAutoClicker",
+                "FriendlyName": "Toggle auto clicker",
+                "Description": "Toggles the auto clicker on and off",
+                "Parameters": []
+            },
+            "StartAutoClicker": {
+                "MethodName": "StartAutoClicker",
+                "FriendlyName": "Start auto clicker",
+                "Description": "Starts the auto clicker if it is not running",
+                "Parameters": []
+            },
+            "StopAutoClicker": {
+                "MethodName": "StopAutoClicker",
+                "FriendlyName": "Stop auto clicker",
+                "Description": "Stops the auto clicker if it is running",
+                "Parameters": []
+            },
+            "SendClick": {
+                "MethodName": "SendClick",
+                "FriendlyName": "Send mouse click",
+                "Description": "Sends a mouse click",
+                "Parameters": []
+            },
+            "MoveMouseTo": {
+                "MethodName": "MoveMouseTo",
+                "FriendlyName": "Move mouse to position",
+                "Description": "Moves the mouse to the specified coordinates",
+                "Parameters": [
+                    {
+                        "Name": "x coordinate",
+                        "Type": "int",
+                        "Description": "The x coordinate to move the mouse to"
+                    },
+                    {
+                        "Name": "y coordinate",
+                        "Type": "int",
+                        "Description": "The y coordinate to move the mouse to"
+                    }
+                ]
+            }
+        }
+    },
+    "Keyboard": {
+        "ObjectName": "KeyboardInstance",
+        "ClassName": "Keyboard",
+        "Description": "Can be used to send keyboard input, even repearedly",
+        "Methods": {
+            "SendKeyBoardInput": {
+                "MethodName": "SendKeyBoardInput",
+                "FriendlyName": "Send keyboard input",
+                "Description": "Sends a key press",
+                "Parameters": [
+                    {
+                        "Name": "Keyboard key",
+                        "Type": "string",
+                        "Description": "The key to send"
+                    }
+                ]
+            },
+            "SendRepeatInput": {
+                "MethodName": "SendRepeatInput",
+                "FriendlyName": "Send an input repeatedly",
+                "Description": "Sends a series of key presses",
+                "Parameters": [
+                    {
+                        "Name": "Keyboard key",
+                        "Type": "string",
+                        "Description": "The key to repeatedly to send"
+                    }
+                ]
+            }
+        }
+    },
+    "ProcessManager":{
+        "ObjectName": "ProcessManagerInstance",
+        "ClassName": "ProcessManager",
+        "Description": "Can be used to close processes or close this script.",
+        "Methods": {
+            "CloseActiveAutohotkeyScript": {
+                "MethodName": "CloseActiveAutohotkeyScript",
+                "FriendlyName": "Close this script",
+                "Description": "Closes this script",
+                "Parameters": []
+            },
+            "CloseFocusedProcess": {
+                "MethodName": "CloseFocusedProcess",
+                "FriendlyName": "Close focused process",
+                "Description": "Closes the currently focused process",
+                "Parameters": []
+            },
+            "SuspendActiveAutohotkeyScript": {
+                "MethodName": "SuspendActiveAutohotkeyScript",
+                "FriendlyName": "Suspend this script",
+                "Description": "Suspends this script",
+                "Parameters": []
+            }
+        }
+    },
+
+    "CommandPromptOpener": {
+        "ObjectName": "CommandPrompt",
+        "ClassName": "CommandPromptOpener",
+        "Description": "Used for opening cmd",
+        "Methods": {
+            "OpenCmdPathedToCurrentLocation": {
+                "MethodName": "OpenCmdPathedToCurrentLocation",
+                "FriendlyName": "Open cmd pathed to current location",
+                "Description": "Opens the command prompt to the current file location. Works when working in Visual Studio Code and when in the file editor.",
+                "Parameters": []
+            }
+        }
+    },
+
+    "BatteryController":{
+        "ObjectName": "Battery",
+        "ClassName": "BatteryController",
+        "Description": "Change battery settings (WIP, don't use yet, probably wont work)",
+        "Methods": {
+            "ToggleBatterySaver": {
+                "MethodName": "ToggleBatterySaver",
+                "FriendlyName": "Toggle battery saver",
+                "Description": "Toggles the battery saver on and off",
+                "Parameters": []
+            },
+            "TurnOnBatterySaver": {
+                "MethodName": "TurnOnBatterySaver",
+                "FriendlyName": "Turn on battery saver",
+                "Description": "Turns on the battery saver",
+                "Parameters": []
+            },
+            "TurnOffBatterySaver": {
+                "MethodName": "TurnOffBatterySaver",
+                "FriendlyName": "Turn off battery saver",
+                "Description": "Turns off the battery saver",
+                "Parameters": []
+            }
+        }
+    },
+
+    "FileExplorerNavigator":{
+        "ObjectName": "FileExplorer",
+        "ClassName": "FileExplorerNavigator",
+        "Description": "Used for navigating in the file explorer",
+        "Methods": {
+            "NavigateToFolder": {
+                "MethodName": "NavigateToFolder",
+                "FriendlyName": "Navigate to folder",
+                "Description": "Navigates to the specified folder",
+                "Parameters": [
+                    {
+                        "Name": "Folder path",
+                        "Type": "string",
+                        "Description": "A path to a folder. from the root. Example: C:\\Users\\User\\Desktop\\Folder"
+                    }
+                ]
+            }
+        }
+    },
+
+    "KeyboardOverlayRegistry": {
+        "ObjectName": "OverlayRegistry",
+        "ClassName": "KeyboardOverlayRegistry",
+        "Description": "No use yet",
+        "Methods": {
+            "ToggleKeyboardOverlay": {
+                "MethodName": "ToggleKeyboardOverlay",
+                "FriendlyName": "Toggle keyboard overlay",
+                "Description": "Toggles the keyboard overlay",
+                "Parameters": []
+            }
+        }
+    },
+
+    "WebNavigator":{
+        "ObjectName": "WebSearcher",
+        "ClassName": "WebNavigator",
+        "Description": "Used for navigating or other shortcuts in the web browser",
+        "Methods": {
+            "CloseTabsToTheRight": {
+                "MethodName": "CloseTabsToTheRight",
+                "FriendlyName": "Close tabs to the right in a browser",
+                "Description": "Closes all tabs to the right of the active tab in google chrome",
+                "Parameters": []
+            }
+        }
+    },
+
+    "KeysPressedGui" : {
+        "ObjectName": "OnScreenWriter",
+        "ClassName": "KeysPressedGui",
+        "Description": "Used for showing keys pressed on screen",
+        "Methods": {
+            "ToggleShowKeysPressed": {
+                "MethodName": "ToggleShowKeysPressed",
+                "FriendlyName": "Write text over screen",
+                "Description": "Toggles an on screen gui where the user can write text to show others.",
+                "Parameters": []
+            }
+        }
+    },
+
+    "ComputerInputController" : {
+        "ObjectName": "ComputerInput",
+        "ClassName": "ComputerInputController",
+        "Description": "Used for blocking input from the keyboard and/or mouse",
+        "Methods": {
+            "BlockAllInput": {
+                "MethodName": "BlockAllInput",
+                "FriendlyName": "Block all computer input",
+                "Description": "Blocks keyboard and mouse input(mostly)",
+                "Parameters": []
+            },
+            "UnBlockAllInput":{
+                "MethodName": "UnBlockAllInput",
+                "FriendlyName": "Unblock all computer input",
+                "Description": "Unblocks keyboard and mouse input(mostly)",
+                "Parameters": []
+            },
+            "BlockKeyboard": {
+                "MethodName": "BlockKeyboard",
+                "FriendlyName": "Block keyboard input",
+                "Description": "Blocks keyboard input",
+                "Parameters": []
+            },
+            "UnBlockKeyboard": {
+                "MethodName": "UnBlockKeyboard",
+                "FriendlyName": "Unblock keyboard input",
+                "Description": "Unblocks keyboard input",
+                "Parameters": []
+            },
+            "BlockMouse": {
+                "MethodName": "BlockMouse",
+                "FriendlyName": "Block mouse input",
+                "Description": "Blocks mouse input",
+                "Parameters": []
+            },
+            "UnBlockMouse": {
+                "MethodName": "UnBlockMouse",
+                "FriendlyName": "Unblock mouse input",
+                "Description": "Unblocks mouse input",
+                "Parameters": []
+            }
+        }
+    },
+    "ScreenPrivacyController":{
+        "ObjectName": "PrivacyController",
+        "ClassName": "ScreenPrivacyController",
+        "Description": "Used for hiding content on screen",
+        "Methods": {
+            "HideScreen": {
+                "MethodName": "HideScreen",
+                "FriendlyName": "Hide screen",
+                "Description": "Hides the entire screen",
+                "Parameters": []
+            },
+            "HideWindow": {
+                "MethodName": "HideWindow",
+                "FriendlyName": "Hide active window",
+                "Description": "Hides the active window",
+                "Parameters": []
+            },
+            "HideGui": {
+                "MethodName": "HideGui",
+                "FriendlyName": "Hide the screen hider itself (turn it off)",
+                "Description": "Hides the screen hider itself",
+                "Parameters": []
+            },
+            "HideTabs": {
+                "MethodName": "HideTabs",
+                "FriendlyName": "Hide active tabs in a browser",
+                "Description": "Hides the active tabs in a browser",
+                "Parameters": []
+            }
+        }
+    },
+
+    "DeviceManager":{
+        "ObjectName": "DeviceManipulator",
+        "ClassName": "DeviceManager",
+        "Description": "Not in use yet. WIP",
+        "Methods": {}
+    },
+
+    "Monitor":{
+        "ObjectName": "MonitorInstance",
+        "ClassName": "Monitor",
+        "Description": "Used for controlling the monitor, can change brightness and gamma",
+        "Methods": {
+            "SetBrightness": {
+                "MethodName": "SetBrightness",
+                "FriendlyName": "Set monitor brightness",
+                "Description": "Sets the brightness of the monitor",
+                "Parameters": [
+                    {
+                        "Name": "Brightness",
+                        "Type": "int",
+                        "Description": "The brightness to set the monitor to. 0-100"
+                    }
+                ]
+            },
+            "ToggleHighestBrightness": {
+                "MethodName": "ToggleHighestBrightness",
+                "FriendlyName": "Toggle highest monitor brightness",
+                "Description": "Toggles the brightness of the monitor to 100 and 50. Might only work for laptops, and not yet tested on other devices(than my own).",
+                "Parameters": []
+            },
+            "ToggleLowestBrightness":{
+                "MethodName": "ToggleLowestBrightness",
+                "FriendlyName": "Toggle lowest monitor brightness",
+                "Description": "Toggles the brightness of the monitor to 0 and 50. Might only work for laptops, and not yet tested on other devices(than my own).",
+                "Parameters": []
+            },
+
+            "SetGamma": {
+                "MethodName": "SetGamma",
+                "FriendlyName": "Set monitor gamma",
+                "Description": "Sets the gamma of the monitor",
+                "Parameters": [
+                    {
+                        "Name": "Red",
+                        "Type": "int",
+                        "Description": "The red value to set the gamme. 0-255"
+                    },
+                    {
+                        "Name": "Green",
+                        "Type": "int",
+                        "Description": "The green value to set the gamme. 0-255"
+                    },
+                    {
+                        "Name": "Blue",
+                        "Type": "int",
+                        "Description": "The blue value to set the gamme. 0-255"
+                    }
+                ]
+
+            },
+            "ToggleHighestGamma": {
+                "MethodName": "ToggleHighestGamma",
+                "FriendlyName": "Toggle highest monitor gamma",
+                "Description": "Toggles the gamma of the monitor to (255, 255, 255) and (128, 128, 128). Might only work for laptops, and not yet tested on other devices(than my own).",
+                "Parameters": []
+            },
+            "ToggleLowestGamma":{
+                "MethodName": "ToggleLowestGamma",
+                "FriendlyName": "Toggle lowest monitor gamma",
+                "Description": "Toggles the gamma of the monitor to (0, 0, 0) and (128, 128, 128). Might only work for laptops, and not yet tested on other devices(than my own).",
+                "Parameters": []
+            }
+        }
+    },
+    "LayerIndicatorController":{
+        "ObjectName": "layers",
+        "ClassName": "LayerIndicatorController",
+        "Description": "Used for changign the active keyboard laye and its layer indicator",
+        "Methods": {
+            "toggleLayerIndicator":{
+                "MethodName": "toggleLayerIndicator",
+                "FriendlyName": "Toggle layer indicator",
+                "Description": "Toggles the active layer between off and the given layer.",
+                "Parameters": [
+                    {
+                        "Name": "layer",
+                        "Type": "int",
+                        "Description": "The layer to toggle the indicator for"
+                    }
+                ]
+            },
+            "cycleLayerIndicators":{
+                "MethodName": "cycleLayerIndicators",
+                "FriendlyName": "Cycle layer indicators",
+                "Description": "Cycles the layer indicators for a given layer",
+                "Parameters": [
+                    {
+                        "Name": "layer",
+                        "Type": "int",
+                        "Description": "The default layer to set if no layer is active."
+                    }
+                ]
+            }
+        }
+    }
+}
