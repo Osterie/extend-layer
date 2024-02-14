@@ -22,6 +22,10 @@ class ParameterControlsGroup{
         return this.parameterEditControl
     }
 
+    getEditControlValue(){
+        return this.parameterEditControl.Value
+    }
+
     getDescriptionControl(){
         return this.parameterDescriptionControl
     }
