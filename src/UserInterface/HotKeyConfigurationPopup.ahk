@@ -3,7 +3,8 @@
 
 #Include ".\HotkeyCrafterGui.ahk"
 #Include ".\ActionCrafterGui.ahk"
-#Include "..\library\HotkeyFormatConverter.ahk"
+; #Include "..\library\HotkeyFormatConverter.ahk"
+#Include <HotkeyFormatConverter>
 
 class HotKeyConfigurationPopup{
 

@@ -1,7 +1,8 @@
 #Requires AutoHotkey v2.0
 #Include ".\guiControlsRegistry.ahk"
 
-#Include "..\library\MetaInfo\MetaInfoReading\KeyNamesReader.ahk"
+; #Include "..\library\MetaInfo\MetaInfoReading\KeyNamesReader.ahk"
+#Include <MetaInfo\MetaInfoReading\KeyNamesReader>
 
 class HotkeyCrafterGui{
 

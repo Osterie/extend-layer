@@ -6,7 +6,8 @@
 ; #Include ".\TreeViewFromJsonFile.ahk"
 ; #Include ".\ListViewFromJsonObject.ahk"
 #Include ".\ListViewFromIniFileContent.ahk"
-#Include "..\library\FoldersAndFiles\FolderManager.ahk"
+; #Include "..\library\FoldersAndFiles\FolderManager.ahk"
+#Include <FoldersAndFiles\FolderManager>
 
 class ProfileButtons{
 

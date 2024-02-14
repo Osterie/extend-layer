@@ -5,34 +5,37 @@
 #Requires Autohotkey v2.0
 
 #Include ".\ExtraKeyboardsApp.ahk"
-#Include ".\library\IODevices\DeviceManager.ahk"
-#Include ".\library\IODevices\ComputerInputController.ahk"
-#Include ".\library\IODevices\Monitor.ahk"
-#Include ".\library\IODevices\Mouse.ahk"
-#Include ".\library\Clock\CountdownGUI.ahk"
-#Include ".\library\LayerIndication\LayerIndicatorController.ahk"
-#Include ".\library\BatteryAndPower\BatteryController.ahk"
-#Include ".\library\Privacy\ScreenPrivacyController.ahk"
-#Include ".\library\KeysPressedGui.ahk"
-#Include ".\library\Navigation\WebNavigation\WebNavigator.ahk"
-#Include ".\library\KeyboardOverlay\KeyboardOverlay.ahk"
-#Include ".\library\CommandPromptOpener.ahk"
-#Include ".\library\Navigation\FileNavigation\FileExplorerNavigator.ahk"
-#Include ".\library\KeyboardOverlay\KeyboardOverlayRegistry.ahk"
-#Include ".\library\ProcessManager.ahk"
-#Include ".\library\MetaInfo\MetaInfoStorage\Objects\ObjectRegistry.ahk"
-#Include ".\library\Configuration\StartupConfiguration\MainStartupConfigurator.ahk"
-#Include ".\library\Privacy\UnauthorizedUseDetector.ahk"
+#Include <IODevices\DeviceManager>
+#Include <IODevices\ComputerInputController>
+#Include <IODevices\Monitor>
+#Include <IODevices\Mouse>
+#Include <Clock\CountdownGUI>
+#Include <LayerIndication\LayerIndicatorController>
+#Include <BatteryAndPower\BatteryController>
+#Include <Privacy\ScreenPrivacyController>
+#Include <KeysPressedGui>
+#Include <Navigation\WebNavigation\WebNavigator>
+#Include <KeyboardOverlay\KeyboardOverlay>
+#Include <CommandPromptOpener>
+#Include <Navigation\FileNavigation\FileExplorerNavigator>
+#Include <KeyboardOverlay\KeyboardOverlayRegistry>
+#Include <ProcessManager>
+#Include <MetaInfo\MetaInfoStorage\Objects\ObjectRegistry>
+#Include <Configuration\StartupConfiguration\MainStartupConfigurator>
+#Include <Privacy\UnauthorizedUseDetector>
 
-#Include ".\library\MetaInfo\MetaInfoStorage\Objects\ObjectInfo.ahk"
-#Include ".\library\MetaInfo\MetaInfoStorage\Objects\MethodInfo.ahk"
-#Include ".\library\MetaInfo\MetaInfoStorage\Objects\MethodRegistry.ahk"
+#Include <MetaInfo\MetaInfoStorage\Objects\ObjectInfo>
+#Include <MetaInfo\MetaInfoStorage\Objects\MethodInfo>
+#Include <MetaInfo\MetaInfoStorage\Objects\MethodRegistry>
 
-#Include ".\library\JsonParsing\JXON\JXON.ahk"
+#Include <JsonParsing\JXON\JXON>
 
-#Include ".\library\MetaInfo\MetaInfoReading\ObjectsJsonReader.ahk"
-#Include ".\library\MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader.ahk"
-#Include ".\library\MetaInfo\MetaInfoReading\KeyboadLayersInfoClassObjectReader.ahk"
+#Include <MetaInfo\MetaInfoReading\ObjectsJsonReader>
+#Include <MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader>
+#Include <MetaInfo\MetaInfoReading\KeyboadLayersInfoClassObjectReader>
+
+#Include <CommandPromptOpener>
+#Include <MetaInfo\MetaInfoReading\ObjectsJsonReader>
 
 ; TODO Cleanup!
 

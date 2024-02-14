@@ -1,7 +1,8 @@
 #Requires AutoHotkey v2.0
 
 
-#Include "..\library\JsonParsing\JXON\JXON.ahk"
+; #Include "..\library\JsonParsing\JXON\JXON.ahk"
+#Include <JsonParsing\JXON\JXON>
 #Include ".\TreeViewFromIniFile.ahk"
 #Include ".\ProfileButtons.ahk"
 #Include ".\KeyboardLayerChanging.ahk"
@@ -9,8 +10,11 @@
 ; #Include ".\TreeViewFromJsonFile.ahk"
 ; #Include ".\ListViewFromJsonObject.ahk"
 #Include ".\ListViewFromIniFileContent.ahk"
-#Include "..\library\FoldersAndFiles\FolderManager.ahk"
-#Include "..\library\JsonParsing\JsonFormatter\JsonFormatter.ahk"
+; #Include "..\library\FoldersAndFiles\FolderManager.ahk"
+; #Include "..\library\JsonParsing\JsonFormatter\JsonFormatter.ahk"
+
+#Include <FoldersAndFiles\FolderManager>
+#Include <JsonParsing\JsonFormatter\JsonFormatter>
 
 ; TODO have a hotkey which sends a given key(or hotkey) after a given delay.
 ; TODO could also have a hotkey/key which is excecuted if a loud enough sound is caught by the mic.

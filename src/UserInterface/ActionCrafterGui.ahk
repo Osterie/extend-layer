@@ -1,10 +1,12 @@
 #Requires AutoHotkey v2.0
 #Include ".\guiControlsRegistry.ahk"
 
-#Include "..\library\MetaInfo\MetaInfoReading\KeyNamesReader.ahk"
+; #Include "..\library\MetaInfo\MetaInfoReading\KeyNamesReader.ahk"
+#Include <MetaInfo\MetaInfoReading\KeyNamesReader>
 #Include ".\HotkeyCrafterGui.ahk"
 
-#Include "..\library\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo.ahk"
+; #Include "..\library\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo.ahk"
+#Include <MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
 #Include ".\ParameterControlsGroup.ahk"
 
