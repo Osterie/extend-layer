@@ -1,18 +1,11 @@
 #Requires AutoHotkey v2.0
 
 
-; #Include "..\library\JsonParsing\JXON\JXON.ahk"
 #Include <JsonParsing\JXON\JXON>
-#Include ".\TreeViewFromIniFile.ahk"
-#Include ".\ProfileButtons.ahk"
-#Include ".\KeyboardLayerChanging.ahk"
-#Include ".\ListViewMaker.ahk"
-; #Include ".\TreeViewFromJsonFile.ahk"
-; #Include ".\ListViewFromJsonObject.ahk"
-#Include ".\ListViewFromIniFileContent.ahk"
-; #Include "..\library\FoldersAndFiles\FolderManager.ahk"
-; #Include "..\library\JsonParsing\JsonFormatter\JsonFormatter.ahk"
-
+#Include "Main\util\ListViewFromIniFileContent.ahk"
+#Include "Main\ProfileEditing\ProfileButtons.ahk"
+#Include "Main\Functionality\Keyboard\TreeViewForLayers.ahk"
+#Include "Main\Functionality\Keyboard\ListViewForHotkeys.ahk"
 #Include <FoldersAndFiles\FolderManager>
 #Include <JsonParsing\JsonFormatter\JsonFormatter>
 
@@ -50,10 +43,13 @@ Class ExtraKeyboardsAppGui{
 
     currentLayer := ""
 
+    keyNames := ""
 
-    __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonFileConents, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript){
+
+    __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonFileConents, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames){
         this.MainScript := mainScript
         
+        this.keyNames := keyNames
         
         this.ExistingProfilesManager := FolderManager()
         this.PresetProfilesManager := FolderManager()
@@ -115,12 +111,12 @@ Class ExtraKeyboardsAppGui{
         Tab := this.ExtraKeyboardsAppGui.AddTab3("ys+20 xm", ["Keyboards","Change Functions Settings","Documentation"])
         Tab.UseTab(1)
 
-        keyboardLayoutChanger := KeyboardLayerChanging()
+        keyboardLayoutChanger := TreeViewForLayers()
         keyboardLayoutChanger.createElementsForGui(this.ExtraKeyboardsAppGui, jsonFileContents)
         ; TODO use this.jsonwhatever ...
         
         
-        listViewElement := ListViewMaker(this.activeObjectsRegistry, jsonFileContents, this.keyboardLayersInfoRegister)
+        listViewElement := ListViewForHotkeys(this.activeObjectsRegistry, jsonFileContents, this.keyboardLayersInfoRegister, this.keyNames)
         listViewElement.CreateListView(this.ExtraKeyboardsAppGui, ["KeyCombo","Action"])
         
         

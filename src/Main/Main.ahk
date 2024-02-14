@@ -95,9 +95,9 @@ if (not A_IsAdmin){
 ; |----------PRIVATE PERSONAL---------|
 ; |-----------------------------------|
 
-name := IniRead("../config/privateConfig.ini", "PrivateInfo", "Name")
-eMail := IniRead("../config/privateConfig.ini", "PrivateInfo", "Email")
-password := IniRead("../config/privateConfig.ini", "PrivateInfo", "Password")
+name := IniRead("../../config/privateConfig.ini", "PrivateInfo", "Name")
+eMail := IniRead("../../config/privateConfig.ini", "PrivateInfo", "Email")
+password := IniRead("../../config/privateConfig.ini", "PrivateInfo", "Password")
 
 Hotstring( "::agb", StrReplace(name, "Ã¸", "ø"))
 Hotstring( "::a@", eMail)
@@ -122,8 +122,8 @@ Hotstring("::@p", password)
 
 Class Main{
 
-    PATH_TO_OBJECT_INFO := "..\config\ObjectInfo.json"
-    PATH_TO_META_INI_FILE := "..\config\meta.ini"
+    PATH_TO_OBJECT_INFO := "..\..\config\ObjectInfo.json"
+    PATH_TO_META_INI_FILE := "..\..\config\meta.ini"
     
 
     CURRENT_PROFILE_NAME := ""
@@ -166,8 +166,8 @@ Class Main{
 
     UpdatePathsToInfo(){
         this.CURRENT_PROFILE_NAME := iniRead(this.PATH_TO_META_INI_FILE, "General", "activeUserProfile")
-        this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := "../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "/ClassObjects.ini"
-        this.PATH_TO_CURRENT_KEYBOARD_LAYOUT := "../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "\Keyboards.json"
+        this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := "../../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "/ClassObjects.ini"
+        this.PATH_TO_CURRENT_KEYBOARD_LAYOUT := "../../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "\Keyboards.json"
     
         keyboardSettingsString := FileRead(this.PATH_TO_CURRENT_KEYBOARD_LAYOUT, "UTF-8")
         this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)

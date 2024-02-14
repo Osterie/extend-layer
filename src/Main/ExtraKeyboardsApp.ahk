@@ -30,12 +30,20 @@ Class ExtraKeyboardsApp{
     __New(jsonObject, activeObjectsRegistry,  keyboardLayersInfoRegister, mainScript){
 
         this.MainScript := mainScript
-        pathToExistingProfiles := "..\config\UserProfiles"
-        pathToPresetProfiles := "..\config\PresetProfiles"
-        pathToMetaFile := "..\config\meta.ini"
-        pathToMainScript := A_ScriptDir "\..\src\Main.ahk"
-        pathToEmptyProfile := "..\config\EmptyProfile"
-        this.UserInterface := ExtraKeyboardsAppgui(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonObject, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript)
+        pathToExistingProfiles := "..\..\config\UserProfiles"
+        pathToPresetProfiles := "..\..\config\PresetProfiles"
+        pathToMetaFile := "..\..\config\meta.ini"
+        pathToMainScript := A_ScriptDir "\..\..\src\Main.ahk"
+        pathToEmptyProfile := "..\..\config\EmptyProfile"
+        pathToKeyNamesFile := "..\..\resources\keyNames.txt"
+    
+        keyNamesFileObjReader := KeyNamesReader()
+        fileObjectOfKeyNames := FileOpen(pathToKeyNamesFile, "rw" , "UTF-8")
+        keyNames := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
+    
+        this.UserInterface := ExtraKeyboardsAppgui(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonObject, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames)
+    
+    
     }
 
     Start(){

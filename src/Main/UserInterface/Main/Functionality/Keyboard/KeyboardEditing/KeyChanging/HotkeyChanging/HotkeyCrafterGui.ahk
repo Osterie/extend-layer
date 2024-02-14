@@ -1,5 +1,5 @@
 #Requires AutoHotkey v2.0
-#Include ".\guiControlsRegistry.ahk"
+#Include "..\..\..\..\..\util\GuiControlsRegistry.ahk"
 
 ; #Include "..\library\MetaInfo\MetaInfoReading\KeyNamesReader.ahk"
 #Include <MetaInfo\MetaInfoReading\KeyNamesReader>
@@ -25,7 +25,7 @@ class HotkeyCrafterGui{
     createdOnOtherGui := false
 
     ; TODO pathToKeyNamesFile should instead just be a paramater which gives what you want immmediatly, (this.availableKeyNames = keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
-    __New(originalHotkey, pathToKeyNamesFile, guiToAddTo := ""){
+    __New(originalHotkey, arrayOfKeyNames, guiToAddTo := ""){
 
         if (guiToAddTo = ""){
             this.GuiObject := Gui()
@@ -39,10 +39,9 @@ class HotkeyCrafterGui{
 
         ; TODO add path to keynames file as parameter
 
-        keyNamesFileObjReader := KeyNamesReader()
-        fileObjectOfKeyNames := FileOpen(pathToKeyNamesFile, "rw" , "UTF-8")
 
-        this.availableKeyNames := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
+
+        this.availableKeyNames := arrayOfKeyNames 
         this.controlsForAdvancedHotkeys := guiControlsRegistry()
         this.controlsForSimpleHotkeys := guiControlsRegistry()
         this.controlsForModifiers := guiControlsRegistry()

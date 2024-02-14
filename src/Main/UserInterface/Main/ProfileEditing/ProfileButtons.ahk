@@ -1,12 +1,7 @@
 #Requires AutoHotkey v2.0
 
-
-#Include ".\TreeViewFromIniFile.ahk"
-#Include ".\ProfileButtons.ahk"
-; #Include ".\TreeViewFromJsonFile.ahk"
-; #Include ".\ListViewFromJsonObject.ahk"
-#Include ".\ListViewFromIniFileContent.ahk"
-; #Include "..\library\FoldersAndFiles\FolderManager.ahk"
+#Include "..\util\TreeViewFromIniFile.ahk"
+#Include "..\util\ListViewFromIniFileContent.ahk"
 #Include <FoldersAndFiles\FolderManager>
 
 class ProfileButtons{

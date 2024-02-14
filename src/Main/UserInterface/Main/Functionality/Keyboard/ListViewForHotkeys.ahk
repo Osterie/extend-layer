@@ -1,8 +1,8 @@
 #Requires AutoHotkey v2.0
 
-#Include ".\HotKeyConfigurationPopup.ahk"
+#Include ".\KeyboardEditing\HotKeyConfigurationPopup.ahk"
 
-class ListViewMaker{
+class ListViewForHotkeys{
 
     listView := ""
     activeTreeViewItem := ""
@@ -22,11 +22,14 @@ class ListViewMaker{
     originalHotkey := ""
 
     newAction := ""
+    
+    arrayOfKeyNames := []
 
-    __New(activeObjectsRegistry, jsonFileContents, keyboardLayersInfoRegister){
+    __New(activeObjectsRegistry, jsonFileContents, keyboardLayersInfoRegister, arrayOfKeyNames){
         this.activeObjectsRegistry := activeObjectsRegistry
         this.jsonFileContents := jsonFileContents
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
+        this.arrayOfKeyNames := arrayOfKeyNames
     }
 
     CreateListView(guiObject, columnNames){
@@ -90,7 +93,7 @@ class ListViewMaker{
         this.originalHotkey := hotkeyBuild
         hotkeyAction := listView.GetText(rowNumber, 2)
 
-        this.popupForConfiguringHotkey := HotKeyConfigurationPopup(this.activeObjectsRegistry)
+        this.popupForConfiguringHotkey := HotKeyConfigurationPopup(this.activeObjectsRegistry, this.arrayOfKeyNames)
         if (Type(data) == "HotkeysRegistry"){
             this.popupForConfiguringHotkey.CreatePopupForHotkeyRegistry(data, rowNumber, hotkeyBuild, hotkeyAction)
             

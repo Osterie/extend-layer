@@ -1,9 +1,9 @@
 #Requires AutoHotkey v2.0
-#Include ".\guiControlsRegistry.ahk"
+#Include "..\..\..\..\..\util\GuiControlsRegistry.ahk"
 
 ; #Include "..\library\MetaInfo\MetaInfoReading\KeyNamesReader.ahk"
 #Include <MetaInfo\MetaInfoReading\KeyNamesReader>
-#Include ".\HotkeyCrafterGui.ahk"
+#Include "..\HotkeyChanging\HotkeyCrafterGui.ahk"
 
 ; #Include "..\library\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo.ahk"
 #Include <MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
@@ -48,9 +48,13 @@ class ActionCrafterGui{
 
     amountOfParametersToBeFilled := 0
 
-    __New(originalAction, pathToKeyNamesFile, activeObjectsRegistry, currentHotkeyToExcecuteAction){
+    arrayOfKeyNames := []
+
+    __New(originalAction, arrayOfKeyNames, activeObjectsRegistry, currentHotkeyToExcecuteAction){
 
         this.currentHotkeyToExcecuteAction := currentHotkeyToExcecuteAction
+
+        this.arrayOfKeyNames := arrayOfKeyNames
 
         this.controlsForAllSpecialActionCrafting := guiControlsRegistry()
         this.controlsForSpecificSpecialActionCrafting := guiControlsRegistry()
@@ -58,10 +62,7 @@ class ActionCrafterGui{
 
         this.activeObjectsRegistry := activeObjectsRegistry
         allPossibleSpecialActions := this.activeObjectsRegistry.getFriendlyNames()
-        ; allPossibleSpecialActions := ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6LONGASSNAMEEE turn off battery saver and such (WIP)", "Test7", "Test8", "Test9", "Test10"]
 
-        keyNamesFileObjReader := KeyNamesReader()
-        fileObjectOfKeyNames := FileOpen(pathToKeyNamesFile, "rw" , "UTF-8")
 
         this.GuiObject := Gui(, "Action Crafter")
         this.GuiObject.Opt("+Resize +MinSize640x480")
@@ -75,10 +76,6 @@ class ActionCrafterGui{
 
         listViewOfSpecialAction := this.GuiObject.Add("ListView", "r20 Grid w400", ["Special Action"])
         listViewOfSpecialAction.SetFont("s12 c333333", "Segoe UI")
-
-        ; listViewOfSpecialAction.OnEvent("ItemSelect", msgbox("test"))
-        ; listViewOfSpecialAction.ModifyCol()
-
 
 
 
@@ -102,7 +99,7 @@ class ActionCrafterGui{
 
         this.controlsForAllSpecialActionCrafting.AddControl("listViewOfSpecialAction", listViewOfSpecialAction)
 
-        this.hotkeyCrafter := HotkeyCrafterGui(originalAction, pathToKeyNamesFile, this.GuiObject)
+        this.hotkeyCrafter := HotkeyCrafterGui(originalAction, this.arrayOfKeyNames, this.GuiObject)
         this.hotkeyCrafter.hideAllButFinalisationButtons()
 
         ; validationText := this.guiObject.Add("Text", "x+20 y+20", "Validation Text")
@@ -112,7 +109,7 @@ class ActionCrafterGui{
         specialActionSelectedEvent := ObjBindMethod(this, "listViewOfSpecialActionSelected")
         listViewOfSpecialAction.OnEvent("ItemSelect", specialActionSelectedEvent)
 
-        ; this.availableKeyNames := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
+        
         ; this.controlsForAdvancedHotkeys := guiControlsRegistry()
         ; this.controlsForSimpleHotkeys := guiControlsRegistry()
         ; this.controlsForModifiers := guiControlsRegistry()

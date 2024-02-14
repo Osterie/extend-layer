@@ -1,8 +1,8 @@
 #Requires AutoHotkey v2.0
 
 
-#Include ".\HotkeyCrafterGui.ahk"
-#Include ".\ActionCrafterGui.ahk"
+#Include ".\KeyChanging\HotkeyChanging\HotkeyCrafterGui.ahk"
+#Include ".\KeyChanging\ActionChanging\ActionCrafterGui.ahk"
 ; #Include "..\library\HotkeyFormatConverter.ahk"
 #Include <HotkeyFormatConverter>
 
@@ -32,8 +32,11 @@ class HotKeyConfigurationPopup{
 
     activeObjectsRegistry := ""
 
-    __New(activeObjectsRegistry){
+    arrayOfKeyNames := Array()
+
+    __New(activeObjectsRegistry, arrayOfKeyNames){
         this.activeObjectsRegistry := activeObjectsRegistry
+        this.arrayOfKeyNames := arrayOfKeyNames
     }
     
 
@@ -102,7 +105,8 @@ class HotKeyConfigurationPopup{
     buttonToChangeOriginalHotkeyClickedEvent(){
         this.mainGui.Hide()
 
-        hotkeyCrafter := HotkeyCrafterGui(this.currentHotkeyCommand, "..\resources\keyNames\keyNames.txt")
+        ; TODO instead of having this path here, which is used for creating an array of key names, pass instead just the array of key names.
+        hotkeyCrafter := HotkeyCrafterGui(this.currentHotkeyCommand, this.arrayOfKeyNames)
         hotkeySavedEventAction := ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent", hotkeyCrafter)
         hotkeyCrafter.addSaveButtonClickEventAction(hotkeySavedEventAction)
 
@@ -121,7 +125,7 @@ class HotKeyConfigurationPopup{
         this.mainGui.Hide()
 
 
-        actionCrafter := ActionCrafterGui(this.currentHotkeyAction, "..\resources\keyNames\keyNames.txt", this.activeObjectsRegistry, this.currentHotkeyCommand)
+        actionCrafter := ActionCrafterGui(this.currentHotkeyAction, this.arrayOfKeyNames, this.activeObjectsRegistry, this.currentHotkeyCommand)
         actionSavedEventAction := ObjBindMethod(this, "saveButtonClickedForActionChangeEvent", actionCrafter)
         actionCrafter.addSaveButtonClickEventAction(actionSavedEventAction)
 
