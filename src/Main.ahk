@@ -34,6 +34,9 @@
 #Include ".\library\MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader.ahk"
 #Include ".\library\MetaInfo\MetaInfoReading\KeyboadLayersInfoClassObjectReader.ahk"
 
+; TODO Cleanup!
+
+; TODO to add a new hotkey, add buttons for this, since the listview can max out making it hard to click an empty cell.
 
 ; TODO perhaps should add a "description" for the hotkeys in the gui
 
