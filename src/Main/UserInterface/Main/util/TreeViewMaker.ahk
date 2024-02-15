@@ -6,13 +6,12 @@ class TreeViewMaker{
 
     }
     
-    createElementsForGui(guiObject, JsonObject){
+    createElementsForGui(guiObject, arrayOfValues){
         ImageListID := this.GetCustomImages()
         this.treeView := guiObject.Add("TreeView", "r20 ImageList" . ImageListID)
-        
-        if (Type(JsonObject) = "Array"){
-            Loop JsonOBject.Length{
-                this.treeView.Add(JsonObject[A_Index], 0, "Icon4")
+        if (Type(arrayOfValues) = "Array"){
+            Loop arrayOfValues.Length{
+                this.treeView.Add(arrayOfValues[A_Index], 0, "Icon4")
             }
         } 
         else{

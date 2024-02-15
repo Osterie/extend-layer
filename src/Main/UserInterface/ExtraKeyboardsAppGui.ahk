@@ -92,8 +92,10 @@ Class ExtraKeyboardsAppGui{
         pathToKeyboardsJsonFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileButtonsObject.getProfilesDropDownMenu().Text . "\Keyboards.json"
         pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileButtonsObject.getProfilesDropDownMenu().Text . "\ClassObjects.ini"
 
+        fileReader := IniFileReader()
+        functionsNames := fileReader.ReadSectionNamesToArray(pathToObjectsIniFile)
 
-        this.CreateTabs(pathToKeyboardsJsonFile, pathToObjectsIniFile, this.keyboardLayerIdentifiers)
+        this.CreateTabs(pathToKeyboardsJsonFile, functionsNames, this.keyboardLayerIdentifiers, pathToObjectsIniFile)
         
         
         ; Create gui in the top left corner of the screen
@@ -108,7 +110,7 @@ Class ExtraKeyboardsAppGui{
         this.ExtraKeyboardsAppGui.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.
     }
 
-    CreateTabs(pathToKeyboardsJsonFile, pathToObjectsIniFile, jsonFileContents){
+    CreateTabs(pathToKeyboardsJsonFile, functionsNames, jsonFileContents, pathToObjectsIniFile){
         
         Tab := this.ExtraKeyboardsAppGui.AddTab3("ys+20 xm", ["Keyboards","Change Functions Settings","Documentation"])
         Tab.UseTab(1)
@@ -132,7 +134,7 @@ Class ExtraKeyboardsAppGui{
         ; this.CreateTreeViewWithAssociatedListViewFromJsonObject(keyboardLayerIdentifiers)
 
         Tab.UseTab(2)
-        this.CreateFunctionSettingsTab(pathToObjectsIniFile)
+        this.CreateFunctionSettingsTab(functionsNames, pathToObjectsIniFile)
 
 
         Tab.UseTab(3)
@@ -182,17 +184,16 @@ Class ExtraKeyboardsAppGui{
         listViewElement.getPopup().Destroy()
     }
 
-    CreateFunctionSettingsTab(iniFilePath){
+    CreateFunctionSettingsTab(functionsNames, iniFilePath){
 
-        
-        functionsNames := TreeViewFromIniFile(iniFilePath)
-        functionsNames.CreateTreeView(this.ExtraKeyboardsAppGui)
+        functionsNamesTreeView := TreeViewMaker()
+        functionsNamesTreeView.createElementsForGui(this.ExtraKeyboardsAppGui, functionsNames)
         
         functionSettings := ListViewFromIniFileContent()
-        functionSettings.CreateListView(this.ExtraKeyboardsAppGui, ["Key","Value"], iniFilePath)
+        functionSettings.CreateListView(this.ExtraKeyboardsAppGui, ["Setting","Value"], iniFilePath)
         
         ShowFunctionSettingsForFunction := ObjBindMethod(functionSettings, "SetNewListViewItemsByLayerIdentifier", iniFilePath)
-        functionsNames.AddEventAction("ItemSelect", ShowFunctionSettingsForFunction)
+        functionsNamesTreeView.AddEventAction("ItemSelect", ShowFunctionSettingsForFunction)
 
     }
 }
