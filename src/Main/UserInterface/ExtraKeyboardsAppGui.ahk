@@ -1,8 +1,11 @@
 #Requires AutoHotkey v2.0
 
+; TODO move inifilereader to meta info reading
 
 ; #Include <JsonParsing\JXON\JXON>
 #Include "Main\util\ListViewFromIniFileContent.ahk"
+#Include <FoldersAndFiles\IniFileReader>
+
 #Include "Main\ProfileEditing\ProfileButtons.ahk"
 #Include "Main\util\TreeViewMaker.ahk"
 #Include "Main\Functionality\Keyboard\ListViewForHotkeys.ahk"
@@ -129,7 +132,7 @@ Class ExtraKeyboardsAppGui{
         ; this.CreateTreeViewWithAssociatedListViewFromJsonObject(keyboardLayerIdentifiers)
 
         Tab.UseTab(2)
-        this.CreateTreeViewWithAssociatedListViewFromIniFile(pathToObjectsIniFile)
+        this.CreateFunctionSettingsTab(pathToObjectsIniFile)
 
 
         Tab.UseTab(3)
@@ -179,17 +182,17 @@ Class ExtraKeyboardsAppGui{
         listViewElement.getPopup().Destroy()
     }
 
-    CreateTreeViewWithAssociatedListViewFromIniFile(iniFilePath){
+    CreateFunctionSettingsTab(iniFilePath){
 
         
-        treeViewElement := TreeViewFromIniFile(iniFilePath)
-        treeViewElement.CreateTreeView(this.ExtraKeyboardsAppGui)
+        functionsNames := TreeViewFromIniFile(iniFilePath)
+        functionsNames.CreateTreeView(this.ExtraKeyboardsAppGui)
         
-        listViewElement := ListViewFromIniFileContent()
-        listViewElement.CreateListView(this.ExtraKeyboardsAppGui, ["Key","Value"], iniFilePath)
+        functionSettings := ListViewFromIniFileContent()
+        functionSettings.CreateListView(this.ExtraKeyboardsAppGui, ["Key","Value"], iniFilePath)
         
-        CreateListViewItems := ObjBindMethod(listViewElement, "SetNewListViewItemsByLayerIdentifier", iniFilePath)
-        treeViewElement.AddEventAction("ItemSelect", CreateListViewItems)
+        ShowFunctionSettingsForFunction := ObjBindMethod(functionSettings, "SetNewListViewItemsByLayerIdentifier", iniFilePath)
+        functionsNames.AddEventAction("ItemSelect", ShowFunctionSettingsForFunction)
 
     }
 }
