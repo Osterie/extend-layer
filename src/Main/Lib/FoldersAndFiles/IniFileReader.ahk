@@ -34,6 +34,17 @@ Class IniFileReader{
         return twoDimensionalArray
     }
 
+    ReadSectionNamesToArray(iniFile){
+        iniFileSections := this.ReadSectionNames(iniFile)
+        iniFileSections := StrSplit(iniFileSections, "`n")
+        sectionNames := Array()
+        Loop iniFileSections.Length{
+            sectionName := iniFileSections[A_Index]
+            sectionNames.Push(sectionName)
+        }
+        return sectionNames
+    }
+
     ReadLine(iniFile, section, key){
         key := this.ValidateText(key)
         readValue := IniRead(iniFile, section, key)
