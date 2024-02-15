@@ -3,25 +3,20 @@
 #Include "..\..\..\..\..\util\GuiControlsRegistry.ahk"
 #Include "..\HotkeyChanging\HotkeyCrafterGui.ahk"
 #Include ".\ParameterControlsGroup.ahk"
-#Include <MetaInfo\MetaInfoReading\KeyNamesReader>
 #Include <MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
 class ActionCrafterGui{
 
     GuiObject := ""
-    hotkeyStaticInput := ""
-    hotkeyDynamicInput := ""
 
     controlsForAdvancedHotkeys := ""
     controlsForSimpleHotkeys := ""
     controlsForModifiers := ""
     groupBox := ""
     
-    advancedModeButton := ""
     saveButton := ""
     cancelButton := ""
 
-    availableKeyNames := []
 
     activeObjectsRegistry := ""
 
@@ -110,7 +105,7 @@ class ActionCrafterGui{
 
         parameters := MethodInfoOfAction.getMethodParameters()
 
-        this.setAmountOfParametersToBeFilled(parameters.count)
+        this.setAmountOfParametersToBeFilled(parameters.Count)
         this.hideParameterControls()
         this.setTextForSpecialActionMaker(friendlyNameOfAction, methodDescription, parameters)
 
@@ -198,7 +193,6 @@ class ActionCrafterGui{
             parameterEdit := this.GuiObject.Add("Edit", "xs+10 yp+30 w335", "")
             
             parameterDescription := this.GuiObject.Add("Text", "xs+10 yp+30 w335", "")
-            ; parameterDescription.SetFont("Bold")
 
             parameterControls := ParameterControlsGroup(parameterControl, parameterEdit, parameterDescription)
             this.parameterControlsArray.Push(parameterControls)
@@ -224,13 +218,9 @@ class ActionCrafterGui{
             parameterDescription := parameterInfo.getDescription()
 
             parameterControls.setTextControlValue(parameterName)
-
             parameterControls.setEditControlType(parameterType)
-
             parameterControls.setDescriptionControlValue(parameterDescription)
-
             parameterControls.ShowControls()
-
         }
     }
 
