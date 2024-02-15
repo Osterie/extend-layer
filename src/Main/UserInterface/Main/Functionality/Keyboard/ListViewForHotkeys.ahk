@@ -31,7 +31,7 @@ class ListViewForHotkeys{
 
     CreateListView(guiObject, columnNames){
         
-        this.listView := guiObject.Add("ListView", "grid r20 w600 x+10", columnNames)
+        this.listView := guiObject.Add("ListView", "r20 w600 x+10", columnNames)
 
         ImageListID := IL_Create(10)  ; Create an ImageList with initial capacity for 10 icons.
         Loop 10  ; Load the ImageList with some standard system icons.
@@ -44,9 +44,11 @@ class ListViewForHotkeys{
         
         this.listView.ModifyCol(1, 200)
         this.listView.ModifyCol(2, 397)
+        ; this.listView.ModifyCol(2, )
 
         ListViewDoubleClickEvent := ObjBindMethod(this, "ListViewDoubleClickEvent")
         this.listView.OnEvent("DoubleClick", ListViewDoubleClickEvent)
+        ; this.listView.Opt("+0x800") 
         
     }
 
