@@ -5,37 +5,36 @@
 #Requires Autohotkey v2.0
 
 #Include ".\ExtraKeyboardsApp.ahk"
+#Include <KeysPressedGui>
+#Include <ProcessManager>
+#Include <CommandPromptOpener>
+#Include <Clock\CountdownGUI>
+#Include <IODevices\Mouse>
+#Include <IODevices\Monitor>
 #Include <IODevices\DeviceManager>
 #Include <IODevices\ComputerInputController>
-#Include <IODevices\Monitor>
-#Include <IODevices\Mouse>
-#Include <Clock\CountdownGUI>
-#Include <LayerIndication\LayerIndicatorController>
-#Include <BatteryAndPower\BatteryController>
 #Include <Privacy\ScreenPrivacyController>
-#Include <KeysPressedGui>
-#Include <Navigation\WebNavigation\WebNavigator>
-#Include <KeyboardOverlay\KeyboardOverlay>
-#Include <CommandPromptOpener>
-#Include <Navigation\FileNavigation\FileExplorerNavigator>
-#Include <KeyboardOverlay\KeyboardOverlayRegistry>
-#Include <ProcessManager>
-#Include <MetaInfo\MetaInfoStorage\Objects\ObjectRegistry>
-#Include <Configuration\StartupConfiguration\MainStartupConfigurator>
 #Include <Privacy\UnauthorizedUseDetector>
-
-#Include <MetaInfo\MetaInfoStorage\Objects\ObjectInfo>
-#Include <MetaInfo\MetaInfoStorage\Objects\MethodInfo>
-#Include <MetaInfo\MetaInfoStorage\Objects\MethodRegistry>
-
-#Include <JsonParsing\JXON\JXON>
+#Include <BatteryAndPower\BatteryController>
+#Include <KeyboardOverlay\KeyboardOverlay>
+#Include <KeyboardOverlay\KeyboardOverlayRegistry>
+#Include <Navigation\WebNavigation\WebNavigator>
+#Include <Navigation\FileNavigation\FileExplorerNavigator>
+#Include <LayerIndication\LayerIndicatorController>
+#Include <Configuration\StartupConfiguration\MainStartupConfigurator>
 
 #Include <MetaInfo\MetaInfoReading\ObjectsJsonReader>
 #Include <MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader>
 #Include <MetaInfo\MetaInfoReading\KeyboadLayersInfoClassObjectReader>
+#Include <MetaInfo\MetaInfoReading\KeyNamesReader>
 
-#Include <CommandPromptOpener>
-#Include <MetaInfo\MetaInfoReading\ObjectsJsonReader>
+#Include <MetaInfo\MetaInfoStorage\Objects\MethodInfo>
+#Include <MetaInfo\MetaInfoStorage\Objects\MethodRegistry>
+#Include <MetaInfo\MetaInfoStorage\Objects\ObjectInfo>
+#Include <MetaInfo\MetaInfoStorage\Objects\ObjectRegistry>
+
+#Include <JsonParsing\JXON\JXON>
+
 
 ; TODO Cleanup!
 
@@ -124,7 +123,7 @@ Class Main{
 
     PATH_TO_OBJECT_INFO := "..\..\config\ObjectInfo.json"
     PATH_TO_META_INI_FILE := "..\..\config\meta.ini"
-    
+    PATH_TO_KEYNAMES_FILE := "..\..\resources\keyNames.txt"
 
     CURRENT_PROFILE_NAME := ""
     PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := ""
@@ -133,7 +132,6 @@ Class Main{
     jsonStringFunctionalityInformation := ""
     allClassesInformationJson := ""
 
-    keyboardSettingsString := ""
     keyboardSettingsJsonObject := ""
 
     Objects := Map()
@@ -141,6 +139,8 @@ Class Main{
     KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
     StartupConfigurator := ""
     app := ""
+
+    keyNames := ""
 
     __New(){
 
@@ -167,8 +167,9 @@ Class Main{
     UpdatePathsToInfo(){
         this.CURRENT_PROFILE_NAME := iniRead(this.PATH_TO_META_INI_FILE, "General", "activeUserProfile")
         this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := "../../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "/ClassObjects.ini"
-        this.PATH_TO_CURRENT_KEYBOARD_LAYOUT := "../../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "\Keyboards.json"
+        this.PATH_TO_CURRENT_KEYBOARD_LAYOUT := "../../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "/Keyboards.json"
     
+        ; TODO remove this
         keyboardSettingsString := FileRead(this.PATH_TO_CURRENT_KEYBOARD_LAYOUT, "UTF-8")
         this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
     }
@@ -181,6 +182,7 @@ Class Main{
         this.InitializeObjectsForKeyboardOverlays()
         this.ReadObjectsInformationFromJson()
         this.ReadKeyboardLayersInfoFromJson()
+        this.ReadKeyNamesFromTxtFile()
     }
 
     RunMainStartup(enableHotkeys := true){
@@ -360,11 +362,20 @@ Class Main{
         JsonReaderForKeyboardLayersInfo := KeyboardLayersInfoJsonReader(this.PATH_TO_CURRENT_KEYBOARD_LAYOUT)
         JsonReaderForKeyboardLayersInfo.ReadKeyboardLayersInfoFromJson()
         this.KeyboardLayersInfoRegister := JsonReaderForKeyboardLayersInfo.getKeyboardLayersInfoRegister()
+        this.keyboardLayerIdentifiers := this.KeyboardLayersInfoRegister.getLayerIdentifiers()
+    }
+
+    ReadKeyNamesFromTxtFile(){
+        keyNamesFileObjReader := KeyNamesReader()
+        fileObjectOfKeyNames := FileOpen(this.PATH_TO_KEYNAMES_FILE, "rw" , "UTF-8")
+        this.keyNames := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
+
     }
 
     RunAppGui(){
-
-        this.app := ExtraKeyboardsApp(this.keyboardSettingsJsonObject, this.ObjectRegister, this.KeyboardLayersInfoRegister, this)
+    
+    
+        this.app := ExtraKeyboardsApp(this.keyboardSettingsJsonObject, this.ObjectRegister, this.KeyboardLayersInfoRegister, this, this.keyNames)
         this.app.Start()
 
         refreshHotkeys := ObjBindMethod(this, "eventProfileChanged")

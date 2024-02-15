@@ -48,6 +48,14 @@ class KeyboardLayersInfoRegistry{
         return registryToReturn
     }
 
+    GetLayerIdentifiers(){
+        layerIdentifiers := Array()
+        for layerIdentifier, layerInfo in this.KeyboardOverlaysRegistry{
+            layerIdentifiers.Push(layerIdentifier)
+        }
+        return layerIdentifiers
+    }
+
     GetKeyboardOverlaysRegistry(){
         return this.KeyboardOverlaysRegistry
     }

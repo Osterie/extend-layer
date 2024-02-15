@@ -27,7 +27,7 @@ Class ExtraKeyboardsApp{
     UserInterface := ""
     MainScript := ""
 
-    __New(jsonObject, activeObjectsRegistry,  keyboardLayersInfoRegister, mainScript){
+    __New(jsonObject, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames){
 
         this.MainScript := mainScript
         pathToExistingProfiles := "..\..\config\UserProfiles"
@@ -36,14 +36,8 @@ Class ExtraKeyboardsApp{
         pathToMainScript := A_ScriptDir "\..\..\src\Main.ahk"
         pathToEmptyProfile := "..\..\config\EmptyProfile"
         pathToKeyNamesFile := "..\..\resources\keyNames.txt"
-    
-        keyNamesFileObjReader := KeyNamesReader()
-        fileObjectOfKeyNames := FileOpen(pathToKeyNamesFile, "rw" , "UTF-8")
-        keyNames := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
-    
+
         this.UserInterface := ExtraKeyboardsAppgui(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonObject, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames)
-    
-    
     }
 
     Start(){
