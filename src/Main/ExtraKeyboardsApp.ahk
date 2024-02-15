@@ -27,7 +27,7 @@ Class ExtraKeyboardsApp{
     UserInterface := ""
     MainScript := ""
 
-    __New(jsonObject, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames){
+    __New(keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames){
 
         this.MainScript := mainScript
         pathToExistingProfiles := "..\..\config\UserProfiles"
@@ -37,7 +37,7 @@ Class ExtraKeyboardsApp{
         pathToEmptyProfile := "..\..\config\EmptyProfile"
         pathToKeyNamesFile := "..\..\resources\keyNames.txt"
 
-        this.UserInterface := ExtraKeyboardsAppgui(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonObject, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames)
+        this.UserInterface := ExtraKeyboardsAppgui(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames)
     }
 
     Start(){

@@ -17,7 +17,6 @@ class ActionCrafterGui{
     saveButton := ""
     cancelButton := ""
 
-
     activeObjectsRegistry := ""
 
     hotkeyCrafter := ""

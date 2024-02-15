@@ -50,6 +50,9 @@ class KeyboardLayersInfoRegistry{
 
     GetLayerIdentifiers(){
         layerIdentifiers := Array()
+        for layerIdentifier, layerInfo in this.HotkeysRegistry{
+            layerIdentifiers.Push(layerIdentifier)
+        }
         for layerIdentifier, layerInfo in this.KeyboardOverlaysRegistry{
             layerIdentifiers.Push(layerIdentifier)
         }

@@ -4,7 +4,7 @@
 ; #Include <JsonParsing\JXON\JXON>
 #Include "Main\util\ListViewFromIniFileContent.ahk"
 #Include "Main\ProfileEditing\ProfileButtons.ahk"
-#Include "Main\Functionality\Keyboard\TreeViewForLayers.ahk"
+#Include "Main\Functionality\Keyboard\TreeViewMaker.ahk"
 #Include "Main\Functionality\Keyboard\ListViewForHotkeys.ahk"
 #Include <FoldersAndFiles\FolderManager>
 #Include <JsonParsing\JsonFormatter\JsonFormatter>
@@ -35,7 +35,7 @@ Class ExtraKeyboardsAppGui{
     ; Gui part
     profilesDropDownMenu := ""
 
-    jsonFileConents := ""
+    keyboardLayerIdentifiers := ""
     activeObjectsRegistry := ""
     keyboardLayersInfoRegister := ""
 
@@ -46,7 +46,7 @@ Class ExtraKeyboardsAppGui{
     keyNames := ""
 
 
-    __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, jsonFileConents, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames){
+    __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames){
         this.MainScript := mainScript
         
         this.keyNames := keyNames
@@ -56,7 +56,7 @@ Class ExtraKeyboardsAppGui{
 
         this.activeObjectsRegistry := activeObjectsRegistry
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
-        this.jsonFileConents := jsonFileConents
+        this.keyboardLayerIdentifiers := keyboardLayerIdentifiers
 
         this.PATH_TO_EXISTING_PROFILES := pathToExistingProfiles
         this.PATH_TO_PRESET_PROFILES := pathToPresetProfiles
@@ -89,7 +89,7 @@ Class ExtraKeyboardsAppGui{
         pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileButtonsObject.getProfilesDropDownMenu().Text . "\ClassObjects.ini"
 
 
-        this.CreateTabs(pathToKeyboardsJsonFile, pathToObjectsIniFile, this.jsonFileConents)
+        this.CreateTabs(pathToKeyboardsJsonFile, pathToObjectsIniFile, this.keyboardLayerIdentifiers)
         
         
         ; Create gui in the top left corner of the screen
@@ -109,7 +109,7 @@ Class ExtraKeyboardsAppGui{
         Tab := this.ExtraKeyboardsAppGui.AddTab3("ys+20 xm", ["Keyboards","Change Functions Settings","Documentation"])
         Tab.UseTab(1)
 
-        keyboardLayoutChanger := TreeViewForLayers()
+        keyboardLayoutChanger := TreeViewMaker()
         keyboardLayoutChanger.createElementsForGui(this.ExtraKeyboardsAppGui, jsonFileContents)
         ; TODO use this.jsonwhatever ...
         
@@ -125,7 +125,7 @@ Class ExtraKeyboardsAppGui{
         listViewElement.setHotkeySavedEvent(saveEvent)
 
 
-        ; this.CreateTreeViewWithAssociatedListViewFromJsonObject(jsonFileConents)
+        ; this.CreateTreeViewWithAssociatedListViewFromJsonObject(keyboardLayerIdentifiers)
 
         Tab.UseTab(2)
         this.CreateTreeViewWithAssociatedListViewFromIniFile(pathToObjectsIniFile)
