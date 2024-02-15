@@ -35,7 +35,6 @@ Class ExtraKeyboardsApp{
         pathToMetaFile := "..\..\config\meta.ini"
         pathToMainScript := A_ScriptDir "\..\..\src\Main.ahk"
         pathToEmptyProfile := "..\..\config\EmptyProfile"
-        pathToKeyNamesFile := "..\..\resources\keyNames.txt"
 
         this.UserInterface := ExtraKeyboardsAppgui(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames)
     }

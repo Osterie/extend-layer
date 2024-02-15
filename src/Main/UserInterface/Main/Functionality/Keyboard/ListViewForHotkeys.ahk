@@ -43,6 +43,7 @@ class ListViewForHotkeys{
         this.listView.Opt("Report")
         
         this.listView.ModifyCol(1, 200)
+        this.listView.ModifyCol(2, 397)
 
         ListViewDoubleClickEvent := ObjBindMethod(this, "ListViewDoubleClickEvent")
         this.listView.OnEvent("DoubleClick", ListViewDoubleClickEvent)
@@ -60,7 +61,6 @@ class ListViewForHotkeys{
             ; TODO, would need this if this class should be general. Among other stuff...
         }
     }
-
 
     ; Takes a two dimensional array, items, and adds each item to the listView
     SetNewListViewItems(items){
@@ -143,7 +143,6 @@ class ListViewForHotkeys{
     SetOnTop(identifier){
         WinSetAlwaysOnTop 1, identifier
     }
-
 
     AddEventAction(eventType, action){
         this.listView.OnEvent(eventType, action)

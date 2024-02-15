@@ -82,6 +82,8 @@ Class ExtraKeyboardsAppGui{
     CreateMain(){
 
         this.ExtraKeyboardsAppGui := Gui()
+        this.ExtraKeyboardsAppGui.BackColor := "051336"
+        this.ExtraKeyboardsAppGui.SetFont("c6688cc Bold")
         this.ExtraKeyboardsAppGui.Opt("+Resize +MinSize920x480")
         this.ExtraKeyboardsAppGui.Add("Text", , "Current Profile:")
 
@@ -97,9 +99,27 @@ Class ExtraKeyboardsAppGui{
 
         this.CreateTabs(pathToKeyboardsJsonFile, functionsNames, this.keyboardLayerIdentifiers, pathToObjectsIniFile)
         
-        
+        BackgroundColor := "000c18"
+        ; BackgroundColor := "051336"
+        BackgroundColor := "060621"
+        this.setControlsColor(BackgroundColor)
+        this.setControlsTextColor()
         ; Create gui in the top left corner of the screen
         this.ExtraKeyboardsAppGui.Show("x0 y0")
+    }
+
+    setControlsColor(colorHex){
+        For Hwnd, Ctrl in this.ExtraKeyboardsAppGui{
+            Ctrl.Opt("+Background" . colorHex)
+            Ctrl.BackColor := colorHex
+        }
+
+    }
+
+    setControlsTextColor(){
+        For Hwnd, Ctrl in this.ExtraKeyboardsAppGui{
+            Ctrl.SetFont("c6688cc")
+        }
     }
 
     getProfileButtonsObject(){
@@ -112,7 +132,7 @@ Class ExtraKeyboardsAppGui{
 
     CreateTabs(pathToKeyboardsJsonFile, functionsNames, jsonFileContents, pathToObjectsIniFile){
         
-        Tab := this.ExtraKeyboardsAppGui.AddTab3("ys+20 xm", ["Keyboards","Change Functions Settings","Documentation"])
+        Tab := this.ExtraKeyboardsAppGui.AddTab3("yp+40 xm", ["Keyboards","Change Functions Settings","Documentation"])
         Tab.UseTab(1)
 
         keyboardLayoutChanger := TreeViewMaker()
