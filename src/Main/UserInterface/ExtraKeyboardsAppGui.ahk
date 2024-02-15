@@ -4,7 +4,7 @@
 ; #Include <JsonParsing\JXON\JXON>
 #Include "Main\util\ListViewFromIniFileContent.ahk"
 #Include "Main\ProfileEditing\ProfileButtons.ahk"
-#Include "Main\Functionality\Keyboard\TreeViewMaker.ahk"
+#Include "Main\util\TreeViewMaker.ahk"
 #Include "Main\Functionality\Keyboard\ListViewForHotkeys.ahk"
 #Include <FoldersAndFiles\FolderManager>
 #Include <JsonParsing\JsonFormatter\JsonFormatter>
