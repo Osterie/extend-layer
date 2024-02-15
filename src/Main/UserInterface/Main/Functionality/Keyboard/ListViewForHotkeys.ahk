@@ -6,8 +6,11 @@ class ListViewForHotkeys{
 
     listView := ""
     activeTreeViewItem := ""
+    iniFile := ""
 
     keyboardLayersInfoRegister := ""
+
+    iniFileRead := ""
 
     activeObjectsRegistry := ""
 
@@ -33,6 +36,10 @@ class ListViewForHotkeys{
         
         this.listView := guiObject.Add("ListView", "grid r20 w600 x+10", columnNames)
 
+        ; Create an ImageList so that the ListView can display some icons:
+        ; ImageListID1 := IL_Create(10)
+        ; ImageListID2 := IL_Create(10, 10, true)  ; A list of large icons to go with the small ones.
+
         ImageListID := IL_Create(10)  ; Create an ImageList with initial capacity for 10 icons.
         Loop 10  ; Load the ImageList with some standard system icons.
             IL_Add(ImageListID, "shell32.dll", A_Index)
@@ -41,15 +48,17 @@ class ListViewForHotkeys{
         ; Attach the ImageLists to the ListView so that it can later display the icons:
         this.listView.SetImageList(ImageListID)
         this.listView.Opt("Report")
+        ; this.listView.SetImageList(ImageListID2)
         
         this.listView.ModifyCol(1, 200)
+        ; this.listView.ModifyCol(2, 200)
 
         ListViewDoubleClickEvent := ObjBindMethod(this, "ListViewDoubleClickEvent")
         this.listView.OnEvent("DoubleClick", ListViewDoubleClickEvent)
         
     }
 
-    SetNewListViewItemsByLayerIdentifier(treeViewGui, selectedTreeViewItem){
+    SetNewListViewItemsByIniFileSection(treeViewGui, selectedTreeViewItem){
         if (treeViewGui is Gui.TreeView){
             this.activeTreeViewItem := treeViewGui.GetText(selectedTreeViewItem)
             itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.activeTreeViewItem)

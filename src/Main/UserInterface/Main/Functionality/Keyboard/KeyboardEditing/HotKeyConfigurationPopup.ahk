@@ -3,6 +3,7 @@
 
 #Include ".\KeyChanging\HotkeyChanging\HotkeyCrafterGui.ahk"
 #Include ".\KeyChanging\ActionChanging\ActionCrafterGui.ahk"
+; #Include "..\library\HotkeyFormatConverter.ahk"
 #Include <HotkeyFormatConverter>
 
 class HotKeyConfigurationPopup{
@@ -49,9 +50,20 @@ class HotKeyConfigurationPopup{
 
         this.mainGui := Gui()
         this.mainGui.opt("+Resize +MinSize600x560")
+
         this.createCurrentHotkeyControl()
         this.createCurrentActionControl()
+        
         this.createButtons()
+        
+        ; currentHotkeyInfo := hotkeysRegistry.GetHotkey(HotkeyFormatConverter.convertFromFriendlyName(hotkeyCommand))
+        ; if (currentHotkeyInfo.hotkeyIsObject()){
+        ;     this.CreateHotKeyMaker(this.mainGui)
+        ;     this.createHotkeyMethodCall(this.mainGui, hotkeyAction)
+        ; }
+        ; else{
+
+        ; }
         this.mainGui.Show()
     }
 
@@ -78,6 +90,8 @@ class HotKeyConfigurationPopup{
         buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80 xm", "Change original hotkey")
         buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent())
         
+        ; this.activeObjectsRegistry
+
         buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change original action")
         buttonToChangeOriginalAction.onEvent("Click", (*) => this.buttonToChangeOriginalActionClickedEvent())
     }
@@ -91,6 +105,7 @@ class HotKeyConfigurationPopup{
     buttonToChangeOriginalHotkeyClickedEvent(){
         this.mainGui.Hide()
 
+        ; TODO instead of having this path here, which is used for creating an array of key names, pass instead just the array of key names.
         hotkeyCrafter := HotkeyCrafterGui(this.currentHotkeyCommand, this.arrayOfKeyNames)
         hotkeySavedEventAction := ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent", hotkeyCrafter)
         hotkeyCrafter.addSaveButtonClickEventAction(hotkeySavedEventAction)
@@ -102,11 +117,13 @@ class HotKeyConfigurationPopup{
         hotkeyDeleteEventAction := ObjBindMethod(this, "deleteButtonClickedForHotkeyChangeEvent", hotkeyCrafter)
         hotkeyCrafter.addDeleteButtonClickEventAction(hotkeyDeleteEventAction)
 
+
         hotkeyCrafter.Show()
     }
 
     buttonToChangeOriginalActionClickedEvent(){
         this.mainGui.Hide()
+
 
         actionCrafter := ActionCrafterGui(this.currentHotkeyAction, this.arrayOfKeyNames, this.activeObjectsRegistry, this.currentHotkeyCommand)
         actionSavedEventAction := ObjBindMethod(this, "saveButtonClickedForActionChangeEvent", actionCrafter)
@@ -118,6 +135,7 @@ class HotKeyConfigurationPopup{
 
         hotkeyDeleteEventAction := ObjBindMethod(this, "deleteButtonClickedForActionChangeEvent", actionCrafter)
         actionCrafter.addDeleteButtonClickEventAction(hotkeyDeleteEventAction)
+
 
         actionCrafter.Show()
     }

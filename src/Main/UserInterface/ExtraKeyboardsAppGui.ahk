@@ -141,7 +141,7 @@ Class ExtraKeyboardsAppGui{
 
         this.currentLayer := treeViewElement.GetText(treeViewElementSelectedItemID)
         ; this.currentHotkey := 
-        listViewElement.SetNewListViewItemsByLayerIdentifier(treeViewElement, treeViewElementSelectedItemID)
+        listViewElement.SetNewListViewItemsByIniFileSection(treeViewElement, treeViewElementSelectedItemID)
 
     }
 
@@ -185,7 +185,7 @@ Class ExtraKeyboardsAppGui{
         listViewElement := ListViewFromIniFileContent()
         listViewElement.CreateListView(this.ExtraKeyboardsAppGui, ["Key","Value"], iniFilePath)
         
-        CreateListViewItems := ObjBindMethod(listViewElement, "SetNewListViewItemsByLayerIdentifier", iniFilePath)
+        CreateListViewItems := ObjBindMethod(listViewElement, "SetNewListViewItemsByIniFileSection", iniFilePath)
         treeViewElement.AddEventAction("ItemSelect", CreateListViewItems)
 
     }

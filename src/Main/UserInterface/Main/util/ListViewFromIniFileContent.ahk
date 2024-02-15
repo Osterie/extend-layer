@@ -23,7 +23,7 @@ Class ListViewFromIniFileContent{
         
     }
 
-    SetNewListViewItemsByLayerIdentifier(iniFile, section, item){
+    SetNewListViewItemsByIniFileSection(iniFile, section, item){
         if (section is Gui.TreeView){
             this.activeTreeViewItem := section.GetText(item)
             keyPairValuesArray := this.iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(iniFile, section.GetText(item))

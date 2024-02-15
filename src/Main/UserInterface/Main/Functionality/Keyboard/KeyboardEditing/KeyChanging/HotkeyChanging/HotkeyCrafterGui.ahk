@@ -1,6 +1,8 @@
 #Requires AutoHotkey v2.0
-
 #Include "..\..\..\..\..\util\GuiControlsRegistry.ahk"
+
+; #Include "..\library\MetaInfo\MetaInfoReading\KeyNamesReader.ahk"
+#Include <MetaInfo\MetaInfoReading\KeyNamesReader>
 
 class HotkeyCrafterGui{
 
@@ -20,15 +22,24 @@ class HotkeyCrafterGui{
 
     availableKeyNames := []
 
+    createdOnOtherGui := false
+
+    ; TODO pathToKeyNamesFile should instead just be a paramater which gives what you want immmediatly, (this.availableKeyNames = keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
     __New(originalHotkey, arrayOfKeyNames, guiToAddTo := ""){
 
         if (guiToAddTo = ""){
             this.GuiObject := Gui()
             this.GuiObject.Add("Text", "h20", "Original hotkey: " . originalHotkey)
+            this.createdOnOtherGui := true
         }
         else {
             this.GuiObject := guiToAddTo
+            createdOnOtherGui := false
         }
+
+        ; TODO add path to keynames file as parameter
+
+
 
         this.availableKeyNames := arrayOfKeyNames 
         this.controlsForAdvancedHotkeys := guiControlsRegistry()
@@ -49,8 +60,14 @@ class HotkeyCrafterGui{
         this.controlsForSimpleHotkeys.addControl("GroupBox", groupBox)
         this.controlsForSimpleHotkeys.addControl("HotkeyDynamicInput", this.hotkeyDynamicInput)
 
+
         this.createAdvancedHotkeyCrafter()
         this.hideAdvancedHotkeyCrafter()
+
+        ; this.hideSimpleHotkeyCrafter()
+
+        ; this.hotkeyStaticInput := this.GuiObject.Add("Edit", "w300 h20 xp yp")
+        ; this.hotkeyStaticInput.Opt("Hidden1")
 
         this.saveButton := this.GuiObject.Add("Button", " w100 h20 xM yp+150", "Save")
         this.cancelButton := this.GuiObject.Add("Button", "w100 h20", "Cancel")
@@ -68,6 +85,7 @@ class HotkeyCrafterGui{
 
     createAdvancedHotkeyCrafter(){
         groupBoxForAdvancedHotkeyCrafting := this.GuiObject.Add("GroupBox", "Section w370 h200 xp yp", "Advanced hotkey crafting:")
+        ; hotkeyText := this.GuiObject.Add("Text", "h100 xs+10 ys+10", "Advanced hotkey crafting:")
         
         groupBoxForModifiers := this.GuiObject.Add("GroupBox", "Section w300 h50 xp+30 yp+20", "Modifiers:")
         
@@ -93,6 +111,7 @@ class HotkeyCrafterGui{
         keyUpRadio := this.GuiObject.Add("Radio",, "When key up")
 
         this.controlsForAdvancedHotkeys.addControl("GroupBoxAdvancedCrafting", groupBoxForAdvancedHotkeyCrafting)
+        ; this.controlsForAdvancedHotkeys.addControl("HotkeyText", hotkeyText)
         this.controlsForAdvancedHotkeys.addControl("GroupBoxForModifiers", groupBoxForModifiers)
         this.controlsForAdvancedHotkeys.addControl("GroupBoxForHotkey", groupBoxForHotkey)
         this.controlsForAdvancedHotkeys.addControl("KeyDownRadio", keyDownRadio)
@@ -142,8 +161,10 @@ class HotkeyCrafterGui{
     }
 
     cancelButtonClickEvent(){
+
         this.GuiObject.Destroy()
         this.Destroy()
+
     }
 
     advancedModeButtonChangedEvent(){
