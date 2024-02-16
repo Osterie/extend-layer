@@ -71,6 +71,7 @@ class ListViewForHotkeys{
         }
     }
 
+    ; TODO this is not used...
     ; Takes item which should be an array with the same length as the number of columns
     SetListViewItem(item){
         this.listView.Add(, item*)        
@@ -139,10 +140,6 @@ class ListViewForHotkeys{
 
     getOriginalHotkey(){
         return this.originalHotkey
-    }
-
-    SetOnTop(identifier){
-        WinSetAlwaysOnTop 1, identifier
     }
 
     AddEventAction(eventType, action){

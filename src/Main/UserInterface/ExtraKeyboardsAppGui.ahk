@@ -106,10 +106,9 @@ Class ExtraKeyboardsAppGui{
         this.setControlsTextColor()
         
         
-        ; MyGui := Gui()
-        this.SetDarkWindowFrame(this.ExtraKeyboardsAppGui)
         ; this.ExtraKeyboardsAppGui.BackColor := 0x333333
         ; 181d29
+        ; this.SetDarkWindowFrame(this.ExtraKeyboardsAppGui)
         ; TODO these methods work with windows 11.
         this.DwmSetCaptionColor(this.ExtraKeyboardsAppGui, 0x300f45) ; color is in RGB format
         this.DwmSetTextColor(this.ExtraKeyboardsAppGui, 0x27eaf1)
@@ -148,6 +147,20 @@ Class ExtraKeyboardsAppGui{
         Tab := this.ExtraKeyboardsAppGui.AddTab3("yp+40 xm", ["Keyboards","Change Functions Settings","Documentation"])
         Tab.UseTab(1)
 
+        this.CreateKeyboardsTab(pathToKeyboardsJsonFile, functionsNames, jsonFileContents, pathToObjectsIniFile)
+
+        Tab.UseTab(2)
+        this.CreateFunctionSettingsTab(functionsNames, pathToObjectsIniFile)
+
+
+        Tab.UseTab(3)
+        this.CreateDocumentationTab()
+
+        Tab.UseTab(0)  ; i.e. subsequently-added controls will not belong to the tab control.
+    }
+
+    CreateKeyboardsTab(pathToKeyboardsJsonFile, functionsNames, jsonFileContents, pathToObjectsIniFile){
+
         keyboardLayoutChanger := TreeViewMaker()
         keyboardLayoutChanger.createElementsForGui(this.ExtraKeyboardsAppGui, jsonFileContents)
         ; TODO use this.jsonwhatever ...
@@ -166,14 +179,6 @@ Class ExtraKeyboardsAppGui{
 
         ; this.CreateTreeViewWithAssociatedListViewFromJsonObject(keyboardLayerIdentifiers)
 
-        Tab.UseTab(2)
-        this.CreateFunctionSettingsTab(functionsNames, pathToObjectsIniFile)
-
-
-        Tab.UseTab(3)
-        this.CreateDocumentationTab()
-
-        Tab.UseTab(0)  ; i.e. subsequently-added controls will not belong to the tab control.
     }
 
     TreeViewElementClickedEvent(listViewElement, treeViewElement, treeViewElementSelectedItemID){
