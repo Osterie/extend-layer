@@ -51,16 +51,8 @@ class ListViewForHotkeys{
         this.listView.Opt("-0x200000 -0x2000 +0x100000") 
     }
 
-    SetNewListViewItemsByLayerIdentifier(treeViewGui, selectedTreeViewItem){
-        if (treeViewGui is Gui.TreeView){
-            this.activeTreeViewItem := treeViewGui.GetText(selectedTreeViewItem)
-            itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.activeTreeViewItem)
-
-            this.SetNewListViewItems(itemsToShowForListView.getFriendlyHotkeyActionPairValues())
-        }
-        else{
-            ; TODO, would need this if this class should be general. Among other stuff...
-        }
+    SetNewListViewItemsByLayerIdentifier(newItems){
+        this.SetNewListViewItems(newItems)
     }
 
     ; Takes a two dimensional array, items, and adds each item to the listView
@@ -69,12 +61,6 @@ class ListViewForHotkeys{
         Loop items.Length{
             this.listView.Add("Icon3", items[A_index]*)
         }
-    }
-
-    ; TODO this is not used...
-    ; Takes item which should be an array with the same length as the number of columns
-    SetListViewItem(item){
-        this.listView.Add(, item*)        
     }
 
     ListViewDoubleClickEvent(listView, rowNumber){

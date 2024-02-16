@@ -184,8 +184,11 @@ Class ExtraKeyboardsAppGui{
     TreeViewElementClickedEvent(listViewElement, treeViewElement, treeViewElementSelectedItemID){
 
         this.currentLayer := treeViewElement.GetText(treeViewElementSelectedItemID)
-        ; this.currentHotkey := 
-        listViewElement.SetNewListViewItemsByLayerIdentifier(treeViewElement, treeViewElementSelectedItemID)
+
+        itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer)
+        hotkeysForLayer := itemsToShowForListView.getFriendlyHotkeyActionPairValues()
+
+        listViewElement.SetNewListViewItemsByLayerIdentifier(hotkeysForLayer)
 
     }
 
