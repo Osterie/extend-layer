@@ -51,10 +51,6 @@ class ListViewForHotkeys{
         this.listView.Opt("-0x200000 -0x2000 +0x100000") 
     }
 
-    SetNewListViewItemsByLayerIdentifier(newItems){
-        this.SetNewListViewItems(newItems)
-    }
-
     ; Takes a two dimensional array, items, and adds each item to the listView
     SetNewListViewItems(items){
         this.listView.Delete()

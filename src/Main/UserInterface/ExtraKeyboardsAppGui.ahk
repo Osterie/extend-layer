@@ -188,7 +188,7 @@ Class ExtraKeyboardsAppGui{
         itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer)
         hotkeysForLayer := itemsToShowForListView.getFriendlyHotkeyActionPairValues()
 
-        listViewElement.SetNewListViewItemsByLayerIdentifier(hotkeysForLayer)
+        listViewElement.SetNewListViewItems(hotkeysForLayer)
 
     }
 
