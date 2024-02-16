@@ -13,7 +13,7 @@ Class ListViewFromIniFileContent{
 
     CreateListView(guiObject, columnNames, iniFile){
         this.iniFile := iniFile
-        this.listView := guiObject.Add("ListView", "grid r20 w400 x+10", columnNames)
+        this.listView := guiObject.Add("ListView", "r20 w400 x+10", columnNames)
         
         this.listView.ModifyCol(1, 200)
         this.listView.ModifyCol(2, 200)

@@ -64,7 +64,7 @@ class ActionCrafterGui{
         this.newKeyRadio := this.GuiObject.Add("Radio", "", "New Key")
         this.newKeyRadio.OnEvent("Click", (*) => this.hotkeyCrafter.show() this.controlsForAllSpecialActionCrafting.hideControls())
 
-        listViewOfSpecialAction := this.GuiObject.Add("ListView", "r20 Grid w400", ["Special Action"])
+        listViewOfSpecialAction := this.GuiObject.Add("ListView", "r20 w400", ["Special Action"])
         listViewOfSpecialAction.SetFont("s12 c333333", "Segoe UI")
 
 

@@ -104,8 +104,21 @@ Class ExtraKeyboardsAppGui{
         BackgroundColor := "060621"
         this.setControlsColor(BackgroundColor)
         this.setControlsTextColor()
+        
+        
+        ; MyGui := Gui()
+        this.SetDarkWindowFrame(this.ExtraKeyboardsAppGui)
+        ; this.ExtraKeyboardsAppGui.BackColor := 0x333333
+        ; 181d29
+        ; TODO these methods work with windows 11.
+        this.DwmSetCaptionColor(this.ExtraKeyboardsAppGui, 0x300f45) ; color is in RGB format
+        this.DwmSetTextColor(this.ExtraKeyboardsAppGui, 0x27eaf1)
+        
         ; Create gui in the top left corner of the screen
         this.ExtraKeyboardsAppGui.Show("x0 y0")
+
+        ; this.ExtraKeyboardsAppGui.Show("w300 h200")
+
     }
 
     setControlsColor(colorHex){
@@ -215,5 +228,30 @@ Class ExtraKeyboardsAppGui{
         ShowFunctionSettingsForFunction := ObjBindMethod(functionSettings, "SetNewListViewItemsByLayerIdentifier", iniFilePath)
         functionsNamesTreeView.AddEventAction("ItemSelect", ShowFunctionSettingsForFunction)
 
+    }
+
+    ; TODO create own class for this
+    SetDarkWindowFrame(hwnd, boolEnable:=1) {
+        hwnd := WinExist(hwnd)
+        if VerCompare(A_OSVersion, "10.0.17763") >= 0
+            attr := 19
+        if VerCompare(A_OSVersion, "10.0.18985") >= 0
+            attr := 20
+        DllCall("dwmapi\DwmSetWindowAttribute", "ptr", hwnd, "int", attr, "int*", boolEnable, "int", 4)
+    }
+
+
+    ; set caption color
+    DwmSetCaptionColor(hwnd?, color?) {
+        static DWMWA_CAPTION_COLOR := 35
+        color := IsSet(color) ? (color & 0xFF0000) >> 16 | (color & 0xFF00) | (color & 0xFF) << 16 : 0xFFFFFFFF
+        DllCall("dwmapi\DwmSetWindowAttribute", "ptr", WinExist(hwnd??"A"), "int", DWMWA_CAPTION_COLOR, "int*", color, "int", 4)
+    }
+
+    ; set caption text color
+    DwmSetTextColor(hwnd?, color?) {
+        static DWMWA_TEXT_COLOR := 36
+        color := IsSet(color) ? (color & 0xFF0000) >> 16 | (color & 0xFF00) | (color & 0xFF) << 16 : 0xFFFFFFFF
+        DllCall("dwmapi\DwmSetWindowAttribute", "ptr", WinExist(hwnd??"A"), "int", DWMWA_TEXT_COLOR, "int*", color, "int", 4)
     }
 }

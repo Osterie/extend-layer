@@ -48,8 +48,7 @@ class ListViewForHotkeys{
 
         ListViewDoubleClickEvent := ObjBindMethod(this, "ListViewDoubleClickEvent")
         this.listView.OnEvent("DoubleClick", ListViewDoubleClickEvent)
-        ; this.listView.Opt("+0x800") 
-        
+        this.listView.Opt("-0x200000 -0x2000 +0x100000") 
     }
 
     SetNewListViewItemsByLayerIdentifier(treeViewGui, selectedTreeViewItem){
