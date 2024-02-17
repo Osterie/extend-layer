@@ -378,6 +378,7 @@ Class Main{
         this.app.Start()
 
         refreshHotkeys := ObjBindMethod(this, "eventProfileChanged")
+        ; TODO this is probably bad
         this.app.getExtraKeyboardsAppgui().getProfileButtonsObject().addProfileChangedEvent(refreshHotkeys)
     }
 

@@ -1,7 +1,5 @@
 #Requires AutoHotkey v2.0
 
-#Include "..\util\TreeViewFromIniFile.ahk"
-#Include "..\util\ListViewFromIniFileContent.ahk"
 #Include <FoldersAndFiles\FolderManager>
 
 class ProfileButtons{
