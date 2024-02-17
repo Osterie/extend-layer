@@ -56,8 +56,8 @@ Class ExtraKeyboardsAppGui{
     pathToObjectsIniFile := ""
 
 
-    __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames){
-        this.MainScript := mainScript
+    __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToEmptyProfile, keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, MainScript, keyNames){
+        this.MainScript := MainScript
         
         this.keyNames := keyNames
         
@@ -74,15 +74,9 @@ Class ExtraKeyboardsAppGui{
         this.ExistingProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_EXISTING_PROFILES)
 
         this.PATH_TO_META_FILE := pathToMetaFile
-
         ; this.PATH_TO_EMPTY_PROFILE := pathToEmptyProfile
 
         this.currentProfile := iniRead(this.PATH_TO_META_FILE, "General", "activeUserProfile")
-
-        
-
-        ; this.currentProfileIndex := this.ExistingProfilesManager.getFirstFoundFolderIndex(this.currentProfile)
-
     }
 
     CreateMain(){
@@ -95,13 +89,12 @@ Class ExtraKeyboardsAppGui{
         this.CreateProfileEditor()
 
         ; TODO move somewhere else...
-        pathToKeyboardsJsonFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileButtonsObject.getProfilesDropDownMenu().Text . "\Keyboards.json"
         this.pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileButtonsObject.getProfilesDropDownMenu().Text . "\ClassObjects.ini"
 
         fileReader := IniFileReader()
         functionsNames := fileReader.ReadSectionNamesToArray(this.pathToObjectsIniFile)
         
-        this.CreateTabs(pathToKeyboardsJsonFile, functionsNames, this.keyboardLayerIdentifiers)
+        this.CreateTabs(functionsNames, this.keyboardLayerIdentifiers)
         
         this.setColors()
         
@@ -123,12 +116,12 @@ Class ExtraKeyboardsAppGui{
         this.ExtraKeyboardsAppGui.Destroy()
     }
 
-    CreateTabs(pathToKeyboardsJsonFile, functionsNames, jsonFileContents){
+    CreateTabs(functionsNames, jsonFileContents){
         
         Tab := this.ExtraKeyboardsAppGui.AddTab3("yp+40 xm", ["Keyboards","Change Functions Settings","Documentation"])
         Tab.UseTab(1)
 
-        this.CreateKeyboardsTab(pathToKeyboardsJsonFile, functionsNames, jsonFileContents)
+        this.CreateKeyboardsTab(functionsNames, jsonFileContents)
 
         Tab.UseTab(2)
         this.CreateFunctionSettingsTab(functionsNames)
@@ -139,8 +132,9 @@ Class ExtraKeyboardsAppGui{
         Tab.UseTab(0) ; subsequently-added controls will not belong to the tab control.
     }
 
-    CreateKeyboardsTab(pathToKeyboardsJsonFile, functionsNames, jsonFileContents){
+    CreateKeyboardsTab(functionsNames, jsonFileContents){
 
+        ; TODO perhaps use inheritance or something, but this is the exact same as CreateFunctionSettingsTab pretty much 
         keyboardLayoutChanger := TreeViewMaker()
         keyboardLayoutChanger.createElementsForGui(this.ExtraKeyboardsAppGui, jsonFileContents)
         ; TODO use this.jsonwhatever ...
@@ -149,10 +143,7 @@ Class ExtraKeyboardsAppGui{
         listViewControl.CreateListView(this.ExtraKeyboardsAppGui, ["KeyCombo","Action"])
         
         keyboardLayoutChanger.AddEventAction("ItemSelect", ObjBindMethod(this, "TreeViewElementSelectedEvent", listViewControl))
-
-
-        doubleClickEvent := ObjBindMethod(this, "ListViewElementDoubleClickedEvent", keyboardLayoutChanger)
-        listViewControl.AddEventAction("DoubleClick", doubleClickEvent)
+        listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this, "ListViewElementDoubleClickedEvent", keyboardLayoutChanger))
     }
 
     TreeViewElementSelectedEvent(listViewControl, treeViewElement, treeViewElementSelectedItemID){
@@ -199,8 +190,7 @@ Class ExtraKeyboardsAppGui{
         newHotkey := popupForConfiguringHotkey.getHotkey()
         newAction := popupForConfiguringHotkey.getAction()
 
-                ; TODO now i must update the json file with the new hotkey if it is valid...
-
+        ; TODO now i must update the json file with the new hotkey if it is valid...
         ; TODO keyboardLayersInfoRegister change a hotkey, turn into a json file, and then change the existing json file
 
         this.keyboardLayersInfoRegister.ChangeHotkey(this.currentLayer, originalHotkey, newHotkey)
@@ -210,6 +200,7 @@ Class ExtraKeyboardsAppGui{
             this.keyboardLayersInfoRegister.ChangeAction(this.currentLayer, originalHotkey, newAction)
         }
 
+        ; TODO create a method for this.
         toJsonReader := KeyboadLayersInfoClassObjectReader()
         toJsonReader.ReadObjectToJson(this.keyboardLayersInfoRegister)
         jsonObject := toJsonReader.getJsonObject()
