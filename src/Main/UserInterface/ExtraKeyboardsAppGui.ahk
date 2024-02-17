@@ -6,6 +6,8 @@
 #Include "Main\util\ListViewFromIniFileContent.ahk"
 #Include <FoldersAndFiles\IniFileReader>
 
+#Include "Main\Functionality\ActionSettings\SettingsEditor.ahk"
+
 #Include "Main\ProfileEditing\ProfileButtons.ahk"
 #Include "Main\util\TreeViewMaker.ahk"
 #Include "Main\util\ListViewMaker.ahk"
@@ -88,10 +90,7 @@ Class ExtraKeyboardsAppGui{
         this.ExtraKeyboardsAppGui.BackColor := "051336"
         this.ExtraKeyboardsAppGui.SetFont("c6688cc Bold")
 
-        this.profileButtonsObject := ProfileButtons(this.PATH_TO_EXISTING_PROFILES, this.PATH_TO_META_FILE)
-        this.profileButtonsObject.createProfileSettingsForGui(this.ExtraKeyboardsAppGui)
-        this.profileButtonsObject.addProfileChangedEvent(ObjBindMethod(this, "eventProfileChanged"))
-
+        this.CreateProfileEditor()
 
         ; TODO move somewhere else...
         pathToKeyboardsJsonFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileButtonsObject.getProfilesDropDownMenu().Text . "\Keyboards.json"
@@ -100,12 +99,19 @@ Class ExtraKeyboardsAppGui{
         fileReader := IniFileReader()
         functionsNames := fileReader.ReadSectionNamesToArray(pathToObjectsIniFile)
 
+        
         this.CreateTabs(pathToKeyboardsJsonFile, functionsNames, this.keyboardLayerIdentifiers, pathToObjectsIniFile)
         
         this.setColors()
         
         ; Create gui in the top left corner of the screen
         this.ExtraKeyboardsAppGui.Show("x0 y0")
+    }
+
+    CreateProfileEditor(){
+        this.profileButtonsObject := ProfileButtons(this.PATH_TO_EXISTING_PROFILES, this.PATH_TO_META_FILE)
+        this.profileButtonsObject.createProfileSettingsForGui(this.ExtraKeyboardsAppGui)
+        this.profileButtonsObject.addProfileChangedEvent(ObjBindMethod(this, "eventProfileChanged"))
     }
 
     eventProfileChanged(*){
@@ -125,7 +131,6 @@ Class ExtraKeyboardsAppGui{
 
         Tab.UseTab(2)
         this.CreateFunctionSettingsTab(functionsNames, pathToObjectsIniFile)
-
 
         Tab.UseTab(3)
         this.CreateDocumentationTab()
@@ -217,7 +222,6 @@ Class ExtraKeyboardsAppGui{
         FileRecycle(pathToCurrentProfile . "\Keyboards.json")
         FileAppend(jsonString, pathToCurrentProfile . "\Keyboards.json", "UTF-8")
         this.MainScript.RunLogicalStartup()
-
         
         popupForConfiguringHotkey.Destroy()
     }
@@ -227,12 +231,30 @@ Class ExtraKeyboardsAppGui{
         functionsNamesTreeView := TreeViewMaker()
         functionsNamesTreeView.createElementsForGui(this.ExtraKeyboardsAppGui, functionsNames)
         
-        functionSettings := ListViewFromIniFileContent()
-        functionSettings.CreateListView(this.ExtraKeyboardsAppGui, ["Setting","Value"], iniFilePath)
-        
-        ShowFunctionSettingsForFunction := ObjBindMethod(functionSettings, "SetNewListViewItemsByLayerIdentifier", iniFilePath)
+        listViewControl := ListViewMaker()
+        listViewControl.CreateListView(this.ExtraKeyboardsAppGui, ["Setting","Value"])
+        ShowFunctionSettingsForFunction := ObjBindMethod(this, "SetNewListViewItemsByLayerIdentifier", listViewControl, iniFilePath)
         functionsNamesTreeView.AddEventAction("ItemSelect", ShowFunctionSettingsForFunction)
+        
+        ListViewDoubleClickEvent := ObjBindMethod(this, "DoubleClick")
+        listViewControl.AddEventAction("DoubleClick", ListViewDoubleClickEvent)
+    }
 
+    DoubleClick(listView, rowNumber){
+        listViewFirstColum := listView.GetText(rowNumber, 1)
+        listViewSecondColum := listView.GetText(rowNumber, 2)
+
+        editorForActionSettings := SettingsEditor()
+        editorForActionSettings.CreateControls(listViewFirstColum, listViewSecondColum)
+    }
+
+    ; SettingsEditor
+
+    SetNewListViewItemsByLayerIdentifier(listViewControl, iniFile, treeViewElement, treeViewElementSelectedItemID){
+        iniFileRead := IniFileReader()
+        activeTreeViewItem := treeViewElement.GetText(treeViewElementSelectedItemID)
+        keyPairValuesArray := iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(iniFile, activeTreeViewItem)
+        listViewControl.SetNewListViewItems(keyPairValuesArray)
     }
 
     CreateDocumentationTab(){

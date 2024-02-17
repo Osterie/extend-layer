@@ -13,7 +13,7 @@ class TreeViewMaker{
             Loop arrayOfValues.Length{
                 this.treeView.Add(arrayOfValues[A_Index], 0, "Icon4")
             }
-        } 
+        }
         else{
             Throw TypeError("Given values must be an array of values to create treeview")
         }

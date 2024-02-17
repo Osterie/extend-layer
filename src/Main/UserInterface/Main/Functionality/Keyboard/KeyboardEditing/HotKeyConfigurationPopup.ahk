@@ -22,7 +22,6 @@ class HotKeyConfigurationPopup{
     currentHotkeyActionFormatted := ""
 
     saveButton := ""
-
     deleteButton := ""
 
     undoDeletionButton := ""

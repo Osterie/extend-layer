@@ -3,9 +3,7 @@
 class ParameterControlsGroup{
 
     parameterTextControl := ""
-
     parameterEditControl := ""
-
     parameterDescriptionControl := ""
 
     __New(parameterTextControl, paramaterEditControl, parameterDescriptionControl){

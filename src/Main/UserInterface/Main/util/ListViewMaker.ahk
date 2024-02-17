@@ -14,9 +14,6 @@ class ListViewMaker{
 
         ; Attach the ImageLists to the ListView so that it can later display the icons:
         this.listView.SetImageList(this.getImageList())
-        
-        this.listView.ModifyCol(1, 200)
-        this.listView.ModifyCol(2, 397)
     }
 
     getImageList(){
@@ -32,6 +29,7 @@ class ListViewMaker{
         Loop items.Length{
             this.listView.Add("Icon3", items[A_index]*)
         }
+        this.listView.ModifyCol()
     }
 
     AddEventAction(eventType, action){
