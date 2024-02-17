@@ -25,18 +25,10 @@ class SettingsEditor{
         
         this.SaveButton := this.SettingsGui.Add("Button", "w100 h20", "Save")
         CancelButton := this.SettingsGui.Add("Button", "w100 h20", "Cancel")
+        CancelButton.onEvent("Click", (*) =>this.SettingsGui.Destroy())
         this.DeleteButton := this.SettingsGui.Add("Button", "w100 h20", "Delete")
 
         this.SettingsGui.Show()
-
-        CancelButton.onEvent("Click", (*) =>this.SettingsGui.Destroy())
-        
-        ; DeleteButton.onEvent("Click", (*) => 
-
-        ;     this.listView.Delete(rowNumber)
-        ;     IniDelete(this.iniFile, iniFileSection, settingName)
-        ;     SettingsGui.Destroy()
-        ; )
     }
 
     DisableSettingNameEdit(){

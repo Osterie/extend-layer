@@ -236,10 +236,17 @@ Class ExtraKeyboardsAppGui{
         settingsValuesListView.CreateListView(this.ExtraKeyboardsAppGui, ["Setting","Value"])
         
         functionsNamesTreeView.AddEventAction("ItemSelect", ObjBindMethod(this, "CreateListViewItemsBasedOnIniFileContents", settingsValuesListView))
-        settingsValuesListView.AddEventAction("DoubleClick", ObjBindMethod(this, "DoubleClick", functionsNamesTreeView))
+        settingsValuesListView.AddEventAction("DoubleClick", ObjBindMethod(this, "CreateFunctionSettingsEditor", functionsNamesTreeView))
     }
 
-    DoubleClick(functionsNamesTreeView, listView, rowNumber){
+    CreateListViewItemsBasedOnIniFileContents(listViewControl, treeViewElement, treeViewElementSelectedItemID){
+        iniFileRead := IniFileReader()
+        activeTreeViewItem := treeViewElement.GetText(treeViewElementSelectedItemID)
+        keyPairValuesArray := iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(this.pathToObjectsIniFile, activeTreeViewItem)
+        listViewControl.SetNewListViewItems(keyPairValuesArray)
+    }
+
+    CreateFunctionSettingsEditor(functionsNamesTreeView, listView, rowNumber){
         currentFunctionSettings := functionsNamesTreeView.GetSelectionText()
 
         listViewFirstColum := listView.GetText(rowNumber, 1)
@@ -271,15 +278,6 @@ Class ExtraKeyboardsAppGui{
                 
 
                 ; IniWrite(inputValue.Value, this.iniFile, iniFileSection, inputKey.Value)
-                ; ; TODO change this
-                ; Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
-    }
-
-    CreateListViewItemsBasedOnIniFileContents(listViewControl, treeViewElement, treeViewElementSelectedItemID){
-        iniFileRead := IniFileReader()
-        activeTreeViewItem := treeViewElement.GetText(treeViewElementSelectedItemID)
-        keyPairValuesArray := iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(this.pathToObjectsIniFile, activeTreeViewItem)
-        listViewControl.SetNewListViewItems(keyPairValuesArray)
     }
 
     CreateDocumentationTab(){
