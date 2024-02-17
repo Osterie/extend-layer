@@ -8,7 +8,9 @@
 
 #Include "Main\ProfileEditing\ProfileButtons.ahk"
 #Include "Main\util\TreeViewMaker.ahk"
-#Include "Main\Functionality\Keyboard\ListViewForHotkeys.ahk"
+#Include "Main\util\ListViewMaker.ahk"
+#Include "Main\Functionality\Keyboard\KeyboardEditing\HotKeyConfigurationPopup.ahk"
+
 
 #Include <FoldersAndFiles\FolderManager>
 #Include <JsonParsing\JsonFormatter\JsonFormatter>
@@ -165,23 +167,23 @@ Class ExtraKeyboardsAppGui{
         keyboardLayoutChanger.createElementsForGui(this.ExtraKeyboardsAppGui, jsonFileContents)
         ; TODO use this.jsonwhatever ...
         
-        listViewElement := ListViewForHotkeys(this.activeObjectsRegistry, jsonFileContents, this.keyboardLayersInfoRegister, this.keyNames)
-        listViewElement.CreateListView(this.ExtraKeyboardsAppGui, ["KeyCombo","Action"])
+        listViewControl := ListViewMaker()
+        listViewControl.CreateListView(this.ExtraKeyboardsAppGui, ["KeyCombo","Action"])
         
-        keyboardLayoutChanger.AddEventAction("ItemSelect", ObjBindMethod(this, "TreeViewElementSelectedEvent", listViewElement))
+        keyboardLayoutChanger.AddEventAction("ItemSelect", ObjBindMethod(this, "TreeViewElementSelectedEvent", listViewControl))
 
 
         doubleClickEvent := ObjBindMethod(this, "ListViewElementDoubleClickedEvent", keyboardLayoutChanger)
-        listViewElement.AddEventAction("DoubleClick", doubleClickEvent)
+        listViewControl.AddEventAction("DoubleClick", doubleClickEvent)
     }
 
-    TreeViewElementSelectedEvent(listViewElement, treeViewElement, treeViewElementSelectedItemID){
+    TreeViewElementSelectedEvent(listViewControl, treeViewElement, treeViewElementSelectedItemID){
         this.currentLayer := treeViewElement.GetText(treeViewElementSelectedItemID)
 
         itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer)
         hotkeysForLayer := itemsToShowForListView.getFriendlyHotkeyActionPairValues()
 
-        listViewElement.SetNewListViewItems(hotkeysForLayer)
+        listViewControl.SetNewListViewItems(hotkeysForLayer)
     }
 
     ListViewElementDoubleClickedEvent(treeView, listView, item){
