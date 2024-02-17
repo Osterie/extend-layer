@@ -165,47 +165,71 @@ Class ExtraKeyboardsAppGui{
         keyboardLayoutChanger.createElementsForGui(this.ExtraKeyboardsAppGui, jsonFileContents)
         ; TODO use this.jsonwhatever ...
         
-        
         listViewElement := ListViewForHotkeys(this.activeObjectsRegistry, jsonFileContents, this.keyboardLayersInfoRegister, this.keyNames)
         listViewElement.CreateListView(this.ExtraKeyboardsAppGui, ["KeyCombo","Action"])
         
-        
-        keyboardLayoutChanger.AddEventAction("ItemSelect", ObjBindMethod(this, "TreeViewElementClickedEvent", listViewElement))
+        keyboardLayoutChanger.AddEventAction("ItemSelect", ObjBindMethod(this, "TreeViewElementSelectedEvent", listViewElement))
 
 
-        saveEvent := ObjBindMethod(this, "hotkeySavedEvent", listViewElement)
-        listViewElement.setHotkeySavedEvent(saveEvent)
-
-
-        ; this.CreateTreeViewWithAssociatedListViewFromJsonObject(keyboardLayerIdentifiers)
-
+        doubleClickEvent := ObjBindMethod(this, "ListViewElementDoubleClickedEvent", keyboardLayoutChanger)
+        listViewElement.AddEventAction("DoubleClick", doubleClickEvent)
     }
 
-    TreeViewElementClickedEvent(listViewElement, treeViewElement, treeViewElementSelectedItemID){
-
+    TreeViewElementSelectedEvent(listViewElement, treeViewElement, treeViewElementSelectedItemID){
         this.currentLayer := treeViewElement.GetText(treeViewElementSelectedItemID)
 
         itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer)
         hotkeysForLayer := itemsToShowForListView.getFriendlyHotkeyActionPairValues()
 
         listViewElement.SetNewListViewItems(hotkeysForLayer)
-
     }
 
-    ; TODO change name of this method to reflect that it (maybe) changes both hotkey and action...
-    hotkeySavedEvent(listViewElement, *){
-        ; TODO now i must update the json file with the new hotkey if it is valid...
+    ListViewElementDoubleClickedEvent(treeView, listView, item){
+        currentLayerIdentifier := treeView.GetSelectionText()
+
+        keyboardInformation := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(currentLayerIdentifier)
+
+        hotkeyBuild := listView.GetText(item, 1)
+        this.newHotkey := hotkeyBuild
+        this.originalHotkey := hotkeyBuild
+        hotkeyAction := listView.GetText(item, 2)
+
+        popupForConfiguringHotkey := HotKeyConfigurationPopup(this.activeObjectsRegistry, this.keyNames)
+        if (Type(keyboardInformation) == "HotkeysRegistry"){
+            popupForConfiguringHotkey.CreatePopupForHotkeyRegistry(keyboardInformation, item, hotkeyBuild, hotkeyAction)
+            
+        }
+        else if (Type(keyboardInformation) == "KeyboardOverlayInfo"){
+            popupForConfiguringHotkey.CreatePopupForKeyboardOverlayInfo(keyboardInformation, item)
+        }
+
+        saveButtonEvent := ObjBindMethod(this, "HotKeyConfigurationPopupSaveEvent", popupForConfiguringHotkey)
+        popupForConfiguringHotkey.addSaveButtonClickedEvent(saveButtonEvent)
+        ; popupForConfiguringHotkey.addSaveButtonClickedEvent(this.hotkeySavedEvent)
+
+        cancelButtonEvent := ObjBindMethod(this, "popupCancelButtonClickEvent")
+        popupForConfiguringHotkey.addCancelButtonClickedEvent(cancelButtonEvent)
+
+        
+    }
+
+    ; NOTE, info has no info for button clicks, which this is for.
+    HotKeyConfigurationPopupSaveEvent(popupForConfiguringHotkey, info, buttonClicked){
+        
+        originalHotkey := popupForConfiguringHotkey.getOriginalHotkey()
+        newHotkey := popupForConfiguringHotkey.getHotkey()
+        newAction := popupForConfiguringHotkey.getAction()
+
+                ; TODO now i must update the json file with the new hotkey if it is valid...
 
         ; TODO keyboardLayersInfoRegister change a hotkey, turn into a json file, and then change the existing json file
 
-        oldHotkey := HotkeyFormatConverter.convertFromFriendlyName(listViewElement.getOriginalHotkey())
-        newHotkey := listViewElement.getNewHotkey()
-        newAction := listViewElement.getNewAction()
+        this.keyboardLayersInfoRegister.ChangeHotkey(this.currentLayer, originalHotkey, newHotkey)
 
-        this.keyboardLayersInfoRegister.ChangeHotkey(this.currentLayer, oldHotkey, newHotKey)
-        this.keyboardLayersInfoRegister.ChangeAction(this.currentLayer, oldHotkey, newAction)
-
-
+        ; TODO perhaps a else with some information here
+        if (newAction != ""){
+            this.keyboardLayersInfoRegister.ChangeAction(this.currentLayer, originalHotkey, newAction)
+        }
 
         toJsonReader := KeyboadLayersInfoClassObjectReader()
         toJsonReader.ReadObjectToJson(this.keyboardLayersInfoRegister)
@@ -222,7 +246,7 @@ Class ExtraKeyboardsAppGui{
         this.MainScript.RunLogicalStartup()
 
         
-        listViewElement.getPopup().Destroy()
+        popupForConfiguringHotkey.Destroy()
     }
 
     CreateFunctionSettingsTab(functionsNames, iniFilePath){

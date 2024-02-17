@@ -18,6 +18,8 @@ class HotKeyConfigurationPopup{
     currentHotkeyCommand := ""
 
     originalHotkeyAction := ""
+    currentHotkeyAction := ""
+    currentHotkeyActionFormatted := ""
 
     saveButton := ""
 
@@ -37,7 +39,6 @@ class HotKeyConfigurationPopup{
         this.activeObjectsRegistry := activeObjectsRegistry
         this.arrayOfKeyNames := arrayOfKeyNames
     }
-    
 
     CreatePopupForHotkeyRegistry(hotkeysRegistry, listViewColumn, hotkeyCommand, hotkeyAction){
 
@@ -45,7 +46,7 @@ class HotKeyConfigurationPopup{
         this.currentHotkeyCommand := hotkeyCommand
 
         this.originalHotkeyAction := hotkeyAction
-        this.currentHotkeyAction := hotkeyAction
+        this.currentHotkeyActionFormatted := hotkeyAction
 
         this.mainGui := Gui()
         this.mainGui.opt("+Resize +MinSize600x560")
@@ -61,8 +62,8 @@ class HotKeyConfigurationPopup{
     }
 
     createCurrentActionControl(){
-        this.currentActionTextControl := this.mainGui.AddText(" ", "Action: `n" . this.currentHotkeyAction)
-        this.setCurrentActionText(this.currentHotkeyAction)
+        this.currentActionTextControl := this.mainGui.AddText(" ", "Action: `n" . this.currentHotkeyActionFormatted)
+        this.setCurrentActionText(this.currentHotkeyActionFormatted)
     }
 
     createButtons(){
@@ -108,7 +109,7 @@ class HotKeyConfigurationPopup{
     buttonToChangeOriginalActionClickedEvent(){
         this.mainGui.Hide()
 
-        actionCrafter := ActionCrafterGui(this.currentHotkeyAction, this.arrayOfKeyNames, this.activeObjectsRegistry, this.currentHotkeyCommand)
+        actionCrafter := ActionCrafterGui(this.currentHotkeyActionFormatted, this.arrayOfKeyNames, this.activeObjectsRegistry, this.currentHotkeyCommand)
         actionSavedEventAction := ObjBindMethod(this, "saveButtonClickedForActionChangeEvent", actionCrafter)
         actionCrafter.addSaveButtonClickEventAction(actionSavedEventAction)
 
@@ -273,6 +274,10 @@ class HotKeyConfigurationPopup{
             DllCall('ReleaseDC', 'Ptr', textCtrl.Hwnd, 'Ptr', hDC)
             return [Round(width * 96/A_ScreenDPI), Round(height * 96/A_ScreenDPI)]
         }
+    }
+
+    getOriginalHotkey(){
+        return HotkeyFormatConverter.convertFromFriendlyName(this.originalHotkey) 
     }
 
     getHotkey(){

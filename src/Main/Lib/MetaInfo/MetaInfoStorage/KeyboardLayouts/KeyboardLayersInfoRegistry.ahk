@@ -25,6 +25,7 @@ class KeyboardLayersInfoRegistry{
         this.HotkeysRegistry[layerIdentifier].ChangeHotkeyKey(hotkeyName, newHotkey)
     }
 
+    ; TODO add checks if empty string or such is given.
     ChangeAction(layerIdentifier, hotkeyName, newAction){
         this.HotkeysRegistry[layerIdentifier].ChangeHotkeyAction(hotkeyName, newAction)
     }

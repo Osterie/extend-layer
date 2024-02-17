@@ -30,4 +30,8 @@ class TreeViewMaker{
 
         return ImageListID
     }
+
+    GetSelectionText(){
+        return this.treeView.GetText(this.treeView.GetSelection())
+    }
 }

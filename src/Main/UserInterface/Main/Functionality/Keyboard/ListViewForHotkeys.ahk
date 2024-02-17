@@ -33,22 +33,20 @@ class ListViewForHotkeys{
         
         this.listView := guiObject.Add("ListView", "r20 w600 x+10", columnNames)
 
-        ImageListID := IL_Create(10)  ; Create an ImageList with initial capacity for 10 icons.
-        Loop 10  ; Load the ImageList with some standard system icons.
-            IL_Add(ImageListID, "shell32.dll", A_Index)
-
-
         ; Attach the ImageLists to the ListView so that it can later display the icons:
-        this.listView.SetImageList(ImageListID)
-        this.listView.Opt("Report")
+        this.listView.SetImageList(this.getImageList())
         
         this.listView.ModifyCol(1, 200)
         this.listView.ModifyCol(2, 397)
-        ; this.listView.ModifyCol(2, )
 
-        ListViewDoubleClickEvent := ObjBindMethod(this, "ListViewDoubleClickEvent")
-        this.listView.OnEvent("DoubleClick", ListViewDoubleClickEvent)
-        this.listView.Opt("-0x200000 -0x2000 +0x100000") 
+        ; this.listView.OnEvent("DoubleClick", ObjBindMethod(this, "ListViewDoubleClickEvent"))
+    }
+
+    getImageList(){
+        ImageListID := IL_Create(10)  ; Create an ImageList with initial capacity for 10 icons.
+        Loop 10  ; Load the ImageList with some standard system icons.
+            IL_Add(ImageListID, "shell32.dll", A_Index)
+        return ImageListID
     }
 
     ; Takes a two dimensional array, items, and adds each item to the listView
@@ -60,9 +58,9 @@ class ListViewForHotkeys{
     }
 
     ListViewDoubleClickEvent(listView, rowNumber){
-
+        ; TODO error here
         data := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.activeTreeViewItem)
-
+        
         hotkeyBuild := listView.GetText(rowNumber, 1)
         this.newHotkey := hotkeyBuild
         this.originalHotkey := hotkeyBuild
