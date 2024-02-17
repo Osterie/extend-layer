@@ -2,7 +2,6 @@
 
 class GuiColorsChanger{
 
-
     ; colorHex is on the format RRGGBB, or cRRGGBB
     static setControlsColor(guiObject, colorHex){
         For Hwnd, Ctrl in guiObject{
@@ -27,7 +26,6 @@ class GuiColorsChanger{
             attr := 20
         DllCall("dwmapi\DwmSetWindowAttribute", "ptr", hwnd, "int", attr, "int*", boolEnable, "int", 4)
     }
-
 
     ; set caption color for windows 11 only
     ; coloreHex is on the format 0xRRGGBB
