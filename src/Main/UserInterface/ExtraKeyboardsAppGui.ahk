@@ -10,6 +10,7 @@
 #Include "Main\util\TreeViewMaker.ahk"
 #Include "Main\util\ListViewMaker.ahk"
 #Include "Main\Functionality\Keyboard\KeyboardEditing\HotKeyConfigurationPopup.ahk"
+#Include "Main\util\GuiColorsChanger.ahk"
 
 
 #Include <FoldersAndFiles\FolderManager>
@@ -101,41 +102,19 @@ Class ExtraKeyboardsAppGui{
 
         this.CreateTabs(pathToKeyboardsJsonFile, functionsNames, this.keyboardLayerIdentifiers, pathToObjectsIniFile)
         
-        BackgroundColor := "000c18"
-        ; BackgroundColor := "051336"
-        BackgroundColor := "060621"
-        this.setControlsColor(BackgroundColor)
-        this.setControlsTextColor()
-        
-        
-        ; this.ExtraKeyboardsAppGui.BackColor := 0x333333
-        ; 181d29
-        ; this.SetDarkWindowFrame(this.ExtraKeyboardsAppGui)
-        ; TODO these methods work with windows 11.
-        this.DwmSetCaptionColor(this.ExtraKeyboardsAppGui, 0x300f45) ; color is in RGB format
-        this.DwmSetTextColor(this.ExtraKeyboardsAppGui, 0x27eaf1)
+        this.setColors()
         
         ; Create gui in the top left corner of the screen
         this.ExtraKeyboardsAppGui.Show("x0 y0")
-
-        ; this.ExtraKeyboardsAppGui.Show("w300 h200")
-
     }
 
-    ; TODO create class for this
-    setControlsColor(colorHex){
-        For Hwnd, Ctrl in this.ExtraKeyboardsAppGui{
-            Ctrl.Opt("+Background" . colorHex)
-            Ctrl.BackColor := colorHex
-        }
-
-    }
-    
-    ; TODO create class for this(same as above)
-    setControlsTextColor(){
-        For Hwnd, Ctrl in this.ExtraKeyboardsAppGui{
-            Ctrl.SetFont("c6688cc")
-        }
+    setColors(){
+        controlColor := "060621"
+        textColor := "6688FF"
+        GuiColorsChanger.setControlsColor(this.ExtraKeyboardsAppGui, controlColor)
+        GuiColorsChanger.setControlsTextColor(this.ExtraKeyboardsAppGui, textColor)
+        GuiColorsChanger.DwmSetCaptionColor(this.ExtraKeyboardsAppGui, 0x300f45) ; color is in RGB format
+        GuiColorsChanger.DwmSetTextColor(this.ExtraKeyboardsAppGui, 0x27eaf1)
     }
 
     getProfileButtonsObject(){
@@ -263,30 +242,5 @@ Class ExtraKeyboardsAppGui{
         ShowFunctionSettingsForFunction := ObjBindMethod(functionSettings, "SetNewListViewItemsByLayerIdentifier", iniFilePath)
         functionsNamesTreeView.AddEventAction("ItemSelect", ShowFunctionSettingsForFunction)
 
-    }
-
-    ; TODO create own class for this
-    SetDarkWindowFrame(hwnd, boolEnable:=1) {
-        hwnd := WinExist(hwnd)
-        if VerCompare(A_OSVersion, "10.0.17763") >= 0
-            attr := 19
-        if VerCompare(A_OSVersion, "10.0.18985") >= 0
-            attr := 20
-        DllCall("dwmapi\DwmSetWindowAttribute", "ptr", hwnd, "int", attr, "int*", boolEnable, "int", 4)
-    }
-
-
-    ; set caption color
-    DwmSetCaptionColor(hwnd?, color?) {
-        static DWMWA_CAPTION_COLOR := 35
-        color := IsSet(color) ? (color & 0xFF0000) >> 16 | (color & 0xFF00) | (color & 0xFF) << 16 : 0xFFFFFFFF
-        DllCall("dwmapi\DwmSetWindowAttribute", "ptr", WinExist(hwnd??"A"), "int", DWMWA_CAPTION_COLOR, "int*", color, "int", 4)
-    }
-
-    ; set caption text color
-    DwmSetTextColor(hwnd?, color?) {
-        static DWMWA_TEXT_COLOR := 36
-        color := IsSet(color) ? (color & 0xFF0000) >> 16 | (color & 0xFF00) | (color & 0xFF) << 16 : 0xFFFFFFFF
-        DllCall("dwmapi\DwmSetWindowAttribute", "ptr", WinExist(hwnd??"A"), "int", DWMWA_TEXT_COLOR, "int*", color, "int", 4)
     }
 }
