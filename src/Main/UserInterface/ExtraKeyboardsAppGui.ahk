@@ -232,13 +232,11 @@ Class ExtraKeyboardsAppGui{
         functionsNamesTreeView := TreeViewMaker()
         functionsNamesTreeView.createElementsForGui(this.ExtraKeyboardsAppGui, functionsNames)
         
-        listViewControl := ListViewMaker()
-        listViewControl.CreateListView(this.ExtraKeyboardsAppGui, ["Setting","Value"])
-        ShowFunctionSettingsForFunction := ObjBindMethod(this, "SetNewListViewItemsByLayerIdentifier", listViewControl, this.pathToObjectsIniFile)
-        functionsNamesTreeView.AddEventAction("ItemSelect", ShowFunctionSettingsForFunction)
+        settingsValuesListView := ListViewMaker()
+        settingsValuesListView.CreateListView(this.ExtraKeyboardsAppGui, ["Setting","Value"])
         
-        ListViewDoubleClickEvent := ObjBindMethod(this, "DoubleClick", functionsNamesTreeView)
-        listViewControl.AddEventAction("DoubleClick", ListViewDoubleClickEvent)
+        functionsNamesTreeView.AddEventAction("ItemSelect", ObjBindMethod(this, "CreateListViewItemsBasedOnIniFileContents", settingsValuesListView))
+        settingsValuesListView.AddEventAction("DoubleClick", ObjBindMethod(this, "DoubleClick", functionsNamesTreeView))
     }
 
     DoubleClick(functionsNamesTreeView, listView, rowNumber){
@@ -250,8 +248,7 @@ Class ExtraKeyboardsAppGui{
         editorForActionSettings := SettingsEditor()
         editorForActionSettings.CreateControls(listViewFirstColum, listViewSecondColum)
         editorForActionSettings.DisableSettingNameEdit()
-        settingsSavedEvent := ObjBindMethod(this, "SettingsEditorSaveButtonEvent", editorForActionSettings, currentFunctionSettings)
-        editorForActionSettings.addSaveButtonEvent("Click", settingsSavedEvent)
+        editorForActionSettings.addSaveButtonEvent("Click", ObjBindMethod(this, "SettingsEditorSaveButtonEvent", editorForActionSettings, currentFunctionSettings))
     }
 
     SettingsEditorSaveButtonEvent(editorForActionSettings, currentFunctionSettings, *){
@@ -278,12 +275,10 @@ Class ExtraKeyboardsAppGui{
                 ; Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
     }
 
-    ; SettingsEditor
-
-    SetNewListViewItemsByLayerIdentifier(listViewControl, iniFile, treeViewElement, treeViewElementSelectedItemID){
+    CreateListViewItemsBasedOnIniFileContents(listViewControl, treeViewElement, treeViewElementSelectedItemID){
         iniFileRead := IniFileReader()
         activeTreeViewItem := treeViewElement.GetText(treeViewElementSelectedItemID)
-        keyPairValuesArray := iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(iniFile, activeTreeViewItem)
+        keyPairValuesArray := iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(this.pathToObjectsIniFile, activeTreeViewItem)
         listViewControl.SetNewListViewItems(keyPairValuesArray)
     }
 
