@@ -122,6 +122,7 @@ Class ExtraKeyboardsAppGui{
 
     }
 
+    ; TODO create class for this
     setControlsColor(colorHex){
         For Hwnd, Ctrl in this.ExtraKeyboardsAppGui{
             Ctrl.Opt("+Background" . colorHex)
@@ -129,7 +130,8 @@ Class ExtraKeyboardsAppGui{
         }
 
     }
-
+    
+    ; TODO create class for this(same as above)
     setControlsTextColor(){
         For Hwnd, Ctrl in this.ExtraKeyboardsAppGui{
             Ctrl.SetFont("c6688cc")
