@@ -91,6 +91,7 @@ Class ExtraKeyboardsAppGui{
         this.ExtraKeyboardsAppGui.BackColor := "051336"
         this.ExtraKeyboardsAppGui.SetFont("c6688cc Bold")
 
+        ; TODO when a profile is changed, update the paths? or not? since i at the moment restart everything when the profile is changed.
         this.CreateProfileEditor()
 
         ; TODO move somewhere else...
@@ -99,9 +100,8 @@ Class ExtraKeyboardsAppGui{
 
         fileReader := IniFileReader()
         functionsNames := fileReader.ReadSectionNamesToArray(this.pathToObjectsIniFile)
-
         
-        this.CreateTabs(pathToKeyboardsJsonFile, functionsNames, this.keyboardLayerIdentifiers, this.pathToObjectsIniFile)
+        this.CreateTabs(pathToKeyboardsJsonFile, functionsNames, this.keyboardLayerIdentifiers)
         
         this.setColors()
         
@@ -123,15 +123,15 @@ Class ExtraKeyboardsAppGui{
         this.ExtraKeyboardsAppGui.Destroy()
     }
 
-    CreateTabs(pathToKeyboardsJsonFile, functionsNames, jsonFileContents, pathToObjectsIniFile){
+    CreateTabs(pathToKeyboardsJsonFile, functionsNames, jsonFileContents){
         
         Tab := this.ExtraKeyboardsAppGui.AddTab3("yp+40 xm", ["Keyboards","Change Functions Settings","Documentation"])
         Tab.UseTab(1)
 
-        this.CreateKeyboardsTab(pathToKeyboardsJsonFile, functionsNames, jsonFileContents, pathToObjectsIniFile)
+        this.CreateKeyboardsTab(pathToKeyboardsJsonFile, functionsNames, jsonFileContents)
 
         Tab.UseTab(2)
-        this.CreateFunctionSettingsTab(functionsNames, pathToObjectsIniFile)
+        this.CreateFunctionSettingsTab(functionsNames)
 
         Tab.UseTab(3)
         this.CreateDocumentationTab()
@@ -139,7 +139,7 @@ Class ExtraKeyboardsAppGui{
         Tab.UseTab(0) ; subsequently-added controls will not belong to the tab control.
     }
 
-    CreateKeyboardsTab(pathToKeyboardsJsonFile, functionsNames, jsonFileContents, pathToObjectsIniFile){
+    CreateKeyboardsTab(pathToKeyboardsJsonFile, functionsNames, jsonFileContents){
 
         keyboardLayoutChanger := TreeViewMaker()
         keyboardLayoutChanger.createElementsForGui(this.ExtraKeyboardsAppGui, jsonFileContents)
@@ -227,14 +227,14 @@ Class ExtraKeyboardsAppGui{
         popupForConfiguringHotkey.Destroy()
     }
 
-    CreateFunctionSettingsTab(functionsNames, iniFilePath){
+    CreateFunctionSettingsTab(functionsNames){
 
         functionsNamesTreeView := TreeViewMaker()
         functionsNamesTreeView.createElementsForGui(this.ExtraKeyboardsAppGui, functionsNames)
         
         listViewControl := ListViewMaker()
         listViewControl.CreateListView(this.ExtraKeyboardsAppGui, ["Setting","Value"])
-        ShowFunctionSettingsForFunction := ObjBindMethod(this, "SetNewListViewItemsByLayerIdentifier", listViewControl, iniFilePath)
+        ShowFunctionSettingsForFunction := ObjBindMethod(this, "SetNewListViewItemsByLayerIdentifier", listViewControl, this.pathToObjectsIniFile)
         functionsNamesTreeView.AddEventAction("ItemSelect", ShowFunctionSettingsForFunction)
         
         ListViewDoubleClickEvent := ObjBindMethod(this, "DoubleClick", functionsNamesTreeView)
@@ -249,15 +249,18 @@ Class ExtraKeyboardsAppGui{
 
         editorForActionSettings := SettingsEditor()
         editorForActionSettings.CreateControls(listViewFirstColum, listViewSecondColum)
+        editorForActionSettings.DisableSettingNameEdit()
         settingsSavedEvent := ObjBindMethod(this, "SettingsEditorSaveButtonEvent", editorForActionSettings, currentFunctionSettings)
         editorForActionSettings.addSaveButtonEvent("Click", settingsSavedEvent)
     }
 
-    SettingsEditorSaveButtonEvent(editorForActionSettings, currentFunctionSettings *){
-        iniFileSection := currentFunctionSettings[1]
+    SettingsEditorSaveButtonEvent(editorForActionSettings, currentFunctionSettings, *){
+        iniFileSection := currentFunctionSettings
         iniFileKey := editorForActionSettings.GetSetting()
         iniFileValue := editorForActionSettings.GetSettingValue()
         IniWrite(iniFileValue, this.pathToObjectsIniFile, iniFileSection, iniFileKey)
+        editorForActionSettings.Destroy()
+
                 ; ; TODO validate values, can not be empty!, can not be the same as another key, etc...
                 ; if(rowNumber != 0){
                 ;     oldIniFileKey := this.listView.GetText(rowNumber)
@@ -271,7 +274,6 @@ Class ExtraKeyboardsAppGui{
                 
 
                 ; IniWrite(inputValue.Value, this.iniFile, iniFileSection, inputKey.Value)
-                ; SettingsGui.Destroy()
                 ; ; TODO change this
                 ; Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
     }

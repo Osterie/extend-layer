@@ -8,26 +8,28 @@ class SettingsEditor{
     settingNameEdit := ""
     settingValueEdit := ""
 
+    SettingsGui := ""
+
 
     CreateControls(settingName, settingValue){
 
         ; TODO should be set to on top, can not be not top ever...
         
-        SettingsGui := Gui("+Resize +MinSize300x560", "Settings")
+        this.SettingsGui := Gui("+Resize +MinSize300x560", "Settings")
         
-        SettingsGui.Add("Text", "w300 h20", "Setting:")
-        this.settingNameEdit := SettingsGui.Add("Edit", "xm w300 h20", settingName)
+        this.SettingsGui.Add("Text", "w300 h20", "Setting:")
+        this.settingNameEdit := this.SettingsGui.Add("Edit", "xm w300 h20", settingName)
         
-        SettingsGui.Add("Text", "xm w300 h20", "Setting value:")
-        this.settingValueEdit := SettingsGui.Add("Edit", "xm w300 h20", settingValue)
+        this.SettingsGui.Add("Text", "xm w300 h20", "Setting value:")
+        this.settingValueEdit := this.SettingsGui.Add("Edit", "xm w300 h20", settingValue)
         
-        this.SaveButton := SettingsGui.Add("Button", "w100 h20", "Save")
-        CancelButton := SettingsGui.Add("Button", "w100 h20", "Cancel")
-        this.DeleteButton := SettingsGui.Add("Button", "w100 h20", "Delete")
+        this.SaveButton := this.SettingsGui.Add("Button", "w100 h20", "Save")
+        CancelButton := this.SettingsGui.Add("Button", "w100 h20", "Cancel")
+        this.DeleteButton := this.SettingsGui.Add("Button", "w100 h20", "Delete")
 
-        SettingsGui.Show()
+        this.SettingsGui.Show()
 
-        CancelButton.onEvent("Click", (*) =>SettingsGui.Destroy())
+        CancelButton.onEvent("Click", (*) =>this.SettingsGui.Destroy())
         
         ; DeleteButton.onEvent("Click", (*) => 
 
@@ -35,6 +37,14 @@ class SettingsEditor{
         ;     IniDelete(this.iniFile, iniFileSection, settingName)
         ;     SettingsGui.Destroy()
         ; )
+    }
+
+    DisableSettingNameEdit(){
+        this.settingNameEdit.Opt("+Disabled")
+    }
+
+    DisableSettingValueEdit(){
+        this.settingValueEdit.Opt("+Disabled")
     }
 
     addSaveButtonEvent(eventType, action){
@@ -71,5 +81,9 @@ class SettingsEditor{
     
     GetSettingValue(){
         return this.settingValueEdit.Value
+    }
+
+    Destroy(){
+        this.SettingsGui.Destroy()
     }
 }
