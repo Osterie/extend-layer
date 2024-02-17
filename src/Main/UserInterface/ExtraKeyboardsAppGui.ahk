@@ -107,20 +107,13 @@ Class ExtraKeyboardsAppGui{
         ; Create gui in the top left corner of the screen
         this.ExtraKeyboardsAppGui.Show("x0 y0")
     }
+
     eventProfileChanged(*){
         ; TODO this should probably be changed? it is sort of heavy to basically restart the entire program when changing profiles.
         this.mainScript.RunMainStartup(false)
         this.mainScript.RunLogicalStartup()
         this.mainScript.RunAppGui()
         this.ExtraKeyboardsAppGui.Destroy()
-    }
-
-    getProfileButtonsObject(){
-        return this.profileButtonsObject
-    }
-
-    CreateDocumentationTab(){
-        this.ExtraKeyboardsAppGui.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.
     }
 
     CreateTabs(pathToKeyboardsJsonFile, functionsNames, jsonFileContents, pathToObjectsIniFile){
@@ -137,7 +130,7 @@ Class ExtraKeyboardsAppGui{
         Tab.UseTab(3)
         this.CreateDocumentationTab()
 
-        Tab.UseTab(0)  ; i.e. subsequently-added controls will not belong to the tab control.
+        Tab.UseTab(0) ; subsequently-added controls will not belong to the tab control.
     }
 
     CreateKeyboardsTab(pathToKeyboardsJsonFile, functionsNames, jsonFileContents, pathToObjectsIniFile){
@@ -240,6 +233,10 @@ Class ExtraKeyboardsAppGui{
         ShowFunctionSettingsForFunction := ObjBindMethod(functionSettings, "SetNewListViewItemsByLayerIdentifier", iniFilePath)
         functionsNamesTreeView.AddEventAction("ItemSelect", ShowFunctionSettingsForFunction)
 
+    }
+
+    CreateDocumentationTab(){
+        this.ExtraKeyboardsAppGui.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.
     }
 
     setColors(){
