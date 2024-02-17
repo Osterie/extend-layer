@@ -3,7 +3,6 @@
 ; TODO move inifilereader to meta info reading
 
 ; #Include <JsonParsing\JXON\JXON>
-#Include "Main\util\ListViewFromIniFileContent.ahk"
 #Include <FoldersAndFiles\IniFileReader>
 
 #Include "Main\Functionality\ActionSettings\SettingsEditor.ahk"
