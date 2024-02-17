@@ -205,7 +205,6 @@ Class ExtraKeyboardsAppGui{
 
         saveButtonEvent := ObjBindMethod(this, "HotKeyConfigurationPopupSaveEvent", popupForConfiguringHotkey)
         popupForConfiguringHotkey.addSaveButtonClickedEvent(saveButtonEvent)
-        ; popupForConfiguringHotkey.addSaveButtonClickedEvent(this.hotkeySavedEvent)
 
         cancelButtonEvent := ObjBindMethod(this, "popupCancelButtonClickEvent")
         popupForConfiguringHotkey.addCancelButtonClickedEvent(cancelButtonEvent)

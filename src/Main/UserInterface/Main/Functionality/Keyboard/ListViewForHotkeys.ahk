@@ -102,26 +102,6 @@ class ListViewForHotkeys{
         this.popupForConfiguringHotkey.Destroy()
     }
 
-    getPopup(){
-        return this.popupForConfiguringHotkey
-    }
-
-    setHotkeySavedEvent(event){
-        this.hotkeySavedEvent := event
-    }
-
-    getNewHotkey(){
-        return this.newHotKey
-    }
-
-    getNewAction(){
-        return this.newAction
-    }
-
-    getOriginalHotkey(){
-        return this.originalHotkey
-    }
-
     AddEventAction(eventType, action){
         this.listView.OnEvent(eventType, action)
     }
