@@ -159,11 +159,6 @@ Class Main{
         this.RunMainStartup()
     }
 
-    eventProfileChanged(*){
-        this.RunMainStartup(false)
-        this.RunLogicalStartup()
-    }
-
     UpdatePathsToInfo(){
         this.CURRENT_PROFILE_NAME := iniRead(this.PATH_TO_META_INI_FILE, "General", "activeUserProfile")
         this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := "../../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "/ClassObjects.ini"
@@ -355,7 +350,6 @@ Class Main{
     ReadObjectsInformationFromJson(){
         JsonReaderForObjects := ObjectsJsonReader(this.PATH_TO_OBJECT_INFO, this.Objects)
         this.ObjectRegister := JsonReaderForObjects.ReadObjectsFromJson()
-
     }
 
     ReadKeyboardLayersInfoFromJson(){
@@ -373,13 +367,8 @@ Class Main{
     }
 
     RunAppGui(){
-    
         this.app := ExtraKeyboardsApp(this.keyboardLayerIdentifiers, this.ObjectRegister, this.KeyboardLayersInfoRegister, this, this.keyNames)
         this.app.Start()
-
-        refreshHotkeys := ObjBindMethod(this, "eventProfileChanged")
-        ; TODO this is probably bad
-        this.app.getExtraKeyboardsAppgui().getProfileButtonsObject().addProfileChangedEvent(refreshHotkeys)
     }
 
     getStartupConfigurator(){

@@ -84,15 +84,15 @@ Class ExtraKeyboardsAppGui{
 
     CreateMain(){
 
-        this.ExtraKeyboardsAppGui := Gui()
+        this.ExtraKeyboardsAppGui := Gui("+Resize +MinSize920x480", "Extra Keyboards App")
         this.ExtraKeyboardsAppGui.BackColor := "051336"
         this.ExtraKeyboardsAppGui.SetFont("c6688cc Bold")
-        this.ExtraKeyboardsAppGui.Opt("+Resize +MinSize920x480")
-        this.ExtraKeyboardsAppGui.Add("Text", , "Current Profile:")
 
         this.profileButtonsObject := ProfileButtons(this.PATH_TO_EXISTING_PROFILES, this.PATH_TO_META_FILE)
         this.profileButtonsObject.createProfileSettingsForGui(this.ExtraKeyboardsAppGui)
-        
+        this.profileButtonsObject.addProfileChangedEvent(ObjBindMethod(this, "eventProfileChanged"))
+
+
         ; TODO move somewhere else...
         pathToKeyboardsJsonFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileButtonsObject.getProfilesDropDownMenu().Text . "\Keyboards.json"
         pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileButtonsObject.getProfilesDropDownMenu().Text . "\ClassObjects.ini"
@@ -107,14 +107,12 @@ Class ExtraKeyboardsAppGui{
         ; Create gui in the top left corner of the screen
         this.ExtraKeyboardsAppGui.Show("x0 y0")
     }
-
-    setColors(){
-        controlColor := "060621"
-        textColor := "6688FF"
-        GuiColorsChanger.setControlsColor(this.ExtraKeyboardsAppGui, controlColor)
-        GuiColorsChanger.setControlsTextColor(this.ExtraKeyboardsAppGui, textColor)
-        GuiColorsChanger.DwmSetCaptionColor(this.ExtraKeyboardsAppGui, 0x300f45) ; color is in RGB format
-        GuiColorsChanger.DwmSetTextColor(this.ExtraKeyboardsAppGui, 0x27eaf1)
+    eventProfileChanged(*){
+        ; TODO this should probably be changed? it is sort of heavy to basically restart the entire program when changing profiles.
+        this.mainScript.RunMainStartup(false)
+        this.mainScript.RunLogicalStartup()
+        this.mainScript.RunAppGui()
+        this.ExtraKeyboardsAppGui.Destroy()
     }
 
     getProfileButtonsObject(){
@@ -242,5 +240,14 @@ Class ExtraKeyboardsAppGui{
         ShowFunctionSettingsForFunction := ObjBindMethod(functionSettings, "SetNewListViewItemsByLayerIdentifier", iniFilePath)
         functionsNamesTreeView.AddEventAction("ItemSelect", ShowFunctionSettingsForFunction)
 
+    }
+
+    setColors(){
+        controlColor := "060621"
+        textColor := "6688FF"
+        GuiColorsChanger.setControlsColor(this.ExtraKeyboardsAppGui, controlColor)
+        GuiColorsChanger.setControlsTextColor(this.ExtraKeyboardsAppGui, textColor)
+        GuiColorsChanger.DwmSetCaptionColor(this.ExtraKeyboardsAppGui, 0x300f45) ; color is in RGB format
+        GuiColorsChanger.DwmSetTextColor(this.ExtraKeyboardsAppGui, 0x27eaf1)
     }
 }

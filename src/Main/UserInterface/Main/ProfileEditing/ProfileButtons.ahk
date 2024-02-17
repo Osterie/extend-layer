@@ -52,6 +52,7 @@ class ProfileButtons{
         ; this.PATH_TO_PRESET_PROFILES := pathToPresetProfiles
 
         
+        guiObject.Add("Text", , "Current Profile:")
 
         this.profilesDropDownMenu := this.createProfilesDropDownMenu(guiObject)
         
