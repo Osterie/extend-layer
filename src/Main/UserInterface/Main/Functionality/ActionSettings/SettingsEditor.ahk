@@ -2,27 +2,32 @@
 
 class SettingsEditor{
     
+    SaveButton := ""
+    DeleteButton := ""
+
+    settingNameEdit := ""
+    settingValueEdit := ""
+
+
     CreateControls(settingName, settingValue){
 
         ; TODO should be set to on top, can not be not top ever...
         
-        SettingsGui := Gui("+Resize +MinSize300x560 +AlwaysOnTop")
+        SettingsGui := Gui("+Resize +MinSize300x560", "Settings")
         
-        SettingsGui.Add("Text", "w300 h20", "Value From Key:")
-        inputKey := SettingsGui.Add("Edit", "xm w300 h20", settingName)
+        SettingsGui.Add("Text", "w300 h20", "Setting:")
+        this.settingNameEdit := SettingsGui.Add("Edit", "xm w300 h20", settingName)
         
-        SettingsGui.Add("Text", "xm w300 h20", "Value New Key Action:")
-        inputValue := SettingsGui.Add("Edit", "xm w300 h20", settingValue)
+        SettingsGui.Add("Text", "xm w300 h20", "Setting value:")
+        this.settingValueEdit := SettingsGui.Add("Edit", "xm w300 h20", settingValue)
         
-        SaveButton := SettingsGui.Add("Button", "w100 h20", "Save")
+        this.SaveButton := SettingsGui.Add("Button", "w100 h20", "Save")
         CancelButton := SettingsGui.Add("Button", "w100 h20", "Cancel")
-        DeleteButton := SettingsGui.Add("Button", "w100 h20", "Delete")
+        this.DeleteButton := SettingsGui.Add("Button", "w100 h20", "Delete")
 
         SettingsGui.Show()
 
-        ; SaveButton.onEvent("Click", (*) => this.SaveButtonClickEvent(SettingsGui, rowNumber, inputKey, iniFileSection, inputValue))
-
-        ; CancelButton.onEvent("Click", (*) =>SettingsGui.Destroy())
+        CancelButton.onEvent("Click", (*) =>SettingsGui.Destroy())
         
         ; DeleteButton.onEvent("Click", (*) => 
 
@@ -32,21 +37,39 @@ class SettingsEditor{
         ; )
     }
 
-    
-    SaveButtonClickEvent(SettingsGui, rowNumber, inputKey, iniFileSection, inputValue){
-        ; TODO validate values, can not be empty!, can not be the same as another key, etc...
-        if(rowNumber != 0){
-            oldIniFileKey := this.listView.GetText(rowNumber)
-            IniDelete this.iniFile, iniFileSection, oldIniFileKey
-            this.listView.Modify(rowNumber, , inputKey.Value, inputValue.Value)
+    addSaveButtonEvent(eventType, action){
+        if (Type(this.SaveButton) = "Gui.Button"){
+            try{
+                this.SaveButton.onEvent(eventType, action)
+            }
+            catch Error as e{
+                MsgBox("Error in settings editor: " . e.Message)
+            }
         }
         else{
-            this.listView.Add(, inputKey.Value, inputValue.Value)
-
+            throw TypeError("Save button has not been created yet for SettingsEditor object.")
         }
-        IniWrite(inputValue.Value, this.iniFile, iniFileSection, inputKey.Value)
-        SettingsGui.Destroy()
-        ; TODO change this
-        Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
+    }
+
+    addDeleteButtonEvent(eventType, action){
+        if (Type(this.SaveButton) = "Gui.Button"){
+            try{
+                this.DeleteButton.onEvent(eventType, action)
+            }
+            catch Error as e{
+                MsgBox("Error in settings editor: " . e.Message)
+            }
+        }
+        else{
+            throw TypeError("Delete button has not been created yet for SettingsEditor object.")
+        }
+    }
+
+    GetSetting(){
+        return this.settingNameEdit.Value
+    }
+    
+    GetSettingValue(){
+        return this.settingValueEdit.Value
     }
 }

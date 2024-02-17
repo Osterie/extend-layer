@@ -53,6 +53,8 @@ Class ExtraKeyboardsAppGui{
 
     keyNames := ""
 
+    pathToObjectsIniFile := ""
+
 
     __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToMainScript, pathToEmptyProfile, keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames){
         this.MainScript := mainScript
@@ -93,13 +95,13 @@ Class ExtraKeyboardsAppGui{
 
         ; TODO move somewhere else...
         pathToKeyboardsJsonFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileButtonsObject.getProfilesDropDownMenu().Text . "\Keyboards.json"
-        pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileButtonsObject.getProfilesDropDownMenu().Text . "\ClassObjects.ini"
+        this.pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileButtonsObject.getProfilesDropDownMenu().Text . "\ClassObjects.ini"
 
         fileReader := IniFileReader()
-        functionsNames := fileReader.ReadSectionNamesToArray(pathToObjectsIniFile)
+        functionsNames := fileReader.ReadSectionNamesToArray(this.pathToObjectsIniFile)
 
         
-        this.CreateTabs(pathToKeyboardsJsonFile, functionsNames, this.keyboardLayerIdentifiers, pathToObjectsIniFile)
+        this.CreateTabs(pathToKeyboardsJsonFile, functionsNames, this.keyboardLayerIdentifiers, this.pathToObjectsIniFile)
         
         this.setColors()
         
@@ -235,16 +237,43 @@ Class ExtraKeyboardsAppGui{
         ShowFunctionSettingsForFunction := ObjBindMethod(this, "SetNewListViewItemsByLayerIdentifier", listViewControl, iniFilePath)
         functionsNamesTreeView.AddEventAction("ItemSelect", ShowFunctionSettingsForFunction)
         
-        ListViewDoubleClickEvent := ObjBindMethod(this, "DoubleClick")
+        ListViewDoubleClickEvent := ObjBindMethod(this, "DoubleClick", functionsNamesTreeView)
         listViewControl.AddEventAction("DoubleClick", ListViewDoubleClickEvent)
     }
 
-    DoubleClick(listView, rowNumber){
+    DoubleClick(functionsNamesTreeView, listView, rowNumber){
+        currentFunctionSettings := functionsNamesTreeView.GetSelectionText()
+
         listViewFirstColum := listView.GetText(rowNumber, 1)
         listViewSecondColum := listView.GetText(rowNumber, 2)
 
         editorForActionSettings := SettingsEditor()
         editorForActionSettings.CreateControls(listViewFirstColum, listViewSecondColum)
+        settingsSavedEvent := ObjBindMethod(this, "SettingsEditorSaveButtonEvent", editorForActionSettings, currentFunctionSettings)
+        editorForActionSettings.addSaveButtonEvent("Click", settingsSavedEvent)
+    }
+
+    SettingsEditorSaveButtonEvent(editorForActionSettings, currentFunctionSettings *){
+        iniFileSection := currentFunctionSettings[1]
+        iniFileKey := editorForActionSettings.GetSetting()
+        iniFileValue := editorForActionSettings.GetSettingValue()
+        IniWrite(iniFileValue, this.pathToObjectsIniFile, iniFileSection, iniFileKey)
+                ; ; TODO validate values, can not be empty!, can not be the same as another key, etc...
+                ; if(rowNumber != 0){
+                ;     oldIniFileKey := this.listView.GetText(rowNumber)
+                ;     IniDelete this.iniFile, iniFileSection, oldIniFileKey
+                ;     this.listView.Modify(rowNumber, , inputKey.Value, inputValue.Value)
+                ; }
+                ; else{
+                ;     this.listView.Add(, inputKey.Value, inputValue.Value)
+        
+                ; }
+                
+
+                ; IniWrite(inputValue.Value, this.iniFile, iniFileSection, inputKey.Value)
+                ; SettingsGui.Destroy()
+                ; ; TODO change this
+                ; Run("*RunAs " A_ScriptDir "\..\src\Main.ahk")
     }
 
     ; SettingsEditor
