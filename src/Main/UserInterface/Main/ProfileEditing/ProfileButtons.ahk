@@ -227,7 +227,6 @@ class ProfileButtons{
         cancelButton := presetProfileAddingGui.Add("Button", "Default w80 ym+1", "Cancel")
 
         addProfileButton.onEvent("Click", (*) => 
-            
             this.AddPresetProfileAddButtonClickedEvent(customProfilesDropDownMenu)
             presetProfileAddingGui.Destroy()
 

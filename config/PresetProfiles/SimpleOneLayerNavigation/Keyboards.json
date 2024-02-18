@@ -15,34 +15,10 @@
         }
     },
     "NormalLayer-Hotkeys": {
-        "win+0": {
-            "isObject": true,
-            "ObjectName": "OnScreenWriter",
-            "MethodName": "ToggleShowKeysPressed",
-            "Parameters": []
-        },
-        "*f1": {
-            "isObject": true,
-            "ObjectName": "ProcessManagerInstance",
-            "MethodName": "CloseActiveAutohotkeyScript",
-            "Parameters": []
-        },
         "^!w": {
             "isObject": true,
             "ObjectName": "WebSearcher",
             "MethodName": "CloseTabsToTheRight",
-            "Parameters": []
-        },
-        "^q": {
-            "isObject": true,
-            "ObjectName": "ProcessManagerInstance",
-            "MethodName": "CloseFocusedProcess",
-            "Parameters": []
-        },
-        "win+c": {
-            "isObject": true,
-            "ObjectName": "CommandPrompt",
-            "MethodName": "OpenCmdPathedToCurrentLocation",
             "Parameters": []
         },
         "^!s": {
