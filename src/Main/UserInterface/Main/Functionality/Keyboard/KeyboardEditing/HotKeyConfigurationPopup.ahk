@@ -15,7 +15,7 @@ class HotKeyConfigurationPopup{
 
     hotkeyElement := ""
     originalHotkey := ""
-    currentHotkeyCommand := ""
+    currentHotkeyFormatted := ""
 
     originalHotkeyAction := ""
     currentHotkeyAction := ""
@@ -42,7 +42,7 @@ class HotKeyConfigurationPopup{
     CreatePopupForHotkeyRegistry(hotkeysRegistry, listViewColumn, hotkeyCommand, hotkeyAction){
 
         this.originalHotkey := hotkeyCommand
-        this.currentHotkeyCommand := hotkeyCommand
+        this.currentHotkeyFormatted := hotkeyCommand
 
         this.originalHotkeyAction := hotkeyAction
         this.currentHotkeyActionFormatted := hotkeyAction
@@ -56,8 +56,8 @@ class HotKeyConfigurationPopup{
     }
 
     createCurrentHotkeyControl(){
-        this.currentHotkeyTextControl := this.mainGui.AddText("r4", "Hotkey: `n" . this.currentHotkeyCommand)
-        this.setCurrentHotkeyText(this.currentHotkeyCommand)
+        this.currentHotkeyTextControl := this.mainGui.AddText("r4", "Hotkey: `n" . this.currentHotkeyFormatted)
+        this.setCurrentHotkeyText(this.currentHotkeyFormatted)
     }
 
     createCurrentActionControl(){
@@ -91,7 +91,7 @@ class HotKeyConfigurationPopup{
     buttonToChangeOriginalHotkeyClickedEvent(){
         this.mainGui.Hide()
 
-        hotkeyCrafter := HotkeyCrafterGui(this.currentHotkeyCommand, this.arrayOfKeyNames)
+        hotkeyCrafter := HotkeyCrafterGui(this.currentHotkeyFormatted, this.arrayOfKeyNames)
         hotkeySavedEventAction := ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent", hotkeyCrafter)
         hotkeyCrafter.addSaveButtonClickEventAction(hotkeySavedEventAction)
 
@@ -108,7 +108,7 @@ class HotKeyConfigurationPopup{
     buttonToChangeOriginalActionClickedEvent(){
         this.mainGui.Hide()
 
-        actionCrafter := ActionCrafterGui(this.currentHotkeyActionFormatted, this.arrayOfKeyNames, this.activeObjectsRegistry, this.currentHotkeyCommand)
+        actionCrafter := ActionCrafterGui(this.currentHotkeyActionFormatted, this.arrayOfKeyNames, this.activeObjectsRegistry, this.currentHotkeyFormatted)
         actionSavedEventAction := ObjBindMethod(this, "saveButtonClickedForActionChangeEvent", actionCrafter)
         actionCrafter.addSaveButtonClickEventAction(actionSavedEventAction)
 
@@ -133,7 +133,7 @@ class HotKeyConfigurationPopup{
     undoDeletionButtonClickedEvent(){
         this.hotkeyDeleted := false
         this.undoDeletionButton.Opt("Hidden1")
-        this.setCurrentHotkeyText(this.currentHotkeyCommand)
+        this.setCurrentHotkeyText(this.currentHotkeyFormatted)
     }
 
     cancelButtonClickedForCrafterEvent(hotkeyCrafter, *){
@@ -175,7 +175,7 @@ class HotKeyConfigurationPopup{
         this.hotkeyDeleted := true
         this.undoDeletionButton.Opt("Hidden0")
 
-        this.setCurrentHotkeyText(this.currentHotkeyCommand)
+        this.setCurrentHotkeyText(this.currentHotkeyFormatted)
         
         hotkeyCrafter.Destroy()
         this.mainGui.Show()
@@ -195,7 +195,7 @@ class HotKeyConfigurationPopup{
         manuallyCreateHotkeyCheckbox.onEvent("Click", (*) => this.manuallyCreateHotkeyCheckboxClickEvent(manuallyCreateHotkeyCheckbox))
 
         this.hotkeyElement := this.mainGui.Add("Hotkey", )
-        this.manuallyCreatHotkeyElement := this.mainGui.Add("Edit", "xm w300 h20", this.currentHotkeyCommand)
+        this.manuallyCreatHotkeyElement := this.mainGui.Add("Edit", "xm w300 h20", this.currentHotkeyFormatted)
         this.manuallyCreatHotkeyElement.Opt("Hidden1")
 
         this.addWinKeyAsModifierElement := this.mainGui.Add("CheckBox",, "Add win key as modifier")
@@ -225,7 +225,7 @@ class HotKeyConfigurationPopup{
     }
 
     setCurrentHotkeyText(newHotkey){
-        this.currentHotkeyCommand := newHotkey
+        this.currentHotkeyFormatted := newHotkey
         this.currentHotkeyTextControl.Value := ("Hotkey: `n" . newHotkey)
 
         if (this.hotkeyDeleted = true){
@@ -282,9 +282,11 @@ class HotKeyConfigurationPopup{
     getHotkey(){
         hotkeyToReturn := ""
         if (this.hotkeyDeleted != true){
-            hotkeyToReturn := this.currentHotkeyCommand
+            hotkeyToReturn := HotkeyFormatConverter.convertFromFriendlyName(this.currentHotkeyFormatted)
         }
-
+        else{
+            hotkeyToReturn := ""
+        }
         return hotkeyToReturn
     }
 
@@ -301,14 +303,5 @@ class HotKeyConfigurationPopup{
         this.mainGui.Destroy()
     }
 
-    getHotkeyFormatted(){
-        hotkeyToReturn := ""
-        if (this.hotkeyDeleted != true){
-            hotkeyToReturn := HotkeyFormatConverter.convertFromFriendlyName(this.currentHotkeyCommand)
-        }
-        else{
-            hotkeyToReturn := ""
-        }
-        return hotkeyToReturn
-    }
+
 }

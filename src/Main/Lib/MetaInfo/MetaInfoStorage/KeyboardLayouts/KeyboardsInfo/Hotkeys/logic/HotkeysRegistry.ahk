@@ -61,8 +61,4 @@ class HotkeysRegistry{
         return elements
     }
 
-
-    ToString(){
-
-    }
 }
