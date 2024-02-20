@@ -23,31 +23,26 @@ class ProfileEditorView{
 
     CreateView(guiObject, controller){
 
-        ; this.PATH_TO_EXISTING_PROFILES := pathToExistingProfiles
-        ; this.PATH_TO_PRESET_PROFILES := pathToPresetProfiles
-
-        
         guiObject.Add("Text", , "Current Profile:")
 
         profiles := controller.getProfiles()
         currentProfileIndex := controller.getCurrentProfileIndex()
         this.profilesDropDownMenu := this.createProfilesDropDownMenu(guiObject, profiles, currentProfileIndex)
         
-        profileChangedEvent := ObjBindMethod(controller, "HandleProfileChangedEvent")
-        this.profilesDropDownMenu.OnEvent("Change", profileChangedEvent)
+        this.profilesDropDownMenu.OnEvent("Change", ObjBindMethod(controller, "HandleProfileChangedEvent"))
         
 
-        ; TODO when add profile is clicked, user can choose a pre made profile, or create their own from scratch
         editProfilesButton := guiObject.Add("Button", "Default w80 ym+1", "Edit profiles")
         addProfileButton := guiObject.Add("Button", "Default w80 ym+1", "Add profile")
         importProfileButton := guiObject.Add("Button", "Default w80 ym+1", "Import profile")
         exportProfileButton := guiObject.Add("Button", "Default w80 ym+1", "Export profile")
         
 
-        ; editProfilesButton.OnEvent("Click", (*) =>  this.EditProfiles())
-        ; addProfileButton.OnEvent("Click", (*) => this.AddProfile())
-        ; importProfileButton.OnEvent("Click", (*) => this.ImportProfile())
-        ; exportProfileButton.OnEvent("Click", (*) => this.exportProfile())
+        ; editProfilesButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleEditProfilesEvent")())
+        ; addProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleAddProfileEvent")())
+        ; importProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleImportProfileEvent")())
+        ; exportProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleExportProfileEvent")())
+
               
         guiObject.Show()
     }
@@ -69,8 +64,6 @@ class ProfileEditorView{
             profilesDropDownMenu := guiObject.Add("DropDownList", "ym+1 Choose" . profileIndex, profiles)
         }
 
-        ; profilesDropDownMenu.OnEvent("Change", (*) => this.ProfileChangedFromDropDownMenuEvent(profilesDropDownMenu))
-        
         return profilesDropDownMenu
     }
 
@@ -78,13 +71,6 @@ class ProfileEditorView{
         return this.profilesDropDownMenu
     }
 
-
-
-    ProfileChangedFromDropDownMenuEvent(profilesDropDownMenu){
-        iniWrite(profilesDropDownMenu.Text, this.PATH_TO_META_FILE, "General", "activeUserProfile")
-        ; Run("*RunAs " this.PATH_TO_MAIN_SCRIPT)
-        ; reload
-    }
 
 
     EditProfiles(*){

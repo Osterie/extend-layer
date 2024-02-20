@@ -44,99 +44,19 @@ class ProfileEditorController{
     HandleProfileChangedEvent(dropDownList, *){
         profileSelected := dropDownList.Text
         profileSelectedIndex := dropDownList.Value
-        this.model.setCurrentProfile(profileSelected, profileSelectedIndex)
+        this.UpdateModelProfileValues(profileSelected, profileSelectedIndex)
 
+        this.WriteToFileCurrentProfile(profileSelected)
+    }
+
+    UpdateModelProfileValues(profile, profileIndex){
+        this.model.setCurrentProfile(profile, profileIndex)
+    }
+
+    WriteToFileCurrentProfile(currentProfile){
         PATH_TO_META_FILE := this.model.getPathToMetaFile()
-        iniWrite(profileSelected, PATH_TO_META_FILE, "General", "activeUserProfile")
-
-    }
-
-
-
-
-
-
-
-
-
-
-    createProfileSettingsForGui(guiObject){
-
-        ; this.PATH_TO_EXISTING_PROFILES := pathToExistingProfiles
-        ; this.PATH_TO_PRESET_PROFILES := pathToPresetProfiles
-
-        
-        guiObject.Add("Text", , "Current Profile:")
-
-        this.profilesDropDownMenu := this.createProfilesDropDownMenu(guiObject)
-        
-        ; TODO when add profile is clicked, user can choose a pre made profile, or create their own from scratch
-        editProfilesButton := guiObject.Add("Button", "Default w80 ym+1", "Edit profiles")
-        addProfileButton := guiObject.Add("Button", "Default w80 ym+1", "Add profile")
-        importProfileButton := guiObject.Add("Button", "Default w80 ym+1", "Import profile")
-        exportProfileButton := guiObject.Add("Button", "Default w80 ym+1", "Export profile")
-        
-
-        editProfilesButton.OnEvent("Click", (*) =>  this.EditProfiles())
-        addProfileButton.OnEvent("Click", (*) => this.AddProfile())
-        importProfileButton.OnEvent("Click", (*) => this.ImportProfile())
-        exportProfileButton.OnEvent("Click", (*) => this.exportProfile())
-              
-        
-        ; TODO move somewhere else...
-        pathToKeyboardsJsonFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profilesDropDownMenu.Text . "\Keyboards.json"
-        pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profilesDropDownMenu.Text . "\ClassObjects.ini"
-
-
-        ; this.CreateTabs(pathToKeyboardsJsonFile, pathToObjectsIniFile, this.jsonFileConents)
-        
-        
-        guiObject.Show()
-    }
-
-    getProfilesDropDownMenu(){
-        return this.profilesDropDownMenu
-    }
-
-    ; UpdateprofilesDropDownMenu(){
-    ;     this.profilesDropDownMenu.Delete()
-    ;     this.profilesDropDownMenu.Add(this.ExistingProfilesManager.getFolderNames())
-    ;     this.profilesDropDownMenu.Choose(this.ExistingProfilesManager.getMostRecentlyAddedFolder())
-    ;     this.currentProfile := this.ExistingProfilesManager.getMostRecentlyAddedFolder()
-    ; }
-
-    CreateProfilesDropDownMenu(guiObject){
-        
-        ; If for some reason a profile is not selected, then select the first one.
-        if (this.currentProfileIndex == -1)
-        {
-            msgbox("error, profile not found, selecting first existing profile")
-
-            ; Creates a drop down list of all the profiles, and sets the current profile to the active profile
-            profilesDropDownMenu := guiObject.Add("DropDownList", "ym+1 Choose" . this.currentProfileIndex, this.ExistingProfilesManager.getFolderNames())
-            profilesDropDownMenu.Value := 1
-            this.currentProfile := profilesDropDownMenu.Text
-        }
-        else{
-            ; Creates a drop down list of all the profiles, and sets the current profile to the active profile
-            profilesDropDownMenu := guiObject.Add("DropDownList", "ym+1 Choose" . this.currentProfileIndex, this.ExistingProfilesManager.getFolderNames())
-        }
-
-        profilesDropDownMenu.OnEvent("Change", (*) => this.ProfileChangedFromDropDownMenuEvent(profilesDropDownMenu))
-        
-        return profilesDropDownMenu
-    }
-
-    AddProfileChangedEvent(profileChangedMethodToExcecute){
-        ; this.listView.OnEvent("DoubleClick", ListViewDoubleClickEvent)
-
-        this.profilesDropDownMenu.OnEvent("Change", profileChangedMethodToExcecute)
-    }
-
-    ProfileChangedFromDropDownMenuEvent(profilesDropDownMenu){
-        iniWrite(profilesDropDownMenu.Text, this.PATH_TO_META_FILE, "General", "activeUserProfile")
-        ; Run("*RunAs " this.PATH_TO_MAIN_SCRIPT)
-        ; reload
+        ; TODO perhaps create a class for writing to these sorts of files, so i dont have the "General" and "activeUserProfile" part here.
+        iniWrite(currentProfile, PATH_TO_META_FILE, "General", "activeUserProfile")
     }
 
 
@@ -207,7 +127,6 @@ class ProfileEditorController{
                 iniWrite(inputPrompt.Value, this.PATH_TO_META_FILE, "General", "activeUserProfile")
                 this.UpdateProfileDropDownMenu(this.profilesDropDownMenu)
                 this.UpdateProfileDropDownMenu(profilesDropDownMenu)
-                this.ProfileChangedFromDropDownMenuEvent(profilesDropDownMenu)
             }
             else{
                 msgbox("failed to delete profile")
