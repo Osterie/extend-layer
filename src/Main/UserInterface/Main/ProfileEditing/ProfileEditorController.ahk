@@ -59,6 +59,10 @@ class ProfileEditorController{
         iniWrite(currentProfile, PATH_TO_META_FILE, "General", "activeUserProfile")
     }
 
+    HandleEditProfilesEvent(*){
+        this.EditProfiles()
+    }
+
 
     EditProfiles(*){
         
