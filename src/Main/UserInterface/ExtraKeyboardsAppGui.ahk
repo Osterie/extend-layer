@@ -8,9 +8,9 @@
 #Include "Main\Functionality\ActionSettings\SettingsEditor.ahk"
 
 #Include "Main\ProfileEditing\ProfileButtons.ahk"
-#Include "Main\ProfileEditing\ProfileEditorModel.ahk"
-#Include "Main\ProfileEditing\ProfileEditorView.ahk"
-#Include "Main\ProfileEditing\ProfileEditorController.ahk"
+#Include "Main\ProfileEditing\ProfileRegionModel.ahk"
+#Include "Main\ProfileEditing\ProfileRegionView.ahk"
+#Include "Main\ProfileEditing\ProfileRegionController.ahk"
 #Include "Main\util\TreeViewMaker.ahk"
 #Include "Main\util\ListViewMaker.ahk"
 #Include "Main\Functionality\Keyboard\KeyboardEditing\HotKeyConfigurationPopup.ahk"
@@ -107,9 +107,9 @@ Class ExtraKeyboardsAppGui{
     }
 
     CreateProfileEditor(){
-        profileModel := ProfileEditorModel(this.ExtraKeyboardsAppGui, this.PATH_TO_META_FILE, this.PATH_TO_EXISTING_PROFILES)
-        profileView := ProfileEditorView()
-        profileController := ProfileEditorController(profileModel, profileView, ObjBindMethod(this, "eventProfileChanged"))
+        profileModel := ProfileRegionModel(this.ExtraKeyboardsAppGui, this.PATH_TO_META_FILE, this.PATH_TO_EXISTING_PROFILES)
+        profileView := ProfileRegionView()
+        profileController := ProfileRegionController(profileModel, profileView, ObjBindMethod(this, "eventProfileChanged"))
         profileController.CreateView()
         ; this.profileButtonsObject := ProfileButtons(this.PATH_TO_EXISTING_PROFILES, this.PATH_TO_META_FILE)
         ; this.profileButtonsObject.createProfileSettingsForGui(this.ExtraKeyboardsAppGui)

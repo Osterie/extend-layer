@@ -2,7 +2,9 @@
 
 #Include <FoldersAndFiles\FolderManager>
 
-class ProfileEditorView{
+#Include ".\EditProfiles\EditorView.ahk"
+
+class ProfileRegionController{
 
     ; Used to manage the preset user profiles, the user is only allowed to add a preset profile as a new profile
     PresetProfilesManager := ""
@@ -21,91 +23,72 @@ class ProfileEditorView{
     ; Gui part
     profilesDropDownMenu := ""
 
-    CreateView(guiObject, controller){
+    model := ""
+    view := ""
+    callback := ""
 
-        guiObject.Add("Text", , "Current Profile:")
-
-        profiles := controller.getProfiles()
-        currentProfileIndex := controller.getCurrentProfileIndex()
-        this.profilesDropDownMenu := this.createProfilesDropDownMenu(guiObject, profiles, currentProfileIndex)
-        
-        this.profilesDropDownMenu.OnEvent("Change", ObjBindMethod(controller, "HandleProfileChangedEvent"))
-        
-
-        editProfilesButton := guiObject.Add("Button", "Default w80 ym+1", "Edit profiles")
-        addProfileButton := guiObject.Add("Button", "Default w80 ym+1", "Add profile")
-        importProfileButton := guiObject.Add("Button", "Default w80 ym+1", "Import profile")
-        exportProfileButton := guiObject.Add("Button", "Default w80 ym+1", "Export profile")
-        
-
-        editProfilesButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleEditProfilesEvent")())
-        ; addProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleAddProfileEvent")())
-        ; importProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleImportProfileEvent")())
-        ; exportProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleExportProfileEvent")())
-
-              
-        guiObject.Show()
+    __New(model, view, callback){
+        this.model := model
+        this.view := view 
+        this.callback := callback
     }
 
-
-    CreateProfilesDropDownMenu(guiObject, profiles, profileIndex){
-        
-        ; If for some reason a profile is not selected, then select the first one.
-        if (profileIndex == -1)
-        {
-            msgbox("error, profile not found, selecting first existing profile")
-
-            ; Creates a drop down list of all the profiles, and sets the current profile to the active profile
-            profilesDropDownMenu := guiObject.Add("DropDownList", "ym+1 Choose" . profileIndex, profiles)
-            profilesDropDownMenu.Value := 1
-        }
-        else{
-            ; Creates a drop down list of all the profiles, and sets the current profile to the active profile
-            profilesDropDownMenu := guiObject.Add("DropDownList", "ym+1 Choose" . profileIndex, profiles)
-        }
-
-        return profilesDropDownMenu
+    CreateView(){
+        guiObject := this.model.getGuiObject()
+        this.view.CreateView(guiObject, this)
     }
 
-    getProfilesDropDownMenu(){
-        return this.profilesDropDownMenu
+    GetProfiles(){
+        return this.model.getProfiles()
     }
 
-
-
-    EditProfiles(*){
-        
-        editProfilesGui := Gui()
-    
-        editProfilesGui.OnEvent("Close", (*) => editProfilesGui.Destroy())
-    
-        editProfilesGui.Opt("+Resize +MinSize320x240")
-        editProfilesGui.Add("Text", , "Selected Profile:")
-        profilesToEditDropDownMenu := editProfilesGui.Add("DropDownList", "ym Choose" . this.currentProfileIndex, this.ExistingProfilesManager.getFolderNames())
-        
-        ; TODO bug with change profile name or something, changes user.
-        renameProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Change profile name")
-
-        renameProfileButton.OnEvent("Click", (*) => 
-            
-            this.RenameProfile(profilesToEditDropDownMenu.Text)
-            this.UpdateProfileDropDownMenu(profilesToEditDropDownMenu)
-            this.UpdateProfileDropDownMenu(this.profilesDropDownMenu)
-    
-        )
-    
-        ; TODO should ask the user if they are really sure they want to delete the profile
-        deleteProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Delete profile")
-        deleteProfileButton.OnEvent("Click", (*) =>
-            this.DeleteProfile(profilesToEditDropDownMenu)
-        )
-    
-        editProfilesGui.Show()
+    GetCurrentProfileIndex(){
+        return this.model.getCurrentProfileIndex()
     }
-    
-    RenameProfile(currentProfile){
-        inputPrompt := InputBox("Please write the new name for the profile!", "Edit object value",, currentProfile)
-    
+
+    GetCurrentProfile(){
+        return this.model.getCurrentProfile()
+    }
+
+    HandleProfileChangedEvent(dropDownList, *){
+        profileSelected := dropDownList.Text
+        profileSelectedIndex := dropDownList.Value
+        this.UpdateModelProfileValues(profileSelected, profileSelectedIndex)
+
+        this.WriteCurrentProfileToFile(profileSelected)
+        this.callback()
+    }
+
+    UpdateModelProfileValues(profile, profileIndex){
+        this.model.setCurrentProfile(profile, profileIndex)
+    }
+
+    ; TODO this should be done in model
+    WriteCurrentProfileToFile(currentProfile){
+        PATH_TO_META_FILE := this.model.getPathToMetaFile()
+        ; TODO perhaps create a class for writing to these sorts of files, so i dont have the "General" and "activeUserProfile" part here.
+        iniWrite(currentProfile, PATH_TO_META_FILE, "General", "activeUserProfile")
+    }
+
+    HandleEditProfilesEvent(*){
+        this.CreateEditorView()
+    }
+
+    CreateEditorView(){
+        profiles := this.getProfiles()
+        currentProfileIndex := this.getCurrentProfileIndex()
+        editView := EditorView()
+        editView.CreateView(this, profiles, currentProfileIndex)
+    }
+
+    HandleRenameProfileButtonClickEvent(dropDownList, editView, *){
+        profileSelected := dropDownList.Text
+        profileSelectedIndex := dropDownList.Value
+        this.model.setCurrentProfile(profileSelected, profileSelectedIndex)
+        editView.CreateRenameProfileInputBox(this, this.getCurrentProfile())
+    }
+
+    RenameProfile(inputPrompt){
         if inputPrompt.Result = "Cancel"{
             ; Do nothing
         }
@@ -114,16 +97,12 @@ class ProfileEditorView{
         }
         else{
     
-            if (this.ExistingProfilesManager.RenameFolder(currentProfile, inputPrompt.Value)){
-                ; Changed profile name succesfully
-                iniWrite(inputPrompt.Value, this.PATH_TO_META_FILE, "General", "activeUserProfile")
-            }
-            else{
-                msgbox("failed to change profile name, perhaps name already exists or illegal characters were used.")
-            }
+            this.model.renameProfile(this.getCurrentProfile(), inputPrompt.Value)
         }
-    } 
-    
+    }
+
+
+
     DeleteProfile(profilesDropDownMenu){
         inputPrompt := InputBox("Are you sure you want to delete this profile? Deleted profiles cannot be resuscitated. Type yes to confirm", "Edit object value",, profilesDropDownMenu.Text)
     
@@ -140,7 +119,6 @@ class ProfileEditorView{
                 iniWrite(inputPrompt.Value, this.PATH_TO_META_FILE, "General", "activeUserProfile")
                 this.UpdateProfileDropDownMenu(this.profilesDropDownMenu)
                 this.UpdateProfileDropDownMenu(profilesDropDownMenu)
-                this.ProfileChangedFromDropDownMenuEvent(profilesDropDownMenu)
             }
             else{
                 msgbox("failed to delete profile")

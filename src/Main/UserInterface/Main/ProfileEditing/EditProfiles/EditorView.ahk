@@ -5,22 +5,17 @@ class EditorView{
     CreateView(controller, profiles, currentProfileIndex){
         
         editProfilesGui := Gui("+Resize +MinSize320x240")
-    
-        ; editProfilesGui.OnEvent("Close", (*) => editProfilesGui.Destroy())
-    
         editProfilesGui.Add("Text", , "Selected Profile:")
         profilesToEditDropDownMenu := editProfilesGui.Add("DropDownList", "ym Choose" . currentProfileIndex, profiles)
         
-        ; TODO bug with change profile name or something, changes user.
         renameProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Change profile name")
 
-        renameProfileButton.OnEvent("Click", ObjBindMethod(controller, "HandleRenameProfileButtonClickEvent", profilesToEditDropDownMenu))
+        renameProfileButton.OnEvent("Click", ObjBindMethod(controller, "HandleRenameProfileButtonClickEvent", profilesToEditDropDownMenu, this))
     
-        ; TODO should ask the user if they are really sure they want to delete the profile
-        deleteProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Delete profile")
-        deleteProfileButton.OnEvent("Click", (*) =>
-            this.DeleteProfile(profilesToEditDropDownMenu)
-        )
+        ; deleteProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Delete profile")
+        ; deleteProfileButton.OnEvent("Click", (*) =>
+        ;     this.DeleteProfile(profilesToEditDropDownMenu)
+        ; )
     
         editProfilesGui.Show()
     }
