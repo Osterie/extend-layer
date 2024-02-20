@@ -109,12 +109,14 @@ Class ExtraKeyboardsAppGui{
     CreateProfileEditor(){
         profileModel := ProfileEditorModel(this.ExtraKeyboardsAppGui, this.PATH_TO_META_FILE, this.PATH_TO_EXISTING_PROFILES)
         profileView := ProfileEditorView()
-        profileController := ProfileEditorController(profileModel, profileView)
+        profileController := ProfileEditorController(profileModel, profileView, ObjBindMethod(this, "eventProfileChanged"))
         profileController.CreateView()
         ; this.profileButtonsObject := ProfileButtons(this.PATH_TO_EXISTING_PROFILES, this.PATH_TO_META_FILE)
         ; this.profileButtonsObject.createProfileSettingsForGui(this.ExtraKeyboardsAppGui)
         ; this.profileButtonsObject.addProfileChangedEvent(ObjBindMethod(this, "eventProfileChanged"))
     }
+
+
 
     eventProfileChanged(*){
         ; TODO this should probably be changed? it is sort of heavy to basically restart the entire program when changing profiles.

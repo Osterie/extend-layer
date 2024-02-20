@@ -2,6 +2,10 @@
 
 #Include <FoldersAndFiles\FolderManager>
 
+#Include ".\EditProfiles\EditorController.ahk"
+#Include ".\EditProfiles\EditorModel.ahk"
+#Include ".\EditProfiles\EditorView.ahk"
+
 class ProfileEditorController{
 
     ; Used to manage the preset user profiles, the user is only allowed to add a preset profile as a new profile
@@ -22,10 +26,13 @@ class ProfileEditorController{
     profilesDropDownMenu := ""
 
     model := ""
+    view := ""
+    callback := ""
 
-    __New(model, view){
+    __New(model, view, callback){
         this.model := model
         this.view := view 
+        this.callback := callback
     }
 
     CreateView(){
@@ -47,6 +54,7 @@ class ProfileEditorController{
         this.UpdateModelProfileValues(profileSelected, profileSelectedIndex)
 
         this.WriteToFileCurrentProfile(profileSelected)
+        this.callback()
     }
 
     UpdateModelProfileValues(profile, profileIndex){
@@ -60,7 +68,10 @@ class ProfileEditorController{
     }
 
     HandleEditProfilesEvent(*){
-        this.EditProfiles()
+        editModel := EditorModel(this.GetProfiles(), this.GetCurrentProfileIndex())
+        editView := EditorView()
+        editController := EditorController(editModel, editView)
+        editController.CreateView()
     }
 
 
@@ -72,24 +83,24 @@ class ProfileEditorController{
     
         editProfilesGui.Opt("+Resize +MinSize320x240")
         editProfilesGui.Add("Text", , "Selected Profile:")
-        profilesToEditDropDownMenu := editProfilesGui.Add("DropDownList", "ym Choose" . this.currentProfileIndex, this.ExistingProfilesManager.getFolderNames())
+        ; profilesToEditDropDownMenu := editProfilesGui.Add("DropDownList", "ym Choose" . this.currentProfileIndex, this.ExistingProfilesManager.getFolderNames())
         
-        ; TODO bug with change profile name or something, changes user.
-        renameProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Change profile name")
+        ; ; TODO bug with change profile name or something, changes user.
+        ; renameProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Change profile name")
 
-        renameProfileButton.OnEvent("Click", (*) => 
+        ; renameProfileButton.OnEvent("Click", (*) => 
             
-            this.RenameProfile(profilesToEditDropDownMenu.Text)
-            this.UpdateProfileDropDownMenu(profilesToEditDropDownMenu)
-            this.UpdateProfileDropDownMenu(this.profilesDropDownMenu)
+        ;     this.RenameProfile(profilesToEditDropDownMenu.Text)
+        ;     this.UpdateProfileDropDownMenu(profilesToEditDropDownMenu)
+        ;     this.UpdateProfileDropDownMenu(this.profilesDropDownMenu)
     
-        )
+        ; )
     
-        ; TODO should ask the user if they are really sure they want to delete the profile
-        deleteProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Delete profile")
-        deleteProfileButton.OnEvent("Click", (*) =>
-            this.DeleteProfile(profilesToEditDropDownMenu)
-        )
+        ; ; TODO should ask the user if they are really sure they want to delete the profile
+        ; deleteProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Delete profile")
+        ; deleteProfileButton.OnEvent("Click", (*) =>
+        ;     this.DeleteProfile(profilesToEditDropDownMenu)
+        ; )
     
         editProfilesGui.Show()
     }
