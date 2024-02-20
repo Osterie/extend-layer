@@ -21,6 +21,8 @@ class ProfileEditorModel{
     ; Gui part
     profilesDropDownMenu := ""
 
+    profiles := ""
+
     guiObject := ""
 
 
@@ -45,6 +47,7 @@ class ProfileEditorModel{
         this.currentProfile := iniRead(this.PATH_TO_META_FILE, "General", "activeUserProfile")
         this.currentProfileIndex := this.ExistingProfilesManager.getFirstFoundFolderIndex(this.currentProfile)
 
+        this.profiles := this.ExistingProfilesManager.getFolderNames()
 
 
     }
@@ -54,12 +57,29 @@ class ProfileEditorModel{
     }
 
     getProfiles(){
-        return this.ExistingProfilesManager.getFolderNames()
+        return this.profiles
     }
 
     setCurrentProfile(profileName, profileIndex){
         this.currentProfile := profileName
         this.currentProfileIndex := profileIndex
+    }
+
+    renameProfile(currentProfileName, newProfileName){
+        renamedSuccesfully := false
+        
+        if (this.ExistingProfilesManager.RenameFolder(currentProfileName, newProfileName)){
+            renamedSuccesfully := true
+        }
+        else{
+            msgbox("failed to change profile name, perhaps name already exists or illegal characters were used.")
+            renamedSuccesfully := false
+        }
+        return renamedSuccesfully
+    }
+
+    getCurrentProfile(){
+        return this.currentProfile
     }
 
     getCurrentProfileIndex(){
@@ -70,6 +90,16 @@ class ProfileEditorModel{
         return this.PATH_TO_META_FILE
     }
 
+    hasProfile(profileName){
+        hasProfile := false
+        Loop this.profiles.Length{
+            if (this.profiles[A_Index] = profileName){
+                hasProfile := true
+            }
+        }
+        return hasProfile
+    }
+
 
 
     ; ProfileChangedFromDropDownMenuEvent(profilesDropDownMenu){
@@ -77,26 +107,7 @@ class ProfileEditorModel{
     ; }
 
 
-    RenameProfile(currentProfile){
-        inputPrompt := InputBox("Please write the new name for the profile!", "Edit object value",, currentProfile)
-    
-        if inputPrompt.Result = "Cancel"{
-            ; Do nothing
-        }
-        else if(inputPrompt.Value = ""){
-            ; Do Nothing
-        }
-        else{
-    
-            if (this.ExistingProfilesManager.RenameFolder(currentProfile, inputPrompt.Value)){
-                ; Changed profile name succesfully
-                iniWrite(inputPrompt.Value, this.PATH_TO_META_FILE, "General", "activeUserProfile")
-            }
-            else{
-                msgbox("failed to change profile name, perhaps name already exists or illegal characters were used.")
-            }
-        }
-    } 
+
     
     DeleteProfile(profilesDropDownMenu){
         inputPrompt := InputBox("Are you sure you want to delete this profile? Deleted profiles cannot be resuscitated. Type yes to confirm", "Edit object value",, profilesDropDownMenu.Text)

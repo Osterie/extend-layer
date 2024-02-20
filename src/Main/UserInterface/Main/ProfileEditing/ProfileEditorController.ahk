@@ -53,7 +53,7 @@ class ProfileEditorController{
         profileSelectedIndex := dropDownList.Value
         this.UpdateModelProfileValues(profileSelected, profileSelectedIndex)
 
-        this.WriteToFileCurrentProfile(profileSelected)
+        this.WriteCurrentProfileToFile(profileSelected)
         this.callback()
     }
 
@@ -61,16 +61,16 @@ class ProfileEditorController{
         this.model.setCurrentProfile(profile, profileIndex)
     }
 
-    WriteToFileCurrentProfile(currentProfile){
+    ; TODO this should be done in model
+    WriteCurrentProfileToFile(currentProfile){
         PATH_TO_META_FILE := this.model.getPathToMetaFile()
         ; TODO perhaps create a class for writing to these sorts of files, so i dont have the "General" and "activeUserProfile" part here.
         iniWrite(currentProfile, PATH_TO_META_FILE, "General", "activeUserProfile")
     }
 
     HandleEditProfilesEvent(*){
-        editModel := EditorModel(this.GetProfiles(), this.GetCurrentProfileIndex())
         editView := EditorView()
-        editController := EditorController(editModel, editView)
+        editController := EditorController(this.model, editView)
         editController.CreateView()
     }
 

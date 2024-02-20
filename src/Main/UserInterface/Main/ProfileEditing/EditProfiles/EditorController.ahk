@@ -8,6 +8,7 @@ class EditorController{
     __New(model, view){
         this.model := model
         this.view := view 
+
     }
 
     CreateView(){
@@ -16,14 +17,25 @@ class EditorController{
         this.view.CreateView(this, profiles, currentProfileIndex)
     }
 
-    HandleRenameProfileEvent(dropDownList, *){
+    HandleRenameProfileButtonClickEvent(dropDownList, *){
         profileSelected := dropDownList.Text
         profileSelectedIndex := dropDownList.Value
         this.model.setCurrentProfile(profileSelected, profileSelectedIndex)
-        this.view.RenameProfile(this.getCurrentProfile())
+        this.view.CreateRenameProfileInputBox(this, this.getCurrentProfile())
     }
 
-
+    RenameProfile(inputPrompt){
+        if inputPrompt.Result = "Cancel"{
+            ; Do nothing
+        }
+        else if(inputPrompt.Value = ""){
+            ; Do Nothing
+        }
+        else{
+    
+            this.model.renameProfile(this.getCurrentProfile(), inputPrompt.Value)
+        }
+    }
 
     getProfiles(){
         return this.model.getProfiles()

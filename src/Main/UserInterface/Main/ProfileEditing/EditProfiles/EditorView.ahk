@@ -14,7 +14,7 @@ class EditorView{
         ; TODO bug with change profile name or something, changes user.
         renameProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Change profile name")
 
-        renameProfileButton.OnEvent("Click", ObjBindMethod(controller, "HandleRenameProfileEvent", profilesToEditDropDownMenu))
+        renameProfileButton.OnEvent("Click", ObjBindMethod(controller, "HandleRenameProfileButtonClickEvent", profilesToEditDropDownMenu))
     
         ; TODO should ask the user if they are really sure they want to delete the profile
         deleteProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Delete profile")
@@ -25,25 +25,10 @@ class EditorView{
         editProfilesGui.Show()
     }
     
-    RenameProfile(currentProfile){
+    CreateRenameProfileInputBox(controller, currentProfile){
         inputPrompt := InputBox("Please write the new name for the profile!", "Edit object value",, currentProfile)
-    
-        if inputPrompt.Result = "Cancel"{
-            ; Do nothing
-        }
-        else if(inputPrompt.Value = ""){
-            ; Do Nothing
-        }
-        else{
-    
-            if (this.ExistingProfilesManager.RenameFolder(currentProfile, inputPrompt.Value)){
-                ; Changed profile name succesfully
-                iniWrite(inputPrompt.Value, this.PATH_TO_META_FILE, "General", "activeUserProfile")
-            }
-            else{
-                msgbox("failed to change profile name, perhaps name already exists or illegal characters were used.")
-            }
-        }
+        
+        controller.RenameProfile(inputPrompt)
     } 
 
     DeleteProfile(profilesDropDownMenu){
