@@ -2,7 +2,7 @@
 
 #Include <FoldersAndFiles\FolderManager>
 
-class ProfileButtons{
+class ProfileEditorController{
 
     ; Used to manage the preset user profiles, the user is only allowed to add a preset profile as a new profile
     PresetProfilesManager := ""
@@ -21,28 +21,44 @@ class ProfileButtons{
     ; Gui part
     profilesDropDownMenu := ""
 
+    model := ""
 
-    __New(pathToExistingProfiles, pathToMetaFile){
+    __New(model, view){
+        this.model := model
+        this.view := view 
+    }
 
-        ; this.jsonFileConents := jsonFileConents
-        this.PATH_TO_META_FILE := pathToMetaFile
-        this.PATH_TO_EXISTING_PROFILES := pathToExistingProfiles
+    CreateView(){
+        guiObject := this.model.getGuiObject()
+        this.view.CreateView(guiObject, this)
+    }
 
-        ; this.PATH_TO_MAIN_SCRIPT := pathToMainScript
+    GetProfiles(){
+        return this.model.getProfiles()
+    }
 
-        ; this.PATH_TO_EMPTY_PROFILE := pathToEmptyProfile
+    GetCurrentProfileIndex(){
+        return this.model.getCurrentProfileIndex()
+    }
 
-        this.currentProfile := iniRead(this.PATH_TO_META_FILE, "General", "activeUserProfile")
-        this.ExistingProfilesManager := FolderManager()
-        this.PresetProfilesManager := FolderManager()
+    HandleProfileChangedEvent(dropDownList, *){
+        profileSelected := dropDownList.Text
+        profileSelectedIndex := dropDownList.Value
+        this.model.setCurrentProfile(profileSelected, profileSelectedIndex)
 
-        this.PresetProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_PRESET_PROFILES)
-        this.ExistingProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_EXISTING_PROFILES)
-
-
-        this.currentProfileIndex := this.ExistingProfilesManager.getFirstFoundFolderIndex(this.currentProfile)
+        PATH_TO_META_FILE := this.model.getPathToMetaFile()
+        iniWrite(profileSelected, PATH_TO_META_FILE, "General", "activeUserProfile")
 
     }
+
+
+
+
+
+
+
+
+
 
     createProfileSettingsForGui(guiObject){
 

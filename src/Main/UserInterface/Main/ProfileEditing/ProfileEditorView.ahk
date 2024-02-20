@@ -2,7 +2,7 @@
 
 #Include <FoldersAndFiles\FolderManager>
 
-class ProfileButtons{
+class ProfileEditorView{
 
     ; Used to manage the preset user profiles, the user is only allowed to add a preset profile as a new profile
     PresetProfilesManager := ""
@@ -21,30 +21,7 @@ class ProfileButtons{
     ; Gui part
     profilesDropDownMenu := ""
 
-
-    __New(pathToExistingProfiles, pathToMetaFile){
-
-        ; this.jsonFileConents := jsonFileConents
-        this.PATH_TO_META_FILE := pathToMetaFile
-        this.PATH_TO_EXISTING_PROFILES := pathToExistingProfiles
-
-        ; this.PATH_TO_MAIN_SCRIPT := pathToMainScript
-
-        ; this.PATH_TO_EMPTY_PROFILE := pathToEmptyProfile
-
-        this.currentProfile := iniRead(this.PATH_TO_META_FILE, "General", "activeUserProfile")
-        this.ExistingProfilesManager := FolderManager()
-        this.PresetProfilesManager := FolderManager()
-
-        this.PresetProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_PRESET_PROFILES)
-        this.ExistingProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_EXISTING_PROFILES)
-
-
-        this.currentProfileIndex := this.ExistingProfilesManager.getFirstFoundFolderIndex(this.currentProfile)
-
-    }
-
-    createProfileSettingsForGui(guiObject){
+    CreateView(guiObject, controller){
 
         ; this.PATH_TO_EXISTING_PROFILES := pathToExistingProfiles
         ; this.PATH_TO_PRESET_PROFILES := pathToPresetProfiles
@@ -52,8 +29,14 @@ class ProfileButtons{
         
         guiObject.Add("Text", , "Current Profile:")
 
-        this.profilesDropDownMenu := this.createProfilesDropDownMenu(guiObject)
+        profiles := controller.getProfiles()
+        currentProfileIndex := controller.getCurrentProfileIndex()
+        this.profilesDropDownMenu := this.createProfilesDropDownMenu(guiObject, profiles, currentProfileIndex)
         
+        profileChangedEvent := ObjBindMethod(controller, "HandleProfileChangedEvent")
+        this.profilesDropDownMenu.OnEvent("Change", profileChangedEvent)
+        
+
         ; TODO when add profile is clicked, user can choose a pre made profile, or create their own from scratch
         editProfilesButton := guiObject.Add("Button", "Default w80 ym+1", "Edit profiles")
         addProfileButton := guiObject.Add("Button", "Default w80 ym+1", "Add profile")
@@ -61,61 +44,41 @@ class ProfileButtons{
         exportProfileButton := guiObject.Add("Button", "Default w80 ym+1", "Export profile")
         
 
-        editProfilesButton.OnEvent("Click", (*) =>  this.EditProfiles())
-        addProfileButton.OnEvent("Click", (*) => this.AddProfile())
-        importProfileButton.OnEvent("Click", (*) => this.ImportProfile())
-        exportProfileButton.OnEvent("Click", (*) => this.exportProfile())
+        ; editProfilesButton.OnEvent("Click", (*) =>  this.EditProfiles())
+        ; addProfileButton.OnEvent("Click", (*) => this.AddProfile())
+        ; importProfileButton.OnEvent("Click", (*) => this.ImportProfile())
+        ; exportProfileButton.OnEvent("Click", (*) => this.exportProfile())
               
-        
-        ; TODO move somewhere else...
-        pathToKeyboardsJsonFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profilesDropDownMenu.Text . "\Keyboards.json"
-        pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profilesDropDownMenu.Text . "\ClassObjects.ini"
-
-
-        ; this.CreateTabs(pathToKeyboardsJsonFile, pathToObjectsIniFile, this.jsonFileConents)
-        
-        
         guiObject.Show()
+    }
+
+
+    CreateProfilesDropDownMenu(guiObject, profiles, profileIndex){
+        
+        ; If for some reason a profile is not selected, then select the first one.
+        if (profileIndex == -1)
+        {
+            msgbox("error, profile not found, selecting first existing profile")
+
+            ; Creates a drop down list of all the profiles, and sets the current profile to the active profile
+            profilesDropDownMenu := guiObject.Add("DropDownList", "ym+1 Choose" . profileIndex, profiles)
+            profilesDropDownMenu.Value := 1
+        }
+        else{
+            ; Creates a drop down list of all the profiles, and sets the current profile to the active profile
+            profilesDropDownMenu := guiObject.Add("DropDownList", "ym+1 Choose" . profileIndex, profiles)
+        }
+
+        ; profilesDropDownMenu.OnEvent("Change", (*) => this.ProfileChangedFromDropDownMenuEvent(profilesDropDownMenu))
+        
+        return profilesDropDownMenu
     }
 
     getProfilesDropDownMenu(){
         return this.profilesDropDownMenu
     }
 
-    ; UpdateprofilesDropDownMenu(){
-    ;     this.profilesDropDownMenu.Delete()
-    ;     this.profilesDropDownMenu.Add(this.ExistingProfilesManager.getFolderNames())
-    ;     this.profilesDropDownMenu.Choose(this.ExistingProfilesManager.getMostRecentlyAddedFolder())
-    ;     this.currentProfile := this.ExistingProfilesManager.getMostRecentlyAddedFolder()
-    ; }
 
-    CreateProfilesDropDownMenu(guiObject){
-        
-        ; If for some reason a profile is not selected, then select the first one.
-        if (this.currentProfileIndex == -1)
-        {
-            msgbox("error, profile not found, selecting first existing profile")
-
-            ; Creates a drop down list of all the profiles, and sets the current profile to the active profile
-            profilesDropDownMenu := guiObject.Add("DropDownList", "ym+1 Choose" . this.currentProfileIndex, this.ExistingProfilesManager.getFolderNames())
-            profilesDropDownMenu.Value := 1
-            this.currentProfile := profilesDropDownMenu.Text
-        }
-        else{
-            ; Creates a drop down list of all the profiles, and sets the current profile to the active profile
-            profilesDropDownMenu := guiObject.Add("DropDownList", "ym+1 Choose" . this.currentProfileIndex, this.ExistingProfilesManager.getFolderNames())
-        }
-
-        profilesDropDownMenu.OnEvent("Change", (*) => this.ProfileChangedFromDropDownMenuEvent(profilesDropDownMenu))
-        
-        return profilesDropDownMenu
-    }
-
-    AddProfileChangedEvent(profileChangedMethodToExcecute){
-        ; this.listView.OnEvent("DoubleClick", ListViewDoubleClickEvent)
-
-        this.profilesDropDownMenu.OnEvent("Change", profileChangedMethodToExcecute)
-    }
 
     ProfileChangedFromDropDownMenuEvent(profilesDropDownMenu){
         iniWrite(profilesDropDownMenu.Text, this.PATH_TO_META_FILE, "General", "activeUserProfile")

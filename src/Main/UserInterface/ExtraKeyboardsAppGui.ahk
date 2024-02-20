@@ -8,6 +8,9 @@
 #Include "Main\Functionality\ActionSettings\SettingsEditor.ahk"
 
 #Include "Main\ProfileEditing\ProfileButtons.ahk"
+#Include "Main\ProfileEditing\ProfileEditorModel.ahk"
+#Include "Main\ProfileEditing\ProfileEditorView.ahk"
+#Include "Main\ProfileEditing\ProfileEditorController.ahk"
 #Include "Main\util\TreeViewMaker.ahk"
 #Include "Main\util\ListViewMaker.ahk"
 #Include "Main\Functionality\Keyboard\KeyboardEditing\HotKeyConfigurationPopup.ahk"
@@ -89,7 +92,8 @@ Class ExtraKeyboardsAppGui{
         this.CreateProfileEditor()
 
         ; TODO move somewhere else...
-        this.pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileButtonsObject.getProfilesDropDownMenu().Text . "\ClassObjects.ini"
+        ; this.pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileButtonsObject.getProfilesDropDownMenu().Text . "\ClassObjects.ini"
+        this.pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . 'MainProfile' . "\ClassObjects.ini"
 
         fileReader := IniFileReader()
         functionsNames := fileReader.ReadSectionNamesToArray(this.pathToObjectsIniFile)
@@ -103,9 +107,13 @@ Class ExtraKeyboardsAppGui{
     }
 
     CreateProfileEditor(){
-        this.profileButtonsObject := ProfileButtons(this.PATH_TO_EXISTING_PROFILES, this.PATH_TO_META_FILE)
-        this.profileButtonsObject.createProfileSettingsForGui(this.ExtraKeyboardsAppGui)
-        this.profileButtonsObject.addProfileChangedEvent(ObjBindMethod(this, "eventProfileChanged"))
+        profileModel := ProfileEditorModel(this.ExtraKeyboardsAppGui, this.PATH_TO_META_FILE, this.PATH_TO_EXISTING_PROFILES)
+        profileView := ProfileEditorView()
+        profileController := ProfileEditorController(profileModel, profileView)
+        profileController.CreateView()
+        ; this.profileButtonsObject := ProfileButtons(this.PATH_TO_EXISTING_PROFILES, this.PATH_TO_META_FILE)
+        ; this.profileButtonsObject.createProfileSettingsForGui(this.ExtraKeyboardsAppGui)
+        ; this.profileButtonsObject.addProfileChangedEvent(ObjBindMethod(this, "eventProfileChanged"))
     }
 
     eventProfileChanged(*){
@@ -255,20 +263,6 @@ Class ExtraKeyboardsAppGui{
         iniFileValue := editorForActionSettings.GetSettingValue()
         IniWrite(iniFileValue, this.pathToObjectsIniFile, iniFileSection, iniFileKey)
         editorForActionSettings.Destroy()
-
-                ; ; TODO validate values, can not be empty!, can not be the same as another key, etc...
-                ; if(rowNumber != 0){
-                ;     oldIniFileKey := this.listView.GetText(rowNumber)
-                ;     IniDelete this.iniFile, iniFileSection, oldIniFileKey
-                ;     this.listView.Modify(rowNumber, , inputKey.Value, inputValue.Value)
-                ; }
-                ; else{
-                ;     this.listView.Add(, inputKey.Value, inputValue.Value)
-        
-                ; }
-                
-
-                ; IniWrite(inputValue.Value, this.iniFile, iniFileSection, inputKey.Value)
     }
 
     CreateDocumentationTab(){

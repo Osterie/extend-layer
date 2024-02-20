@@ -108,9 +108,6 @@ Hotstring("::@p", password)
 
 ; TODO add hotkey for creating tab to the right...
 
-; TODO when making a new hotkey, it should be temporarily green. When deleting a hotkey, it should be red for a short time, and possible to restore it.
-; TODO when changing a hotkey, it should be yellow or blue or something indicating that it has been changed (temporary)
-
 ; TODO to help the user learn how to use the script, a ghost keyboard should be made. All actions could have a short name, and when the key on the ghostkeyboard was hovered a description could be shown
 
 ; TODO in objects.json or whatever, add a "Optional" field to parameters, which says if the parameter is optional or not.
