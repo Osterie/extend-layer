@@ -47,6 +47,14 @@ class ProfileRegionView{
         guiObject.Show()
     }
 
+    UpdateProfilesDropDownMenu(controller){
+        profiles := controller.getProfiles()
+        currentProfileIndex := controller.getCurrentProfileIndex()
+        this.profilesDropDownMenu.Delete()
+        this.profilesDropDownMenu.Add(profiles)
+        this.profilesDropDownMenu.Value := currentProfileIndex
+    }
+
 
     CreateProfilesDropDownMenu(guiObject, profiles, profileIndex){
         

@@ -82,9 +82,9 @@ class ProfileRegionController{
     }
 
     HandleRenameProfileButtonClickEvent(dropDownList, editView, *){
-        profileSelected := dropDownList.Text
-        profileSelectedIndex := dropDownList.Value
-        this.model.setCurrentProfile(profileSelected, profileSelectedIndex)
+        ; profileSelected := dropDownList.Text
+        ; profileSelectedIndex := dropDownList.Value
+        ; this.model.setCurrentProfile(profileSelected, profileSelectedIndex)
         editView.CreateRenameProfileInputBox(this, this.getCurrentProfile())
     }
 
@@ -96,8 +96,8 @@ class ProfileRegionController{
             ; Do Nothing
         }
         else{
-    
             this.model.renameProfile(this.getCurrentProfile(), inputPrompt.Value)
+            this.view.UpdateProfilesDropDownMenu(this)
         }
     }
 

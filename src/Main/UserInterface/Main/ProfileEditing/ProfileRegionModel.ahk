@@ -88,7 +88,7 @@ class ProfileRegionModel{
     }
 
     getCurrentProfileIndex(){
-        return this.ExistingProfilesManager.getFirstFoundFolderIndex(this.currentProfile)
+        return this.currentProfileIndex
     }
 
     getPathToMetaFile(){
