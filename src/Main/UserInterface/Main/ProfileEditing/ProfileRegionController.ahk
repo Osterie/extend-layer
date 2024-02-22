@@ -3,6 +3,7 @@
 #Include <FoldersAndFiles\FolderManager>
 
 #Include ".\EditProfiles\EditorView.ahk"
+#Include ".\EditProfiles\EditorModel.ahk"
 
 class ProfileRegionController{
 
@@ -26,6 +27,10 @@ class ProfileRegionController{
     model := ""
     view := ""
     callback := ""
+
+
+    editView := ""
+    editModel := ""
 
     __New(model, view, callback){
         this.model := model
@@ -53,21 +58,9 @@ class ProfileRegionController{
     HandleProfileChangedEvent(dropDownList, *){
         profileSelected := dropDownList.Text
         profileSelectedIndex := dropDownList.Value
-        this.UpdateModelProfileValues(profileSelected, profileSelectedIndex)
 
-        this.WriteCurrentProfileToFile(profileSelected)
+        this.model.setCurrentProfile(profileSelected, profileSelectedIndex)
         this.callback()
-    }
-
-    UpdateModelProfileValues(profile, profileIndex){
-        this.model.setCurrentProfile(profile, profileIndex)
-    }
-
-    ; TODO this should be done in model
-    WriteCurrentProfileToFile(currentProfile){
-        PATH_TO_META_FILE := this.model.getPathToMetaFile()
-        ; TODO perhaps create a class for writing to these sorts of files, so i dont have the "General" and "activeUserProfile" part here.
-        iniWrite(currentProfile, PATH_TO_META_FILE, "General", "activeUserProfile")
     }
 
     HandleEditProfilesEvent(*){
@@ -77,18 +70,17 @@ class ProfileRegionController{
     CreateEditorView(){
         profiles := this.getProfiles()
         currentProfileIndex := this.getCurrentProfileIndex()
-        editView := EditorView()
-        editView.CreateView(this, profiles, currentProfileIndex)
+    
+        this.editModel := EditorModel(profiles, currentProfileIndex)
+        this.editView := EditorView()
+        this.editView.CreateView(this, this.editModel)
     }
 
-    HandleRenameProfileButtonClickEvent(dropDownList, editView, *){
-        ; profileSelected := dropDownList.Text
-        ; profileSelectedIndex := dropDownList.Value
-        ; this.model.setCurrentProfile(profileSelected, profileSelectedIndex)
-        editView.CreateRenameProfileInputBox(this, this.getCurrentProfile())
+    HandleRenameProfileButtonClickEvent(*){
+        this.editView.CreateRenameProfileInputBox()
     }
 
-    RenameProfile(inputPrompt){
+    HandleRenameProfile(profileToRename, inputPrompt){
         if inputPrompt.Result = "Cancel"{
             ; Do nothing
         }
@@ -96,14 +88,14 @@ class ProfileRegionController{
             ; Do Nothing
         }
         else{
-            this.model.renameProfile(this.getCurrentProfile(), inputPrompt.Value)
+            this.model.renameProfile(profileToRename, inputPrompt.Value)
+            this.editModel.SetProfiles(this.model.getProfiles())
             this.view.UpdateProfilesDropDownMenu(this)
+            this.editView.UpdateProfilesDropDownMenu()
         }
     }
 
-
-
-    DeleteProfile(profilesDropDownMenu){
+    HandleDeleteProfile(profilesDropDownMenu){
         inputPrompt := InputBox("Are you sure you want to delete this profile? Deleted profiles cannot be resuscitated. Type yes to confirm", "Edit object value",, profilesDropDownMenu.Text)
     
         if inputPrompt.Result = "Cancel"{
@@ -125,97 +117,6 @@ class ProfileRegionController{
             }
         }
     }
-    
-    AddProfile(){
-        addProfileGui := Gui()
-    
-        addProfileGui.OnEvent("Close", (*) => addProfileGui.Destroy())
-    
-        addProfileGui.Opt("+Resize +MinSize320x240")
-    
-        addPresetProfileButton := addProfileGui.Add("Button", "Default w80 xm+1", "Add preset profile")
-        addPresetProfileButton.OnEvent("Click", (*) => this.AddPresetProfile())
-    
-        addCustomProfileButton := addProfileGui.Add("Button", "Default w80 ym+1", "Add custom profile")
-        addCustomProfileButton.OnEvent("Click", (*) => this.AddCustomProfile())
-        
-        addProfileGui.Show()
-    }
 
-    AddPresetProfile(){
-        presetProfileAddingGui := Gui()
-        presetProfileAddingGui.Opt("+Resize +MinSize160x120")
-        presetProfileAddingGui.Add("Text", , "Selected Profile:")
-        
-        customProfilesDropDownMenu := presetProfileAddingGui.Add("DropDownList", "ym+1 Choose1", this.PresetProfilesManager.getFolderNames())
-        addProfileButton := presetProfileAddingGui.Add("Button", "Default w80 ym+1", "Add profile")
-        cancelButton := presetProfileAddingGui.Add("Button", "Default w80 ym+1", "Cancel")
-
-        addProfileButton.onEvent("Click", (*) => 
-            this.AddPresetProfileAddButtonClickedEvent(customProfilesDropDownMenu)
-            presetProfileAddingGui.Destroy()
-
-        )
-        
-        cancelButton.onEvent("Click", (*) => 
-            presetProfileAddingGui.Destroy()
-        )
-
-        presetProfileAddingGui.Show()
-
-    }
-
-    AddPresetProfileAddButtonClickedEvent(dropDownMenuGui){
-        presetProfileName := dropDownMenuGui.Text 
-        presetProfilePath := this.PresetProfilesManager.getFolderPathByName(presetProfileName)
-
-        this.ExistingProfilesManager.CopyFolderToNewLocation(presetProfilePath, this.PATH_TO_EXISTING_PROFILES . "\" . presetProfileName, presetProfileName, presetProfileName)
-        this.UpdateProfileDropDownMenu(this.profilesDropDownMenu)
-    }
-
-    AddCustomProfileAddButtonClickedEvent(profileNameField){
-        profileName := profileNameField.Text
-        profilePath := this.PATH_TO_EXISTING_PROFILES . "\" . profileName
-
-        try{
-            this.ExistingProfilesManager.CopyFolderToNewLocation(this.PATH_TO_EMPTY_PROFILE, profilePath, "EmptyProfile", profileName)
-            this.UpdateProfileDropDownMenu(this.profilesDropDownMenu)
-        }
-        catch{
-            msgbox("failed to add profile, perhaps name already exists or illegal characters were used.")
-        }
-    }
-
-    AddCustomProfile(){        
-        
-        customProfileAddingGui := Gui()
-        customProfileAddingGui.Opt("+Resize +MinSize160x120")
-        customProfileAddingGui.Add("Text", , "Selected Profile:")
-
-        customProfileAddingGui.Add("Text", "ym+1", "Name of profile to add:")
-        profileNameField := customProfileAddingGui.Add("Edit", "r1 ym+1", "")
-        addProfileButton := customProfileAddingGui.Add("Button", "Default w80 ym+1", "Add profile")
-        cancelButton := customProfileAddingGui.Add("Button", "Default w80 ym+1", "Cancel")
-
-        addProfileButton.onEvent("Click", (*) => 
-            
-            this.AddCustomProfileAddButtonClickedEvent(profileNameField)
-            customProfileAddingGui.Destroy()
-
-        )
-        
-        cancelButton.onEvent("Click", (*) => 
-            customProfileAddingGui.Destroy()
-        )
-
-        customProfileAddingGui.Show()
-        
-    }
-
-    UpdateProfileDropDownMenu(guiObject){
-        guiObject.Delete()
-        guiObject.Add(this.ExistingProfilesManager.getFolderNames())
-        guiObject.Choose(this.currentProfile)
-    }
 
 }

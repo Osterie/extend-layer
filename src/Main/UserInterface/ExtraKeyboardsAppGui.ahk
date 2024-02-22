@@ -58,6 +58,8 @@ Class ExtraKeyboardsAppGui{
 
     pathToObjectsIniFile := ""
 
+    profileModel := ""
+
 
     __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToEmptyProfile, keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, MainScript, keyNames){
         this.MainScript := MainScript
@@ -92,8 +94,8 @@ Class ExtraKeyboardsAppGui{
         this.CreateProfileEditor()
 
         ; TODO move somewhere else...
-        ; this.pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileButtonsObject.getProfilesDropDownMenu().Text . "\ClassObjects.ini"
-        this.pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . 'MainProfile' . "\ClassObjects.ini"
+        this.pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileModel.getCurrentProfile() . "\ClassObjects.ini"
+        ; this.pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . 'MainProfile' . "\ClassObjects.ini"
 
         fileReader := IniFileReader()
         functionsNames := fileReader.ReadSectionNamesToArray(this.pathToObjectsIniFile)
@@ -107,9 +109,9 @@ Class ExtraKeyboardsAppGui{
     }
 
     CreateProfileEditor(){
-        profileModel := ProfileRegionModel(this.ExtraKeyboardsAppGui, this.PATH_TO_META_FILE, this.PATH_TO_EXISTING_PROFILES)
+        this.profileModel := ProfileRegionModel(this.ExtraKeyboardsAppGui, this.PATH_TO_META_FILE, this.PATH_TO_EXISTING_PROFILES)
         profileView := ProfileRegionView()
-        profileController := ProfileRegionController(profileModel, profileView, ObjBindMethod(this, "eventProfileChanged"))
+        profileController := ProfileRegionController(this.profileModel, profileView, ObjBindMethod(this, "eventProfileChanged"))
         profileController.CreateView()
         ; this.profileButtonsObject := ProfileButtons(this.PATH_TO_EXISTING_PROFILES, this.PATH_TO_META_FILE)
         ; this.profileButtonsObject.createProfileSettingsForGui(this.ExtraKeyboardsAppGui)

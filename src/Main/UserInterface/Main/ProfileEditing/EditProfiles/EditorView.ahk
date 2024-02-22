@@ -2,51 +2,51 @@
 
 class EditorView{
 
-    CreateView(controller, profiles, currentProfileIndex){
-        
-        editProfilesGui := Gui("+Resize +MinSize320x240")
-        editProfilesGui.Add("Text", , "Selected Profile:")
-        profilesToEditDropDownMenu := editProfilesGui.Add("DropDownList", "ym Choose" . currentProfileIndex, profiles)
-        
-        renameProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Change profile name")
+    controller := ""
+    model := ""
 
-        renameProfileButton.OnEvent("Click", ObjBindMethod(controller, "HandleRenameProfileButtonClickEvent", profilesToEditDropDownMenu, this))
+    editProfilesGui := ""
+    profilesToEditDropDownMenu := ""
+
+    CreateView(controller, model){
+
+        this.controller := controller
+        this.model := model
+        
+        this.editProfilesGui := Gui("+Resize +MinSize320x240")
+        this.editProfilesGui.Add("Text", , "Selected Profile:")
+
+        this.profilesToEditDropDownMenu := this.editProfilesGui.Add("DropDownList", "ym Choose" . model.GetCurrentProfileIndex(), model.GetProfiles())
+        this.profilesToEditDropDownMenu.OnEvent("Change", (*) => ObjBindMethod(model, "SetCurrentProfile", this.profilesToEditDropDownMenu.Value)())
+
+        renameProfileButton := this.editProfilesGui.Add("Button", "Default w80 xm+1", "Change profile name")
+
+        renameProfileButton.OnEvent("Click", ObjBindMethod(this.controller, "HandleRenameProfileButtonClickEvent"))
     
-        ; deleteProfileButton := editProfilesGui.Add("Button", "Default w80 xm+1", "Delete profile")
+        ; deleteProfileButton := this.editProfilesGui.Add("Button", "Default w80 xm+1", "Delete profile")
         ; deleteProfileButton.OnEvent("Click", (*) =>
-        ;     this.DeleteProfile(profilesToEditDropDownMenu)
+        ;     this.DeleteProfile()
         ; )
     
-        editProfilesGui.Show()
+        this.editProfilesGui.Show()
     }
     
-    CreateRenameProfileInputBox(controller, currentProfile){
-        inputPrompt := InputBox("Please write the new name for the profile!", "Edit object value",, currentProfile)
-        
-        controller.RenameProfile(inputPrompt)
+    CreateRenameProfileInputBox(){
+        inputPrompt := InputBox("Please write the new name for the profile!", "Edit object value",, this.model.getCurrentProfile())
+        this.controller.HandleRenameProfile(this.model.getCurrentProfile(), inputPrompt)
     } 
 
-    DeleteProfile(profilesDropDownMenu){
-        inputPrompt := InputBox("Are you sure you want to delete this profile? Deleted profiles cannot be resuscitated. Type yes to confirm", "Edit object value",, profilesDropDownMenu.Text)
-    
-        if inputPrompt.Result = "Cancel"{
-            ; Do nothing
-        }
-        else if(inputPrompt.Value = ""){
-            ; Do Nothing
-        }
-        else if (StrLower(inputPrompt.Value) = "yes"){
-    
-            if (this.ExistingProfilesManager.DeleteFolder(profilesDropDownMenu.Text)){
-                ; Deleted profile succesfully
-                iniWrite(inputPrompt.Value, this.PATH_TO_META_FILE, "General", "activeUserProfile")
-                this.UpdateProfileDropDownMenu(this.profilesDropDownMenu)
-                this.UpdateProfileDropDownMenu(profilesDropDownMenu)
-            }
-            else{
-                msgbox("failed to delete profile")
-            }
-        }
+    DeleteProfile(){
+        inputPrompt := InputBox("Are you sure you want to delete this profile? Deleted profiles cannot be resuscitated. Type yes to confirm", "Edit object value",, this.model.getCurrentProfile())
+        this.controller.HandleDeleteProfile(inputPrompt)
+    }
+
+    UpdateProfilesDropDownMenu(){
+        profiles := this.model.getProfiles()
+        currentProfileIndex := this.model.getCurrentProfileIndex()
+        this.profilesToEditDropDownMenu.Delete()
+        this.profilesToEditDropDownMenu.Add(profiles)
+        this.profilesToEditDropDownMenu.Value := currentProfileIndex
     }
     
 }
