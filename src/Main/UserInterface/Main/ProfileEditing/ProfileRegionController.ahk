@@ -4,6 +4,7 @@
 
 #Include ".\EditProfiles\EditorView.ahk"
 #Include ".\EditProfiles\EditorModel.ahk"
+#Include ".\AddProfiles\AddProfilesView.ahk"
 
 class ProfileRegionController{
 
@@ -76,7 +77,7 @@ class ProfileRegionController{
         this.editView.CreateView(this, this.editModel)
     }
 
-    HandleRenameProfileButtonClickEvent(*){
+    HandleRenameProfileButtonClickEvent(){
         this.editView.CreateRenameProfileInputBox()
     }
 
@@ -95,9 +96,11 @@ class ProfileRegionController{
         }
     }
 
-    HandleDeleteProfile(profilesDropDownMenu){
-        inputPrompt := InputBox("Are you sure you want to delete this profile? Deleted profiles cannot be resuscitated. Type yes to confirm", "Edit object value",, profilesDropDownMenu.Text)
-    
+    HandleDeleteProfileButtonClickEvent(){
+        this.editView.CreateDeleteProfileInputBox()
+    }
+
+    HandleDeleteProfile(inputPrompt){
         if inputPrompt.Result = "Cancel"{
             ; Do nothing
         }
@@ -106,16 +109,16 @@ class ProfileRegionController{
         }
         else if (StrLower(inputPrompt.Value) = "yes"){
     
-            if (this.ExistingProfilesManager.DeleteFolder(profilesDropDownMenu.Text)){
-                ; Deleted profile succesfully
-                iniWrite(inputPrompt.Value, this.PATH_TO_META_FILE, "General", "activeUserProfile")
-                this.UpdateProfileDropDownMenu(this.profilesDropDownMenu)
-                this.UpdateProfileDropDownMenu(profilesDropDownMenu)
-            }
-            else{
-                msgbox("failed to delete profile")
-            }
+            this.model.deleteProfile(this.editModel.getCurrentProfile())
+            this.editModel.SetProfiles(this.model.getProfiles())
+            this.view.UpdateProfilesDropDownMenu()
+            this.editView.UpdateProfilesDropDownMenu()
         }
+    }
+
+    HandleAddProfileEvent(){
+        addprofileView := AddProfilesView()
+        addprofileView.CreateView(this)
     }
 
 

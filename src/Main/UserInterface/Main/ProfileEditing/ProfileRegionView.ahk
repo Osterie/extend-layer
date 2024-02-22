@@ -28,7 +28,7 @@ class ProfileRegionView{
         
 
         editProfilesButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleEditProfilesEvent")())
-        ; addProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleAddProfileEvent")())
+        addProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleAddProfileEvent")())
         ; importProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleImportProfileEvent")())
         ; exportProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleExportProfileEvent")())
 

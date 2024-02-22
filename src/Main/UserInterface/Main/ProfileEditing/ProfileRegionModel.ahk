@@ -29,12 +29,8 @@ class ProfileRegionModel{
     __New(guiObject, pathToMetaFile, pathToExistingProfiles){
 
         this.guiObject := guiObject
-        ; this.jsonFileConents := jsonFileConents
         this.PATH_TO_META_FILE := pathToMetaFile
         this.PATH_TO_EXISTING_PROFILES := pathToExistingProfiles
-
-        ; this.PATH_TO_MAIN_SCRIPT := pathToMainScript
-
         ; this.PATH_TO_EMPTY_PROFILE := pathToEmptyProfile
 
 
@@ -86,6 +82,18 @@ class ProfileRegionModel{
             renamedSuccesfully := false
         }
         return renamedSuccesfully
+    }
+
+    DeleteProfile(profileToDelete){
+        if (this.ExistingProfilesManager.DeleteFolder(profileToDelete)){
+            ; Deleted profile succesfully
+            if (profileToDelete = this.currentProfile){
+                this.setCurrentProfile(this.profiles[1], 1)
+            }
+        }
+        else{
+            msgbox("failed to delete profile")
+        }
     }
 
     getCurrentProfile(){

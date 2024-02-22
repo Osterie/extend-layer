@@ -20,13 +20,10 @@ class EditorView{
         this.profilesToEditDropDownMenu.OnEvent("Change", (*) => ObjBindMethod(model, "SetCurrentProfile", this.profilesToEditDropDownMenu.Value)())
 
         renameProfileButton := this.editProfilesGui.Add("Button", "Default w80 xm+1", "Change profile name")
-
-        renameProfileButton.OnEvent("Click", ObjBindMethod(this.controller, "HandleRenameProfileButtonClickEvent"))
+        renameProfileButton.OnEvent("Click", (*) => ObjBindMethod(this.controller, "HandleRenameProfileButtonClickEvent")())
     
-        ; deleteProfileButton := this.editProfilesGui.Add("Button", "Default w80 xm+1", "Delete profile")
-        ; deleteProfileButton.OnEvent("Click", (*) =>
-        ;     this.DeleteProfile()
-        ; )
+        deleteProfileButton := this.editProfilesGui.Add("Button", "Default w80 xm+1", "Delete profile")
+        deleteProfileButton.OnEvent("Click", (*) => ObjBindMethod(this.controller, "HandleDeleteProfileButtonClickEvent")())
     
         this.editProfilesGui.Show()
     }
@@ -36,7 +33,7 @@ class EditorView{
         this.controller.HandleRenameProfile(this.model.getCurrentProfile(), inputPrompt)
     } 
 
-    DeleteProfile(){
+    CreateDeleteProfileInputBox(){
         inputPrompt := InputBox("Are you sure you want to delete this profile? Deleted profiles cannot be resuscitated. Type yes to confirm", "Edit object value",, this.model.getCurrentProfile())
         this.controller.HandleDeleteProfile(inputPrompt)
     }
