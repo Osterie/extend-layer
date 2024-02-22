@@ -102,6 +102,23 @@ class ProfileRegionModel{
         }
     }
 
+    AddProfile(profile, profileName){
+        profileAdded := false
+        if (this.hasProfile(profileName)){
+            profileAdded := false
+        }
+        else{
+            presetProfileName := profileName
+            profilePath := this.PresetProfilesManager.getFolderPathByName(profile)
+    
+            this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, this.PATH_TO_EXISTING_PROFILES . "\" . profileName, profileName, profileName)
+            ; this.UpdateProfileDropDownMenu(this.profilesDropDownMenu)
+            
+            profileAdded := true
+        }
+        return profileAdded
+    }
+
     getCurrentProfile(){
         return this.currentProfile
     }

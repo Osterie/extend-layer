@@ -88,8 +88,10 @@ class KeyboardLayersInfoJsonReader{
                 }
             }
         }
-        KeyboardOverlayInformation := KeyboardOverlayInfo(layerInfoContents["ShowKeyboardOverlayKey"], layerIdentifier, elementRegistry)
-        this.KeyboardLayersInfoRegister.AddKeyboardOverlayLayerInfo(KeyboardOverlayInformation)
+        try{
+            KeyboardOverlayInformation := KeyboardOverlayInfo(layerInfoContents["ShowKeyboardOverlayKey"], layerIdentifier, elementRegistry)
+            this.KeyboardLayersInfoRegister.AddKeyboardOverlayLayerInfo(KeyboardOverlayInformation)
+        }
     }
 
     getKeyboardLayersInfoRegister(){

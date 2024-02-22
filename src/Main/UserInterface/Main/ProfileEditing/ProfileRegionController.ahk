@@ -28,6 +28,10 @@ class ProfileRegionController{
     editView := ""
     editModel := ""
 
+
+    addprofileView := ""
+    addprofileModel := ""
+
     __New(model, view, callback){
         this.model := model
         this.view := view 
@@ -112,7 +116,17 @@ class ProfileRegionController{
     }
 
     HandleAddProfileEvent(){
-        addprofileView := AddProfilesView()
-        addprofileView.CreateView(this, this.model)
+        this.addprofileView := AddProfilesView()
+        this.addprofileView.CreateView(this, this.model)
+    }
+
+    HandleAddProfileConfirmedEvent(profileToAdd, profileName){
+        if (this.model.addProfile(profileToAdd, profileName)){
+            this.addprofileView.Destroy()
+        }
+        else{
+            msgbox("Failed to add profile, perhaps a profile with the given name already exists")
+        }
+
     }
 }
