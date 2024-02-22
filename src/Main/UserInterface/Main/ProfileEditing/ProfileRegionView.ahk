@@ -6,7 +6,11 @@ class ProfileRegionView{
     ; Gui part
     profilesDropDownMenu := ""
 
+    controller := ""
+
     CreateView(guiObject, controller){
+
+        this.controller := controller
 
         guiObject.Add("Text", , "Current Profile:")
 
@@ -32,12 +36,10 @@ class ProfileRegionView{
         guiObject.Show()
     }
 
-    UpdateProfilesDropDownMenu(controller){
-        profiles := controller.getProfiles()
-        currentProfileIndex := controller.getCurrentProfileIndex()
+    UpdateProfilesDropDownMenu(){
         this.profilesDropDownMenu.Delete()
-        this.profilesDropDownMenu.Add(profiles)
-        this.profilesDropDownMenu.Value := currentProfileIndex
+        this.profilesDropDownMenu.Add(this.controller.getProfiles())
+        this.profilesDropDownMenu.Value := this.controller.getCurrentProfileIndex()
     }
 
 

@@ -90,7 +90,7 @@ class ProfileRegionController{
         else{
             this.model.renameProfile(profileToRename, inputPrompt.Value)
             this.editModel.SetProfiles(this.model.getProfiles())
-            this.view.UpdateProfilesDropDownMenu(this)
+            this.view.UpdateProfilesDropDownMenu()
             this.editView.UpdateProfilesDropDownMenu()
         }
     }

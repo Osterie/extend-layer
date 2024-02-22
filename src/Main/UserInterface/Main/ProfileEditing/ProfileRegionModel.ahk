@@ -74,13 +74,12 @@ class ProfileRegionModel{
         renamedSuccesfully := false
         
         if (this.ExistingProfilesManager.RenameFolder(profileName, newProfileName)){
-
             if (profileName = this.currentProfile){
                 this.setCurrentProfile(newProfileName, this.ExistingProfilesManager.getFirstFoundFolderIndex(newProfileName))
             }
 
-            renamedSuccesfully := true
             this.updateProfiles()
+            renamedSuccesfully := true
         }
         else{
             msgbox("failed to change profile name, perhaps name already exists or illegal characters were used.")
