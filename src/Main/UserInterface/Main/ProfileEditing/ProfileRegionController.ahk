@@ -14,11 +14,6 @@ class ProfileRegionController{
     ExistingProfilesManager := ""
     ; A constant which is the path to the preset profiles
 
-    PATH_TO_EMPTY_PROFILE := ""
-    PATH_TO_PRESET_PROFILES := ""
-    PATH_TO_EXISTING_PROFILES := ""
-    PATH_TO_META_FILE := ""
-
     currentProfile := ""
     currentProfileIndex := ""
 
@@ -118,8 +113,6 @@ class ProfileRegionController{
 
     HandleAddProfileEvent(){
         addprofileView := AddProfilesView()
-        addprofileView.CreateView(this)
+        addprofileView.CreateView(this, this.model)
     }
-
-
 }

@@ -26,18 +26,20 @@ class ProfileRegionModel{
     guiObject := ""
 
 
-    __New(guiObject, pathToMetaFile, pathToExistingProfiles){
+    __New(guiObject, pathToMetaFile, pathToExistingProfiles, pathToEmptyProfile, pathToPresetProfiles){
 
         this.guiObject := guiObject
         this.PATH_TO_META_FILE := pathToMetaFile
         this.PATH_TO_EXISTING_PROFILES := pathToExistingProfiles
-        ; this.PATH_TO_EMPTY_PROFILE := pathToEmptyProfile
+        this.PATH_TO_EMPTY_PROFILE := pathToEmptyProfile
+        this.PATH_TO_PRESET_PROFILES := pathToPresetProfiles
 
 
         this.ExistingProfilesManager := FolderManager()
         this.PresetProfilesManager := FolderManager()
 
         this.PresetProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_PRESET_PROFILES)
+        this.PresetProfilesManager.addFolderToRegistry("EmptyProfile", this.PATH_TO_EMPTY_PROFILE)
         this.ExistingProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_EXISTING_PROFILES)
 
         this.currentProfile := iniRead(this.PATH_TO_META_FILE, "General", "activeUserProfile")
@@ -58,6 +60,10 @@ class ProfileRegionModel{
 
     getProfiles(){
         return this.profiles
+    }
+
+    getPresetProfiles(){
+        return this.PresetProfilesManager.getFolderNames()
     }
 
     setCurrentProfile(profileName, profileIndex){

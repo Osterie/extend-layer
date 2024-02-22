@@ -76,6 +76,7 @@ Class ExtraKeyboardsAppGui{
         this.PATH_TO_EXISTING_PROFILES := pathToExistingProfiles
         this.PATH_TO_PRESET_PROFILES := pathToPresetProfiles
         this.PresetProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_PRESET_PROFILES)
+        this.PresetProfilesManager.addFolderToRegistry("EmptyProfile", this.PATH_TO_EMPTY_PROFILE)
         this.ExistingProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_EXISTING_PROFILES)
 
         this.PATH_TO_META_FILE := pathToMetaFile
@@ -109,7 +110,7 @@ Class ExtraKeyboardsAppGui{
     }
 
     CreateProfileEditor(){
-        this.profileModel := ProfileRegionModel(this.ExtraKeyboardsAppGui, this.PATH_TO_META_FILE, this.PATH_TO_EXISTING_PROFILES)
+        this.profileModel := ProfileRegionModel(this.ExtraKeyboardsAppGui, this.PATH_TO_META_FILE, this.PATH_TO_EXISTING_PROFILES, this.PATH_TO_EMPTY_PROFILE, this.PATH_TO_PRESET_PROFILES)
         profileView := ProfileRegionView()
         profileController := ProfileRegionController(this.profileModel, profileView, ObjBindMethod(this, "eventProfileChanged"))
         profileController.CreateView()
