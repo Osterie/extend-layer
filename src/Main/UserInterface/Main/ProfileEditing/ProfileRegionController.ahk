@@ -68,10 +68,7 @@ class ProfileRegionController{
     }
 
     CreateEditorView(){
-        profiles := this.getProfiles()
-        currentProfileIndex := this.getCurrentProfileIndex()
-    
-        this.editModel := EditorModel(profiles, currentProfileIndex)
+        this.editModel := EditorModel(this.getProfiles(), this.getCurrentProfileIndex())
         this.editView := EditorView()
         this.editView.CreateView(this, this.editModel)
     }
@@ -122,6 +119,7 @@ class ProfileRegionController{
 
     HandleAddProfileConfirmedEvent(profileToAdd, profileName){
         if (this.model.addProfile(profileToAdd, profileName)){
+            this.view.UpdateProfilesDropDownMenu()
             this.addprofileView.Destroy()
         }
         else{

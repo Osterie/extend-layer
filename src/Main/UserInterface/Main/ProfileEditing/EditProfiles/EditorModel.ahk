@@ -13,7 +13,13 @@ class EditorModel{
 
     setProfiles(profiles){
         this.profiles := profiles
-        this.currentProfile := profiles[this.currentProfileIndex]
+        try{
+            this.currentProfile := profiles[this.currentProfileIndex]
+        }
+        catch{
+            this.currentProfile := profiles[1]
+            this.currentProfileIndex := 1
+        }
     }
 
     getProfiles(){

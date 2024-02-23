@@ -16,7 +16,14 @@ class FolderManager{
     }
 
     addFolderToRegistry(folderName, folderPath) {
-        this.folders.addFolder(folderName, folderPath)
+        addedFolder := false
+        if (this.folders.addFolder(folderName, folderPath)){
+            addedFolder := true
+        }
+        else{
+            addedFolder := false
+        }
+        return addedFolder
     }
 
     RemoveFolderFromRegistry(folderName) {

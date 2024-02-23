@@ -72,6 +72,16 @@ class ProfileRegionModel{
         iniWrite(this.currentProfile, this.PATH_TO_META_FILE, "General", "activeUserProfile")
     }
 
+    getCurrentProfileIndex(){
+        currentProfileIndex := -1
+        Loop this.profiles.Length{
+            if (this.profiles[A_Index] = this.currentProfile){
+                currentProfileIndex := A_Index
+            }
+        }
+        return currentProfileIndex
+    }
+
     renameProfile(profileName, newProfileName){
         renamedSuccesfully := false
         
@@ -93,9 +103,13 @@ class ProfileRegionModel{
     DeleteProfile(profileToDelete){
         if (this.ExistingProfilesManager.DeleteFolder(profileToDelete)){
             ; Deleted profile succesfully
-            if (profileToDelete = this.currentProfile){
-                this.setCurrentProfile(this.profiles[1], 1)
-            }
+            ; if (profileToDelete = this.currentProfile){
+            ;     this.setCurrentProfile(this.profiles[1], 1)
+            ; }
+            this.updateProfiles()
+            ; TODO this should be better.
+            ; this.setCurrentProfile(this.profiles[1], 1)
+
         }
         else{
             msgbox("failed to delete profile")
@@ -110,21 +124,15 @@ class ProfileRegionModel{
         else{
             presetProfileName := profileName
             profilePath := this.PresetProfilesManager.getFolderPathByName(profile)
-    
             this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, this.PATH_TO_EXISTING_PROFILES . "\" . profileName, profileName, profileName)
-            ; this.UpdateProfileDropDownMenu(this.profilesDropDownMenu)
-            
             profileAdded := true
+            this.updateProfiles()
         }
         return profileAdded
     }
 
     getCurrentProfile(){
         return this.currentProfile
-    }
-
-    getCurrentProfileIndex(){
-        return this.currentProfileIndex
     }
 
     getPathToMetaFile(){
