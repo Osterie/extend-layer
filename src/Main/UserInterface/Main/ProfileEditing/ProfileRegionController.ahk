@@ -55,11 +55,11 @@ class ProfileRegionController{
         return this.model.getCurrentProfile()
     }
 
+    ; TODO dont take DropDownList
     HandleProfileChangedEvent(dropDownList, *){
         profileSelected := dropDownList.Text
-        profileSelectedIndex := dropDownList.Value
 
-        this.model.setCurrentProfile(profileSelected, profileSelectedIndex)
+        this.model.setCurrentProfile(profileSelected)
         this.callback()
     }
 
@@ -68,7 +68,7 @@ class ProfileRegionController{
     }
 
     CreateEditorView(){
-        this.editModel := EditorModel(this.getProfiles(), this.getCurrentProfileIndex())
+        this.editModel := EditorModel(this.getProfiles(), this.getCurrentProfile())
         this.editView := EditorView()
         this.editView.CreateView(this, this.editModel)
     }

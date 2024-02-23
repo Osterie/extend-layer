@@ -16,7 +16,6 @@ class ProfileRegionModel{
     PATH_TO_META_FILE := ""
 
     currentProfile := ""
-    currentProfileIndex := ""
 
     ; Gui part
     profilesDropDownMenu := ""
@@ -43,7 +42,6 @@ class ProfileRegionModel{
         this.ExistingProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_EXISTING_PROFILES)
 
         this.currentProfile := iniRead(this.PATH_TO_META_FILE, "General", "activeUserProfile")
-        this.currentProfileIndex := this.ExistingProfilesManager.getFirstFoundFolderIndex(this.currentProfile)
 
         this.profiles := this.ExistingProfilesManager.getFolderNames()
 
@@ -66,9 +64,8 @@ class ProfileRegionModel{
         return this.PresetProfilesManager.getFolderNames()
     }
 
-    setCurrentProfile(profileName, profileIndex){
+    setCurrentProfile(profileName){
         this.currentProfile := profileName
-        this.currentProfileIndex := profileIndex
         iniWrite(this.currentProfile, this.PATH_TO_META_FILE, "General", "activeUserProfile")
     }
 
@@ -87,7 +84,7 @@ class ProfileRegionModel{
         
         if (this.ExistingProfilesManager.RenameFolder(profileName, newProfileName)){
             if (profileName = this.currentProfile){
-                this.setCurrentProfile(newProfileName, this.ExistingProfilesManager.getFirstFoundFolderIndex(newProfileName))
+                this.setCurrentProfile(newProfileName)
             }
 
             this.updateProfiles()
@@ -104,11 +101,11 @@ class ProfileRegionModel{
         if (this.ExistingProfilesManager.DeleteFolder(profileToDelete)){
             ; Deleted profile succesfully
             ; if (profileToDelete = this.currentProfile){
-            ;     this.setCurrentProfile(this.profiles[1], 1)
+            ;     this.setCurrentProfile(this.profiles[1])
             ; }
             this.updateProfiles()
             ; TODO this should be better.
-            ; this.setCurrentProfile(this.profiles[1], 1)
+            ; this.setCurrentProfile(this.profiles[1])
 
         }
         else{

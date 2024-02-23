@@ -3,22 +3,19 @@
 class EditorModel{
     currentProfile := ""
     profiles := []
-    currentProfileIndex := 0
 
-    __New(profiles, currentProfileIndex){
+    __New(profiles, currentProfile){
         this.profiles := profiles
-        this.currentProfileIndex := currentProfileIndex
-        this.currentProfile := profiles[currentProfileIndex]
+        this.currentProfile := currentProfile
     }
 
     setProfiles(profiles){
         this.profiles := profiles
         try{
-            this.currentProfile := profiles[this.currentProfileIndex]
+            this.currentProfile := profiles[this.getCurrentProfileIndex()]
         }
         catch{
             this.currentProfile := profiles[1]
-            this.currentProfileIndex := 1
         }
     }
 
@@ -31,11 +28,16 @@ class EditorModel{
     }
 
     getCurrentProfileIndex(){
-        return this.currentProfileIndex
+        currentProfileIndex := -1
+        Loop this.profiles.Length{
+            if (this.profiles[A_Index] = this.currentProfile){
+                currentProfileIndex := A_Index
+            }
+        }
+        return currentProfileIndex
     }
 
-    SetCurrentProfile(currentProfileIndex){
-        this.currentProfileIndex := currentProfileIndex
-        this.currentProfile := this.profiles[currentProfileIndex]
+    SetCurrentProfile(profileName){
+        this.currentProfile := profileName
     }
 }

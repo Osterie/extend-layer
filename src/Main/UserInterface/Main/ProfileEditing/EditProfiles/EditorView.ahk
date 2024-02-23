@@ -17,7 +17,7 @@ class EditorView{
         this.editProfilesGui.Add("Text", , "Selected Profile:")
 
         this.profilesToEditDropDownMenu := this.editProfilesGui.Add("DropDownList", "ym Choose" . model.GetCurrentProfileIndex(), model.GetProfiles())
-        this.profilesToEditDropDownMenu.OnEvent("Change", (*) => ObjBindMethod(model, "SetCurrentProfile", this.profilesToEditDropDownMenu.Value)())
+        this.profilesToEditDropDownMenu.OnEvent("Change", (*) => ObjBindMethod(model, "SetCurrentProfile", this.profilesToEditDropDownMenu.Text)())
 
         renameProfileButton := this.editProfilesGui.Add("Button", "Default w80 xm+1", "Change profile name")
         renameProfileButton.OnEvent("Click", (*) => ObjBindMethod(this.controller, "HandleRenameProfileButtonClickEvent")())
