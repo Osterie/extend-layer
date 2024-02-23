@@ -50,6 +50,7 @@ class ProfileRegionModel{
 
     updateProfiles(){
         this.profiles := this.ExistingProfilesManager.getFolderNames()
+
     }
 
     getGuiObject(){
@@ -83,11 +84,11 @@ class ProfileRegionModel{
         renamedSuccesfully := false
         
         if (this.ExistingProfilesManager.RenameFolder(profileName, newProfileName)){
+            this.updateProfiles()
             if (profileName = this.currentProfile){
                 this.setCurrentProfile(newProfileName)
             }
 
-            this.updateProfiles()
             renamedSuccesfully := true
         }
         else{
@@ -100,16 +101,16 @@ class ProfileRegionModel{
     DeleteProfile(profileToDelete){
         if (this.ExistingProfilesManager.DeleteFolder(profileToDelete)){
             ; Deleted profile succesfully
-            ; if (profileToDelete = this.currentProfile){
-            ;     this.setCurrentProfile(this.profiles[1])
-            ; }
             this.updateProfiles()
-            ; TODO this should be better.
-            ; this.setCurrentProfile(this.profiles[1])
+            if (this.profiles.Length != 0){
+                if (profileToDelete = this.currentProfile){
+                    this.setCurrentProfile(this.profiles[1])
+                }
+            }
 
         }
         else{
-            msgbox("failed to delete profile")
+            msgbox("failed to delete profile, perhaps no profile exists")
         }
     }
 

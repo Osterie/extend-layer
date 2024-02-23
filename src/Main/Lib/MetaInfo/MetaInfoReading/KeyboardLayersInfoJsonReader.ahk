@@ -33,7 +33,7 @@ class KeyboardLayersInfoJsonReader{
             jsonStringKeyboardInfo := FileRead(this.PATH_TO_KEYBOARD_INFO, "UTF-8")
         }
         catch{
-            throw ("Could not read the file: " . this.PATH_TO_KEYBOARD_INFO)
+            throw ValueError("Could not read the file: " . this.PATH_TO_KEYBOARD_INFO)
         }
         this.keyboardInfo := jxon_load(&jsonStringKeyboardInfo)
 

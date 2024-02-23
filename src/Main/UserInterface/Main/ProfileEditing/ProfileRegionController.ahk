@@ -104,7 +104,6 @@ class ProfileRegionController{
             ; Do Nothing
         }
         else if (StrLower(inputPrompt.Value) = "yes"){
-    
             this.model.deleteProfile(this.editModel.getCurrentProfile())
             this.editModel.SetProfiles(this.model.getProfiles())
             this.view.UpdateProfilesDropDownMenu()

@@ -11,11 +11,13 @@ class EditorModel{
 
     setProfiles(profiles){
         this.profiles := profiles
-        try{
-            this.currentProfile := profiles[this.getCurrentProfileIndex()]
-        }
-        catch{
-            this.currentProfile := profiles[1]
+        if (this.profiles.Length != 0){
+            try{
+                this.currentProfile := profiles[this.getCurrentProfileIndex()]
+            }
+            catch{
+                this.currentProfile := profiles[1]
+            }
         }
     }
 

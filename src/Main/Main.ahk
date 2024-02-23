@@ -137,6 +137,9 @@ Class Main{
     StartupConfigurator := ""
     app := ""
 
+    keyboardLayerIdentifiers := []
+
+
     keyNames := ""
 
     __New(){
@@ -146,8 +149,14 @@ Class Main{
 
     ; Main method used to start the script.
     Start(){
-        this.RunLogicalStartup()
-        this.RunAppGui()
+        try{
+            this.RunLogicalStartup()
+            this.RunAppGui()
+        }
+        catch ValueError as e{
+            this.ReadObjectsInformationFromJson()
+            this.RunAppGui()
+        }
     }
 
     RunLogicalStartup(){
@@ -157,13 +166,24 @@ Class Main{
     }
 
     UpdatePathsToInfo(){
+        
         this.CURRENT_PROFILE_NAME := iniRead(this.PATH_TO_META_INI_FILE, "General", "activeUserProfile")
-        this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := "../../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "/ClassObjects.ini"
+        
         this.PATH_TO_CURRENT_KEYBOARD_LAYOUT := "../../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "/Keyboards.json"
+        this.PATH_TO_EMPTY_KEYBOARD_LAYOUT := "../../config/PresetProfiles/EmptyProfile/Keyboards.json"
     
         ; TODO remove this
-        keyboardSettingsString := FileRead(this.PATH_TO_CURRENT_KEYBOARD_LAYOUT, "UTF-8")
-        this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
+        try{
+            this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := "../../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "/ClassObjects.ini"
+            keyboardSettingsString := FileRead(this.PATH_TO_CURRENT_KEYBOARD_LAYOUT, "UTF-8")
+            this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
+        }
+        catch{
+            this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := "../../config/PresetProfiles/EmptyProfile/ClassObjects.ini"
+            keyboardSettingsString := FileRead(this.PATH_TO_EMPTY_KEYBOARD_LAYOUT, "UTF-8")
+            this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
+            this.CURRENT_PROFILE_NAME := "EmptyProfile"
+        }
     }
 
     InitializeMetaInfo(){

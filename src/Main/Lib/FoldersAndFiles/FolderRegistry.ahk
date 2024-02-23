@@ -82,7 +82,14 @@ Class FolderRegistry{
     }
 
     getFolderPathByName(folderName) {
-        return this.folders[folderName]
+        folderPath := ""
+        try{
+            folderPath := this.folders[folderName]
+        }
+        catch{
+            throw TargetError("Folder not found")
+        }
+        return folderPath 
     }
 
     getFolderNames() {

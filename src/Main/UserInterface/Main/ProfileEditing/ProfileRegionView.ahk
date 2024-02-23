@@ -39,7 +39,9 @@ class ProfileRegionView{
     UpdateProfilesDropDownMenu(){
         this.profilesDropDownMenu.Delete()
         this.profilesDropDownMenu.Add(this.controller.getProfiles())
-        this.profilesDropDownMenu.Value := this.controller.getCurrentProfileIndex()
+        try{
+            this.profilesDropDownMenu.Value := this.controller.getCurrentProfileIndex()
+        }
     }
 
 
@@ -52,7 +54,10 @@ class ProfileRegionView{
 
             ; Creates a drop down list of all the profiles, and sets the current profile to the active profile
             profilesDropDownMenu := guiObject.Add("DropDownList", "ym+1 Choose" . profileIndex, profiles)
-            profilesDropDownMenu.Value := 1
+
+            if(profiles.Length != 0){
+                profilesDropDownMenu.Value := 1
+            }
         }
         else{
             ; Creates a drop down list of all the profiles, and sets the current profile to the active profile

@@ -99,7 +99,13 @@ Class ExtraKeyboardsAppGui{
         ; this.pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . 'MainProfile' . "\ClassObjects.ini"
 
         fileReader := IniFileReader()
-        functionsNames := fileReader.ReadSectionNamesToArray(this.pathToObjectsIniFile)
+        functionsNames := []
+        try{
+            functionsNames := fileReader.ReadSectionNamesToArray(this.pathToObjectsIniFile)
+        }
+        catch{
+            functionName := []
+        }
         
         this.CreateTabs(functionsNames, this.keyboardLayerIdentifiers)
         
@@ -134,7 +140,7 @@ Class ExtraKeyboardsAppGui{
         Tab := this.ExtraKeyboardsAppGui.AddTab3("yp+40 xm", ["Keyboards","Change Functions Settings","Documentation"])
         Tab.UseTab(1)
 
-        this.CreateKeyboardsTab(functionsNames, jsonFileContents)
+        this.CreateKeyboardsTab(jsonFileContents)
 
         Tab.UseTab(2)
         this.CreateFunctionSettingsTab(functionsNames)
@@ -145,7 +151,7 @@ Class ExtraKeyboardsAppGui{
         Tab.UseTab(0) ; subsequently-added controls will not belong to the tab control.
     }
 
-    CreateKeyboardsTab(functionsNames, jsonFileContents){
+    CreateKeyboardsTab(jsonFileContents){
 
         ; TODO perhaps use inheritance or something, but this is the exact same as CreateFunctionSettingsTab pretty much 
         keyboardLayoutChanger := TreeViewMaker()

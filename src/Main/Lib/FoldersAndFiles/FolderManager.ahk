@@ -49,7 +49,7 @@ class FolderManager{
 
             if (this.folders.isInRegistry(oldName)) {
 
-                oldPath := this.folders.getFolderPathByName(oldName)
+                oldPath := this.getFolderPathByName(oldName)
                 newPath := this.folders.getNewPath(oldPath, oldName, newName)
                 
                 try{
@@ -90,16 +90,26 @@ class FolderManager{
 
     DeleteFolder(folderName) {
 
-        pathToFolderToBeDeleted := this.folders.getFolderPathByName(folderName)
 
-        if (this.RemoveFolderFromRegistry(folderName)) {
-            DirDelete(pathToFolderToBeDeleted, true)
-            folderDeleted := true
-        }
-        else{
-            folderDeleted := false
-        }
+        folderDeleted := false
+        
+        if (this.folders.isInRegistry(folderName)) {
 
+            pathToFolderToBeDeleted := this.getFolderPathByName(folderName)
+
+            try{
+                if (this.RemoveFolderFromRegistry(folderName)) {
+                    DirDelete(pathToFolderToBeDeleted, true)
+                    folderDeleted := true
+                }
+                else{
+                    folderDeleted := false
+                }
+            }
+            catch{
+                folderDeleted := false
+            }
+        }
         return folderDeleted
     }
 

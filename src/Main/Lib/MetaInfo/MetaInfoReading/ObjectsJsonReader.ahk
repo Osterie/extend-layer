@@ -26,7 +26,7 @@ class ObjectsJsonReader{
             jsonStringFunctionalityInformation := FileRead(this.PATH_TO_OBJECT_INFO, "UTF-8")
         }
         catch{
-            throw ("Could not read the file: " . this.PATH_TO_OBJECT_INFO)
+            throw ValueError("Could not read the file: " . this.PATH_TO_OBJECT_INFO)
         }
         this.allClassesInformationJson := jxon_load(&jsonStringFunctionalityInformation)
 

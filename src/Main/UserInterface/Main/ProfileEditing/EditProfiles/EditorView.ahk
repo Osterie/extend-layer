@@ -43,7 +43,10 @@ class EditorView{
         currentProfileIndex := this.model.getCurrentProfileIndex()
         this.profilesToEditDropDownMenu.Delete()
         this.profilesToEditDropDownMenu.Add(profiles)
-        this.profilesToEditDropDownMenu.Value := currentProfileIndex
+        try{
+            this.profilesToEditDropDownMenu.Value := currentProfileIndex
+        }
+        
     }
     
 }
