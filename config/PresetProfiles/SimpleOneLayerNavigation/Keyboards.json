@@ -174,54 +174,6 @@
             "key": "Right",
             "modifiers": ""
         },
-        "^1":{
-            "isObject": true,
-            "ObjectName": "FileExplorer",
-            "MethodName": "NavigateToFolder",
-            "Parameters": [
-                "C:\\"
-            ]
-        },
-        "^2":{
-            "isObject": true,
-            "ObjectName": "FileExplorer",
-            "MethodName": "NavigateToFolder",
-            "Parameters": [
-                "C:\\Users\\adria"
-            ]
-        },
-        "^3": {
-            "isObject": true,
-            "ObjectName": "FileExplorer",
-            "MethodName": "NavigateToFolder",
-            "Parameters": [
-                "C:\\Users\\adria\\github"
-            ]
-        },
-        "^4": {
-            "isObject": true,
-            "ObjectName": "FileExplorer",
-            "MethodName": "NavigateToFolder",
-            "Parameters": [
-                "C:\\Users\\adria\\Downloads"
-            ]
-        },
-        "^5": {
-            "isObject": true,
-            "ObjectName": "FileExplorer",
-            "MethodName": "NavigateToFolder",
-            "Parameters": [
-                "C:\\Users\\adria\\github\\University"
-            ]
-        },
-        "^6": {
-            "isObject": true,
-            "ObjectName": "FileExplorer",
-            "MethodName": "NavigateToFolder",
-            "Parameters": [
-                "C:\\Users\\adria\\github\\University\\Programmering 1\\Mappe Vurdering\\mappe-idata1003-traindispatchsystem-Osterie"
-            ]
-        },
         "t":{
             "isObject": true,
             "ObjectName": "WebSearcher",
@@ -257,54 +209,6 @@
             "ObjectName": "MouseInstance",
             "MethodName": "MoveMouseToCenterOfScreen",
             "Parameters": []
-        },
-        "+1": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "OpenUrl",
-            "Parameters": ["https://tp.educloud.no/ntnu/timeplan/?&type=student&weekTo=18&ar=2024&&id[]=35565"]
-        },
-        "+2": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "LoginToSite",
-            "Parameters": ["https://ntnu.blackboard.com/ultra/course", ["as", "..\\\\..\\\\..\\\\imageSearchImages\\\\BBLogin.png"], 5000]
-        },
-        "+3": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "LoginToSite",
-            "Parameters": ["https://ntnu.blackboard.com/ultra/courses/_40058_1/cl/outline", ["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\BBLogin.png"], 3000]
-        },
-        "+4": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "LoginToSite",
-            "Parameters": ["https://ntnu.blackboard.com/ultra/courses/_39985_1/cl/outline", ["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\BBLogin.png"], 3000]
-        },
-        "+5": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "LoginToSite",
-            "Parameters": ["https://ntnu.blackboard.com/ultra/courses/_45450_1/cl/outline", ["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\BBLogin.png"], 3000]
-        },
-        "+6": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "LoginToSite",
-            "Parameters": ["https://ntnu.blackboard.com/ultra/courses/_40179_1/cl/outline", ["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\BBLogin.png"], 3000]
-        },
-        "+7": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "LoginToSite",
-            "Parameters": ["https://s.ntnu.no/IMAx2024", ["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\jupyterHubMaximized.png", "..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\jupyterHubMinimized.png"], 4000]
-        },
-        "+8": {
-            "isObject": true,
-            "ObjectName": "WebSearcher",
-            "MethodName": "OpenUrl",
-            "Parameters": ["https://capquiz.math.ntnu.no/my/"]
         }
     },
     "TertiaryLayer-Hotkeys": {}
