@@ -17,6 +17,10 @@
 #Include "Main\util\GuiColorsChanger.ahk"
 
 
+#Include "<MetaInfo\MetaInfoStorage\Files\FilePaths>"
+
+
+
 #Include <FoldersAndFiles\FolderManager>
 #Include <JsonParsing\JsonFormatter\JsonFormatter>
 
@@ -82,7 +86,7 @@ Class ExtraKeyboardsAppGui{
 
         this.PATH_TO_META_FILE := pathToMetaFile
 
-        this.currentProfile := iniRead(this.PATH_TO_META_FILE, "General", "activeUserProfile")
+        ; this.currentProfile := iniRead(this.PATH_TO_META_FILE, "General", "activeUserProfile")
     }
 
     CreateMain(){
@@ -95,8 +99,8 @@ Class ExtraKeyboardsAppGui{
         this.CreateProfileEditor()
 
         ; TODO move somewhere else...
-        this.pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . this.profileModel.getCurrentProfile() . "\ClassObjects.ini"
-        ; this.pathToObjectsIniFile := this.PATH_TO_EXISTING_PROFILES . "\" . 'MainProfile' . "\ClassObjects.ini"
+
+        this.pathToObjectsIniFile := FilePaths.GetPathToCurrentSettings()
 
         fileReader := IniFileReader()
         functionsNames := []
