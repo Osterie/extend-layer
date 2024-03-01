@@ -4,7 +4,9 @@
 ; [^ = Ctrl] [+ = Shift] [! = Alt] [# = Win]
 #Requires Autohotkey v2.0
 
+
 #Include ".\ExtraKeyboardsApp.ahk"
+#Include "<Constants\FilePaths>"
 #Include <KeysPressedGui>
 #Include <ProcessManager>
 #Include <CommandPromptOpener>
@@ -118,7 +120,6 @@ Hotstring("::@p", password)
 
 Class Main{
 
-    PATH_TO_OBJECT_INFO := "..\..\config\ObjectInfo.json"
     PATH_TO_META_INI_FILE := "..\..\config\meta.ini"
     PATH_TO_KEYNAMES_FILE := "..\..\resources\keyNames.txt"
 
@@ -167,7 +168,8 @@ Class Main{
 
     UpdatePathsToInfo(){
         
-        this.CURRENT_PROFILE_NAME := iniRead(this.PATH_TO_META_INI_FILE, "General", "activeUserProfile")
+        ; TODO create class for this...
+        this.CURRENT_PROFILE_NAME := iniRead(FilePaths.GetPathToMetaFile(), "General", "activeUserProfile")
         
         this.PATH_TO_CURRENT_KEYBOARD_LAYOUT := "../../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "/Keyboards.json"
         this.PATH_TO_EMPTY_KEYBOARD_LAYOUT := "../../config/PresetProfiles/EmptyProfile/Keyboards.json"
@@ -365,7 +367,7 @@ Class Main{
     }
 
     ReadObjectsInformationFromJson(){
-        JsonReaderForObjects := ObjectsJsonReader(this.PATH_TO_OBJECT_INFO, this.Objects)
+        JsonReaderForObjects := ObjectsJsonReader(FilePaths.GetObjectInfo(), this.Objects)
         this.ObjectRegister := JsonReaderForObjects.ReadObjectsFromJson()
     }
 
