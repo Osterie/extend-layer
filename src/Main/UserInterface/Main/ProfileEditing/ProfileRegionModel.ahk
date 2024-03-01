@@ -50,7 +50,6 @@ class ProfileRegionModel{
 
     updateProfiles(){
         this.profiles := this.ExistingProfilesManager.getFolderNames()
-
     }
 
     getGuiObject(){
@@ -67,6 +66,7 @@ class ProfileRegionModel{
 
     setCurrentProfile(profileName){
         this.currentProfile := profileName
+
         iniWrite(this.currentProfile, this.PATH_TO_META_FILE, "General", "activeUserProfile")
     }
 
@@ -99,6 +99,9 @@ class ProfileRegionModel{
     }
 
     DeleteProfile(profileToDelete){
+
+        deletedProfile := false
+
         if (this.ExistingProfilesManager.DeleteFolder(profileToDelete)){
             ; Deleted profile succesfully
             this.updateProfiles()
@@ -108,10 +111,13 @@ class ProfileRegionModel{
                 }
             }
 
+            deletedProfile := true
+
         }
         else{
-            msgbox("failed to delete profile, perhaps no profile exists")
+            deletedProfile := false
         }
+        return deletedProfile
     }
 
     AddProfile(profile, profileName){

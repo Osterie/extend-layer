@@ -133,9 +133,10 @@ Class ExtraKeyboardsAppGui{
 
     eventProfileChanged(*){
         ; TODO this should probably be changed? it is sort of heavy to basically restart the entire program when changing profiles.
-        this.mainScript.RunMainStartup(false)
-        this.mainScript.RunLogicalStartup()
-        this.mainScript.RunAppGui()
+        ; this.mainScript.
+        this.mainScript.Start()
+        ; this.mainScript.RunMainStartup(false)
+        ; this.mainScript.RunAppGui()
         this.ExtraKeyboardsAppGui.Destroy()
     }
 

@@ -79,16 +79,20 @@ class ProfileRegionController{
 
     HandleRenameProfile(profileToRename, inputPrompt){
         if inputPrompt.Result = "Cancel"{
+            msgbox("Cancelled renaming profile")
             ; Do nothing
         }
         else if(inputPrompt.Value = ""){
+            msgbox("No new name for profile given, cancelling")
             ; Do Nothing
         }
         else{
-            this.model.renameProfile(profileToRename, inputPrompt.Value)
-            this.editModel.SetProfiles(this.model.getProfiles())
-            this.view.UpdateProfilesDropDownMenu()
-            this.editView.UpdateProfilesDropDownMenu()
+            if(this.model.renameProfile(profileToRename, inputPrompt.Value)){
+                this.editModel.SetProfiles(this.model.getProfiles())
+                this.view.UpdateProfilesDropDownMenu()
+                this.editView.UpdateProfilesDropDownMenu()
+                msgbox("Successfully renamed profile to " . inputPrompt.Value)
+            }
         }
     }
 
@@ -98,16 +102,23 @@ class ProfileRegionController{
 
     HandleDeleteProfile(inputPrompt){
         if inputPrompt.Result = "Cancel"{
+            msgbox("Cancelled deleting profile")
             ; Do nothing
         }
-        else if(inputPrompt.Value = ""){
-            ; Do Nothing
-        }
         else if (StrLower(inputPrompt.Value) = "yes"){
-            this.model.deleteProfile(this.editModel.getCurrentProfile())
-            this.editModel.SetProfiles(this.model.getProfiles())
-            this.view.UpdateProfilesDropDownMenu()
-            this.editView.UpdateProfilesDropDownMenu()
+            profileToDelete := this.editModel.getCurrentProfile()
+            if (this.model.deleteProfile(profileToDelete)){
+                this.editModel.SetProfiles(this.model.getProfiles())
+                this.view.UpdateProfilesDropDownMenu()
+                this.editView.UpdateProfilesDropDownMenu()
+                msgbox("Successfully deleted profile " . profileToDelete)
+            }
+            else{
+                msgbox("Failed to delete profile " . profileToDelete)
+            }
+        }
+        else if(inputPrompt.Value != "yes"){
+            msgbox("You did not write 'yes', profile not deleted")
         }
     }
 
@@ -120,10 +131,10 @@ class ProfileRegionController{
         if (this.model.addProfile(profileToAdd, profileName)){
             this.view.UpdateProfilesDropDownMenu()
             this.addprofileView.Destroy()
+            msgbox("Successfully added profile " . profileName)
         }
         else{
             msgbox("Failed to add profile, perhaps a profile with the given name already exists")
         }
-
     }
 }
