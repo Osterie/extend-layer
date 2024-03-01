@@ -375,7 +375,7 @@ Class Main{
     ReadKeyNamesFromTxtFile(){
         keyNamesFileObjReader := KeyNamesReader()
         fileObjectOfKeyNames := FileOpen(FilePaths.GetPathToKeyNames(), "rw" , "UTF-8")
-        | := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
+        this.keyNames := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
 
     }
 

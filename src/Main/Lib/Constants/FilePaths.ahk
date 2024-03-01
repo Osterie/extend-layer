@@ -1,8 +1,8 @@
 class FilePaths{
 
-    static OBJECT_INFO := "..\..\config\ObjectInfo.json"
+    static OBJECT_INFO := "../../config/ObjectInfo.json"
 
-    static PATH_TO_META_INI_FILE := "..\..\config\meta.ini"
+    static PATH_TO_META_INI_FILE := "../../config/meta.ini"
 
     static PATH_TO_PROFILES := "../../config/UserProfiles/"
 
@@ -10,11 +10,14 @@ class FilePaths{
 
     static PATH_TO_EMPTY_SETTINGS_PROFILE := "../../config/PresetProfiles/EmptyProfile/ClassObjects.ini"
 
-    static PATH_TO_KEYNAMES_FILE := "..\..\resources\keyNames.txt"
+    static PATH_TO_KEYNAMES_FILE := "../../resources/keyNames.txt"
 
+    static PATH_TO_EMPTY_PROFILE := "..\..\config\EmptyProfile"
 
-    ; PATH_TO_META_INI_FILE := "..\..\config\meta.ini"
-    ; PATH_TO_KEYNAMES_FILE := "..\..\resources\keyNames.txt"
+    static PATH_TO_PRESET_PROFILES := "..\..\config\PresetProfiles"
+
+    ; PATH_TO_META_INI_FILE := "../../config/meta.ini"
+    ; PATH_TO_KEYNAMES_FILE := "../../resources/keyNames.txt"
 
     ; CURRENT_PROFILE_NAME := ""
     ; PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := ""
