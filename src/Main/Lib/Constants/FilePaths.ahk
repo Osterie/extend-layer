@@ -10,6 +10,8 @@ class FilePaths{
 
     static PATH_TO_EMPTY_SETTINGS_PROFILE := "../../config/PresetProfiles/EmptyProfile/ClassObjects.ini"
 
+    static PATH_TO_KEYNAMES_FILE := "..\..\resources\keyNames.txt"
+
 
     ; PATH_TO_META_INI_FILE := "..\..\config\meta.ini"
     ; PATH_TO_KEYNAMES_FILE := "..\..\resources\keyNames.txt"
@@ -44,6 +46,10 @@ class FilePaths{
     
     static GetPathToEmptySettingsProfile(){
         return this.PATH_TO_EMPTY_SETTINGS_PROFILE
+    }
+
+    static GetPathToKeyNames(){
+        return this.PATH_TO_KEYNAMES_FILE
     }
 
 }

@@ -120,14 +120,9 @@ Hotstring("::@p", password)
 
 Class Main{
 
-    PATH_TO_META_INI_FILE := "..\..\config\meta.ini"
-    PATH_TO_KEYNAMES_FILE := "..\..\resources\keyNames.txt"
 
     PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := ""
     PATH_TO_CURRENT_KEYBOARD_LAYOUT := ""
-
-    jsonStringFunctionalityInformation := ""
-    allClassesInformationJson := ""
 
     keyboardSettingsJsonObject := ""
 
@@ -174,10 +169,12 @@ Class Main{
         this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := FilePaths.GetPathToCurrentSettings(CURRENT_PROFILE_NAME)
 
         try{
+            ; Try to read the information for the current profile.
             keyboardSettingsString := FileRead(this.PATH_TO_CURRENT_KEYBOARD_LAYOUT, "UTF-8")
             this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
         }
         catch{
+            ; Unable to read information for the current profile, so we use default to an empty profile.
             this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := FilePaths.GetPathToEmptyKeyboardProfile()
             keyboardSettingsString := FileRead(FilePaths.GetPathToEmptyKeyboardProfile(), "UTF-8")
             this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
@@ -320,6 +317,7 @@ Class Main{
         }
     }
 
+    ; TODO in the future fix...
     InitializeObjectsForKeyboardOverlays(){
 
         ; |---------------------------------|
@@ -376,8 +374,8 @@ Class Main{
 
     ReadKeyNamesFromTxtFile(){
         keyNamesFileObjReader := KeyNamesReader()
-        fileObjectOfKeyNames := FileOpen(this.PATH_TO_KEYNAMES_FILE, "rw" , "UTF-8")
-        this.keyNames := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
+        fileObjectOfKeyNames := FileOpen(FilePaths.GetPathToKeyNames(), "rw" , "UTF-8")
+        | := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
 
     }
 
