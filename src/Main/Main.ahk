@@ -6,7 +6,6 @@
 
 
 #Include ".\ExtraKeyboardsApp.ahk"
-#Include "<Constants\FilePaths>"
 #Include <KeysPressedGui>
 #Include <ProcessManager>
 #Include <CommandPromptOpener>
@@ -30,6 +29,9 @@
 #Include <MetaInfo\MetaInfoReading\KeyboadLayersInfoClassObjectReader>
 #Include <MetaInfo\MetaInfoReading\KeyNamesReader>
 
+
+
+#Include "<MetaInfo\MetaInfoStorage\Files\FilePaths>"
 #Include <MetaInfo\MetaInfoStorage\Objects\MethodInfo>
 #Include <MetaInfo\MetaInfoStorage\Objects\MethodRegistry>
 #Include <MetaInfo\MetaInfoStorage\Objects\ObjectInfo>
@@ -165,8 +167,10 @@ Class Main{
         ; TODO create class for this...
         CURRENT_PROFILE_NAME := iniRead(FilePaths.GetPathToMetaFile(), "General", "activeUserProfile")
         
-        this.PATH_TO_CURRENT_KEYBOARD_LAYOUT := FilePaths.GetPathToCurrentKeyboardLayout(CURRENT_PROFILE_NAME)
-        this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := FilePaths.GetPathToCurrentSettings(CURRENT_PROFILE_NAME)
+        FilePaths.SetCurrentProfile(CURRENT_PROFILE_NAME)
+
+        this.PATH_TO_CURRENT_KEYBOARD_LAYOUT := FilePaths.GetPathToCurrentKeyboardLayout()
+        this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := FilePaths.GetPathToCurrentSettings()
 
         try{
             ; Try to read the information for the current profile.

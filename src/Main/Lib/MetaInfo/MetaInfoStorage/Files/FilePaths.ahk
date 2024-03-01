@@ -1,5 +1,7 @@
 class FilePaths{
 
+    static CURRENT_PROFILE := "EmptyProfile"
+
     static OBJECT_INFO := "../../config/ObjectInfo.json"
 
     static PATH_TO_META_INI_FILE := "../../config/meta.ini"
@@ -32,16 +34,26 @@ class FilePaths{
         return this.PATH_TO_META_INI_FILE
     }
 
-    static GetPathToCurrentKeyboardLayout(currentProfileName){
-        PATH_TO_CURRENT_KEYBOARD_LAYOUT := this.PATH_TO_PROFILES . currentProfileName . "/Keyboards.json"
+    static GetPathToCurrentKeyboardLayout(currentProfileName := ""){
+        if (currentProfileName = ""){
+            currentProfileName := this.CURRENT_PROFILE
+        }
+
+        PATH_TO_CURRENT_KEYBOARD_LAYOUT := this.PATH_TO_PROFILES . this.CURRENT_PROFILE . "/Keyboards.json"
         return PATH_TO_CURRENT_KEYBOARD_LAYOUT
     }
 
-    static GetPathToCurrentSettings(currentProfileName){
-        PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := this.PATH_TO_PROFILES . currentProfileName . "/ClassObjects.ini"
+    static GetPathToCurrentSettings(currentProfileName := ""){
+        if (currentProfileName = ""){
+            currentProfileName := this.CURRENT_PROFILE
+        }
+        PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := this.PATH_TO_PROFILES . this.CURRENT_PROFILE . "/ClassObjects.ini"
         return PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE
     }
 
+    static SetCurrentProfile(currentProfileName){
+        this.CURRENT_PROFILE := currentProfileName
+    }
 
     static GetPathToEmptyKeyboardProfile(){
         return this.PATH_TO_EMPTY_KEYBOARD_PROFILE
