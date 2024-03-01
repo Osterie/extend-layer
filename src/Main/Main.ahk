@@ -123,7 +123,6 @@ Class Main{
     PATH_TO_META_INI_FILE := "..\..\config\meta.ini"
     PATH_TO_KEYNAMES_FILE := "..\..\resources\keyNames.txt"
 
-    CURRENT_PROFILE_NAME := ""
     PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := ""
     PATH_TO_CURRENT_KEYBOARD_LAYOUT := ""
 
@@ -169,22 +168,19 @@ Class Main{
     UpdatePathsToInfo(){
         
         ; TODO create class for this...
-        this.CURRENT_PROFILE_NAME := iniRead(FilePaths.GetPathToMetaFile(), "General", "activeUserProfile")
+        CURRENT_PROFILE_NAME := iniRead(FilePaths.GetPathToMetaFile(), "General", "activeUserProfile")
         
-        this.PATH_TO_CURRENT_KEYBOARD_LAYOUT := "../../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "/Keyboards.json"
-        this.PATH_TO_EMPTY_KEYBOARD_LAYOUT := "../../config/PresetProfiles/EmptyProfile/Keyboards.json"
-    
-        ; TODO remove this
+        this.PATH_TO_CURRENT_KEYBOARD_LAYOUT := FilePaths.GetPathToCurrentKeyboardLayout(CURRENT_PROFILE_NAME)
+        this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := FilePaths.GetPathToCurrentSettings(CURRENT_PROFILE_NAME)
+
         try{
-            this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := "../../config/UserProfiles/" . this.CURRENT_PROFILE_NAME . "/ClassObjects.ini"
             keyboardSettingsString := FileRead(this.PATH_TO_CURRENT_KEYBOARD_LAYOUT, "UTF-8")
             this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
         }
         catch{
-            this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := "../../config/PresetProfiles/EmptyProfile/ClassObjects.ini"
-            keyboardSettingsString := FileRead(this.PATH_TO_EMPTY_KEYBOARD_LAYOUT, "UTF-8")
+            this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := FilePaths.GetPathToEmptyKeyboardProfile()
+            keyboardSettingsString := FileRead(FilePaths.GetPathToEmptyKeyboardProfile(), "UTF-8")
             this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
-            this.CURRENT_PROFILE_NAME := "EmptyProfile"
         }
     }
 
