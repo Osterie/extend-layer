@@ -21,6 +21,7 @@
 
 
 
+
 #Include <FoldersAndFiles\FolderManager>
 #Include <JsonParsing\JsonFormatter\JsonFormatter>
 
@@ -39,17 +40,6 @@ Class ExtraKeyboardsAppGui{
     ExistingProfilesManager := ""
     ; A constant which is the path to the preset profiles
 
-    PATH_TO_EMPTY_PROFILE := ""
-    PATH_TO_PRESET_PROFILES := ""
-    PATH_TO_EXISTING_PROFILES := ""
-    PATH_TO_META_FILE := ""
-
-    currentProfile := ""
-    currentProfileIndex := ""
-
-    ; Gui part
-    profilesDropDownMenu := ""
-
     keyboardLayerIdentifiers := ""
     activeObjectsRegistry := ""
     keyboardLayersInfoRegister := ""
@@ -65,29 +55,17 @@ Class ExtraKeyboardsAppGui{
     profileModel := ""
 
 
-    __New(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToEmptyProfile, keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, MainScript, keyNames){
+    __New(keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, MainScript, keyNames){
         this.MainScript := MainScript
         
         this.keyNames := keyNames
         
-        ; this.ExistingProfilesManager := FolderManager()
-        ; this.PresetProfilesManager := FolderManager()
-
         this.activeObjectsRegistry := activeObjectsRegistry
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
         this.keyboardLayerIdentifiers := keyboardLayerIdentifiers
 
-        ; this.PATH_TO_EMPTY_PROFILE := pathToEmptyProfile
-        this.PATH_TO_EXISTING_PROFILES := pathToExistingProfiles
-        this.PATH_TO_PRESET_PROFILES := pathToPresetProfiles
-        ; this.PresetProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_PRESET_PROFILES)
-        ; this.PresetProfilesManager.addFolderToRegistry("EmptyProfile", this.PATH_TO_EMPTY_PROFILE)
-        ; this.ExistingProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_EXISTING_PROFILES)
-
-        this.PATH_TO_META_FILE := pathToMetaFile
-
-        ; this.currentProfile := iniRead(this.PATH_TO_META_FILE, "General", "activeUserProfile")
     }
+
 
     CreateMain(){
 
@@ -124,19 +102,13 @@ Class ExtraKeyboardsAppGui{
         profileView := ProfileRegionView()
         profileController := ProfileRegionController(this.profileModel, profileView, ObjBindMethod(this, "eventProfileChanged"))
         profileController.CreateView()
-        ; this.profileButtonsObject := ProfileButtons(this.PATH_TO_EXISTING_PROFILES, this.PATH_TO_META_FILE)
-        ; this.profileButtonsObject.createProfileSettingsForGui(this.ExtraKeyboardsAppGui)
-        ; this.profileButtonsObject.addProfileChangedEvent(ObjBindMethod(this, "eventProfileChanged"))
     }
 
 
 
     eventProfileChanged(*){
         ; TODO this should probably be changed? it is sort of heavy to basically restart the entire program when changing profiles.
-        ; this.mainScript.
         this.mainScript.Start()
-        ; this.mainScript.RunMainStartup(false)
-        ; this.mainScript.RunAppGui()
         this.ExtraKeyboardsAppGui.Destroy()
     }
 
@@ -229,8 +201,9 @@ Class ExtraKeyboardsAppGui{
         toJsonReader.ReadObjectToJson(this.keyboardLayersInfoRegister)
         jsonObject := toJsonReader.getJsonObject()
 
-        currentProfileName := iniRead(this.PATH_TO_META_FILE, "General", "activeUserProfile")
-        pathToCurrentProfile := this.PATH_TO_EXISTING_PROFILES . "\" . currentProfileName
+        currentProfileName := iniRead(FilePaths.GetPathToMetaFile(), "General", "activeUserProfile")
+
+        pathToCurrentProfile := FilePaths.GetPathToProfiles() . "\" . currentProfileName
 
         
         formatterForJson := JsonFormatter()

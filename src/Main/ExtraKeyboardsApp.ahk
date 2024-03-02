@@ -30,12 +30,7 @@ Class ExtraKeyboardsApp{
     __New(keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames){
 
         this.MainScript := mainScript
-        pathToExistingProfiles := "..\..\config\UserProfiles"
-        pathToPresetProfiles := "..\..\config\PresetProfiles"
-        pathToMetaFile := "..\..\config\meta.ini"
-        pathToEmptyProfile := "..\..\config\EmptyProfile"
-
-        this.UserInterface := ExtraKeyboardsAppgui(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToEmptyProfile, keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames)
+        this.UserInterface := ExtraKeyboardsAppgui(keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames)
     }
 
     Start(){
