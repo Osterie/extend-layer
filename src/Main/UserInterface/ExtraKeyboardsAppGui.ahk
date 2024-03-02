@@ -19,9 +19,6 @@
 
 #Include "<MetaInfo\MetaInfoStorage\Files\FilePaths>"
 
-
-
-
 #Include <FoldersAndFiles\FolderManager>
 #Include <JsonParsing\JsonFormatter\JsonFormatter>
 
@@ -34,11 +31,6 @@ Class ExtraKeyboardsAppGui{
 
     ; Used to create the gui
     ExtraKeyboardsAppGui := ""
-    ; Used to manage the preset user profiles, the user is only allowed to add a preset profile as a new profile
-    PresetProfilesManager := ""
-    ; Used to manage the existing user profiles, the user is allowed to edit, delete, and add new profiles
-    ExistingProfilesManager := ""
-    ; A constant which is the path to the preset profiles
 
     keyboardLayerIdentifiers := ""
     activeObjectsRegistry := ""
@@ -51,8 +43,6 @@ Class ExtraKeyboardsAppGui{
     keyNames := ""
 
     pathToObjectsIniFile := ""
-
-    profileModel := ""
 
 
     __New(keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, MainScript, keyNames){
@@ -98,13 +88,11 @@ Class ExtraKeyboardsAppGui{
     }
 
     CreateProfileEditor(){
-        this.profileModel := ProfileRegionModel(this.ExtraKeyboardsAppGui)
+        profileModel := ProfileRegionModel(this.ExtraKeyboardsAppGui)
         profileView := ProfileRegionView()
-        profileController := ProfileRegionController(this.profileModel, profileView, ObjBindMethod(this, "eventProfileChanged"))
+        profileController := ProfileRegionController(profileModel, profileView, ObjBindMethod(this, "eventProfileChanged"))
         profileController.CreateView()
     }
-
-
 
     eventProfileChanged(*){
         ; TODO this should probably be changed? it is sort of heavy to basically restart the entire program when changing profiles.
