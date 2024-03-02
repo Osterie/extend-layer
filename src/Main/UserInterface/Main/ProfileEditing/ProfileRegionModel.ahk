@@ -2,6 +2,9 @@
 
 #Include <FoldersAndFiles\FolderManager>
 
+#Include "<MetaInfo\MetaInfoStorage\Files\FilePaths>"
+
+
 class ProfileRegionModel{
 
     ; Used to manage the preset user profiles, the user is only allowed to add a preset profile as a new profile
@@ -25,13 +28,13 @@ class ProfileRegionModel{
     guiObject := ""
 
 
-    __New(guiObject, pathToMetaFile, pathToExistingProfiles, pathToEmptyProfile, pathToPresetProfiles){
+    __New(guiObject){
 
         this.guiObject := guiObject
-        this.PATH_TO_META_FILE := pathToMetaFile
-        this.PATH_TO_EXISTING_PROFILES := pathToExistingProfiles
-        this.PATH_TO_EMPTY_PROFILE := pathToEmptyProfile
-        this.PATH_TO_PRESET_PROFILES := pathToPresetProfiles
+        this.PATH_TO_META_FILE := FilePaths.GetPathToMetaFile()
+        this.PATH_TO_EXISTING_PROFILES := FilePaths.GetPathToProfiles()
+        this.PATH_TO_EMPTY_PROFILE := FilePaths.GetPathToEmptyProfile()
+        this.PATH_TO_PRESET_PROFILES := FilePaths.GetPathToPresetProfiles()
 
 
         this.ExistingProfilesManager := FolderManager()
@@ -73,7 +76,7 @@ class ProfileRegionModel{
     getCurrentProfileIndex(){
         currentProfileIndex := -1
         Loop this.profiles.Length{
-            if (this.profiles[A_Index] = this.currentProfile){
+            if (this.profiles[A_Index] = FilePaths.GetCurrentProfile()){
                 currentProfileIndex := A_Index
             }
         }
@@ -139,9 +142,6 @@ class ProfileRegionModel{
         return this.currentProfile
     }
 
-    getPathToMetaFile(){
-        return this.PATH_TO_META_FILE
-    }
 
     hasProfile(profileName){
         hasProfile := false

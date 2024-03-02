@@ -34,6 +34,18 @@ class FilePaths{
         return this.PATH_TO_META_INI_FILE
     }
 
+    static GetPathToProfiles(){
+        return this.PATH_TO_PROFILES
+    }
+
+    static GetPathToEmptyProfile(){
+        return this.PATH_TO_EMPTY_PROFILE
+    }
+
+    static GetPathToPresetProfiles(){
+        return this.PATH_TO_PRESET_PROFILES
+    }
+
     static GetPathToCurrentKeyboardLayout(currentProfileName := ""){
         if (currentProfileName = ""){
             currentProfileName := this.CURRENT_PROFILE
@@ -53,6 +65,11 @@ class FilePaths{
 
     static SetCurrentProfile(currentProfileName){
         this.CURRENT_PROFILE := currentProfileName
+        iniWrite(this.CURRENT_PROFILE, this.PATH_TO_META_INI_FILE, "General", "activeUserProfile")
+    }
+
+    static GetCurrentProfile(){
+        return this.CURRENT_PROFILE
     }
 
     static GetPathToEmptyKeyboardProfile(){

@@ -120,7 +120,7 @@ Class ExtraKeyboardsAppGui{
     }
 
     CreateProfileEditor(){
-        this.profileModel := ProfileRegionModel(this.ExtraKeyboardsAppGui, this.PATH_TO_META_FILE, this.PATH_TO_EXISTING_PROFILES, this.PATH_TO_EMPTY_PROFILE, this.PATH_TO_PRESET_PROFILES)
+        this.profileModel := ProfileRegionModel(this.ExtraKeyboardsAppGui)
         profileView := ProfileRegionView()
         profileController := ProfileRegionController(this.profileModel, profileView, ObjBindMethod(this, "eventProfileChanged"))
         profileController.CreateView()

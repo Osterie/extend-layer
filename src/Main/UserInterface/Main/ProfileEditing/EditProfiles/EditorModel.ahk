@@ -41,5 +41,6 @@ class EditorModel{
 
     SetCurrentProfile(profileName){
         this.currentProfile := profileName
+        
     }
 }
