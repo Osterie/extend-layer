@@ -39,7 +39,7 @@ class HotKeyConfigurationPopup{
         this.arrayOfKeyNames := arrayOfKeyNames
     }
 
-    CreatePopupForHotkeyRegistry(hotkeysRegistry, listViewColumn, hotkeyCommand, hotkeyAction){
+    CreatePopupForHotkeyRegistry(hotkeyCommand, hotkeyAction){
 
         this.originalHotkey := hotkeyCommand
         this.currentHotkeyFormatted := hotkeyCommand

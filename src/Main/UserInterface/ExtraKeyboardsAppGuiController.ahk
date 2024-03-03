@@ -114,29 +114,25 @@ Class ExtraKeyboardsAppGuiController{
         listViewControl.SetNewListViewItems(hotkeysForLayer)
     }
 
-    HandleKeyComboActionDoubleClickedEvent(listView, item){
+    ; TODO make sure user cant create multiple popups
+    HandleKeyComboActionDoubleClickedEvent(listView, indexOfKeyToEdit){
 
         keyboardInformation := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.GetCurrentLayer())
 
-        hotkeyBuild := listView.GetText(item, 1)
-        hotkeyAction := listView.GetText(item, 2)
+        hotkeyBuild := listView.GetText(indexOfKeyToEdit, 1)
+        hotkeyAction := listView.GetText(indexOfKeyToEdit, 2)
 
         popupForConfiguringHotkey := HotKeyConfigurationPopup(this.activeObjectsRegistry, this.keyNames)
         if (Type(keyboardInformation) == "HotkeysRegistry"){
-            popupForConfiguringHotkey.CreatePopupForHotkeyRegistry(keyboardInformation, item, hotkeyBuild, hotkeyAction)
+            popupForConfiguringHotkey.CreatePopupForHotkeyRegistry(hotkeyBuild, hotkeyAction)
             
         }
         else if (Type(keyboardInformation) == "KeyboardOverlayInfo"){
-            popupForConfiguringHotkey.CreatePopupForKeyboardOverlayInfo(keyboardInformation, item)
+            popupForConfiguringHotkey.CreatePopupForKeyboardOverlayInfo(keyboardInformation, indexOfKeyToEdit)
         }
 
         saveButtonEvent := ObjBindMethod(this, "HotKeyConfigurationPopupSaveEvent", popupForConfiguringHotkey)
         popupForConfiguringHotkey.addSaveButtonClickedEvent(saveButtonEvent)
-
-        ; cancelButtonEvent := ObjBindMethod(this, "popupCancelButtonClickEvent")
-        ; popupForConfiguringHotkey.addCancelButtonClickedEvent(cancelButtonEvent)
-
-        
     }
 
     ; NOTE, info has no info for button clicks, which this is for.
