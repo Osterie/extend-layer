@@ -93,4 +93,17 @@ Class ExtraKeyboardsAppGuiModel{
     GetKeyboardLayerIdentifiers(){
         return this.keyboardLayerIdentifiers
     }
+
+    GetCurrentLayerInfo(){
+        return this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer)
+    }
+
+    GetActiveObjectsRegistry(){
+        return this.activeObjectsRegistry
+    }
+
+    GetKeyNames(){
+        return this.keyNames
+    }
+
 }

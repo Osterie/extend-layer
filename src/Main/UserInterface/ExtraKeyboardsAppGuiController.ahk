@@ -32,8 +32,6 @@ Class ExtraKeyboardsAppGuiController{
     ; Used to create the gui
     ExtraKeyboardsAppGui := ""
 
-    keyboardLayerIdentifiers := ""
-    activeObjectsRegistry := ""
     keyboardLayersInfoRegister := ""
 
     MainScript := ""
@@ -43,7 +41,7 @@ Class ExtraKeyboardsAppGuiController{
     pathToObjectsIniFile := ""
 
 
-    __New(model, view, keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, MainScript, keyNames){
+    __New(model, view, keyboardLayersInfoRegister, MainScript, keyNames){
         this.view := view
         this.model := model
         
@@ -51,42 +49,10 @@ Class ExtraKeyboardsAppGuiController{
         
         this.keyNames := keyNames
         
-        this.activeObjectsRegistry := activeObjectsRegistry
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
-        this.keyboardLayerIdentifiers := keyboardLayerIdentifiers
 
     }
 
-
-    CreateMain(){
-
-        this.ExtraKeyboardsAppGui := Gui("+Resize +MinSize920x480", "Extra Keyboards App")
-        this.ExtraKeyboardsAppGui.BackColor := "051336"
-        this.ExtraKeyboardsAppGui.SetFont("c6688cc Bold")
-
-        ; TODO when a profile is changed, update the paths? or not? since i at the moment restart everything when the profile is changed.
-        this.CreateProfileEditor()
-
-        ; TODO move somewhere else...
-
-        this.pathToObjectsIniFile := FilePaths.GetPathToCurrentSettings()
-
-        fileReader := IniFileReader()
-        functionsNames := []
-        try{
-            functionsNames := fileReader.ReadSectionNamesToArray(this.pathToObjectsIniFile)
-        }
-        catch{
-            functionName := []
-        }
-        
-        this.CreateTabs(functionsNames, this.keyboardLayerIdentifiers)
-        
-        this.setColors()
-        
-        ; Create gui in the top left corner of the screen
-        this.ExtraKeyboardsAppGui.Show("x0 y0")
-    }
 
     GetFunctionNames(){
         return this.model.GetFunctionNames()
@@ -117,23 +83,30 @@ Class ExtraKeyboardsAppGuiController{
     ; TODO make sure user cant create multiple popups
     HandleKeyComboActionDoubleClickedEvent(listView, indexOfKeyToEdit){
 
-        keyboardInformation := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.GetCurrentLayer())
+        layerInformation := this.GetCurrentLayerInfo()
 
-        hotkeyBuild := listView.GetText(indexOfKeyToEdit, 1)
-        hotkeyAction := listView.GetText(indexOfKeyToEdit, 2)
-
-        popupForConfiguringHotkey := HotKeyConfigurationPopup(this.activeObjectsRegistry, this.keyNames)
-        if (Type(keyboardInformation) == "HotkeysRegistry"){
-            popupForConfiguringHotkey.CreatePopupForHotkeyRegistry(hotkeyBuild, hotkeyAction)
-            
+        if (Type(layerInformation) == "HotkeysRegistry"){
+            hotkeyBuild := listView.GetText(indexOfKeyToEdit, 1)
+            hotkeyAction := listView.GetText(indexOfKeyToEdit, 2)
+            this.CreatePopupForHotkeys(hotkeyBuild, hotkeyAction)
         }
-        else if (Type(keyboardInformation) == "KeyboardOverlayInfo"){
-            popupForConfiguringHotkey.CreatePopupForKeyboardOverlayInfo(keyboardInformation, indexOfKeyToEdit)
+        else if (Type(layerInformation) == "KeyboardOverlayInfo"){
+            ; TODO implement
+            ; popupForConfiguringHotkey.CreatePopupForKeyboardOverlayInfo()
         }
 
+        
+    }
+
+    CreatePopupForHotkeys(hotkeyBuild, hotkeyAction){
+        popupForConfiguringHotkey := HotKeyConfigurationPopup(this.GetActiveObjectsRegistry(), this.GetKeyNames())
+        popupForConfiguringHotkey.CreatePopupForHotkeyRegistry(hotkeyBuild, hotkeyAction)
         saveButtonEvent := ObjBindMethod(this, "HotKeyConfigurationPopupSaveEvent", popupForConfiguringHotkey)
         popupForConfiguringHotkey.addSaveButtonClickedEvent(saveButtonEvent)
+
+        ; TODO add delete button event.
     }
+
 
     ; NOTE, info has no info for button clicks, which this is for.
     HotKeyConfigurationPopupSaveEvent(popupForConfiguringHotkey, info, buttonClicked){
@@ -220,5 +193,17 @@ Class ExtraKeyboardsAppGuiController{
 
     GetKeyboardLayerIdentifiers(){
         return this.model.GetKeyboardLayerIdentifiers()
+    }
+    
+    GetCurrentLayerInfo(){
+        return this.model.GetCurrentLayerInfo()
+    }
+
+    GetActiveObjectsRegistry(){
+        return this.model.GetActiveObjectsRegistry()
+    }
+
+    GetKeyNames(){
+        return this.model.GetKeyNames()
     }
 }
