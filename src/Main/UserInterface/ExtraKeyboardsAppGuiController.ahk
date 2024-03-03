@@ -38,8 +38,6 @@ Class ExtraKeyboardsAppGuiController{
 
     MainScript := ""
 
-    currentLayer := ""
-
     keyNames := ""
 
     pathToObjectsIniFile := ""
@@ -108,10 +106,10 @@ Class ExtraKeyboardsAppGuiController{
     }
 
     HandleKeyboardLayerSelected(listViewControl, treeViewElement, treeViewElementSelectedItemID){
-        this.currentLayer := treeViewElement.GetText(treeViewElementSelectedItemID)
-
-        itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer)
-        hotkeysForLayer := itemsToShowForListView.getFriendlyHotkeyActionPairValues()
+        currentLayer := treeViewElement.GetText(treeViewElementSelectedItemID)
+        
+        this.model.SetCurrentLayer(currentLayer)
+        hotkeysForLayer := this.model.GetFriendlyHotkeysForCurrentLayer()
 
         listViewControl.SetNewListViewItems(hotkeysForLayer)
     }
@@ -154,11 +152,11 @@ Class ExtraKeyboardsAppGuiController{
         ; TODO now i must update the json file with the new hotkey if it is valid...
         ; TODO keyboardLayersInfoRegister change a hotkey, turn into a json file, and then change the existing json file
 
-        this.keyboardLayersInfoRegister.ChangeHotkey(this.currentLayer, originalHotkey, newHotkey)
+        this.keyboardLayersInfoRegister.ChangeHotkey(this.model.GetCurrentLayer(), originalHotkey, newHotkey)
 
         ; TODO perhaps a else with some information here
         if (newAction != ""){
-            this.keyboardLayersInfoRegister.ChangeAction(this.currentLayer, originalHotkey, newAction)
+            this.keyboardLayersInfoRegister.ChangeAction(this.model.GetCurrentLayer(), originalHotkey, newAction)
         }
 
         ; TODO create a method for this.

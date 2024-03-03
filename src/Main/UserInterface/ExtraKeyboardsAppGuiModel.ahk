@@ -70,6 +70,27 @@ Class ExtraKeyboardsAppGuiModel{
         return functionsNames
     }
 
+    GetFriendlyHotkeysForLayer(layerIdentifier){
+        itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(layerIdentifier)
+        hotkeysForLayer := itemsToShowForListView.getFriendlyHotkeyActionPairValues()
+
+        return hotkeysForLayer
+    }
+
+    GetFriendlyHotkeysForCurrentLayer(){
+        itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer)
+        hotkeysForLayer := itemsToShowForListView.getFriendlyHotkeyActionPairValues()
+
+        return hotkeysForLayer
+    }
+
+    SetCurrentLayer(layerIdentifier){
+        this.currentLayer := layerIdentifier
+    }
+
+    GetCurrentLayer(){
+        return this.currentLayer
+    }
 
     CreateMain(){
 

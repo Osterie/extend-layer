@@ -110,15 +110,6 @@ Class ExtraKeyboardsAppGuiView{
         listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this, "ListViewElementDoubleClickedEvent", keyboardLayoutChanger))
     }
 
-    TreeViewElementSelectedEvent(listViewControl, treeViewElement, treeViewElementSelectedItemID){
-        this.currentLayer := treeViewElement.GetText(treeViewElementSelectedItemID)
-
-        itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer)
-        hotkeysForLayer := itemsToShowForListView.getFriendlyHotkeyActionPairValues()
-
-        listViewControl.SetNewListViewItems(hotkeysForLayer)
-    }
-
     ListViewElementDoubleClickedEvent(treeView, listView, item){
         currentLayerIdentifier := treeView.GetSelectionText()
 
