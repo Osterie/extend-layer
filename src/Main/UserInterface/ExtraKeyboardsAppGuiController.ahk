@@ -70,15 +70,11 @@ Class ExtraKeyboardsAppGuiController{
 
 
     HotKeyConfigurationPopupSaveEvent(popupForConfiguringHotkey, *){
-        
         originalHotkey := popupForConfiguringHotkey.getOriginalHotkey()
         newHotkey := popupForConfiguringHotkey.getHotkey()
         newAction := popupForConfiguringHotkey.getAction()
-
         this.model.ChangeHotkey(originalHotkey, newHotkey, newAction)
-
         this.MainScript.RunLogicalStartup()
-        
         popupForConfiguringHotkey.Destroy()
     }
 

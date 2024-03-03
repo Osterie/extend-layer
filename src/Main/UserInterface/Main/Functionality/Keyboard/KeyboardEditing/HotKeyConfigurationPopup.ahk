@@ -75,10 +75,10 @@ class HotKeyConfigurationPopup{
     }
 
     createChangeButtons(){
-        buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80 xm", "Change original hotkey")
+        buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80 xm", "Change Hotkey")
         buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent())
         
-        buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change original action")
+        buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change Action")
         buttonToChangeOriginalAction.onEvent("Click", (*) => this.buttonToChangeOriginalActionClickedEvent())
     }
 
