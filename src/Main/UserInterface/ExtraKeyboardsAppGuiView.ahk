@@ -107,7 +107,6 @@ Class ExtraKeyboardsAppGuiView{
         listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "HandleKeyComboActionDoubleClickedEvent"))
     }
 
-
     CreateFunctionSettingsTab(){
 
         functionsNamesTreeView := TreeViewMaker()
@@ -117,28 +116,9 @@ Class ExtraKeyboardsAppGuiView{
         settingsValuesListView.CreateListView(this.ExtraKeyboardsAppGui, ["Setting","Value"])
         
         functionsNamesTreeView.AddEventAction("ItemSelect", ObjBindMethod(this.controller, "HandleFunctionFromTreeViewSelected", settingsValuesListView))
-        settingsValuesListView.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "CreateFunctionSettingsEditor", functionsNamesTreeView))
+        settingsValuesListView.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "HandleSettingClicked", functionsNamesTreeView))
     }
 
-    CreateFunctionSettingsEditor(functionsNamesTreeView, listView, rowNumber){
-        currentFunctionSettings := functionsNamesTreeView.GetSelectionText()
-
-        listViewFirstColum := listView.GetText(rowNumber, 1)
-        listViewSecondColum := listView.GetText(rowNumber, 2)
-
-        editorForActionSettings := SettingsEditor()
-        editorForActionSettings.CreateControls(listViewFirstColum, listViewSecondColum)
-        editorForActionSettings.DisableSettingNameEdit()
-        editorForActionSettings.addSaveButtonEvent("Click", ObjBindMethod(this, "SettingsEditorSaveButtonEvent", editorForActionSettings, currentFunctionSettings))
-    }
-
-    SettingsEditorSaveButtonEvent(editorForActionSettings, currentFunctionSettings, *){
-        iniFileSection := currentFunctionSettings
-        iniFileKey := editorForActionSettings.GetSetting()
-        iniFileValue := editorForActionSettings.GetSettingValue()
-        IniWrite(iniFileValue, FilePaths.GetPathToCurrentSettings(), iniFileSection, iniFileKey)
-        editorForActionSettings.Destroy()
-    }
 
     CreateDocumentationTab(){
         this.ExtraKeyboardsAppGui.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.

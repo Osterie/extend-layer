@@ -149,7 +149,7 @@ Class ExtraKeyboardsAppGuiController{
         listViewControl.SetNewListViewItems(this.model.GetSettingsForFunction(functionName))
     }
 
-    CreateFunctionSettingsEditor(functionsNamesTreeView, listView, rowNumber){
+    HandleSettingClicked(functionsNamesTreeView, listView, rowNumber){
         currentFunctionSettings := functionsNamesTreeView.GetSelectionText()
 
         settingName := listView.GetText(rowNumber, 1)
