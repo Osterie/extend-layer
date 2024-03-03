@@ -42,8 +42,6 @@ Class ExtraKeyboardsAppGuiView{
 
     keyNames := ""
 
-    pathToObjectsIniFile := ""
-
 
     __New(keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, MainScript, keyNames){
         
@@ -68,20 +66,8 @@ Class ExtraKeyboardsAppGuiView{
         ; TODO when a profile is changed, update the paths? or not? since i at the moment restart everything when the profile is changed.
         this.CreateProfileEditor()
 
-        ; TODO move somewhere else...
 
-        this.pathToObjectsIniFile := FilePaths.GetPathToCurrentSettings()
-
-        fileReader := IniFileReader()
-        functionsNames := []
-        try{
-            functionsNames := fileReader.ReadSectionNamesToArray(this.pathToObjectsIniFile)
-        }
-        catch{
-            functionName := []
-        }
-        
-        this.CreateTabs(functionsNames, this.keyboardLayerIdentifiers)
+        this.CreateTabs(this.keyboardLayerIdentifiers)
         
         this.setColors()
         
@@ -96,14 +82,14 @@ Class ExtraKeyboardsAppGuiView{
         profileController.CreateView()
     }
 
-    CreateTabs(functionsNames, jsonFileContents){
+    CreateTabs(jsonFileContents){
         
         Tab := this.ExtraKeyboardsAppGui.AddTab3("yp+40 xm", ["Keyboards","Change Functions Settings","Documentation"])
         Tab.UseTab(1)
         this.CreateKeyboardsTab(jsonFileContents)
 
         Tab.UseTab(2)
-        this.CreateFunctionSettingsTab(functionsNames)
+        this.CreateFunctionSettingsTab()
 
         Tab.UseTab(3)
         this.CreateDocumentationTab()
@@ -198,10 +184,10 @@ Class ExtraKeyboardsAppGuiView{
         popupForConfiguringHotkey.Destroy()
     }
 
-    CreateFunctionSettingsTab(functionsNames){
+    CreateFunctionSettingsTab(){
 
         functionsNamesTreeView := TreeViewMaker()
-        functionsNamesTreeView.createElementsForGui(this.ExtraKeyboardsAppGui, functionsNames)
+        functionsNamesTreeView.createElementsForGui(this.ExtraKeyboardsAppGui, this.controller.GetFunctionNames())
         
         settingsValuesListView := ListViewMaker()
         settingsValuesListView.CreateListView(this.ExtraKeyboardsAppGui, ["Setting","Value"])
@@ -213,7 +199,7 @@ Class ExtraKeyboardsAppGuiView{
     CreateListViewItemsBasedOnIniFileContents(listViewControl, treeViewElement, treeViewElementSelectedItemID){
         iniFileRead := IniFileReader()
         activeTreeViewItem := treeViewElement.GetText(treeViewElementSelectedItemID)
-        keyPairValuesArray := iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(this.pathToObjectsIniFile, activeTreeViewItem)
+        keyPairValuesArray := iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(FilePaths.GetPathToCurrentSettings(), activeTreeViewItem)
         listViewControl.SetNewListViewItems(keyPairValuesArray)
     }
 
@@ -233,7 +219,7 @@ Class ExtraKeyboardsAppGuiView{
         iniFileSection := currentFunctionSettings
         iniFileKey := editorForActionSettings.GetSetting()
         iniFileValue := editorForActionSettings.GetSettingValue()
-        IniWrite(iniFileValue, this.pathToObjectsIniFile, iniFileSection, iniFileKey)
+        IniWrite(iniFileValue, FilePaths.GetPathToCurrentSettings(), iniFileSection, iniFileKey)
         editorForActionSettings.Destroy()
     }
 

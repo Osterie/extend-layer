@@ -45,8 +45,9 @@ Class ExtraKeyboardsAppGuiController{
     pathToObjectsIniFile := ""
 
 
-    __New(view, keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, MainScript, keyNames){
+    __New(model, view, keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, MainScript, keyNames){
         this.view := view
+        this.model := model
         
         this.MainScript := MainScript
         
@@ -87,6 +88,10 @@ Class ExtraKeyboardsAppGuiController{
         
         ; Create gui in the top left corner of the screen
         this.ExtraKeyboardsAppGui.Show("x0 y0")
+    }
+
+    GetFunctionNames(){
+        return this.model.GetFunctionNames()
     }
 
     CreateProfileEditor(){

@@ -55,6 +55,21 @@ Class ExtraKeyboardsAppGuiModel{
 
     }
 
+    GetFunctionNames(){
+        pathToObjectsIniFile := FilePaths.GetPathToCurrentSettings()
+
+        fileReader := IniFileReader()
+        functionsNames := []
+        try{
+            functionsNames := fileReader.ReadSectionNamesToArray(pathToObjectsIniFile)
+        }
+        catch{
+            functionName := []
+        }
+        
+        return functionsNames
+    }
+
 
     CreateMain(){
 
