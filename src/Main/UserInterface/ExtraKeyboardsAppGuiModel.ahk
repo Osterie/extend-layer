@@ -16,7 +16,6 @@
 #Include "Main\Functionality\Keyboard\KeyboardEditing\HotKeyConfigurationPopup.ahk"
 #Include "Main\util\GuiColorsChanger.ahk"
 
-
 #Include "<MetaInfo\MetaInfoStorage\Files\FilePaths>"
 
 #Include <FoldersAndFiles\FolderManager>
@@ -27,7 +26,7 @@
 
 ; TODO make it possible for the user to add own ahk scripts to the program, and then use them as functions. 
 
-Class ExtraKeyboardsAppGui{
+Class ExtraKeyboardsAppGuiModel{
 
     ; Used to create the gui
     ExtraKeyboardsAppGui := ""
@@ -104,7 +103,6 @@ Class ExtraKeyboardsAppGui{
         
         Tab := this.ExtraKeyboardsAppGui.AddTab3("yp+40 xm", ["Keyboards","Change Functions Settings","Documentation"])
         Tab.UseTab(1)
-
         this.CreateKeyboardsTab(jsonFileContents)
 
         Tab.UseTab(2)
@@ -251,6 +249,8 @@ Class ExtraKeyboardsAppGui{
         textColor := "6688FF"
         GuiColorsChanger.setControlsColor(this.ExtraKeyboardsAppGui, controlColor)
         GuiColorsChanger.setControlsTextColor(this.ExtraKeyboardsAppGui, textColor)
+
+        ; Top bar or whatever it is called
         GuiColorsChanger.DwmSetCaptionColor(this.ExtraKeyboardsAppGui, 0x300f45) ; color is in RGB format
         GuiColorsChanger.DwmSetTextColor(this.ExtraKeyboardsAppGui, 0x27eaf1)
     }

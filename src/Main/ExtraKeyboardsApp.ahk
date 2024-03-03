@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
-#Include ".\UserInterface\ExtraKeyboardsAppgui.ahk"
+#Include ".\UserInterface\ExtraKeyboardsAppguiView.ahk"
+#Include ".\UserInterface\ExtraKeyboardsAppguiController.ahk"
+#Include ".\UserInterface\ExtraKeyboardsAppguiModel.ahk"
 ; #Include ".\Main.ahk"
 
 ; |--------------------------------------------------|
@@ -29,12 +31,14 @@ Class ExtraKeyboardsApp{
 
     __New(keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames){
 
+        
         this.MainScript := mainScript
-        this.UserInterface := ExtraKeyboardsAppgui(keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames)
+        this.UserInterface := ExtraKeyboardsAppGuiView(keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames)
+        this.Controller := ExtraKeyboardsAppGuiController(this.UserInterface, keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames)
     }
 
     Start(){
-        this.UserInterface.CreateMain()
+        this.UserInterface.CreateMain(this.Controller)
     }
 
     getExtraKeyboardsAppgui(){

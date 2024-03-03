@@ -136,7 +136,6 @@ Class Main{
 
     keyboardLayerIdentifiers := []
 
-
     keyNames := ""
 
     __New(){
