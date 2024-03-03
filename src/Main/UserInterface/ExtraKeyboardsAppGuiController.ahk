@@ -114,10 +114,9 @@ Class ExtraKeyboardsAppGuiController{
         listViewControl.SetNewListViewItems(hotkeysForLayer)
     }
 
-    ListViewElementDoubleClickedEvent(treeView, listView, item){
-        currentLayerIdentifier := treeView.GetSelectionText()
+    HandleKeyComboActionDoubleClickedEvent(listView, item){
 
-        keyboardInformation := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(currentLayerIdentifier)
+        keyboardInformation := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.GetCurrentLayer())
 
         hotkeyBuild := listView.GetText(item, 1)
         hotkeyAction := listView.GetText(item, 2)
@@ -150,11 +149,11 @@ Class ExtraKeyboardsAppGuiController{
         ; TODO now i must update the json file with the new hotkey if it is valid...
         ; TODO keyboardLayersInfoRegister change a hotkey, turn into a json file, and then change the existing json file
 
-        this.keyboardLayersInfoRegister.ChangeHotkey(this.model.GetCurrentLayer(), originalHotkey, newHotkey)
+        this.keyboardLayersInfoRegister.ChangeHotkey(this.GetCurrentLayer(), originalHotkey, newHotkey)
 
         ; TODO perhaps a else with some information here
         if (newAction != ""){
-            this.keyboardLayersInfoRegister.ChangeAction(this.model.GetCurrentLayer(), originalHotkey, newAction)
+            this.keyboardLayersInfoRegister.ChangeAction(this.GetCurrentLayer(), originalHotkey, newAction)
         }
 
         ; TODO create a method for this.
@@ -217,6 +216,10 @@ Class ExtraKeyboardsAppGuiController{
 
     CreateDocumentationTab(){
         this.ExtraKeyboardsAppGui.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.
+    }
+
+    GetCurrentLayer(){
+        return this.model.GetCurrentLayer()
     }
 
     GetKeyboardLayerIdentifiers(){

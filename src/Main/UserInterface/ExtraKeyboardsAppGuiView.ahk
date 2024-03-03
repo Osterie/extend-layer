@@ -80,7 +80,6 @@ Class ExtraKeyboardsAppGuiView{
     }
 
     CreateTabs(){
-        
         Tab := this.ExtraKeyboardsAppGui.AddTab3("yp+40 xm", ["Keyboards","Change Functions Settings","Documentation"])
         Tab.UseTab(1)
         this.CreateKeyboardsTab()
@@ -105,7 +104,7 @@ Class ExtraKeyboardsAppGuiView{
         listViewControl.CreateListView(this.ExtraKeyboardsAppGui, ["KeyCombo","Action"])
         
         keyboardLayoutChanger.AddEventAction("ItemSelect", ObjBindMethod(this.controller, "HandleKeyboardLayerSelected", listViewControl))
-        listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "ListViewElementDoubleClickedEvent", keyboardLayoutChanger))
+        listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "HandleKeyComboActionDoubleClickedEvent"))
     }
 
     ; NOTE, info has no info for button clicks, which this is for.
