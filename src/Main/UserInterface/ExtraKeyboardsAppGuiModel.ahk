@@ -68,6 +68,12 @@ Class ExtraKeyboardsAppGuiModel{
         return functionsNames
     }
 
+    GetSettingsForFunction(functionName){
+        iniFileRead := IniFileReader()
+        currentSettingsSettingValuePair := iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(FilePaths.GetPathToCurrentSettings(), functionName)
+        return currentSettingsSettingValuePair
+    }
+
     GetFriendlyHotkeysForLayer(layerIdentifier){
         itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(layerIdentifier)
         hotkeysForLayer := itemsToShowForListView.getFriendlyHotkeyActionPairValues()

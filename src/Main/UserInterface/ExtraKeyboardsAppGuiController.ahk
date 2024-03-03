@@ -144,23 +144,9 @@ Class ExtraKeyboardsAppGuiController{
         popupForConfiguringHotkey.Destroy()
     }
 
-    CreateFunctionSettingsTab(functionsNames){
-
-        functionsNamesTreeView := TreeViewMaker()
-        functionsNamesTreeView.createElementsForGui(this.ExtraKeyboardsAppGui, functionsNames)
-        
-        settingsValuesListView := ListViewMaker()
-        settingsValuesListView.CreateListView(this.ExtraKeyboardsAppGui, ["Setting","Value"])
-        
-        functionsNamesTreeView.AddEventAction("ItemSelect", ObjBindMethod(this, "CreateListViewItemsBasedOnIniFileContents", settingsValuesListView))
-        settingsValuesListView.AddEventAction("DoubleClick", ObjBindMethod(this, "CreateFunctionSettingsEditor", functionsNamesTreeView))
-    }
-
-    CreateListViewItemsBasedOnIniFileContents(listViewControl, treeViewElement, treeViewElementSelectedItemID){
-        iniFileRead := IniFileReader()
-        activeTreeViewItem := treeViewElement.GetText(treeViewElementSelectedItemID)
-        keyPairValuesArray := iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(this.pathToObjectsIniFile, activeTreeViewItem)
-        listViewControl.SetNewListViewItems(keyPairValuesArray)
+    HandleFunctionFromTreeViewSelected(listViewControl, treeViewElement, treeViewElementSelectedItemID){
+        functionName := treeViewElement.GetText(treeViewElementSelectedItemID)
+        listViewControl.SetNewListViewItems(this.model.GetSettingsForFunction(functionName))
     }
 
     CreateFunctionSettingsEditor(functionsNamesTreeView, listView, rowNumber){

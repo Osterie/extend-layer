@@ -116,7 +116,7 @@ Class ExtraKeyboardsAppGuiView{
         settingsValuesListView := ListViewMaker()
         settingsValuesListView.CreateListView(this.ExtraKeyboardsAppGui, ["Setting","Value"])
         
-        functionsNamesTreeView.AddEventAction("ItemSelect", ObjBindMethod(this, "CreateListViewItemsBasedOnIniFileContents", settingsValuesListView))
+        functionsNamesTreeView.AddEventAction("ItemSelect", ObjBindMethod(this.controller, "HandleFunctionFromTreeViewSelected", settingsValuesListView))
         settingsValuesListView.AddEventAction("DoubleClick", ObjBindMethod(this, "CreateFunctionSettingsEditor", functionsNamesTreeView))
     }
 
