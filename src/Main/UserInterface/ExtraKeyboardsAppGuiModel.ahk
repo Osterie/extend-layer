@@ -280,14 +280,7 @@ Class ExtraKeyboardsAppGuiModel{
         this.ExtraKeyboardsAppGui.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.
     }
 
-    setColors(){
-        controlColor := "060621"
-        textColor := "6688FF"
-        GuiColorsChanger.setControlsColor(this.ExtraKeyboardsAppGui, controlColor)
-        GuiColorsChanger.setControlsTextColor(this.ExtraKeyboardsAppGui, textColor)
-
-        ; Top bar or whatever it is called
-        GuiColorsChanger.DwmSetCaptionColor(this.ExtraKeyboardsAppGui, 0x300f45) ; color is in RGB format
-        GuiColorsChanger.DwmSetTextColor(this.ExtraKeyboardsAppGui, 0x27eaf1)
+    GetKeyboardLayerIdentifiers(){
+        return this.keyboardLayerIdentifiers
     }
 }

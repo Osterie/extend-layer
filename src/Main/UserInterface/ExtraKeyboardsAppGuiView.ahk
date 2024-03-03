@@ -32,7 +32,6 @@ Class ExtraKeyboardsAppGuiView{
     ; Used to create the gui
     ExtraKeyboardsAppGui := ""
 
-    keyboardLayerIdentifiers := ""
     activeObjectsRegistry := ""
     keyboardLayersInfoRegister := ""
 
@@ -43,7 +42,7 @@ Class ExtraKeyboardsAppGuiView{
     keyNames := ""
 
 
-    __New(keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, MainScript, keyNames){
+    __New(activeObjectsRegistry, keyboardLayersInfoRegister, MainScript, keyNames){
         
         this.MainScript := MainScript
         
@@ -51,7 +50,6 @@ Class ExtraKeyboardsAppGuiView{
         
         this.activeObjectsRegistry := activeObjectsRegistry
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
-        this.keyboardLayerIdentifiers := keyboardLayerIdentifiers
     }
 
 
@@ -66,7 +64,7 @@ Class ExtraKeyboardsAppGuiView{
         this.CreateProfileEditor()
 
 
-        this.CreateTabs(this.keyboardLayerIdentifiers)
+        this.CreateTabs()
         
         this.setColors()
         
@@ -81,11 +79,11 @@ Class ExtraKeyboardsAppGuiView{
         profileController.CreateView()
     }
 
-    CreateTabs(jsonFileContents){
+    CreateTabs(){
         
         Tab := this.ExtraKeyboardsAppGui.AddTab3("yp+40 xm", ["Keyboards","Change Functions Settings","Documentation"])
         Tab.UseTab(1)
-        this.CreateKeyboardsTab(jsonFileContents)
+        this.CreateKeyboardsTab()
 
         Tab.UseTab(2)
         this.CreateFunctionSettingsTab()
@@ -96,11 +94,11 @@ Class ExtraKeyboardsAppGuiView{
         Tab.UseTab(0) ; subsequently-added controls will not belong to the tab control.
     }
 
-    CreateKeyboardsTab(jsonFileContents){
+    CreateKeyboardsTab(){
 
         ; TODO perhaps use inheritance or something, but this is the exact same as CreateFunctionSettingsTab pretty much 
         keyboardLayoutChanger := TreeViewMaker()
-        keyboardLayoutChanger.createElementsForGui(this.ExtraKeyboardsAppGui, jsonFileContents)
+        keyboardLayoutChanger.createElementsForGui(this.ExtraKeyboardsAppGui, this.controller.GetKeyboardLayerIdentifiers())
         ; TODO use this.jsonwhatever ...
         
         listViewControl := ListViewMaker()
@@ -108,34 +106,6 @@ Class ExtraKeyboardsAppGuiView{
         
         keyboardLayoutChanger.AddEventAction("ItemSelect", ObjBindMethod(this.controller, "HandleKeyboardLayerSelected", listViewControl))
         listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "ListViewElementDoubleClickedEvent", keyboardLayoutChanger))
-    }
-
-    ListViewElementDoubleClickedEvent(treeView, listView, item){
-        currentLayerIdentifier := treeView.GetSelectionText()
-
-        keyboardInformation := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(currentLayerIdentifier)
-
-        hotkeyBuild := listView.GetText(item, 1)
-        this.newHotkey := hotkeyBuild
-        this.originalHotkey := hotkeyBuild
-        hotkeyAction := listView.GetText(item, 2)
-
-        popupForConfiguringHotkey := HotKeyConfigurationPopup(this.activeObjectsRegistry, this.keyNames)
-        if (Type(keyboardInformation) == "HotkeysRegistry"){
-            popupForConfiguringHotkey.CreatePopupForHotkeyRegistry(keyboardInformation, item, hotkeyBuild, hotkeyAction)
-            
-        }
-        else if (Type(keyboardInformation) == "KeyboardOverlayInfo"){
-            popupForConfiguringHotkey.CreatePopupForKeyboardOverlayInfo(keyboardInformation, item)
-        }
-
-        saveButtonEvent := ObjBindMethod(this, "HotKeyConfigurationPopupSaveEvent", popupForConfiguringHotkey)
-        popupForConfiguringHotkey.addSaveButtonClickedEvent(saveButtonEvent)
-
-        cancelButtonEvent := ObjBindMethod(this, "popupCancelButtonClickEvent")
-        popupForConfiguringHotkey.addCancelButtonClickedEvent(cancelButtonEvent)
-
-        
     }
 
     ; NOTE, info has no info for button clicks, which this is for.
