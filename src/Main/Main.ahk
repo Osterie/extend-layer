@@ -4,7 +4,6 @@
 ; [^ = Ctrl] [+ = Shift] [! = Alt] [# = Win]
 #Requires Autohotkey v2.0
 
-
 #Include ".\ExtraKeyboardsApp.ahk"
 #Include <KeysPressedGui>
 #Include <ProcessManager>
