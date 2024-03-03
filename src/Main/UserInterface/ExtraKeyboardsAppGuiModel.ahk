@@ -2,54 +2,24 @@
 
 ; TODO move inifilereader to meta info reading
 
-; #Include <JsonParsing\JXON\JXON>
 #Include <FoldersAndFiles\IniFileReader>
-
-#Include "Main\Functionality\ActionSettings\SettingsEditor.ahk"
-
-#Include "Main\ProfileEditing\ProfileButtons.ahk"
-#Include "Main\ProfileEditing\ProfileRegionModel.ahk"
-#Include "Main\ProfileEditing\ProfileRegionView.ahk"
-#Include "Main\ProfileEditing\ProfileRegionController.ahk"
-#Include "Main\util\TreeViewMaker.ahk"
-#Include "Main\util\ListViewMaker.ahk"
-#Include "Main\Functionality\Keyboard\KeyboardEditing\HotKeyConfigurationPopup.ahk"
-#Include "Main\util\GuiColorsChanger.ahk"
 
 #Include "<MetaInfo\MetaInfoStorage\Files\FilePaths>"
 
-#Include <FoldersAndFiles\FolderManager>
-#Include <JsonParsing\JsonFormatter\JsonFormatter>
-
-; TODO have a hotkey which sends a given key(or hotkey) after a given delay.
-; TODO could also have a hotkey/key which is excecuted if a loud enough sound is caught by the mic.
-
-; TODO make it possible for the user to add own ahk scripts to the program, and then use them as functions. 
-
 Class ExtraKeyboardsAppGuiModel{
 
-
-    keyboardLayerIdentifiers := ""
+    keyNames := ""
+    currentLayer := ""
     activeObjectsRegistry := ""
+    keyboardLayerIdentifiers := ""
     keyboardLayersInfoRegister := ""
 
-    MainScript := ""
-
-    currentLayer := ""
-
-    keyNames := ""
-
-    pathToObjectsIniFile := ""
-
-
-    __New(keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, MainScript, keyNames){
-        this.MainScript := MainScript
+    __New(keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, keyNames){
         
         this.keyNames := keyNames
-        
         this.activeObjectsRegistry := activeObjectsRegistry
-        this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
         this.keyboardLayerIdentifiers := keyboardLayerIdentifiers
+        this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
 
     }
 

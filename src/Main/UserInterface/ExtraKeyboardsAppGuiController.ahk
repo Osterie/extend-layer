@@ -1,25 +1,11 @@
 #Requires AutoHotkey v2.0
 
-; TODO move inifilereader to meta info reading
-
-; #Include <JsonParsing\JXON\JXON>
-#Include <FoldersAndFiles\IniFileReader>
-
 #Include "Main\Functionality\ActionSettings\SettingsEditor.ahk"
 
-#Include "Main\ProfileEditing\ProfileButtons.ahk"
-#Include "Main\ProfileEditing\ProfileRegionModel.ahk"
-#Include "Main\ProfileEditing\ProfileRegionView.ahk"
-#Include "Main\ProfileEditing\ProfileRegionController.ahk"
-#Include "Main\util\TreeViewMaker.ahk"
-#Include "Main\util\ListViewMaker.ahk"
 #Include "Main\Functionality\Keyboard\KeyboardEditing\HotKeyConfigurationPopup.ahk"
-#Include "Main\util\GuiColorsChanger.ahk"
-
 
 #Include "<MetaInfo\MetaInfoStorage\Files\FilePaths>"
 
-#Include <FoldersAndFiles\FolderManager>
 #Include <JsonParsing\JsonFormatter\JsonFormatter>
 
 ; TODO have a hotkey which sends a given key(or hotkey) after a given delay.
@@ -29,26 +15,14 @@
 
 Class ExtraKeyboardsAppGuiController{
 
-    ; Used to create the gui
-    ExtraKeyboardsAppGui := ""
-
+    MainScript := ""
     keyboardLayersInfoRegister := ""
 
-    MainScript := ""
-
-    keyNames := ""
-
-    pathToObjectsIniFile := ""
-
-
-    __New(model, view, keyboardLayersInfoRegister, MainScript, keyNames){
+    __New(model, view, keyboardLayersInfoRegister, MainScript){
         this.view := view
         this.model := model
         
         this.MainScript := MainScript
-        
-        this.keyNames := keyNames
-        
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
 
     }
@@ -56,13 +30,6 @@ Class ExtraKeyboardsAppGuiController{
 
     GetFunctionNames(){
         return this.model.GetFunctionNames()
-    }
-
-    CreateProfileEditor(){
-        profileModel := ProfileRegionModel(this.ExtraKeyboardsAppGui)
-        profileView := ProfileRegionView()
-        profileController := ProfileRegionController(profileModel, profileView, ObjBindMethod(this, "eventProfileChanged"))
-        profileController.CreateView()
     }
 
     HandleProfileChangedEvent(*){
@@ -94,10 +61,9 @@ Class ExtraKeyboardsAppGuiController{
             ; TODO implement
             ; popupForConfiguringHotkey.CreatePopupForKeyboardOverlayInfo()
         }
-
-        
     }
 
+    ; TODO move to view
     CreatePopupForHotkeys(hotkeyBuild, hotkeyAction){
         popupForConfiguringHotkey := HotKeyConfigurationPopup(this.GetActiveObjectsRegistry(), this.GetKeyNames())
         popupForConfiguringHotkey.CreatePopupForHotkeyRegistry(hotkeyBuild, hotkeyAction)
@@ -170,10 +136,6 @@ Class ExtraKeyboardsAppGuiController{
 
     GetPathToCurrentSettings(){
         return this.model.GetPathToCurrentSettings()
-    }
-
-    CreateDocumentationTab(){
-        this.ExtraKeyboardsAppGui.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.
     }
 
     GetCurrentLayer(){
