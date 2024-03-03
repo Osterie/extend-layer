@@ -85,6 +85,7 @@ class HotKeyConfigurationPopup{
     createFinalizationButtons(){
         this.saveButton := this.mainGui.AddButton("Default w80", "Save+Done")
         this.cancelButton := this.mainGui.AddButton("Default w80", "Cancel+Done")
+        this.cancelButton.onEvent("Click", (*) => this.mainGui.Destroy())
         this.deleteButton := this.mainGui.AddButton("Default w80", "Delete+Done")
     }
 
@@ -126,9 +127,6 @@ class HotKeyConfigurationPopup{
         this.saveButton.onEvent("Click", event)
     }
 
-    addCancelButtonClickedEvent(event){
-        this.cancelButton.onEvent("Click", event)
-    }
 
     undoDeletionButtonClickedEvent(){
         this.hotkeyDeleted := false

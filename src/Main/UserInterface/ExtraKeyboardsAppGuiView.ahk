@@ -107,7 +107,7 @@ Class ExtraKeyboardsAppGuiView{
         listViewControl.CreateListView(this.ExtraKeyboardsAppGui, ["KeyCombo","Action"])
         
         keyboardLayoutChanger.AddEventAction("ItemSelect", ObjBindMethod(this.controller, "HandleKeyboardLayerSelected", listViewControl))
-        listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this, "ListViewElementDoubleClickedEvent", keyboardLayoutChanger))
+        listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "ListViewElementDoubleClickedEvent", keyboardLayoutChanger))
     }
 
     ListViewElementDoubleClickedEvent(treeView, listView, item){

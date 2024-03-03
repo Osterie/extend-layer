@@ -136,8 +136,8 @@ Class ExtraKeyboardsAppGuiController{
         saveButtonEvent := ObjBindMethod(this, "HotKeyConfigurationPopupSaveEvent", popupForConfiguringHotkey)
         popupForConfiguringHotkey.addSaveButtonClickedEvent(saveButtonEvent)
 
-        cancelButtonEvent := ObjBindMethod(this, "popupCancelButtonClickEvent")
-        popupForConfiguringHotkey.addCancelButtonClickedEvent(cancelButtonEvent)
+        ; cancelButtonEvent := ObjBindMethod(this, "popupCancelButtonClickEvent")
+        ; popupForConfiguringHotkey.addCancelButtonClickedEvent(cancelButtonEvent)
 
         
     }
