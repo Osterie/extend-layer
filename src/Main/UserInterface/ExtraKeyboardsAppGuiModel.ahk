@@ -54,7 +54,7 @@ Class ExtraKeyboardsAppGuiModel{
     }
 
     GetFunctionNames(){
-        pathToObjectsIniFile := FilePaths.GetPathToCurrentSettings()
+        pathToObjectsIniFile := this.GetPathToCurrentSettings()
 
         fileReader := IniFileReader()
         functionsNames := []
@@ -70,7 +70,7 @@ Class ExtraKeyboardsAppGuiModel{
 
     GetSettingsForFunction(functionName){
         iniFileRead := IniFileReader()
-        currentSettingsSettingValuePair := iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(FilePaths.GetPathToCurrentSettings(), functionName)
+        currentSettingsSettingValuePair := iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(this.GetPathToCurrentSettings(), functionName)
         return currentSettingsSettingValuePair
     }
 
@@ -110,6 +110,19 @@ Class ExtraKeyboardsAppGuiModel{
 
     GetKeyNames(){
         return this.keyNames
+    }
+
+    ChangeFunctionSetting(settingName, settingValue, currentFunctionSettings){
+        try{
+            IniWrite(settingValue, this.GetPathToCurrentSettings(), currentFunctionSettings, settingName)
+        }
+        catch{
+            MsgBox("Failed to save settings")
+        }
+    }
+
+    GetPathToCurrentSettings(){
+        return FilePaths.GetPathToCurrentSettings()
     }
 
 }

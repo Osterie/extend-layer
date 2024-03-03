@@ -117,14 +117,7 @@ Class ExtraKeyboardsAppGuiView{
         settingsValuesListView.CreateListView(this.ExtraKeyboardsAppGui, ["Setting","Value"])
         
         functionsNamesTreeView.AddEventAction("ItemSelect", ObjBindMethod(this.controller, "HandleFunctionFromTreeViewSelected", settingsValuesListView))
-        settingsValuesListView.AddEventAction("DoubleClick", ObjBindMethod(this, "CreateFunctionSettingsEditor", functionsNamesTreeView))
-    }
-
-    CreateListViewItemsBasedOnIniFileContents(listViewControl, treeViewElement, treeViewElementSelectedItemID){
-        iniFileRead := IniFileReader()
-        activeTreeViewItem := treeViewElement.GetText(treeViewElementSelectedItemID)
-        keyPairValuesArray := iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(FilePaths.GetPathToCurrentSettings(), activeTreeViewItem)
-        listViewControl.SetNewListViewItems(keyPairValuesArray)
+        settingsValuesListView.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "CreateFunctionSettingsEditor", functionsNamesTreeView))
     }
 
     CreateFunctionSettingsEditor(functionsNamesTreeView, listView, rowNumber){

@@ -152,21 +152,24 @@ Class ExtraKeyboardsAppGuiController{
     CreateFunctionSettingsEditor(functionsNamesTreeView, listView, rowNumber){
         currentFunctionSettings := functionsNamesTreeView.GetSelectionText()
 
-        listViewFirstColum := listView.GetText(rowNumber, 1)
-        listViewSecondColum := listView.GetText(rowNumber, 2)
+        settingName := listView.GetText(rowNumber, 1)
+        settingValue := listView.GetText(rowNumber, 2)
 
         editorForActionSettings := SettingsEditor()
-        editorForActionSettings.CreateControls(listViewFirstColum, listViewSecondColum)
+        editorForActionSettings.CreateControls(settingName, settingValue)
         editorForActionSettings.DisableSettingNameEdit()
         editorForActionSettings.addSaveButtonEvent("Click", ObjBindMethod(this, "SettingsEditorSaveButtonEvent", editorForActionSettings, currentFunctionSettings))
     }
 
     SettingsEditorSaveButtonEvent(editorForActionSettings, currentFunctionSettings, *){
-        iniFileSection := currentFunctionSettings
-        iniFileKey := editorForActionSettings.GetSetting()
-        iniFileValue := editorForActionSettings.GetSettingValue()
-        IniWrite(iniFileValue, this.pathToObjectsIniFile, iniFileSection, iniFileKey)
+        settingName := editorForActionSettings.GetSetting()
+        settingValue := editorForActionSettings.GetSettingValue()
+        this.model.ChangeFunctionSetting(settingName, settingValue, currentFunctionSettings)
         editorForActionSettings.Destroy()
+    }
+
+    GetPathToCurrentSettings(){
+        return this.model.GetPathToCurrentSettings()
     }
 
     CreateDocumentationTab(){
