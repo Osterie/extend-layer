@@ -107,41 +107,6 @@ Class ExtraKeyboardsAppGuiView{
         listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "HandleKeyComboActionDoubleClickedEvent"))
     }
 
-    ; NOTE, info has no info for button clicks, which this is for.
-    HotKeyConfigurationPopupSaveEvent(popupForConfiguringHotkey, info, buttonClicked){
-        
-        originalHotkey := popupForConfiguringHotkey.getOriginalHotkey()
-        newHotkey := popupForConfiguringHotkey.getHotkey()
-        newAction := popupForConfiguringHotkey.getAction()
-
-        ; TODO now i must update the json file with the new hotkey if it is valid...
-        ; TODO keyboardLayersInfoRegister change a hotkey, turn into a json file, and then change the existing json file
-
-        this.keyboardLayersInfoRegister.ChangeHotkey(this.currentLayer, originalHotkey, newHotkey)
-
-        ; TODO perhaps a else with some information here
-        if (newAction != ""){
-            this.keyboardLayersInfoRegister.ChangeAction(this.currentLayer, originalHotkey, newAction)
-        }
-
-        ; TODO create a method for this.
-        toJsonReader := KeyboadLayersInfoClassObjectReader()
-        toJsonReader.ReadObjectToJson(this.keyboardLayersInfoRegister)
-        jsonObject := toJsonReader.getJsonObject()
-
-        currentProfileName := iniRead(FilePaths.GetPathToMetaFile(), "General", "activeUserProfile")
-
-        pathToCurrentProfile := FilePaths.GetPathToProfiles() . "\" . currentProfileName
-
-        
-        formatterForJson := JsonFormatter()
-        jsonString := formatterForJson.FormatJsonObject(jsonObject)
-        FileRecycle(pathToCurrentProfile . "\Keyboards.json")
-        FileAppend(jsonString, pathToCurrentProfile . "\Keyboards.json", "UTF-8")
-        this.MainScript.RunLogicalStartup()
-        
-        popupForConfiguringHotkey.Destroy()
-    }
 
     CreateFunctionSettingsTab(){
 
