@@ -52,7 +52,6 @@ Class ExtraKeyboardsAppGuiView{
         this.activeObjectsRegistry := activeObjectsRegistry
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
         this.keyboardLayerIdentifiers := keyboardLayerIdentifiers
-
     }
 
 
@@ -107,7 +106,7 @@ Class ExtraKeyboardsAppGuiView{
         listViewControl := ListViewMaker()
         listViewControl.CreateListView(this.ExtraKeyboardsAppGui, ["KeyCombo","Action"])
         
-        keyboardLayoutChanger.AddEventAction("ItemSelect", ObjBindMethod(this, "TreeViewElementSelectedEvent", listViewControl))
+        keyboardLayoutChanger.AddEventAction("ItemSelect", ObjBindMethod(this.controller, "HandleKeyboardLayerSelected", listViewControl))
         listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this, "ListViewElementDoubleClickedEvent", keyboardLayoutChanger))
     }
 

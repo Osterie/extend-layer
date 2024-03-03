@@ -107,36 +107,7 @@ Class ExtraKeyboardsAppGuiController{
         this.view.Destroy()
     }
 
-    CreateTabs(functionsNames, jsonFileContents){
-        
-        Tab := this.ExtraKeyboardsAppGui.AddTab3("yp+40 xm", ["Keyboards","Change Functions Settings","Documentation"])
-        Tab.UseTab(1)
-        this.CreateKeyboardsTab(jsonFileContents)
-
-        Tab.UseTab(2)
-        this.CreateFunctionSettingsTab(functionsNames)
-
-        Tab.UseTab(3)
-        this.CreateDocumentationTab()
-
-        Tab.UseTab(0) ; subsequently-added controls will not belong to the tab control.
-    }
-
-    CreateKeyboardsTab(jsonFileContents){
-
-        ; TODO perhaps use inheritance or something, but this is the exact same as CreateFunctionSettingsTab pretty much 
-        keyboardLayoutChanger := TreeViewMaker()
-        keyboardLayoutChanger.createElementsForGui(this.ExtraKeyboardsAppGui, jsonFileContents)
-        ; TODO use this.jsonwhatever ...
-        
-        listViewControl := ListViewMaker()
-        listViewControl.CreateListView(this.ExtraKeyboardsAppGui, ["KeyCombo","Action"])
-        
-        keyboardLayoutChanger.AddEventAction("ItemSelect", ObjBindMethod(this, "TreeViewElementSelectedEvent", listViewControl))
-        listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this, "ListViewElementDoubleClickedEvent", keyboardLayoutChanger))
-    }
-
-    TreeViewElementSelectedEvent(listViewControl, treeViewElement, treeViewElementSelectedItemID){
+    HandleKeyboardLayerSelected(listViewControl, treeViewElement, treeViewElementSelectedItemID){
         this.currentLayer := treeViewElement.GetText(treeViewElementSelectedItemID)
 
         itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer)
