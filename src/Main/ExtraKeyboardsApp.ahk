@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
-#Include ".\UserInterface\ExtraKeyboardsAppgui.ahk"
+#Include ".\UserInterface\ExtraKeyboardsAppguiView.ahk"
+#Include ".\UserInterface\ExtraKeyboardsAppguiController.ahk"
+#Include ".\UserInterface\ExtraKeyboardsAppguiModel.ahk"
 ; #Include ".\Main.ahk"
 
 ; |--------------------------------------------------|
@@ -28,18 +30,14 @@ Class ExtraKeyboardsApp{
     MainScript := ""
 
     __New(keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames){
-
         this.MainScript := mainScript
-        pathToExistingProfiles := "..\..\config\UserProfiles"
-        pathToPresetProfiles := "..\..\config\PresetProfiles"
-        pathToMetaFile := "..\..\config\meta.ini"
-        pathToEmptyProfile := "..\..\config\EmptyProfile"
-
-        this.UserInterface := ExtraKeyboardsAppgui(pathToExistingProfiles, pathToPresetProfiles, pathToMetaFile, pathToEmptyProfile, keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames)
+        this.Model := ExtraKeyboardsAppGuiModel(keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, keyNames)
+        this.UserInterface := ExtraKeyboardsAppGuiView()
+        this.Controller := ExtraKeyboardsAppGuiController(this.Model, this.UserInterface, keyboardLayersInfoRegister, mainScript)
     }
 
     Start(){
-        this.UserInterface.CreateMain()
+        this.UserInterface.CreateMain(this.Controller)
     }
 
     getExtraKeyboardsAppgui(){

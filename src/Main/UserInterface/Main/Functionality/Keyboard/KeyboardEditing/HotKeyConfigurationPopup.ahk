@@ -39,7 +39,7 @@ class HotKeyConfigurationPopup{
         this.arrayOfKeyNames := arrayOfKeyNames
     }
 
-    CreatePopupForHotkeyRegistry(hotkeysRegistry, listViewColumn, hotkeyCommand, hotkeyAction){
+    CreatePopupForHotkeyRegistry(hotkeyCommand, hotkeyAction){
 
         this.originalHotkey := hotkeyCommand
         this.currentHotkeyFormatted := hotkeyCommand
@@ -75,16 +75,17 @@ class HotKeyConfigurationPopup{
     }
 
     createChangeButtons(){
-        buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80 xm", "Change original hotkey")
+        buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80 xm", "Change Hotkey")
         buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent())
         
-        buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change original action")
+        buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change Action")
         buttonToChangeOriginalAction.onEvent("Click", (*) => this.buttonToChangeOriginalActionClickedEvent())
     }
 
     createFinalizationButtons(){
         this.saveButton := this.mainGui.AddButton("Default w80", "Save+Done")
         this.cancelButton := this.mainGui.AddButton("Default w80", "Cancel+Done")
+        this.cancelButton.onEvent("Click", (*) => this.mainGui.Destroy())
         this.deleteButton := this.mainGui.AddButton("Default w80", "Delete+Done")
     }
 
@@ -126,9 +127,6 @@ class HotKeyConfigurationPopup{
         this.saveButton.onEvent("Click", event)
     }
 
-    addCancelButtonClickedEvent(event){
-        this.cancelButton.onEvent("Click", event)
-    }
 
     undoDeletionButtonClickedEvent(){
         this.hotkeyDeleted := false

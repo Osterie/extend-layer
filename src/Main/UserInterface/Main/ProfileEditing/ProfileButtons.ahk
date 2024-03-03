@@ -155,7 +155,7 @@ class ProfileButtons{
     }
     
     RenameProfile(currentProfile){
-        inputPrompt := InputBox("Please write the new name for the profile!", "Edit object value",, currentProfile)
+        inputPrompt := InputBox("Please write the new name for the profile! `n Original profile name: " . currentProfile, "Edit object value",, currentProfile)
     
         if inputPrompt.Result = "Cancel"{
             ; Do nothing
@@ -199,21 +199,21 @@ class ProfileButtons{
         }
     }
     
-    AddProfile(){
-        addProfileGui := Gui()
+    ; AddProfile(){
+    ;     addProfileGui := Gui()
     
-        addProfileGui.OnEvent("Close", (*) => addProfileGui.Destroy())
+    ;     addProfileGui.OnEvent("Close", (*) => addProfileGui.Destroy())
     
-        addProfileGui.Opt("+Resize +MinSize320x240")
+    ;     addProfileGui.Opt("+Resize +MinSize320x240")
     
-        addPresetProfileButton := addProfileGui.Add("Button", "Default w80 xm+1", "Add preset profile")
-        addPresetProfileButton.OnEvent("Click", (*) => this.AddPresetProfile())
+    ;     ; addPresetProfileButton := addProfileGui.Add("Button", "Default w80 xm+1", "Add preset profile")
+    ;     ; addPresetProfileButton.OnEvent("Click", (*) => this.AddPresetProfile())
     
-        addCustomProfileButton := addProfileGui.Add("Button", "Default w80 ym+1", "Add custom profile")
-        addCustomProfileButton.OnEvent("Click", (*) => this.AddCustomProfile())
+    ;     ; addCustomProfileButton := addProfileGui.Add("Button", "Default w80 ym+1", "Add custom profile")
+    ;     ; addCustomProfileButton.OnEvent("Click", (*) => this.AddCustomProfile())
         
-        addProfileGui.Show()
-    }
+    ;     addProfileGui.Show()
+    ; }
 
     AddPresetProfile(){
         presetProfileAddingGui := Gui()

@@ -29,12 +29,12 @@ class EditorView{
     }
     
     CreateRenameProfileInputBox(){
-        inputPrompt := InputBox("Please write the new name for the profile!", "Edit object value",, this.model.getCurrentProfile())
+        inputPrompt := InputBox("Please write the new name for the profile! `n Original profile name: " . this.model.getCurrentProfile(), "Edit object value",, this.model.getCurrentProfile())
         this.controller.HandleRenameProfile(this.model.getCurrentProfile(), inputPrompt)
     } 
 
     CreateDeleteProfileInputBox(){
-        inputPrompt := InputBox("Are you sure you want to delete this profile? Deleted profiles cannot be resuscitated. Type yes to confirm", "Edit object value",, this.model.getCurrentProfile())
+        inputPrompt := InputBox("Are you sure you want to delete the profile named '" . this.model.getCurrentProfile() .  "'? Deleted profiles cannot be resuscitated. Type yes to confirm", "Edit object value",, this.model.getCurrentProfile())
         this.controller.HandleDeleteProfile(inputPrompt)
     }
 

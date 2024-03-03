@@ -69,6 +69,11 @@ class HotKeyInfo{
                 stringToReturn .= argument . ","
             }
         }
+
+        ; Remove the last comma, which should not be there yaknow
+        stringToReturn := RegExReplace(stringToReturn, "," , "",,  1, -1)
+
+
         return stringToReturn
     }
 
