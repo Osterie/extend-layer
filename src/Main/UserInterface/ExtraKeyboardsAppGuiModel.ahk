@@ -23,6 +23,28 @@ Class ExtraKeyboardsAppGuiModel{
 
     }
 
+    ChangeHotkey(originalHotkey, newHotkey, newAction){
+
+        this.keyboardLayersInfoRegister.ChangeHotkey(this.GetCurrentLayer(), originalHotkey, newHotkey)
+
+        if (newAction != ""){
+            this.keyboardLayersInfoRegister.ChangeAction(this.GetCurrentLayer(), originalHotkey, newAction)
+        }
+        else{
+            msgbox("new action was blank, action unchanged...")
+        }
+
+        ; TODO create a method for this.
+        toJsonReader := KeyboadLayersInfoClassObjectReader()
+        toJsonReader.ReadObjectToJson(this.keyboardLayersInfoRegister)
+        jsonObject := toJsonReader.getJsonObject()
+
+        formatterForJson := JsonFormatter()
+        jsonString := formatterForJson.FormatJsonObject(jsonObject)
+        FileRecycle(this.GetPathToCurrentProfile() . "\Keyboards.json")
+        FileAppend(jsonString, this.GetPathToCurrentProfile() . "\Keyboards.json", "UTF-8")
+    }
+
     GetFunctionNames(){
         pathToObjectsIniFile := this.GetPathToCurrentSettings()
 
@@ -93,6 +115,10 @@ Class ExtraKeyboardsAppGuiModel{
 
     GetPathToCurrentSettings(){
         return FilePaths.GetPathToCurrentSettings()
+    }
+
+    GetPathToCurrentProfile(){
+        return FilePaths.GetPathToCurrentProfile()
     }
 
 }

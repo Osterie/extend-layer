@@ -51,7 +51,7 @@ class FilePaths{
             currentProfileName := this.CURRENT_PROFILE
         }
 
-        PATH_TO_CURRENT_KEYBOARD_LAYOUT := this.PATH_TO_PROFILES . this.CURRENT_PROFILE . "/Keyboards.json"
+        PATH_TO_CURRENT_KEYBOARD_LAYOUT := this.GetPathToCurrentProfile() . "/Keyboards.json"
         return PATH_TO_CURRENT_KEYBOARD_LAYOUT
     }
 
@@ -59,13 +59,17 @@ class FilePaths{
         if (currentProfileName = ""){
             currentProfileName := this.CURRENT_PROFILE
         }
-        PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := this.PATH_TO_PROFILES . this.CURRENT_PROFILE . "/ClassObjects.ini"
+        PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := this.GetPathToCurrentProfile() . "/ClassObjects.ini"
         return PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE
     }
 
     static SetCurrentProfile(currentProfileName){
         this.CURRENT_PROFILE := currentProfileName
         iniWrite(this.CURRENT_PROFILE, this.PATH_TO_META_INI_FILE, "General", "activeUserProfile")
+    }
+
+    static GetPathToCurrentProfile(){
+        return this.PATH_TO_PROFILES . this.CURRENT_PROFILE
     }
 
     static GetCurrentProfile(){

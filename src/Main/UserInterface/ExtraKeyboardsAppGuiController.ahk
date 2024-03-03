@@ -27,11 +27,6 @@ Class ExtraKeyboardsAppGuiController{
 
     }
 
-
-    GetFunctionNames(){
-        return this.model.GetFunctionNames()
-    }
-
     HandleProfileChangedEvent(*){
         ; TODO this should probably be changed? it is sort of heavy to basically restart the entire program when changing profiles.
         this.mainScript.Start()
@@ -74,37 +69,14 @@ Class ExtraKeyboardsAppGuiController{
     }
 
 
-    ; NOTE, info has no info for button clicks, which this is for.
-    HotKeyConfigurationPopupSaveEvent(popupForConfiguringHotkey, info, buttonClicked){
+    HotKeyConfigurationPopupSaveEvent(popupForConfiguringHotkey, *){
         
         originalHotkey := popupForConfiguringHotkey.getOriginalHotkey()
         newHotkey := popupForConfiguringHotkey.getHotkey()
         newAction := popupForConfiguringHotkey.getAction()
 
-        ; TODO now i must update the json file with the new hotkey if it is valid...
-        ; TODO keyboardLayersInfoRegister change a hotkey, turn into a json file, and then change the existing json file
+        this.model.ChangeHotkey(originalHotkey, newHotkey, newAction)
 
-        this.keyboardLayersInfoRegister.ChangeHotkey(this.GetCurrentLayer(), originalHotkey, newHotkey)
-
-        ; TODO perhaps a else with some information here
-        if (newAction != ""){
-            this.keyboardLayersInfoRegister.ChangeAction(this.GetCurrentLayer(), originalHotkey, newAction)
-        }
-
-        ; TODO create a method for this.
-        toJsonReader := KeyboadLayersInfoClassObjectReader()
-        toJsonReader.ReadObjectToJson(this.keyboardLayersInfoRegister)
-        jsonObject := toJsonReader.getJsonObject()
-
-        currentProfileName := iniRead(FilePaths.GetPathToMetaFile(), "General", "activeUserProfile")
-
-        pathToCurrentProfile := FilePaths.GetPathToProfiles() . "\" . currentProfileName
-
-        
-        formatterForJson := JsonFormatter()
-        jsonString := formatterForJson.FormatJsonObject(jsonObject)
-        FileRecycle(pathToCurrentProfile . "\Keyboards.json")
-        FileAppend(jsonString, pathToCurrentProfile . "\Keyboards.json", "UTF-8")
         this.MainScript.RunLogicalStartup()
         
         popupForConfiguringHotkey.Destroy()
@@ -156,5 +128,9 @@ Class ExtraKeyboardsAppGuiController{
 
     GetKeyNames(){
         return this.model.GetKeyNames()
+    }
+
+    GetFunctionNames(){
+        return this.model.GetFunctionNames()
     }
 }

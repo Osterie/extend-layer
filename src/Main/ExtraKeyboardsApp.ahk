@@ -30,8 +30,6 @@ Class ExtraKeyboardsApp{
     MainScript := ""
 
     __New(keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames){
-
-        
         this.MainScript := mainScript
         this.Model := ExtraKeyboardsAppGuiModel(keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, keyNames)
         this.UserInterface := ExtraKeyboardsAppGuiView()
