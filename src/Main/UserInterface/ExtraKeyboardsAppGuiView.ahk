@@ -33,10 +33,7 @@ Class ExtraKeyboardsAppGuiView{
 
         ; TODO when a profile is changed, update the paths? or not? since i at the moment restart everything when the profile is changed.
         this.CreateProfileEditor()
-
-
         this.CreateTabs()
-        
         this.setColors()
         
         ; Create gui in the top left corner of the screen
@@ -69,7 +66,6 @@ Class ExtraKeyboardsAppGuiView{
         ; TODO perhaps use inheritance or something, but this is the exact same as CreateFunctionSettingsTab pretty much 
         keyboardLayoutChanger := TreeViewMaker()
         keyboardLayoutChanger.createElementsForGui(this.ExtraKeyboardsAppGui, this.controller.GetKeyboardLayerIdentifiers())
-        ; TODO use this.jsonwhatever ...
         
         listViewControl := ListViewMaker()
         listViewControl.CreateListView(this.ExtraKeyboardsAppGui, ["KeyCombo","Action"])

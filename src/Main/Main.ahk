@@ -38,21 +38,6 @@
 
 #Include <JsonParsing\JXON\JXON>
 
-
-; TODO Cleanup!
-
-; TODO to add a new hotkey, add buttons for this, since the listview can max out making it hard to click an empty cell.
-
-; TODO perhaps should add a "description" for the hotkeys in the gui
-
-; TODO all these #includes are terribly time consuming to write out (for one). Find a way to do it better...
-
-; TODO add a functionality to change background image on computer...
-
-
-; TODO create a quick volume changer to change volume of different apps.
-; TODO change volume of app for x minutes?
-
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
 ; |--------------------------------------------------|
@@ -83,40 +68,8 @@ SendMode "Event"
 ; 	Run("*RunAs `"" A_ScriptFullPath "`"") 
 ; }
 
-; |-----------------------------------|
-; |------------HOTSTRINGS-------------|
-; |-----------------------------------|
-; TODO hotstrings should be in ini file and yeah
-
-; This hotstring replaces "]d" with the current date and time via the statement below.
-:*:]d::{
-    Send(FormatTime(, "d.M.yyyy"))  ; It will look like 13.7.2005
-}
-
-; |-----------------------------------|
-; |----------PRIVATE PERSONAL---------|
-; |-----------------------------------|
-
-try{
-    name := IniRead("../../config/privateConfig.ini", "PrivateInfo", "Name")
-    eMail := IniRead("../../config/privateConfig.ini", "PrivateInfo", "Email")
-    password := IniRead("../../config/privateConfig.ini", "PrivateInfo", "Password")
-    
-    Hotstring( "::agb", StrReplace(name, "Ã¸", "ø"))
-    Hotstring( "::a@", eMail)
-    Hotstring("::@p", password)
-}
-    
-
 ; ------------Global or whatever stusff----------------
 
-; TODO create a nice gui for user to create their own scripts. This is probably pretty hard, since i need to create an instance of the class they create and store it...
-
-; TODO add hotkey for creating tab to the right...
-
-; TODO to help the user learn how to use the script, a ghost keyboard should be made. All actions could have a short name, and when the key on the ghostkeyboard was hovered a description could be shown
-
-; TODO in objects.json or whatever, add a "Optional" field to parameters, which says if the parameter is optional or not.
 
 ; |-------------------------------------------|
 ; |----------- OBJECT CREATION ---------------|
