@@ -1,11 +1,8 @@
 #Requires AutoHotkey v2.0
 
-#Include "KeyboardOverlaysInitializer.ahk"
 #Include "HotkeyInitializer.ahk"
-
-#Include "..\..\JsonParsing\JXON\JXON.ahk"
-
-
+#Include "KeyboardOverlaysInitializer.ahk"
+#Include <Util\JsonParsing\JXON\JXON>
 
 Class MainStartupConfigurator{
 

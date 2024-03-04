@@ -1,9 +1,9 @@
 #Requires AutoHotkey v2.0
 
-#Include "..\..\..\..\..\util\GuiControlsRegistry.ahk"
+#Include <UserInterface\Main\util\GuiControlsRegistry>
 #Include "..\HotkeyChanging\HotkeyCrafterGui.ahk"
 #Include ".\ParameterControlsGroup.ahk"
-#Include <MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
+#Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
 class ActionCrafterGui{
 

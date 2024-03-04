@@ -5,38 +5,38 @@
 #Requires Autohotkey v2.0
 
 #Include "<UserInterface\ExtraKeyboardsApp>"
-#Include <KeysPressedGui>
-#Include <ProcessManager>
-#Include <CommandPromptOpener>
-#Include <Clock\CountdownGUI>
-#Include <IODevices\Mouse>
-#Include <IODevices\Monitor>
-#Include <IODevices\DeviceManager>
-#Include <IODevices\ComputerInputController>
-#Include <Privacy\ScreenPrivacyController>
-#Include <Privacy\UnauthorizedUseDetector>
-#Include <BatteryAndPower\BatteryController>
-#Include <KeyboardOverlay\KeyboardOverlay>
-#Include <KeyboardOverlay\KeyboardOverlayRegistry>
-#Include <Navigation\WebNavigation\WebNavigator>
-#Include <Navigation\FileNavigation\FileExplorerNavigator>
+#Include <Util\KeysPressedGui>
+#Include <Actions\ProcessManager>
+#Include <Actions\CommandPromptOpener>
+#Include <Actions\Clock\CountdownGUI>
+#Include <Actions\IODevices\Mouse>
+#Include <Actions\IODevices\Monitor>
+#Include <Actions\IODevices\DeviceManager>
+#Include <Actions\IODevices\ComputerInputController>
+#Include <Actions\Privacy\ScreenPrivacyController>
+#Include <Actions\Privacy\UnauthorizedUseDetector>
+#Include <Actions\BatteryAndPower\BatteryController>
+#Include <Util\KeyboardOverlay\KeyboardOverlay>
+#Include <Util\KeyboardOverlay\KeyboardOverlayRegistry>
+#Include <Actions\Navigation\WebNavigation\WebNavigator>
+#Include <Actions\Navigation\FileNavigation\FileExplorerNavigator>
 #Include <LayerIndication\LayerIndicatorController>
-#Include <Configuration\StartupConfiguration\MainStartupConfigurator>
+#Include <Util\StartupConfiguration\MainStartupConfigurator>
 
-#Include <MetaInfo\MetaInfoReading\ObjectsJsonReader>
-#Include <MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader>
-#Include <MetaInfo\MetaInfoReading\KeyboadLayersInfoClassObjectReader>
-#Include <MetaInfo\MetaInfoReading\KeyNamesReader>
+#Include <Util\MetaInfo\MetaInfoReading\ObjectsJsonReader>
+#Include <Util\MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader>
+#Include <Util\MetaInfo\MetaInfoReading\KeyboadLayersInfoClassObjectReader>
+#Include <Util\MetaInfo\MetaInfoReading\KeyNamesReader>
 
 
 
-#Include <MetaInfo\MetaInfoStorage\Objects\MethodInfo>
-#Include <MetaInfo\MetaInfoStorage\Objects\ObjectInfo>
-#Include <MetaInfo\MetaInfoStorage\Objects\MethodRegistry>
-#Include <MetaInfo\MetaInfoStorage\Objects\ObjectRegistry>
-#Include <MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include <Util\MetaInfo\MetaInfoStorage\Objects\MethodInfo>
+#Include <Util\MetaInfo\MetaInfoStorage\Objects\ObjectInfo>
+#Include <Util\MetaInfo\MetaInfoStorage\Objects\MethodRegistry>
+#Include <Util\MetaInfo\MetaInfoStorage\Objects\ObjectRegistry>
+#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
 
-#Include <JsonParsing\JXON\JXON>
+#Include <Util\JsonParsing\JXON\JXON>
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|

@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include "..\..\..\..\..\util\GuiControlsRegistry.ahk"
+#Include <UserInterface\Main\util\GuiControlsRegistry>
 
 class HotkeyCrafterGui{
 

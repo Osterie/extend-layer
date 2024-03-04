@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#Include <MetaInfo\MetaInfoStorage\FoldersAndFiles\IniFileReader>
-#Include <MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\IniFileReader>
+#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
 
 
 Class ExtraKeyboardsAppGuiModel{
