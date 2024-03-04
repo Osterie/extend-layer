@@ -78,10 +78,10 @@ SendMode "Event"
 ; |----- Also makes it possible to run powercfg and such ----|
 ; |----------------------------------------------------------|
 
-if (not A_IsAdmin){
-    ; "*RunAs*" is an option for the Run() function to run a program as admin
-	Run("*RunAs `"" A_ScriptFullPath "`"") 
-}
+; if (not A_IsAdmin){
+;     ; "*RunAs*" is an option for the Run() function to run a program as admin
+; 	Run("*RunAs `"" A_ScriptFullPath "`"") 
+; }
 
 ; |-----------------------------------|
 ; |------------HOTSTRINGS-------------|
@@ -97,13 +97,16 @@ if (not A_IsAdmin){
 ; |----------PRIVATE PERSONAL---------|
 ; |-----------------------------------|
 
-name := IniRead("../../config/privateConfig.ini", "PrivateInfo", "Name")
-eMail := IniRead("../../config/privateConfig.ini", "PrivateInfo", "Email")
-password := IniRead("../../config/privateConfig.ini", "PrivateInfo", "Password")
-
-Hotstring( "::agb", StrReplace(name, "Ã¸", "ø"))
-Hotstring( "::a@", eMail)
-Hotstring("::@p", password)
+try{
+    name := IniRead("../../config/privateConfig.ini", "PrivateInfo", "Name")
+    eMail := IniRead("../../config/privateConfig.ini", "PrivateInfo", "Email")
+    password := IniRead("../../config/privateConfig.ini", "PrivateInfo", "Password")
+    
+    Hotstring( "::agb", StrReplace(name, "Ã¸", "ø"))
+    Hotstring( "::a@", eMail)
+    Hotstring("::@p", password)
+}
+    
 
 ; ------------Global or whatever stusff----------------
 
@@ -177,7 +180,7 @@ Class Main{
         }
         catch{
             ; Unable to read information for the current profile, so we use default to an empty profile.
-            this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := FilePaths.GetPathToEmptyKeyboardProfile()
+            this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := FilePaths.GetPathToEmptySettingsProfile()
             keyboardSettingsString := FileRead(FilePaths.GetPathToEmptyKeyboardProfile(), "UTF-8")
             this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
         }
