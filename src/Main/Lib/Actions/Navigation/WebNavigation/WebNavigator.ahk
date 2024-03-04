@@ -122,7 +122,6 @@ Class WebNavigator{
         }
     }
 
-    ; TODO instead of using loadtime = 3000, it should be a setting in the ini file, but i dont want to do this right now, easy fix
     AskChatGptAboutHighligtedTextOrClipboardContent(){
         ; saves current clipboard value to a variable
         clipboardValue := A_Clipboard

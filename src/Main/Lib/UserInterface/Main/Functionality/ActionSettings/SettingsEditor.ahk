@@ -13,8 +13,6 @@ class SettingsEditor{
 
     CreateControls(settingName, settingValue){
 
-        ; TODO should be set to on top, can not be not top ever...
-        
         this.SettingsGui := Gui("+Resize +MinSize300x560", "Settings")
         
         this.SettingsGui.Add("Text", "w300 h20", "Setting:")
