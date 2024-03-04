@@ -1,30 +1,28 @@
 #Requires AutoHotkey v2.0
 
-#Include "..\..\..\..\..\..\HotkeyFormatConverter.ahk"
+#Include <Util\HotkeyFormatConverter>
 
 class HotKeyInfo{
 
-    hotkeyName := ""
-    friendlyHotkeyName := ""
+    ; The key to press to trigger the "toKey" or the "objectName.methodName(parameters)" action.
+    fromKey := ""
     isObject := ""
     objectName := ""
     methodName := ""
     parameters := []
     
-    newHotKey := ""
-    newHotKeyFriendlyName := ""
+    ; The key triggered by fromKey. For example, if fromKey is "a", and toKey is "b". Pressing "a" would result in "b" being sent.
+    toKey := ""
     modifiers := ""
 
-    __New(hotkeyName){
-        this.hotkeyName := hotkeyName
-        this.friendlyHotkeyName := HotkeyFormatConverter.convertToFriendlyHotkeyName(hotkeyName)
+    __New(fromKey){
+        this.fromKey := fromKey
     }
 
-    setInfoForNormalHotKey(newHotKey, modifiers){
+    setInfoForNormalHotKey(toKey, modifiers){
         this.isObject := false
-        this.newHotKey := newHotKey
+        this.toKey := toKey
         this.modifiers := modifiers
-        this.newHotKeyFriendlyName := HotkeyFormatConverter.convertToFriendlyHotkeyName(this.modifiers . this.newHotKey)
     }
 
     setInfoForSpecialHotKey(objectName, MethodName, parameters){
@@ -35,8 +33,7 @@ class HotKeyInfo{
     }
 
     changeHotkey(newHotKeyName){
-        this.hotkeyName := newHotKeyName
-        this.friendlyHotkeyName := HotkeyFormatConverter.convertToFriendlyHotkeyName(newHotKeyName)
+        this.fromKey := newHotKeyName
     }
 
     hotkeyIsObject(){
@@ -48,7 +45,7 @@ class HotKeyInfo{
             return this.objectName . "." . this.methodName . "(" . this.parametersToString(this.parameters) . ")"
         }
         else{
-            return this.newHotKeyFriendlyName
+            return HotkeyFormatConverter.convertToFriendlyHotkeyName(this.modifiers . this.toKey)
         }
     }
 
@@ -78,17 +75,17 @@ class HotKeyInfo{
     }
 
     getHotkeyName(){
-        return this.hotkeyName
+        return this.fromKey
     }
 
     getNewHotkeyName(){
-        return this.newHotKey
+        return this.toKey
     }
     getNewHotkeyModifiers(){
         return this.modifiers
     }
     getFriendlyHotkeyName(){
-        return this.friendlyHotkeyName
+        return HotkeyFormatConverter.convertToFriendlyHotkeyName(this.fromKey)
     }
 
     getObjectName(){
@@ -102,5 +99,4 @@ class HotKeyInfo{
     getParameters(){
         return this.parameters
     }
-
 }
