@@ -1,7 +1,7 @@
 ﻿#Requires Autohotkey v2.0
 
-
 Class NumberDisplay{
+    
     value := 0
     upperLimit := 0
 

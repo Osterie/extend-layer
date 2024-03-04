@@ -8,7 +8,7 @@
 #Include <Util\KeysPressedGui>
 #Include <Actions\ProcessManager>
 #Include <Actions\CommandPromptOpener>
-#Include <Actions\Clock\CountdownGUI>
+#Include <Actions\Clock\CountdownDisplay>
 #Include <Actions\IODevices\Mouse>
 #Include <Actions\IODevices\Monitor>
 #Include <Actions\IODevices\DeviceManager>

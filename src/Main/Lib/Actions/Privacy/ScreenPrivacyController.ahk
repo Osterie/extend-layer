@@ -1,5 +1,5 @@
 #Requires Autohotkey v2.0
-#Include "..\Clock\CountdownGUI.ahk"
+#Include "..\Clock\CountdownDisplay.ahk"
 
 Class ScreenPrivacyController{
 
@@ -7,7 +7,7 @@ Class ScreenPrivacyController{
     GUIPrivacyBox := ""
     minutes := 3
     seconds := 0
-    GUICountdown := CountdownGUI(3,0)
+    GUICountdown := CountdownDisplay(3,0)
 
     CreateGui(){
         this.GUIPrivacyBox := Gui()
