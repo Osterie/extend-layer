@@ -18,11 +18,17 @@ To run this script, do the following:
   Alternatively, you can [download it here.](https://www.autohotkey.com/download/) <br>
   Or go to the official [autohotkey website](https://www.autohotkey.com/) and click the download button then choose Download v2.0. <br>
 
-2. __Run the script__
-
+2. __Download and run the script__
+   1. Go to [Releases](https://github.com/Osterie/extend-layer/releases/).
+   2. Download the source code for the latest version.
+   3. After downloading the source code, unzip it to an appropriate location on your computer.
+   4. To run the program, run the "Run_this.ahk" file by double clicking it.
+   5. If you want, you can right click "Run_this.ahk" and create a shortcut which you can drag to your desktop.
+   
 3. __How to run script on startup.__<br>
    On Windows:
-   Use the shortcut Win+R to run windows utility, and then write "shell:startup" and press enter
+   1. Use the shortcut Win+R to run windows utility, and then write "shell:startup" and press enter.
+   2. Create a shortcut of the "Run_this.ahk" file and drag it to the file explorer tab you just opened with shell:startup
 
 ## Summary
 1. Remap keys to new keys or new functionalities using a Gui.
