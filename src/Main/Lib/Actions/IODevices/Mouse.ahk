@@ -45,6 +45,16 @@ Class Mouse{
         MouseMove(x, y)
     }
 
+    BlockAllMouseInput(){
+        this.BlockMovementInput()
+        this.BlockMouseClicks()
+    }
+    
+    UnBlockAllMouseInput(){
+        this.UnBlockMovementInput()
+        this.UnBlockMouseClicks()
+    }
+
     BlockMovementInput(){
         BlockInput("MouseMove")
     }
@@ -53,7 +63,22 @@ Class Mouse{
         BlockInput("MouseMoveOff")
     }
 
+    BlockMouseClicks(){
+        Hotkey("LButton", this.DoNothing, "On UseErrorLevel")
+        Hotkey("*LButton", this.DoNothing, "On UseErrorLevel")
+    }
+
+    UnBlockMouseClicks(){
+        Hotkey("LButton", this.DoNothing, "Off UseErrorLevel")
+        Hotkey("*LButton", this.DoNothing, "Off UseErrorLevel")
+    }
+
+    ; Run a powershell exe to disable mouse
     DisableMouse(){
         ; TODO: Implement
+    }
+
+    DoNothing(){
+        return
     }
 }
