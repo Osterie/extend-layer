@@ -77,9 +77,6 @@ SendMode "Event"
 
 Class Main{
 
-
-    PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := ""
-
     keyboardSettingsJsonObject := ""
 
     Objects := Map()
@@ -116,9 +113,6 @@ Class Main{
     }
 
     UpdatePathsToInfo(){
-
-        this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := FilePaths.GetPathToCurrentSettings()
-
         try{
             ; Try to read the information for the current profile.
             keyboardSettingsString := FileRead(FilePaths.GetPathToCurrentKeyboardLayout(), "UTF-8")
@@ -126,8 +120,8 @@ Class Main{
         }
         catch{
             ; Unable to read information for the current profile, so we use default to an empty profile.
-            this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := FilePaths.GetPathToEmptySettingsProfile()
-            keyboardSettingsString := FileRead(FilePaths.GetPathToEmptyKeyboardProfile(), "UTF-8")
+            FilePaths.SetCurrentProfile("Empty")
+            keyboardSettingsString := FileRead(FilePaths.GetPathToCurrentKeyboardLayout(), "UTF-8")
             this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
         }
     }
@@ -183,7 +177,7 @@ Class Main{
         ; Used to control mouse actions, and disable/enable mouse
         MouseInstance := Mouse()
         ; Sets the click speed of the auto clicker
-        mouseCps := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Mouse", "AutoClickerClickCps")
+        mouseCps := IniRead(FilePaths.GetPathToCurrentSettings(), "Mouse", "AutoClickerClickCps")
         MouseInstance.SetAutoClickerClickCps(mouseCps)
         this.Objects["MouseInstance"] := MouseInstance
 
@@ -197,7 +191,7 @@ Class Main{
 
 
         ; Allows opening cmd pathed to the current file location for vs code and file explorer.
-        commandPromptDefaultPath := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "CommandPrompt", "DefaultPath")
+        commandPromptDefaultPath := IniRead(FilePaths.GetPathToCurrentSettings(), "CommandPrompt", "DefaultPath")
         CommandPrompt := CommandPromptOpener(commandPromptDefaultPath)
         this.Objects["CommandPrompt"] := CommandPrompt
 
@@ -223,7 +217,7 @@ Class Main{
         PrivacyController.CreateGui()
         ; Sets the countdown for the screen hider to 3 minutes. (change to your screen sleep time)
         ; This shows a countdown on the screen, and when it reaches 0, the screen goes to sleep
-        monitorSleepTimeMinutes := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "PrivacyController", "MonitorSleepTimeMinutes")
+        monitorSleepTimeMinutes := IniRead(FilePaths.GetPathToCurrentSettings(), "PrivacyController", "MonitorSleepTimeMinutes")
         PrivacyController.ChangeCountdown(monitorSleepTimeMinutes,0)
         this.Objects["PrivacyController"] := PrivacyController
 
@@ -240,8 +234,8 @@ Class Main{
         this.Objects["MonitorInstance"] := MonitorInstance
 
         ; Used to switch between power saver mode and normal power mode (does not work as expected currently, percentage to switch to power saver is changed, but power saver is never turned on...)
-        powerSaverModeGUID := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Battery", "PowerSaverModeGUID")
-        defaultPowerModeGUID := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "Battery", "DefaultPowerModeGUID")
+        powerSaverModeGUID := IniRead(FilePaths.GetPathToCurrentSettings(), "Battery", "PowerSaverModeGUID")
+        defaultPowerModeGUID := IniRead(FilePaths.GetPathToCurrentSettings(), "Battery", "DefaultPowerModeGUID")
         Battery := BatteryController(50, 50)
         Battery.setPowerSaverModeGUID(powerSaverModeGUID)
         Battery.setDefaultPowerModeGUID(defaultPowerModeGUID)
@@ -249,7 +243,7 @@ Class Main{
         this.Objects["Battery"] := Battery
 
         ; Used to search for stuff in the browser, translate, and excecute shortcues like close tabs to the right in browser
-        chatGptLoadTime := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "WebNavigator", "chatGptLoadTime")
+        chatGptLoadTime := IniRead(FilePaths.GetPathToCurrentSettings(), "WebNavigator", "chatGptLoadTime")
         WebSearcher := WebNavigator()
         WebSearcher.SetChatGptLoadTime(chatGptLoadTime)
         this.Objects["WebSearcher"] := WebSearcher
@@ -258,7 +252,7 @@ Class Main{
         UnautorizedUserDetector := UnauthorizedUseDetector()
         this.Objects["UnautorizedUserDetector"] := UnautorizedUserDetector
 
-        lockComputerOnTaskBarClick := IniRead(this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE, "UnauthorizedUseDetector", "lockComputerOnTaskBarClick")
+        lockComputerOnTaskBarClick := IniRead(FilePaths.GetPathToCurrentSettings(), "UnauthorizedUseDetector", "lockComputerOnTaskBarClick")
 
         if (lockComputerOnTaskBarClick = "true"){
             UnautorizedUserDetector.ActivateLockComputerOnTaskBarClick()
