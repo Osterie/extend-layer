@@ -4,12 +4,12 @@
 ProcessSetPriority "High"
 SetWorkingDir(A_ScriptDir)
 
-if not A_IsAdmin
-	Run("*RunAs `"" A_ScriptFullPath "`"") ; (A_AhkPath is usually optional if the script has the .ahk extension.) You would typically check  first.
+; if not A_IsAdmin
+; 	Run("*RunAs `"" A_ScriptFullPath "`"") ; (A_AhkPath is usually optional if the script has the .ahk extension.) You would typically check  first.
 
 
 ; Extra layers script
-^!l::Run("*RunAs " A_ScriptDir "\Main\Main.ahk")
+^!l::Run(A_ScriptDir "\Main\Main.ahk")
 ; For testing
 ^!i::Run(A_ScriptDir "\..\tests\removeme.ahk")
 ^!u::Run(A_ScriptDir "\ExtraKeyboardsApp.ahk")
