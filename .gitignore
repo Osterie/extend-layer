@@ -1,5 +1,6 @@
 # test.ahk
 PrivateConfig.ini
 config/UserProfiles/*
+!config/UserProfiles/Default
 tests/*
 TODO.ahk
