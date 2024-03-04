@@ -79,7 +79,6 @@ Class Main{
 
 
     PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := ""
-    PATH_TO_CURRENT_KEYBOARD_LAYOUT := ""
 
     keyboardSettingsJsonObject := ""
 
@@ -117,18 +116,12 @@ Class Main{
     }
 
     UpdatePathsToInfo(){
-        
-        ; TODO create class for this...
-        CURRENT_PROFILE_NAME := iniRead(FilePaths.GetPathToMetaFile(), "General", "activeUserProfile")
-        
-        FilePaths.SetCurrentProfile(CURRENT_PROFILE_NAME)
 
-        this.PATH_TO_CURRENT_KEYBOARD_LAYOUT := FilePaths.GetPathToCurrentKeyboardLayout()
         this.PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := FilePaths.GetPathToCurrentSettings()
 
         try{
             ; Try to read the information for the current profile.
-            keyboardSettingsString := FileRead(this.PATH_TO_CURRENT_KEYBOARD_LAYOUT, "UTF-8")
+            keyboardSettingsString := FileRead(FilePaths.GetPathToCurrentKeyboardLayout(), "UTF-8")
             this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
         }
         catch{
@@ -324,7 +317,7 @@ Class Main{
     }
 
     ReadKeyboardLayersInfoFromJson(){
-        JsonReaderForKeyboardLayersInfo := KeyboardLayersInfoJsonReader(this.PATH_TO_CURRENT_KEYBOARD_LAYOUT)
+        JsonReaderForKeyboardLayersInfo := KeyboardLayersInfoJsonReader(FilePaths.GetPathToCurrentKeyboardLayout())
         JsonReaderForKeyboardLayersInfo.ReadKeyboardLayersInfoFromJson()
         this.KeyboardLayersInfoRegister := JsonReaderForKeyboardLayersInfo.getKeyboardLayersInfoRegister()
         this.keyboardLayerIdentifiers := this.KeyboardLayersInfoRegister.getLayerIdentifiers()
