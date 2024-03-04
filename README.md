@@ -9,6 +9,27 @@
 3. [What does Extend-layer do?](#what-does-extend-layer-do)
 4. [How to use this program](#how-to-use-this-program)
 5. [Functions and how to use them](#functions-and-how-to-use-them)
+
+## Getting started
+To run this script, do the following:
+
+1. __Download and install Autohotkey v2.0__ <br>
+  There are multiple options for this, the easiest is downloading it with [this .exe file.](https://www.autohotkey.com/download/ahk-v2.exe) <br>
+  Alternatively, you can [download it here.](https://www.autohotkey.com/download/) <br>
+  Or go to the official [autohotkey website](https://www.autohotkey.com/) and click the download button then choose Download v2.0. <br>
+
+2. __Download and run the script__
+   1. Go to [Releases](https://github.com/Osterie/extend-layer/releases/).
+   2. Download the source code for the latest version.
+   3. After downloading the source code, unzip it to an appropriate location on your computer.
+   4. To run the program, run the "Run_this.ahk" file by double clicking it.
+   5. If you want, you can right click "Run_this.ahk" and create a shortcut which you can drag to your desktop.
+   
+3. __How to run script on startup.__<br>
+   On Windows:
+   1. Use the shortcut Win+R to run windows utility, and then write "shell:startup" and press enter.
+   2. Create a shortcut of the "Run_this.ahk" file and drag it to the file explorer tab you just opened with shell:startup
+
 ## Summary
 1. Remap keys to new keys or new functionalities using a Gui.
 2. Create Multiple virtual keyboards.
@@ -38,23 +59,12 @@ There are many premade special functionalities in this program, for example chan
 ## How to use this program?
 After following the [getting started guide](#getting-started).
 Run ExtraKeyboardsApp.ahk. This will open a gui where you can change you profile and edit keybinds.
+
 ### How to change a key bind?
 
 #### Changing a key to a normal key
 #### Changing a key to a functionality
 
-
-## Getting started
-To run this script, do the following:
-
-1. __Download and install Autohotkey v2.0__ <br>
-  There are multiple options for this, the easiest is downloading it with [this .exe file.](https://www.autohotkey.com/download/ahk-v2.exe) <br>
-  Alternatively, you can [download it here.](https://www.autohotkey.com/download/) <br>
-  Or go to the official [autohotkey website](https://www.autohotkey.com/) and click the download button then choose Download v2.0. <br>
-
-3. __How to run script on startup.__<br>
-   On Windows:
-   Use the shortcut Win+R to run windows utility, and then write "shell:startup" and press enter
 
 
 ## Functions and how to use them
