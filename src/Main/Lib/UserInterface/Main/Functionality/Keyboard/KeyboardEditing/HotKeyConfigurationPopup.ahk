@@ -3,6 +3,9 @@
 
 #Include ".\KeyChanging\HotkeyChanging\HotkeyCrafterGui.ahk"
 #Include ".\KeyChanging\ActionChanging\ActionCrafterGui.ahk"
+
+#Include <UserInterface\Main\util\GuiSizeChanger>
+
 #Include <HotkeyFormatConverter>
 
 class HotKeyConfigurationPopup{

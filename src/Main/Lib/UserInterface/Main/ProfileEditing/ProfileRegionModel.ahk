@@ -1,8 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#Include <FoldersAndFiles\FolderManager>
-
-#Include "<MetaInfo\MetaInfoStorage\Files\FilePaths>"
+#Include <MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include <MetaInfo\MetaInfoStorage\FoldersAndFiles\FolderManager>
 
 
 class ProfileRegionModel{

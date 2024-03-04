@@ -1,17 +1,9 @@
 #Requires AutoHotkey v2.0
 
-#Include "Main\Functionality\ActionSettings\SettingsEditor.ahk"
-
-#Include "Main\Functionality\Keyboard\KeyboardEditing\HotKeyConfigurationPopup.ahk"
-
-#Include "<MetaInfo\MetaInfoStorage\Files\FilePaths>"
-
 #Include <JsonParsing\JsonFormatter\JsonFormatter>
-
-; TODO have a hotkey which sends a given key(or hotkey) after a given delay.
-; TODO could also have a hotkey/key which is excecuted if a loud enough sound is caught by the mic.
-
-; TODO make it possible for the user to add own ahk scripts to the program, and then use them as functions. 
+#Include <MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include "Main\Functionality\ActionSettings\SettingsEditor.ahk"
+#Include "Main\Functionality\Keyboard\KeyboardEditing\HotKeyConfigurationPopup.ahk"
 
 Class ExtraKeyboardsAppGuiController{
 

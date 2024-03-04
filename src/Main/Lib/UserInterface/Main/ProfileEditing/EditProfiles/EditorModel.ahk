@@ -1,4 +1,5 @@
 #Requires AutoHotkey v2.0
+
 ; TODO inheritance with ProfileRegionModel perhaps
 class EditorModel{
     currentProfile := ""

@@ -4,7 +4,7 @@
 ; [^ = Ctrl] [+ = Shift] [! = Alt] [# = Win]
 #Requires Autohotkey v2.0
 
-#Include ".\ExtraKeyboardsApp.ahk"
+#Include "<UserInterface\ExtraKeyboardsApp>"
 #Include <KeysPressedGui>
 #Include <ProcessManager>
 #Include <CommandPromptOpener>
@@ -30,11 +30,11 @@
 
 
 
-#Include "<MetaInfo\MetaInfoStorage\Files\FilePaths>"
 #Include <MetaInfo\MetaInfoStorage\Objects\MethodInfo>
-#Include <MetaInfo\MetaInfoStorage\Objects\MethodRegistry>
 #Include <MetaInfo\MetaInfoStorage\Objects\ObjectInfo>
+#Include <MetaInfo\MetaInfoStorage\Objects\MethodRegistry>
 #Include <MetaInfo\MetaInfoStorage\Objects\ObjectRegistry>
+#Include <MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
 
 #Include <JsonParsing\JXON\JXON>
 

@@ -1,18 +1,12 @@
 #Requires AutoHotkey v2.0
 
-#Include "Main\ProfileEditing\ProfileRegionModel.ahk"
-#Include "Main\ProfileEditing\ProfileRegionView.ahk"
-#Include "Main\ProfileEditing\ProfileRegionController.ahk"
-#Include "Main\util\TreeViewMaker.ahk"
-#Include "Main\util\ListViewMaker.ahk"
-#Include "Main\Functionality\Keyboard\KeyboardEditing\HotKeyConfigurationPopup.ahk"
-#Include "Main\util\GuiColorsChanger.ahk"
-
-
-; TODO have a hotkey which sends a given key(or hotkey) after a given delay.
-; TODO could also have a hotkey/key which is excecuted if a loud enough sound is caught by the mic.
-
-; TODO make it possible for the user to add own ahk scripts to the program, and then use them as functions. 
+#Include <UserInterface\Main\ProfileEditing\ProfileRegionModel>
+#Include <UserInterface\Main\ProfileEditing\ProfileRegionView>
+#Include <UserInterface\Main\ProfileEditing\ProfileRegionController>
+#Include <UserInterface\Main\util\TreeViewMaker>
+#Include <UserInterface\Main\util\ListViewMaker>
+#Include <UserInterface\Main\Functionality\Keyboard\KeyboardEditing\HotKeyConfigurationPopup>
+#Include <UserInterface\Main\util\GuiColorsChanger>
 
 Class ExtraKeyboardsAppGuiView{
 
@@ -31,7 +25,6 @@ Class ExtraKeyboardsAppGuiView{
         this.ExtraKeyboardsAppGui.BackColor := "051336"
         this.ExtraKeyboardsAppGui.SetFont("c6688cc Bold")
 
-        ; TODO when a profile is changed, update the paths? or not? since i at the moment restart everything when the profile is changed.
         this.CreateProfileEditor()
         this.CreateTabs()
         this.setColors()
@@ -62,8 +55,6 @@ Class ExtraKeyboardsAppGuiView{
     }
 
     CreateKeyboardsTab(){
-
-        ; TODO perhaps use inheritance or something, but this is the exact same as CreateFunctionSettingsTab pretty much 
         keyboardLayoutChanger := TreeViewMaker()
         keyboardLayoutChanger.createElementsForGui(this.ExtraKeyboardsAppGui, this.controller.GetKeyboardLayerIdentifiers())
         

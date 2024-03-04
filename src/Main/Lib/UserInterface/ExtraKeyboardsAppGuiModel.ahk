@@ -1,10 +1,8 @@
 #Requires AutoHotkey v2.0
 
-; TODO move inifilereader to meta info reading
+#Include <MetaInfo\MetaInfoStorage\FoldersAndFiles\IniFileReader>
+#Include <MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
 
-#Include <FoldersAndFiles\IniFileReader>
-
-#Include "<MetaInfo\MetaInfoStorage\Files\FilePaths>"
 
 Class ExtraKeyboardsAppGuiModel{
 

@@ -1,7 +1,5 @@
 #Requires AutoHotkey v2.0
 
-#Include <FoldersAndFiles\FolderManager>
-
 #Include ".\EditProfiles\EditorView.ahk"
 #Include ".\EditProfiles\EditorModel.ahk"
 #Include ".\AddProfiles\AddProfilesView.ahk"
@@ -55,7 +53,6 @@ class ProfileRegionController{
         return this.model.getCurrentProfile()
     }
 
-    ; TODO dont take DropDownList
     HandleProfileChangedEvent(dropDownList, *){
         profileSelected := dropDownList.Text
 
