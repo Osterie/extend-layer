@@ -75,6 +75,8 @@ SendMode "Event"
 ; |----------- OBJECT CREATION ---------------|
 ; |-------------------------------------------|
 
+; ¨~2^
+
 Class Main{
 
     keyboardSettingsJsonObject := ""
@@ -208,6 +210,7 @@ Class Main{
         ; Used to hide screen and parts of the screen
         PrivacyController := ScreenPrivacyController()
         PrivacyController.CreateGui()
+        ; TODO move the ini reads to the class
         ; Sets the countdown for the screen hider to 3 minutes. (change to your screen sleep time)
         ; This shows a countdown on the screen, and when it reaches 0, the screen goes to sleep
         monitorSleepTimeMinutes := IniRead(FilePaths.GetPathToCurrentSettings(), "PrivacyController", "MonitorSleepTimeMinutes")
