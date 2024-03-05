@@ -175,17 +175,11 @@ Class Main{
 
     InitializeObjectsForKeybinds(){
         ; Used to control mouse actions, and disable/enable mouse
-        MouseInstance := Mouse()
-        ; Sets the click speed of the auto clicker
-        ; TODO Instead, perhaps the field should be initialized in the Mouse class, and then the value should be set in the Mouse class
-        mouseCps := IniRead(FilePaths.GetPathToCurrentSettings(), "Mouse", "AutoClickerClickCps")
-        MouseInstance.SetAutoClickerClickCps(mouseCps)
+        MouseInstance := Mouse(true)
         this.Objects["MouseInstance"] := MouseInstance
-
 
         KeyboardInstance := Keyboard()
         this.Objects["KeyboardInstance"] := KeyboardInstance
-
 
         ProcessManagerInstance := ProcessManager()
         this.Objects["ProcessManagerInstance"] := ProcessManagerInstance
