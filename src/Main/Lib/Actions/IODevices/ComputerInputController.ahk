@@ -14,12 +14,28 @@ Class ComputerInputController{
     }
 
     BlockAllInput(){
-        this.KeyboardInput.BlockKeyInput()
-        this.MouseInput.BlockAllMouseInput()
+        this.BlockKeyboard()
+        this.BlockMouse()
     }
 
     UnBlockAllInput(){
+        this.UnBlockKeyboard()
+        this.UnBlockMouse()
+    }
+
+    BlockKeyboard(){
+        this.KeyboardInput.BlockKeyInput()
+    }
+
+    UnBlockKeyboard(){
         this.KeyboardInput.UnBlockKeyInput()
+    }
+
+    BlockMouse(){
+        this.MouseInput.BlockAllMouseInput()
+    }
+
+    UnBlockMouse(){
         this.MouseInput.UnBlockAllMouseInput()
     }
 }
