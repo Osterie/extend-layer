@@ -5,7 +5,7 @@
 # Extend layer
 
 The preset profiles are HEAVILY "inspired" by the extend layer created by DreymaR [link](https://dreymar.colemak.org/layers-extend.html). Check it out.
-If you use this program, i recommend reading about the extend layer, and copying this [Image](https://dreymar.colemak.org/res/div/Extend/Extend-ISO-NoMod-Win_96d-Labels.png) since it is basically the layout of the preset profile. In the future i will create a better way to keep track of which keys are where and what they do.
+If you use this program i recommend reading about the extend layer and copying this [Image](https://dreymar.colemak.org/res/div/Extend/Extend-ISO-NoMod-Win_96d-Labels.png) since it is basically the layout of the preset profile. In the future i will create a better way to keep track of which keys are where and what they do, since the extend layer i have created is not identical to the DreymaR extend layer.
 
 !WARNING! If you start using the Extend Layer, you will NEVER go back.
 The extend layer makes navigation a lot more ergonomic and fast. I highly reccomend learning the shortcuts from the extend layer [WebPage](https://dreymar.colemak.org/layers-extend.html#:~:text=F12%20is%20faster.-,GENERAL,-SHORTCUTS).
