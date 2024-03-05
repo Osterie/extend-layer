@@ -1,25 +1,31 @@
 #Requires AutoHotkey v2.0
 
+#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+
 Class CommandPromptOpener{
 
     defaultPath := ""
 
-    __New(defaultPath){
-        this.defaultPath := defaultPath
+    __New(){
+        this.SetDefaultPathFromFile()
     }
 
     ; public method
     ; Works with vscode, and file explorer
     OpenCmdPathedToCurrentLocation(){
-
-        if ( WinActive("ahk_class CabinetWClass") ){
-            this.OpenCmdFileExplorer()
+        try{
+            if ( WinActive("ahk_class CabinetWClass") ){ ;File explorer
+                this.OpenCmdFileExplorer()
+            }
+            else if( WinActive("ahk_exe Code.exe") ){ ;Vscode
+                this.OpenCmdFromVisualStudioCode()
+            }
+            else{
+                this.OpenToDefaultPath()
+            }
         }
-        else if( WinActive("ahk_exe Code.exe") ){
-            this.OpenCmdFromVisualStudioCode()
-        }
-        else{
-            run("cmd", this.defaultPath)
+        catch{
+            msgbox("Error opening command prompt to current location...", "Notify")
         }
     }
 
@@ -28,7 +34,7 @@ Class CommandPromptOpener{
             run("cmd", WinGetTitle("A"))
         }
         catch{
-            run("cmd", this.defaultPath)
+            this.OpenToDefaultPath()
         }
     }
 
@@ -48,10 +54,29 @@ Class CommandPromptOpener{
             run("cmd", pathToCurrentWorkFile)
         }
         catch{
-            run("cmd", this.defaultPath)
+            this.OpenToDefaultPath()
         }
         ;put the last copied thing back in the clipboard
         A_Clipboard := clipboardValue 
+    }
+
+    OpenToDefaultPath(){
+        try{
+            run("cmd", this.defaultPath)
+        }
+        catch{
+            msgbox("Error opening command prompt the given default path, perhaps it does not exist. `nThe default path you gave was: " . this.GetDefaultPath(), "Notify")
+        }
+    }
+
+    SetDefaultPathFromFile(){
+        try{
+            commandPromptDefaultPath := IniRead(FilePaths.GetPathToCurrentSettings(), "CommandPrompt", "DefaultPath")
+            this.SetDefaultPath(commandPromptDefaultPath)
+        }
+        catch{
+            msgbox("Error reading the default path from the settings file for Command Prompt Opener.", "Notify")
+        }
     }
 
     SetDefaultPath(defaultPath){

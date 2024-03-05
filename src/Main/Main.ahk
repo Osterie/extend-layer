@@ -184,10 +184,8 @@ Class Main{
         ProcessManagerInstance := ProcessManager()
         this.Objects["ProcessManagerInstance"] := ProcessManagerInstance
 
-
         ; Allows opening cmd pathed to the current file location for vs code and file explorer.
-        commandPromptDefaultPath := IniRead(FilePaths.GetPathToCurrentSettings(), "CommandPrompt", "DefaultPath")
-        CommandPrompt := CommandPromptOpener(commandPromptDefaultPath)
+        CommandPrompt := CommandPromptOpener()
         this.Objects["CommandPrompt"] := CommandPrompt
 
 
