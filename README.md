@@ -2,6 +2,14 @@
   An autohotkey program to change key binds and create extra keyboards.
 </pre>
 
+The preset profiles and are HEAVILY "inspired" by the extend layer created by DreymaR [link](https://dreymar.colemak.org/layers-extend.html). Check it out.
+If you use this program, i recommend reading about the extend layer, and copying this [Image](https://dreymar.colemak.org/res/div/Extend/Extend-ISO-NoMod-Win_96d-Labels.png) since it is basically the layout of the preset profile. In the future i will create a better way to keep track of which keys are where and what they do.
+
+!WARNING! If you start using the Extend Layer, you will NEVER go back.
+The extend layer makes navigation a lot more ergonomic and fast. I highly reccomend learning the shortcuts from the extend layer [WebPage](https://dreymar.colemak.org/layers-extend.html#:~:text=F12%20is%20faster.-,GENERAL,-SHORTCUTS).
+
+My favorite use for the extend layer, is coding in an IDE, for example VsCode. The extend layer really complements the existing shortcuts of VsCode and makes coding a lot faster, more ergonomic and more satisfying. 
+
 # Extend layer
 ## Quick links
 1. [Getting started](#getting-started)
