@@ -2,7 +2,7 @@
 
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\IniFileReader>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
-
+#Include <Util\MetaInfo\MetaInfoReading\KeyboadLayersInfoClassObjectReader>
 
 Class ExtraKeyboardsAppGuiModel{
 

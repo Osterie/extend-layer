@@ -1,5 +1,8 @@
 #Requires AutoHotkey v2.0
 
+#Include <Util\KeyboardOverlay\KeyboardOverlay>
+
+
 Class KeyboardOverlaysInitializer{
     
     jsonFile := ""

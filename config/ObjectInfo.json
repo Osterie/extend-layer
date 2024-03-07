@@ -361,9 +361,9 @@
             }
         }
     },
-    "LayerIndicatorController":{
+    "LayerController":{
         "ObjectName": "layers",
-        "ClassName": "LayerIndicatorController",
+        "ClassName": "LayerController",
         "Description": "Used for changign the active keyboard laye and its layer indicator",
         "Methods": {
             "toggleLayerIndicator":{

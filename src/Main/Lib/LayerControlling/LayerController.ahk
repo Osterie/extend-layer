@@ -5,7 +5,7 @@
 ; TODO: perhaps it should be called registry?
 
 ; TODO; instead of multiple guis, it would be possible to just change the color and have the same gui no change...
-Class LayerIndicatorController{
+Class LayerController{
     
     layers := []
     activeLayer := 0

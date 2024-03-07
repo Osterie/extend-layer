@@ -11,6 +11,7 @@ Class LayerIndicator{
         this.indicatorColor := color
     }
 
+    ; TODO create settings for changing the location, color, size, and such of the layer indicator...
     createLayerIndicator(){
         this.layerIndicatorGui := Gui()
         this.layerIndicatorGui.Opt("+E0x20 -Caption +AlwaysOnTop -MaximizeBox +ToolWindow")
