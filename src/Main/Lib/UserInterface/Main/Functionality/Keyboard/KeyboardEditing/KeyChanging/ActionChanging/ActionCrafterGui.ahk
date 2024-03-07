@@ -5,18 +5,12 @@
 #Include ".\ParameterControlsGroup.ahk"
 #Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
+#Include <UserInterface\Main\util\GuiSizeChanger>
+
+
 class ActionCrafterGui{
 
     GuiObject := ""
-
-    controlsForAdvancedHotkeys := ""
-    controlsForSimpleHotkeys := ""
-    controlsForModifiers := ""
-    groupBox := ""
-    
-    saveButton := ""
-    cancelButton := ""
-
     activeObjectsRegistry := ""
 
     hotkeyCrafter := ""
@@ -153,13 +147,13 @@ class ActionCrafterGui{
 
         friendlyNameOfActionControl := this.controlsForSpecificSpecialActionCrafting.getControl("friendlyNameOfActionControl")
         friendlyNameOfActionControl.Text := friendlyNameOfAction
-        this.SetTextAndResize(friendlyNameOfActionControl, friendlyNameOfAction)
+        GuiSizeChanger.SetTextAndResize(friendlyNameOfActionControl, friendlyNameOfAction)
         
         actionDescriptionControl := this.controlsForSpecificSpecialActionCrafting.getControl("actionDescriptionControl")
         actionDescriptionControl.Text := actionDescription
         textWidth := (this.GetTextSize(actionDescriptionControl, actionDescription)[1])
 
-        ; this.SetTextAndResize(actionDescriptionControl, actionDescription)
+        ; GuiSizeChanger.SetTextAndResize(actionDescriptionControl, actionDescription)
 
 
         newHeight := 50 + (textWidth/350)*20
@@ -272,13 +266,6 @@ class ActionCrafterGui{
 
     Destroy(){
         this.GuiObject.destroy()
-    }
-
-    ; TODO create a class for this...
-    SetTextAndResize(textCtrl, text) {
-        textCtrl.Move(,, this.GetTextSize(textCtrl, text)*)
-        textCtrl.Value := text
-        textCtrl.Gui.Show('AutoSize')
     }
 
     GetTextSize(textCtrl, text) {
