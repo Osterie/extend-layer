@@ -151,7 +151,7 @@ Class Main{
     }
 
     ReadObjectsInformationFromJson(){
-        JsonReaderForObjects := ObjectsJsonReader(FilePaths.GetObjectInfo(), this.Objects)
+        JsonReaderForObjects := ObjectsJsonReader(this.Objects)
         this.ObjectRegister := JsonReaderForObjects.ReadObjectsFromJson()
     }
 

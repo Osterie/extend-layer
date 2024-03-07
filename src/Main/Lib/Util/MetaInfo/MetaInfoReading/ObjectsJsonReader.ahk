@@ -7,16 +7,17 @@
 #Include "..\MetaInfoStorage\Objects\MethodRegistry.ahk"
 #Include "..\MetaInfoStorage\Objects\ParameterInfo.ahk"
 
+#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+
+
 
 class ObjectsJsonReader{
 
-    PATH_TO_OBJECT_INFO := ""
+    PATH_TO_OBJECT_INFO := FilePaths.GetObjectInfo()
     ObjectRegister := ""
     ObjectInstanceRegistry := ""
-    allClassesInformationJson := ""
 
-    __New(jsonFilePath, ObjectInstanceRegistry){
-        this.PATH_TO_OBJECT_INFO := jsonFilePath
+    __New(ObjectInstanceRegistry){
         this.ObjectRegister := ObjectRegistry()
         this.ObjectInstanceRegistry := ObjectInstanceRegistry
     }
@@ -28,12 +29,12 @@ class ObjectsJsonReader{
         catch{
             throw ValueError("Could not read the file: " . this.PATH_TO_OBJECT_INFO)
         }
-        this.allClassesInformationJson := jxon_load(&jsonStringFunctionalityInformation)
+        allClassesInformationJson := jxon_load(&jsonStringFunctionalityInformation)
 
         ; -----------Read JSON----------------
 
         ; TODO! add try catch to all of these. If one of these informations are missing something wrong will happen!
-        For ClassName , ClassInformation in this.allClassesInformationJson{
+        For ClassName , ClassInformation in allClassesInformationJson{
             
             ObjectName := ClassInformation["ObjectName"]
             className := ClassInformation["ClassName"]
