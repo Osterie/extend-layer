@@ -5,21 +5,16 @@
 #Requires Autohotkey v2.0
 
 #Include "<UserInterface\ExtraKeyboardsApp>"
+
 #Include <Util\StartupConfiguration\ObjectsInitializer>
-
-
-
-
 #Include <Util\StartupConfiguration\MainStartupConfigurator>
+
+#Include <Util\MetaInfo\MetaInfoReading\KeyNamesReader>
 #Include <Util\MetaInfo\MetaInfoReading\ObjectsJsonReader>
 #Include <Util\MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader>
-#Include <Util\MetaInfo\MetaInfoReading\KeyNamesReader>
-
 
 #Include <Util\MetaInfo\MetaInfoStorage\Objects\ObjectRegistry>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
-
-#Include <Util\JsonParsing\JXON\JXON>
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -71,7 +66,6 @@ Class Main{
 
     __New(){
 
-
     }
 
     ; Main method used to start the script.
@@ -80,8 +74,8 @@ Class Main{
             this.RunLogicalStartup()
             this.RunAppGui()
         }
-        catch ValueError as e{
-            this.ReadObjectsInformationFromJson()
+        catch Error as e{
+            MsgBox("Error: " e.Message)
             this.RunAppGui()
         }
     }

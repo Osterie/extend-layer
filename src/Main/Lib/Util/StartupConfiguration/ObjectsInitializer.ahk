@@ -1,5 +1,6 @@
 #Requires Autohotkey v2.0
 
+#Include <LayerControlling\LayerController>
 #Include <Util\KeyboardOverlay\KeyboardOverlay>
 #Include <Util\KeyboardOverlay\KeyboardOverlayRegistry>
 
@@ -15,7 +16,7 @@
 #Include <Actions\BatteryAndPower\BatteryController>
 #Include <Actions\Navigation\WebNavigation\WebNavigator>
 #Include <Actions\Navigation\FileNavigation\FileExplorerNavigator>
-#Include <LayerControlling\LayerController>
+#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
 
 class ObjectsInitializer{
 
