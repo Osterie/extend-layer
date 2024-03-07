@@ -6,6 +6,8 @@ Class WebNavigator{
 
     chatGptLoadTime := 3000
 
+    PATH_TO_IMAGE_ASSETS := A_ScriptDir . "\..\..\assets\imageSearchImages\"
+
     ; Public method
     ; Closes tabs to the right of the current tab, only works in chrome ATM
     CloseTabsToTheRight(){
@@ -34,9 +36,10 @@ Class WebNavigator{
 
         ComputerInput.UnBlockKeyboard()
     }
+    ; Images should be for example "loginButton.png"
+    LoginToSite(url, images, loadTime){
 
-    LoginToSite(url, loginButtonImagePaths, loadTime){
-
+        ; TODO split into methods...
         rememberedClipboardValue := A_Clipboard
         trimmedUrl := StrReplace(url, "https://www", "")
         trimmedUrl := StrReplace(trimmedUrl, "https://", "")
@@ -49,11 +52,9 @@ Class WebNavigator{
         this.OpenUrl(url)
         Sleep(loadTime)
 
-
-        
-        while ( (index <= loginButtonImagePaths.Length+1) && !loginButtonClicked ){
+        while ( (index < images.Length+1) && !loginButtonClicked ){
             try{
-                this.ClickLoginButton(loginButtonImagePaths[index])
+                this.ClickLoginButton(this.PATH_TO_IMAGE_ASSETS . images[index])
                 ; if it reaches here, the login button is clicked
                 loginButtonClicked := true
 
@@ -83,7 +84,7 @@ Class WebNavigator{
     }
 
     ClickLoginButton(loginButtonImagePath){
-        ErrorLevel := !ImageSearch(&loginButtonXCoordinate, &loginButtonYCoordinate, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir loginButtonImagePath)
+        ErrorLevel := !ImageSearch(&loginButtonXCoordinate, &loginButtonYCoordinate, 0, 0, A_ScreenWidth, A_ScreenHeight, loginButtonImagePath)
         MouseClick("left", loginButtonXCoordinate, loginButtonYCoordinate)
     }
 
@@ -141,6 +142,7 @@ Class WebNavigator{
         Run("https://chat.openai.com/")
         Sleep(loadTime)
         Send(question)
+        Sleep(1000)
         Send("{Enter}")
     }
 
@@ -199,7 +201,7 @@ Class WebNavigator{
     }
 
     OpenUrl(url){
-        Run("chrome.exe " url)
+        Run("chrome.exe -incognito " url)
     }
 
 }
