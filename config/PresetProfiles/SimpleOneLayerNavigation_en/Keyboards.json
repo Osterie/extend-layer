@@ -183,7 +183,7 @@
         "+t": {
             "isObject": true,
             "ObjectName": "WebSearcher",
-            "MethodName": "AskChatGptAboutHighligtedTextOrClipboardContent",
+            "MethodName": "QuestionChatGpt",
             "Parameters": []
         },
         "^t": {

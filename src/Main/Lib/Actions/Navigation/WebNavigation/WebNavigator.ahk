@@ -16,7 +16,7 @@ Class WebNavigator{
     }
 
     ; Public method
-    ; Closes tabs to the right of the current tab, only works in chrome ATM
+    ; Closes tabs to the right of the current tab, only works in chrome ATM TODO make it work for more browsers
     CloseTabsToTheRight(){
 
         ComputerInput := ComputerInputController()
@@ -43,58 +43,76 @@ Class WebNavigator{
 
         ComputerInput.UnBlockKeyboard()
     }
+
+    ; Public method
     ; Images should be for example "loginButton.png"
     LoginToSite(url, images, loadTime){
-
-        ; TODO split into methods...
-        rememberedClipboardValue := A_Clipboard
-        trimmedUrl := StrReplace(url, "https://www", "")
-        trimmedUrl := StrReplace(trimmedUrl, "https://", "")
-        trimmedUrl := StrReplace(trimmedUrl, "http://www", "")
-        trimmedUrl := StrReplace(trimmedUrl, "http://", "")
-
-        loginButtonClicked := false
-        index := 1
 
         this.OpenUrl(url)
         Sleep(loadTime)
 
-        while ( (index < images.Length+1) && !loginButtonClicked ){
+        loginButtonClicked := false
+        timesTriedToClickLoginButton := 1
+        targetSiteUrl := this.TrimUrl(url)
+
+        while ( (timesTriedToClickLoginButton <= images.Length) && !loginButtonClicked ){
             try{
-                this.ClickLoginButton(this.PATH_TO_IMAGE_ASSETS . images[index])
+                this.ClickLoginButton(this.PATH_TO_IMAGE_ASSETS . images[timesTriedToClickLoginButton])
                 ; if it reaches here, the login button is clicked
                 loginButtonClicked := true
 
-                Sleep(loadTime/2)
-                Send("^l")
-                Send("^c")
-                Send("{F6 2}")
-
-                trimmedClipboard := StrReplace(A_Clipboard, "https://www", "")
-                trimmedClipboard := StrReplace(trimmedClipboard, "https://", "")
-                trimmedClipboard := StrReplace(trimmedClipboard, "http://www", "")
-                trimmedClipboard := StrReplace(trimmedClipboard, "http://", "")
+                currentSiteUrl := this.TrimUrl(this.GetCurrentUrl())
 
                 ; this checks if the clipboard content (which is the new site url, after logging in) is the same as the given url.
-                if (!InStr(trimmedClipboard, trimmedUrl)){
-                    Send("^l")
-                    Send(url)
-                    Send("{Enter}")
+                if (!InStr(currentSiteUrl, targetSiteUrl)){
+                    this.ChangeCurrentUrl()
                 }
-        
-                A_Clipboard := rememberedClipboardValue
             }
             catch{
-                index += 1
+                Sleep(loadTime/(images.Length))
+                timesTriedToClickLoginButton += 1
             }
         }
     }
 
+    ; TODO check if a webbrowser is active perhaps.
+    ; Private method.
+    GetCurrentUrl(){
+        Sleep(200)
+        rememberedClipboardValue := A_Clipboard
+
+        Send("!d")
+        Send("^c")
+        Send("{F6 2}")
+
+        urlText := A_Clipboard
+        A_Clipboard := rememberedClipboardValue
+
+        return urlText
+    }
+
+    ChangeCurrentUrl(newUrl){
+        Send("!d")
+        Send(newUrl)
+        Send("{Enter}")
+    }
+
+    ; Private method
+    TrimUrl(url){
+        trimmedUrl := StrReplace(url, "https://www", "")
+        trimmedUrl := StrReplace(trimmedUrl, "https://", "")
+        trimmedUrl := StrReplace(trimmedUrl, "http://www", "")
+        trimmedUrl := StrReplace(trimmedUrl, "http://", "")
+        return trimmedUrl
+    }
+
+    ; Private method
     ClickLoginButton(loginButtonImagePath){
         ErrorLevel := !ImageSearch(&loginButtonXCoordinate, &loginButtonYCoordinate, 0, 0, A_ScreenWidth, A_ScreenHeight, loginButtonImagePath)
         MouseClick("left", loginButtonXCoordinate, loginButtonYCoordinate)
     }
 
+    ; Public method
     ; Searches google for the currently highlighteded text, or the text stored in the clipboard
     LookUpHighlitedTextOrClipboardContent(){
         
@@ -108,6 +126,7 @@ Class WebNavigator{
         A_Clipboard := rememberedClipboardValue
     }
 
+    ; Public method
     SearchFromInputBox(){
         inputBoxWebSearch := InputBox("What would you like to search in the browser?", "Web search", "w150 h150")
         ; Only if the search is not cancelled will it search
@@ -116,6 +135,7 @@ Class WebNavigator{
         }
     }
 
+    ; Private method
     SearchInBrowser(searchTerm){
         googleSearchUrl := "https://www.google.com/search?q="
         isUrl := this.isUrl(searchTerm)
@@ -130,7 +150,8 @@ Class WebNavigator{
         }
     }
 
-    AskChatGptAboutHighligtedTextOrClipboardContent(){
+    ; Public method.
+    QuestionChatGpt(){
         ; saves current clipboard value to a variable
         clipboardValue := A_Clipboard
         ; saves a new value to the clipboard, if any text is highligted
@@ -144,6 +165,7 @@ Class WebNavigator{
         A_Clipboard := clipboardValue
     }
 
+    ; Private method
     ; asks chat-gpt a question, loadTime is the estimated time the site takes to load in, in probably not the best way to do this
     AskChatGpt(question, loadTime){
         Run("https://chat.openai.com/")
@@ -153,14 +175,17 @@ Class WebNavigator{
         Send("{Enter}")
     }
 
-    SetChatGptLoadTime(loadTime){
-        this.chatGptLoadTime := loadTime
-    }
-
+    ; Public method
+    ; Translates highligted text or the text in the clipboard, and then shows it in a message box
     ShowTranslatedText(fromLanguage := "auto", toLanguage := "en", &variants := ""){
         translatedText := this.TranslateHighlightedTextOrClipboard(fromLanguage, toLanguage, &variants)
         MsgBox(translatedText)
     }
+
+    OpenUrl(url){
+        Run("chrome.exe -incognito " url)
+    }
+
     ; Translates highligted text or the text in the clipboard
     ; if no fromLanguage is specified, then the language is automatically detected
     ; if no toLanguage is specified, then the language is translated to english
@@ -191,7 +216,7 @@ Class WebNavigator{
         translatedText := TextTranslator.Translate(textToTranslate, fromLanguage, toLanguage, &variants)
         return translatedText
     }
-
+    
     ; meant to be a private method, checks if a text is a url
     ; returns a boolean
     IsUrl(text){
@@ -207,8 +232,7 @@ Class WebNavigator{
         return isUrl
     }
 
-    OpenUrl(url){
-        Run("chrome.exe -incognito " url)
+    SetChatGptLoadTime(loadTime){
+        this.chatGptLoadTime := loadTime
     }
-
 }

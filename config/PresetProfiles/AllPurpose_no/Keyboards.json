@@ -188,7 +188,7 @@
 			"modifiers":""
 		},
 		"+t":{
-			"MethodName":"AskChatGptAboutHighligtedTextOrClipboardContent",
+			"MethodName":"QuestionChatGpt",
 			"ObjectName":"WebSearcher",
 			"Parameters":[],
 			"isObject":1
