@@ -187,68 +187,6 @@
 			"key":"BackSpace",
 			"modifiers":""
 		},
-		"+1":{
-			"MethodName":"OpenUrl",
-			"ObjectName":"WebSearcher",
-			"Parameters":["https:\/\/tp.educloud.no\/ntnu\/timeplan\/?&type=student&weekTo=18&ar=2024&&id[]=35565"],
-			"isObject":1
-		},
-		"+2":{
-			"MethodName":"LoginToSite",
-			"ObjectName":"WebSearcher",
-			"Parameters":["https:\/\/ntnu.blackboard.com\/ultra\/course",
-			["as",
-			"..\\\\..\\\\..\\\\imageSearchImages\\\\BBLogin.png"],
-			5000],
-			"isObject":1
-		},
-		"+3":{
-			"MethodName":"LoginToSite",
-			"ObjectName":"WebSearcher",
-			"Parameters":["https:\/\/ntnu.blackboard.com\/ultra\/courses\/_40058_1\/cl\/outline",
-			["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\BBLogin.png"],
-			3000],
-			"isObject":1
-		},
-		"+4":{
-			"MethodName":"LoginToSite",
-			"ObjectName":"WebSearcher",
-			"Parameters":["https:\/\/ntnu.blackboard.com\/ultra\/courses\/_39985_1\/cl\/outline",
-			["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\BBLogin.png"],
-			3000],
-			"isObject":1
-		},
-		"+5":{
-			"MethodName":"LoginToSite",
-			"ObjectName":"WebSearcher",
-			"Parameters":["https:\/\/ntnu.blackboard.com\/ultra\/courses\/_45450_1\/cl\/outline",
-			["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\BBLogin.png"],
-			3000],
-			"isObject":1
-		},
-		"+6":{
-			"MethodName":"LoginToSite",
-			"ObjectName":"WebSearcher",
-			"Parameters":["https:\/\/ntnu.blackboard.com\/ultra\/courses\/_40179_1\/cl\/outline",
-			["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\BBLogin.png"],
-			3000],
-			"isObject":1
-		},
-		"+7":{
-			"MethodName":"LoginToSite",
-			"ObjectName":"WebSearcher",
-			"Parameters":["https:\/\/s.ntnu.no\/IMAx2024",
-			["..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\jupyterHubMaximized.png",
-			"..\\\\..\\\\..\\\\assets\\\\imageSearchImages\\\\jupyterHubMinimized.png"],
-			4000],
-			"isObject":1
-		},
-		"+8":{
-			"MethodName":"OpenUrl",
-			"ObjectName":"WebSearcher",
-			"Parameters":["https:\/\/capquiz.math.ntnu.no\/my\/"],
-			"isObject":1
-		},
 		"+t":{
 			"MethodName":"AskChatGptAboutHighligtedTextOrClipboardContent",
 			"ObjectName":"WebSearcher",
@@ -274,42 +212,6 @@
 			"no"],
 			"isObject":1
 		},
-		"^1":{
-			"MethodName":"NavigateToFolder",
-			"ObjectName":"FileExplorer",
-			"Parameters":["C:\\"],
-			"isObject":1
-		},
-		"^2":{
-			"MethodName":"NavigateToFolder",
-			"ObjectName":"FileExplorer",
-			"Parameters":["C:\\Users\\adria"],
-			"isObject":1
-		},
-		"^3":{
-			"MethodName":"NavigateToFolder",
-			"ObjectName":"FileExplorer",
-			"Parameters":["C:\\Users\\adria\\github"],
-			"isObject":1
-		},
-		"^4":{
-			"MethodName":"NavigateToFolder",
-			"ObjectName":"FileExplorer",
-			"Parameters":["C:\\Users\\adria\\Downloads"],
-			"isObject":1
-		},
-		"^5":{
-			"MethodName":"NavigateToFolder",
-			"ObjectName":"FileExplorer",
-			"Parameters":["C:\\Users\\adria\\github\\University"],
-			"isObject":1
-		},
-		"^6":{
-			"MethodName":"NavigateToFolder",
-			"ObjectName":"FileExplorer",
-			"Parameters":["C:\\Users\\adria\\github\\University\\Programmering 1\\Mappe Vurdering\\mappe-idata1003-traindispatchsystem-Osterie"],
-			"isObject":1
-		},
 		"^a":{
 			"isObject":0,
 			"key":"a",
@@ -332,72 +234,6 @@
 			"ObjectName":"WebSearcher",
 			"Parameters":[],
 			"isObject":1
-		}
-	},
-	"SecondaryLayer-KeyboardOverlay1":{
-		"ShowKeyboardOverlayKey":"~Shift",
-		"overlayElements":{
-			"Column1":{
-				"description":"Open Time Table",
-				"key":"1"
-			},
-			"Column2":{
-				"description":"Black Board",
-				"key":"2"
-			},
-			"Column3":{
-				"description":"Prog 2",
-				"key":"3"
-			},
-			"Column4":{
-				"description":"System",
-				"key":"4"
-			},
-			"Column5":{
-				"description":"Math",
-				"key":"5"
-			},
-			"Column6":{
-				"description":"Data",
-				"key":"6"
-			},
-			"Column7":{
-				"description":"Jupyter Hub",
-				"key":"7"
-			},
-			"Column8":{
-				"description":"Capquiz",
-				"key":"8"
-			}
-		}
-	},
-	"SecondaryLayer-KeyboardOverlay2":{
-		"ShowKeyboardOverlayKey":"~Control",
-		"overlayElements":{
-			"Column1":{
-				"description":"Root",
-				"key":"1"
-			},
-			"Column2":{
-				"description":"Adrian",
-				"key":"2"
-			},
-			"Column3":{
-				"description":"Github",
-				"key":"3"
-			},
-			"Column4":{
-				"description":"Down loads",
-				"key":"4"
-			},
-			"Column5":{
-				"description":"School",
-				"key":"5"
-			},
-			"Column6":{
-				"description":"Mappe",
-				"key":"6"
-			}
 		}
 	},
 	"TertiaryLayer-Hotkeys":{
@@ -518,27 +354,6 @@
 			"Parameters":[63,
 			255],
 			"isObject":1
-		}
-	},
-	"TertiaryLayer-KeyboardOverlay1":{
-		"ShowKeyboardOverlayKey":"~Control",
-		"overlayElements":{
-			"Column1":{
-				"description":"Touch Screen",
-				"key":"1"
-			},
-			"Column2":{
-				"description":"Camera",
-				"key":"2"
-			},
-			"Column3":{
-				"description":"Blue tooth",
-				"key":"3"
-			},
-			"Column4":{
-				"description":"Touch Pad",
-				"key":"4"
-			}
 		}
 	}
 }
