@@ -19,7 +19,7 @@ Class MainStartupConfigurator{
         this.HotkeyInitializerInstance := HotkeyInitializer(keyboardSettingsJsonObject, this.objectRegistry)
     }
 
-    ReadKeysToNewActionsBySection(section, enableHotkeys := "on"){
+    InitializeLayer(section, enableHotkeys := "on"){
         this.HotkeyInitializerInstance.InitializeHotkeys(section . "-Hotkeys", enableHotkeys)
         this.KeyboardOverlayInitializerInstance.ChangeHotkeysStateForKeyboardOverlaysByLayerSection(section . "-KeyboardOverlay", enableHotkeys)
     }

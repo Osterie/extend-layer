@@ -125,22 +125,24 @@ Class Main{
 
     InitializeHotkeysForAllLayers(enableHotkeys := true){
         this.StartupConfigurator.CreateGlobalHotkeysForAllKeyboardOverlays()
-        this.StartupConfigurator.ReadKeysToNewActionsBySection("GlobalLayer", enableHotkeys)
+
+        ; Reads and initializes all the hotkeys which are active for every keyboard layer.
+        this.StartupConfigurator.InitializeLayer("GlobalLayer", enableHotkeys)
         
-        layers := this.getLayerController()
         HotIf "MainScript.getLayerController().getActiveLayer() == 0"
-            ; Reads and initializes all the hotkeys for the normal keyboard layer, based on how they are created in the ini file
-            this.StartupConfigurator.ReadKeysToNewActionsBySection("NormalLayer", enableHotkeys)
+            ; Reads and initializes all the hotkeys for the normal keyboard layer.
+            this.StartupConfigurator.InitializeLayer("NormalLayer", enableHotkeys)
         HotIf
         
         HotIf "MainScript.getLayerController().getActiveLayer() == 1"
-            this.StartupConfigurator.ReadKeysToNewActionsBySection("SecondaryLayer", enableHotkeys)
+            ; Reads and initializes all the hotkeys for the second keyboard layer.
+            this.StartupConfigurator.InitializeLayer("SecondaryLayer", enableHotkeys)
         HotIf
         
         HotIf "MainScript.getLayerController().getActiveLayer() == 2"
-            this.StartupConfigurator.ReadKeysToNewActionsBySection("TertiaryLayer", enableHotkeys)
+            ; Reads and initializes all the hotkeys for the third keyboard layer.
+            this.StartupConfigurator.InitializeLayer("TertiaryLayer", enableHotkeys)
         HotIf
-
     }
 
     InitializeObjects(){
@@ -174,10 +176,6 @@ Class Main{
         this.app.Start()
     }
 
-    getStartupConfigurator(){
-        return this.StartupConfigurator
-    }
-
     getLayerController(){
         return this.ObjectRegister.GetObjectInfo("layers").GetObjectInstance()
     }
@@ -191,17 +189,18 @@ Class Main{
 MainScript := Main()
 MainScript.Start()
 
+; These are needed here so the HotIf statements can be used in the Main class
 #HotIf MainScript.getLayerController().getActiveLayer() == 0
-
 #HotIf
 
 #HotIf MainScript.getLayerController().getActiveLayer() == 1
 #HotIf
 
 #HotIf MainScript.getLayerController().getActiveLayer() == 2 
-    ; ; Shows key history, used for debugging
-    ; b:: KeyHistory
 #HotIf
+
+; Shows key history, used for debugging
+; b:: KeyHistory
 
 ; Used to show user the script is enabled
 ToolTip "Script enabled!"
