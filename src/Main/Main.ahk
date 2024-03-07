@@ -6,8 +6,7 @@
 
 #Include "<UserInterface\ExtraKeyboardsApp>"
 
-#Include <Util\StartupConfiguration\ObjectsInitializer>
-#Include <Util\StartupConfiguration\MainStartupConfigurator>
+#Include <Util\StartupConfiguration\ObjectRegistryInitializer>
 
 #Include <Util\MetaInfo\MetaInfoReading\KeyNamesReader>
 #Include <Util\MetaInfo\MetaInfoReading\ObjectsJsonReader>
@@ -101,8 +100,7 @@ Class Main{
     }
 
     InitializeMetaInfo(){
-        this.InitializeObjects()
-        this.ReadObjectsInformationFromJson()
+        this.InitializeObjectRegistry()
         this.ReadKeyboardLayersInfoFromJson()
         this.ReadKeyNamesFromTxtFile()
     }
@@ -145,16 +143,10 @@ Class Main{
         HotIf
     }
 
-    InitializeObjects(){
-
-        initializerForObjects := ObjectsInitializer()
-        initializerForObjects.InitializeObjects()
-        this.Objects := initializerForObjects.GetObjects()
-    }
-
-    ReadObjectsInformationFromJson(){
-        JsonReaderForObjects := ObjectsJsonReader(this.Objects)
-        this.ObjectRegister := JsonReaderForObjects.ReadObjectsFromJson()
+    InitializeObjectRegistry(){
+        objectRegisterInitializer := ObjectRegistryInitializer()
+        objectRegisterInitializer.InitializeObjectRegistry()
+        this.ObjectRegister := objectRegisterInitializer.GetObjectRegistry()
     }
 
     ReadKeyboardLayersInfoFromJson(){
