@@ -57,9 +57,6 @@ Class Main{
     ObjectRegister := ObjectRegistry()
     KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
     StartupConfigurator := ""
-    app := ""
-
-    keyboardLayerIdentifiers := []
 
     keyNames := ""
 
@@ -163,8 +160,8 @@ Class Main{
     }
 
     RunAppGui(){
-        this.app := ExtraKeyboardsApp(this.ObjectRegister, this.KeyboardLayersInfoRegister, this, this.keyNames)
-        this.app.Start()
+        app := ExtraKeyboardsApp(this.ObjectRegister, this.KeyboardLayersInfoRegister, this, this.keyNames)
+        app.Start()
     }
 
     getLayerController(){
