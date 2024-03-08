@@ -104,4 +104,18 @@ Class KeyboardOverlay{
     ChangeElementHeight(){
 
     }
+
+    fillKeyboardOverlayInformation(keyboardOverlayInfo){
+        If (Type(keyboardOverlayInfo) = "keyboardOverlayInfo"){
+
+            KeyboardOverlayElements := keyboardOverlayInfo.getOverlayElements()
+
+            For overlayElementName, overlayElementInformation in KeyboardOverlayElements.getKeyboardOverlayElements(){
+                elementName := overlayElementInformation.getElementName()
+                description := overlayElementInformation.getDescription()
+                this.AddStaticColumn(elementName, description)
+            }
+        }
+        
+    }
 }

@@ -5,28 +5,28 @@
 
 Class KeyboardOverlaysInitializer{
     
-    jsonFile := ""
+    layersInformation := ""
     objectRegistry := ""
 
 
-    __New(jsonFile, objectRegistry){
-        this.jsonFile := jsonFile
+    __New(layersInformation, objectRegistry){
+        this.layersInformation := layersInformation
         this.objectRegistry := objectRegistry
-        this.instanceOfRegistry := this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance()
+        this.instanceOfOverlayRegistry := this.objectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance()
     }
 
     ; TODO add method to read which keys are used to show keyboard overlays, should be in the correct layer section, because only then should they activate
     ReadAllKeyboardOverlays(){
-        For key, value in this.jsonFile{
-            if (InStr(key, "KeyboardOverlay")){
+        ; msgbox(this.layersInformation.GetKeyboardOverlaysRegistry())
+        For key, value in this.layersInformation.GetKeyboardOverlaysRegistry(){
                 NewKeyboardOverlay := KeyboardOverlay()
                 NewKeyboardOverlay.CreateGui()
-                if (value.has("overlayElements")){
-                    this.fillKeyboardOverlayInformation(NewKeyboardOverlay, value["overlayElements"])
-                    this.instanceOfRegistry := this.ObjectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance()
-                    this.instanceOfRegistry.addKeyboardOverlay(NewKeyboardOverlay, key)
-                }
-            }
+
+                this.layersInformation.GetRegistryByLayerIdentifier(key)
+                
+                NewKeyboardOverlay.fillKeyboardOverlayInformation(value)
+                
+                this.instanceOfOverlayRegistry.addKeyboardOverlay(NewKeyboardOverlay, key)
         }
     }
 
@@ -45,10 +45,10 @@ Class KeyboardOverlaysInitializer{
 
     ChangeHotkeysStateForKeyboardOverlaysByLayerSection(layerSection, enableHotkeys := true){
         try{
-            for key, value in this.jsonFile{
+            for key, value in this.layersInformation{
                 if (InStr(key, layerSection)){
 
-                    showKeyboardOverlayKey := this.jsonFile[key]["ShowKeyboardOverlayKey"]
+                    showKeyboardOverlayKey := this.layersInformation[key]["ShowKeyboardOverlayKey"]
                     ; TODO use the keyboardOVelray class to create a new keyboard overlay, which then columns are added to
                     ; TODO, each layer should have the "KeyboardOverlayKey" in it, which is then created there and such blah blah blah
                     this.ChangeHotkeyStateForKeyboardOverlay(key, showKeyboardOverlayKey, enableHotkeys)
@@ -62,12 +62,12 @@ Class KeyboardOverlaysInitializer{
 
     ChangeHotkeyStateForKeyboardOverlay(sectionName, showKeyboardOverlayKey, enableHotkeys := true){
         if (enableHotkeys){
-            HotKey(showKeyboardOverlayKey, (ThisHotkey) => this.instanceOfRegistry.ShowKeyboardOverlay(sectionName))
-            HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => this.instanceOfRegistry.hideAllLayers())
+            HotKey(showKeyboardOverlayKey, (ThisHotkey) => this.instanceOfOverlayRegistry.ShowKeyboardOverlay(sectionName))
+            HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => this.instanceOfOverlayRegistry.hideAllLayers())
         }
         else if (enableHotkeys = false){
-            HotKey(showKeyboardOverlayKey, (ThisHotkey) => this.instanceOfRegistry.ShowKeyboardOverlay(sectionName), "off")
-            HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => this.instanceOfRegistry.hideAllLayers(), "off")
+            HotKey(showKeyboardOverlayKey, (ThisHotkey) => this.instanceOfOverlayRegistry.ShowKeyboardOverlay(sectionName), "off")
+            HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => this.instanceOfOverlayRegistry.hideAllLayers(), "off")
         }
         else {
             msgbox("error in KeyboardOverlaysInitializer, state is not on or off")
@@ -76,10 +76,10 @@ Class KeyboardOverlaysInitializer{
 
     HotKeyForHidingKeyboardOverlaysUseMeGlobally(){
         try{
-            for key, value in this.jsonFile{
+            for key, value in this.layersInformation{
                 if (InStr(key, "KeyboardOverlay")){
-                    showKeyboardOverlayKey := this.jsonFile[key]["ShowKeyboardOverlayKey"]
-                    HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => this.instanceOfRegistry.hideAllLayers())
+                    showKeyboardOverlayKey := this.layersInformation[key]["ShowKeyboardOverlayKey"]
+                    HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => this.instanceOfOverlayRegistry.hideAllLayers())
                 }
             }
         }

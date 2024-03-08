@@ -14,9 +14,13 @@ Class MainStartupConfigurator{
     ; and then either "Hotkeys" or "KeyboardOverlay", and then the information for that layer 
     ; (pertaining to hokteys or overlays obviously)
     __New(layersInformation, objectRegistry){
-        
-        this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(layersInformation, objectRegistry)
-        this.HotkeyInitializerInstance := HotkeyInitializer(layersInformation, objectRegistry)
+        if (Type(layersInformation) = "KeyboardLayersInfoRegistry" AND Type(objectRegistry) = "ObjectRegistry"){
+            this.HotkeyInitializerInstance := HotkeyInitializer(layersInformation, objectRegistry)
+            this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(layersInformation, objectRegistry)
+        }
+        else{
+            ; throw Exception("Invalid parameters passed to MainStartupConfigurator")
+        }
     }
 
     InitializeLayer(section, enableHotkeys := "on"){

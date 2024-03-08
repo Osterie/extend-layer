@@ -17,30 +17,34 @@
 class KeyboardLayersInfoJsonReader{
     
 
-    PATH_TO_KEYBOARD_INFO := ""
-    keyboardInfo := ""
+    keyboardLayersInfo := ""
 
     KeyboardLayersInfoRegister := ""
 
 
-    __New(jsonFilePath){
-        this.PATH_TO_KEYBOARD_INFO := jsonFilePath
+    __New(){
         this.KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
     }
 
-    ReadKeyboardLayersInfoFromJson(){
+    ; TODO add a "for current profile"
+    ReadKeyboardLayersInfoForCurrentProfile(){
         try{
-            jsonStringKeyboardInfo := FileRead(this.PATH_TO_KEYBOARD_INFO, "UTF-8")
+            ; Try to read the information for the current profile.
+            keyboardSettingsString := FileRead(FilePaths.GetPathToCurrentKeyboardLayout(), "UTF-8")
         }
         catch{
-            throw ValueError("Could not read the file: " . this.PATH_TO_KEYBOARD_INFO)
+            ; Unable to read information for the current profile, so we use default to an empty profile.
+            FilePaths.SetCurrentProfile("Empty")
+            keyboardSettingsString := FileRead(FilePaths.GetPathToCurrentKeyboardLayout(), "UTF-8")
+            msgbox("Unable to read information for the current profile. Defaulting to an empty profile.")
         }
-        this.keyboardInfo := jxon_load(&jsonStringKeyboardInfo)
+
+        this.keyboardLayersInfo := jxon_load(&keyboardSettingsString)
 
         ; -----------Read JSON----------------
 
         ; TODO! add try catch to all of these. If one of these informations are missing something wrong will happen!
-        For layerIdentifier , layerInfoContents in this.keyboardInfo{
+        For layerIdentifier , layerInfoContents in this.keyboardLayersInfo{
             if (InStr(layerIdentifier, "Hotkeys")){
                 this.ReadHotkeys(layerIdentifier, layerinfoContents)
             }

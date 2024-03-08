@@ -52,8 +52,6 @@ Class Main{
 
     layersInformation := ""
 
-    ; TODO objects and objectRegister are very similiar in some ways. Objects is ONLY used to create objectregister...
-    Objects := Map()
     ObjectRegister := ObjectRegistry()
     KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
     StartupConfigurator := ""
@@ -71,13 +69,13 @@ Class Main{
             this.RunAppGui()
         }
         catch Error as e{
-            MsgBox("Error: " e.Message)
+            MsgBox("Error in running startup: " e.Message)
             this.RunAppGui()
         }
     }
 
     RunLogicalStartup(){
-        this.UpdatePathsToInfo()
+        ; this.UpdatePathsToInfo()
         this.InitializeMetaInfo()
         this.RunMainStartup()
     }
@@ -98,7 +96,7 @@ Class Main{
 
     InitializeMetaInfo(){
         this.InitializeObjectRegistry()
-        this.ReadKeyboardLayersInfoFromJson()
+        this.ReadKeyboardLayersInfoForCurrentProfile()
         this.ReadKeyNamesFromTxtFile()
     }
 
@@ -110,7 +108,7 @@ Class Main{
 
     InitializeMainStartupConfigurator(){
         ; This is used to read ini files, and create hotkeys from them
-        this.StartupConfigurator := MainStartupConfigurator(this.layersInformation, this.ObjectRegister)
+        this.StartupConfigurator := MainStartupConfigurator(this.KeyboardLayersInfoRegister, this.ObjectRegister)
     }
     
     ReadAndMakeKeyboardOverlays(){
@@ -146,9 +144,9 @@ Class Main{
         this.ObjectRegister := objectRegisterInitializer.GetObjectRegistry()
     }
 
-    ReadKeyboardLayersInfoFromJson(){
-        JsonReaderForKeyboardLayersInfo := KeyboardLayersInfoJsonReader(FilePaths.GetPathToCurrentKeyboardLayout())
-        JsonReaderForKeyboardLayersInfo.ReadKeyboardLayersInfoFromJson()
+    ReadKeyboardLayersInfoForCurrentProfile(){
+        JsonReaderForKeyboardLayersInfo := KeyboardLayersInfoJsonReader()
+        JsonReaderForKeyboardLayersInfo.ReadKeyboardLayersInfoForCurrentProfile()
         this.KeyboardLayersInfoRegister := JsonReaderForKeyboardLayersInfo.getKeyboardLayersInfoRegister()
     }
 
