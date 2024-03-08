@@ -2,8 +2,5 @@
     "GlobalLayer-Hotkeys":{},
     "NormalLayer-Hotkeys": {},
     "SecondaryLayer-Hotkeys": {},
-    "SecondaryLayer-KeyboardOverlay1": {},
-    "SecondaryLayer-KeyboardOverlay2": {},
-    "TertiaryLayer-Hotkeys": {},
-    "TertiaryLayer-KeyboardOverlay1": {}
+    "TertiaryLayer-Hotkeys": {}
 }
