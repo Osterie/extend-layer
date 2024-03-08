@@ -211,5 +211,12 @@
             "Parameters": []
         }
     },
-    "TertiaryLayer-Hotkeys": {}
+    "TertiaryLayer-Hotkeys": {
+        "Esc":{
+			"MethodName":"CloseActiveAutohotkeyScript",
+			"ObjectName":"ProcessManagerInstance",
+			"Parameters":[],
+			"isObject":1
+		}
+    }
 }
