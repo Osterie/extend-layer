@@ -2,6 +2,8 @@ class FilePaths{
 
     static CURRENT_PROFILE := "EmptyProfile"
 
+    static DEFAULT_PROFILE := "Default"
+
     static OBJECT_INFO := "../../config/ObjectInfo.json"
 
     static PATH_TO_META_INI_FILE := "../../config/meta.ini"
@@ -75,7 +77,12 @@ class FilePaths{
             this.CURRENT_PROFILE := iniRead(this.GetPathToMetaFile(), "General", "activeUserProfile")
         }
         catch{
-            this.CURRENT_PROFILE := "EmptyProfile"
+            if (FileExist(this.PATH_TO_PROFILES . "Default")){
+                this.CURRENT_PROFILE := "Default"
+            }
+            else{
+                this.CURRENT_PROFILE := "EmptyProfile"
+            }
         }
         return this.CURRENT_PROFILE
     }
