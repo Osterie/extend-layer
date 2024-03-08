@@ -50,7 +50,7 @@ SendMode "Event"
 
 Class Main{
 
-    keyboardSettingsJsonObject := ""
+    layersInformation := ""
 
     ; TODO objects and objectRegister are very similiar in some ways. Objects is ONLY used to create objectregister...
     Objects := Map()
@@ -89,13 +89,13 @@ Class Main{
         try{
             ; Try to read the information for the current profile.
             keyboardSettingsString := FileRead(FilePaths.GetPathToCurrentKeyboardLayout(), "UTF-8")
-            this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
+            this.layersInformation := jxon_load(&keyboardSettingsString)
         }
         catch{
             ; Unable to read information for the current profile, so we use default to an empty profile.
             FilePaths.SetCurrentProfile("Empty")
             keyboardSettingsString := FileRead(FilePaths.GetPathToCurrentKeyboardLayout(), "UTF-8")
-            this.keyboardSettingsJsonObject := jxon_load(&keyboardSettingsString)
+            this.layersInformation := jxon_load(&keyboardSettingsString)
         }
     }
 
@@ -113,7 +113,7 @@ Class Main{
 
     InitializeMainStartupConfigurator(){
         ; This is used to read ini files, and create hotkeys from them
-        this.StartupConfigurator := MainStartupConfigurator(this.keyboardSettingsJsonObject, this.ObjectRegister)
+        this.StartupConfigurator := MainStartupConfigurator(this.layersInformation, this.ObjectRegister)
     }
     
     ReadAndMakeKeyboardOverlays(){
@@ -153,7 +153,6 @@ Class Main{
         JsonReaderForKeyboardLayersInfo := KeyboardLayersInfoJsonReader(FilePaths.GetPathToCurrentKeyboardLayout())
         JsonReaderForKeyboardLayersInfo.ReadKeyboardLayersInfoFromJson()
         this.KeyboardLayersInfoRegister := JsonReaderForKeyboardLayersInfo.getKeyboardLayersInfoRegister()
-        this.keyboardLayerIdentifiers := this.KeyboardLayersInfoRegister.getLayerIdentifiers()
     }
 
     ReadKeyNamesFromTxtFile(){
@@ -164,7 +163,7 @@ Class Main{
     }
 
     RunAppGui(){
-        this.app := ExtraKeyboardsApp(this.keyboardLayerIdentifiers, this.ObjectRegister, this.KeyboardLayersInfoRegister, this, this.keyNames)
+        this.app := ExtraKeyboardsApp(this.ObjectRegister, this.KeyboardLayersInfoRegister, this, this.keyNames)
         this.app.Start()
     }
 

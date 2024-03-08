@@ -12,11 +12,11 @@ Class ExtraKeyboardsAppGuiModel{
     keyboardLayerIdentifiers := ""
     keyboardLayersInfoRegister := ""
 
-    __New(keyboardLayerIdentifiers, activeObjectsRegistry, keyboardLayersInfoRegister, keyNames){
+    __New(activeObjectsRegistry, keyboardLayersInfoRegister, keyNames){
         
         this.keyNames := keyNames
         this.activeObjectsRegistry := activeObjectsRegistry
-        this.keyboardLayerIdentifiers := keyboardLayerIdentifiers
+        this.keyboardLayerIdentifiers := keyboardLayersInfoRegister.getLayerIdentifiers()
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
 
     }
