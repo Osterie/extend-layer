@@ -40,8 +40,15 @@ class FilePaths{
         try{
             this.CURRENT_PROFILE := iniRead(this.GetPathToMetaFile(), "General", "activeUserProfile")
         }
-        catch{
-            if (FileExist(this.PATH_TO_PROFILES . this.DEFAULT_PROFILE)){
+        catch OSError{
+            this.SetCurrentProfile(this.DEFAULT_PROFILE)
+            this.CURRENT_PROFILE := this.DEFAULT_PROFILE
+        }
+        finally{
+            if (FileExist(this.PATH_TO_PROFILES . this.CURRENT_PROFILE)){
+                ; do nothing
+            }
+            else if (!FileExist(this.PATH_TO_PROFILES . this.CURRENT_PROFILE)){
                 this.CURRENT_PROFILE := this.DEFAULT_PROFILE
             }
             else{
@@ -54,9 +61,13 @@ class FilePaths{
 
     static GetPathToCurrentProfile(){
         PATH_TO_CURRENT_PROFILE := this.getPathToProfiles() . this.GetCurrentProfile()
-        if (FileExist(PATH_TO_CURRENT_PROFILE) = false){
+        if (!FileExist(PATH_TO_CURRENT_PROFILE)){
             PATH_TO_CURRENT_PROFILE := this.GetPathToEmptyProfile()
         }
+        else if (!FileExist(PATH_TO_CURRENT_PROFILE . "*")){
+            PATH_TO_CURRENT_PROFILE := this.GetPathToEmptyProfile()
+        }
+
         return PATH_TO_CURRENT_PROFILE
     }
 
