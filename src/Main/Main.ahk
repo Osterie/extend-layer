@@ -50,8 +50,6 @@ SendMode "Event"
 
 Class Main{
 
-    layersInformation := ""
-
     ObjectRegister := ObjectRegistry()
     KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
     StartupConfigurator := ""
@@ -66,44 +64,48 @@ Class Main{
     Start(){
         try{
             this.RunLogicalStartup()
-            this.RunAppGui()
         }
         catch Error as e{
             MsgBox("Error in running startup: " e.Message)
+        }
+        finally{
             this.RunAppGui()
         }
     }
 
     RunLogicalStartup(){
-        ; this.UpdatePathsToInfo()
-        this.InitializeMetaInfo()
+        this.Initialize()
         this.RunMainStartup()
     }
 
-    UpdatePathsToInfo(){
-        try{
-            ; Try to read the information for the current profile.
-            keyboardSettingsString := FileRead(FilePaths.GetPathToCurrentKeyboardLayout(), "UTF-8")
-            this.layersInformation := jxon_load(&keyboardSettingsString)
-        }
-        catch{
-            ; Unable to read information for the current profile, so we use default to an empty profile.
-            FilePaths.SetCurrentProfile("Empty")
-            keyboardSettingsString := FileRead(FilePaths.GetPathToCurrentKeyboardLayout(), "UTF-8")
-            this.layersInformation := jxon_load(&keyboardSettingsString)
-        }
-    }
-
-    InitializeMetaInfo(){
+    Initialize(){
         this.InitializeObjectRegistry()
-        this.ReadKeyboardLayersInfoForCurrentProfile()
-        this.ReadKeyNamesFromTxtFile()
+        this.InitializeKeyboardLayersInfo()
+        this.InitializeKeyNames()
+        this.InitializeMainStartupConfigurator()
     }
 
     RunMainStartup(enableHotkeys := true){
-        this.InitializeMainStartupConfigurator()
-        this.ReadAndMakeKeyboardOverlays()
-        this.InitializeHotkeysForAllLayers(enableHotkeys)
+        this.CreateKeyboardOverlays()
+        this.CreateHotkeysForAllLayers(enableHotkeys)
+    }
+
+    InitializeObjectRegistry(){
+        objectRegisterInitializer := ObjectRegistryInitializer()
+        objectRegisterInitializer.InitializeObjectRegistry()
+        this.ObjectRegister := objectRegisterInitializer.GetObjectRegistry()
+    }
+
+    InitializeKeyboardLayersInfo(){
+        JsonReaderForKeyboardLayersInfo := KeyboardLayersInfoJsonReader()
+        JsonReaderForKeyboardLayersInfo.ReadKeyboardLayersInfoForCurrentProfile()
+        this.KeyboardLayersInfoRegister := JsonReaderForKeyboardLayersInfo.getKeyboardLayersInfoRegister()
+    }
+
+    InitializeKeyNames(){
+        keyNamesFileObjReader := KeyNamesReader()
+        fileObjectOfKeyNames := FileOpen(FilePaths.GetPathToKeyNames(), "rw" , "UTF-8")
+        this.keyNames := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
     }
 
     InitializeMainStartupConfigurator(){
@@ -111,12 +113,12 @@ Class Main{
         this.StartupConfigurator := MainStartupConfigurator(this.KeyboardLayersInfoRegister, this.ObjectRegister)
     }
     
-    ReadAndMakeKeyboardOverlays(){
+    CreateKeyboardOverlays(){
         ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
         this.StartupConfigurator.ReadAllKeyboardOverlays()
     }
 
-    InitializeHotkeysForAllLayers(enableHotkeys := true){
+    CreateHotkeysForAllLayers(enableHotkeys := true){
         this.StartupConfigurator.CreateGlobalHotkeysForAllKeyboardOverlays()
 
         ; Reads and initializes all the hotkeys which are active for every keyboard layer.
@@ -136,25 +138,6 @@ Class Main{
             ; Reads and initializes all the hotkeys for the third keyboard layer.
             this.StartupConfigurator.InitializeLayer("TertiaryLayer", enableHotkeys)
         HotIf
-    }
-
-    InitializeObjectRegistry(){
-        objectRegisterInitializer := ObjectRegistryInitializer()
-        objectRegisterInitializer.InitializeObjectRegistry()
-        this.ObjectRegister := objectRegisterInitializer.GetObjectRegistry()
-    }
-
-    ReadKeyboardLayersInfoForCurrentProfile(){
-        JsonReaderForKeyboardLayersInfo := KeyboardLayersInfoJsonReader()
-        JsonReaderForKeyboardLayersInfo.ReadKeyboardLayersInfoForCurrentProfile()
-        this.KeyboardLayersInfoRegister := JsonReaderForKeyboardLayersInfo.getKeyboardLayersInfoRegister()
-    }
-
-    ReadKeyNamesFromTxtFile(){
-        keyNamesFileObjReader := KeyNamesReader()
-        fileObjectOfKeyNames := FileOpen(FilePaths.GetPathToKeyNames(), "rw" , "UTF-8")
-        this.keyNames := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
-
     }
 
     RunAppGui(){
