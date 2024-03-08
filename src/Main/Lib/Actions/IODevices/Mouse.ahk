@@ -16,9 +16,7 @@ Class Mouse{
 
     SetAutoClickerCPSFromFile(){
         try{
-            if (!FilePaths.GetCurrentProfile() = "EmptyProfile"){
-                autoClickerCPS := IniRead(FilePaths.GetPathToCurrentSettings(), "Mouse", "AutoClickerClickCps")
-            }
+            autoClickerCPS := IniRead(FilePaths.GetPathToCurrentSettings(), "Mouse", "AutoClickerClickCps")
         }
         catch{
             autoClickerCPS := 10

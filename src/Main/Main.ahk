@@ -66,7 +66,7 @@ Class Main{
             this.RunLogicalStartup()
         }
         catch Error as e{
-            MsgBox("Error in running startup: " e.Message)
+            ; MsgBox("Error in running startup: " e.Message " " e.Line " " e.File " " e.Extra " " e.Stack " " e.What)
         }
         finally{
             this.RunAppGui()
