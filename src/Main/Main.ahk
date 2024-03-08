@@ -50,11 +50,11 @@ SendMode "Event"
 
 Class Main{
 
+    keyNames := ""
+    StartupConfigurator := ""
     ObjectRegister := ObjectRegistry()
     KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
-    StartupConfigurator := ""
 
-    keyNames := ""
 
     __New(){
 

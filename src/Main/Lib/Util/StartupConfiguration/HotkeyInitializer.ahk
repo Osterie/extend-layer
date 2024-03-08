@@ -15,26 +15,35 @@ Class HotkeyInitializer{
         currentKeyboardLayerInformation := this.layersInformation.GetRegistryByLayerIdentifier(keyboardLayerName)
         currentKeyboardLayerHotkeys := currentKeyboardLayerInformation.GetHotkeys()
 
-        For hotkeyKey, hotkeyInformation in currentKeyboardLayerHotkeys{
+        For key, hotkeyInformation in currentKeyboardLayerHotkeys{
             if (hotkeyInformation.hotkeyIsObject()){
-                this.InitializeDefaultKeyToFunction(hotkeyKey, hotkeyInformation, enableHotkeys)
+                this.InitializeDefaultKeyToFunction(hotkeyInformation, enableHotkeys)
             }
             else{
-                this.InitializeDefaultKeyToNewKey(hotkeyKey, hotkeyInformation, enableHotkeys)
+                this.InitializeDefaultKeyToNewKey(hotkeyInformation, enableHotkeys)
             }
         }
     }
 
     ; Used to change a single keyboard key into a key which triggers a class method call.
-    InitializeDefaultKeyToFunction(hotkeyKey, hotkeyInformation, enableHotkeys := true){
+    InitializeDefaultKeyToFunction(hotkeyInformation, enableHotkeys := true){
         
+        hotkeyKey := hotkeyInformation.getHotkeyName()
         objectName := hotkeyInformation.getObjectName()
         methodName := hotkeyInformation.getMethodName()
         arguments := hotkeyInformation.getParameters()
  
+        objectMethodCall := this.CreateObjectMethodCall(objectName, methodName, arguments)
+        this.runHotkeyForFunction(hotkeyKey, objectMethodCall, enableHotkeys)
+    }
+
+    CreateObjectMethodCall(objectName, methodName, arguments){
         objectInstance := this.objectRegistry.GetObjectInfo(objectName).GetObjectInstance()
         objectMethodCall := ObjBindMethod(objectInstance, methodName, arguments*)
-        ; msgbox("creating hotkey")
+        return objectMethodCall
+    }
+
+    runHotkeyForFunction(hotkeyKey, objectMethodCall, enableHotkeys := true){
         if (enableHotkeys){
             HotKey(hotkeyKey, (ThisHotkey) => (objectMethodCall)(), "On")
         }
@@ -48,10 +57,16 @@ Class HotkeyInitializer{
 
     ; a double pipe symbol (||) can be used to separate when one key is going to be changed to multiple keys.
     ; for example original key "a" to "b||c" means that when "a" is pressed, "b" and "c" will be pressed as well.
-    InitializeDefaultKeyToNewKey(hotkeyKey, hotkeyInformation, enableHotkeys := true){
+    InitializeDefaultKeyToNewKey(hotkeyInformation, enableHotkeys := true){
+        
+        hotkeyKey := hotkeyInformation.getHotkeyName()
         newHotKey := hotkeyInformation.getNewHotkeyName()
         newHotKeyModifiers := hotkeyInformation.getNewHotkeyModifiers()
         
+        this.runHotkeyForKey(hotkeyKey, newHotKey, newHotKeyModifiers, enableHotkeys)
+    }
+
+    runHotkeyForKey(hotkeyKey, newHotKey, newHotKeyModifiers, enableHotkeys := true){
         newKeysDown := this.CreateExcecutableKeysDown(newHotKey)
         newKeysUp := this.CreateExcecutableKeysUp(newHotKey)
 
@@ -64,7 +79,7 @@ Class HotkeyInitializer{
             HotKey(hotkeyKey . " Up", (ThisHotkey) => this.SendKeysDown(newKeysDown, newHotKeyModifiers), "Off")
         } 
         else {
-            msgbox("error in InitializeDefaultKeyToNewKey, state is not on or off")
+            msgbox("error in runHotkeyForKey, state is not on or off")
         }
     }
 
