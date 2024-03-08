@@ -39,12 +39,6 @@ Class HotkeyInitializer{
         this.runHotkeyForFunction(hotkeyKey, objectMethodCall, enableHotkeys)
     }
 
-    CreateObjectMethodCall(objectName, methodName, arguments){
-        objectInstance := this.objectRegistry.GetObjectInfo(objectName).GetObjectInstance()
-        objectMethodCall := ObjBindMethod(objectInstance, methodName, arguments*)
-        return objectMethodCall
-    }
-
     runHotkeyForFunction(hotkeyKey, objectMethodCall, enableHotkeys := true){
         if (enableHotkeys){
             HotKey(hotkeyKey, (ThisHotkey) => (objectMethodCall)(), "On")
@@ -69,16 +63,13 @@ Class HotkeyInitializer{
     }
 
     runHotkeyForKey(hotkeyKey, newHotKey, newHotKeyModifiers, enableHotkeys := true){
-        newKeysDown := HotkeyFormatConverter.convertToKeyDownExcecutable(newHotKey)
-        newKeysUp := HotkeyFormatConverter.convertToKeyUpExcecutable(newHotKey)
-
         if (enableHotkeys){
-            HotKey(hotkeyKey, (ThisHotkey) => this.SendKeysDown(newKeysDown, newHotKeyModifiers), "On") 
-            HotKey(hotkeyKey . " Up", (ThisHotkey) => this.SendKeysUp(newKeysUp, newHotKeyModifiers), "On")
+            HotKey(hotkeyKey, (ThisHotkey) => this.SendKeysDown(newHotKey, newHotKeyModifiers), "On") 
+            HotKey(hotkeyKey . " Up", (ThisHotkey) => this.SendKeysUp(newHotKey, newHotKeyModifiers), "On")
         }
         else if (!enableHotkeys){
-            HotKey(hotkeyKey, (ThisHotkey) => this.SendKeysUp(newKeysUp, newHotKeyModifiers), "Off") 
-            HotKey(hotkeyKey . " Up", (ThisHotkey) => this.SendKeysDown(newKeysDown, newHotKeyModifiers), "Off")
+            HotKey(hotkeyKey, (ThisHotkey) => this.SendKeysUp(newHotKey, newHotKeyModifiers), "Off") 
+            HotKey(hotkeyKey . " Up", (ThisHotkey) => this.SendKeysDown(newHotKey, newHotKeyModifiers), "Off")
         } 
         else {
             msgbox("error in runHotkeyForKey, state is not on or off")
@@ -87,11 +78,19 @@ Class HotkeyInitializer{
 
     ; Sends key(s) down, including possible modifiers
     SendKeysDown(keysDown, modifiers){
+        keysDown := HotkeyFormatConverter.convertToKeyDownExcecutable(keysDown)
         Send("{blind}" . modifiers . keysDown)
     }
     
     ; Sends key(s) up, including possible modifiers
     SendKeysUp(keysUp, modifiers){
+        keysUp := HotkeyFormatConverter.convertToKeyUpExcecutable(keysUp)
         Send("{blind}" . modifiers . keysUp)
+    }
+
+    CreateObjectMethodCall(objectName, methodName, arguments){
+        objectInstance := this.objectRegistry.GetObjectInfo(objectName).GetObjectInstance()
+        objectMethodCall := ObjBindMethod(objectInstance, methodName, arguments*)
+        return objectMethodCall
     }
 }
