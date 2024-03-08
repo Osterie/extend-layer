@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
 
+#Include <Util\HotkeyFormatConverter>
+
 Class HotkeyInitializer{
 
     layersInformation := ""
@@ -67,8 +69,8 @@ Class HotkeyInitializer{
     }
 
     runHotkeyForKey(hotkeyKey, newHotKey, newHotKeyModifiers, enableHotkeys := true){
-        newKeysDown := this.CreateExcecutableKeysDown(newHotKey)
-        newKeysUp := this.CreateExcecutableKeysUp(newHotKey)
+        newKeysDown := HotkeyFormatConverter.convertToKeyDownExcecutable(newHotKey)
+        newKeysUp := HotkeyFormatConverter.convertToKeyUpExcecutable(newHotKey)
 
         if (enableHotkeys){
             HotKey(hotkeyKey, (ThisHotkey) => this.SendKeysDown(newKeysDown, newHotKeyModifiers), "On") 
@@ -91,23 +93,5 @@ Class HotkeyInitializer{
     ; Sends key(s) up, including possible modifiers
     SendKeysUp(keysUp, modifiers){
         Send("{blind}" . modifiers . keysUp)
-    }
-
-    CreateExcecutableKeysDown(keys){
-        keysList := StrSplit(keys, "||")
-        excecutableKeysDown := ""
-        for key in keysList{
-            excecutableKeysDown .= "{" . key . " Down}"
-        }
-        return excecutableKeysDown
-    }
-
-    CreateExcecutableKeysUp(keys){
-        keysList := StrSplit(keys, "||")
-        excecutableKeysUp := ""
-        for key in keysList{
-            excecutableKeysUp .= "{" . key . " Up}"
-        }
-        return excecutableKeysUp
     }
 }

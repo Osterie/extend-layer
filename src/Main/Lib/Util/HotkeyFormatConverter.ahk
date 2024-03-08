@@ -70,4 +70,25 @@ class HotkeyFormatConverter{
 
     }
 
+    ; Converts a key (or keys depending if ||) to a string which the Hotkey function can use to simulate a key press
+    ; Converts to key down.
+    static convertToKeyDownExcecutable(keys){
+        keysList := StrSplit(keys, "||")
+        excecutableKeysDown := ""
+        for key in keysList{
+            excecutableKeysDown .= "{" . key . " Down}"
+        }
+        return excecutableKeysDown
+    }
+
+    ; Converts a key (or keys depending if ||) to a string which the Hotkey function can use to simulate a key press
+    ; Converts to key up.
+    static convertToKeyUpExcecutable(keys){
+        keysList := StrSplit(keys, "||")
+        excecutableKeysUp := ""
+        for key in keysList{
+            excecutableKeysUp .= "{" . key . " Up}"
+        }
+        return excecutableKeysUp
+    }
 }
