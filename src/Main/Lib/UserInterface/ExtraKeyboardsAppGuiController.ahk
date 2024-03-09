@@ -40,8 +40,14 @@ Class ExtraKeyboardsAppGuiController{
         layerInformation := this.GetCurrentLayerInfo()
 
         if (Type(layerInformation) == "HotkeysRegistry"){
-            hotkeyBuild := listView.GetText(indexOfKeyToEdit, 1)
-            hotkeyAction := listView.GetText(indexOfKeyToEdit, 2)
+            if (indexOfKeyToEdit == 0){
+                hotkeyBuild := "NONE"
+                hotkeyAction := "NONE"
+            }
+            else{
+                hotkeyBuild := listView.GetText(indexOfKeyToEdit, 1)
+                hotkeyAction := listView.GetText(indexOfKeyToEdit, 2)
+            }
             this.CreatePopupForHotkeys(hotkeyBuild, hotkeyAction)
         }
         else if (Type(layerInformation) == "KeyboardOverlayInfo"){
@@ -65,7 +71,26 @@ Class ExtraKeyboardsAppGuiController{
         originalHotkey := popupForConfiguringHotkey.getOriginalHotkey()
         newHotkey := popupForConfiguringHotkey.getHotkey()
         newAction := popupForConfiguringHotkey.getAction()
-        this.model.ChangeHotkey(originalHotkey, newHotkey, newAction)
+
+        if (originalHotkey = "NONE"){
+            try{
+                newAction.changeHotkey(newHotkey)
+                this.model.AddHotkey(newAction)
+            }
+            catch Error as e{
+                msgbox("Could not add hotkey. " . e.Message)
+                
+            }
+        }
+        else{
+            try{
+                this.model.ChangeHotkey(originalHotkey, newHotkey, newAction)
+            }
+            catch Error as e{
+                msgbox("Could not modify hotkey.")
+            }
+        }
+
         this.MainScript.RunLogicalStartup()
         popupForConfiguringHotkey.Destroy()
     }

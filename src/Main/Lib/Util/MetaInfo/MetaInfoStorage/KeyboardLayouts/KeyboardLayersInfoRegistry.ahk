@@ -16,8 +16,13 @@ class KeyboardLayersInfoRegistry{
     AddKeyboardOverlayLayerInfo(KeyboardOverlay){
         this.KeyboardOverlaysRegistry[KeyboardOverlay.GetLayerIdentifier()] := KeyboardOverlay
     }
+
     AddHotkeysRegistry(Hotkeys){
         this.HotkeysRegistry[Hotkeys.GetLayerIdentifier()] := Hotkeys
+    }
+
+    AddHotkey(layerIdentifier, hotkeyAction){
+        this.HotkeysRegistry[layerIdentifier].AddHotkey(hotkeyAction)
     }
 
     ; TODO remove me perhaps, a new and better method is being developed...
