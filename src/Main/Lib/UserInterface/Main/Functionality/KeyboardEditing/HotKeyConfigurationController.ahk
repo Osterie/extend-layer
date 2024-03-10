@@ -33,6 +33,8 @@ class HotKeyConfigurationController{
     model := ""
     view := ""
 
+    saveEventSubscribers := Array()
+
     __New(model, view){
         this.model := model
         this.view := view
@@ -47,8 +49,9 @@ class HotKeyConfigurationController{
         ; TODO, controller, view, model for HotkeyCrafterGui, talk to the controller and wait for either save, cancel or delete.
         ; Be notified by the controller when one of these actions occure and take appropriate action (here in this controller.)
         hotkeyCrafter := HotkeyCrafterGui(hotkeyInfo, arrayOfKeyNames)
-        hotkeySavedEventAction := ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent", hotkeyCrafter)
-        hotkeyCrafter.addSaveButtonClickEventAction(hotkeySavedEventAction)
+        hotkeyCrafter.addSaveButtonClickEventAction(ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent", hotkeyCrafter))
+
+        ; hotkeyCrafter.subscribeToSaveEvent(ObjBindMethod(this, "NotifyListenersSave"))
 
         hotkeyCrafterClosedEvent := ObjBindMethod(this, "cancelButtonClickedForCrafterEvent", hotkeyCrafter)
         hotkeyCrafter.addCloseEventAction(hotkeyCrafterClosedEvent)
@@ -82,13 +85,24 @@ class HotKeyConfigurationController{
         this.view.Show()
     }
 
+    subscribeToSaveEvent(event){
+        this.saveEventSubscribers.Push(event)
+    }
+
+    NotifyListenersSave(){
+        for index, event in this.saveEventSubscribers
+        {
+            event(this.getHotkeyInfo(), this.getOriginalHotkey())
+        }
+        this.view.destroy()
+    }
+
     saveButtonClickedForHotkeyChangeEvent(hotkeyCrafter, savedButton, idk){
-        
-        newHotkey := HotkeyFormatConverter.convertToFriendlyHotkeyName(hotkeyCrafter.getNewHotkey(), " + ")
-        this.setCurrentHotkeyText(newHotkey)
+
+        this.view.updateHotkeyText()
         
         hotkeyCrafter.Destroy()
-        this.mainGui.Show()
+        this.view.Show()
 
     }
 
@@ -98,7 +112,7 @@ class HotKeyConfigurationController{
 
         if (newAction.getMethodName() != ""){
             this.model.SetHotkeyInfo(newAction)
-            this.view.setCurrentActionText(newAction.toString())
+            this.view.updateActionText()
         }
         
         actionCrafter.Destroy()
@@ -106,66 +120,12 @@ class HotKeyConfigurationController{
         this.view.Show()
     }
 
-    setCurrentHotkeyText(newHotkey){
-        this.currentHotkeyFormatted := newHotkey
-        this.currentHotkeyTextControl.Value := ("Hotkey: `n" . newHotkey)
-
-        if (this.hotkeyDeleted = true){
-            this.currentHotkeyTextControl.SetFont("s10 cRed")
-        }
-        else if (this.originalHotkey != newHotkey){
-            this.currentHotkeyTextControl.SetFont("s10 cBlue")
-        }
-        else{
-            this.currentHotkeyTextControl.SetFont("s10 cBlack")
-        }
-
-        GuiSizeChanger.SetTextAndResize(this.currentHotkeyTextControl, this.currentHotkeyTextControl.Value )
-    }
-
-    setCurrentActionText(newAction){
-        this.currentActionTextControl.Value := ("Action: `n" . newAction)
-
-        if (this.actionDeleted = true){
-            this.currentActionTextControl.SetFont("s10 cRed")
-        }
-        else if (this.originalHotkeyAction != newAction){
-            this.currentActionTextControl.SetFont("s10 cBlue")
-        }
-        else{
-            this.currentActionTextControl.SetFont("s10 cBlack")
-        }
-
-        GuiSizeChanger.SetTextAndResize(this.currentActionTextControl, this.currentActionTextControl.Value )
-    }
-
-    ; getHotkey(){
-    ;     hotkeyToReturn := ""
-    ;     if (this.hotkeyDeleted != true){
-    ;         hotkeyToReturn := HotkeyFormatConverter.convertFromFriendlyName(this.currentHotkeyFormatted)
-    ;     }
-    ;     else{
-    ;         hotkeyToReturn := ""
-    ;     }
-    ;     return hotkeyToReturn
-    ; }
-
-    ; getAction(){
-    ;     actionToReturn := ""
-    ;     if (this.actionDeleted != true){
-    ;         actionToReturn := this.currentHotkeyAction
-    ;     }
-
-    ;     return actionToReturn
-    ; }
-
-    destroy(){
-        this.mainGui.Destroy()
-    }
-
-
     SetAction(action){
         this.model.SetHotkeyInfo(action)
+    }
+
+    GetHotkeyInfo(){
+        return this.model.GetHotkeyInfo()
     }
 
     GetHotkeyFriendly(){
@@ -176,12 +136,16 @@ class HotKeyConfigurationController{
         return this.model.GetActionFriendly()
     }
 
-    GetOriginalHotkey(){
+    getOriginalHotkeyFriendly(){
+        return this.model.GetOriginalHotkeyFriendly()
+    }
+
+    getOriginalHotkey(){
         return this.model.GetOriginalHotkey()
     }
 
-    GetOriginalAction(){
-        return this.model.GetOriginalAction()
+    GetOriginalActionFriendly(){
+        return this.model.GetOriginalActionFriendly()
     }
 }
 

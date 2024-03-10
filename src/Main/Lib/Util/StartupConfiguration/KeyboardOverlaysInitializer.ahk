@@ -17,7 +17,6 @@ Class KeyboardOverlaysInitializer{
 
     ; TODO add method to read which keys are used to show keyboard overlays, should be in the correct layer section, because only then should they activate
     ReadAllKeyboardOverlays(){
-        ; msgbox(this.layersInformation.GetKeyboardOverlaysRegistry())
         For key, value in this.layersInformation.GetKeyboardOverlaysRegistry(){
                 NewKeyboardOverlay := KeyboardOverlay()
                 NewKeyboardOverlay.CreateGui()

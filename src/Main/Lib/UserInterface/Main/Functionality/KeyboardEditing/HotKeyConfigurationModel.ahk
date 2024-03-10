@@ -10,16 +10,14 @@ class HotKeyConfigurationModel{
 
     hotkeyDeleted := false
 
-    currentActionTextControl := ""
-
     activeObjectsRegistry := ""
 
     arrayOfKeyNames := Array()
 
     hotkeyInfo := ""
 
-    originalHotkey := ""
-    originalAction := ""
+    originalHotkeyKey := ""
+    originalActionFriendly := ""
 
 
     __New(activeObjectsRegistry, arrayOfKeyNames, hotkeyInfo){
@@ -27,8 +25,8 @@ class HotKeyConfigurationModel{
         this.arrayOfKeyNames := arrayOfKeyNames
         this.hotkeyInfo := hotkeyInfo
 
-        this.originalHotkey := this.hotkeyInfo.getHotkeyName()
-        this.originalAction := this.hotkeyInfo.toString()
+        this.originalHotkeyKey := this.hotkeyInfo.getHotkeyName()
+        this.originalActionFriendly := this.hotkeyInfo.toString()
     }
 
     GetActiveObjectsRegistry(){
@@ -37,6 +35,14 @@ class HotKeyConfigurationModel{
 
     GetArrayOfKeyNames(){
         return this.arrayOfKeyNames
+    }
+
+    SetHotkeyKey(newHotkey){
+        this.hotkeyInfo.changeHotkey(newHotkey)
+    }
+
+    SetHotkeyAction(newAction){
+        this.hotkeyInfo := newAction
     }
 
     SetHotkeyInfo(hotkeyInfo){
@@ -51,12 +57,16 @@ class HotKeyConfigurationModel{
         return this.hotkeyInfo
     }
 
-    GetOriginalHotkey(){
-        return this.originalHotkey
+    GetOriginalHotkeyFriendly(){
+        return HotkeyFormatConverter.convertToFriendlyHotkeyName(this.originalHotkeyKey)
     }
 
-    GetOriginalAction(){
-        return this.originalAction
+    GetOriginalHotkey(){
+        return this.originalHotkeyKey
+    }
+
+    GetOriginalActionFriendly(){
+        return this.originalActionFriendly
     }
 
     GetHotkeyFriendly(){

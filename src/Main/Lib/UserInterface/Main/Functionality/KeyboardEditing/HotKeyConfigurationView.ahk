@@ -16,7 +16,6 @@ class HotKeyConfigurationView{
 
     hotkeyElement := ""
     originalHotkey := ""
-    currentHotkeyFormatted := ""
 
     originalHotkeyAction := ""
     currentHotkeyAction := ""
@@ -41,7 +40,6 @@ class HotKeyConfigurationView{
         this.controller := controller
 
         this.originalHotkey := this.controller.GetHotkeyFriendly()
-        this.currentHotkeyFormatted := this.controller.GetHotkeyFriendly()
 
         this.originalHotkeyAction := this.controller.GetActionFriendly()
         this.currentHotkeyActionFormatted := this.controller.GetActionFriendly()
@@ -55,13 +53,13 @@ class HotKeyConfigurationView{
     }
 
     createCurrentHotkeyControl(){
-        this.currentHotkeyTextControl := this.mainGui.AddText("r4", "Hotkey: `n" . this.currentHotkeyFormatted)
-        this.setCurrentHotkeyText(this.currentHotkeyFormatted)
+        this.currentHotkeyTextControl := this.mainGui.AddText("r4", "Hotkey: `n")
+        this.updateHotkeyText()
     }
 
     createCurrentActionControl(){
-        this.currentActionTextControl := this.mainGui.AddText(" ", "Action: `n" . this.currentHotkeyActionFormatted)
-        this.setCurrentActionText(this.currentHotkeyActionFormatted)
+        this.currentActionTextControl := this.mainGui.AddText(" ", "Action: `n")
+        this.updateActionText()
     }
 
     createButtons(){
@@ -79,16 +77,17 @@ class HotKeyConfigurationView{
 
     createFinalizationButtons(){
         this.saveButton := this.mainGui.AddButton("Default w80", "Save+Done")
+        this.saveButton.onEvent("Click", (*) => this.controller.NotifyListenersSave())
         this.cancelButton := this.mainGui.AddButton("Default w80", "Cancel+Done")
         this.cancelButton.onEvent("Click", (*) => this.mainGui.Destroy())
         this.deleteButton := this.mainGui.AddButton("Default w80", "Delete+Done")
     }
     
-    setCurrentHotkeyText(newHotkey){
-        this.currentHotkeyFormatted := newHotkey
+    updateHotkeyText(){
+        newHotkey := this.controller.GetHotkeyFriendly()
         this.currentHotkeyTextControl.Value := ("Hotkey: `n" . newHotkey)
 
-        if (this.originalHotkey != newHotkey){
+        if (this.controller.getOriginalHotkeyFriendly() != this.controller.GetHotkeyFriendly()){
             this.currentHotkeyTextControl.SetFont("s10 cBlue")
         }
         else{
@@ -98,10 +97,11 @@ class HotKeyConfigurationView{
         GuiSizeChanger.SetTextAndResize(this.currentHotkeyTextControl, this.currentHotkeyTextControl.Value )
     }
 
-    setCurrentActionText(newAction){
+    updateActionText(){
+        newAction := this.controller.GetActionFriendly()
         this.currentActionTextControl.Value := ("Action: `n" . newAction)
 
-        if (this.controller.getOriginalAction() != this.controller.GetActionFriendly()){
+        if (this.controller.getOriginalActionFriendly() != this.controller.GetActionFriendly()){
             this.currentActionTextControl.SetFont("s10 cBlue")
         }
         else{
@@ -110,23 +110,6 @@ class HotKeyConfigurationView{
 
         GuiSizeChanger.SetTextAndResize(this.currentActionTextControl, this.currentActionTextControl.Value )
     }
-
-    ; getOriginalHotkey(){
-    ;     return HotkeyFormatConverter.convertFromFriendlyName(this.originalHotkey) 
-    ; }
-
-    ; getHotkey(){
-    ;     hotkeyToReturn := ""
-    ;     hotkeyToReturn := HotkeyFormatConverter.convertFromFriendlyName(this.currentHotkeyFormatted)
-    ;     return hotkeyToReturn
-    ; }
-
-    ; getAction(){
-    ;     actionToReturn := ""
-    ;     actionToReturn := this.currentHotkeyAction
-
-    ;     return actionToReturn
-    ; }
 
     Show(){
         this.mainGui.Show()

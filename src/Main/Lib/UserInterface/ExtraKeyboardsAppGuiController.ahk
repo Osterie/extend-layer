@@ -66,43 +66,38 @@ Class ExtraKeyboardsAppGuiController{
         popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
         popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController)
         
-        saveButtonEvent := ObjBindMethod(this, "HotKeyConfigurationViewSaveEvent", popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
-        popupForConfiguringHotkey.addSaveButtonClickedEvent(saveButtonEvent)
+        
+        saveButtonEvent := ObjBindMethod(this, "changeHotkeys")
+        popupForConfiguringHotkeyController.subscribeToSaveEvent(saveButtonEvent)
+        ; popupForConfiguringHotkey.addSaveButtonClickedEvent(saveButtonEvent)
+
 
         ; TODO add delete button event.
     }
 
 
-    HotKeyConfigurationViewSaveEvent(popupForConfiguringHotkeyModel, popupForConfiguringHotkey, *){
-        originalHotkey := popupForConfiguringHotkeyModel.getOriginalHotkey()
+    changeHotkeys(hotkeyInfo, originalHotkeyKey){
+        hotkeyKey := hotkeyInfo.getHotkeyName()
 
-        ; TODO fix wtf is going on here
-        hotkeyInfo := popupForConfiguringHotkeyModel.getHotkeyInfo()
-        newHotkey := "asd"
-        newAction := hotkeyInfo
-        msgbox(newAction)
-
-        if (originalHotkey = "NONE"){
+        if (originalHotkeyKey = "NONE"){
             try{
-                hotkeyInfo.changeHotkey(newHotkey)
+                hotkeyInfo.changeHotkey(hotkeyKey)
                 this.model.AddHotkey(hotkeyInfo)
             }
             catch Error as e{
                 msgbox("Could not add hotkey. " . e.Message)
-                
             }
         }
         else{
             try{
-                this.model.ChangeHotkey(originalHotkey, newHotkey, hotkeyInfo)
+                this.model.ChangeHotkey(originalHotkeyKey, hotkeyKey, hotkeyInfo)
             }
             catch Error as e{
-                msgbox("Could not modify hotkey.")
+                msgbox("Could not modify hotkey. " . e.Message)
             }
         }
 
         this.MainScript.RunLogicalStartup()
-        popupForConfiguringHotkey.Destroy()
     }
 
     HandleFunctionFromTreeViewSelected(listViewControl, treeViewElement, treeViewElementSelectedItemID){

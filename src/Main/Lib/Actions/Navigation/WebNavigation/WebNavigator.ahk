@@ -183,7 +183,7 @@ Class WebNavigator{
     }
 
     OpenUrl(url){
-        Run("chrome.exe -incognito " url)
+        Run("chrome.exe " url)
     }
 
     ; Translates highligted text or the text in the clipboard
