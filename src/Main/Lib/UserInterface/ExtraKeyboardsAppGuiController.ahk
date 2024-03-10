@@ -3,7 +3,9 @@
 #Include <Util\JsonParsing\JsonFormatter\JsonFormatter>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
 #Include "Main\Functionality\ActionSettings\SettingsEditor.ahk"
-#Include "Main\Functionality\Keyboard\KeyboardEditing\HotKeyConfigurationPopup.ahk"
+#Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationView.ahk"
+#Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationController.ahk"
+#Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationModel.ahk"
 
 Class ExtraKeyboardsAppGuiController{
 
@@ -46,9 +48,10 @@ Class ExtraKeyboardsAppGuiController{
             }
             else{
                 hotkeyBuild := listView.GetText(indexOfKeyToEdit, 1)
+                hotkeyInfo := this.model.GetHotkeyInfoForLayer(this.GetCurrentLayer(), hotkeyBuild)
                 hotkeyAction := listView.GetText(indexOfKeyToEdit, 2)
             }
-            this.CreatePopupForHotkeys(hotkeyBuild, hotkeyAction)
+            this.CreatePopupForHotkeys(hotkeyInfo)
         }
         else if (Type(layerInformation) == "KeyboardOverlayInfo"){
             ; TODO implement
@@ -57,17 +60,20 @@ Class ExtraKeyboardsAppGuiController{
     }
 
     ; TODO move to view
-    CreatePopupForHotkeys(hotkeyBuild, hotkeyAction){
-        popupForConfiguringHotkey := HotKeyConfigurationPopup(this.GetActiveObjectsRegistry(), this.GetKeyNames())
-        popupForConfiguringHotkey.CreatePopupForHotkeyRegistry(hotkeyBuild, hotkeyAction)
-        saveButtonEvent := ObjBindMethod(this, "HotKeyConfigurationPopupSaveEvent", popupForConfiguringHotkey)
+    CreatePopupForHotkeys(hotkeyInfo){
+        popupForConfiguringHotkeyModel := HotKeyConfigurationModel(this.GetActiveObjectsRegistry(), this.GetKeyNames(), hotkeyInfo)
+        popupForConfiguringHotkey := HotKeyConfigurationView(this.GetActiveObjectsRegistry(), this.GetKeyNames())
+        popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
+        popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController)
+        
+        saveButtonEvent := ObjBindMethod(this, "HotKeyConfigurationViewSaveEvent", popupForConfiguringHotkey)
         popupForConfiguringHotkey.addSaveButtonClickedEvent(saveButtonEvent)
 
         ; TODO add delete button event.
     }
 
 
-    HotKeyConfigurationPopupSaveEvent(popupForConfiguringHotkey, *){
+    HotKeyConfigurationViewSaveEvent(popupForConfiguringHotkey, *){
         originalHotkey := popupForConfiguringHotkey.getOriginalHotkey()
         newHotkey := popupForConfiguringHotkey.getHotkey()
         newAction := popupForConfiguringHotkey.getAction()

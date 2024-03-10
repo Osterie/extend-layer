@@ -12,6 +12,7 @@ class ProfileRegionModel{
     ExistingProfilesManager := ""
     ; A constant which is the path to the preset profiles
 
+    ; TODO dont need these
     PATH_TO_EMPTY_PROFILE := ""
     PATH_TO_PRESET_PROFILES := ""
     PATH_TO_EXISTING_PROFILES := ""

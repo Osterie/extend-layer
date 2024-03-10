@@ -5,7 +5,7 @@
 #Include <UserInterface\Main\ProfileEditing\ProfileRegionController>
 #Include <UserInterface\Main\util\TreeViewMaker>
 #Include <UserInterface\Main\util\ListViewMaker>
-#Include <UserInterface\Main\Functionality\Keyboard\KeyboardEditing\HotKeyConfigurationPopup>
+#Include <UserInterface\Main\Functionality\KeyboardEditing\HotKeyConfigurationView>
 #Include <UserInterface\Main\util\GuiColorsChanger>
 
 Class ExtraKeyboardsAppGuiView{
@@ -16,7 +16,6 @@ Class ExtraKeyboardsAppGuiView{
     __New(){
         ; Empty
     }
-
 
     CreateMain(controller){
         this.controller := controller  
@@ -76,7 +75,6 @@ Class ExtraKeyboardsAppGuiView{
         functionsNamesTreeView.AddEventAction("ItemSelect", ObjBindMethod(this.controller, "HandleFunctionFromTreeViewSelected", settingsValuesListView))
         settingsValuesListView.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "HandleSettingClicked", functionsNamesTreeView))
     }
-
 
     CreateDocumentationTab(){
         this.ExtraKeyboardsAppGui.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.

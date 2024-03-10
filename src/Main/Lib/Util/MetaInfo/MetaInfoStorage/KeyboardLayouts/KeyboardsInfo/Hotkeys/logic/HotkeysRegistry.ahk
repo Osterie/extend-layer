@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
 
+#Include <Util\HotkeyFormatConverter>
+
 class HotkeysRegistry{
 
     hotkeys := Map()
@@ -19,7 +21,11 @@ class HotkeysRegistry{
     }
 
     GetHotkey(hotkeyName){
-        return this.hotkeys.get(hotkeyName)
+        hotkeyInfoToReturn := this.hotkeys.get(hotkeyName)
+        if (hotkeyInfoToReturn = ""){
+            hotkeyInfoToReturn := this.hotkeys.get(HotkeyFormatConverter.convertFromFriendlyName(hotkeyName))
+        }
+        return hotkeyInfoToReturn
     }
 
     ; TODO instead of reading the entire profile for keyboard again, perhaps i can just change the hotkey with this...

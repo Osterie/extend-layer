@@ -72,4 +72,8 @@ class KeyboardLayersInfoRegistry{
     GetHotkeysRegistry(){
         return this.HotkeysRegistry
     }    
+
+    GetHotkeyInfoForLayer(layerIdentifier, hotkeyKey){
+        return this.GetRegistryByLayerIdentifier(layerIdentifier).GetHotkey(hotkeyKey)
+    }
 }

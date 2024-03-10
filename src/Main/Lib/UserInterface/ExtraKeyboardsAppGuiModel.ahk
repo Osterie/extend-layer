@@ -12,6 +12,8 @@ Class ExtraKeyboardsAppGuiModel{
     keyboardLayerIdentifiers := ""
     keyboardLayersInfoRegister := ""
 
+
+
     __New(activeObjectsRegistry, keyboardLayersInfoRegister, keyNames){
         
         this.keyNames := keyNames
@@ -26,9 +28,6 @@ Class ExtraKeyboardsAppGuiModel{
 
         if (newAction != ""){
             this.keyboardLayersInfoRegister.ChangeAction(this.GetCurrentLayer(), originalHotkey, newAction)
-        }
-        else{
-            msgbox("new action was blank, action unchanged...")
         }
 
         ; TODO create a method for this.
@@ -131,6 +130,10 @@ Class ExtraKeyboardsAppGuiModel{
 
     GetPathToCurrentProfile(){
         return FilePaths.GetPathToCurrentProfile()
+    }
+
+    GetHotkeyInfoForLayer(layerIdentifier, hotkeyKey){
+        return this.keyboardLayersInfoRegister.GetHotkeyInfoForLayer(layerIdentifier, hotkeyKey)
     }
 
 }

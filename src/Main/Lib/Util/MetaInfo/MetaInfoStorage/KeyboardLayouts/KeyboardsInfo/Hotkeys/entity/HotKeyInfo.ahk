@@ -84,6 +84,7 @@ class HotKeyInfo{
     getNewHotkeyModifiers(){
         return this.modifiers
     }
+    
     getFriendlyHotkeyName(){
         return HotkeyFormatConverter.convertToFriendlyHotkeyName(this.fromKey)
     }

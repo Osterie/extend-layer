@@ -1,14 +1,12 @@
 #Requires AutoHotkey v2.0
 
-
 #Include ".\KeyChanging\HotkeyChanging\HotkeyCrafterGui.ahk"
 #Include ".\KeyChanging\ActionChanging\ActionCrafterGui.ahk"
 #Include <UserInterface\Main\util\GuiSizeChanger>
 
 #Include <Util\HotkeyFormatConverter>
 
-
-class HotKeyConfigurationPopup{
+class HotKeyConfigurationView{
 
     mainGui := ""
 
@@ -37,18 +35,21 @@ class HotKeyConfigurationPopup{
 
     arrayOfKeyNames := Array()
 
+    controller := ""
+
     __New(activeObjectsRegistry, arrayOfKeyNames){
         this.activeObjectsRegistry := activeObjectsRegistry
         this.arrayOfKeyNames := arrayOfKeyNames
     }
 
-    CreatePopupForHotkeyRegistry(hotkeyCommand, hotkeyAction){
+    CreateMain(controller){
+        this.controller := controller
 
-        this.originalHotkey := hotkeyCommand
-        this.currentHotkeyFormatted := hotkeyCommand
+        this.originalHotkey := this.controller.GetHotkeyFriendly()
+        this.currentHotkeyFormatted := this.controller.GetHotkeyFriendly()
 
-        this.originalHotkeyAction := hotkeyAction
-        this.currentHotkeyActionFormatted := hotkeyAction
+        this.originalHotkeyAction := this.controller.GetActionFriendly()
+        this.currentHotkeyActionFormatted := this.controller.GetActionFriendly()
 
         this.mainGui := Gui()
         this.mainGui.opt("+Resize +MinSize600x560")
@@ -70,7 +71,7 @@ class HotKeyConfigurationPopup{
 
     createButtons(){
         this.undoDeletionButton := this.mainGui.AddButton("Default w80 ym", "Undo deletion")
-        this.undoDeletionButton.onEvent("Click", (*) => this.undoDeletionButtonClickedEvent())
+        this.undoDeletionButton.onEvent("Click", (*) => this.controller.undoDeletionButtonClickedEvent())
         this.undoDeletionButton.Opt("Hidden1")
 
         this.createChangeButtons()
@@ -82,7 +83,7 @@ class HotKeyConfigurationPopup{
         buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent())
         
         buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change Action")
-        buttonToChangeOriginalAction.onEvent("Click", (*) => this.buttonToChangeOriginalActionClickedEvent())
+        buttonToChangeOriginalAction.onEvent("Click", (*) => this.controller.changeOriginalAction())
     }
 
     createFinalizationButtons(){
@@ -130,11 +131,8 @@ class HotKeyConfigurationPopup{
         this.saveButton.onEvent("Click", event)
     }
 
-
-    undoDeletionButtonClickedEvent(){
-        this.hotkeyDeleted := false
+    hideUndoDeletionButton(){
         this.undoDeletionButton.Opt("Hidden1")
-        this.setCurrentHotkeyText(this.currentHotkeyFormatted)
     }
 
     cancelButtonClickedForCrafterEvent(hotkeyCrafter, *){
@@ -160,11 +158,13 @@ class HotKeyConfigurationPopup{
         this.actionDeleted := false
         this.undoDeletionButton.Opt("Hidden1")
 
+        
         newAction := actionCrafter.getNewAction()
-        this.setCurrentActionText(newAction.toString())
 
-        ; TODO perhaps remove this line
-        this.currentHotkeyAction := newAction
+        
+        this.controller.setAction(newAction)
+
+        this.setCurrentActionText(newAction.toString())
 
         
         actionCrafter.Destroy()
@@ -248,7 +248,7 @@ class HotKeyConfigurationPopup{
         if (this.actionDeleted = true){
             this.currentActionTextControl.SetFont("s10 cRed")
         }
-        else if (this.originalHotkeyAction != newAction){
+        else if (this.controller.getOriginalAction() != this.controller.GetActionFriendly()){
             this.currentActionTextControl.SetFont("s10 cBlue")
         }
         else{
