@@ -34,9 +34,11 @@ class ActionCrafterGui{
 
     arrayOfKeyNames := []
 
-    __New(originalAction, arrayOfKeyNames, activeObjectsRegistry, currentHotkeyToExcecuteAction){
+    __New(hotkeyInfo, arrayOfKeyNames, activeObjectsRegistry){
 
-        this.currentHotkeyToExcecuteAction := currentHotkeyToExcecuteAction
+        originalAction := hotkeyInfo.toString()
+
+        this.currentHotkeyToExcecuteAction := hotkeyInfo.GetHotkeyName()
 
         this.arrayOfKeyNames := arrayOfKeyNames
 
@@ -225,9 +227,9 @@ class ActionCrafterGui{
         this.hotkeyCrafter.addCancelButtonClickEventAction(action)
     }
     
-    addDeleteButtonClickEventAction(action){
-        this.hotkeyCrafter.addDeleteButtonClickEventAction(action)
-    }
+    ; addDeleteButtonClickEventAction(action){
+    ;     this.hotkeyCrafter.addDeleteButtonClickEventAction(action)
+    ; }
 
     addCloseEventAction(action){
         this.hotkeyCrafter.addCloseEventAction(action)

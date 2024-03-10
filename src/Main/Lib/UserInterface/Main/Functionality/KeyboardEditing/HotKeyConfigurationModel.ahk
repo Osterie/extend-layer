@@ -9,7 +9,6 @@
 class HotKeyConfigurationModel{
 
     hotkeyDeleted := false
-    actionDeleted := false
 
     currentActionTextControl := ""
 
@@ -32,8 +31,24 @@ class HotKeyConfigurationModel{
         this.originalAction := this.hotkeyInfo.toString()
     }
 
+    GetActiveObjectsRegistry(){
+        return this.activeObjectsRegistry
+    }
+
+    GetArrayOfKeyNames(){
+        return this.arrayOfKeyNames
+    }
+
     SetHotkeyInfo(hotkeyInfo){
         this.hotkeyInfo := hotkeyInfo
+    }
+
+    setHotkeyDeletedStatus(status){
+        this.hotkeyDeleted := status
+    }
+
+    GetHotkeyInfo(){
+        return this.hotkeyInfo
     }
 
     GetOriginalHotkey(){

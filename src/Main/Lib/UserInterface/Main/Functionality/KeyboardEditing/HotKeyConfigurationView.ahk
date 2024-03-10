@@ -94,7 +94,7 @@ class HotKeyConfigurationView{
     }
 
     buttonToChangeOriginalHotkeyClickedEvent(){
-        this.mainGui.Hide()
+        this.Hide()
 
         hotkeyCrafter := HotkeyCrafterGui(this.currentHotkeyFormatted, this.arrayOfKeyNames)
         hotkeySavedEventAction := ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent", hotkeyCrafter)
@@ -104,35 +104,14 @@ class HotKeyConfigurationView{
         hotkeyCrafter.addCloseEventAction(hotkeyCrafterClosedEvent)
         hotkeyCrafter.addCancelButtonClickEventAction(hotkeyCrafterClosedEvent)
 
-        hotkeyDeleteEventAction := ObjBindMethod(this, "deleteButtonClickedForHotkeyChangeEvent", hotkeyCrafter)
-        hotkeyCrafter.addDeleteButtonClickEventAction(hotkeyDeleteEventAction)
+        ; hotkeyDeleteEventAction := ObjBindMethod(this, "deleteButtonClickedForHotkeyChangeEvent", hotkeyCrafter)
+        ; hotkeyCrafter.addDeleteButtonClickEventAction(hotkeyDeleteEventAction)
 
         hotkeyCrafter.Show()
     }
 
-    buttonToChangeOriginalActionClickedEvent(){
-        this.mainGui.Hide()
-
-        actionCrafter := ActionCrafterGui(this.currentHotkeyActionFormatted, this.arrayOfKeyNames, this.activeObjectsRegistry, this.currentHotkeyFormatted)
-        actionSavedEventAction := ObjBindMethod(this, "saveButtonClickedForActionChangeEvent", actionCrafter)
-        actionCrafter.addSaveButtonClickEventAction(actionSavedEventAction)
-
-        actionCrafterClosedEvent := ObjBindMethod(this, "cancelButtonClickedForCrafterEvent", actionCrafter)
-        actionCrafter.addCloseEventAction(actionCrafterClosedEvent)
-        actionCrafter.addCancelButtonClickEventAction(actionCrafterClosedEvent)
-
-        hotkeyDeleteEventAction := ObjBindMethod(this, "deleteButtonClickedForActionChangeEvent", actionCrafter)
-        actionCrafter.addDeleteButtonClickEventAction(hotkeyDeleteEventAction)
-
-        actionCrafter.Show()
-    }
-
     addSaveButtonClickedEvent(event){
         this.saveButton.onEvent("Click", event)
-    }
-
-    hideUndoDeletionButton(){
-        this.undoDeletionButton.Opt("Hidden1")
     }
 
     cancelButtonClickedForCrafterEvent(hotkeyCrafter, *){
@@ -280,6 +259,22 @@ class HotKeyConfigurationView{
         }
 
         return actionToReturn
+    }
+
+    Show(){
+        this.mainGui.Show()
+    }
+
+    hide(){
+        this.mainGui.Hide()
+    }
+
+    hideUndoDeletionButton(){
+        this.undoDeletionButton.Opt("Hidden1")
+    }
+
+    ShowUndoDeletionButton(){
+        this.undoDeletionButton.Opt("Hidden0")
     }
 
     destroy(){

@@ -69,33 +69,12 @@ class HotKeyConfigurationController{
         this.setCurrentActionText(this.currentHotkeyActionFormatted)
     }
 
-    createButtons(){
-        this.undoDeletionButton := this.mainGui.AddButton("Default w80 ym", "Undo deletion")
-        this.undoDeletionButton.onEvent("Click", (*) => this.undoDeletionButtonClickedEvent())
-        this.undoDeletionButton.Opt("Hidden1")
-
-        this.createChangeButtons()
-        this.createFinalizationButtons()
-    }
-
-    createChangeButtons(){
-        buttonToChangeOriginalHotkey := this.mainGui.AddButton("Default w80 xm", "Change Hotkey")
-        buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.buttonToChangeOriginalHotkeyClickedEvent())
-        
-        buttonToChangeOriginalAction := this.mainGui.AddButton("Default w80", "Change Action")
-        buttonToChangeOriginalAction.onEvent("Click", (*) => this.buttonToChangeOriginalActionClickedEvent())
-    }
-
-    createFinalizationButtons(){
-        this.saveButton := this.mainGui.AddButton("Default w80", "Save+Done")
-        this.cancelButton := this.mainGui.AddButton("Default w80", "Cancel+Done")
-        this.cancelButton.onEvent("Click", (*) => this.mainGui.Destroy())
-        this.deleteButton := this.mainGui.AddButton("Default w80", "Delete+Done")
-    }
-
-    changeOriginalAction(){
+    changeOriginalHotkey(){
         this.view.hide()
 
+
+        ; TODO, controller, view, model for HotkeyCrafterGui, talk to the controller and wait for either save, cancel or delete.
+        ; Be notified by the controller when one of these actions occure and take appropriate action (here in this controller.)
         hotkeyCrafter := HotkeyCrafterGui(this.currentHotkeyFormatted, this.arrayOfKeyNames)
         hotkeySavedEventAction := ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent", hotkeyCrafter)
         hotkeyCrafter.addSaveButtonClickEventAction(hotkeySavedEventAction)
@@ -104,16 +83,21 @@ class HotKeyConfigurationController{
         hotkeyCrafter.addCloseEventAction(hotkeyCrafterClosedEvent)
         hotkeyCrafter.addCancelButtonClickEventAction(hotkeyCrafterClosedEvent)
 
-        hotkeyDeleteEventAction := ObjBindMethod(this, "deleteButtonClickedForHotkeyChangeEvent", hotkeyCrafter)
-        hotkeyCrafter.addDeleteButtonClickEventAction(hotkeyDeleteEventAction)
+        ; hotkeyDeleteEventAction := ObjBindMethod(this, "deleteButtonClickedForHotkeyChangeEvent", hotkeyCrafter)
+        ; hotkeyCrafter.addDeleteButtonClickEventAction(hotkeyDeleteEventAction)
 
         hotkeyCrafter.Show()
     }
 
-    buttonToChangeOriginalActionClickedEvent(){
-        this.mainGui.Hide()
+    changeOriginalAction(){
+        this.view.Hide()
 
-        actionCrafter := ActionCrafterGui(this.currentHotkeyActionFormatted, this.arrayOfKeyNames, this.activeObjectsRegistry, this.currentHotkeyFormatted)
+        activeObjectsRegistry := this.model.GetActiveObjectsRegistry()
+        arrayOfKeyNames := this.model.GetArrayOfKeyNames()
+        hotkeyInfo := this.model.GetHotkeyInfo()
+
+
+        actionCrafter := ActionCrafterGui(hotkeyInfo, arrayOfKeyNames, activeObjectsRegistry)
         actionSavedEventAction := ObjBindMethod(this, "saveButtonClickedForActionChangeEvent", actionCrafter)
         actionCrafter.addSaveButtonClickEventAction(actionSavedEventAction)
 
@@ -121,8 +105,8 @@ class HotKeyConfigurationController{
         actionCrafter.addCloseEventAction(actionCrafterClosedEvent)
         actionCrafter.addCancelButtonClickEventAction(actionCrafterClosedEvent)
 
-        hotkeyDeleteEventAction := ObjBindMethod(this, "deleteButtonClickedForActionChangeEvent", actionCrafter)
-        actionCrafter.addDeleteButtonClickEventAction(hotkeyDeleteEventAction)
+        ; hotkeyDeleteEventAction := ObjBindMethod(this, "deleteButtonClickedForActionChangeEvent", actionCrafter)
+        ; actionCrafter.addDeleteButtonClickEventAction(hotkeyDeleteEventAction)
 
         actionCrafter.Show()
     }
@@ -133,21 +117,22 @@ class HotKeyConfigurationController{
 
 
     undoDeletionButtonClickedEvent(){
-        this.hotkeyDeleted := false
+        this.model.setHotkeyDeletedStatus(false)
         this.view.hideUndoDeletionButton() 
-        this.view.setCurrentHotkeyText(this.currentHotkeyFormatted)
+        this.view.setCurrentHotkeyText(this.GetHotkeyFriendly())
+        this.view.setCurrentActionText(this.GetActionFriendly())
     }
 
     cancelButtonClickedForCrafterEvent(hotkeyCrafter, *){
         hotkeyCrafter.Destroy()
-        this.mainGui.Show()
+        this.view.Show()
     }
 
     saveButtonClickedForHotkeyChangeEvent(hotkeyCrafter, savedButton, idk){
         
-        this.hotkeyDeleted := false
-        this.undoDeletionButton.Opt("Hidden1")
-
+        ; this.hotkeyDeleted := false
+        this.view.hideUndoDeletionButton()
+        msgbox(hotkeyCrafter.getNewHotkey())
         newHotkey := HotkeyFormatConverter.convertToFriendlyHotkeyName(hotkeyCrafter.getNewHotkey(), " + ")
         this.setCurrentHotkeyText(newHotkey)
         
@@ -158,18 +143,19 @@ class HotKeyConfigurationController{
 
     saveButtonClickedForActionChangeEvent(actionCrafter, savedButton, idk){
         
-        this.actionDeleted := false
-        this.undoDeletionButton.Opt("Hidden1")
+        this.model.setHotkeyDeletedStatus(false)
+        this.view.hideUndoDeletionButton()
 
         newAction := actionCrafter.getNewAction()
-        this.setCurrentActionText(newAction.toString())
 
-        ; TODO perhaps remove this line
-        this.currentHotkeyAction := newAction
-
+        if (newAction.getMethodName() != ""){
+            this.model.SetHotkeyInfo(newAction)
+            this.view.setCurrentActionText(newAction.toString())
+        }
         
         actionCrafter.Destroy()
-        this.mainGui.Show()
+        
+        this.view.Show()
     }
 
     deleteButtonClickedForHotkeyChangeEvent(hotkeyCrafter, savedButton, idk){
@@ -185,11 +171,11 @@ class HotKeyConfigurationController{
 
     deleteButtonClickedForActionChangeEvent(actionCrafter, savedButton, idk){
         
-        this.actionDeleted := true
-        this.undoDeletionButton.Opt("Hidden0")
+        this.model.setHotkeyDeletedStatus(true)
+        this.view.ShowUndoDeletionButton()
 
         actionCrafter.Destroy()
-        this.mainGui.Show()
+        this.view.Show()
     }
 
     CreateHotKeyMaker(){
