@@ -66,22 +66,26 @@ Class ExtraKeyboardsAppGuiController{
         popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
         popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController)
         
-        saveButtonEvent := ObjBindMethod(this, "HotKeyConfigurationViewSaveEvent", popupForConfiguringHotkey)
+        saveButtonEvent := ObjBindMethod(this, "HotKeyConfigurationViewSaveEvent", popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
         popupForConfiguringHotkey.addSaveButtonClickedEvent(saveButtonEvent)
 
         ; TODO add delete button event.
     }
 
 
-    HotKeyConfigurationViewSaveEvent(popupForConfiguringHotkey, *){
-        originalHotkey := popupForConfiguringHotkey.getOriginalHotkey()
-        newHotkey := popupForConfiguringHotkey.getHotkey()
-        newAction := popupForConfiguringHotkey.getAction()
+    HotKeyConfigurationViewSaveEvent(popupForConfiguringHotkeyModel, popupForConfiguringHotkey, *){
+        originalHotkey := popupForConfiguringHotkeyModel.getOriginalHotkey()
+
+        ; TODO fix wtf is going on here
+        hotkeyInfo := popupForConfiguringHotkeyModel.getHotkeyInfo()
+        newHotkey := "asd"
+        newAction := hotkeyInfo
+        msgbox(newAction)
 
         if (originalHotkey = "NONE"){
             try{
-                newAction.changeHotkey(newHotkey)
-                this.model.AddHotkey(newAction)
+                hotkeyInfo.changeHotkey(newHotkey)
+                this.model.AddHotkey(hotkeyInfo)
             }
             catch Error as e{
                 msgbox("Could not add hotkey. " . e.Message)
@@ -90,7 +94,7 @@ Class ExtraKeyboardsAppGuiController{
         }
         else{
             try{
-                this.model.ChangeHotkey(originalHotkey, newHotkey, newAction)
+                this.model.ChangeHotkey(originalHotkey, newHotkey, hotkeyInfo)
             }
             catch Error as e{
                 msgbox("Could not modify hotkey.")

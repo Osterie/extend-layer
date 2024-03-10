@@ -23,11 +23,6 @@ class HotKeyConfigurationController{
     currentHotkeyActionFormatted := ""
 
     saveButton := ""
-    deleteButton := ""
-
-    undoDeletionButton := ""
-    hotkeyDeleted := false
-    actionDeleted := false
 
     currentActionTextControl := ""
 
@@ -43,48 +38,21 @@ class HotKeyConfigurationController{
         this.view := view
     }
 
-    CreatePopupForHotkeyRegistry(hotkeyCommand, hotkeyAction){
-
-        this.originalHotkey := hotkeyCommand
-        this.currentHotkeyFormatted := hotkeyCommand
-
-        this.originalHotkeyAction := hotkeyAction
-        this.currentHotkeyActionFormatted := hotkeyAction
-
-        this.mainGui := Gui()
-        this.mainGui.opt("+Resize +MinSize600x560")
-        this.createCurrentHotkeyControl()
-        this.createCurrentActionControl()
-        this.createButtons()
-        this.mainGui.Show()
-    }
-
-    createCurrentHotkeyControl(){
-        this.currentHotkeyTextControl := this.mainGui.AddText("r4", "Hotkey: `n" . this.currentHotkeyFormatted)
-        this.setCurrentHotkeyText(this.currentHotkeyFormatted)
-    }
-
-    createCurrentActionControl(){
-        this.currentActionTextControl := this.mainGui.AddText(" ", "Action: `n" . this.currentHotkeyActionFormatted)
-        this.setCurrentActionText(this.currentHotkeyActionFormatted)
-    }
-
     changeOriginalHotkey(){
         this.view.hide()
 
+        arrayOfKeyNames := this.model.GetArrayOfKeyNames()
+        hotkeyInfo := this.model.GetHotkeyInfo()
 
         ; TODO, controller, view, model for HotkeyCrafterGui, talk to the controller and wait for either save, cancel or delete.
         ; Be notified by the controller when one of these actions occure and take appropriate action (here in this controller.)
-        hotkeyCrafter := HotkeyCrafterGui(this.currentHotkeyFormatted, this.arrayOfKeyNames)
+        hotkeyCrafter := HotkeyCrafterGui(hotkeyInfo, arrayOfKeyNames)
         hotkeySavedEventAction := ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent", hotkeyCrafter)
         hotkeyCrafter.addSaveButtonClickEventAction(hotkeySavedEventAction)
 
         hotkeyCrafterClosedEvent := ObjBindMethod(this, "cancelButtonClickedForCrafterEvent", hotkeyCrafter)
         hotkeyCrafter.addCloseEventAction(hotkeyCrafterClosedEvent)
         hotkeyCrafter.addCancelButtonClickEventAction(hotkeyCrafterClosedEvent)
-
-        ; hotkeyDeleteEventAction := ObjBindMethod(this, "deleteButtonClickedForHotkeyChangeEvent", hotkeyCrafter)
-        ; hotkeyCrafter.addDeleteButtonClickEventAction(hotkeyDeleteEventAction)
 
         hotkeyCrafter.Show()
     }
@@ -105,23 +73,9 @@ class HotKeyConfigurationController{
         actionCrafter.addCloseEventAction(actionCrafterClosedEvent)
         actionCrafter.addCancelButtonClickEventAction(actionCrafterClosedEvent)
 
-        ; hotkeyDeleteEventAction := ObjBindMethod(this, "deleteButtonClickedForActionChangeEvent", actionCrafter)
-        ; actionCrafter.addDeleteButtonClickEventAction(hotkeyDeleteEventAction)
-
         actionCrafter.Show()
     }
 
-    addSaveButtonClickedEvent(event){
-        this.saveButton.onEvent("Click", event)
-    }
-
-
-    undoDeletionButtonClickedEvent(){
-        this.model.setHotkeyDeletedStatus(false)
-        this.view.hideUndoDeletionButton() 
-        this.view.setCurrentHotkeyText(this.GetHotkeyFriendly())
-        this.view.setCurrentActionText(this.GetActionFriendly())
-    }
 
     cancelButtonClickedForCrafterEvent(hotkeyCrafter, *){
         hotkeyCrafter.Destroy()
@@ -130,9 +84,6 @@ class HotKeyConfigurationController{
 
     saveButtonClickedForHotkeyChangeEvent(hotkeyCrafter, savedButton, idk){
         
-        ; this.hotkeyDeleted := false
-        this.view.hideUndoDeletionButton()
-        msgbox(hotkeyCrafter.getNewHotkey())
         newHotkey := HotkeyFormatConverter.convertToFriendlyHotkeyName(hotkeyCrafter.getNewHotkey(), " + ")
         this.setCurrentHotkeyText(newHotkey)
         
@@ -143,9 +94,6 @@ class HotKeyConfigurationController{
 
     saveButtonClickedForActionChangeEvent(actionCrafter, savedButton, idk){
         
-        this.model.setHotkeyDeletedStatus(false)
-        this.view.hideUndoDeletionButton()
-
         newAction := actionCrafter.getNewAction()
 
         if (newAction.getMethodName() != ""){
@@ -156,60 +104,6 @@ class HotKeyConfigurationController{
         actionCrafter.Destroy()
         
         this.view.Show()
-    }
-
-    deleteButtonClickedForHotkeyChangeEvent(hotkeyCrafter, savedButton, idk){
-        
-        this.hotkeyDeleted := true
-        this.undoDeletionButton.Opt("Hidden0")
-
-        this.setCurrentHotkeyText(this.currentHotkeyFormatted)
-        
-        hotkeyCrafter.Destroy()
-        this.mainGui.Show()
-    }
-
-    deleteButtonClickedForActionChangeEvent(actionCrafter, savedButton, idk){
-        
-        this.model.setHotkeyDeletedStatus(true)
-        this.view.ShowUndoDeletionButton()
-
-        actionCrafter.Destroy()
-        this.view.Show()
-    }
-
-    CreateHotKeyMaker(){
-        manuallyCreateHotkeyCheckbox := this.mainGui.Add("CheckBox", , "Manually create hotkey")
-        manuallyCreateHotkeyCheckbox.onEvent("Click", (*) => this.manuallyCreateHotkeyCheckboxClickEvent(manuallyCreateHotkeyCheckbox))
-
-        this.hotkeyElement := this.mainGui.Add("Hotkey", )
-        this.manuallyCreatHotkeyElement := this.mainGui.Add("Edit", "xm w300 h20", this.currentHotkeyFormatted)
-        this.manuallyCreatHotkeyElement.Opt("Hidden1")
-
-        this.addWinKeyAsModifierElement := this.mainGui.Add("CheckBox",, "Add win key as modifier")
-
-    }
-
-    manuallyCreateHotkeyCheckboxClickEvent(checkbox){
-        if (checkbox.Value == 1){
-            ; on, manually create hotkey
-            this.hotkeyElement.Opt("Hidden1")
-            this.manuallyCreatHotkeyElement.Opt("Hidden0")
-            if (this.addWinKeyAsModifierElement.Value == 1){
-                this.manuallyCreatHotkeyElement.Value := "#"    
-            }
-            this.addWinKeyAsModifierElement.Opt("Hidden1")
-            this.manuallyCreatHotkeyElement.Value .= this.hotkeyElement.Value
-
-
-        }
-        else{
-            ; off create hotkey by pressing keys
-            this.hotkeyElement.Opt("Hidden0")
-            this.addWinKeyAsModifierElement.Opt("Hidden0")
-            this.manuallyCreatHotkeyElement.Opt("Hidden1")
-
-        }
     }
 
     setCurrentHotkeyText(newHotkey){

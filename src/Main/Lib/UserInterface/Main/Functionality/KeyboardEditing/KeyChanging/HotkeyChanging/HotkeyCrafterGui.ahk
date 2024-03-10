@@ -20,7 +20,8 @@ class HotkeyCrafterGui{
 
     availableKeyNames := []
 
-    __New(originalHotkey, arrayOfKeyNames, guiToAddTo := ""){
+    __New(hotkeyInfo, arrayOfKeyNames, guiToAddTo := ""){
+        originalHotkey := hotkeyInfo.getFriendlyHotkeyName()
 
         if (guiToAddTo = ""){
             this.GuiObject := Gui()
