@@ -48,9 +48,9 @@ class KeyboardLayersInfoRegistry{
         else if (this.HotkeysRegistry.Has(layerIdentifier)){
             registryToReturn := this.HotkeysRegistry[layerIdentifier]
         }
-        else{
-            throw ("No registry found for layer identifier: " . layerIdentifier)
-        }
+        ; else{
+        ;     throw ("No registry found for layer identifier: " . layerIdentifier)
+        ; }
         return registryToReturn
     }
 

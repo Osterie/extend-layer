@@ -18,14 +18,13 @@ Class KeyboardOverlaysInitializer{
     ; TODO add method to read which keys are used to show keyboard overlays, should be in the correct layer section, because only then should they activate
     ReadAllKeyboardOverlays(){
         For key, value in this.layersInformation.GetKeyboardOverlaysRegistry(){
-                NewKeyboardOverlay := KeyboardOverlay()
-                NewKeyboardOverlay.CreateGui()
 
-                this.layersInformation.GetRegistryByLayerIdentifier(key)
-                
-                NewKeyboardOverlay.fillKeyboardOverlayInformation(value)
-                
-                this.instanceOfOverlayRegistry.addKeyboardOverlay(NewKeyboardOverlay, key)
+            NewKeyboardOverlay := KeyboardOverlay()
+            NewKeyboardOverlay.CreateGui()
+
+            NewKeyboardOverlay.fillKeyboardOverlayInformation(value)
+            
+            this.instanceOfOverlayRegistry.addKeyboardOverlay(NewKeyboardOverlay, key)
         }
     }
 
@@ -42,19 +41,22 @@ Class KeyboardOverlaysInitializer{
         KeyboardOverlay.AddStaticColumn(ColumnHelperKey, ColumnFriendlyName)
     }
 
+    ; FIXME does not work probably TODO
     ChangeHotkeysStateForKeyboardOverlaysByLayerSection(layerSection, enableHotkeys := true){
         try{
-            for key, value in this.layersInformation{
+            
+            for key, value in this.layersInformation.GetKeyboardOverlaysRegistry(){
                 if (InStr(key, layerSection)){
-
-                    showKeyboardOverlayKey := this.layersInformation[key]["ShowKeyboardOverlayKey"]
                     ; TODO use the keyboardOVelray class to create a new keyboard overlay, which then columns are added to
                     ; TODO, each layer should have the "KeyboardOverlayKey" in it, which is then created there and such blah blah blah
+                    showKeyboardOverlayKey := this.layersInformation.GetRegistryByLayerIdentifier(key).getShowKeyboardOverlayKey()
                     this.ChangeHotkeyStateForKeyboardOverlay(key, showKeyboardOverlayKey, enableHotkeys)
+                    
                 }
             }
         }
         catch{
+            msgbox("error in KeyboardOverlaysInitializer, layer section does not exist")
             ; overlay does not exist...
         }
     }
@@ -75,14 +77,16 @@ Class KeyboardOverlaysInitializer{
 
     HotKeyForHidingKeyboardOverlaysUseMeGlobally(){
         try{
-            for key, value in this.layersInformation{
+            for key, value in this.layersInformation.GetKeyboardOverlaysRegistry(){
                 if (InStr(key, "KeyboardOverlay")){
-                    showKeyboardOverlayKey := this.layersInformation[key]["ShowKeyboardOverlayKey"]
+                    showKeyboardOverlayKey := this.layersInformation.GetRegistryByLayerIdentifier(key).getShowKeyboardOverlayKey()
                     HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => this.instanceOfOverlayRegistry.hideAllLayers())
+                    
                 }
             }
         }
-        catch{
+        catch Error as e{
+            msgbox(e.Message)
             ; overlay does not exist...
         }
     }

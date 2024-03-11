@@ -26,10 +26,8 @@ SendMode "Event"
 Class ExtraKeyboardsApp{
     
     UserInterface := ""
-    MainScript := ""
 
     __New(activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames){
-        this.MainScript := mainScript
         this.Model := ExtraKeyboardsAppGuiModel(activeObjectsRegistry, keyboardLayersInfoRegister, keyNames)
         this.UserInterface := ExtraKeyboardsAppGuiView()
         this.Controller := ExtraKeyboardsAppGuiController(this.Model, this.UserInterface, keyboardLayersInfoRegister, mainScript)

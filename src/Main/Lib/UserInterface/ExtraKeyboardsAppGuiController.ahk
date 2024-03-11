@@ -67,10 +67,7 @@ Class ExtraKeyboardsAppGuiController{
         popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController)
         
         
-        saveButtonEvent := ObjBindMethod(this, "changeHotkeys")
-        popupForConfiguringHotkeyController.subscribeToSaveEvent(saveButtonEvent)
-        ; popupForConfiguringHotkey.addSaveButtonClickedEvent(saveButtonEvent)
-
+        popupForConfiguringHotkeyController.subscribeToSaveEvent(ObjBindMethod(this, "changeHotkeys"))
 
         ; TODO add delete button event.
     }
