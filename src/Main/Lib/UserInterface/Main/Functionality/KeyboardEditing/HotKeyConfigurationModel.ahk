@@ -8,12 +8,8 @@
 
 class HotKeyConfigurationModel{
 
-    hotkeyDeleted := false
-
     activeObjectsRegistry := ""
-
     arrayOfKeyNames := Array()
-
     hotkeyInfo := ""
 
     originalHotkeyKey := ""
@@ -48,10 +44,6 @@ class HotKeyConfigurationModel{
 
     SetHotkeyInfo(hotkeyInfo){
         this.hotkeyInfo := hotkeyInfo
-    }
-
-    setHotkeyDeletedStatus(status){
-        this.hotkeyDeleted := status
     }
 
     GetHotkeyInfo(){

@@ -36,6 +36,12 @@ Class ExtraKeyboardsAppGuiModel{
         ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() . "\Keyboards.json")
     }
 
+    DeleteHotkey(hotkeyKey){
+        this.keyboardLayersInfoRegister.DeleteHotkey(this.GetCurrentLayer(), hotkeyKey)
+
+        ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() . "\Keyboards.json")
+    }
+
     GetFunctionNames(){
         pathToObjectsIniFile := this.GetPathToCurrentSettings()
 

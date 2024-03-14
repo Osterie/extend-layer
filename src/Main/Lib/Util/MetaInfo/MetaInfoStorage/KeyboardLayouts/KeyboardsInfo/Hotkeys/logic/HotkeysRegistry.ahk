@@ -16,6 +16,10 @@ class HotkeysRegistry{
         this.hotkeys[HotkeyInfo.getHotkeyName()] := HotkeyInfo
     }
 
+    DeleteHotkey(hotkeyName){
+        this.hotkeys.Delete(hotkeyName)
+    }
+
     GetLayerIdentifier(){
         return this.layerIdentifier
     }
@@ -66,5 +70,4 @@ class HotkeysRegistry{
 
         return elements
     }
-
 }

@@ -65,6 +65,7 @@ Class ExtraKeyboardsAppGuiController{
         
         
         popupForConfiguringHotkeyController.subscribeToSaveEvent(ObjBindMethod(this, "changeHotkeys"))
+        popupForConfiguringHotkeyController.subscribeToDeleteEvent(ObjBindMethod(this, "deleteHotkey"))
 
         ; TODO add delete button event.
     }
@@ -72,7 +73,6 @@ Class ExtraKeyboardsAppGuiController{
     GetHwnd(){
         return this.view.GetHwnd()
     }
-
 
     changeHotkeys(hotkeyInfo, originalHotkeyKey){
         newHotkeyKey := hotkeyInfo.getHotkeyName()
@@ -99,6 +99,17 @@ Class ExtraKeyboardsAppGuiController{
             }
         }
 
+        this.MainScript.RunLogicalStartup()
+    }
+
+    deleteHotkey(hotkeyKey){
+        try{
+            this.model.DeleteHotkey(hotkeyKey)
+            msgbox("Deleted hotkey")
+        }
+        catch Error as e{
+            msgbox("Could not delete hotkey. " . e.Message)
+        }
         this.MainScript.RunLogicalStartup()
     }
 

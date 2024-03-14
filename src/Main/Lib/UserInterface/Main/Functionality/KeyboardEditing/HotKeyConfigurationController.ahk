@@ -13,6 +13,7 @@ class HotKeyConfigurationController{
     view := ""
 
     saveEventSubscribers := Array()
+    deleteEventSubscribers := Array()
 
     __New(model, view){
         this.model := model
@@ -65,6 +66,18 @@ class HotKeyConfigurationController{
         for index, event in this.saveEventSubscribers
         {
             event(this.getHotkeyInfo(), this.getOriginalHotkey())
+        }
+        this.view.destroy()
+    }
+
+    SubscribeToDeleteEvent(event){
+        this.deleteEventSubscribers.Push(event)
+    }
+
+    NotifyListenersDelete(){
+        for index, event in this.deleteEventSubscribers
+        {
+            event(this.getOriginalHotkey())
         }
         this.view.destroy()
     }

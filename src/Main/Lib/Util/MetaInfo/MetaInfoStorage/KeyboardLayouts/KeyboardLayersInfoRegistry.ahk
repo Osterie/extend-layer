@@ -25,6 +25,10 @@ class KeyboardLayersInfoRegistry{
         this.HotkeysRegistry[layerIdentifier].AddHotkey(hotkeyAction)
     }
 
+    DeleteHotkey(layerIdentifier, hotkeyName){
+        this.HotkeysRegistry[layerIdentifier].DeleteHotkey(hotkeyName)
+    }
+
     ; TODO remove me perhaps, a new and better method is being developed...
     ChangeHotkey(layerIdentifier, hotkeyName, newHotkey){
         this.HotkeysRegistry[layerIdentifier].ChangeHotkeyKey(hotkeyName, newHotkey)

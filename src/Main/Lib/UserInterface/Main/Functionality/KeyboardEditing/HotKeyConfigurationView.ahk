@@ -59,6 +59,7 @@ class HotKeyConfigurationView extends DomainSpecificGui{
         cancelButton := this.AddButton("Default w100", "Cancel+Done")
         cancelButton.onEvent("Click", (*) => this.Destroy())
         deleteButton := this.AddButton("Default w100", "Delete+Done")
+        deleteButton.onEvent("Click", (*) => this.controller.NotifyListenersDelete())
     }
     
     updateHotkeyText(){
