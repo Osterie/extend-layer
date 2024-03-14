@@ -18,13 +18,15 @@ class HotkeyCrafterGui{
     saveButton := ""
     cancelButton := ""
 
+    saveEventSubscribers := Array()
+
     availableKeyNames := []
 
     __New(hotkeyInfo, arrayOfKeyNames, guiToAddTo := ""){
         originalHotkey := hotkeyInfo.getFriendlyHotkeyName()
 
         if (guiToAddTo = ""){
-            this.GuiObject := Gui()
+            this.GuiObject := Gui(, "HotkeyCrafterGui")
             this.GuiObject.Add("Text", "h20", "Original hotkey: " . originalHotkey)
         }
         else {
@@ -54,6 +56,8 @@ class HotkeyCrafterGui{
         this.hideAdvancedHotkeyCrafter()
 
         this.saveButton := this.GuiObject.Add("Button", " w100 h20 xM yp+150", "Save")
+        this.saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
+        
         this.cancelButton := this.GuiObject.Add("Button", "w100 h20", "Cancel")
         ; this.deleteButton := this.GuiObject.Add("Button", "w100 h20", "Delete")
     }
@@ -189,8 +193,14 @@ class HotkeyCrafterGui{
         return hotkeyValueToReturn
     }
 
-    addSaveButtonClickEventAction(action){
-        this.saveButton.OnEvent("Click", action)
+    subscribeToSaveEvent(action){
+        this.saveEventSubscribers.push(action)
+    }
+
+    NotifyListenersSave(){
+        Loop this.saveEventSubscribers.Length{
+            this.saveEventSubscribers[A_Index](this.getNewHotkey())
+        }
     }
 
     addCancelButtonClickEventAction(action){

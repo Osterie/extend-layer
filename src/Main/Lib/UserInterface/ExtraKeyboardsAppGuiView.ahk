@@ -8,25 +8,27 @@
 #Include <UserInterface\Main\Functionality\KeyboardEditing\HotKeyConfigurationView>
 #Include <UserInterface\Main\util\GuiColorsChanger>
 
-Class ExtraKeyboardsAppGuiView{
+#Include <UserInterface\Main\Util\DomainSpecificGui>
+
+
+; TODO everything should inherit from a base gui class which fixes the colors and such of all the guis.
+Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
 
     ; Used to create the gui
     ExtraKeyboardsAppGui := ""
 
     __New(){
-        ; Empty
+
     }
 
     CreateMain(controller){
-        this.controller := controller  
+        this.controller := controller
 
-        this.ExtraKeyboardsAppGui := Gui("+Resize +MinSize920x480", "Extra Keyboards App")
-        this.ExtraKeyboardsAppGui.BackColor := "051336"
-        this.ExtraKeyboardsAppGui.SetFont("c6688cc Bold")
+        this.ExtraKeyboardsAppGui := DomainSpecificGui("+Resize +MinSize920x480", "Extra Keyboards App")
+
 
         this.CreateProfileEditor()
         this.CreateTabs()
-        this.setColors()
         
         ; Create gui in the top left corner of the screen
         this.ExtraKeyboardsAppGui.Show("x0 y0")
@@ -80,18 +82,7 @@ Class ExtraKeyboardsAppGuiView{
         this.ExtraKeyboardsAppGui.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.
     }
 
-    setColors(){
-        controlColor := "060621"
-        textColor := "6688FF"
-        GuiColorsChanger.setControlsColor(this.ExtraKeyboardsAppGui, controlColor)
-        GuiColorsChanger.setControlsTextColor(this.ExtraKeyboardsAppGui, textColor)
-
-        ; Top bar or whatever it is called
-        GuiColorsChanger.DwmSetCaptionColor(this.ExtraKeyboardsAppGui, 0x300f45) ; color is in RGB format
-        GuiColorsChanger.DwmSetTextColor(this.ExtraKeyboardsAppGui, 0x27eaf1)
-    }
-
-    Destroy(){
-        this.ExtraKeyboardsAppGui.Destroy()
+    GetHwnd(){
+        return this.ExtraKeyboardsAppGui.Hwnd
     }
 }

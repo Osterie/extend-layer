@@ -12,8 +12,6 @@ Class ExtraKeyboardsAppGuiModel{
     keyboardLayerIdentifiers := ""
     keyboardLayersInfoRegister := ""
 
-
-
     __New(activeObjectsRegistry, keyboardLayersInfoRegister, keyNames){
         
         this.keyNames := keyNames

@@ -49,15 +49,18 @@ class HotKeyConfigurationController{
         ; TODO, controller, view, model for HotkeyCrafterGui, talk to the controller and wait for either save, cancel or delete.
         ; Be notified by the controller when one of these actions occure and take appropriate action (here in this controller.)
         hotkeyCrafter := HotkeyCrafterGui(hotkeyInfo, arrayOfKeyNames)
-        hotkeyCrafter.addSaveButtonClickEventAction(ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent", hotkeyCrafter))
-
-        ; hotkeyCrafter.subscribeToSaveEvent(ObjBindMethod(this, "NotifyListenersSave"))
+        hotkeyCrafter.subscribeToSaveEvent(ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent", hotkeyCrafter))
 
         hotkeyCrafterClosedEvent := ObjBindMethod(this, "cancelButtonClickedForCrafterEvent", hotkeyCrafter)
         hotkeyCrafter.addCloseEventAction(hotkeyCrafterClosedEvent)
         hotkeyCrafter.addCancelButtonClickEventAction(hotkeyCrafterClosedEvent)
 
         hotkeyCrafter.Show()
+
+        WinWait("HotkeyCrafterGui")
+        WinWaitClose
+        
+        
     }
 
     changeOriginalAction(){
@@ -97,11 +100,12 @@ class HotKeyConfigurationController{
         this.view.destroy()
     }
 
-    saveButtonClickedForHotkeyChangeEvent(hotkeyCrafter, savedButton, idk){
+    saveButtonClickedForHotkeyChangeEvent(hotkeyCrafter, newHotkeyKey){
 
+        this.SetHotkeyKey(newHotkeyKey)
         this.view.updateHotkeyText()
-        
         hotkeyCrafter.Destroy()
+        
         this.view.Show()
 
     }
@@ -120,8 +124,12 @@ class HotKeyConfigurationController{
         this.view.Show()
     }
 
-    SetAction(action){
-        this.model.SetHotkeyInfo(action)
+    SetHotkeyKey(newHotkeyKey){
+        this.model.SetHotkeyKey(newHotkeyKey)
+    }
+
+    SetHotkeyAction(action){
+        this.model.SetHotkeyAction(action)
     }
 
     GetHotkeyInfo(){

@@ -19,7 +19,7 @@ Class KeysPressedGui{
         this.GuiShowKeysPressed.Opt("-Caption +AlwaysOnTop +Owner +LastFound")
         this.GuiShowKeysPressed.BackColor := "EEAA99"
         this.GuiShowKeysPressed.SetFont("s40 w70 q4", "Cascadia Code")
-        this.showKeysPressedControl := this.GuiShowKeysPressed.AddText(, "")
+        this.showKeysPressedControl := this.GuiShowKeysPressed.Add("Text")
     }
 
     ; The reason for the asterisk is because the Hotkey function is used to create hotkeys.

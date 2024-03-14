@@ -64,12 +64,16 @@ Class ExtraKeyboardsAppGuiController{
         popupForConfiguringHotkeyModel := HotKeyConfigurationModel(this.GetActiveObjectsRegistry(), this.GetKeyNames(), hotkeyInfo)
         popupForConfiguringHotkey := HotKeyConfigurationView(this.GetActiveObjectsRegistry(), this.GetKeyNames())
         popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
-        popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController)
+        popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController, this.GetViewHwnd())
         
         
         popupForConfiguringHotkeyController.subscribeToSaveEvent(ObjBindMethod(this, "changeHotkeys"))
 
         ; TODO add delete button event.
+    }
+
+    GetViewHwnd(){
+        return this.view.GetHwnd()
     }
 
 
