@@ -62,7 +62,7 @@ Class ExtraKeyboardsAppGuiController{
     ; TODO move to view
     CreatePopupForHotkeys(hotkeyInfo){
         popupForConfiguringHotkeyModel := HotKeyConfigurationModel(this.GetActiveObjectsRegistry(), this.GetKeyNames(), hotkeyInfo)
-        popupForConfiguringHotkey := HotKeyConfigurationView(this.GetActiveObjectsRegistry(), this.GetKeyNames())
+        popupForConfiguringHotkey := HotKeyConfigurationView()
         popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
         popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController, this.GetViewHwnd())
         

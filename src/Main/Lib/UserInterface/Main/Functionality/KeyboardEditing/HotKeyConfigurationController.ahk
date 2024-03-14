@@ -8,28 +8,6 @@
 
 class HotKeyConfigurationController{
 
-    mainGui := ""
-
-    manuallyCreatHotkeyElement := ""
-    addWinKeyAsModifierElement := ""
-    currentHotkeyTextControl := ""
-
-    hotkeyElement := ""
-    originalHotkey := ""
-    currentHotkeyFormatted := ""
-
-    originalHotkeyAction := ""
-    currentHotkeyAction := ""
-    currentHotkeyActionFormatted := ""
-
-    saveButton := ""
-
-    currentActionTextControl := ""
-
-    activeObjectsRegistry := ""
-
-    arrayOfKeyNames := Array()
-
     model := ""
     view := ""
 

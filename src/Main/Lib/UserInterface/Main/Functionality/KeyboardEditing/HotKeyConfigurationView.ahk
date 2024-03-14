@@ -10,35 +10,19 @@
 class HotKeyConfigurationView extends DomainSpecificGui{
 
 
-    manuallyCreatHotkeyElement := ""
-    addWinKeyAsModifierElement := ""
     currentHotkeyTextControl := ""
-
-    hotkeyElement := ""
-
-    currentHotkeyAction := ""
-
-    saveButton := ""
-
     currentActionTextControl := ""
-
-    activeObjectsRegistry := ""
-
-    arrayOfKeyNames := Array()
 
     controller := ""
 
-    __New(activeObjectsRegistry, arrayOfKeyNames){
+    __New(){
         super.__New()
-
-        this.activeObjectsRegistry := activeObjectsRegistry
-        this.arrayOfKeyNames := arrayOfKeyNames
     }
 
     CreateMain(controller, ownerHwnd := ""){
         this.controller := controller
 
-        this.opt("+Resize +MinSize600x560")
+        this.opt("+Resize +MinSize300x280")
         this.opt("+Owner" ownerHwnd)
         this.createCurrentHotkeyControl()
         this.createCurrentActionControl()
@@ -62,19 +46,19 @@ class HotKeyConfigurationView extends DomainSpecificGui{
     }
 
     createChangeButtons(){
-        buttonToChangeOriginalHotkey := this.AddButton("Default w80 xm", "Change Hotkey")
+        buttonToChangeOriginalHotkey := this.AddButton("Default w100 xm", "Change Hotkey")
         buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.controller.changeOriginalHotkey())
         
-        buttonToChangeOriginalAction := this.AddButton("Default w80", "Change Action")
+        buttonToChangeOriginalAction := this.AddButton("Default w100", "Change Action")
         buttonToChangeOriginalAction.onEvent("Click", (*) => this.controller.changeOriginalAction())
     }
 
     createFinalizationButtons(){
-        this.saveButton := this.AddButton("Default w80", "Save+Done")
-        this.saveButton.onEvent("Click", (*) => this.controller.NotifyListenersSave())
-        this.cancelButton := this.AddButton("Default w80", "Cancel+Done")
-        this.cancelButton.onEvent("Click", (*) => this.Destroy())
-        this.deleteButton := this.AddButton("Default w80", "Delete+Done")
+        saveButton := this.AddButton("Default w100", "Save+Done")
+        saveButton.onEvent("Click", (*) => this.controller.NotifyListenersSave())
+        cancelButton := this.AddButton("Default w100", "Cancel+Done")
+        cancelButton.onEvent("Click", (*) => this.Destroy())
+        deleteButton := this.AddButton("Default w100", "Delete+Done")
     }
     
     updateHotkeyText(){
@@ -82,7 +66,7 @@ class HotKeyConfigurationView extends DomainSpecificGui{
         this.currentHotkeyTextControl.Value := ("Hotkey: `n" . newHotkey)
 
         if (this.controller.getOriginalHotkeyFriendly() != this.controller.GetHotkeyFriendly()){
-            this.currentHotkeyTextControl.SetFont("s10 cBlue")
+            this.currentHotkeyTextControl.SetFont("s10 cGreen")
         }
         else{
             this.SetColors()
@@ -97,7 +81,7 @@ class HotKeyConfigurationView extends DomainSpecificGui{
         this.currentActionTextControl.Value := ("Action: `n" . newAction)
 
         if (this.controller.getOriginalActionFriendly() != this.controller.GetActionFriendly()){
-            this.currentActionTextControl.SetFont("s10 cBlue")
+            this.currentActionTextControl.SetFont("s10 cGreen")
         }
         else{
             this.SetColors()

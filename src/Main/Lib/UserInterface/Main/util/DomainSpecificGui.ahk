@@ -1,5 +1,8 @@
 #Requires AutoHotkey v2.0
 
+#Include <UserInterface\Main\util\GuiColorsChanger>
+
+
 class DomainSpecificGui extends Gui{
 
     __New(options := "", title := "", eventObj := ""){

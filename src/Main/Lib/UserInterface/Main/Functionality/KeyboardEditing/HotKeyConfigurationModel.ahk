@@ -19,7 +19,6 @@ class HotKeyConfigurationModel{
     originalHotkeyKey := ""
     originalActionFriendly := ""
 
-
     __New(activeObjectsRegistry, arrayOfKeyNames, hotkeyInfo){
         this.activeObjectsRegistry := activeObjectsRegistry
         this.arrayOfKeyNames := arrayOfKeyNames
