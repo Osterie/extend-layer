@@ -8,6 +8,7 @@
 
 class HotKeyConfigurationController{
 
+
     model := ""
     view := ""
 
@@ -18,48 +19,38 @@ class HotKeyConfigurationController{
         this.view := view
     }
 
-    changeOriginalHotkey(){
+    changeHotkey(whatToChange){
+        whatToChange := StrLower(whatToChange)
         this.view.hide()
 
         arrayOfKeyNames := this.model.GetArrayOfKeyNames()
         hotkeyInfo := this.model.GetHotkeyInfo()
 
-        ; TODO, controller, view, model for HotkeyCrafterGui, talk to the controller and wait for either save, cancel or delete.
-        ; Be notified by the controller when one of these actions occure and take appropriate action (here in this controller.)
-        hotkeyCrafter := HotkeyCrafterGui(hotkeyInfo, arrayOfKeyNames)
-        hotkeyCrafter.subscribeToSaveEvent(ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent", hotkeyCrafter))
-
-        hotkeyCrafterClosedEvent := ObjBindMethod(this, "cancelButtonClickedForCrafterEvent", hotkeyCrafter)
-        hotkeyCrafter.addCloseEventAction(hotkeyCrafterClosedEvent)
-        hotkeyCrafter.addCancelButtonClickEventAction(hotkeyCrafterClosedEvent)
-
-        hotkeyCrafter.Show()
+        if (whatToChange == "hotkey"){
+            this.changeOriginalHotkey(arrayOfKeyNames, hotkeyInfo)
+        }
+        else if (whatToChange == "action"){
+            activeObjectsRegistry := this.model.GetActiveObjectsRegistry()
+            this.changeOriginalAction(activeObjectsRegistry, arrayOfKeyNames, hotkeyInfo)
+        }
 
         WinWait("HotkeyCrafterGui")
         WinWaitClose
-        
-        
+        this.view.Show()
+
     }
 
-    changeOriginalAction(){
-        this.view.Hide()
+    changeOriginalHotkey(arrayOfKeyNames, hotkeyInfo){
+        hotkeyCrafter := HotkeyCrafterGui(hotkeyInfo, arrayOfKeyNames)
+        hotkeyCrafter.subscribeToSaveEvent(ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent", hotkeyCrafter))
+        hotkeyCrafter.Show()
+    }
 
-        activeObjectsRegistry := this.model.GetActiveObjectsRegistry()
-        arrayOfKeyNames := this.model.GetArrayOfKeyNames()
-        hotkeyInfo := this.model.GetHotkeyInfo()
-
-
+    changeOriginalAction(activeObjectsRegistry, arrayOfKeyNames, hotkeyInfo){
         actionCrafter := ActionCrafterGui(hotkeyInfo, arrayOfKeyNames, activeObjectsRegistry)
-        actionSavedEventAction := ObjBindMethod(this, "saveButtonClickedForActionChangeEvent", actionCrafter)
-        actionCrafter.addSaveButtonClickEventAction(actionSavedEventAction)
-
-        actionCrafterClosedEvent := ObjBindMethod(this, "cancelButtonClickedForCrafterEvent", actionCrafter)
-        actionCrafter.addCloseEventAction(actionCrafterClosedEvent)
-        actionCrafter.addCancelButtonClickEventAction(actionCrafterClosedEvent)
-
+        actionCrafter.addSaveButtonClickEventAction(ObjBindMethod(this, "saveButtonClickedForActionChangeEvent", actionCrafter))
         actionCrafter.Show()
     }
-
 
     cancelButtonClickedForCrafterEvent(hotkeyCrafter, *){
         hotkeyCrafter.Destroy()

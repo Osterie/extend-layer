@@ -59,7 +59,7 @@ class HotkeyCrafterGui{
         this.saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
         
         this.cancelButton := this.GuiObject.Add("Button", "w100 h20", "Cancel")
-        ; this.deleteButton := this.GuiObject.Add("Button", "w100 h20", "Delete")
+        this.cancelButton.OnEvent("Click", (*) => this.GuiObject.Destroy())
     }
 
     dynamicHotkeyInputChangedEvent(){

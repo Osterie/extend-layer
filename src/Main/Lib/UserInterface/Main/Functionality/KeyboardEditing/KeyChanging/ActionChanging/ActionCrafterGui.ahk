@@ -50,7 +50,7 @@ class ActionCrafterGui{
         allPossibleSpecialActions := this.activeObjectsRegistry.getFriendlyNames()
 
 
-        this.GuiObject := Gui(, "Action Crafter")
+        this.GuiObject := Gui(, "HotkeyCrafterGui")
         this.GuiObject.Opt("+Resize +MinSize640x480")
         
         originalActionControl := this.GuiObject.Add("Text", "", "Original Action: " . originalAction)

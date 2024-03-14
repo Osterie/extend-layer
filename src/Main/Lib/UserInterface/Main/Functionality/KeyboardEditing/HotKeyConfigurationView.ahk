@@ -47,10 +47,10 @@ class HotKeyConfigurationView extends DomainSpecificGui{
 
     createChangeButtons(){
         buttonToChangeOriginalHotkey := this.AddButton("Default w100 xm", "Change Hotkey")
-        buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.controller.changeOriginalHotkey())
+        buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.controller.changeHotkey("Hotkey"))
         
         buttonToChangeOriginalAction := this.AddButton("Default w100", "Change Action")
-        buttonToChangeOriginalAction.onEvent("Click", (*) => this.controller.changeOriginalAction())
+        buttonToChangeOriginalAction.onEvent("Click", (*) => this.controller.changeHotkey("Action"))
     }
 
     createFinalizationButtons(){
