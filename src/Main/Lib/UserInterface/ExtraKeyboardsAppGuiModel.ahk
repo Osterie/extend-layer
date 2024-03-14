@@ -25,7 +25,7 @@ Class ExtraKeyboardsAppGuiModel{
         this.keyboardLayersInfoRegister.ChangeHotkey(this.GetCurrentLayer(), originalHotkey, newHotkey)
 
         if (newAction != ""){
-            this.keyboardLayersInfoRegister.ChangeAction(this.GetCurrentLayer(), originalHotkey, newAction)
+            this.keyboardLayersInfoRegister.ChangeAction(this.GetCurrentLayer(), newHotkey, newAction)
         }
 
         ; TODO create a method for this.

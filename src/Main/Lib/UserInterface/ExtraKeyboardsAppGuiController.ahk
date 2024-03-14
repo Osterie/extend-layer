@@ -78,12 +78,14 @@ Class ExtraKeyboardsAppGuiController{
 
 
     changeHotkeys(hotkeyInfo, originalHotkeyKey){
-        hotkeyKey := hotkeyInfo.getHotkeyName()
+        newHotkeyKey := hotkeyInfo.getHotkeyName()
 
+        ; If it does not exist, add it
         if (originalHotkeyKey = "NONE"){
             try{
-                hotkeyInfo.changeHotkey(hotkeyKey)
+                hotkeyInfo.changeHotkey(newHotkeyKey)
                 this.model.AddHotkey(hotkeyInfo)
+                msgbox("Created new hotkey")
             }
             catch Error as e{
                 msgbox("Could not add hotkey. " . e.Message)
@@ -91,7 +93,8 @@ Class ExtraKeyboardsAppGuiController{
         }
         else{
             try{
-                this.model.ChangeHotkey(originalHotkeyKey, hotkeyKey, hotkeyInfo)
+                this.model.ChangeHotkey(originalHotkeyKey, newHotkeyKey, hotkeyInfo)
+                msgbox("Changed hotkey")
             }
             catch Error as e{
                 msgbox("Could not modify hotkey. " . e.Message)
