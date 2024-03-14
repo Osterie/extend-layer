@@ -10,15 +10,12 @@
 Class ExtraKeyboardsAppGuiController{
 
     MainScript := ""
-    keyboardLayersInfoRegister := ""
 
-    __New(model, view, keyboardLayersInfoRegister, MainScript){
+    __New(model, view, MainScript){
         this.view := view
         this.model := model
         
         this.MainScript := MainScript
-        this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
-
     }
 
     HandleProfileChangedEvent(*){
@@ -48,7 +45,7 @@ Class ExtraKeyboardsAppGuiController{
             }
             else{
                 hotkeyBuild := listView.GetText(indexOfKeyToEdit, 1)
-                hotkeyInfo := this.model.GetHotkeyInfoForLayer(this.GetCurrentLayer(), hotkeyBuild)
+                hotkeyInfo := this.model.GetHotkeyInfoForCurrentLayer(hotkeyBuild)
                 hotkeyAction := listView.GetText(indexOfKeyToEdit, 2)
             }
             this.CreatePopupForHotkeys(hotkeyInfo)
@@ -64,7 +61,7 @@ Class ExtraKeyboardsAppGuiController{
         popupForConfiguringHotkeyModel := HotKeyConfigurationModel(this.GetActiveObjectsRegistry(), this.GetKeyNames(), hotkeyInfo)
         popupForConfiguringHotkey := HotKeyConfigurationView()
         popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
-        popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController, this.GetViewHwnd())
+        popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController, this.GetHwnd())
         
         
         popupForConfiguringHotkeyController.subscribeToSaveEvent(ObjBindMethod(this, "changeHotkeys"))
@@ -72,7 +69,7 @@ Class ExtraKeyboardsAppGuiController{
         ; TODO add delete button event.
     }
 
-    GetViewHwnd(){
+    GetHwnd(){
         return this.view.GetHwnd()
     }
 
@@ -81,6 +78,7 @@ Class ExtraKeyboardsAppGuiController{
         newHotkeyKey := hotkeyInfo.getHotkeyName()
 
         ; If it does not exist, add it
+        ; TODO this is bad, how the heck does EKAPGC know the default values is NONE?
         if (originalHotkeyKey = "NONE"){
             try{
                 hotkeyInfo.changeHotkey(newHotkeyKey)

@@ -3,6 +3,7 @@
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\IniFileReader>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
 #Include <Util\MetaInfo\MetaInfoReading\KeyboadLayersInfoClassObjectReader>
+#Include <Util\MetaInfo\MetaInfoWriting\ToJsonFileWriter>
 
 Class ExtraKeyboardsAppGuiModel{
 
@@ -23,35 +24,16 @@ Class ExtraKeyboardsAppGuiModel{
 
     ChangeHotkey(originalHotkey, newHotkey, newAction){
         this.keyboardLayersInfoRegister.ChangeHotkey(this.GetCurrentLayer(), originalHotkey, newHotkey)
+        this.keyboardLayersInfoRegister.ChangeAction(this.GetCurrentLayer(), newHotkey, newAction)
 
-        if (newAction != ""){
-            this.keyboardLayersInfoRegister.ChangeAction(this.GetCurrentLayer(), newHotkey, newAction)
-        }
-
-        ; TODO create a method for this.
-        toJsonReader := KeyboadLayersInfoClassObjectReader()
-        toJsonReader.ReadObjectToJson(this.keyboardLayersInfoRegister)
-        jsonObject := toJsonReader.getJsonObject()
-
-        formatterForJson := JsonFormatter()
-        jsonString := formatterForJson.FormatJsonObject(jsonObject)
-        FileRecycle(this.GetPathToCurrentProfile() . "\Keyboards.json")
-        FileAppend(jsonString, this.GetPathToCurrentProfile() . "\Keyboards.json", "UTF-8")
+        ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() . "\Keyboards.json")
     }
 
     AddHotkey(newAction){
 
         this.keyboardLayersInfoRegister.AddHotkey(this.GetCurrentLayer(), newAction)
 
-        ; TODO create a method for this.
-        toJsonReader := KeyboadLayersInfoClassObjectReader()
-        toJsonReader.ReadObjectToJson(this.keyboardLayersInfoRegister)
-        jsonObject := toJsonReader.getJsonObject()
-
-        formatterForJson := JsonFormatter()
-        jsonString := formatterForJson.FormatJsonObject(jsonObject)
-        FileRecycle(this.GetPathToCurrentProfile() . "\Keyboards.json")
-        FileAppend(jsonString, this.GetPathToCurrentProfile() . "\Keyboards.json", "UTF-8")  
+        ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() . "\Keyboards.json")
     }
 
     GetFunctionNames(){
@@ -75,12 +57,6 @@ Class ExtraKeyboardsAppGuiModel{
         return currentSettingsSettingValuePair
     }
 
-    GetFriendlyHotkeysForLayer(layerIdentifier){
-        itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(layerIdentifier)
-        hotkeysForLayer := itemsToShowForListView.getFriendlyHotkeyActionPairValues()
-
-        return hotkeysForLayer
-    }
 
     GetFriendlyHotkeysForCurrentLayer(){
         itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer)
@@ -130,8 +106,14 @@ Class ExtraKeyboardsAppGuiModel{
         return FilePaths.GetPathToCurrentProfile()
     }
 
-    GetHotkeyInfoForLayer(layerIdentifier, hotkeyKey){
-        return this.keyboardLayersInfoRegister.GetHotkeyInfoForLayer(layerIdentifier, hotkeyKey)
+    GetHotkeyInfoForCurrentLayer(hotkeyKey){
+        return this.keyboardLayersInfoRegister.GetHotkeyInfoForLayer(this.GetCurrentLayer(), hotkeyKey)
     }
 
+    ; GetFriendlyHotkeysForLayer(layerIdentifier){
+    ;     itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(layerIdentifier)
+    ;     hotkeysForLayer := itemsToShowForListView.getFriendlyHotkeyActionPairValues()
+
+    ;     return hotkeysForLayer
+    ; }
 }
