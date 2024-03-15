@@ -61,11 +61,6 @@ class HotKeyConfigurationController{
         actionCrafter.Show()
     }
 
-    cancelButtonClickedForCrafterEvent(hotkeyCrafter, *){
-        hotkeyCrafter.Destroy()
-        this.view.Show()
-    }
-
     subscribeToSaveEvent(event){
         this.saveEventSubscribers.Push(event)
     }
@@ -102,7 +97,6 @@ class HotKeyConfigurationController{
 
     saveButtonClickedForActionChangeEvent(newAction){
         
-        msgbox(newAction)
         if (newAction.getMethodName() != ""){
             this.model.SetHotkeyInfo(newAction)
             this.view.updateActionText()
@@ -118,31 +112,6 @@ class HotKeyConfigurationController{
     SetHotkeyAction(action){
         this.model.SetHotkeyAction(action)
     }
-
-    GetHotkeyInfo(){
-        return this.model.GetHotkeyInfo()
-    }
-
-    GetHotkeyFriendly(){
-        return this.model.GetHotkeyFriendly()
-    }
-
-    GetActionFriendly(){
-        return this.model.GetActionFriendly()
-    }
-
-    getOriginalHotkeyFriendly(){
-        return this.model.GetOriginalHotkeyFriendly()
-    }
-
-    getOriginalHotkey(){
-        return this.model.GetOriginalHotkey()
-    }
-
-    GetOriginalActionFriendly(){
-        return this.model.GetOriginalActionFriendly()
-    }
-
     
     GetModel(){
         return this.model

@@ -60,6 +60,7 @@ class HotKeyConfigurationView extends DomainSpecificGui{
         deleteButton.onEvent("Click", (*) => this.controller.NotifyListenersDelete())
     }
     
+    ; TODO updateHotkeyText and UpdateActionText are very similar, can be refactored
     updateHotkeyText(){
         this.currentHotkeyTextControl.Value := ("Hotkey: `n" . this.model.GetHotkeyFriendly())
 
