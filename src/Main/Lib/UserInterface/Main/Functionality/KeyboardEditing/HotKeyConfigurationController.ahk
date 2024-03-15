@@ -26,13 +26,21 @@ class HotKeyConfigurationController{
 
         arrayOfKeyNames := this.model.GetArrayOfKeyNames()
         hotkeyInfo := this.model.GetHotkeyInfo()
+        if (hotkeyInfo != ""){
+            originalHotkey := hotkeyInfo.getFriendlyHotkeyName()
+            action := hotkeyInfo.toString()
+        }
+        else{
+            originalHotkey := "NONE"
+            action := "NONE"
+        }
 
         if (whatToChange == "hotkey"){
-            this.changeOriginalHotkey(arrayOfKeyNames, hotkeyInfo)
+            this.changeOriginalHotkey(arrayOfKeyNames, originalHotkey)
         }
         else if (whatToChange == "action"){
             activeObjectsRegistry := this.model.GetActiveObjectsRegistry()
-            this.changeOriginalAction(activeObjectsRegistry, arrayOfKeyNames, hotkeyInfo)
+            this.changeOriginalAction(activeObjectsRegistry, arrayOfKeyNames, action)
         }
 
         WinWait("HotkeyCrafterGui")
@@ -41,15 +49,15 @@ class HotKeyConfigurationController{
 
     }
 
-    changeOriginalHotkey(arrayOfKeyNames, hotkeyInfo){
-        hotkeyCrafter := HotkeyCrafterGui(hotkeyInfo, arrayOfKeyNames)
+    changeOriginalHotkey(arrayOfKeyNames, originalHotkey){
+        hotkeyCrafter := HotkeyCrafterGui(originalHotkey, arrayOfKeyNames)
         hotkeyCrafter.subscribeToSaveEvent(ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent", hotkeyCrafter))
         hotkeyCrafter.Show()
     }
 
-    changeOriginalAction(activeObjectsRegistry, arrayOfKeyNames, hotkeyInfo){
-        actionCrafter := ActionCrafterGui(hotkeyInfo, arrayOfKeyNames, activeObjectsRegistry)
-        actionCrafter.addSaveButtonClickEventAction(ObjBindMethod(this, "saveButtonClickedForActionChangeEvent", actionCrafter))
+    changeOriginalAction(activeObjectsRegistry, arrayOfKeyNames, action){
+        actionCrafter := ActionCrafterGui(action, arrayOfKeyNames, activeObjectsRegistry)
+        actionCrafter.subscribeToSaveEvent(ObjBindMethod(this, "saveButtonClickedForActionChangeEvent"))
         actionCrafter.Show()
     }
 
@@ -92,16 +100,13 @@ class HotKeyConfigurationController{
 
     }
 
-    saveButtonClickedForActionChangeEvent(actionCrafter, savedButton, idk){
+    saveButtonClickedForActionChangeEvent(newAction){
         
-        newAction := actionCrafter.getNewAction()
-
+        msgbox(newAction)
         if (newAction.getMethodName() != ""){
             this.model.SetHotkeyInfo(newAction)
             this.view.updateActionText()
         }
-        
-        actionCrafter.Destroy()
         
         this.view.Show()
     }

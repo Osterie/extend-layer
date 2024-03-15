@@ -54,8 +54,8 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         listViewControl := ListViewMaker()
         listViewControl.CreateListView(this, ["KeyCombo","Action"])
         
-        keyboardLayoutChanger.AddEventAction("ItemSelect", ObjBindMethod(this.controller, "HandleKeyboardLayerSelected", listViewControl))
-        listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "HandleKeyComboActionDoubleClickedEvent"))
+        keyboardLayoutChanger.AddEventAction("ItemSelect", ObjBindMethod(this.controller, "ShowHotkeysForLayer", listViewControl))
+        listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "EditHotkey"))
     }
 
     CreateFunctionSettingsTab(){

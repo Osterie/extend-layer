@@ -28,17 +28,11 @@ class ActionCrafterGui{
 
     controlsForParameters := ""
 
-    currentHotkeyToExcecuteAction := ""
-
     amountOfParametersToBeFilled := 0
 
     arrayOfKeyNames := []
 
-    __New(hotkeyInfo, arrayOfKeyNames, activeObjectsRegistry){
-
-        originalAction := hotkeyInfo.toString()
-
-        this.currentHotkeyToExcecuteAction := hotkeyInfo.GetHotkeyName()
+    __New(originalAction, arrayOfKeyNames, activeObjectsRegistry){
 
         this.arrayOfKeyNames := arrayOfKeyNames
 
@@ -219,8 +213,8 @@ class ActionCrafterGui{
         }
     }
 
-    addSaveButtonClickEventAction(action){
-        this.hotkeyCrafter.addSaveButtonClickEventAction(action)
+    subscribeToSaveEvent(action){
+        this.hotkeyCrafter.subscribeToSaveEvent(action)
     }
 
     addCancelButtonClickEventAction(action){
@@ -251,7 +245,7 @@ class ActionCrafterGui{
     }
 
     getNewSpecialActionHotkey(){
-        hotkeyToReturn := HotKeyInfo(this.currentHotkeyToExcecuteAction)
+        hotkeyToReturn := HotKeyInfo("")
         parameters := []
         Loop this.amountOfParametersToBeFilled{
             parameterControls := this.parameterControlsArray[A_index]

@@ -24,7 +24,7 @@ Class ExtraKeyboardsAppGuiController{
         this.view.Destroy()
     }
 
-    HandleKeyboardLayerSelected(listViewControl, treeViewElement, treeViewElementSelectedItemID){
+    ShowHotkeysForLayer(listViewControl, treeViewElement, treeViewElementSelectedItemID){
         currentLayer := treeViewElement.GetText(treeViewElementSelectedItemID)
         
         this.model.SetCurrentLayer(currentLayer)
@@ -33,31 +33,33 @@ Class ExtraKeyboardsAppGuiController{
         listViewControl.SetNewListViewItems(hotkeysForLayer)
     }
 
-    ; TODO make sure user cant create multiple popups
-    HandleKeyComboActionDoubleClickedEvent(listView, indexOfKeyToEdit){
+    ; TODO make sure user cant create multiple popups?
+    EditHotkey(listView, indexOfKeyToEdit){
 
-        layerInformation := this.GetCurrentLayerInfo()
+        if (indexOfKeyToEdit = 0){
+            hotkeyBuild := "NONE"
+            hotkeyAction := "NONE"
+            this.CreatePopupForHotkeys()
+        }
+        else{
 
-        if (Type(layerInformation) == "HotkeysRegistry"){
-            if (indexOfKeyToEdit == 0){
-                hotkeyBuild := "NONE"
-                hotkeyAction := "NONE"
-            }
-            else{
+            layerInformation := this.GetCurrentLayerInfo()
+    
+            if (Type(layerInformation) == "HotkeysRegistry"){
                 hotkeyBuild := listView.GetText(indexOfKeyToEdit, 1)
                 hotkeyInfo := this.model.GetHotkeyInfoForCurrentLayer(hotkeyBuild)
                 hotkeyAction := listView.GetText(indexOfKeyToEdit, 2)
+                this.CreatePopupForHotkeys(hotkeyInfo)
             }
-            this.CreatePopupForHotkeys(hotkeyInfo)
-        }
-        else if (Type(layerInformation) == "KeyboardOverlayInfo"){
-            ; TODO implement
-            ; popupForConfiguringHotkey.CreatePopupForKeyboardOverlayInfo()
+            else if (Type(layerInformation) == "KeyboardOverlayInfo"){
+                ; TODO implement
+                ; popupForConfiguringHotkey.CreatePopupForKeyboardOverlayInfo()
+            }
         }
     }
 
     ; TODO move to view
-    CreatePopupForHotkeys(hotkeyInfo){
+    CreatePopupForHotkeys(hotkeyInfo := ""){
         popupForConfiguringHotkeyModel := HotKeyConfigurationModel(this.GetActiveObjectsRegistry(), this.GetKeyNames(), hotkeyInfo)
         popupForConfiguringHotkey := HotKeyConfigurationView()
         popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)

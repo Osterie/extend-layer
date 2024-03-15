@@ -1,27 +1,32 @@
 #Requires AutoHotkey v2.0
 
-#Include ".\KeyChanging\HotkeyChanging\HotkeyCrafterGui.ahk"
-#Include ".\KeyChanging\ActionChanging\ActionCrafterGui.ahk"
-#Include <UserInterface\Main\util\GuiSizeChanger>
-
 #Include <Util\HotkeyFormatConverter>
+
+#Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
+
 
 class HotKeyConfigurationModel{
 
     activeObjectsRegistry := ""
     arrayOfKeyNames := Array()
-    hotkeyInfo := ""
+    hotkeyInformation := ""
 
-    originalHotkeyKey := ""
-    originalActionFriendly := ""
+    originalHotkeyKey := "No hotkey set."
+    originalActionFriendly := "No action set."
 
-    __New(activeObjectsRegistry, arrayOfKeyNames, hotkeyInfo){
+    __New(activeObjectsRegistry, arrayOfKeyNames, hotkeyInformation := ""){
         this.activeObjectsRegistry := activeObjectsRegistry
         this.arrayOfKeyNames := arrayOfKeyNames
-        this.hotkeyInfo := hotkeyInfo
-
-        this.originalHotkeyKey := this.hotkeyInfo.getHotkeyName()
-        this.originalActionFriendly := this.hotkeyInfo.toString()
+        if (hotkeyInformation != ""){
+            this.hotkeyInformation := hotkeyInformation
+            this.originalHotkeyKey := this.hotkeyInformation.getHotkeyName()
+            this.originalActionFriendly := this.hotkeyInformation.toString()
+        }
+        else{
+            this.hotkeyInformation := HotKeyInfo("")
+            this.originalHotkeyKey := "No hotkey set."
+            this.originalActionFriendly := "No action set."
+        }
     }
 
     GetActiveObjectsRegistry(){
@@ -33,25 +38,29 @@ class HotKeyConfigurationModel{
     }
 
     SetHotkeyKey(newHotkey){
-        this.hotkeyInfo.changeHotkey(newHotkey)
+        this.hotkeyInformation.changeHotkey(newHotkey)
     }
 
     SetHotkeyAction(newAction){
-        hotkeyKey := this.hotkeyInfo.getHotkeyName()
-        this.hotkeyInfo := newAction
+        hotkeyKey := this.hotkeyInformation.getHotkeyName()
+        this.hotkeyInformation := newAction
         this.hotkeyINfo.changeHotkey(hotkeyKey)
     }
 
-    SetHotkeyInfo(hotkeyInfo){
-        this.hotkeyInfo := hotkeyInfo
+    SetHotkeyInfo(hotkeyInformation){
+        this.hotkeyInformation := hotkeyInformation
     }
 
     GetHotkeyInfo(){
-        return this.hotkeyInfo
+        return this.hotkeyInformation
     }
 
     GetOriginalHotkeyFriendly(){
-        return HotkeyFormatConverter.convertToFriendlyHotkeyName(this.originalHotkeyKey)
+        friendlyNameToReturn := "No hotkey set."
+        if (this.originalHotkeyKey != ""){
+            friendlyNameToReturn := HotkeyFormatConverter.convertToFriendlyHotkeyName(this.originalHotkeyKey)
+        }
+        return friendlyNameToReturn
     }
 
     GetOriginalHotkey(){
@@ -63,10 +72,18 @@ class HotKeyConfigurationModel{
     }
 
     GetHotkeyFriendly(){
-        return this.hotkeyInfo.getFriendlyHotkeyName()
+        friendlyNameToReturn := "No hotkey set."
+        if (this.hotkeyInformation != ""){
+            friendlyNameToReturn := this.hotkeyInformation.getFriendlyHotkeyName()
+        }
+        return friendlyNameToReturn
     }
 
     GetActionFriendly(){
-        return this.hotkeyInfo.toString()
+        friendlyNameToReturn := "No action set."
+        if (this.hotkeyInformation != ""){
+            friendlyNameToReturn := this.hotkeyInformation.toString()
+        }
+        return friendlyNameToReturn
     }
 }

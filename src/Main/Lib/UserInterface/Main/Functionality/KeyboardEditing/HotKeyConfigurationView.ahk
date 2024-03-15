@@ -1,6 +1,5 @@
 #Requires AutoHotkey v2.0
 
-#Include ".\KeyChanging\HotkeyChanging\HotkeyCrafterGui.ahk"
 #Include ".\KeyChanging\ActionChanging\ActionCrafterGui.ahk"
 #Include <UserInterface\Main\util\GuiSizeChanger>
 #Include <UserInterface\Main\Util\DomainSpecificGui>

@@ -22,8 +22,7 @@ class HotkeyCrafterGui{
 
     availableKeyNames := []
 
-    __New(hotkeyInfo, arrayOfKeyNames, guiToAddTo := ""){
-        originalHotkey := hotkeyInfo.getFriendlyHotkeyName()
+    __New(originalHotkey, arrayOfKeyNames, guiToAddTo := ""){
 
         if (guiToAddTo = ""){
             this.GuiObject := Gui(, "HotkeyCrafterGui")
@@ -38,7 +37,6 @@ class HotkeyCrafterGui{
         this.controlsForSimpleHotkeys := guiControlsRegistry()
         this.controlsForModifiers := guiControlsRegistry()
 
-        originalHotkeyFormatted := HotkeyFormatConverter.convertFromFriendlyName(originalHotkey, " + ")
 
         
         this.advancedModeButton := this.GuiObject.AddCheckBox("h50 xp+15 yp+15", "Advanced mode")
@@ -46,6 +44,7 @@ class HotkeyCrafterGui{
 
         groupBox := this.GuiObject.Add("GroupBox", "Section w300 h50", "Simple hotkey crafting:")
         this.hotkeyDynamicInput := this.GuiObject.Add("Hotkey", "w250 h20 xs+10 ys+20") ;yp sets the control's position to the left of the previous one...
+        originalHotkeyFormatted := HotkeyFormatConverter.convertFromFriendlyName(originalHotkey, " + ")
         this.hotkeyDynamicInput.Value := originalHotkeyFormatted
         this.hotkeyDynamicInput.OnEvent("Change", (*) => this.dynamicHotkeyInputChangedEvent())
 
