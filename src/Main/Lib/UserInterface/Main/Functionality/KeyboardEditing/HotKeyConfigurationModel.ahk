@@ -11,22 +11,16 @@ class HotKeyConfigurationModel{
     arrayOfKeyNames := Array()
     hotkeyInformation := ""
 
-    originalHotkeyKey := "No hotkey set."
-    originalActionFriendly := "No action set."
+    originalHotkeyKey := ""
+    originalActionFriendly := ""
 
-    __New(activeObjectsRegistry, arrayOfKeyNames, hotkeyInformation := ""){
+    __New(activeObjectsRegistry, arrayOfKeyNames, hotkeyInformation){
         this.activeObjectsRegistry := activeObjectsRegistry
         this.arrayOfKeyNames := arrayOfKeyNames
-        if (hotkeyInformation != ""){
-            this.hotkeyInformation := hotkeyInformation
-            this.originalHotkeyKey := this.hotkeyInformation.getHotkeyName()
-            this.originalActionFriendly := this.hotkeyInformation.toString()
-        }
-        else{
-            this.hotkeyInformation := HotKeyInfo("")
-            this.originalHotkeyKey := "No hotkey set."
-            this.originalActionFriendly := "No action set."
-        }
+        
+        this.hotkeyInformation := hotkeyInformation
+        this.originalHotkeyKey := this.hotkeyInformation.getHotkeyName()
+        this.originalActionFriendly := this.hotkeyInformation.toString()
     }
 
     GetActiveObjectsRegistry(){
@@ -55,14 +49,6 @@ class HotKeyConfigurationModel{
         return this.hotkeyInformation
     }
 
-    GetOriginalHotkeyFriendly(){
-        friendlyNameToReturn := "No hotkey set."
-        if (this.originalHotkeyKey != ""){
-            friendlyNameToReturn := HotkeyFormatConverter.convertToFriendlyHotkeyName(this.originalHotkeyKey)
-        }
-        return friendlyNameToReturn
-    }
-
     GetOriginalHotkey(){
         return this.originalHotkeyKey
     }
@@ -71,19 +57,16 @@ class HotKeyConfigurationModel{
         return this.originalActionFriendly
     }
 
+    GetHotkey(){
+        return this.hotkeyInformation.getHotkeyName()
+    }
+
     GetHotkeyFriendly(){
-        friendlyNameToReturn := "No hotkey set."
-        if (this.hotkeyInformation != ""){
-            friendlyNameToReturn := this.hotkeyInformation.getFriendlyHotkeyName()
-        }
-        return friendlyNameToReturn
+        return this.hotkeyInformation.getFriendlyHotkeyName()
     }
 
     GetActionFriendly(){
-        friendlyNameToReturn := "No action set."
-        if (this.hotkeyInformation != ""){
-            friendlyNameToReturn := this.hotkeyInformation.toString()
-        }
-        return friendlyNameToReturn
+        return this.hotkeyInformation.toString()
     }
+
 }

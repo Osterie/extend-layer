@@ -6,6 +6,9 @@
 #Include <UserInterface\Main\util\TreeViewMaker>
 #Include <UserInterface\Main\util\ListViewMaker>
 
+#Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
+
+
 #Include <UserInterface\Main\Util\DomainSpecificGui>
 
 
@@ -59,7 +62,6 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
     }
 
     CreateFunctionSettingsTab(){
-
         functionsNamesTreeView := TreeViewMaker()
         functionsNamesTreeView.createElementsForGui(this, this.controller.GetFunctionNames())
         

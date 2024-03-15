@@ -15,17 +15,22 @@ class HotKeyInfo{
     toKey := ""
     modifiers := ""
 
-    __New(fromKey){
+    actionSet := false
+
+    __New(fromKey := ""){
         this.fromKey := fromKey
+        this.actionSet := false
     }
 
     setInfoForNormalHotKey(toKey, modifiers){
+        this.actionSet := true
         this.isObject := false
         this.toKey := toKey
         this.modifiers := modifiers
     }
 
     setInfoForSpecialHotKey(objectName, MethodName, parameters){
+        this.actionSet := true
         this.isObject := true
         this.objectName := objectName
         this.methodName := methodName
@@ -41,11 +46,16 @@ class HotKeyInfo{
     }
 
     toString(){
-        if(this.isObject){
-            return this.objectName . "." . this.methodName . "(" . this.parametersToString(this.parameters) . ")"
+        if (this.actionSet){
+            if(this.hotkeyIsObject()){
+                return this.objectName . "." . this.methodName . "(" . this.parametersToString(this.parameters) . ")"
+            }
+            else{
+                return HotkeyFormatConverter.convertToFriendlyHotkeyName(this.modifiers . this.toKey)
+            }
         }
         else{
-            return HotkeyFormatConverter.convertToFriendlyHotkeyName(this.modifiers . this.toKey)
+            return ""
         }
     }
 
@@ -86,7 +96,11 @@ class HotKeyInfo{
     }
     
     getFriendlyHotkeyName(){
-        return HotkeyFormatConverter.convertToFriendlyHotkeyName(this.fromKey)
+        friendlyNameToReturn := ""
+        if (this.fromKey != ""){
+            friendlyNameToReturn := HotkeyFormatConverter.convertToFriendlyHotkeyName(this.fromKey)
+        }
+        return friendlyNameToReturn
     }
 
     getObjectName(){

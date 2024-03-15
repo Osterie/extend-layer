@@ -1,10 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#Include ".\KeyChanging\ActionChanging\ActionCrafterGui.ahk"
 #Include <UserInterface\Main\util\GuiSizeChanger>
 #Include <UserInterface\Main\Util\DomainSpecificGui>
-
-#Include <Util\HotkeyFormatConverter>
 
 class HotKeyConfigurationView extends DomainSpecificGui{
 
@@ -13,6 +10,7 @@ class HotKeyConfigurationView extends DomainSpecificGui{
     currentActionTextControl := ""
 
     controller := ""
+    model := ""
 
     __New(){
         super.__New()
@@ -20,6 +18,7 @@ class HotKeyConfigurationView extends DomainSpecificGui{
 
     CreateMain(controller, ownerHwnd := ""){
         this.controller := controller
+        this.model := controller.getModel()
 
         this.opt("+Resize +MinSize300x280")
         this.opt("+Owner" ownerHwnd)
@@ -62,30 +61,26 @@ class HotKeyConfigurationView extends DomainSpecificGui{
     }
     
     updateHotkeyText(){
-        newHotkey := this.controller.GetHotkeyFriendly()
-        this.currentHotkeyTextControl.Value := ("Hotkey: `n" . newHotkey)
+        this.currentHotkeyTextControl.Value := ("Hotkey: `n" . this.model.GetHotkeyFriendly())
 
-        if (this.controller.getOriginalHotkeyFriendly() != this.controller.GetHotkeyFriendly()){
+        if (this.model.getOriginalHotkey() != this.model.GetHotkey()){
             this.currentHotkeyTextControl.SetFont("s10 cGreen")
         }
         else{
             this.SetColors()
-            ; this.currentHotkeyTextControl.SetFont("s10 cRed")
         }
 
         GuiSizeChanger.SetTextAndResize(this.currentHotkeyTextControl, this.currentHotkeyTextControl.Value )
     }
 
     updateActionText(){
-        newAction := this.controller.GetActionFriendly()
-        this.currentActionTextControl.Value := ("Action: `n" . newAction)
+        this.currentActionTextControl.Value := ("Action: `n" . this.model.GetActionFriendly())
 
-        if (this.controller.getOriginalActionFriendly() != this.controller.GetActionFriendly()){
+        if (this.model.getOriginalActionFriendly() != this.model.GetActionFriendly()){
             this.currentActionTextControl.SetFont("s10 cGreen")
         }
         else{
             this.SetColors()
-            ; this.currentActionTextControl.SetFont("s10 cRed")
         }
 
         GuiSizeChanger.SetTextAndResize(this.currentActionTextControl, this.currentActionTextControl.Value )

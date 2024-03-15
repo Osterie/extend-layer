@@ -142,6 +142,11 @@ class HotKeyConfigurationController{
     GetOriginalActionFriendly(){
         return this.model.GetOriginalActionFriendly()
     }
+
+    
+    GetModel(){
+        return this.model
+    }
 }
 
 

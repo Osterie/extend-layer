@@ -37,9 +37,8 @@ Class ExtraKeyboardsAppGuiController{
     EditHotkey(listView, indexOfKeyToEdit){
 
         if (indexOfKeyToEdit = 0){
-            hotkeyBuild := "NONE"
-            hotkeyAction := "NONE"
-            this.CreatePopupForHotkeys()
+            emptyHotkeyInformation := HotkeyInfo()
+            this.CreatePopupForHotkeys(emptyHotkeyInformation)
         }
         else{
 
@@ -47,9 +46,9 @@ Class ExtraKeyboardsAppGuiController{
     
             if (Type(layerInformation) == "HotkeysRegistry"){
                 hotkeyBuild := listView.GetText(indexOfKeyToEdit, 1)
-                hotkeyInfo := this.model.GetHotkeyInfoForCurrentLayer(hotkeyBuild)
-                hotkeyAction := listView.GetText(indexOfKeyToEdit, 2)
-                this.CreatePopupForHotkeys(hotkeyInfo)
+                hotkeyInformation := this.model.GetHotkeyInfoForCurrentLayer(hotkeyBuild)
+                ; hotkeyAction := listView.GetText(indexOfKeyToEdit, 2)
+                this.CreatePopupForHotkeys(hotkeyInformation)
             }
             else if (Type(layerInformation) == "KeyboardOverlayInfo"){
                 ; TODO implement
@@ -59,8 +58,8 @@ Class ExtraKeyboardsAppGuiController{
     }
 
     ; TODO move to view
-    CreatePopupForHotkeys(hotkeyInfo := ""){
-        popupForConfiguringHotkeyModel := HotKeyConfigurationModel(this.GetActiveObjectsRegistry(), this.GetKeyNames(), hotkeyInfo)
+    CreatePopupForHotkeys(hotkeyInformation){
+        popupForConfiguringHotkeyModel := HotKeyConfigurationModel(this.GetActiveObjectsRegistry(), this.GetKeyNames(), hotkeyInformation)
         popupForConfiguringHotkey := HotKeyConfigurationView()
         popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
         popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController, this.GetHwnd())
@@ -76,15 +75,15 @@ Class ExtraKeyboardsAppGuiController{
         return this.view.GetHwnd()
     }
 
-    changeHotkeys(hotkeyInfo, originalHotkeyKey){
-        newHotkeyKey := hotkeyInfo.getHotkeyName()
+    changeHotkeys(hotkeyInformation, originalHotkeyKey){
+        newHotkeyKey := hotkeyInformation.getHotkeyName()
 
         ; If it does not exist, add it
         ; TODO this is bad, how the heck does EKAPGC know the default values is NONE?
         if (originalHotkeyKey = "NONE"){
             try{
-                hotkeyInfo.changeHotkey(newHotkeyKey)
-                this.model.AddHotkey(hotkeyInfo)
+                hotkeyInformation.changeHotkey(newHotkeyKey)
+                this.model.AddHotkey(hotkeyInformation)
                 msgbox("Created new hotkey")
             }
             catch Error as e{
@@ -93,7 +92,7 @@ Class ExtraKeyboardsAppGuiController{
         }
         else{
             try{
-                this.model.ChangeHotkey(originalHotkeyKey, newHotkeyKey, hotkeyInfo)
+                this.model.ChangeHotkey(originalHotkeyKey, newHotkeyKey, hotkeyInformation)
                 msgbox("Changed hotkey")
             }
             catch Error as e{
