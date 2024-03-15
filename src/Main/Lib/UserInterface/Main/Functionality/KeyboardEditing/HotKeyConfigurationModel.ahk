@@ -38,7 +38,7 @@ class HotKeyConfigurationModel{
     SetHotkeyAction(newAction){
         hotkeyKey := this.hotkeyInformation.getHotkeyName()
         this.hotkeyInformation := newAction
-        this.hotkeyINfo.changeHotkey(hotkeyKey)
+        this.hotkeyInformation.changeHotkey(hotkeyKey)
     }
 
     SetHotkeyInfo(hotkeyInformation){

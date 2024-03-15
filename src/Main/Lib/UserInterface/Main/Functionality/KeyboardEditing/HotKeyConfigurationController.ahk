@@ -68,7 +68,7 @@ class HotKeyConfigurationController{
     NotifyListenersSave(){
         for index, event in this.saveEventSubscribers
         {
-            event(this.getHotkeyInfo(), this.getOriginalHotkey())
+            event(this.model.getHotkeyInfo(), this.model.getOriginalHotkey())
         }
         this.view.destroy()
     }
@@ -80,7 +80,7 @@ class HotKeyConfigurationController{
     NotifyListenersDelete(){
         for index, event in this.deleteEventSubscribers
         {
-            event(this.getOriginalHotkey())
+            event(this.model.getOriginalHotkey())
         }
         this.view.destroy()
     }
@@ -98,7 +98,7 @@ class HotKeyConfigurationController{
     saveButtonClickedForActionChangeEvent(newAction){
         
         if (newAction.getMethodName() != ""){
-            this.model.SetHotkeyInfo(newAction)
+            this.model.SetHotkeyAction(newAction)
             this.view.updateActionText()
         }
         

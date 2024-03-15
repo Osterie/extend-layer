@@ -78,13 +78,13 @@ Class ExtraKeyboardsAppGuiController{
     changeHotkeys(hotkeyInformation, originalHotkeyKey){
         newHotkeyKey := hotkeyInformation.getHotkeyName()
 
+
         ; If it does not exist, add it
         ; TODO this is bad, how the heck does EKAPGC know the default values is NONE?
-        if (originalHotkeyKey = "NONE"){
+        if (originalHotkeyKey = ""){
             try{
                 hotkeyInformation.changeHotkey(newHotkeyKey)
                 this.model.AddHotkey(hotkeyInformation)
-                msgbox("Created new hotkey")
             }
             catch Error as e{
                 msgbox("Could not add hotkey. " . e.Message)

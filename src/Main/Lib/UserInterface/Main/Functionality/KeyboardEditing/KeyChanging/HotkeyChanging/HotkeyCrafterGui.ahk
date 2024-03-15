@@ -61,6 +61,11 @@ class HotkeyCrafterGui{
         this.cancelButton.OnEvent("Click", (*) => this.GuiObject.Destroy())
     }
 
+    hideButtons(){
+        this.saveButton.Opt("Hidden1")
+        this.cancelButton.Opt("Hidden1")
+    }
+
     dynamicHotkeyInputChangedEvent(){
         if (this.hotkeyDynamicInput.Value = ""){
             this.saveButton.enabled := false

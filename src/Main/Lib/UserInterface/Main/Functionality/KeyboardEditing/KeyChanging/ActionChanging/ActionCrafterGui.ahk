@@ -71,6 +71,7 @@ class ActionCrafterGui{
 
         this.hotkeyCrafter := HotkeyCrafterGui(originalAction, this.arrayOfKeyNames, this.actionCrafter)
         this.hotkeyCrafter.hideAllButFinalisationButtons()
+        this.hotkeyCrafter.hideButtons()
 
         ; validationText := this.guiObject.Add("Text", "x+20 y+20", "Validation Text")
 
@@ -83,6 +84,11 @@ class ActionCrafterGui{
         ; this.controlsForAdvancedHotkeys := guiControlsRegistry()
         ; this.controlsForSimpleHotkeys := guiControlsRegistry()
         ; this.controlsForModifiers := guiControlsRegistry()
+
+        saveButton := this.actionCrafter.Add("Button", "xp+20 yp+20 w100 h30", "Save")
+        saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
+        cancelButton := this.actionCrafter.Add("Button", "xp+130 yp+20 w100 h30", "Cancel")
+        cancelButton.OnEvent("Click", (*) => this.Destroy())
     }
 
     listViewOfSpecialActionSelected(listView, rowNumberSpecialAction, columnNumber){
@@ -223,6 +229,7 @@ class ActionCrafterGui{
         Loop this.saveEventSubscribers.Length{
             this.saveEventSubscribers[A_Index](this.getNewAction())
         }
+        this.Destroy()
     }
 
     addCancelButtonClickEventAction(action){
