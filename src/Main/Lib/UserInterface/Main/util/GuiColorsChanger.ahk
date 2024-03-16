@@ -11,7 +11,9 @@ class GuiColorsChanger{
     }
 
     static setControlColor(control, colorHex){
-        control.Opt("+Background" . colorHex)
+        try{
+            control.Opt("+Background" . colorHex)
+        }
         control.BackColor := colorHex
     }
     

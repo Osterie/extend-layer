@@ -50,7 +50,8 @@ class HotKeyConfigurationController{
     }
 
     changeOriginalHotkey(arrayOfKeyNames, originalHotkey){
-        hotkeyCrafter := HotkeyCrafterGui(originalHotkey, arrayOfKeyNames)
+        hotkeyCrafter := HotkeyCrafterGui()
+        hotkeyCrafter.Create(originalHotkey, arrayOfKeyNames)
         hotkeyCrafter.subscribeToSaveEvent(ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent", hotkeyCrafter))
         hotkeyCrafter.Show()
     }

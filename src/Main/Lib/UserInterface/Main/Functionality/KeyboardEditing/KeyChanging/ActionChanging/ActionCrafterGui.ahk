@@ -6,16 +6,17 @@
 #Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
 #Include <UserInterface\Main\util\GuiSizeChanger>
+#Include <UserInterface\Main\Util\DomainSpecificGui>
+
+#Include "..\HotkeyChanging\HotkeyCrafterGui.ahk"
 
 
-class ActionCrafterGui{
 
-    actionCrafter := ""
+class ActionCrafterGui extends HotkeyCrafterGui{
+
     activeObjectsRegistry := ""
 
     saveEventSubscribers := Array()
-
-    hotkeyCrafter := ""
 
     specialActionRadio := ""
     newKeyRadio := ""
@@ -36,6 +37,12 @@ class ActionCrafterGui{
 
     __New(originalAction, arrayOfKeyNames, activeObjectsRegistry){
 
+        super.__New()
+
+        this.Opt("+Resize +MinSize640x480")
+        this.show("w640 h480")
+
+
         this.arrayOfKeyNames := arrayOfKeyNames
 
         this.controlsForAllSpecialActionCrafting := guiControlsRegistry()
@@ -46,17 +53,15 @@ class ActionCrafterGui{
         allPossibleSpecialActions := this.activeObjectsRegistry.getFriendlyNames()
 
 
-        this.actionCrafter := Gui(, "HotkeyCrafterGui")
-        this.actionCrafter.Opt("+Resize +MinSize640x480")
         
-        originalActionControl := this.actionCrafter.Add("Text", "", "Original Action: " . originalAction)
+        originalActionControl := this.Add("Text", "", "Original Action: " . originalAction)
         
-        this.specialActionRadio := this.actionCrafter.Add("Radio", "Checked", "Special Action")
-        this.specialActionRadio.OnEvent("Click", (*) => this.hotkeyCrafter.hideAllButFinalisationButtons() this.controlsForAllSpecialActionCrafting.showControls())
-        this.newKeyRadio := this.actionCrafter.Add("Radio", "", "New Key")
-        this.newKeyRadio.OnEvent("Click", (*) => this.hotkeyCrafter.show() this.controlsForAllSpecialActionCrafting.hideControls())
+        this.specialActionRadio := this.Add("Radio", "Checked", "Special Action")
+        this.specialActionRadio.OnEvent("Click", (*) => this.hideAllButFinalisationButtons() this.controlsForAllSpecialActionCrafting.showControls())
+        this.newKeyRadio := this.Add("Radio", "", "New Key")
+        this.newKeyRadio.OnEvent("Click", (*) => this.ShowSome() this.controlsForAllSpecialActionCrafting.hideControls())
 
-        listViewOfSpecialAction := this.actionCrafter.Add("ListView", "r20 w400", ["Special Action"])
+        listViewOfSpecialAction := this.Add("ListView", "r20 w400", ["Special Action"])
         listViewOfSpecialAction.SetFont("s12 c333333", "Segoe UI")
 
 
@@ -69,11 +74,13 @@ class ActionCrafterGui{
 
         this.controlsForAllSpecialActionCrafting.AddControl("listViewOfSpecialAction", listViewOfSpecialAction)
 
-        this.hotkeyCrafter := HotkeyCrafterGui(originalAction, this.arrayOfKeyNames, this.actionCrafter)
-        this.hotkeyCrafter.hideAllButFinalisationButtons()
-        this.hotkeyCrafter.hideButtons()
+
 
         ; validationText := this.guiObject.Add("Text", "x+20 y+20", "Validation Text")
+
+        super.Create(originalAction, arrayOfKeyNames)
+        this.hideAllButFinalisationButtons()
+        this.hideButtons()
 
         this.createSpecialActionMaker()
 
@@ -81,14 +88,15 @@ class ActionCrafterGui{
         listViewOfSpecialAction.OnEvent("ItemSelect", specialActionSelectedEvent)
 
         
-        ; this.controlsForAdvancedHotkeys := guiControlsRegistry()
-        ; this.controlsForSimpleHotkeys := guiControlsRegistry()
-        ; this.controlsForModifiers := guiControlsRegistry()
+        this.controlsForAdvancedHotkeys := guiControlsRegistry()
+        this.controlsForSimpleHotkeys := guiControlsRegistry()
+        this.controlsForModifiers := guiControlsRegistry()
 
-        saveButton := this.actionCrafter.Add("Button", "xp+20 yp+20 w100 h30", "Save")
+        saveButton := this.Add("Button", "xp+20 yp+20 w100 h30", "Save")
         saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
-        cancelButton := this.actionCrafter.Add("Button", "xp+130 yp+20 w100 h30", "Cancel")
+        cancelButton := this.Add("Button", "xp+130 yp+20 w100 h30", "Cancel")
         cancelButton.OnEvent("Click", (*) => this.Destroy())
+
     }
 
     listViewOfSpecialActionSelected(listView, rowNumberSpecialAction, columnNumber){
@@ -114,23 +122,23 @@ class ActionCrafterGui{
 
     createSpecialActionMaker(){
 
-        groupBoxForActionDescription := this.actionCrafter.Add("GroupBox", " Section xp yp-185 w400 h45", "Action Description")
-        actionDescriptionControl := this.actionCrafter.Add("Text", "xp+15 yp+15 w380", "")
+        groupBoxForActionDescription := this.Add("GroupBox", " Section xp yp-185 w400 h45", "Action Description")
+        actionDescriptionControl := this.Add("Text", "xp+15 yp+15 w380", "")
         actionDescriptionControl.SetFont("s12 c333333", "Segoe UI")
         actionDescriptionControl.Opt("Hidden1")
 
-        groupBoxForActionMaker := this.actionCrafter.Add("GroupBox", " Section ym w400 h500", "Special Action Maker")
+        groupBoxForActionMaker := this.Add("GroupBox", " Section ym w400 h500", "Special Action Maker")
 
         
-        groupBoxForActionToDo := this.actionCrafter.Add("GroupBox", " Section xp+20 yp+20 w360 h45", "Action to do")
-        friendlyNameOfActionControl := this.actionCrafter.Add("Text", "xs+15 ys+15 wrap", "")
+        groupBoxForActionToDo := this.Add("GroupBox", " Section xp+20 yp+20 w360 h45", "Action to do")
+        friendlyNameOfActionControl := this.Add("Text", "xs+15 ys+15 wrap", "")
         friendlyNameOfActionControl.SetFont("s12 c333333", "Segoe UI")
         friendlyNameOfActionControl.Opt("Hidden1")
 
         
         this.createParameterControls(5)
 
-        noParametersForActionText := this.actionCrafter.Add("Text", "xs+40 ys+60 w200 h200", "THIS ACTION HAS NO PARAMETERS:)")
+        noParametersForActionText := this.Add("Text", "xs+40 ys+60 w200 h200", "THIS ACTION HAS NO PARAMETERS:)")
         noParametersForActionText.SetFont("s20")
         noParametersForActionText.Opt("Hidden1")
 
@@ -178,18 +186,18 @@ class ActionCrafterGui{
 
     createParameterControls(amountOfParameters){
 
-        groupBoxForParameters := this.actionCrafter.Add("GroupBox", " Section xp-15 yp+50 w360 h400", "Parameters")
+        groupBoxForParameters := this.Add("GroupBox", " Section xp-15 yp+50 w360 h400", "Parameters")
 
         this.parameterControlsArray := Array()
 
         Loop amountOfParameters{
             
-            parameterControl := this.actionCrafter.Add("Text", "xs+10 yp+30 w335", "")
+            parameterControl := this.Add("Text", "xs+10 yp+30 w335", "")
             parameterControl.SetFont("Bold")
 
-            parameterEdit := this.actionCrafter.Add("Edit", "xs+10 yp+30 w335", "")
+            parameterEdit := this.Add("Edit", "xs+10 yp+30 w335", "")
             
-            parameterDescription := this.actionCrafter.Add("Text", "xs+10 yp+30 w335", "")
+            parameterDescription := this.Add("Text", "xs+10 yp+30 w335", "")
 
             parameterControls := ParameterControlsGroup(parameterControl, parameterEdit, parameterDescription)
             this.parameterControlsArray.Push(parameterControls)
@@ -233,20 +241,20 @@ class ActionCrafterGui{
     }
 
     addCancelButtonClickEventAction(action){
-        this.hotkeyCrafter.addCancelButtonClickEventAction(action)
+        this.addCancelButtonClickEventAction(action)
     }
     
     ; addDeleteButtonClickEventAction(action){
-    ;     this.hotkeyCrafter.addDeleteButtonClickEventAction(action)
+    ;     this.addDeleteButtonClickEventAction(action)
     ; }
 
     addCloseEventAction(action){
-        this.hotkeyCrafter.addCloseEventAction(action)
+        this.addCloseEventAction(action)
     }
 
     getCrafter(){
         ; TODO add conditionals to check which crafter 
-        return this.hotkeyCrafter
+        return this
     }
 
     getNewAction(){
@@ -255,7 +263,7 @@ class ActionCrafterGui{
             return this.getNewSpecialActionHotkey()
         }
         else if (this.newKeyRadio.Value = true){
-            return this.hotkeyCrafter.getNewHotkey()
+            return this.getNewHotkey()
         }
     }
 
@@ -269,14 +277,6 @@ class ActionCrafterGui{
         }
         hotkeyToReturn.setInfoForSpecialHotKey(this.currentObjectName, this.currentMethodName, parameters)
         return hotkeyToReturn
-    }
-
-    show(){
-        this.actionCrafter.show()
-    }
-
-    Destroy(){
-        this.actionCrafter.destroy()
     }
 
     GetTextSize(textCtrl, text) {
