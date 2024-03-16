@@ -216,6 +216,7 @@ class HotkeyCrafterGui extends DomainSpecificGui{
         Loop this.saveEventSubscribers.Length{
             this.saveEventSubscribers[A_Index](this.getNewHotkey())
         }
+        this.Destroy()
     }
 
     addCancelButtonClickEventAction(action){

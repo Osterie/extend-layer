@@ -22,9 +22,9 @@ class HotkeyFormatConverter{
         mapModifiersToFriendly["*"] := "Any" . delimiter
         
 
-
         index := 0
         stringLength := StrLen(hotkeyNameWithModifiers)
+        
         Loop Parse hotkeyNameWithModifiers{
             index++
             if ( (mapModifiersToFriendly[A_LoopField] == "") or index == stringLength) {

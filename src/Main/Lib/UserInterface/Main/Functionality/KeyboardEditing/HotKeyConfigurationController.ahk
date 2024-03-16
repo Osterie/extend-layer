@@ -52,7 +52,7 @@ class HotKeyConfigurationController{
     changeOriginalHotkey(arrayOfKeyNames, originalHotkey){
         hotkeyCrafter := HotkeyCrafterGui()
         hotkeyCrafter.Create(originalHotkey, arrayOfKeyNames)
-        hotkeyCrafter.subscribeToSaveEvent(ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent", hotkeyCrafter))
+        hotkeyCrafter.subscribeToSaveEvent(ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent"))
         hotkeyCrafter.Show()
     }
 
@@ -86,12 +86,11 @@ class HotKeyConfigurationController{
         this.view.destroy()
     }
 
-    saveButtonClickedForHotkeyChangeEvent(hotkeyCrafter, newHotkeyKey){
-
-        this.SetHotkeyKey(newHotkeyKey)
+    saveButtonClickedForHotkeyChangeEvent(newHotkey){
+        newHotkeyKey := newHotkey.getNewHotkeyModifiers()
+        newHotkeyKey .= newHotkey.getNewHotkeyName()
+        this.model.SetHotkeyKey(newHotkeyKey)
         this.view.updateHotkeyText()
-        hotkeyCrafter.Destroy()
-        
         this.view.Show()
 
     }
@@ -110,14 +109,6 @@ class HotKeyConfigurationController{
         this.view.Show()
     }
 
-    SetHotkeyKey(newHotkeyKey){
-        this.model.SetHotkeyKey(newHotkeyKey)
-    }
-
-    SetHotkeyAction(action){
-        this.model.SetHotkeyAction(action)
-    }
-    
     GetModel(){
         return this.model
     }
