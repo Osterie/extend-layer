@@ -5,7 +5,7 @@
 #Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
 
-class HotkeyCrafterGui extends DomainSpecificGui{ 
+class HotkeyCrafterController{ 
 
     hotkeyStaticInput := ""
     hotkeyDynamicInput := ""
@@ -26,8 +26,6 @@ class HotkeyCrafterGui extends DomainSpecificGui{
     originalHotkeyText := ""
 
     __New(){
-        super.__New(, "HotkeyCrafterGui")
-        this.Opt("+Resize +MinSize480x480")
     }
 
     Create(originalHotkey, arrayOfKeyNames){

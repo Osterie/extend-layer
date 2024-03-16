@@ -1,5 +1,11 @@
 #Requires AutoHotkey v2.0
 
+#Include ".\KeyChanging\HotkeyChanging\HotkeyCrafterView.ahk"
+#Include ".\KeyChanging\ActionChanging\ActionCrafterView.ahk"
+#Include ".\KeyChanging\HotkeyChanging\HotkeyCrafterModel.ahk"
+#Include ".\KeyChanging\ActionChanging\ActionCrafterModel.ahk"
+#Include ".\KeyChanging\HotkeyChanging\HotkeyCrafterController.ahk"
+#Include ".\KeyChanging\ActionChanging\ActionCrafterController.ahk"
 #Include ".\KeyChanging\HotkeyChanging\HotkeyCrafterGui.ahk"
 #Include ".\KeyChanging\ActionChanging\ActionCrafterGui.ahk"
 #Include <UserInterface\Main\util\GuiSizeChanger>
@@ -7,7 +13,6 @@
 #Include <Util\HotkeyFormatConverter>
 
 class HotKeyConfigurationController{
-
 
     model := ""
     view := ""
@@ -21,7 +26,6 @@ class HotKeyConfigurationController{
     }
 
     changeHotkey(whatToChange){
-        whatToChange := StrLower(whatToChange)
         this.view.hide()
 
         arrayOfKeyNames := this.model.GetArrayOfKeyNames()
@@ -35,6 +39,7 @@ class HotKeyConfigurationController{
             action := "NONE"
         }
 
+        whatToChange := StrLower(whatToChange)
         if (whatToChange == "hotkey"){
             this.changeOriginalHotkey(arrayOfKeyNames, originalHotkey)
         }
@@ -50,10 +55,15 @@ class HotKeyConfigurationController{
     }
 
     changeOriginalHotkey(arrayOfKeyNames, originalHotkey){
-        hotkeyCrafter := HotkeyCrafterGui()
-        hotkeyCrafter.Create(originalHotkey, arrayOfKeyNames)
-        hotkeyCrafter.subscribeToSaveEvent(ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent"))
-        hotkeyCrafter.Show()
+        hotkeyCrafterController_ := HotkeyCrafterController()
+        hotkeyCrafterModel_ := HotkeyCrafterModel(arrayOfKeyNames)
+        hotkeyCrafterView_ := HotkeyCrafterView(hotkeyCrafterModel_)
+
+        hotkeyCrafterView_.create(originalHotkey)
+        ; hotkeyCrafter := HotkeyCrafterGui()
+        ; hotkeyCrafter.Create(originalHotkey, arrayOfKeyNames)
+        hotkeyCrafterView_.subscribeToSaveEvent(ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent"))
+        hotkeyCrafterView_.Show()
     }
 
     changeOriginalAction(activeObjectsRegistry, arrayOfKeyNames, action){
