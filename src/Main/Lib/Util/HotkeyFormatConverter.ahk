@@ -22,9 +22,9 @@ class HotkeyFormatConverter{
         mapModifiersToFriendly["*"] := "Any" . delimiter
         
 
-
         index := 0
         stringLength := StrLen(hotkeyNameWithModifiers)
+        
         Loop Parse hotkeyNameWithModifiers{
             index++
             if ( (mapModifiersToFriendly[A_LoopField] == "") or index == stringLength) {
@@ -35,6 +35,33 @@ class HotkeyFormatConverter{
             }
         }
         return friendlyName
+    }
+
+    static splitModifiersAndHotkey(hotkeyWithModifiers){
+        modifiers := ""
+        hotkeyKey := ""
+        
+        mapModifiersToFriendly := Map()
+        mapModifiersToFriendly.Default := ""
+
+        mapModifiersToFriendly["^"] := "^"
+        mapModifiersToFriendly["#"] := "#"
+        mapModifiersToFriendly["!"] := "!"
+        mapModifiersToFriendly["+"] := "+"
+        mapModifiersToFriendly["<"] := "<"
+        mapModifiersToFriendly[">"] := ">"
+        mapModifiersToFriendly["&"] := "&"
+        mapModifiersToFriendly["*"] := "*"
+
+        Loop parse hotkeyWithModifiers{
+            if (mapModifiersToFriendly[A_LoopField] != ""){
+                modifiers .= mapModifiersToFriendly[A_LoopField]
+            }
+            else{
+                hotkeyKey .= A_LoopField
+            }
+        }
+        return [modifiers, hotkeyKey]
     }
 
     static convertFromFriendlyName(friendlyHotkeyNameWithModifiers, delimiter := " + "){

@@ -6,14 +6,15 @@ class GuiControlsRegistry{
 
     __New(){
         this.Controls := Map()
+        ; this.Controls.Default := ""
     }
 
     addControl(controlName, control){
-        this.Controls[controlName] := control
+        this.Controls.Set(controlName, control)
     }
 
     getControl(controlName){
-        return this.Controls[controlName]
+        return this.Controls.Get(controlName)
     }
 
     removeControl(controlName){

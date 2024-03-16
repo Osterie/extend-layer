@@ -10,6 +10,7 @@ class ProfileRegionView{
 
     CreateView(guiObject, controller){
 
+
         this.controller := controller
 
         guiObject.Add("Text", , "Current Profile:")

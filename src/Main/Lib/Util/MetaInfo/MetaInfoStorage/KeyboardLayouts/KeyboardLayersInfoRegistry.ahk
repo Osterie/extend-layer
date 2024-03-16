@@ -16,8 +16,17 @@ class KeyboardLayersInfoRegistry{
     AddKeyboardOverlayLayerInfo(KeyboardOverlay){
         this.KeyboardOverlaysRegistry[KeyboardOverlay.GetLayerIdentifier()] := KeyboardOverlay
     }
+
     AddHotkeysRegistry(Hotkeys){
         this.HotkeysRegistry[Hotkeys.GetLayerIdentifier()] := Hotkeys
+    }
+
+    AddHotkey(layerIdentifier, hotkeyAction){
+        this.HotkeysRegistry[layerIdentifier].AddHotkey(hotkeyAction)
+    }
+
+    DeleteHotkey(layerIdentifier, hotkeyName){
+        this.HotkeysRegistry[layerIdentifier].DeleteHotkey(hotkeyName)
     }
 
     ; TODO remove me perhaps, a new and better method is being developed...
@@ -43,9 +52,9 @@ class KeyboardLayersInfoRegistry{
         else if (this.HotkeysRegistry.Has(layerIdentifier)){
             registryToReturn := this.HotkeysRegistry[layerIdentifier]
         }
-        else{
-            throw ("No registry found for layer identifier: " . layerIdentifier)
-        }
+        ; else{
+        ;     throw ("No registry found for layer identifier: " . layerIdentifier)
+        ; }
         return registryToReturn
     }
 
@@ -67,4 +76,8 @@ class KeyboardLayersInfoRegistry{
     GetHotkeysRegistry(){
         return this.HotkeysRegistry
     }    
+
+    GetHotkeyInfoForLayer(layerIdentifier, hotkeyKey){
+        return this.GetRegistryByLayerIdentifier(layerIdentifier).GetHotkey(hotkeyKey)
+    }
 }

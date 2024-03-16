@@ -9,12 +9,23 @@ class GuiColorsChanger{
             Ctrl.BackColor := colorHex
         }
     }
+
+    static setControlColor(control, colorHex){
+        try{
+            control.Opt("+Background" . colorHex)
+        }
+        control.BackColor := colorHex
+    }
     
     ; colorHex is on the format RRGGBB, or cRRGGBB
     static setControlsTextColor(guiObject, colorHex){
         For Hwnd, Ctrl in guiObject{
             Ctrl.SetFont("c" . colorHex)
         }
+    }
+
+    static setControlTextColor(control, colorHex){
+        control.SetFont("c" . colorHex)
     }
 
     static SetDarkWindowFrame(guiObject, boolEnable:=1) {
