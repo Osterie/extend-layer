@@ -22,11 +22,24 @@ class HotKeyInfo{
         this.actionSet := false
     }
 
-    setInfoForNormalHotKey(toKey, modifiers){
+    setInfoForNormalHotKey(toKey, modifiers?){
         this.actionSet := true
         this.isObject := false
-        this.toKey := toKey
-        this.modifiers := modifiers
+
+        if (IsSet(modifiers)){
+            this.modifiers := modifiers
+            this.toKey := toKey
+        }
+        else{
+            this.setNormalHotkeySingle(toKey)
+        }
+    }
+
+    setNormalHotkeySingle(toKeyWithModifiers){
+        modifiersAndHotkey := HotkeyFormatConverter.splitModifiersAndHotkey(toKeyWithModifiers)
+        this.modifiers := modifiersAndHotkey[1]
+        this.toKey := modifiersAndHotkey[2]
+
     }
 
     setInfoForSpecialHotKey(objectName, MethodName, parameters){

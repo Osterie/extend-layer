@@ -4,6 +4,9 @@
 
 #Include <UserInterface\Main\Util\DomainSpecificGui>
 
+#Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
+
+
 
 class HotkeyCrafterGui extends DomainSpecificGui{ 
 
@@ -28,11 +31,10 @@ class HotkeyCrafterGui extends DomainSpecificGui{
 
     __New(){
         super.__New(, "HotkeyCrafterGui")
-        this.Opt("+Resize +MinSize640x480")
+        this.Opt("+Resize +MinSize480x480")
     }
 
     Create(originalHotkey, arrayOfKeyNames){
-        this.show("w640 h480")
         this.originalHotkeyText := this.Add("Text", "h20", "Original hotkey: " . originalHotkey)
 
         this.availableKeyNames := arrayOfKeyNames 
@@ -40,8 +42,6 @@ class HotkeyCrafterGui extends DomainSpecificGui{
         this.controlsForSimpleHotkeys := guiControlsRegistry()
         this.controlsForModifiers := guiControlsRegistry()
 
-
-        
         this.advancedModeButton := this.Add("Checkbox", "h50 xp+15 yp+15", "Advanced mode")
         this.advancedModeButton.onEvent("Click", (*) => this.advancedModeButtonChangedEvent())
 
@@ -57,11 +57,13 @@ class HotkeyCrafterGui extends DomainSpecificGui{
         this.createAdvancedHotkeyCrafter()
         this.hideAdvancedHotkeyCrafter()
 
-        this.saveButton := this.Add("Button", " w100 h20 xM yp+150", "Save")
+        this.saveButton := this.Add("Button", " w100 h20 xM yp", "Save")
         this.saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
         
         this.cancelButton := this.Add("Button", "w100 h20", "Cancel")
         this.cancelButton.OnEvent("Click", (*) => this.Destroy())
+        ; this.show("w640 h480")
+        this.show("w480 h480")
     }
 
     hideButtons(){
@@ -118,6 +120,7 @@ class HotkeyCrafterGui extends DomainSpecificGui{
     }
 
     updateSaveButtonStateBasedOnAdvancedHotkey(){
+
         selectedKey := this.controlsForAdvancedHotkeys.getControl("AvailableKeyNamesDropDown").Text
         if (selectedKey = ""){
             this.saveButton.enabled := false
@@ -171,33 +174,38 @@ class HotkeyCrafterGui extends DomainSpecificGui{
     }
 
     getNewHotkey(*){
-        hotkeyValueToReturn := ""
+
+        hotkeyKey := this.controlsForAdvancedHotkeys.getControl("AvailableKeyNamesDropDown").Text
+        hotkeyModifiers := ""
+        
+        hotkeyToReturn := HotKeyInfo()
+
+
         if (this.advancedModeButton.Value = true){
             if (this.controlsForAdvancedHotkeys.getControl("AnyModifierCheckbox").Value = 1){
-                hotkeyValueToReturn .= "*"    
+                hotkeyModifiers .= "*"    
             }
             if (this.controlsForAdvancedHotkeys.getControl("ControlCheckbox").Value = 1){
-                hotkeyValueToReturn .= "^"
+                hotkeyModifiers .= "^"
             }
             if (this.controlsForAdvancedHotkeys.getControl("ShiftCheckbox").Value = 1){
-                hotkeyValueToReturn .= "+"
+                hotkeyModifiers .= "+"
             }
             if (this.controlsForAdvancedHotkeys.getControl("AltCheckbox").Value = 1){
-                hotkeyValueToReturn .= "!"
+                hotkeyModifiers .= "!"
             }
             if (this.controlsForAdvancedHotkeys.getControl("WinCheckbox").Value = 1){
-                hotkeyValueToReturn .= "#"
+                hotkeyModifiers .= "#"
             }
-            hotkeyValueToReturn .= this.controlsForAdvancedHotkeys.getControl("AvailableKeyNamesDropDown").Text
-
             if (this.controlsForAdvancedHotkeys.getControl("KeyUpRadio").Value = 1){
-                hotkeyValueToReturn .= " Up"
+                hotkeyModifiers .= " Up"
             }
+            hotkeyToReturn.setInfoForNormalHotKey(hotkeyKey, hotkeyModifiers)
         }
         else {
-            hotkeyValueToReturn := this.hotkeyDynamicInput.Value
+            hotkeyToReturn.setInfoForNormalHotKey(this.hotkeyDynamicInput.Value)
         }
-        return hotkeyValueToReturn
+        return hotkeyToReturn
     }
 
     subscribeToSaveEvent(action){

@@ -39,7 +39,7 @@ class ActionCrafterGui extends HotkeyCrafterGui{
 
         super.__New()
 
-        ; this.Opt("+Resize +MinSize640x480")
+        this.Opt("+Resize +MinSize840x580")
         ; this.show("w640 h480")
 
 
@@ -58,7 +58,7 @@ class ActionCrafterGui extends HotkeyCrafterGui{
         
         this.specialActionRadio := this.Add("Radio", "Checked", "Special Action")
         this.specialActionRadio.OnEvent("Click", (*) => this.hideAllButFinalisationButtons() this.controlsForAllSpecialActionCrafting.showControls())
-        this.newKeyRadio := this.Add("Radio", "Section", "New Key")
+        this.newKeyRadio := this.Add("Radio", "", "New Key")
         this.newKeyRadio.OnEvent("Click", (*) => this.ShowSome() this.controlsForAllSpecialActionCrafting.hideControls())
 
         super.Create(originalAction, arrayOfKeyNames)
@@ -66,8 +66,10 @@ class ActionCrafterGui extends HotkeyCrafterGui{
         this.hideButtons()
         this.hideOriginalHotkeyText()
 
-        listViewOfSpecialAction := this.Add("ListView", "xs ys r20 w400", ["Special Action"])
-        listViewOfSpecialAction.SetFont("s12 c333333", "Segoe UI")
+        listViewOfSpecialAction := this.Add("ListView", "x20 y65 r20 w400", ["Special Action"])
+        ; listViewOfSpecialAction.SetFont("s12 c333333", "Segoe UI")
+        listViewOfSpecialAction.SetFont("s12")
+        listViewOfSpecialAction.ModifyCol(1, "Center", )
 
 
         Loop allPossibleSpecialActions.Length
@@ -75,7 +77,9 @@ class ActionCrafterGui extends HotkeyCrafterGui{
             listViewOfSpecialAction.Add("", allPossibleSpecialActions[A_Index])
         }
 
-        listViewOfSpecialAction.ModifyCol(1, "Center ", )
+        specialActionSelectedEvent := ObjBindMethod(this, "listViewOfSpecialActionSelected")
+        listViewOfSpecialAction.OnEvent("ItemSelect", specialActionSelectedEvent)
+
 
         this.controlsForAllSpecialActionCrafting.AddControl("listViewOfSpecialAction", listViewOfSpecialAction)
 
@@ -87,15 +91,14 @@ class ActionCrafterGui extends HotkeyCrafterGui{
 
         this.createSpecialActionMaker()
 
-        specialActionSelectedEvent := ObjBindMethod(this, "listViewOfSpecialActionSelected")
-        listViewOfSpecialAction.OnEvent("ItemSelect", specialActionSelectedEvent)
+        
 
         
-        this.controlsForAdvancedHotkeys := guiControlsRegistry()
-        this.controlsForSimpleHotkeys := guiControlsRegistry()
-        this.controlsForModifiers := guiControlsRegistry()
+        ; this.controlsForAdvancedHotkeys := guiControlsRegistry()
+        ; this.controlsForSimpleHotkeys := guiControlsRegistry()
+        ; this.controlsForModifiers := guiControlsRegistry()
 
-        this.saveButton := this.Add("Button", " w100 h20 xM yp+150", "Save")
+        this.saveButton := this.Add("Button", " w100 h20 x300 y0 ", "Save")
         this.saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
         
         this.cancelButton := this.Add("Button", "w100 h20", "Cancel")
@@ -125,17 +128,18 @@ class ActionCrafterGui extends HotkeyCrafterGui{
 
     createSpecialActionMaker(){
 
-        groupBoxForActionDescription := this.Add("GroupBox", " Section xp yp-185 w400 h45", "Action Description")
+        groupBoxForActionDescription := this.Add("GroupBox", " Section xp w400 h45", "Action Description")
         actionDescriptionControl := this.Add("Text", "xp+15 yp+15 w380", "")
-        actionDescriptionControl.SetFont("s12 c333333", "Segoe UI")
+        actionDescriptionControl.SetFont("s12")
+
         actionDescriptionControl.Opt("Hidden1")
 
         groupBoxForActionMaker := this.Add("GroupBox", " Section ym w400 h500", "Special Action Maker")
 
         
-        groupBoxForActionToDo := this.Add("GroupBox", " Section xp+20 yp+20 w360 h45", "Action to do")
+        groupBoxForActionToDo := this.Add("GroupBox", " Section xp+20 yp+20 wp-40 h45", "Action to do")
         friendlyNameOfActionControl := this.Add("Text", "xs+15 ys+15 wrap", "")
-        friendlyNameOfActionControl.SetFont("s12 c333333", "Segoe UI")
+        friendlyNameOfActionControl.SetFont("s12")
         friendlyNameOfActionControl.Opt("Hidden1")
 
         
