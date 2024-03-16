@@ -24,6 +24,8 @@ class HotkeyCrafterGui extends DomainSpecificGui{
 
     availableKeyNames := []
 
+    originalHotkeyText := ""
+
     __New(){
         super.__New(, "HotkeyCrafterGui")
         this.Opt("+Resize +MinSize640x480")
@@ -31,7 +33,7 @@ class HotkeyCrafterGui extends DomainSpecificGui{
 
     Create(originalHotkey, arrayOfKeyNames){
         this.show("w640 h480")
-        this.Add("Text", "h20", "Original hotkey: " . originalHotkey)
+        this.originalHotkeyText := this.Add("Text", "h20", "Original hotkey: " . originalHotkey)
 
         this.availableKeyNames := arrayOfKeyNames 
         this.controlsForAdvancedHotkeys := guiControlsRegistry()
@@ -221,7 +223,7 @@ class HotkeyCrafterGui extends DomainSpecificGui{
     }
 
     ShowSome(){
-        Super.show()
+        ; Super.show()
         ; this.Show()
         this.advancedModeButton.Opt("Hidden0")
         if (this.advancedModeButton.Value = true){
@@ -232,6 +234,10 @@ class HotkeyCrafterGui extends DomainSpecificGui{
             this.showSimpleHotkeyCrafter()
             this.hideAdvancedHotkeyCrafter()
         }
+    }
+
+    hideOriginalHotkeyText(){
+        this.originalHotkeyText.Opt("Hidden1")
     }
 
     hideAllButFinalisationButtons(){

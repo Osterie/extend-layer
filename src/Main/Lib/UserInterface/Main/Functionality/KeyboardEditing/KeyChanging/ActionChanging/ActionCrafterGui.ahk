@@ -39,8 +39,8 @@ class ActionCrafterGui extends HotkeyCrafterGui{
 
         super.__New()
 
-        this.Opt("+Resize +MinSize640x480")
-        this.show("w640 h480")
+        ; this.Opt("+Resize +MinSize640x480")
+        ; this.show("w640 h480")
 
 
         this.arrayOfKeyNames := arrayOfKeyNames
@@ -58,10 +58,15 @@ class ActionCrafterGui extends HotkeyCrafterGui{
         
         this.specialActionRadio := this.Add("Radio", "Checked", "Special Action")
         this.specialActionRadio.OnEvent("Click", (*) => this.hideAllButFinalisationButtons() this.controlsForAllSpecialActionCrafting.showControls())
-        this.newKeyRadio := this.Add("Radio", "", "New Key")
+        this.newKeyRadio := this.Add("Radio", "Section", "New Key")
         this.newKeyRadio.OnEvent("Click", (*) => this.ShowSome() this.controlsForAllSpecialActionCrafting.hideControls())
 
-        listViewOfSpecialAction := this.Add("ListView", "r20 w400", ["Special Action"])
+        super.Create(originalAction, arrayOfKeyNames)
+        this.hideAllButFinalisationButtons()
+        this.hideButtons()
+        this.hideOriginalHotkeyText()
+
+        listViewOfSpecialAction := this.Add("ListView", "xs ys r20 w400", ["Special Action"])
         listViewOfSpecialAction.SetFont("s12 c333333", "Segoe UI")
 
 
@@ -78,9 +83,7 @@ class ActionCrafterGui extends HotkeyCrafterGui{
 
         ; validationText := this.guiObject.Add("Text", "x+20 y+20", "Validation Text")
 
-        super.Create(originalAction, arrayOfKeyNames)
-        this.hideAllButFinalisationButtons()
-        this.hideButtons()
+
 
         this.createSpecialActionMaker()
 
@@ -92,11 +95,11 @@ class ActionCrafterGui extends HotkeyCrafterGui{
         this.controlsForSimpleHotkeys := guiControlsRegistry()
         this.controlsForModifiers := guiControlsRegistry()
 
-        saveButton := this.Add("Button", "xp+20 yp+20 w100 h30", "Save")
-        saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
-        cancelButton := this.Add("Button", "xp+130 yp+20 w100 h30", "Cancel")
-        cancelButton.OnEvent("Click", (*) => this.Destroy())
-
+        this.saveButton := this.Add("Button", " w100 h20 xM yp+150", "Save")
+        this.saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
+        
+        this.cancelButton := this.Add("Button", "w100 h20", "Cancel")
+        this.cancelButton.OnEvent("Click", (*) => this.Destroy())
     }
 
     listViewOfSpecialActionSelected(listView, rowNumberSpecialAction, columnNumber){
@@ -187,6 +190,8 @@ class ActionCrafterGui extends HotkeyCrafterGui{
     createParameterControls(amountOfParameters){
 
         groupBoxForParameters := this.Add("GroupBox", " Section xp-15 yp+50 w360 h400", "Parameters")
+
+        this.controlsForAllSpecialActionCrafting.AddControl("groupBoxForParameters", groupBoxForParameters)
 
         this.parameterControlsArray := Array()
 
