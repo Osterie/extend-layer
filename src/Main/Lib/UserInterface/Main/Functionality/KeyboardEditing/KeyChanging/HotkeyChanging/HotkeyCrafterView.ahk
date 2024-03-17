@@ -5,25 +5,21 @@
 #Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
 #Include ".\AdvancedHotkeyCraftingControl.ahk"
+#Include ".\SimpleHotkeyCraftingControl.ahk"
 
 class HotkeyCrafterView extends DomainSpecificGui{ 
 
     simpleHotkeyInput := ""
 
-    controlsForAdvancedHotkeys := ""
     controlsForSimpleHotkeys := ""
-    controlsForModifiers := ""
     
     advancedModeCheckBox := ""
     saveButton := ""
     cancelButton := ""
 
     saveEventSubscribers := Array()
-
     originalHotkeyText := ""
-
     controller := ""
-
     advancedHotkeyCrafter := ""
 
     __New(controller){
@@ -31,16 +27,19 @@ class HotkeyCrafterView extends DomainSpecificGui{
         this.Opt("+Resize +MinSize480x480")
         
         this.controller := controller
-        this.controlsForAdvancedHotkeys := guiControlsRegistry()
         this.controlsForSimpleHotkeys := guiControlsRegistry()
-        this.controlsForModifiers := guiControlsRegistry()
     }
 
     Create(originalHotkey){
         this.originalHotkeyText := this.Add("Text", "h20", "Original hotkey: " . originalHotkey)
         this.advancedModeCheckBox := this.Add("Checkbox", "h50 xp+15 yp+15", "Advanced mode")
         this.advancedModeCheckBox.onEvent("Click", (*) => this.advancedModeButtonChangedEvent())
-        this.createSimpleHotkeyCrafter(originalHotkey)
+        ; this.createSimpleHotkeyCrafter(originalHotkey)
+
+        hotkeyFormatted := HotkeyFormatConverter.convertFromFriendlyName(originalHotkey, " + ")
+        this.SimpleHotkeyCrafter := SimpleHotkeyCraftingControl(this, "w300 h50", hotkeyFormatted)
+        ; this.SimpleHotkeyCrafter.hide()
+        ; this.SimpleHotkeyCrafter.SubscribeToHotkeySelectedEvent(ObjBindMethod(this, "updateSaveButtonStatus"))
         
         this.advancedHotkeyCrafter := AdvancedHotkeyCraftingControl(this, "w370 h200 xp yp", this.controller.getAvailableKeyNames())
         this.advancedHotkeyCrafter.hide()
@@ -80,48 +79,20 @@ class HotkeyCrafterView extends DomainSpecificGui{
         }
     }
 
-    anyModifierCheckboxClickEvent(){
-        if (this.controlsForModifiers.getControl("anyModifierCheckbox").Value = true){
-            this.controlsForModifiers.setValuesFalse()
-            this.controlsForModifiers.disableControls()
-            this.controlsForModifiers.getControl("anyModifierCheckbox").Value := true
-            this.controlsForModifiers.getControl("anyModifierCheckbox").Enabled := true
-        }
-        else if (this.controlsForModifiers.getControl("anyModifierCheckbox").Value = false){
-            this.controlsForModifiers.enableControls()
-        }   
-    }
-
-    showAdvancedHotkeyCrafter(){
-        this.controlsForAdvancedHotkeys.showControls()
-    }
-    hideAdvancedHotkeyCrafter(){
-        this.controlsForAdvancedHotkeys.hideControls()
-    }
-
-    showSimpleHotkeyCrafter(){
-        this.controlsForSimpleHotkeys.showControls()
-    }
-
-    hideSimpleHotkeyCrafter(){
-        this.controlsForSimpleHotkeys.hideControls()
-    }
-
     advancedModeButtonChangedEvent(){
         if(this.advancedModeCheckBox.Value = true){
             this.advancedHotkeyCrafter.show()
-            this.hideSimpleHotkeyCrafter()
+            this.SimpleHotkeyCrafter.hide()
             this.updateSaveButtonStatus(this.advancedHotkeyCrafter.getKey())
         } 
         else {
             this.advancedHotkeyCrafter.hide()
-            this.updateSaveButtonStatus(this.simpleHotkeyInput.Value)
-            this.showSimpleHotkeyCrafter()
+            this.updateSaveButtonStatus(this.SimpleHotkeyCrafter.getKey())
+            this.SimpleHotkeyCrafter.show()
         }
     }
 
-    ; TODO get rid of *
-    getNewHotkey(*){
+    getNewHotkey(){
 
         hotkeyToReturn := HotKeyInfo()
 
@@ -156,12 +127,12 @@ class HotkeyCrafterView extends DomainSpecificGui{
         ; this.Show()
         this.advancedModeCheckBox.Opt("Hidden0")
         if (this.advancedModeCheckBox.Value = true){
-            this.showAdvancedHotkeyCrafter()
-            this.hideSimpleHotkeyCrafter()
+            this.advancedHotkeyCrafter.show()
+            this.SimpleHotkeyCrafter.Hide()
         }
         else {
-            this.showSimpleHotkeyCrafter()
-            this.hideAdvancedHotkeyCrafter()
+            this.SimpleHotkeyCrafter.show()
+            this.advancedHotkeyCrafter.hide()
         }
     }
 
@@ -176,8 +147,8 @@ class HotkeyCrafterView extends DomainSpecificGui{
     }
 
     hideAllButFinalisationButtons(){
-        this.controlsForSimpleHotkeys.hideControls()
-        this.controlsForAdvancedHotkeys.hideControls()
+        this.SimpleHotkeyCrafter.hide()
+        this.advancedHotkeyCrafter.hide()
         this.advancedModeCheckBox.Opt("Hidden1")
     }
 }

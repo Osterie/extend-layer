@@ -9,7 +9,6 @@ class AdvancedHotkeyCraftingControl{
 
     controlsForAdvancedHotkeys := ""
     controlsForModifiers := ""
-
     hotkeySavedEventSubscribers := ""
 
     ; TODO this gui should know about availabkelKeyNames himself?
@@ -19,23 +18,19 @@ class AdvancedHotkeyCraftingControl{
         this.controlsForModifiers := guiControlsRegistry()
         this.hotkeySavedEventSubscribers := Array()
 
-
-
         groupBoxForAdvancedHotkeyCrafting := this.guiToAddTo.Add("GroupBox", "Section " . position, "Advanced hotkey crafting:")
         this.CreateModifierControls()
         this.CreateHotkeySelectionControls(availableKeyNames)
         this.CreateHotkeyStateControls()
         
         this.controlsForAdvancedHotkeys.addControl("GroupBoxAdvancedCrafting", groupBoxForAdvancedHotkeyCrafting)
-
-        
     }
 
     CreateModifierControls(){
         groupBoxForModifiers := this.guiToAddTo.Add("GroupBox", "Section w300 h50 xp+30 yp+20", "Modifiers:")
         
         anyModifierCheckbox := this.guiToAddTo.Add("CheckBox","xs+25 ys+20", "Any")
-        anyModifierCheckbox.OnEvent("Click", (*) => this.anyModifierCheckboxClickEvent())
+        anyModifierCheckbox.OnEvent("Click", (*) => this.AnyModifierCheckboxClickEvent())
         controlCheckbox := this.guiToAddTo.Add("CheckBox","xp+40 ys+20", "Control")
         shiftCheckbox := this.guiToAddTo.Add("CheckBox","xp+60 ys+20", "Shift")
         altCheckbox := this.guiToAddTo.Add("CheckBox","xp+55 ys+20", "Alt")
@@ -61,8 +56,6 @@ class AdvancedHotkeyCraftingControl{
         availableKeyNamesDropDown.OnEvent("Change", (*) => this.NotifyListenersHotkeySaved())
         this.controlsForAdvancedHotkeys.addControl("GroupBoxForHotkey", groupBoxForHotkey)
         this.controlsForAdvancedHotkeys.addControl("AvailableKeyNamesDropDown", availableKeyNamesDropDown)
-
-
     }
 
     CreateHotkeyStateControls(){
@@ -73,7 +66,7 @@ class AdvancedHotkeyCraftingControl{
         this.controlsForAdvancedHotkeys.addControl("KeyUpRadio", keyUpRadio)
     }
 
-    anyModifierCheckboxClickEvent(){
+    AnyModifierCheckboxClickEvent(){
         if (this.controlsForModifiers.getControl("anyModifierCheckbox").Value = true){
             this.controlsForModifiers.setValuesFalse()
             this.controlsForModifiers.disableControls()
