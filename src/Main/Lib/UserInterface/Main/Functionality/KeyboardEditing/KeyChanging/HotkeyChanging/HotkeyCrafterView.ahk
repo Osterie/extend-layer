@@ -9,7 +9,6 @@
 
 class HotkeyCrafterView extends DomainSpecificGui{ 
 
-
     controlsForButtons := ""
     advancedModeCheckBox := ""
 
@@ -27,7 +26,6 @@ class HotkeyCrafterView extends DomainSpecificGui{
     }
 
     Create(originalHotkey){
-        this.originalHotkeyText := this.Add("Text", "h20", "Original hotkey: " . originalHotkey)
         this.advancedModeCheckBox := this.Add("Checkbox", "h50 xp+15 yp+15", "Advanced mode")
         this.advancedModeCheckBox.onEvent("Click", (*) => this.advancedModeButtonChangedEvent())
 
@@ -41,6 +39,11 @@ class HotkeyCrafterView extends DomainSpecificGui{
         this.createButtons()
 
         this.updateSaveButtonStatus(originalHotkey)
+    }
+
+    ; This is usefol for example setting "Original hotkey: shift + a"  at the top of the window
+    SetInformativeTopText(informativeText){
+        informativeTopText := this.Add("Text", "h20 x5 y5", informativeText)
     }
 
     createButtons(){
@@ -120,7 +123,6 @@ class HotkeyCrafterView extends DomainSpecificGui{
     hide(){
         this.hideAllButFinalisationButtons()
         this.hideButtons()
-        this.hideOriginalHotkeyText()
     }
 
     hideButtons(){
@@ -131,9 +133,5 @@ class HotkeyCrafterView extends DomainSpecificGui{
         this.SimpleHotkeyCrafter.hide()
         this.advancedHotkeyCrafter.hide()
         this.advancedModeCheckBox.Opt("Hidden1")
-    }
-
-    hideOriginalHotkeyText(){
-        this.originalHotkeyText.Opt("Hidden1")
     }
 }

@@ -51,6 +51,8 @@ class HotKeyConfigurationController{
     changeOriginalHotkey(availableKeyNames, originalHotkey){
         hotkeyCrafterView_ := HotkeyCrafterView(this)
         hotkeyCrafterView_.create(originalHotkey)
+        hotkeyCrafterView_.SetInformativeTopText("Original Hotkey: " . originalHotkey)
+
         hotkeyCrafterView_.subscribeToSaveEvent(ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent"))
         hotkeyCrafterView_.Show()
     }

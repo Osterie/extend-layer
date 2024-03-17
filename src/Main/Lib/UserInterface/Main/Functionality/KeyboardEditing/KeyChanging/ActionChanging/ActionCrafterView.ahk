@@ -54,7 +54,6 @@ class ActionCrafterView extends HotkeyCrafterView{
         super.Create(originalAction)
         this.hideAllButFinalisationButtons()
         this.hideButtons()
-        this.hideOriginalHotkeyText()
 
         listViewOfSpecialAction := this.Add("ListView", "x20 y65 r20 w400", ["Special Action"])
         listViewOfSpecialAction.SetFont("s12")
