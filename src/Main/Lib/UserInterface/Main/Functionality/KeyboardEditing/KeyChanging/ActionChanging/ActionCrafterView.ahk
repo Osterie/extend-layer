@@ -1,20 +1,15 @@
 #Requires AutoHotkey v2.0
 
 #Include <UserInterface\Main\util\GuiControlsRegistry>
-#Include "..\HotkeyChanging\HotkeyCrafterGui.ahk"
-#Include ".\ParameterControlsGroup.ahk"
+#Include "..\HotkeyChanging\HotkeyCrafterView.ahk"
 #Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
+#Include ".\ParameterControlsGroup.ahk"
 #Include <UserInterface\Main\util\GuiSizeChanger>
 #Include <UserInterface\Main\Util\DomainSpecificGui>
 
-#Include "..\HotkeyChanging\HotkeyCrafterGui.ahk"
 
-
-
-class ActionCrafterView extends HotkeyCrafterGui{
-
-    activeObjectsRegistry := ""
+class ActionCrafterView extends HotkeyCrafterView{
 
     saveEventSubscribers := Array()
 
@@ -33,24 +28,19 @@ class ActionCrafterView extends HotkeyCrafterGui{
 
     amountOfParametersToBeFilled := 0
 
-    arrayOfKeyNames := []
-
-    __New(originalAction, arrayOfKeyNames, activeObjectsRegistry){
-
-        super.__New()
-
+    __New(controller){
+        super.__New(controller)
         this.Opt("+Resize +MinSize840x580")
-        ; this.show("w640 h480")
+    }
 
-
-        this.arrayOfKeyNames := arrayOfKeyNames
+    Create(originalAction){
+        
 
         this.controlsForAllSpecialActionCrafting := guiControlsRegistry()
         this.controlsForSpecificSpecialActionCrafting := guiControlsRegistry()
         this.controlsForParameters := guiControlsRegistry()
 
-        this.activeObjectsRegistry := activeObjectsRegistry
-        allPossibleSpecialActions := this.activeObjectsRegistry.getFriendlyNames()
+        allPossibleSpecialActions := this.controller.getActiveObjectsRegistry().getFriendlyNames()
 
 
         
@@ -61,13 +51,12 @@ class ActionCrafterView extends HotkeyCrafterGui{
         this.newKeyRadio := this.Add("Radio", "", "New Key")
         this.newKeyRadio.OnEvent("Click", (*) => this.ShowSome() this.controlsForAllSpecialActionCrafting.hideControls())
 
-        super.Create(originalAction, arrayOfKeyNames)
+        super.Create(originalAction)
         this.hideAllButFinalisationButtons()
         this.hideButtons()
         this.hideOriginalHotkeyText()
 
         listViewOfSpecialAction := this.Add("ListView", "x20 y65 r20 w400", ["Special Action"])
-        ; listViewOfSpecialAction.SetFont("s12 c333333", "Segoe UI")
         listViewOfSpecialAction.SetFont("s12")
         listViewOfSpecialAction.ModifyCol(1, "Center", )
 
@@ -83,20 +72,7 @@ class ActionCrafterView extends HotkeyCrafterGui{
 
         this.controlsForAllSpecialActionCrafting.AddControl("listViewOfSpecialAction", listViewOfSpecialAction)
 
-
-
-        ; validationText := this.guiObject.Add("Text", "x+20 y+20", "Validation Text")
-
-
-
         this.createSpecialActionMaker()
-
-        
-
-        
-        ; this.controlsForAdvancedHotkeys := guiControlsRegistry()
-        ; this.controlsForSimpleHotkeys := guiControlsRegistry()
-        ; this.controlsForModifiers := guiControlsRegistry()
 
         this.saveButton := this.Add("Button", " w100 h20 x300 y0 ", "Save")
         this.saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
@@ -107,7 +83,7 @@ class ActionCrafterView extends HotkeyCrafterGui{
 
     listViewOfSpecialActionSelected(listView, rowNumberSpecialAction, columnNumber){
         friendlyNameOfAction := listView.GetText(rowNumberSpecialAction)
-        ObjectInfoOfAction := this.activeObjectsRegistry.GetObjectByFriendlyMethodName(friendlyNameOfAction)
+        ObjectInfoOfAction := this.controller.getActiveObjectsRegistry().GetObjectByFriendlyMethodName(friendlyNameOfAction)
         MethodInfoOfAction := ObjectInfoOfAction.getMethodByFriendlyMethodName(friendlyNameOfAction)
 
         this.currentObjectName := ObjectInfoOfAction.getObjectName()
@@ -256,10 +232,6 @@ class ActionCrafterView extends HotkeyCrafterGui{
     ; addDeleteButtonClickEventAction(action){
     ;     this.addDeleteButtonClickEventAction(action)
     ; }
-
-    addCloseEventAction(action){
-        this.addCloseEventAction(action)
-    }
 
     getCrafter(){
         ; TODO add conditionals to check which crafter 
