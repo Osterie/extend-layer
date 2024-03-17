@@ -45,13 +45,13 @@ class ParameterControlsGroup{
         this.parameterDescriptionControl.Value := newParameterDescription
     }
 
-    showControls(){
+    show(){
         this.parameterTextControl.Opt("Hidden0")
         this.parameterEditControl.Opt("Hidden0")
         this.parameterDescriptionControl.Opt("Hidden0")
     }
 
-    hideControls(){
+    hide(){
         this.parameterTextControl.Opt("Hidden1")
         this.parameterEditControl.Opt("Hidden1")
         this.parameterDescriptionControl.Opt("Hidden1")

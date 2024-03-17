@@ -47,9 +47,9 @@ class ActionCrafterView extends HotkeyCrafterView{
         originalActionControl := this.Add("Text", "", "Original Action: " . originalAction)
         
         this.specialActionRadio := this.Add("Radio", "Checked", "Special Action")
-        this.specialActionRadio.OnEvent("Click", (*) => this.hideAllButFinalisationButtons() this.controlsForAllSpecialActionCrafting.showControls())
+        this.specialActionRadio.OnEvent("Click", (*) => this.hideAllButFinalisationButtons() this.controlsForAllSpecialActionCrafting.show())
         this.newKeyRadio := this.Add("Radio", "", "New Key")
-        this.newKeyRadio.OnEvent("Click", (*) => this.ShowSome() this.controlsForAllSpecialActionCrafting.hideControls())
+        this.newKeyRadio.OnEvent("Click", (*) => this.ShowSome() this.controlsForAllSpecialActionCrafting.hide())
 
         super.Create(originalAction)
         this.hideAllButFinalisationButtons()
@@ -164,7 +164,7 @@ class ActionCrafterView extends HotkeyCrafterView{
             this.setTextForParameterControls(parameters)
         }
 
-        this.controlsForSpecificSpecialActionCrafting.ShowControls()
+        this.controlsForSpecificSpecialActionCrafting.show()
     }
 
     createParameterControls(amountOfParameters){
@@ -187,13 +187,13 @@ class ActionCrafterView extends HotkeyCrafterView{
             parameterControls := ParameterControlsGroup(parameterControl, parameterEdit, parameterDescription)
             this.parameterControlsArray.Push(parameterControls)
 
-            parameterControls.HideControls()
+            parameterControls.hide()
         }
     }
 
     hideParameterControls(){
         For parameterControls in this.parameterControlsArray{
-            parameterControls.HideControls()
+            parameterControls.hide()
         }
     }
 
@@ -210,7 +210,7 @@ class ActionCrafterView extends HotkeyCrafterView{
             parameterControls.setTextControlValue(parameterName)
             parameterControls.setEditControlType(parameterType)
             parameterControls.setDescriptionControlValue(parameterDescription)
-            parameterControls.ShowControls()
+            parameterControls.show()
         }
     }
 

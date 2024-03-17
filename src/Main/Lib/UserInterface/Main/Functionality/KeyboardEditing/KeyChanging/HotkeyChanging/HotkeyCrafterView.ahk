@@ -9,13 +9,9 @@
 
 class HotkeyCrafterView extends DomainSpecificGui{ 
 
-    simpleHotkeyInput := ""
 
-    controlsForSimpleHotkeys := ""
-    
+    controlsForButtons := ""
     advancedModeCheckBox := ""
-    saveButton := ""
-    cancelButton := ""
 
     saveEventSubscribers := Array()
     originalHotkeyText := ""
@@ -27,55 +23,43 @@ class HotkeyCrafterView extends DomainSpecificGui{
         this.Opt("+Resize +MinSize480x480")
         
         this.controller := controller
-        this.controlsForSimpleHotkeys := guiControlsRegistry()
+        this.controlsForButtons := guiControlsRegistry()
     }
 
     Create(originalHotkey){
         this.originalHotkeyText := this.Add("Text", "h20", "Original hotkey: " . originalHotkey)
         this.advancedModeCheckBox := this.Add("Checkbox", "h50 xp+15 yp+15", "Advanced mode")
         this.advancedModeCheckBox.onEvent("Click", (*) => this.advancedModeButtonChangedEvent())
-        ; this.createSimpleHotkeyCrafter(originalHotkey)
 
-        hotkeyFormatted := HotkeyFormatConverter.convertFromFriendlyName(originalHotkey, " + ")
-        this.SimpleHotkeyCrafter := SimpleHotkeyCraftingControl(this, "w300 h50", hotkeyFormatted)
-        ; this.SimpleHotkeyCrafter.hide()
-        ; this.SimpleHotkeyCrafter.SubscribeToHotkeySelectedEvent(ObjBindMethod(this, "updateSaveButtonStatus"))
+        this.SimpleHotkeyCrafter := SimpleHotkeyCraftingControl(this, "w300 h50", HotkeyFormatConverter.convertFromFriendlyName(originalHotkey, " + "))
+        this.SimpleHotkeyCrafter.SubscribeToHotkeySelectedEvent(ObjBindMethod(this, "updateSaveButtonStatus"))
         
         this.advancedHotkeyCrafter := AdvancedHotkeyCraftingControl(this, "w370 h200 xp yp", this.controller.getAvailableKeyNames())
-        this.advancedHotkeyCrafter.hide()
         this.advancedHotkeyCrafter.SubscribeToHotkeySelectedEvent(ObjBindMethod(this, "updateSaveButtonStatus"))
+        
+        this.advancedHotkeyCrafter.hide()
         this.createButtons()
-    }
 
-    createSimpleHotkeyCrafter(originalHotkey){
-        simpleHotkeyCraftingBox := this.Add("GroupBox", "Section w300 h50", "Simple hotkey crafting:")
-        this.simpleHotkeyInput := this.Add("Hotkey", "w250 h20 xs+10 ys+20") ;yp sets the control's position to the left of the previous one...
-        this.simpleHotkeyInput.Value := HotkeyFormatConverter.convertFromFriendlyName(originalHotkey, " + ")
-        this.simpleHotkeyInput.OnEvent("Change", (*) => this.updateSaveButtonStatus(this.simpleHotkeyInput.Value))
-
-        this.controlsForSimpleHotkeys.addControl("simpleHotkeyCraftingBox", simpleHotkeyCraftingBox)
-        this.controlsForSimpleHotkeys.addControl("HotkeyDynamicInput", this.simpleHotkeyInput)
+        this.updateSaveButtonStatus(originalHotkey)
     }
 
     createButtons(){
-        this.saveButton := this.Add("Button", " w100 h20 xM yp", "Save")
-        this.saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
+        saveButton := this.Add("Button", " w100 h20 xM yp", "Save")
+        saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
         
-        this.cancelButton := this.Add("Button", "w100 h20", "Cancel")
-        this.cancelButton.OnEvent("Click", (*) => this.Destroy())
-    }
+        cancelButton := this.Add("Button", "w100 h20", "Cancel")
+        cancelButton.OnEvent("Click", (*) => this.Destroy())
 
-    hideButtons(){
-        this.saveButton.Opt("Hidden1")
-        this.cancelButton.Opt("Hidden1")
+        this.controlsForButtons.addControl("saveButton", saveButton)
+        this.controlsForButtons.addControl("cancelButton", cancelButton)
     }
 
     updateSaveButtonStatus(selectedHotkey){
         if (selectedHotkey = ""){
-            this.saveButton.enabled := false
+            this.controlsForButtons.GetControl("saveButton").enabled := false
         }
         else{
-            this.saveButton.enabled := true
+            this.controlsForButtons.GetControl("saveButton").enabled := true
         }
     }
 
@@ -102,12 +86,12 @@ class HotkeyCrafterView extends DomainSpecificGui{
             hotkeyToReturn.setInfoForNormalHotKey(hotkeyKey, hotkeyModifiers)
         }
         else {
-            hotkeyToReturn.setInfoForNormalHotKey(this.simpleHotkeyInput.Value)
+            hotkeyToReturn.setInfoForNormalHotKey(this.SimpleHotkeyCrafter.getKey())
         }
         return hotkeyToReturn
     }
 
-    subscribeToSaveEvent(action){
+    SubscribeToSaveEvent(action){
         this.saveEventSubscribers.push(action)
     }
 
@@ -117,10 +101,6 @@ class HotkeyCrafterView extends DomainSpecificGui{
         }
         this.Destroy()
     }
-    
-    ; addDeleteButtonClickEventAction(action){
-    ;     this.deleteButton.OnEvent("Click", action)
-    ; }
 
     ShowSome(){
         ; Super.show()
@@ -136,19 +116,24 @@ class HotkeyCrafterView extends DomainSpecificGui{
         }
     }
 
-    hideOriginalHotkeyText(){
-        this.originalHotkeyText.Opt("Hidden1")
-    }
 
-    hideControls(){
+    hide(){
         this.hideAllButFinalisationButtons()
         this.hideButtons()
         this.hideOriginalHotkeyText()
+    }
+
+    hideButtons(){
+        this.controlsForButtons.hide()
     }
 
     hideAllButFinalisationButtons(){
         this.SimpleHotkeyCrafter.hide()
         this.advancedHotkeyCrafter.hide()
         this.advancedModeCheckBox.Opt("Hidden1")
+    }
+
+    hideOriginalHotkeyText(){
+        this.originalHotkeyText.Opt("Hidden1")
     }
 }

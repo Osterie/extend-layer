@@ -53,7 +53,7 @@ class AdvancedHotkeyCraftingControl{
     CreateHotkeySelectionControls(availableKeyNames){
         groupBoxForHotkey := this.guiToAddTo.Add("GroupBox", "section w300 h50 xs ys+80", "Hotkey:")
         availableKeyNamesDropDown := this.guiToAddTo.Add("DropDownList", "xs+20 ys+20", availableKeyNames)
-        availableKeyNamesDropDown.OnEvent("Change", (*) => this.NotifyListenersHotkeySaved())
+        availableKeyNamesDropDown.OnEvent("Change", (*) => this.NotifyListenersHotkeyChanged())
         this.controlsForAdvancedHotkeys.addControl("GroupBoxForHotkey", groupBoxForHotkey)
         this.controlsForAdvancedHotkeys.addControl("AvailableKeyNamesDropDown", availableKeyNamesDropDown)
     }
@@ -79,11 +79,11 @@ class AdvancedHotkeyCraftingControl{
     }
 
     Show(){
-        this.controlsForAdvancedHotkeys.showControls()
+        this.controlsForAdvancedHotkeys.show()
     }
 
     Hide(){
-        this.controlsForAdvancedHotkeys.hideControls()
+        this.controlsForAdvancedHotkeys.hide()
     }
 
     GetKey(){
@@ -121,7 +121,7 @@ class AdvancedHotkeyCraftingControl{
         this.hotkeySavedEventSubscribers.push(event)
     }
 
-    NotifyListenersHotkeySaved(){
+    NotifyListenersHotkeyChanged(){
         for event in this.hotkeySavedEventSubscribers{
             event(this.GetKey())
         }
