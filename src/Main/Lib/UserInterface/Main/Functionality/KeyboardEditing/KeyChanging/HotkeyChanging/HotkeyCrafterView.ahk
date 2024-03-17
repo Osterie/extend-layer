@@ -4,6 +4,7 @@
 #Include <UserInterface\Main\Util\DomainSpecificGui>
 #Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
+#Include ".\AdvancedHotkeyCraftingControl.ahk"
 
 class HotkeyCrafterView extends DomainSpecificGui{ 
 
@@ -23,6 +24,8 @@ class HotkeyCrafterView extends DomainSpecificGui{
 
     controller := ""
 
+    advancedHotkeyCrafter := ""
+
     __New(controller){
         super.__New(, "HotkeyCrafterGui")
         this.Opt("+Resize +MinSize480x480")
@@ -38,8 +41,10 @@ class HotkeyCrafterView extends DomainSpecificGui{
         this.advancedModeCheckBox := this.Add("Checkbox", "h50 xp+15 yp+15", "Advanced mode")
         this.advancedModeCheckBox.onEvent("Click", (*) => this.advancedModeButtonChangedEvent())
         this.createSimpleHotkeyCrafter(originalHotkey)
-        this.createAdvancedHotkeyCrafter()
-        this.hideAdvancedHotkeyCrafter()
+        
+        this.advancedHotkeyCrafter := AdvancedHotkeyCraftingControl(this, "w370 h200 xp yp", this.controller.getAvailableKeyNames())
+        this.advancedHotkeyCrafter.hide()
+        this.advancedHotkeyCrafter.SubscribeToHotkeySelectedEvent(ObjBindMethod(this, "updateSaveButtonStatus"))
         this.createButtons()
     }
 
@@ -75,45 +80,6 @@ class HotkeyCrafterView extends DomainSpecificGui{
         }
     }
 
-    createAdvancedHotkeyCrafter(){
-        groupBoxForAdvancedHotkeyCrafting := this.Add("GroupBox", "Section w370 h200 xp yp", "Advanced hotkey crafting:")
-        
-        groupBoxForModifiers := this.Add("GroupBox", "Section w300 h50 xp+30 yp+20", "Modifiers:")
-        
-        anyModifierCheckbox := this.Add("CheckBox","xs+25 ys+20", "Any")
-        anyModifierCheckbox.OnEvent("Click", (*) => this.anyModifierCheckboxClickEvent())
-        controlCheckbox := this.Add("CheckBox","xp+40 ys+20", "Control")
-        shiftCheckbox := this.Add("CheckBox","xp+60 ys+20", "Shift")
-        altCheckbox := this.Add("CheckBox","xp+55 ys+20", "Alt")
-        winCheckbox := this.Add("CheckBox","xp+40 ys+20", "Win")
-        
-
-        this.controlsForModifiers.addControl("anyModifierCheckbox", anyModifierCheckbox)
-        this.controlsForModifiers.addControl("ControlCheckbox", controlCheckbox)
-        this.controlsForModifiers.addControl("ShiftCheckbox", shiftCheckbox)
-        this.controlsForModifiers.addControl("AltCheckbox", altCheckbox)
-        this.controlsForModifiers.addControl("WinCheckbox", winCheckbox)
-
-        groupBoxForHotkey := this.Add("GroupBox", "section w300 h50 xs ys+80", "Hotkey:")
-        availableKeyNamesDropDown := this.Add("DropDownList", "xs+20 ys+20", this.controller.getAvailableKeyNames())
-        availableKeyNamesDropDown.OnEvent("Change", (*) => this.updateSaveButtonStatus(this.controlsForAdvancedHotkeys.getControl("AvailableKeyNamesDropDown").Text))
-        
-        keyDownRadio := this.Add("Radio","Checked xs+95 ys+120", "When key down")
-        keyUpRadio := this.Add("Radio",, "When key up")
-
-        this.controlsForAdvancedHotkeys.addControl("GroupBoxAdvancedCrafting", groupBoxForAdvancedHotkeyCrafting)
-        this.controlsForAdvancedHotkeys.addControl("GroupBoxForModifiers", groupBoxForModifiers)
-        this.controlsForAdvancedHotkeys.addControl("GroupBoxForHotkey", groupBoxForHotkey)
-        this.controlsForAdvancedHotkeys.addControl("KeyDownRadio", keyDownRadio)
-        this.controlsForAdvancedHotkeys.addControl("KeyUpRadio", keyUpRadio)
-        this.controlsForAdvancedHotkeys.addControl("AnyModifierCheckbox", anyModifierCheckbox)
-        this.controlsForAdvancedHotkeys.addControl("ControlCheckbox", controlCheckbox)
-        this.controlsForAdvancedHotkeys.addControl("ShiftCheckbox", shiftCheckbox)
-        this.controlsForAdvancedHotkeys.addControl("AltCheckbox", altCheckbox)
-        this.controlsForAdvancedHotkeys.addControl("WinCheckbox", winCheckbox)
-        this.controlsForAdvancedHotkeys.addControl("AvailableKeyNamesDropDown", availableKeyNamesDropDown)
-    }
-
     anyModifierCheckboxClickEvent(){
         if (this.controlsForModifiers.getControl("anyModifierCheckbox").Value = true){
             this.controlsForModifiers.setValuesFalse()
@@ -143,12 +109,13 @@ class HotkeyCrafterView extends DomainSpecificGui{
 
     advancedModeButtonChangedEvent(){
         if(this.advancedModeCheckBox.Value = true){
-            this.showAdvancedHotkeyCrafter()
+            this.advancedHotkeyCrafter.show()
             this.hideSimpleHotkeyCrafter()
-            this.updateSaveButtonStatus(this.controlsForAdvancedHotkeys.getControl("AvailableKeyNamesDropDown").Text)
+            this.updateSaveButtonStatus(this.advancedHotkeyCrafter.getKey())
         } 
         else {
-            this.hideAdvancedHotkeyCrafter()
+            this.advancedHotkeyCrafter.hide()
+            this.updateSaveButtonStatus(this.simpleHotkeyInput.Value)
             this.showSimpleHotkeyCrafter()
         }
     }
@@ -156,31 +123,11 @@ class HotkeyCrafterView extends DomainSpecificGui{
     ; TODO get rid of *
     getNewHotkey(*){
 
-        hotkeyKey := this.controlsForAdvancedHotkeys.getControl("AvailableKeyNamesDropDown").Text
-        hotkeyModifiers := ""
-        
         hotkeyToReturn := HotKeyInfo()
 
-
         if (this.advancedModeCheckBox.Value = true){
-            if (this.controlsForAdvancedHotkeys.getControl("AnyModifierCheckbox").Value = 1){
-                hotkeyModifiers .= "*"    
-            }
-            if (this.controlsForAdvancedHotkeys.getControl("ControlCheckbox").Value = 1){
-                hotkeyModifiers .= "^"
-            }
-            if (this.controlsForAdvancedHotkeys.getControl("ShiftCheckbox").Value = 1){
-                hotkeyModifiers .= "+"
-            }
-            if (this.controlsForAdvancedHotkeys.getControl("AltCheckbox").Value = 1){
-                hotkeyModifiers .= "!"
-            }
-            if (this.controlsForAdvancedHotkeys.getControl("WinCheckbox").Value = 1){
-                hotkeyModifiers .= "#"
-            }
-            if (this.controlsForAdvancedHotkeys.getControl("KeyUpRadio").Value = 1){
-                hotkeyModifiers .= " Up"
-            }
+            hotkeyKey := this.advancedHotkeyCrafter.getKey()
+            hotkeyModifiers := this.advancedHotkeyCrafter.getModifiers()
             hotkeyToReturn.setInfoForNormalHotKey(hotkeyKey, hotkeyModifiers)
         }
         else {
