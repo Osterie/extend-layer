@@ -21,45 +21,32 @@ class ActionCrafterView extends HotkeyCrafterView{
 
 
     controlsForAllSpecialActionCrafting := ""
-
     controlsForSpecificSpecialActionCrafting := ""
-
     controlsForParameters := ""
-
     amountOfParametersToBeFilled := 0
 
     __New(controller){
         super.__New(controller)
         this.Opt("+Resize +MinSize840x580")
-    }
-
-    Create(originalAction){
-        
-
         this.controlsForAllSpecialActionCrafting := guiControlsRegistry()
         this.controlsForSpecificSpecialActionCrafting := guiControlsRegistry()
         this.controlsForParameters := guiControlsRegistry()
+    }
 
-        allPossibleSpecialActions := this.controller.getActiveObjectsRegistry().getFriendlyNames()
+    Create(originalAction){
+        this.CreateCrafterTypeRadioButtons()
+        super.Create("")
+        this.CreateSpecialActionsListView()
+        this.createSpecialActionMaker()
+    }
 
-
-        
-        originalActionControl := this.Add("Text", "", "Original Action: " . originalAction)
-        
-        this.specialActionRadio := this.Add("Radio", "Checked", "Special Action")
-        this.specialActionRadio.OnEvent("Click", (*) => this.hideAllButButtons() this.controlsForAllSpecialActionCrafting.show())
-        this.newKeyRadio := this.Add("Radio", "", "New Key")
-        this.newKeyRadio.OnEvent("Click", (*) => this.ShowSome() this.controlsForAllSpecialActionCrafting.hide())
-
-        super.Create(originalAction)
-        this.hideAllButButtons()
-        this.hideButtons()
-
+    CreateSpecialActionsListView(){
         listViewOfSpecialAction := this.Add("ListView", "x20 y65 r20 w400", ["Special Action"])
         listViewOfSpecialAction.SetFont("s12")
         listViewOfSpecialAction.ModifyCol(1, "Center", )
 
 
+        allPossibleSpecialActions := this.controller.getActiveObjectsRegistry().getFriendlyNames()
         Loop allPossibleSpecialActions.Length
         {
             listViewOfSpecialAction.Add("", allPossibleSpecialActions[A_Index])
@@ -68,16 +55,22 @@ class ActionCrafterView extends HotkeyCrafterView{
         specialActionSelectedEvent := ObjBindMethod(this, "listViewOfSpecialActionSelected")
         listViewOfSpecialAction.OnEvent("ItemSelect", specialActionSelectedEvent)
 
-
         this.controlsForAllSpecialActionCrafting.AddControl("listViewOfSpecialAction", listViewOfSpecialAction)
+    }
 
-        this.createSpecialActionMaker()
+    CreateCrafterTypeRadioButtons(){
+        this.specialActionRadio := this.Add("Radio", "Checked y30 x10", "Special Action")
+        this.specialActionRadio.OnEvent("Click", (*) => this.hideAllButButtons() this.controlsForAllSpecialActionCrafting.show())
+        this.newKeyRadio := this.Add("Radio", "", "New Key")
+        this.newKeyRadio.OnEvent("Click", (*) => this.ShowHotkeyCrafterControls() this.controlsForAllSpecialActionCrafting.hide())
+    }
 
-        this.saveButton := this.Add("Button", " w100 h20 x300 y0 ", "Save")
-        this.saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
+    CreateButtons(){
+        saveButton := this.Add("Button", " w100 h20 x300 y0 ", "Save")
+        saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
         
-        this.cancelButton := this.Add("Button", "w100 h20", "Cancel")
-        this.cancelButton.OnEvent("Click", (*) => this.Destroy())
+        cancelButton := this.Add("Button", "w100 h20", "Cancel")
+        cancelButton.OnEvent("Click", (*) => this.Destroy())
     }
 
     listViewOfSpecialActionSelected(listView, rowNumberSpecialAction, columnNumber){
@@ -147,8 +140,6 @@ class ActionCrafterView extends HotkeyCrafterView{
         actionDescriptionControl.Text := actionDescription
         textWidth := (GuiSizeChanger.GetTextSize(actionDescriptionControl, actionDescription)[1])
 
-        ; GuiSizeChanger.SetTextAndResize(actionDescriptionControl, actionDescription)
-
 
         newHeight := 50 + (textWidth/350)*20
         this.controlsForSpecificSpecialActionCrafting.getControl("groupBoxForActionDescription").Move(, , , newHeight)
@@ -176,14 +167,14 @@ class ActionCrafterView extends HotkeyCrafterView{
 
         Loop amountOfParameters{
             
-            parameterControl := this.Add("Text", "xs+10 yp+30 w335", "")
-            parameterControl.SetFont("Bold")
+            parameterName := this.Add("Text", "xs+10 yp+30 w335", "")
+            parameterName.SetFont("Bold")
 
             parameterEdit := this.Add("Edit", "xs+10 yp+30 w335", "")
             
             parameterDescription := this.Add("Text", "xs+10 yp+30 w335", "")
 
-            parameterControls := ParameterControlsGroup(parameterControl, parameterEdit, parameterDescription)
+            parameterControls := ParameterControlsGroup(parameterName, parameterEdit, parameterDescription)
             this.parameterControlsArray.Push(parameterControls)
 
             parameterControls.hide()
@@ -213,30 +204,6 @@ class ActionCrafterView extends HotkeyCrafterView{
         }
     }
 
-    subscribeToSaveEvent(action){
-        this.saveEventSubscribers.Push(action)
-    }
-
-    NotifyListenersSave(){
-        Loop this.saveEventSubscribers.Length{
-            this.saveEventSubscribers[A_Index](this.getNewAction())
-        }
-        this.Destroy()
-    }
-
-    addCancelButtonClickEventAction(action){
-        this.addCancelButtonClickEventAction(action)
-    }
-    
-    ; addDeleteButtonClickEventAction(action){
-    ;     this.addDeleteButtonClickEventAction(action)
-    ; }
-
-    getCrafter(){
-        ; TODO add conditionals to check which crafter 
-        return this
-    }
-
     getNewAction(){
         ; TODO check if the values to return are correct perhaps...
         if (this.specialActionRadio.Value = true){
@@ -259,14 +226,14 @@ class ActionCrafterView extends HotkeyCrafterView{
         return hotkeyToReturn
     }
 
-    GetTextSize(textCtrl, text) {
-        static WM_GETFONT := 0x0031, DT_CALCRECT := 0x400
-        hDC := DllCall('GetDC', 'Ptr', textCtrl.Hwnd, 'Ptr')
-        hPrevObj := DllCall('SelectObject', 'Ptr', hDC, 'Ptr', SendMessage(WM_GETFONT,,, textCtrl), 'Ptr')
-        height := DllCall('DrawText', 'Ptr', hDC, 'Str', text, 'Int', -1, 'Ptr', buf := Buffer(16), 'UInt', DT_CALCRECT)
-        width := NumGet(buf, 8, 'Int') - NumGet(buf, 'Int')
-        DllCall('SelectObject', 'Ptr', hDC, 'Ptr', hPrevObj, 'Ptr')
-        DllCall('ReleaseDC', 'Ptr', textCtrl.Hwnd, 'Ptr', hDC)
-        return [Round(width * 96/A_ScreenDPI), Round(height * 96/A_ScreenDPI)]
+    subscribeToSaveEvent(action){
+        this.saveEventSubscribers.Push(action)
+    }
+
+    NotifyListenersSave(){
+        Loop this.saveEventSubscribers.Length{
+            this.saveEventSubscribers[A_Index](this.getNewAction())
+        }
+        this.Destroy()
     }
 }

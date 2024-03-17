@@ -51,6 +51,7 @@ class HotKeyConfigurationController{
     changeOriginalHotkey(availableKeyNames, originalHotkey){
         hotkeyCrafterView_ := HotkeyCrafterView(this)
         hotkeyCrafterView_.create(originalHotkey)
+        hotkeyCrafterView_.CreateButtons()
         hotkeyCrafterView_.SetInformativeTopText("Original Hotkey: " . originalHotkey)
 
         hotkeyCrafterView_.subscribeToSaveEvent(ObjBindMethod(this, "saveButtonClickedForHotkeyChangeEvent"))
@@ -60,6 +61,9 @@ class HotKeyConfigurationController{
     changeOriginalAction(activeObjectsRegistry, availableKeyNames, action){
         ActionCrafterView_ := ActionCrafterView(this)
         ActionCrafterView_.create(action)
+        ActionCrafterView_.CreateButtons()
+        ActionCrafterView_.SetInformativeTopText("Original Action: " . action)
+
         ActionCrafterView_.subscribeToSaveEvent(ObjBindMethod(this, "saveButtonClickedForActionChangeEvent"))
         ActionCrafterView_.Show()
     }
