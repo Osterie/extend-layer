@@ -47,12 +47,12 @@ class ActionCrafterView extends HotkeyCrafterView{
         originalActionControl := this.Add("Text", "", "Original Action: " . originalAction)
         
         this.specialActionRadio := this.Add("Radio", "Checked", "Special Action")
-        this.specialActionRadio.OnEvent("Click", (*) => this.hideAllButFinalisationButtons() this.controlsForAllSpecialActionCrafting.show())
+        this.specialActionRadio.OnEvent("Click", (*) => this.hideAllButButtons() this.controlsForAllSpecialActionCrafting.show())
         this.newKeyRadio := this.Add("Radio", "", "New Key")
         this.newKeyRadio.OnEvent("Click", (*) => this.ShowSome() this.controlsForAllSpecialActionCrafting.hide())
 
         super.Create(originalAction)
-        this.hideAllButFinalisationButtons()
+        this.hideAllButButtons()
         this.hideButtons()
 
         listViewOfSpecialAction := this.Add("ListView", "x20 y65 r20 w400", ["Special Action"])
@@ -145,7 +145,7 @@ class ActionCrafterView extends HotkeyCrafterView{
         
         actionDescriptionControl := this.controlsForSpecificSpecialActionCrafting.getControl("actionDescriptionControl")
         actionDescriptionControl.Text := actionDescription
-        textWidth := (this.GetTextSize(actionDescriptionControl, actionDescription)[1])
+        textWidth := (GuiSizeChanger.GetTextSize(actionDescriptionControl, actionDescription)[1])
 
         ; GuiSizeChanger.SetTextAndResize(actionDescriptionControl, actionDescription)
 
