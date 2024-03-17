@@ -10,7 +10,6 @@ class DomainSpecificGui extends Gui{
         this.OnEvent('Escape', (*) => this.Destroy())
         this.SetColors()
         this.SetFont("c6688FF Bold")
-        this.show()
     }
     
     SetColors(){

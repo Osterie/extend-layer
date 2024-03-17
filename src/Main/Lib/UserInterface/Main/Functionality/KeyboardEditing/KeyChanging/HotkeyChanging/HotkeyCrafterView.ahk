@@ -41,7 +41,6 @@ class HotkeyCrafterView extends DomainSpecificGui{
         this.createAdvancedHotkeyCrafter()
         this.hideAdvancedHotkeyCrafter()
         this.createButtons()
-        this.show("w480 h480")
     }
 
     createSimpleHotkeyCrafter(originalHotkey){
