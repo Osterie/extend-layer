@@ -8,10 +8,12 @@ class ParameterControlsGroup{
     parameterControls := ""
 
     guiToAddTo := ""
+    startingPosition := ""
 
-    __New(guiToAddTo){
+    __New(guiToAddTo, startingPosition := ""){
         this.guiToAddTo := guiToAddTo
         this.parameterControls := Array()
+        this.startingPosition := startingPosition
     }
 
     AddParameterControl(parameterControl){
@@ -45,7 +47,24 @@ class ParameterControlsGroup{
         
         Loop parameters.Length{
             if (A_index > this.parameterControls.Length){
-                control := ParameterControl(this.guiToAddTo)
+                if (A_index > 1){
+                    positions := this.parameterControls[A_index-1].GetPos()
+
+                    X := positions.x
+                    Y := positions.y
+                    Width := positions.width
+                    Height := positions.height
+                    
+                    xPosition := " X" . X . " "
+                    yPosition := " Y" . Y+Height+30 . " "
+                    width := " W" . Width . " "
+
+                    position := xPosition . yPosition . width
+                    control := ParameterControl(this.guiToAddTo, "", position)
+                }
+                else{
+                    control := ParameterControl(this.guiToAddTo, "", this.startingPosition)
+                }
                 this.AddParameterControl(control)
             }
             this.parameterControls[A_index].SetInfo(parameters[A_index])

@@ -27,8 +27,6 @@ class ActionCrafterView extends HotkeyCrafterView{
         this.Opt("+Resize +MinSize840x580")
         this.controlsForAllSpecialActionCrafting := guiControlsRegistry()
         this.controlsForSpecificSpecialActionCrafting := guiControlsRegistry()
-
-        this.parameterControls := ParameterControlsGroup(this)
     }
 
     Create(originalAction){
@@ -162,6 +160,9 @@ class ActionCrafterView extends HotkeyCrafterView{
         ; TODO add this group box to the ParameterControlGroup2
         groupBoxForParameters := this.Add("GroupBox", " Section xp-15 yp+50 w360 h400", "Parameters")
         this.controlsForAllSpecialActionCrafting.AddControl("groupBoxForParameters", groupBoxForParameters)
+
+        this.parameterControls := ParameterControlsGroup(this, "xs+10 ys+30 w335")
+
     }
 
 
