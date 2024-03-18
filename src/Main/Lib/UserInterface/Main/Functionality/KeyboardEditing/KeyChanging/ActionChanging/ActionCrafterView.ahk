@@ -36,6 +36,8 @@ class ActionCrafterView extends HotkeyCrafterView{
         this.CreateCrafterTypeRadioButtons()
         super.Create("")
         super.hide()
+        this.CreateSpecialActionsListView()
+        this.CreateActionDescription("xp w400 h45")
         this.createSpecialActionMaker()
     }
 
@@ -84,48 +86,51 @@ class ActionCrafterView extends HotkeyCrafterView{
         parameters := MethodInfoOfAction.getMethodParameters()
         
         this.parameterControls2.hide()
-        this.hideParameterControls()
         this.setTextForSpecialActionMaker(friendlyNameOfAction, methodDescription, parameters)
 
     }
 
-    createSpecialActionMaker(){
-        this.CreateSpecialActionsListView()
+    CreateSpecialActionMaker(){
 
-        groupBoxForActionDescription := this.Add("GroupBox", " Section xp w400 h45", "Action Description")
+        this.CreateActionToDoControls("ym w400 h500")
+        
+        this.createParameterControls(5)
+        this.parameterControls2.hide()
+
+        noParametersForActionText := this.Add("Text", "xs+40 ys+60 w200 h200", "THIS ACTION HAS NO PARAMETERS:)")
+        noParametersForActionText.SetFont("s20")
+        noParametersForActionText.Opt("Hidden1")
+
+        this.controlsForAllSpecialActionCrafting.AddControl("noParametersForActionText", noParametersForActionText)
+    }
+
+    CreateActionDescription(position){
+
+        groupBoxForActionDescription := this.Add("GroupBox", " Section " . position , "Action Description")
+
         actionDescriptionControl := this.Add("Text", "xp+15 yp+15 w380", "")
         actionDescriptionControl.SetFont("s12")
-
         actionDescriptionControl.Opt("Hidden1")
 
-        groupBoxForActionMaker := this.Add("GroupBox", " Section ym w400 h500", "Special Action Maker")
+        this.controlsForSpecificSpecialActionCrafting.AddControl("actionDescriptionControl", actionDescriptionControl)
+        this.controlsForAllSpecialActionCrafting.AddControl("actionDescriptionControl", actionDescriptionControl)
 
+        this.controlsForSpecificSpecialActionCrafting.AddControl("groupBoxForActionDescription", groupBoxForActionDescription)
+        this.controlsForAllSpecialActionCrafting.AddControl("groupBoxForActionDescription", groupBoxForActionDescription)
+    }
+
+    CreateActionToDoControls(position){
+        groupBoxForActionMaker := this.Add("GroupBox", " Section " . position, "Special Action Maker")
         
         groupBoxForActionToDo := this.Add("GroupBox", " Section xp+20 yp+20 wp-40 h45", "Action to do")
         friendlyNameOfActionControl := this.Add("Text", "xs+15 ys+15 wrap", "")
         friendlyNameOfActionControl.SetFont("s12")
         friendlyNameOfActionControl.Opt("Hidden1")
 
-        
-        this.createParameterControls(5)
-        this.parameterControls2.hide()
-        
-
-        noParametersForActionText := this.Add("Text", "xs+40 ys+60 w200 h200", "THIS ACTION HAS NO PARAMETERS:)")
-        noParametersForActionText.SetFont("s20")
-        noParametersForActionText.Opt("Hidden1")
-
         this.controlsForSpecificSpecialActionCrafting.AddControl("friendlyNameOfActionControl", friendlyNameOfActionControl)
-        this.controlsForSpecificSpecialActionCrafting.AddControl("groupBoxForActionDescription", groupBoxForActionDescription)
-        this.controlsForSpecificSpecialActionCrafting.AddControl("actionDescriptionControl", actionDescriptionControl)
-
-
+        this.controlsForAllSpecialActionCrafting.AddControl("friendlyNameOfActionControl", friendlyNameOfActionControl)
         this.controlsForAllSpecialActionCrafting.AddControl("groupBoxForActionMaker", groupBoxForActionMaker)
         this.controlsForAllSpecialActionCrafting.AddControl("groupBoxForActionToDo", groupBoxForActionToDo)
-        this.controlsForAllSpecialActionCrafting.AddControl("friendlyNameOfActionControl", friendlyNameOfActionControl)
-        this.controlsForAllSpecialActionCrafting.AddControl("groupBoxForActionDescription", groupBoxForActionDescription)
-        this.controlsForAllSpecialActionCrafting.AddControl("actionDescriptionControl", actionDescriptionControl)
-        this.controlsForAllSpecialActionCrafting.AddControl("noParametersForActionText", noParametersForActionText)
     }
 
     setTextForSpecialActionMaker(friendlyNameOfAction, actionDescription, parameters){
@@ -136,14 +141,13 @@ class ActionCrafterView extends HotkeyCrafterView{
         
         actionDescriptionControl := this.controlsForSpecificSpecialActionCrafting.getControl("actionDescriptionControl")
         actionDescriptionControl.Text := actionDescription
-        textWidth := (GuiSizeChanger.GetTextSize(actionDescriptionControl, actionDescription)[1])
+        textWidth := GuiSizeChanger.GetTextSize(actionDescriptionControl, actionDescription)[1]
 
 
         newHeight := 50 + (textWidth/350)*20
         this.controlsForSpecificSpecialActionCrafting.getControl("groupBoxForActionDescription").Move(, , , newHeight)
         actionDescriptionControl.Move(, , , newHeight-30)
 
-        
         if(parameters.count = 0){
             this.controlsForAllSpecialActionCrafting.getControl("noParametersForActionText").Opt("Hidden0")
         }
