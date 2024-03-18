@@ -19,7 +19,7 @@ Class MainStartupConfigurator{
             this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(layersInformation, objectRegistry)
         }
         else{
-            ; throw Exception("Invalid parameters passed to MainStartupConfigurator")
+            ; throw Error("Invalid parameters passed to MainStartupConfigurator")
         }
     }
 

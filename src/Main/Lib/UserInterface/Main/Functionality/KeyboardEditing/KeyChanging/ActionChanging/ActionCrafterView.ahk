@@ -5,9 +5,9 @@
 #Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
 #Include ".\ParameterControlsGroup.ahk"
+#Include ".\ParameterControlsGroup2.ahk"
+#Include ".\ParameterControl.ahk"
 #Include <UserInterface\Main\util\GuiSizeChanger>
-#Include <UserInterface\Main\Util\DomainSpecificGui>
-
 
 class ActionCrafterView extends HotkeyCrafterView{
 
@@ -31,12 +31,14 @@ class ActionCrafterView extends HotkeyCrafterView{
         this.controlsForAllSpecialActionCrafting := guiControlsRegistry()
         this.controlsForSpecificSpecialActionCrafting := guiControlsRegistry()
         this.controlsForParameters := guiControlsRegistry()
+
+        this.parameterControls2 := ParameterControlsGroup2()
     }
 
     Create(originalAction){
         this.CreateCrafterTypeRadioButtons()
         super.Create("")
-        this.CreateSpecialActionsListView()
+        super.hide()
         this.createSpecialActionMaker()
     }
 
@@ -74,16 +76,20 @@ class ActionCrafterView extends HotkeyCrafterView{
     }
 
     listViewOfSpecialActionSelected(listView, rowNumberSpecialAction, columnNumber){
+        
         friendlyNameOfAction := listView.GetText(rowNumberSpecialAction)
         ObjectInfoOfAction := this.controller.getActiveObjectsRegistry().GetObjectByFriendlyMethodName(friendlyNameOfAction)
         MethodInfoOfAction := ObjectInfoOfAction.getMethodByFriendlyMethodName(friendlyNameOfAction)
 
+        
         this.currentObjectName := ObjectInfoOfAction.getObjectName()
         this.currentMethodName := MethodInfoOfAction.getMethodName()
         methodDescription := MethodInfoOfAction.getMethodDescription()
 
         parameters := MethodInfoOfAction.getMethodParameters()
 
+        
+        this.parameterControls2.hide()
         this.setAmountOfParametersToBeFilled(parameters.Count)
         this.hideParameterControls()
         this.setTextForSpecialActionMaker(friendlyNameOfAction, methodDescription, parameters)
@@ -95,6 +101,7 @@ class ActionCrafterView extends HotkeyCrafterView{
     }
 
     createSpecialActionMaker(){
+        this.CreateSpecialActionsListView()
 
         groupBoxForActionDescription := this.Add("GroupBox", " Section xp w400 h45", "Action Description")
         actionDescriptionControl := this.Add("Text", "xp+15 yp+15 w380", "")
@@ -112,6 +119,8 @@ class ActionCrafterView extends HotkeyCrafterView{
 
         
         this.createParameterControls(5)
+        this.parameterControls2.hide()
+        
 
         noParametersForActionText := this.Add("Text", "xs+40 ys+60 w200 h200", "THIS ACTION HAS NO PARAMETERS:)")
         noParametersForActionText.SetFont("s20")
@@ -166,18 +175,21 @@ class ActionCrafterView extends HotkeyCrafterView{
         this.parameterControlsArray := Array()
 
         Loop amountOfParameters{
+            control := ParameterControl(this)
+            this.parameterControls2.AddParameterControl(control)
+
             
-            parameterName := this.Add("Text", "xs+10 yp+30 w335", "")
-            parameterName.SetFont("Bold")
+            ; parameterName := this.Add("Text", "xs+10 yp+30 w335", "")
+            ; parameterName.SetFont("Bold")
 
-            parameterEdit := this.Add("Edit", "xs+10 yp+30 w335", "")
+            ; parameterEdit := this.Add("Edit", "xs+10 yp+30 w335", "")
             
-            parameterDescription := this.Add("Text", "xs+10 yp+30 w335", "")
+            ; parameterDescription := this.Add("Text", "xs+10 yp+30 w335", "")
 
-            parameterControls := ParameterControlsGroup(parameterName, parameterEdit, parameterDescription)
-            this.parameterControlsArray.Push(parameterControls)
+            ; parameterControls := ParameterControlsGroup(parameterName, parameterEdit, parameterDescription)
+            ; this.parameterControlsArray.Push(parameterControls)
 
-            parameterControls.hide()
+            ; parameterControls.hide()
         }
     }
 
@@ -188,20 +200,23 @@ class ActionCrafterView extends HotkeyCrafterView{
     }
 
     setTextForParameterControls(parameters){
-        index := 0
-        For parameter, parameterInfo in parameters{
-            index++
-            parameterControls := this.parameterControlsArray[index]
+        index := 1
+        this.parameterControls2.SetInfo(parameters)
+        this.parameterControls2.Show()
+        ; For parameter, parameterInfo in parameters{
+        ;     parameterControls := this.parameterControlsArray[index]
+            
+        ;     parameterName := parameterInfo.getName()
+        ;     parameterType := parameterInfo.getType()
+        ;     parameterDescription := parameterInfo.getDescription()
 
-            parameterName := parameterInfo.getName()
-            parameterType := parameterInfo.getType()
-            parameterDescription := parameterInfo.getDescription()
+        ;     parameterControls.setTextControlValue(parameterName)
+        ;     parameterControls.setEditControlType(parameterType)
+        ;     parameterControls.setDescriptionControlValue(parameterDescription)
+        ;     parameterControls.show()
 
-            parameterControls.setTextControlValue(parameterName)
-            parameterControls.setEditControlType(parameterType)
-            parameterControls.setDescriptionControlValue(parameterDescription)
-            parameterControls.show()
-        }
+        ;     index++
+        ; }
     }
 
     getNewAction(){
