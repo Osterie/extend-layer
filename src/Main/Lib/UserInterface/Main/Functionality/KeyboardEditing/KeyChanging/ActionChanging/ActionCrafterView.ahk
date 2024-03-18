@@ -5,7 +5,6 @@
 #Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
 #Include ".\ParameterControlsGroup.ahk"
-#Include ".\ParameterControlsGroup2.ahk"
 #Include ".\ParameterControl.ahk"
 #Include <UserInterface\Main\util\GuiSizeChanger>
 
@@ -29,7 +28,7 @@ class ActionCrafterView extends HotkeyCrafterView{
         this.controlsForAllSpecialActionCrafting := guiControlsRegistry()
         this.controlsForSpecificSpecialActionCrafting := guiControlsRegistry()
 
-        this.parameterControls2 := ParameterControlsGroup2()
+        this.parameterControls := ParameterControlsGroup(this)
     }
 
     Create(originalAction){
@@ -52,7 +51,7 @@ class ActionCrafterView extends HotkeyCrafterView{
             listViewOfSpecialAction.Add("", allPossibleSpecialActions[A_Index])
         }
 
-        listViewOfSpecialAction.OnEvent("ItemSelect", ObjBindMethod(this, "listViewOfSpecialActionSelected"))
+        listViewOfSpecialAction.OnEvent("ItemFocus", ObjBindMethod(this, "listViewOfSpecialActionSelected"))
 
         this.controlsForAllSpecialActionCrafting.AddControl("listViewOfSpecialAction", listViewOfSpecialAction)
     }
@@ -72,8 +71,9 @@ class ActionCrafterView extends HotkeyCrafterView{
         cancelButton.OnEvent("Click", (*) => this.Destroy())
     }
 
-    listViewOfSpecialActionSelected(listView, rowNumberSpecialAction, columnNumber){
+    listViewOfSpecialActionSelected(listView, rowNumberSpecialAction){
 
+        this.parameterControls.hide()
         friendlyNameOfAction := listView.GetText(rowNumberSpecialAction)
         ObjectInfoOfAction := this.controller.getActiveObjectsRegistry().GetObjectByFriendlyMethodName(friendlyNameOfAction)
         MethodInfoOfAction := ObjectInfoOfAction.getMethodByFriendlyMethodName(friendlyNameOfAction)
@@ -85,9 +85,8 @@ class ActionCrafterView extends HotkeyCrafterView{
 
         parameters := MethodInfoOfAction.getMethodParameters()
         
-        this.parameterControls2.hide()
+        this.parameterControls.hide()
         this.setTextForSpecialActionMaker(friendlyNameOfAction, methodDescription, parameters)
-
     }
 
     CreateSpecialActionMaker(){
@@ -95,7 +94,7 @@ class ActionCrafterView extends HotkeyCrafterView{
         this.CreateActionToDoControls("ym w400 h500")
         
         this.createParameterControls(5)
-        this.parameterControls2.hide()
+        this.parameterControls.hide()
 
         noParametersForActionText := this.Add("Text", "xs+40 ys+60 w200 h200", "THIS ACTION HAS NO PARAMETERS:)")
         noParametersForActionText.SetFont("s20")
@@ -160,23 +159,15 @@ class ActionCrafterView extends HotkeyCrafterView{
     }
 
     createParameterControls(amountOfParameters){
-
         ; TODO add this group box to the ParameterControlGroup2
         groupBoxForParameters := this.Add("GroupBox", " Section xp-15 yp+50 w360 h400", "Parameters")
         this.controlsForAllSpecialActionCrafting.AddControl("groupBoxForParameters", groupBoxForParameters)
-
-
-        Loop amountOfParameters{
-            control := ParameterControl(this)
-            this.parameterControls2.AddParameterControl(control)
-        }
     }
 
 
-
     setTextForParameterControls(parameters){
-        this.parameterControls2.SetInfo(parameters)
-        this.parameterControls2.Show()
+        this.parameterControls.SetInfo(parameters)
+        this.parameterControls.Show()
     }
 
     getNewAction(){
@@ -191,7 +182,7 @@ class ActionCrafterView extends HotkeyCrafterView{
 
     getNewSpecialActionHotkey(){
         hotkeyToReturn := HotKeyInfo("")
-        parameters := this.parameterControls2.GetParameterValues()
+        parameters := this.parameterControls.GetParameterValues()
         hotkeyToReturn.setInfoForSpecialHotKey(this.currentObjectName, this.currentMethodName, parameters)
         return hotkeyToReturn
     }

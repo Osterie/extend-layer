@@ -9,34 +9,46 @@ class ParameterControl{
     valuesSet := ""
     guiToAddTo := ""
 
-    __New(guiToAddTo, parameterInfo?){
+    __New(guiToAddTo, parameterInfo?, position?){
         this.guiToAddTo := guiToAddTo
         this.valuesSet := false
-        this.CreateControls(parameterInfo?)
+        this.CreateControls(parameterInfo?, position?)
     }
 
-    CreateControls(parameterInfo?){
+    CreateControls(parameterInfo?, position?){
         if (IsSet(parameterInfo)){
             this.valuesSet := true
-            this.parameterNameControl := this.CreateParameterNameControl(parameterInfo.getName())
-            this.parameterInputFieldControl := this.CreateParameterInputFieldControl(parameterInfo.getType())
-            this.parameterDescriptionControl := this.CreateParameterDescriptionControl(parameterInfo.getDescription())
+            this.parameterNameControl := this.CreateParameterNameControl(parameterInfo.getName(), position?)
+            this.parameterInputFieldControl := this.CreateParameterInputFieldControl(parameterInfo.getType(), position?)
+            this.parameterDescriptionControl := this.CreateParameterDescriptionControl(parameterInfo.getDescription(), position?)
         }
         else{
-            this.parameterNameControl := this.CreateParameterNameControl()
-            this.parameterInputFieldControl := this.CreateParameterInputFieldControl()
-            this.parameterDescriptionControl := this.CreateParameterDescriptionControl()
+            this.parameterNameControl := this.CreateParameterNameControl(position?)
+            this.parameterInputFieldControl := this.CreateParameterInputFieldControl(position?)
+            this.parameterDescriptionControl := this.CreateParameterDescriptionControl(position?)
         }
     }
 
-    CreateParameterNameControl(parameterName := ""){
-        parameterNameControl := this.guiToAddTo.Add("Text", "xs+10 yp+30 w335", parameterName)
+    CreateParameterNameControl(position?, parameterName := ""){
+        if (IsSet(position)){
+            parameterNameControl := this.guiToAddTo.Add("Text", position, parameterName)
+        }
+        else{
+            parameterNameControl := this.guiToAddTo.Add("Text", "xs+10 yp+30 w335", parameterName)
+        }
+        
         parameterNameControl.SetFont("Bold")
         return parameterNameControl
     }
 
-    CreateParameterInputFieldControl(parameterType := ""){
-        parameterInputFieldControl := this.guiToAddTo.Add("Edit", "xs+10 yp+30 w335", "")
+    CreateParameterInputFieldControl(position?, parameterType := ""){
+        if (IsSet(position)){
+            parameterInputFieldControl := this.guiToAddTo.Add("Edit", position, "")
+        }
+        else{
+            parameterInputFieldControl := this.guiToAddTo.Add("Edit", "xs+10 yp+30 w335", "")
+        }
+        
         if(StrLower(parameterType) = "int" or StrLower(parameterType) = "integer"){
             parameterInputFieldControl.Opt("+Number")
         }
@@ -46,8 +58,14 @@ class ParameterControl{
         return parameterInputFieldControl
     }
 
-    CreateParameterDescriptionControl(parameterDescription := ""){
-        parameterDescriptionControl := this.guiToAddTo.Add("Text", "xs+10 yp+30 w335", parameterDescription)
+    CreateParameterDescriptionControl(position?, parameterDescription := ""){
+        if (IsSet(position)){
+            parameterDescriptionControl := this.guiToAddTo.Add("Text", position, parameterDescription)
+        }
+        else{
+            parameterDescriptionControl := this.guiToAddTo.Add("Text", "xs+10 yp+30 w335", parameterDescription)
+        }
+
         return parameterDescriptionControl
     }
 
