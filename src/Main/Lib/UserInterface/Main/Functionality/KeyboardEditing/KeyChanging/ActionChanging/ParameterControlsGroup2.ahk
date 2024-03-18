@@ -63,4 +63,15 @@ class ParameterControlsGroup2{
             }
         }
     }
+
+    GetParameterValues(){
+        parameterValues := Array()
+        Loop this.parameterControls.Length{
+            parameterControl := this.parameterControls[A_index]
+            if (parameterControl.IsSet()){
+                parameterValues.Push(parameterControl.GetValue())
+            }
+        }
+        return parameterValues
+    }
 }

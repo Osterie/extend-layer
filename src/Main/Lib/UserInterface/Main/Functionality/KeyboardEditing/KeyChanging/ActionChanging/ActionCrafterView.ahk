@@ -22,15 +22,12 @@ class ActionCrafterView extends HotkeyCrafterView{
 
     controlsForAllSpecialActionCrafting := ""
     controlsForSpecificSpecialActionCrafting := ""
-    controlsForParameters := ""
-    amountOfParametersToBeFilled := 0
 
     __New(controller){
         super.__New(controller)
         this.Opt("+Resize +MinSize840x580")
         this.controlsForAllSpecialActionCrafting := guiControlsRegistry()
         this.controlsForSpecificSpecialActionCrafting := guiControlsRegistry()
-        this.controlsForParameters := guiControlsRegistry()
 
         this.parameterControls2 := ParameterControlsGroup2()
     }
@@ -49,13 +46,11 @@ class ActionCrafterView extends HotkeyCrafterView{
 
 
         allPossibleSpecialActions := this.controller.getActiveObjectsRegistry().getFriendlyNames()
-        Loop allPossibleSpecialActions.Length
-        {
+        Loop allPossibleSpecialActions.Length{
             listViewOfSpecialAction.Add("", allPossibleSpecialActions[A_Index])
         }
 
-        specialActionSelectedEvent := ObjBindMethod(this, "listViewOfSpecialActionSelected")
-        listViewOfSpecialAction.OnEvent("ItemSelect", specialActionSelectedEvent)
+        listViewOfSpecialAction.OnEvent("ItemSelect", ObjBindMethod(this, "listViewOfSpecialActionSelected"))
 
         this.controlsForAllSpecialActionCrafting.AddControl("listViewOfSpecialAction", listViewOfSpecialAction)
     }
@@ -76,7 +71,7 @@ class ActionCrafterView extends HotkeyCrafterView{
     }
 
     listViewOfSpecialActionSelected(listView, rowNumberSpecialAction, columnNumber){
-        
+
         friendlyNameOfAction := listView.GetText(rowNumberSpecialAction)
         ObjectInfoOfAction := this.controller.getActiveObjectsRegistry().GetObjectByFriendlyMethodName(friendlyNameOfAction)
         MethodInfoOfAction := ObjectInfoOfAction.getMethodByFriendlyMethodName(friendlyNameOfAction)
@@ -87,17 +82,11 @@ class ActionCrafterView extends HotkeyCrafterView{
         methodDescription := MethodInfoOfAction.getMethodDescription()
 
         parameters := MethodInfoOfAction.getMethodParameters()
-
         
         this.parameterControls2.hide()
-        this.setAmountOfParametersToBeFilled(parameters.Count)
         this.hideParameterControls()
         this.setTextForSpecialActionMaker(friendlyNameOfAction, methodDescription, parameters)
 
-    }
-
-    setAmountOfParametersToBeFilled(parameterCount){
-        this.amountOfParametersToBeFilled := parameterCount
     }
 
     createSpecialActionMaker(){
@@ -168,55 +157,22 @@ class ActionCrafterView extends HotkeyCrafterView{
 
     createParameterControls(amountOfParameters){
 
+        ; TODO add this group box to the ParameterControlGroup2
         groupBoxForParameters := this.Add("GroupBox", " Section xp-15 yp+50 w360 h400", "Parameters")
-
         this.controlsForAllSpecialActionCrafting.AddControl("groupBoxForParameters", groupBoxForParameters)
 
-        this.parameterControlsArray := Array()
 
         Loop amountOfParameters{
             control := ParameterControl(this)
             this.parameterControls2.AddParameterControl(control)
-
-            
-            ; parameterName := this.Add("Text", "xs+10 yp+30 w335", "")
-            ; parameterName.SetFont("Bold")
-
-            ; parameterEdit := this.Add("Edit", "xs+10 yp+30 w335", "")
-            
-            ; parameterDescription := this.Add("Text", "xs+10 yp+30 w335", "")
-
-            ; parameterControls := ParameterControlsGroup(parameterName, parameterEdit, parameterDescription)
-            ; this.parameterControlsArray.Push(parameterControls)
-
-            ; parameterControls.hide()
         }
     }
 
-    hideParameterControls(){
-        For parameterControls in this.parameterControlsArray{
-            parameterControls.hide()
-        }
-    }
+
 
     setTextForParameterControls(parameters){
-        index := 1
         this.parameterControls2.SetInfo(parameters)
         this.parameterControls2.Show()
-        ; For parameter, parameterInfo in parameters{
-        ;     parameterControls := this.parameterControlsArray[index]
-            
-        ;     parameterName := parameterInfo.getName()
-        ;     parameterType := parameterInfo.getType()
-        ;     parameterDescription := parameterInfo.getDescription()
-
-        ;     parameterControls.setTextControlValue(parameterName)
-        ;     parameterControls.setEditControlType(parameterType)
-        ;     parameterControls.setDescriptionControlValue(parameterDescription)
-        ;     parameterControls.show()
-
-        ;     index++
-        ; }
     }
 
     getNewAction(){
@@ -231,12 +187,7 @@ class ActionCrafterView extends HotkeyCrafterView{
 
     getNewSpecialActionHotkey(){
         hotkeyToReturn := HotKeyInfo("")
-        parameters := []
-        Loop this.amountOfParametersToBeFilled{
-            parameterControls := this.parameterControlsArray[A_index]
-            parameterValue := parameterControls.getEditControlValue()
-            parameters.Push(parameterValue)
-        }
+        parameters := this.parameterControls2.GetParameterValues()
         hotkeyToReturn.setInfoForSpecialHotKey(this.currentObjectName, this.currentMethodName, parameters)
         return hotkeyToReturn
     }

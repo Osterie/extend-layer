@@ -77,15 +77,21 @@ class ParameterControl{
         }
     }
 
-    IsSet(){
-        return this.valuesSet
-    }
 
     SetParameterDescription(parameterDescription){
         this.parameterDescriptionControl.Value := parameterDescription
     }
 
+    GetValue(){
+        return this.parameterInputFieldControl.Value
+    }
+
+    IsSet(){
+        return this.valuesSet
+    }
+
     Clear(){
+        this.valuesSet := false
         this.parameterNameControl.Value := ""
         this.parameterInputFieldControl.Value := ""
         this.parameterDescriptionControl.Value := ""
