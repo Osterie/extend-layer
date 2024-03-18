@@ -21,12 +21,12 @@ class GuiControlsRegistry{
         this.Controls.Remove(controlName)
     }
 
-    hideControls(){
+    hide(){
         for controlName, control in this.Controls{
             control.Opt("Hidden1")
         }
     }
-    showControls(){
+    show(){
         for controlName, control in this.Controls{
             control.Opt("Hidden0")
         }
