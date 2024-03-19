@@ -43,7 +43,9 @@ class ActionCrafterView extends HotkeyCrafterView{
         listViewOfSpecialAction.ModifyCol(1, "Center", )
 
 
+        ; TODO create a method for getting this from controller
         allPossibleSpecialActions := this.controller.getActiveObjectsRegistry().getFriendlyNames()
+        
         Loop allPossibleSpecialActions.Length{
             listViewOfSpecialAction.Add("", allPossibleSpecialActions[A_Index])
         }
@@ -73,12 +75,13 @@ class ActionCrafterView extends HotkeyCrafterView{
 
         this.parameterControls.hide()
         friendlyNameOfAction := listView.GetText(rowNumberSpecialAction)
-        ObjectInfoOfAction := this.controller.GetObjectInfoByFriendlyName(friendlyNameOfAction)
-        MethodInfoOfAction := ObjectInfoOfAction.getMethodByFriendlyMethodName(friendlyNameOfAction)
 
-        
-        this.currentObjectName := ObjectInfoOfAction.getObjectName()
-        this.currentMethodName := MethodInfoOfAction.getMethodName()
+        ObjectInfoOfAction := this.controller.GetObjectInfoByFriendlyName(friendlyNameOfAction)
+        MethodInfoOfAction := this.controller.GetMethodInfoByFriendlyName(friendlyNameOfAction)
+
+        this.controller.SetCurrentObjectName(ObjectInfoOfAction.getObjectName())
+        this.controller.SetCurrentMethodName(MethodInfoOfAction.getMethodName())
+
         methodDescription := MethodInfoOfAction.getMethodDescription()
 
         parameters := MethodInfoOfAction.getMethodParameters()
@@ -183,7 +186,7 @@ class ActionCrafterView extends HotkeyCrafterView{
     getNewSpecialActionHotkey(){
         hotkeyToReturn := HotKeyInfo("")
         parameters := this.parameterControls.GetParameterValues()
-        hotkeyToReturn.setInfoForSpecialHotKey(this.currentObjectName, this.currentMethodName, parameters)
+        hotkeyToReturn.setInfoForSpecialHotKey(this.controller.GetCurrentObjectName(), this.controller.GetCurrentMethodName(), parameters)
         return hotkeyToReturn
     }
 
