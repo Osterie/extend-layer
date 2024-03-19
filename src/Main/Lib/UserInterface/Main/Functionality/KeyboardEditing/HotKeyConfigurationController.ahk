@@ -2,6 +2,7 @@
 
 #Include ".\KeyChanging\HotkeyChanging\HotkeyCrafterView.ahk"
 #Include ".\KeyChanging\ActionChanging\ActionCrafterView.ahk"
+#Include ".\KeyChanging\HotkeyCrafterController.ahk"
 #Include <UserInterface\Main\util\GuiSizeChanger>
 
 #Include <Util\HotkeyFormatConverter>
@@ -14,9 +15,12 @@ class HotKeyConfigurationController{
     saveEventSubscribers := Array()
     deleteEventSubscribers := Array()
 
+    hotkeyCrafterController_ := ""
+
     __New(model, view){
         this.model := model
         this.view := view
+        this.hotkeyCrafterController_ := HotkeyCrafterController(this.GetAvailableKeyNames(), this.GetActiveObjectsRegistry())
     }
 
     changeHotkey(whatToChange){
@@ -49,7 +53,10 @@ class HotKeyConfigurationController{
     }
 
     changeOriginalHotkey(availableKeyNames, originalHotkey){
-        hotkeyCrafterView_ := HotkeyCrafterView(this)
+
+        
+
+        hotkeyCrafterView_ := HotkeyCrafterView(this.hotkeyCrafterController_)
         hotkeyCrafterView_.create(originalHotkey)
         hotkeyCrafterView_.CreateButtons()
         hotkeyCrafterView_.SetInformativeTopText("Original Hotkey: " . originalHotkey)
@@ -59,7 +66,7 @@ class HotKeyConfigurationController{
     }
 
     changeOriginalAction(activeObjectsRegistry, availableKeyNames, action){
-        ActionCrafterView_ := ActionCrafterView(this)
+        ActionCrafterView_ := ActionCrafterView(this.hotkeyCrafterController_)
         ActionCrafterView_.create(action)
         ActionCrafterView_.CreateButtons()
         ActionCrafterView_.SetInformativeTopText("Original Action: " . action)

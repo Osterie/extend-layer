@@ -18,7 +18,6 @@ class ActionCrafterView extends HotkeyCrafterView{
     currentObjectName := ""
     currentMethodName := ""
 
-
     controlsForAllSpecialActionCrafting := ""
     controlsForSpecificSpecialActionCrafting := ""
 
@@ -56,9 +55,10 @@ class ActionCrafterView extends HotkeyCrafterView{
 
     CreateCrafterTypeRadioButtons(){
         this.specialActionRadio := this.Add("Radio", "Checked y30 x10", "Special Action")
-        this.specialActionRadio.OnEvent("Click", (*) => this.hideAllButButtons() this.controlsForAllSpecialActionCrafting.show())
+        this.specialActionRadio.OnEvent("Click", (*) => this.hideAllButButtons() this.controlsForAllSpecialActionCrafting.show() this.parameterControls.show())
         this.newKeyRadio := this.Add("Radio", "", "New Key")
-        this.newKeyRadio.OnEvent("Click", (*) => this.ShowHotkeyCrafterControls() this.controlsForAllSpecialActionCrafting.hide())
+        this.newKeyRadio.OnEvent("Click", (*) => this.ShowHotkeyCrafterControls() this.controlsForAllSpecialActionCrafting.hide() this.parameterControls.hide())
+        
     }
 
     CreateButtons(){
@@ -73,7 +73,7 @@ class ActionCrafterView extends HotkeyCrafterView{
 
         this.parameterControls.hide()
         friendlyNameOfAction := listView.GetText(rowNumberSpecialAction)
-        ObjectInfoOfAction := this.controller.getActiveObjectsRegistry().GetObjectByFriendlyMethodName(friendlyNameOfAction)
+        ObjectInfoOfAction := this.controller.GetObjectInfoByFriendlyName(friendlyNameOfAction)
         MethodInfoOfAction := ObjectInfoOfAction.getMethodByFriendlyMethodName(friendlyNameOfAction)
 
         
@@ -159,10 +159,9 @@ class ActionCrafterView extends HotkeyCrafterView{
     createParameterControls(amountOfParameters){
         ; TODO add this group box to the ParameterControlGroup2
         groupBoxForParameters := this.Add("GroupBox", " Section xp-15 yp+50 w360 h400", "Parameters")
-        this.controlsForAllSpecialActionCrafting.AddControl("groupBoxForParameters", groupBoxForParameters)
-
         this.parameterControls := ParameterControlsGroup(this, "xs+10 ys+30 w335")
 
+        this.controlsForAllSpecialActionCrafting.AddControl("groupBoxForParameters", groupBoxForParameters)
     }
 
 
