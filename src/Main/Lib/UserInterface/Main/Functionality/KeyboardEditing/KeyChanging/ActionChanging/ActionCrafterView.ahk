@@ -15,9 +15,6 @@ class ActionCrafterView extends HotkeyCrafterView{
     specialActionRadio := ""
     newKeyRadio := ""
 
-    currentObjectName := ""
-    currentMethodName := ""
-
     controlsForAllSpecialActionCrafting := ""
     controlsForSpecificSpecialActionCrafting := ""
 
@@ -38,15 +35,14 @@ class ActionCrafterView extends HotkeyCrafterView{
     }
 
     CreateSpecialActionsListView(){
-        listViewOfSpecialAction := this.Add("ListView", "x20 y65 r20 w400", ["Special Action"])
-        listViewOfSpecialAction.SetFont("s12")
-        listViewOfSpecialAction.ModifyCol(1, "Center", )
+        specialActions := this.Add("ListView", "x20 y65 r20 w400", ["Special Action"])
+        specialActions.SetFont("s12")
+        specialActions.ModifyCol(1, "Center", )
 
-        this.AddItemsToListView(listViewOfSpecialAction, this.controller.GetSpecialActions())
+        this.AddItemsToListView(specialActions, this.controller.GetSpecialActions())
+        specialActions.OnEvent("ItemFocus", (*) => this.controller.handleActionSelected(specialActions.GetText(specialActions.GetNext( , "Focused"))))
 
-        listViewOfSpecialAction.OnEvent("ItemFocus", ObjBindMethod(this, "listViewOfSpecialActionSelected"))
-
-        this.controlsForAllSpecialActionCrafting.AddControl("listViewOfSpecialAction", listViewOfSpecialAction)
+        this.controlsForAllSpecialActionCrafting.AddControl("specialActions", specialActions)
     }
 
     AddItemsToListView(listview, items){
@@ -79,6 +75,10 @@ class ActionCrafterView extends HotkeyCrafterView{
 
     HideSpecialActionCrafterControls(){
         this.controlsForAllSpecialActionCrafting.hide()
+        this.HideParameters()
+    }
+
+    HideParameters(){
         this.parameterControls.hide()
     }
 
@@ -90,31 +90,12 @@ class ActionCrafterView extends HotkeyCrafterView{
         cancelButton.OnEvent("Click", (*) => this.Destroy())
     }
 
-    listViewOfSpecialActionSelected(listView, rowNumberSpecialAction){
-
-        this.parameterControls.hide()
-        friendlyNameOfAction := listView.GetText(rowNumberSpecialAction)
-
-        ObjectInfoOfAction := this.controller.GetObjectInfoByActionName(friendlyNameOfAction)
-        MethodInfoOfAction := this.controller.GetMethodInfoByActionName(friendlyNameOfAction)
-
-        this.controller.SetCurrentObjectName(ObjectInfoOfAction.getObjectName())
-        this.controller.SetCurrentMethodName(MethodInfoOfAction.getMethodName())
-
-        methodDescription := MethodInfoOfAction.getMethodDescription()
-
-        parameters := MethodInfoOfAction.getMethodParameters()
-        
-        this.parameterControls.hide()
-        this.setTextForSpecialActionMaker(friendlyNameOfAction, methodDescription, parameters)
-    }
-
     CreateSpecialActionMaker(){
 
         this.CreateActionToDoControls("ym w400 h500")
         
         this.createParameterControls(5)
-        this.parameterControls.hide()
+        this.HideParameters()
 
         noParametersForActionText := this.Add("Text", "xs+40 ys+60 w200 h200", "THIS ACTION HAS NO PARAMETERS:)")
         noParametersForActionText.SetFont("s20")
@@ -194,10 +175,10 @@ class ActionCrafterView extends HotkeyCrafterView{
 
     getNewAction(){
         ; TODO check if the values to return are correct perhaps...
-        if (this.specialActionRadio.Value = true){
+        if (this.controller.IsCraftingSpecialAction()){
             return this.getNewSpecialActionHotkey()
         }
-        else if (this.newKeyRadio.Value = true){
+        else if (!this.controller.IsCraftingSpecialAction()){
             return this.getNewHotkey()
         }
     }
@@ -208,6 +189,8 @@ class ActionCrafterView extends HotkeyCrafterView{
         hotkeyToReturn.setInfoForSpecialHotKey(this.controller.GetCurrentObjectName(), this.controller.GetCurrentMethodName(), parameters)
         return hotkeyToReturn
     }
+
+    
 
     subscribeToSaveEvent(action){
         this.saveEventSubscribers.Push(action)
