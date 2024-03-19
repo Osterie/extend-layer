@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
 
+#Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
+
 class HotkeyCrafterController{
  
     availableKeyNames := ""
@@ -82,38 +84,6 @@ class HotkeyCrafterController{
         this.actionCrafterView.setTextForSpecialActionMaker(actionName, this.GetMethodDescription(), this.GetMethodParameters())
     }
 
-    ; GetNewAction(){
-    ;             ; TODO check if the values to return are correct perhaps...
-    ;             if (this.controller.IsCraftingSpecialAction()){
-    ;                 return this.getNewSpecialActionHotkey()
-    ;             }
-    ;             else if (!this.controller.IsCraftingSpecialAction()){
-    ;                 return this.getNewHotkey()
-    ;             }
-    ; }
-
-    ; getNewSpecialActionHotkey(){
-    ;     hotkeyToReturn := HotKeyInfo("")
-    ;     parameters := this.parameterControls.GetParameterValues()
-    ;     hotkeyToReturn.setInfoForSpecialHotKey(this.controller.GetCurrentObjectName(), this.controller.GetCurrentMethodName(), parameters)
-    ;     return hotkeyToReturn
-    ; }
-
-    ; getNewHotkey(){
-
-    ;     hotkeyToReturn := HotKeyInfo()
-
-    ;     if (this.advancedModeCheckBox.Value = true){
-    ;         hotkeyKey := this.advancedHotkeyCrafter.getKey()
-    ;         hotkeyModifiers := this.advancedHotkeyCrafter.getModifiers()
-    ;         hotkeyToReturn.setInfoForNormalHotKey(hotkeyKey, hotkeyModifiers)
-    ;     }
-    ;     else {
-    ;         hotkeyToReturn.setInfoForNormalHotKey(this.SimpleHotkeyCrafter.getKey())
-    ;     }
-    ;     return hotkeyToReturn
-    ; }
-
     IsCraftingSpecialAction(){
         return this.isCraftingSpecialAction_
     }
@@ -129,5 +99,9 @@ class HotkeyCrafterController{
         return ObjectInfo.getMethodByFriendlyMethodName(actionName)
     }
 
-    
+    GetHotkey(parameters){
+        hotkeyToReturn := HotKeyInfo("")
+        hotkeyToReturn.setInfoForSpecialHotKey(this.GetCurrentObjectName(), this.GetCurrentMethodName(), parameters)
+        return hotkeyToReturn
+    }
 }

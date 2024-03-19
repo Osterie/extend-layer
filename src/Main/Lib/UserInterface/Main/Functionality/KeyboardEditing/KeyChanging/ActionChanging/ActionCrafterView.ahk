@@ -2,7 +2,6 @@
 
 #Include <UserInterface\Main\util\GuiControlsRegistry>
 #Include "..\HotkeyChanging\HotkeyCrafterView.ahk"
-#Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
 #Include ".\ParameterControlsGroup.ahk"
 #Include ".\ParameterControl.ahk"
@@ -184,13 +183,8 @@ class ActionCrafterView extends HotkeyCrafterView{
     }
 
     getNewSpecialActionHotkey(){
-        hotkeyToReturn := HotKeyInfo("")
-        parameters := this.parameterControls.GetParameterValues()
-        hotkeyToReturn.setInfoForSpecialHotKey(this.controller.GetCurrentObjectName(), this.controller.GetCurrentMethodName(), parameters)
-        return hotkeyToReturn
+        return this.controller.GetHotkey(this.parameterControls.GetParameterValues())
     }
-
-    
 
     subscribeToSaveEvent(action){
         this.saveEventSubscribers.Push(action)
