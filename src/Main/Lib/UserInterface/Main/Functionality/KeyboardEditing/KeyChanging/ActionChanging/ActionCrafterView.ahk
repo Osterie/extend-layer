@@ -57,21 +57,27 @@ class ActionCrafterView extends HotkeyCrafterView{
 
     CreateCrafterTypeRadioButtons(){
         this.specialActionRadio := this.Add("Radio", "Checked y30 x10", "Special Action")
-        ; this.specialActionRadio.OnEvent("Click", (*) => this.controller.doSpecialActionCrafting())
-        this.specialActionRadio.OnEvent("Click", (*) => this.SetSpecialActionAsActive())
+        this.specialActionRadio.OnEvent("Click", (*) => this.controller.doSpecialActionCrafting())
         this.newKeyRadio := this.Add("Radio", "", "New Key")
-        ; this.newKeyRadio.OnEvent("Click", (*) => this.controller.doNewKeyActionCrafting())
-        this.newKeyRadio.OnEvent("Click", (*) => this.SetNewKeyAsActive())
+        this.newKeyRadio.OnEvent("Click", (*) => this.controller.doNewKeyActionCrafting())
     }
 
     SetSpecialActionAsActive(){
-        this.hideAllButButtons() 
-        this.controlsForAllSpecialActionCrafting.show() 
-        this.parameterControls.show()
+        this.HideHotkeyCrafterControls() 
+        this.ShowSpecialActionCrafterControls()
     }
 
     SetNewKeyAsActive(){
         this.ShowHotkeyCrafterControls() 
+        this.HideSpecialActionCrafterControls()
+    }
+
+    ShowSpecialActionCrafterControls(){
+        this.controlsForAllSpecialActionCrafting.show()
+        this.parameterControls.show()
+    }
+
+    HideSpecialActionCrafterControls(){
         this.controlsForAllSpecialActionCrafting.hide()
         this.parameterControls.hide()
     }

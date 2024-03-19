@@ -57,10 +57,10 @@ class HotkeyCrafterController{
     }
 
     doSpecialActionCrafting(){
-        this.actionCrafterView.Show()
+        this.actionCrafterView.SetSpecialActionAsActive()
     }
 
     doNewKeyActionCrafting(){
-        this.actionCrafterView.Show()
+        this.actionCrafterView.SetNewKeyAsActive()
     }
 }
