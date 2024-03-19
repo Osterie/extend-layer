@@ -23,16 +23,16 @@ class HotkeyCrafterController{
     }
 
     GetSpecialActions(){
-        return this.getActiveObjectsRegistry().getFriendlyNames()
+        return this.getActiveObjectsRegistry().GetFriendlyNames()
     }
 
-    GetObjectInfoByFriendlyName(friendlyMethodName){
-        return this.getActiveObjectsRegistry().GetObjectByFriendlyMethodName(friendlyMethodName)
+    GetObjectInfoByActionName(actionName){
+        return this.getActiveObjectsRegistry().GetObjectByFriendlyMethodName(actionName)
     }
 
-    GetMethodInfoByFriendlyName(friendlyMethodName){
-        ObjectInfo := this.getObjectInfoByFriendlyName(friendlyMethodName)
-        return ObjectInfo.getMethodByFriendlyMethodName(friendlyMethodName)
+    GetMethodInfoByActionName(actionName){
+        ObjectInfo := this.getObjectInfoByActionName(actionName)
+        return ObjectInfo.getMethodByFriendlyMethodName(actionName)
     }
 
     GetCurrentObjectName(){

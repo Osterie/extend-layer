@@ -42,8 +42,6 @@ class ActionCrafterView extends HotkeyCrafterView{
         listViewOfSpecialAction.SetFont("s12")
         listViewOfSpecialAction.ModifyCol(1, "Center", )
 
-
-        ; TODO create a method for getting this from controller
         allPossibleSpecialActions := this.controller.GetSpecialActions()
         
         Loop allPossibleSpecialActions.Length{
@@ -76,8 +74,8 @@ class ActionCrafterView extends HotkeyCrafterView{
         this.parameterControls.hide()
         friendlyNameOfAction := listView.GetText(rowNumberSpecialAction)
 
-        ObjectInfoOfAction := this.controller.GetObjectInfoByFriendlyName(friendlyNameOfAction)
-        MethodInfoOfAction := this.controller.GetMethodInfoByFriendlyName(friendlyNameOfAction)
+        ObjectInfoOfAction := this.controller.GetObjectInfoByActionName(friendlyNameOfAction)
+        MethodInfoOfAction := this.controller.GetMethodInfoByActionName(friendlyNameOfAction)
 
         this.controller.SetCurrentObjectName(ObjectInfoOfAction.getObjectName())
         this.controller.SetCurrentMethodName(MethodInfoOfAction.getMethodName())
