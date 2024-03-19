@@ -44,7 +44,7 @@ class ActionCrafterView extends HotkeyCrafterView{
 
 
         ; TODO create a method for getting this from controller
-        allPossibleSpecialActions := this.controller.getActiveObjectsRegistry().getFriendlyNames()
+        allPossibleSpecialActions := this.controller.GetSpecialActions()
         
         Loop allPossibleSpecialActions.Length{
             listViewOfSpecialAction.Add("", allPossibleSpecialActions[A_Index])
