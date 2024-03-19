@@ -67,6 +67,8 @@ class HotKeyConfigurationController{
 
     changeOriginalAction(activeObjectsRegistry, availableKeyNames, action){
         ActionCrafterView_ := ActionCrafterView(this.hotkeyCrafterController_)
+        this.hotkeyCrafterController_.AddActionCrafterView(ActionCrafterView_)
+
         ActionCrafterView_.create(action)
         ActionCrafterView_.CreateButtons()
         ActionCrafterView_.SetInformativeTopText("Original Action: " . action)

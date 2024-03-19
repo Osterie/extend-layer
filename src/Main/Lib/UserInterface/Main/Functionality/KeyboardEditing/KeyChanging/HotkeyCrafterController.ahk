@@ -6,6 +6,7 @@ class HotkeyCrafterController{
     activeObjectsRegistry := ""
     currentObjectName := ""
     currentMethodName := ""
+    actionCrafterView := ""
 
     __New(availableKeyNames, activeObjectsRegistry){
         this.availableKeyNames := availableKeyNames
@@ -13,6 +14,10 @@ class HotkeyCrafterController{
         this.currentObjectName := ""
         this.currentMethodName := ""
     }
+
+    AddActionCrafterView(actionCrafterView){
+        this.actionCrafterView := actionCrafterView
+    }   
 
     GetAvailableKeyNames(){
         return this.availableKeyNames
@@ -49,5 +54,13 @@ class HotkeyCrafterController{
 
     SetCurrentMethodName(methodName){
         this.currentMethodName := methodName
+    }
+
+    doSpecialActionCrafting(){
+        this.actionCrafterView.Show()
+    }
+
+    doNewKeyActionCrafting(){
+        this.actionCrafterView.Show()
     }
 }

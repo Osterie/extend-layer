@@ -42,23 +42,38 @@ class ActionCrafterView extends HotkeyCrafterView{
         listViewOfSpecialAction.SetFont("s12")
         listViewOfSpecialAction.ModifyCol(1, "Center", )
 
-        allPossibleSpecialActions := this.controller.GetSpecialActions()
-        
-        Loop allPossibleSpecialActions.Length{
-            listViewOfSpecialAction.Add("", allPossibleSpecialActions[A_Index])
-        }
+        this.AddItemsToListView(listViewOfSpecialAction, this.controller.GetSpecialActions())
 
         listViewOfSpecialAction.OnEvent("ItemFocus", ObjBindMethod(this, "listViewOfSpecialActionSelected"))
 
         this.controlsForAllSpecialActionCrafting.AddControl("listViewOfSpecialAction", listViewOfSpecialAction)
     }
 
+    AddItemsToListView(listview, items){
+        Loop items.Length{
+            listview.Add("", items[A_Index])
+        }
+    }
+
     CreateCrafterTypeRadioButtons(){
         this.specialActionRadio := this.Add("Radio", "Checked y30 x10", "Special Action")
-        this.specialActionRadio.OnEvent("Click", (*) => this.hideAllButButtons() this.controlsForAllSpecialActionCrafting.show() this.parameterControls.show())
+        ; this.specialActionRadio.OnEvent("Click", (*) => this.controller.doSpecialActionCrafting())
+        this.specialActionRadio.OnEvent("Click", (*) => this.SetSpecialActionAsActive())
         this.newKeyRadio := this.Add("Radio", "", "New Key")
-        this.newKeyRadio.OnEvent("Click", (*) => this.ShowHotkeyCrafterControls() this.controlsForAllSpecialActionCrafting.hide() this.parameterControls.hide())
-        
+        ; this.newKeyRadio.OnEvent("Click", (*) => this.controller.doNewKeyActionCrafting())
+        this.newKeyRadio.OnEvent("Click", (*) => this.SetNewKeyAsActive())
+    }
+
+    SetSpecialActionAsActive(){
+        this.hideAllButButtons() 
+        this.controlsForAllSpecialActionCrafting.show() 
+        this.parameterControls.show()
+    }
+
+    SetNewKeyAsActive(){
+        this.ShowHotkeyCrafterControls() 
+        this.controlsForAllSpecialActionCrafting.hide()
+        this.parameterControls.hide()
     }
 
     CreateButtons(){
