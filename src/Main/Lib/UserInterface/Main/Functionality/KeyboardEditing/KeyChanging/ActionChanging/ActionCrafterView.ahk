@@ -182,11 +182,11 @@ class ActionCrafterView extends HotkeyCrafterView{
         }
     }
 
-    getNewSpecialActionHotkey(){
+    GetNewSpecialActionHotkey(){
         return this.controller.GetHotkey(this.parameterControls.GetParameterValues())
     }
 
-    subscribeToSaveEvent(action){
+    SubscribeToSaveEvent(action){
         this.saveEventSubscribers.Push(action)
     }
 
