@@ -2,6 +2,7 @@
 
 #Include <UserInterface\Main\Util\DomainSpecificGui>
 
+; TODO change name to ActionSettingsEditorDialog
 class SettingsEditor extends DomainSpecificGui{
     
     SaveButton := ""

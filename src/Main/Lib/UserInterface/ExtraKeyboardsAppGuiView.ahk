@@ -37,7 +37,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
     }
 
     CreateTabs(){
-        Tab := this.AddTab3("yp+40 xm", ["Keyboards","Change Functions Settings","Documentation"])
+        Tab := this.AddTab3("yp+40 xm", ["Keyboards","Change Action Settings","Documentation"])
         Tab.UseTab(1)
         this.CreateKeyboardsTab()
 
