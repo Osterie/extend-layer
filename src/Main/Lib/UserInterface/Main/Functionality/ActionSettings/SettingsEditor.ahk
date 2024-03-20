@@ -5,13 +5,12 @@
 class SettingsEditor extends DomainSpecificGui{
     
     SaveButton := ""
-    ; DeleteButton := ""
 
     settingNameEdit := ""
     settingValueEdit := ""
 
     __New(){
-        Super.__New("+Resize +MinSize300x560", "Settings")
+        Super.__New("+Resize", "Settings")
     }
 
     CreateControls(settingName, settingValue){
@@ -25,7 +24,6 @@ class SettingsEditor extends DomainSpecificGui{
         this.SaveButton := this.Add("Button", "w100 h20", "Save")
         CancelButton := this.Add("Button", "w100 h20", "Cancel")
         CancelButton.onEvent("Click", (*) =>this.Destroy())
-        ; this.DeleteButton := this.Add("Button", "w100 h20", "Delete")
 
         this.Show()
     }
@@ -51,20 +49,6 @@ class SettingsEditor extends DomainSpecificGui{
             throw TypeError("Save button has not been created yet for SettingsEditor object.")
         }
     }
-
-    ; addDeleteButtonEvent(eventType, action){
-    ;     if (Type(this.SaveButton) = "Gui.Button"){
-    ;         try{
-    ;             this.DeleteButton.onEvent(eventType, action)
-    ;         }
-    ;         catch Error as e{
-    ;             MsgBox("Error in settings editor: " . e.Message)
-    ;         }
-    ;     }
-    ;     else{
-    ;         throw TypeError("Delete button has not been created yet for SettingsEditor object.")
-    ;     }
-    ; }
 
     GetSetting(){
         return this.settingNameEdit.Value
