@@ -44,7 +44,7 @@ Class ExtraKeyboardsAppGuiModel{
 
     GetFunctionNames(){
         pathToObjectsIniFile := this.GetPathToCurrentSettings()
-
+        ; TODO this should be abstracted, create a method and stuff, i DONT want IniFileReader here.
         fileReader := IniFileReader()
         functionsNames := []
         try{
@@ -58,6 +58,7 @@ Class ExtraKeyboardsAppGuiModel{
     }
 
     GetSettingsForFunction(functionName){
+        ; TODO perhaps return an object of type action/function setting?
         iniFileRead := IniFileReader()
         currentSettingsSettingValuePair := iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(this.GetPathToCurrentSettings(), functionName)
         return currentSettingsSettingValuePair
