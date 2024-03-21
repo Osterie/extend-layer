@@ -128,14 +128,11 @@ Class ExtraKeyboardsAppGuiController{
         editorForActionSettings := SettingsEditorDialog()
         editorForActionSettings.CreateControls(settingName, settingValue)
         editorForActionSettings.DisableSettingNameEdit()
-        editorForActionSettings.addSaveButtonEvent("Click", ObjBindMethod(this, "SettingsEditorDialogSaveButtonEvent", editorForActionSettings, currentFunctionSettings))
+        editorForActionSettings.SubscribeToSaveEvent(ObjBindMethod(this, "SettingsEditorDialogSaveButtonEvent", currentFunctionSettings))
     }
 
-    SettingsEditorDialogSaveButtonEvent(editorForActionSettings, currentFunctionSettings, *){
-        settingName := editorForActionSettings.GetSetting()
-        settingValue := editorForActionSettings.GetSettingValue()
+    SettingsEditorDialogSaveButtonEvent(currentFunctionSettings, settingName, settingValue){
         this.model.ChangeFunctionSetting(settingName, settingValue, currentFunctionSettings)
-        editorForActionSettings.Destroy()
     }
 
     GetPathToCurrentSettings(){

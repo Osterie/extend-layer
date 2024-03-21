@@ -4,12 +4,13 @@
 
 class SettingsEditorDialog extends DomainSpecificGui{
     
-    SaveButton := ""
-
     settingNameEdit := ""
     settingValueEdit := ""
 
+    saveEventSubscribers := ""
+
     __New(){
+        this.saveEventSubscribers := Array()
         Super.__New("+Resize", "Settings")
     }
 
@@ -21,33 +22,23 @@ class SettingsEditorDialog extends DomainSpecificGui{
         this.Add("Text", "xm w300 h20", "Setting value:")
         this.settingValueEdit := this.Add("Edit", "xm w300 h20", settingValue)
         
-        this.SaveButton := this.Add("Button", "w100 h20", "Save")
+        SaveButton := this.Add("Button", "w100 h20", "Save")
+        SaveButton.onEvent("Click", (*) => this.NotifyListenersSave())
         CancelButton := this.Add("Button", "w100 h20", "Cancel")
         CancelButton.onEvent("Click", (*) =>this.Destroy())
 
         this.Show()
     }
 
-    DisableSettingNameEdit(){
-        this.settingNameEdit.Opt("+Disabled")
+    SubscribeToSaveEvent(event){
+        this.saveEventSubscribers.Push(event)
     }
 
-    DisableSettingValueEdit(){
-        this.settingValueEdit.Opt("+Disabled")
-    }
-
-    addSaveButtonEvent(eventType, action){
-        if (Type(this.SaveButton) = "Gui.Button"){
-            try{
-                this.SaveButton.onEvent(eventType, action)
-            }
-            catch Error as e{
-                MsgBox("Error in settings editor: " . e.Message)
-            }
+    NotifyListenersSave(){
+        Loop this.saveEventSubscribers.Length{
+            this.saveEventSubscribers[A_Index](this.GetSetting(), this.GetSettingValue())
         }
-        else{
-            throw TypeError("Save button has not been created yet for SettingsEditorDialog object.")
-        }
+        this.Destroy()
     }
 
     GetSetting(){
@@ -56,5 +47,13 @@ class SettingsEditorDialog extends DomainSpecificGui{
     
     GetSettingValue(){
         return this.settingValueEdit.Value
+    }
+    
+    DisableSettingNameEdit(){
+        this.settingNameEdit.Opt("+Disabled")
+    }
+
+    DisableSettingValueEdit(){
+        this.settingValueEdit.Opt("+Disabled")
     }
 }
