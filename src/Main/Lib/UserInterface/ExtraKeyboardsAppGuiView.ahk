@@ -58,7 +58,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         listViewControl := ListViewMaker()
         listViewControl.CreateListView(this, ["KeyCombo","Action"])
         
-        keyboardLayoutChanger.AddEventAction("ItemSelect", ObjBindMethod(this.controller, "ShowHotkeysForLayer", listViewControl))
+        keyboardLayoutChanger.AddEventAction("ItemSelect", (*) => this.controller.ShowHotkeysForLayer(listViewControl, keyboardLayoutChanger.GetSelectionText()))
         listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "EditHotkey"))
     }
 
@@ -69,7 +69,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         settingsValuesListView := ListViewMaker()
         settingsValuesListView.CreateListView(this, ["Setting","Value"])
         
-        functionsNamesTreeView.AddEventAction("ItemSelect", ObjBindMethod(this.controller, "HandleFunctionFromTreeViewSelected", settingsValuesListView))
+        functionsNamesTreeView.AddEventAction("ItemSelect", (*) => this.controller.HandleFunctionFromTreeViewSelected(settingsValuesListView, functionsNamesTreeView.GetSelectionText()))
         settingsValuesListView.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "HandleSettingClicked", functionsNamesTreeView))
     }
 

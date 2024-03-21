@@ -24,8 +24,7 @@ Class ExtraKeyboardsAppGuiController{
         this.view.Destroy()
     }
 
-    ShowHotkeysForLayer(listViewControl, treeViewElement, treeViewElementSelectedItemID){
-        currentLayer := treeViewElement.GetText(treeViewElementSelectedItemID)
+    ShowHotkeysForLayer(listViewControl, currentLayer){
         
         this.model.SetCurrentLayer(currentLayer)
         hotkeysForLayer := this.model.GetFriendlyHotkeysForCurrentLayer()
@@ -110,8 +109,7 @@ Class ExtraKeyboardsAppGuiController{
         this.MainScript.RunLogicalStartup()
     }
 
-    HandleFunctionFromTreeViewSelected(listViewControl, treeViewElement, treeViewElementSelectedItemID){
-        functionName := treeViewElement.GetText(treeViewElementSelectedItemID)
+    HandleFunctionFromTreeViewSelected(listViewControl, functionName){
         listViewControl.SetNewListViewItems(this.model.GetSettingsForFunction(functionName))
     }
 
