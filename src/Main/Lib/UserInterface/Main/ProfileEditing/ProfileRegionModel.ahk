@@ -3,7 +3,7 @@
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FolderManager>
 
-
+; TODO rename this class, 
 class ProfileRegionModel{
 
     ; Used to manage the preset user profiles, the user is only allowed to add a preset profile as a new profile
@@ -69,7 +69,6 @@ class ProfileRegionModel{
 
     setCurrentProfile(profileName){
         this.currentProfile := profileName
-
         iniWrite(this.currentProfile, this.PATH_TO_META_FILE, "General", "activeUserProfile")
     }
 

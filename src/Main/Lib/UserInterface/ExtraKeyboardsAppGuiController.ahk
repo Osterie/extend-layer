@@ -18,7 +18,7 @@ Class ExtraKeyboardsAppGuiController{
         this.MainScript := MainScript
     }
 
-    HandleProfileChangedEvent(*){
+    HandleProfileChangedEvent(){
         ; TODO this should probably be changed? it is sort of heavy to basically restart the entire program when changing profiles.
         this.mainScript.Start()
         this.view.Destroy()
@@ -69,10 +69,6 @@ Class ExtraKeyboardsAppGuiController{
         popupForConfiguringHotkeyController.subscribeToDeleteEvent(ObjBindMethod(this, "deleteHotkey"))
 
         ; TODO add delete button event.
-    }
-
-    GetHwnd(){
-        return this.view.GetHwnd()
     }
 
     changeHotkeys(hotkeyInformation, originalHotkeyKey){
@@ -161,5 +157,9 @@ Class ExtraKeyboardsAppGuiController{
 
     GetFunctionNames(){
         return this.model.GetFunctionNames()
+    }
+
+    GetHwnd(){
+        return this.view.GetHwnd()
     }
 }

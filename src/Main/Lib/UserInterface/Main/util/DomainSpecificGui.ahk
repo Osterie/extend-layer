@@ -57,5 +57,4 @@ class DomainSpecificGui extends Gui{
     GetHwnd(){
         return this.Hwnd
     }
-
 }

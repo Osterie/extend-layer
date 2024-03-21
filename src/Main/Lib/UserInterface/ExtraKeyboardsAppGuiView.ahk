@@ -32,7 +32,8 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
     CreateProfileEditor(){
         profileModel := ProfileRegionModel(this)
         profileView := ProfileRegionView()
-        profileController := ProfileRegionController(profileModel, profileView, ObjBindMethod(this.controller, "HandleProfileChangedEvent"))
+        profileView.SubscribeToProfileChangedEvent(ObjBindMethod(this.controller, "HandleProfileChangedEvent"))
+        profileController := ProfileRegionController(profileModel, profileView)
         profileController.CreateView()
     }
 
@@ -73,6 +74,6 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
     }
 
     CreateDocumentationTab(){
-        this.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.
+        this.Add("Edit", "r20")  ; r20 means 20 rows tall.
     }
 }
