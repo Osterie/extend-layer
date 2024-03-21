@@ -2,8 +2,7 @@
 
 #Include <UserInterface\Main\Util\DomainSpecificGui>
 
-; TODO change name to ActionSettingsEditorDialog
-class SettingsEditor extends DomainSpecificGui{
+class SettingsEditorDialog extends DomainSpecificGui{
     
     SaveButton := ""
 
@@ -47,7 +46,7 @@ class SettingsEditor extends DomainSpecificGui{
             }
         }
         else{
-            throw TypeError("Save button has not been created yet for SettingsEditor object.")
+            throw TypeError("Save button has not been created yet for SettingsEditorDialog object.")
         }
     }
 

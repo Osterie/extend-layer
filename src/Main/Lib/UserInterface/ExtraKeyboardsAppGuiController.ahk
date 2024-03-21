@@ -2,7 +2,7 @@
 
 #Include <Util\JsonParsing\JsonFormatter\JsonFormatter>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
-#Include "Main\Functionality\ActionSettings\SettingsEditor.ahk"
+#Include "Main\Functionality\ActionSettings\SettingsEditorDialog.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationView.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationController.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationModel.ahk"
@@ -125,13 +125,13 @@ Class ExtraKeyboardsAppGuiController{
         settingName := listView.GetText(rowNumber, 1)
         settingValue := listView.GetText(rowNumber, 2)
 
-        editorForActionSettings := SettingsEditor()
+        editorForActionSettings := SettingsEditorDialog()
         editorForActionSettings.CreateControls(settingName, settingValue)
         editorForActionSettings.DisableSettingNameEdit()
-        editorForActionSettings.addSaveButtonEvent("Click", ObjBindMethod(this, "SettingsEditorSaveButtonEvent", editorForActionSettings, currentFunctionSettings))
+        editorForActionSettings.addSaveButtonEvent("Click", ObjBindMethod(this, "SettingsEditorDialogSaveButtonEvent", editorForActionSettings, currentFunctionSettings))
     }
 
-    SettingsEditorSaveButtonEvent(editorForActionSettings, currentFunctionSettings, *){
+    SettingsEditorDialogSaveButtonEvent(editorForActionSettings, currentFunctionSettings, *){
         settingName := editorForActionSettings.GetSetting()
         settingValue := editorForActionSettings.GetSettingValue()
         this.model.ChangeFunctionSetting(settingName, settingValue, currentFunctionSettings)
