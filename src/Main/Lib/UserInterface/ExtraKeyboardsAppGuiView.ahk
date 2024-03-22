@@ -15,6 +15,8 @@
 ; TODO everything should inherit from a base gui class which fixes the colors and such of all the guis.
 Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
 
+    settingsValuesListView := ""
+
     __New(){
         super.__New("+Resize +MinSize920x480", "Extra Keyboards App")
     }
@@ -66,12 +68,18 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         functionsNamesTreeView := TreeViewMaker()
         functionsNamesTreeView.createElementsForGui(this, this.controller.GetActionNames())
         
-        settingsValuesListView := ListViewMaker()
-        settingsValuesListView.CreateListView(this, ["Setting","Value"])
+        this.settingsValuesListView := ListViewMaker()
+        this.settingsValuesListView.CreateListView(this, ["Setting","Value"])
         
-        functionsNamesTreeView.AddEventAction("ItemSelect", (*) => this.controller.ShowSettingsForAction(settingsValuesListView, functionsNamesTreeView.GetSelectionText()))
-        settingsValuesListView.AddEventAction("DoubleClick", (*) => this.controller.HandleSettingClicked(settingsValuesListView.GetSelectionText()))
+        functionsNamesTreeView.AddEventAction("ItemSelect", (*) => this.controller.ShowSettingsForAction(this.settingsValuesListView, functionsNamesTreeView.GetSelectionText()))
+        this.settingsValuesListView.AddEventAction("DoubleClick", (*) => this.controller.HandleSettingClicked(this.settingsValuesListView.GetSelectionText()))
     }
+
+    UpdateSettingsForAction(){
+        this.settingsValuesListView.SetNewListViewItems(this.controller.GetSettings())
+    }
+
+    
 
     ; CreateTabGeneral(){
     ;     treeViewControl := TreeViewMaker()

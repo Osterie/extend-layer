@@ -11,7 +11,7 @@ class SettingsEditorDialog extends DomainSpecificGui{
 
     __New(){
         this.saveEventSubscribers := Array()
-        Super.__New("+Resize", "Settings")
+        Super.__New("+Resize", "SettingsEditorDialog")
     }
 
     CreateControls(setting){
