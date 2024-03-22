@@ -129,22 +129,22 @@
         "ClassName": "BatteryController",
         "Description": "Change battery settings (WIP, don't use yet, probably wont work)",
         "Methods": {
-            "ToggleBatterySaver": {
-                "MethodName": "ToggleBatterySaver",
+            "ToggleBatterySaverMode": {
+                "MethodName": "ToggleBatterySaverMode",
                 "FriendlyName": "Toggle battery saver",
                 "Description": "Toggles the battery saver on and off",
                 "Parameters": []
             },
-            "TurnOnBatterySaver": {
-                "MethodName": "TurnOnBatterySaver",
+            "ActivatePowerSaverMode": {
+                "MethodName": "ActivatePowerSaverMode",
                 "FriendlyName": "Turn on battery saver",
                 "Description": "Turns on the battery saver",
                 "Parameters": []
             },
-            "TurnOffBatterySaver": {
-                "MethodName": "TurnOffBatterySaver",
-                "FriendlyName": "Turn off battery saver",
-                "Description": "Turns off the battery saver",
+            "ActivateNormalPowerMode": {
+                "MethodName": "ActivateNormalPowerMode",
+                "FriendlyName": "Turn on normal power mode",
+                "Description": "Turns on the normal power mode",
                 "Parameters": []
             }
         }
