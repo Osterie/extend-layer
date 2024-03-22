@@ -4,4 +4,3 @@ config/UserProfiles/*
 !config/UserProfiles/Default
 tests/*
 TODO.ahk
-Run_this.ahk
