@@ -1,5 +1,6 @@
 #Requires AutoHotkey v2.0
 
+; TODO listviewmaker and treeviewmaker could inherit from a class...
 class ListViewMaker{
 
     listView := ""
@@ -69,5 +70,9 @@ class ListViewMaker{
 
     AddEventAction(eventType, action){
         this.listView.OnEvent(eventType, action)
+    }
+
+    GetSelectionText(columnNumber := 1){
+        return this.listView.GetText(this.listView.GetNext( , "Focused"), columnNumber)
     }
 }

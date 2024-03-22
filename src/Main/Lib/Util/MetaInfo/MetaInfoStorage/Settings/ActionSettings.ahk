@@ -12,12 +12,13 @@ class ActionSettings {
         this.settingsForAction.Default := ""
     }
 
-    AddSetting(setting){
+    SetSetting(setting){
         if (Type(setting) != "Setting"){
             throw Error("The setting must be of type Setting")
         }
         this.settingsForAction.Set(setting.getSettingName(), setting)
     }
+
 
     GetSetting(settingName){
         return this.settingsForAction.Get(settingName)

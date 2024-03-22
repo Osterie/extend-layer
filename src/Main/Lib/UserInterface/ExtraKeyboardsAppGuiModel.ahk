@@ -107,16 +107,9 @@ Class ExtraKeyboardsAppGuiModel{
         return this.keyNames
     }
 
-    ChangeFunctionSetting(setting, currentFunctionSettings){
-        settingName := setting.GetSettingName()
-        settingValue := setting.GetSettingValue()
-        ; TODO create method for saving the new setting!
-        try{
-            IniWrite(settingValue, this.GetPathToCurrentSettings(), currentFunctionSettings, settingName)
-        }
-        catch{
-            MsgBox("Failed to save settings")
-        }
+    ChangeFunctionSetting(setting, actionName){
+        this.actionSettings.ChangeActionSetting(actionName, this.GetPathToCurrentSettings(), setting)
+        
     }
 
     GetPathToCurrentSettings(){

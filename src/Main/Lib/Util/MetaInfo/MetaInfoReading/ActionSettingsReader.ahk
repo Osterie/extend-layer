@@ -40,7 +40,7 @@ class ActionSettingsReader{
             settingName := keyPairValues[1]
             settingValue := keyPairValues[2]
             setting_ := Setting(settingName, settingValue)
-            actionSettings_.AddSetting(setting_)
+            actionSettings_.SetSetting(setting_)
         }
 
         return actionSettings_

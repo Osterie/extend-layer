@@ -116,12 +116,8 @@ Class ExtraKeyboardsAppGuiController{
         listViewControl.SetNewListViewItems(this.model.GetSettingsForCurrentActionAsArray())
     }
 
-    HandleSettingClicked(listView, rowNumber){
+    HandleSettingClicked(settingName){
         currentFunctionSettings := this.model.GetCurrentFunction()
-
-        settingName := listView.GetText(rowNumber, 1)
-        settingValue := listView.GetText(rowNumber, 2)
-
         selectedSetting := this.model.GetSettingsForCurrentAction().GetSetting(settingName)
 
         editorForActionSettings := SettingsEditorDialog()

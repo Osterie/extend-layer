@@ -7,7 +7,7 @@ class ActionSettingsRegistry{
     __New(){
         this.actionSettingsRegistry := Map()
     }
-    
+
     AddSettings(actionSettings){
         if (Type(actionSettings) != "ActionSettings"){
             throw Error("Invalid argument type. Expected ActionSetting")
@@ -15,6 +15,25 @@ class ActionSettingsRegistry{
         else{
             this.actionSettingsRegistry.set(actionSettings.GetActionName(), actionSettings)
         }
+    }
+
+    ChangeActionSetting(actionName, filePathToSettings, setting){
+        settingName := setting.GetSettingName()
+        settingValue := setting.GetSettingValue()
+
+        try{
+            IniWrite(settingValue, filePathToSettings, actionName, settingName)
+            actionSettings := this.actionSettingsRegistry.Get(actionName)
+            actionSettings.SetSetting(setting)
+            this.actionSettingsRegistry.set(actionName, actionSettings)
+
+        }
+        catch{
+            MsgBox("Failed to save settings")
+        }
+
+        ; this.actionSettingsRegistry.set(actionSettings.GetActionName(), actionSettings)
+
     }
 
     GetActionNames(){

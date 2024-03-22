@@ -70,7 +70,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         settingsValuesListView.CreateListView(this, ["Setting","Value"])
         
         functionsNamesTreeView.AddEventAction("ItemSelect", (*) => this.controller.ShowSettingsForAction(settingsValuesListView, functionsNamesTreeView.GetSelectionText()))
-        settingsValuesListView.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "HandleSettingClicked"))
+        settingsValuesListView.AddEventAction("DoubleClick", (*) => this.controller.HandleSettingClicked(settingsValuesListView.GetSelectionText()))
     }
 
     ; CreateTabGeneral(){
