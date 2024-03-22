@@ -2,7 +2,7 @@
 
 #Include <Util\JsonParsing\JsonFormatter\JsonFormatter>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
-#Include "Main\Functionality\ActionSettings\SettingsEditor.ahk"
+#Include "Main\Functionality\ActionSettings\SettingsEditorDialog.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationView.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationController.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationModel.ahk"
@@ -18,14 +18,13 @@ Class ExtraKeyboardsAppGuiController{
         this.MainScript := MainScript
     }
 
-    HandleProfileChangedEvent(*){
+    HandleProfileChangedEvent(){
         ; TODO this should probably be changed? it is sort of heavy to basically restart the entire program when changing profiles.
         this.mainScript.Start()
         this.view.Destroy()
     }
 
-    ShowHotkeysForLayer(listViewControl, treeViewElement, treeViewElementSelectedItemID){
-        currentLayer := treeViewElement.GetText(treeViewElementSelectedItemID)
+    ShowHotkeysForLayer(listViewControl, currentLayer){
         
         this.model.SetCurrentLayer(currentLayer)
         hotkeysForLayer := this.model.GetFriendlyHotkeysForCurrentLayer()
@@ -60,19 +59,15 @@ Class ExtraKeyboardsAppGuiController{
     ; TODO move to view
     CreatePopupForHotkeys(hotkeyInformation){
         popupForConfiguringHotkeyModel := HotKeyConfigurationModel(this.GetActiveObjectsRegistry(), this.GetKeyNames(), hotkeyInformation)
-        popupForConfiguringHotkey := HotKeyConfigurationView()
+        popupForConfiguringHotkey := HotKeyConfigurationView(this.GetHwnd())
         popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
-        popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController, this.GetHwnd())
+        popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController)
         
         
         popupForConfiguringHotkeyController.subscribeToSaveEvent(ObjBindMethod(this, "changeHotkeys"))
         popupForConfiguringHotkeyController.subscribeToDeleteEvent(ObjBindMethod(this, "deleteHotkey"))
 
         ; TODO add delete button event.
-    }
-
-    GetHwnd(){
-        return this.view.GetHwnd()
     }
 
     changeHotkeys(hotkeyInformation, originalHotkeyKey){
@@ -114,8 +109,7 @@ Class ExtraKeyboardsAppGuiController{
         this.MainScript.RunLogicalStartup()
     }
 
-    HandleFunctionFromTreeViewSelected(listViewControl, treeViewElement, treeViewElementSelectedItemID){
-        functionName := treeViewElement.GetText(treeViewElementSelectedItemID)
+    HandleFunctionFromTreeViewSelected(listViewControl, functionName){
         listViewControl.SetNewListViewItems(this.model.GetSettingsForFunction(functionName))
     }
 
@@ -125,17 +119,14 @@ Class ExtraKeyboardsAppGuiController{
         settingName := listView.GetText(rowNumber, 1)
         settingValue := listView.GetText(rowNumber, 2)
 
-        editorForActionSettings := SettingsEditor()
+        editorForActionSettings := SettingsEditorDialog()
         editorForActionSettings.CreateControls(settingName, settingValue)
         editorForActionSettings.DisableSettingNameEdit()
-        editorForActionSettings.addSaveButtonEvent("Click", ObjBindMethod(this, "SettingsEditorSaveButtonEvent", editorForActionSettings, currentFunctionSettings))
+        editorForActionSettings.SubscribeToSaveEvent(ObjBindMethod(this, "SettingsEditorDialogSaveButtonEvent", currentFunctionSettings))
     }
 
-    SettingsEditorSaveButtonEvent(editorForActionSettings, currentFunctionSettings, *){
-        settingName := editorForActionSettings.GetSetting()
-        settingValue := editorForActionSettings.GetSettingValue()
+    SettingsEditorDialogSaveButtonEvent(currentFunctionSettings, settingName, settingValue){
         this.model.ChangeFunctionSetting(settingName, settingValue, currentFunctionSettings)
-        editorForActionSettings.Destroy()
     }
 
     GetPathToCurrentSettings(){
@@ -164,5 +155,9 @@ Class ExtraKeyboardsAppGuiController{
 
     GetFunctionNames(){
         return this.model.GetFunctionNames()
+    }
+
+    GetHwnd(){
+        return this.view.GetHwnd()
     }
 }

@@ -1,59 +1,108 @@
 #Requires AutoHotkey v2.0
 
+#Include ".\ParameterControl.ahk"
+
+
 class ParameterControlsGroup{
 
-    parameterTextControl := ""
-    parameterEditControl := ""
-    parameterDescriptionControl := ""
+    parameterControls := ""
 
-    __New(parameterTextControl, paramaterEditControl, parameterDescriptionControl){
-        this.parameterTextControl := parameterTextControl
-        this.parameterEditControl := paramaterEditControl
-        this.parameterDescriptionControl := parameterDescriptionControl
+    guiToAddTo := ""
+    startingPosition := ""
+
+    __New(guiToAddTo, startingPosition := ""){
+        this.guiToAddTo := guiToAddTo
+        this.parameterControls := Array()
+        this.startingPosition := startingPosition
     }
 
-    getTextControl(){
-        return this.parameterTextControl
-    }
-
-    getEditControl(){
-        return this.parameterEditControl
-    }
-
-    getEditControlValue(){
-        return this.parameterEditControl.Value
-    }
-
-    getDescriptionControl(){
-        return this.parameterDescriptionControl
-    }
-
-    setTextControlValue(newParameterText){
-        this.parameterTextControl.Value := newParameterText
-    }
-
-    setEditControlType(editType){
-        if(editType = "int"){
-            this.parameterEditControl.Opt("+Number")
+    AddParameterControl(parameterControl){
+        if (Type(parameterControl) != "ParameterControl"){
+            throw Error("Invalid parameterControl")
         }
-        else if(editType = "string"){
-            this.parameterEditControl.Opt("-Number")
+
+        this.parameterControls.Push(parameterControl)
+    }
+
+    SetInfo(parameters){
+        if (Type(parameters) = "Map"){
+            parametersArray := Array()
+            for parameterName, parameterInfo in parameters{
+                parametersArray.Push(parameterInfo)
+            }
+            this.SetInfoWithArray(parametersArray)
+        }
+        else if (Type(parameters = "Array")){
+            this.SetInfoWithArray(parameters)
+        }
+        else{
+            throw Error("Invalid parameters, must be given as array or map")
         }
     }
 
-    setDescriptionControlValue(newParameterDescription){
-        this.parameterDescriptionControl.Value := newParameterDescription
+    ; private method
+    SetInfoWithArray(parameters){
+        
+        this.Clear()
+        
+        Loop parameters.Length{
+            if (A_index > this.parameterControls.Length){
+                if (A_index > 1){
+                    positions := this.parameterControls[A_index-1].GetPos()
+
+                    X := positions.x
+                    Y := positions.y
+                    Width := positions.width
+                    Height := positions.height
+                    
+                    xPosition := " X" . X . " "
+                    yPosition := " Y" . Y+Height+30 . " "
+                    width := " W" . Width . " "
+
+                    position := xPosition . yPosition . width
+                    control := ParameterControl(this.guiToAddTo, "", position)
+                }
+                else{
+                    control := ParameterControl(this.guiToAddTo, "", this.startingPosition)
+                }
+                this.AddParameterControl(control)
+            }
+            this.parameterControls[A_index].SetInfo(parameters[A_index])
+        }
     }
 
-    show(){
-        this.parameterTextControl.Opt("Hidden0")
-        this.parameterEditControl.Opt("Hidden0")
-        this.parameterDescriptionControl.Opt("Hidden0")
+    GetParameterControls(){
+        return this.parameterControls
     }
 
-    hide(){
-        this.parameterTextControl.Opt("Hidden1")
-        this.parameterEditControl.Opt("Hidden1")
-        this.parameterDescriptionControl.Opt("Hidden1")
+    Clear(){
+        Loop this.parameterControls.Length{
+            this.parameterControls[A_index].clear()
+        }
+    }
+
+    Hide(){
+        Loop this.parameterControls.Length{
+            this.parameterControls[A_index].hide()
+        }
+    }
+
+    Show(){
+        Loop this.parameterControls.Length{
+            if (this.parameterControls[A_index].isSet()){
+                this.parameterControls[A_index].Show()
+            }
+        }
+    }
+
+    GetParameterValues(){
+        parameterValues := Array()
+        Loop this.parameterControls.Length{
+            parameterControl := this.parameterControls[A_index]
+            if (parameterControl.IsSet()){
+                parameterValues.Push(parameterControl.GetValue())
+            }
+        }
+        return parameterValues
     }
 }

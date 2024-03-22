@@ -3,12 +3,16 @@
 class ListViewMaker{
 
     listView := ""
+
+    columnNames := Array()
     
     __New(){
         ; Empty
     }
 
     CreateListView(guiObject, columnNames){
+
+        this.columnNames := columnNames
         
         this.listView := guiObject.Add("ListView", "r20 w600 x+10", columnNames)
 
@@ -26,10 +30,41 @@ class ListViewMaker{
     ; Takes a two dimensional array, items, and adds each item to the listView
     SetNewListViewItems(items){
         this.listView.Delete()
+
+        minWidths := this.GetMinWidthsForItems(items)
+
+
         Loop items.Length{
             this.listView.Add("Icon3", items[A_index]*)
         }
-        this.listView.ModifyCol()
+        Sleep(20)
+        this.SetColumnWidths(minWidths)
+
+    }
+
+    SetColumnWidths(columnWidths){
+        Loop columnWidths.Length{
+            this.listView.ModifyCol(A_Index, columnWidths[A_Index]*9)
+        }
+    }
+
+
+    GetMinWidthsForItems(items){
+        minWidths := Array()
+
+        Loop this.columnNames.Length{
+            minWidths.Push(StrLen(this.columnNames[A_Index]))
+        }
+
+        For indexRow, row in items{
+            For indexColumn, column in row{
+                if (StrLen(column) > minWidths[indexColumn]){
+                    minWidths[indexColumn] := StrLen(column)
+                }
+            }
+        }
+        
+        return minWidths
     }
 
     AddEventAction(eventType, action){

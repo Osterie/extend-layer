@@ -12,16 +12,13 @@ class HotKeyConfigurationView extends DomainSpecificGui{
     controller := ""
     model := ""
 
-    __New(){
-        super.__New()
+    __New(ownerHwnd := ""){
+        super.__New("+Resize +MinSize300x280 " . "+Owner" ownerHwnd)
     }
 
-    CreateMain(controller, ownerHwnd := ""){
+    CreateMain(controller){
         this.controller := controller
         this.model := controller.getModel()
-
-        this.opt("+Resize +MinSize300x280")
-        this.opt("+Owner" ownerHwnd)
         this.createCurrentHotkeyControl()
         this.createCurrentActionControl()
         this.createButtons()

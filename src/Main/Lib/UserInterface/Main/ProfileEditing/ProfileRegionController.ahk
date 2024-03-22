@@ -30,10 +30,9 @@ class ProfileRegionController{
     addprofileView := ""
     addprofileModel := ""
 
-    __New(model, view, callback){
+    __New(model, view){
         this.model := model
         this.view := view 
-        this.callback := callback
     }
 
     CreateView(){
@@ -57,7 +56,6 @@ class ProfileRegionController{
         profileSelected := dropDownList.Text
 
         this.model.setCurrentProfile(profileSelected)
-        this.callback()
     }
 
     HandleEditProfilesEvent(*){

@@ -120,7 +120,7 @@ class HotkeyCrafterView extends DomainSpecificGui{
     }
 
     hide(){
-        this.hideAllButButtons()
+        this.HideHotkeyCrafterControls()
         this.hideButtons()
     }
 
@@ -128,7 +128,7 @@ class HotkeyCrafterView extends DomainSpecificGui{
         this.controlsForButtons.hide()
     }
 
-    hideAllButButtons(){
+    HideHotkeyCrafterControls(){
         this.SimpleHotkeyCrafter.hide()
         this.advancedHotkeyCrafter.hide()
         this.advancedModeCheckBox.Opt("Hidden1")

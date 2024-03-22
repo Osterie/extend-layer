@@ -32,12 +32,13 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
     CreateProfileEditor(){
         profileModel := ProfileRegionModel(this)
         profileView := ProfileRegionView()
-        profileController := ProfileRegionController(profileModel, profileView, ObjBindMethod(this.controller, "HandleProfileChangedEvent"))
+        profileView.SubscribeToProfileChangedEvent(ObjBindMethod(this.controller, "HandleProfileChangedEvent"))
+        profileController := ProfileRegionController(profileModel, profileView)
         profileController.CreateView()
     }
 
     CreateTabs(){
-        Tab := this.AddTab3("yp+40 xm", ["Keyboards","Change Functions Settings","Documentation"])
+        Tab := this.AddTab3("yp+40 xm", ["Keyboards","Change Action Settings","Documentation"])
         Tab.UseTab(1)
         this.CreateKeyboardsTab()
 
@@ -57,7 +58,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         listViewControl := ListViewMaker()
         listViewControl.CreateListView(this, ["KeyCombo","Action"])
         
-        keyboardLayoutChanger.AddEventAction("ItemSelect", ObjBindMethod(this.controller, "ShowHotkeysForLayer", listViewControl))
+        keyboardLayoutChanger.AddEventAction("ItemSelect", (*) => this.controller.ShowHotkeysForLayer(listViewControl, keyboardLayoutChanger.GetSelectionText()))
         listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "EditHotkey"))
     }
 
@@ -68,11 +69,11 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         settingsValuesListView := ListViewMaker()
         settingsValuesListView.CreateListView(this, ["Setting","Value"])
         
-        functionsNamesTreeView.AddEventAction("ItemSelect", ObjBindMethod(this.controller, "HandleFunctionFromTreeViewSelected", settingsValuesListView))
+        functionsNamesTreeView.AddEventAction("ItemSelect", (*) => this.controller.HandleFunctionFromTreeViewSelected(settingsValuesListView, functionsNamesTreeView.GetSelectionText()))
         settingsValuesListView.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "HandleSettingClicked", functionsNamesTreeView))
     }
 
     CreateDocumentationTab(){
-        this.Add("Edit", "vMyEdit r20")  ; r20 means 20 rows tall.
+        this.Add("Edit", "r20")  ; r20 means 20 rows tall.
     }
 }
