@@ -4,6 +4,9 @@
 ; [^ = Ctrl] [+ = Shift] [! = Alt] [# = Win]
 #Requires Autohotkey v2.0
 
+#Include <Prototyping\Array>
+#Include <Prototyping\Map>
+
 #Include "<UserInterface\ExtraKeyboardsApp>"
 
 #Include <Util\StartupConfiguration\ObjectRegistryInitializer>
@@ -14,6 +17,8 @@
 
 #Include <Util\MetaInfo\MetaInfoStorage\Objects\ObjectRegistry>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+
+#Include <Util\MetaInfo\MetaInfoReading\ActionSettingsReader>
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|

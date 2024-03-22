@@ -7,6 +7,8 @@
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationController.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationModel.ahk"
 
+; #Include <Util\MetaInfo\MetaInfoStorage\Settings\Setting>
+
 Class ExtraKeyboardsAppGuiController{
 
     MainScript := ""
@@ -109,12 +111,13 @@ Class ExtraKeyboardsAppGuiController{
         this.MainScript.RunLogicalStartup()
     }
 
-    HandleFunctionFromTreeViewSelected(listViewControl, functionName){
-        listViewControl.SetNewListViewItems(this.model.GetSettingsForFunction(functionName))
+    ShowSettingsForAction(listViewControl, functionName){
+        this.model.SetCurrentFunction(functionName)
+        listViewControl.SetNewListViewItems(this.model.GetSettingsForCurrentAction())
     }
 
-    HandleSettingClicked(functionsNamesTreeView, listView, rowNumber){
-        currentFunctionSettings := functionsNamesTreeView.GetSelectionText()
+    HandleSettingClicked(listView, rowNumber){
+        currentFunctionSettings := this.model.GetCurrentFunction()
 
         settingName := listView.GetText(rowNumber, 1)
         settingValue := listView.GetText(rowNumber, 2)
@@ -153,8 +156,8 @@ Class ExtraKeyboardsAppGuiController{
         return this.model.GetKeyNames()
     }
 
-    GetFunctionNames(){
-        return this.model.GetFunctionNames()
+    GetActionNames(){
+        return this.model.GetActionNames()
     }
 
     GetHwnd(){

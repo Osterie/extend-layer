@@ -64,14 +64,25 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
 
     CreateFunctionSettingsTab(){
         functionsNamesTreeView := TreeViewMaker()
-        functionsNamesTreeView.createElementsForGui(this, this.controller.GetFunctionNames())
+        functionsNamesTreeView.createElementsForGui(this, this.controller.GetActionNames())
         
         settingsValuesListView := ListViewMaker()
         settingsValuesListView.CreateListView(this, ["Setting","Value"])
         
-        functionsNamesTreeView.AddEventAction("ItemSelect", (*) => this.controller.HandleFunctionFromTreeViewSelected(settingsValuesListView, functionsNamesTreeView.GetSelectionText()))
-        settingsValuesListView.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "HandleSettingClicked", functionsNamesTreeView))
+        functionsNamesTreeView.AddEventAction("ItemSelect", (*) => this.controller.ShowSettingsForAction(settingsValuesListView, functionsNamesTreeView.GetSelectionText()))
+        settingsValuesListView.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "HandleSettingClicked"))
     }
+
+    ; CreateTabGeneral(){
+    ;     treeViewControl := TreeViewMaker()
+    ;     treeViewControl.createElementsForGui(this, treeViewItems)
+        
+    ;     listViewMadeFromTreeView := ListViewMaker()
+    ;     listViewMadeFromTreeView.CreateListView(this, listViewHeaders)
+        
+    ;     treeViewControl.AddEventAction("ItemSelect", (*) => treeViewItemClickedCallback(listViewMadeFromTreeView, treeViewControl.GetSelectionText()))
+    ;     listViewMadeFromTreeView.AddEventAction("DoubleClick", listViewItemDoubleClickedCallback(treeViewControl))
+    ; }
 
     CreateDocumentationTab(){
         this.Add("Edit", "r20")  ; r20 means 20 rows tall.
