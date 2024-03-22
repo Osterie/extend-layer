@@ -136,7 +136,7 @@ Class ExtraKeyboardsAppGuiController{
     }
 
     GetSettings(){
-        return <this.model.GetSettingsForCurrentActionAsArray()
+        return this.model.GetSettingsForCurrentActionAsArray()
     }
 
     GetPathToCurrentSettings(){
