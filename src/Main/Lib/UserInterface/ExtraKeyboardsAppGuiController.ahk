@@ -113,7 +113,7 @@ Class ExtraKeyboardsAppGuiController{
 
     ShowSettingsForAction(listViewControl, functionName){
         this.model.SetCurrentFunction(functionName)
-        listViewControl.SetNewListViewItems(this.model.GetSettingsForCurrentAction())
+        listViewControl.SetNewListViewItems(this.model.GetSettingsForCurrentActionAsArray())
     }
 
     HandleSettingClicked(listView, rowNumber){
@@ -122,14 +122,16 @@ Class ExtraKeyboardsAppGuiController{
         settingName := listView.GetText(rowNumber, 1)
         settingValue := listView.GetText(rowNumber, 2)
 
+        selectedSetting := this.model.GetSettingsForCurrentAction().GetSetting(settingName)
+
         editorForActionSettings := SettingsEditorDialog()
-        editorForActionSettings.CreateControls(settingName, settingValue)
+        editorForActionSettings.CreateControls(selectedSetting)
         editorForActionSettings.DisableSettingNameEdit()
         editorForActionSettings.SubscribeToSaveEvent(ObjBindMethod(this, "SettingsEditorDialogSaveButtonEvent", currentFunctionSettings))
     }
 
-    SettingsEditorDialogSaveButtonEvent(currentFunctionSettings, settingName, settingValue){
-        this.model.ChangeFunctionSetting(settingName, settingValue, currentFunctionSettings)
+    SettingsEditorDialogSaveButtonEvent(currentFunctionSettings, setting){
+        this.model.ChangeFunctionSetting(setting, currentFunctionSettings)
     }
 
     GetPathToCurrentSettings(){

@@ -52,14 +52,21 @@ Class ExtraKeyboardsAppGuiModel{
         return this.actionSettings.GetActionNames()
     }
 
-    GetSettingsForAction(actionName){
+    GetSettingsForActionAsArray(actionName){
         return this.actionSettings.GetSettingsForActionAsArray(actionName)
+    }
+
+    GetSettingsForCurrentActionAsArray(){
+        return this.GetSettingsForActionAsArray(this.GetCurrentFunction())
+    }
+
+    GetSettingsForAction(actionName){
+        return this.actionSettings.GetSettingsForAction(actionName)
     }
 
     GetSettingsForCurrentAction(){
         return this.GetSettingsForAction(this.GetCurrentFunction())
     }
-
 
     GetFriendlyHotkeysForCurrentLayer(){
         itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer)
@@ -100,7 +107,10 @@ Class ExtraKeyboardsAppGuiModel{
         return this.keyNames
     }
 
-    ChangeFunctionSetting(settingName, settingValue, currentFunctionSettings){
+    ChangeFunctionSetting(setting, currentFunctionSettings){
+        settingName := setting.GetSettingName()
+        settingValue := setting.GetSettingValue()
+        ; TODO create method for saving the new setting!
         try{
             IniWrite(settingValue, this.GetPathToCurrentSettings(), currentFunctionSettings, settingName)
         }

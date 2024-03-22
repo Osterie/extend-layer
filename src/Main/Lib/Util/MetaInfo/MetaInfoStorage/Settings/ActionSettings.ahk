@@ -9,6 +9,7 @@ class ActionSettings {
     __New(actionName){
         this.actionName := actionName
         this.settingsForAction := Map()
+        this.settingsForAction.Default := ""
     }
 
     AddSetting(setting){
@@ -16,6 +17,10 @@ class ActionSettings {
             throw Error("The setting must be of type Setting")
         }
         this.settingsForAction.Set(setting.getSettingName(), setting)
+    }
+
+    GetSetting(settingName){
+        return this.settingsForAction.Get(settingName)
     }
 
     GetSettingValue(settingName){
