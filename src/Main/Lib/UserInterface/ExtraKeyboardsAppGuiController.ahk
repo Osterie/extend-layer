@@ -35,20 +35,19 @@ Class ExtraKeyboardsAppGuiController{
     ; TODO make sure user cant create multiple popups?
     EditHotkey(listView, indexOfKeyToEdit){
 
-        hotkeyInformation := HotkeyInfo()
-
-        ; hotkeyInformation
-        if (indexOfKeyToEdit = 0){
-            ; this.CreatePopupForHotkeys(hotkeyInformation)
-        }
-        else{
-            hotkeyBuild := listView.GetText(indexOfKeyToEdit, 1)
-            hotkeyInformation := this.model.GetHotkeyInfoForCurrentLayer(hotkeyBuild)
-        }
-
         layerInformation := this.GetCurrentLayerInfo()
 
         if (Type(layerInformation) == "HotkeysRegistry"){
+            hotkeyInformation := HotkeyInfo()
+    
+            ; hotkeyInformation
+            if (indexOfKeyToEdit = 0){
+                ; this.CreatePopupForHotkeys(hotkeyInformation)
+            }
+            else{
+                hotkeyBuild := listView.GetText(indexOfKeyToEdit, 1)
+                hotkeyInformation := this.model.GetHotkeyInfoForCurrentLayer(hotkeyBuild)
+            }
             this.CreatePopupForHotkeys(hotkeyInformation)
         }
         else if (Type(layerInformation) == "KeyboardOverlayInfo"){
@@ -94,7 +93,7 @@ Class ExtraKeyboardsAppGuiController{
             editorForActionSettings.SubscribeToSaveEvent(ObjBindMethod(this, "SettingsEditorDialogSaveButtonEvent", currentFunctionSettings))
     
             editorForActionSettings.show()
-            
+
             WinWaitClose("Settings Editor Dialog" , , 1000)
     
             this.view.UpdateSettingsForActions()
