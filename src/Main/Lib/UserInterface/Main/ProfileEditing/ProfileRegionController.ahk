@@ -102,6 +102,7 @@ class ProfileRegionController{
     HandleAddProfileEvent(){
         this.addprofileView := AddProfilesView(this.GetHwnd())
         this.addprofileView.CreateView(this, this.model.GetPresetProfiles())
+        this.addprofileView.Show()
     }
 
     HandleAddProfileConfirmedEvent(profileToAdd, profileName){

@@ -4,7 +4,7 @@
 
 class AddProfilesView extends DomainSpecificGui{
 
-    controller := ""
+    addProfileButton := ""
 
     __New(ownerHwnd := ""){
         Super.__New("+Resize +MinSize320x240", "Add Profile")
@@ -13,21 +13,37 @@ class AddProfilesView extends DomainSpecificGui{
 
     CreateView(controller, profiles){
 
-        this.controller := controller
-
         this.Add("Text", , "Selected Profile:")
         customProfilesDropDownMenu := this.Add("DropDownList", "ym+1 Choose1", profiles)
 
-
         this.Add("Text", "ym+1", "Name of profile to add:")
         profileNameField := this.Add("Edit", "r1 ym+1", "")
-        addProfileButton := this.Add("Button", "Default w80 ym+1", "Add profile")
+        profileNameField.OnEvent("Change", (*) => this.HandleInputFieldChange(profileNameField.Text))
 
-        addProfileButton.OnEvent("Click", (*) => this.controller.HandleAddProfileConfirmedEvent(customProfilesDropDownMenu.Text, profileNameField.Text))
-        
+        this.addProfileButton := this.Add("Button", "Default w80 ym+1", "Add profile")
+        this.addProfileButton.OnEvent("Click", (*) => controller.HandleAddProfileConfirmedEvent(customProfilesDropDownMenu.Text, profileNameField.Text))
+        this.DisableAddProfileButton()
+
+
         cancelButton := this.Add("Button", "Default w80 ym+1", "Cancel")
         cancelButton.OnEvent("Click", (*) => this.Destroy())
-        
-        this.Show()
     }
+
+    HandleInputFieldChange(profileNameFieldText){
+        if (profileNameFieldText != ""){
+            this.EnableAddProfileButton()
+        } else {
+            this.DisableAddProfileButton()
+        }
+    }
+
+    DisableAddProfileButton(){
+        this.addProfileButton.Opt("+Disabled")
+    }
+
+    EnableAddProfileButton(){
+        this.addProfileButton.Opt("-Disabled")
+    }
+
+
 }

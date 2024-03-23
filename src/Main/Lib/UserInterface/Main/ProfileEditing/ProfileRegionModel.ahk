@@ -128,11 +128,16 @@ class ProfileRegionModel{
             profileAdded := false
         }
         else{
-            presetProfileName := profileName
-            profilePath := this.PresetProfilesManager.getFolderPathByName(profile)
-            this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, this.PATH_TO_EXISTING_PROFILES . "\" . profileName, profileName, profileName)
-            profileAdded := true
-            this.updateProfiles()
+            try{
+                presetProfileName := profileName
+                profilePath := this.PresetProfilesManager.getFolderPathByName(profile)
+                this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, this.PATH_TO_EXISTING_PROFILES . "\" . profileName, profileName, profileName)
+                profileAdded := true
+                this.updateProfiles()
+            }
+            catch{
+                profileAdded := false
+            }
         }
         return profileAdded
     }
