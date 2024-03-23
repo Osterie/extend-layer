@@ -14,10 +14,7 @@ class HotKeyConfigurationView extends DomainSpecificGui{
 
     __New(settings, ownerHwnd := ""){
         super.__New(settings, "Hotkey Configuration")
-
-        if (ownerHwnd != ""){
-            this.setOwner(ownerHwnd)
-        }
+        this.setOwner(ownerHwnd)
     }
 
     CreateMain(controller){

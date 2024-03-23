@@ -1,16 +1,9 @@
 #Requires AutoHotkey v2.0
 
 #Include ".\EditProfiles\EditorView.ahk"
-#Include ".\EditProfiles\EditorModel.ahk"
 #Include ".\AddProfiles\AddProfilesView.ahk"
 
 class ProfileRegionController{
-
-    ; Used to manage the preset user profiles, the user is only allowed to add a preset profile as a new profile
-    PresetProfilesManager := ""
-    ; Used to manage the existing user profiles, the user is allowed to edit, delete, and add new profiles
-    ExistingProfilesManager := ""
-    ; A constant which is the path to the preset profiles
 
     currentProfile := ""
     currentProfileIndex := ""
@@ -20,15 +13,11 @@ class ProfileRegionController{
 
     model := ""
     view := ""
-    callback := ""
-
 
     editView := ""
-    editModel := ""
 
 
     addprofileView := ""
-    addprofileModel := ""
 
     __New(model, view){
         this.model := model
@@ -63,14 +52,10 @@ class ProfileRegionController{
     }
 
     CreateEditorView(){
-        this.editModel := EditorModel(this.getProfiles(), this.getCurrentProfile())
-        this.editView := EditorView()
-        this.editView.CreateView(this, this.editModel)
+        this.editView := EditorView(this.GetHwnd())
+        this.editView.CreateView(this)
     }
 
-    HandleRenameProfileButtonClickEvent(){
-        this.editView.CreateRenameProfileInputBox()
-    }
 
     HandleRenameProfile(profileToRename, inputPrompt){
         if inputPrompt.Result = "Cancel"{
@@ -83,7 +68,6 @@ class ProfileRegionController{
         }
         else{
             if(this.model.renameProfile(profileToRename, inputPrompt.Value)){
-                this.editModel.SetProfiles(this.model.getProfiles())
                 this.view.UpdateProfilesDropDownMenu()
                 this.editView.UpdateProfilesDropDownMenu()
                 msgbox("Successfully renamed profile to " . inputPrompt.Value)
@@ -95,15 +79,13 @@ class ProfileRegionController{
         this.editView.CreateDeleteProfileInputBox()
     }
 
-    HandleDeleteProfile(inputPrompt){
+    HandleDeleteProfile(profileToDelete, inputPrompt){
         if inputPrompt.Result = "Cancel"{
             msgbox("Cancelled deleting profile")
             ; Do nothing
         }
         else if (StrLower(inputPrompt.Value) = "yes"){
-            profileToDelete := this.editModel.getCurrentProfile()
             if (this.model.deleteProfile(profileToDelete)){
-                this.editModel.SetProfiles(this.model.getProfiles())
                 this.view.UpdateProfilesDropDownMenu()
                 this.editView.UpdateProfilesDropDownMenu()
                 msgbox("Successfully deleted profile " . profileToDelete)
@@ -118,8 +100,8 @@ class ProfileRegionController{
     }
 
     HandleAddProfileEvent(){
-        this.addprofileView := AddProfilesView()
-        this.addprofileView.CreateView(this, this.model)
+        this.addprofileView := AddProfilesView(this.GetHwnd())
+        this.addprofileView.CreateView(this, this.model.GetPresetProfiles())
     }
 
     HandleAddProfileConfirmedEvent(profileToAdd, profileName){
@@ -131,5 +113,9 @@ class ProfileRegionController{
         else{
             msgbox("Failed to add profile, perhaps a profile with the given name already exists")
         }
+    }
+
+    GetHwnd(){
+        return this.model.getGuiObject().GetHwnd()
     }
 }

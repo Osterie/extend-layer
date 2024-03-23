@@ -13,7 +13,6 @@ class ProfileRegionView{
 
     CreateView(guiObject, controller){
 
-
         this.controller := controller
 
         guiObject.Add("Text", , "Current Profile:")
@@ -59,7 +58,6 @@ class ProfileRegionView{
         }
     }
 
-
     CreateProfilesDropDownMenu(guiObject, profiles, profileIndex){
         
         ; If for some reason a profile is not selected, then select the first one.
@@ -80,9 +78,5 @@ class ProfileRegionView{
         }
 
         return profilesDropDownMenu
-    }
-
-    getProfilesDropDownMenu(){
-        return this.profilesDropDownMenu
     }
 }

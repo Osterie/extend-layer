@@ -58,8 +58,9 @@ class DomainSpecificGui extends Gui{
         return this.Hwnd
     }
 
-    SetOwner(owner){
-        this.opt("+Owner" . owner)
+    SetOwner(ownerHwnd := ""){
+        if (ownerHwnd != ""){
+            this.opt("+Owner" . ownerHwnd)
+        }
     }
-
 }

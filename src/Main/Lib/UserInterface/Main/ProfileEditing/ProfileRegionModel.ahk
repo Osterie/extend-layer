@@ -3,7 +3,7 @@
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FolderManager>
 
-; TODO rename this class, 
+; TODO rename this class, it should be a class pertaining to folders/files
 class ProfileRegionModel{
 
     ; Used to manage the preset user profiles, the user is only allowed to add a preset profile as a new profile
