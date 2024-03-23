@@ -64,6 +64,10 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "EditHotkey"))
     }
 
+    UpdateHotkeys(){
+        
+    }
+
     CreateFunctionSettingsTab(){
         functionsNamesTreeView := TreeViewMaker()
         functionsNamesTreeView.createElementsForGui(this, this.controller.GetActionNames())
@@ -75,7 +79,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         this.settingsValuesListView.AddEventAction("DoubleClick", (*) => this.controller.HandleSettingClicked(this.settingsValuesListView.GetSelectionText()))
     }
 
-    UpdateSettingsForAction(){
+    UpdateSettingsForActions(){
         this.settingsValuesListView.SetNewListViewItems(this.controller.GetSettings())
     }
 

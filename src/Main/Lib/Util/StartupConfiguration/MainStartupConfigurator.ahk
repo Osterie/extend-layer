@@ -9,11 +9,20 @@ Class MainStartupConfigurator{
     KeyboardOverlayInitializerInstance := ""
     HotkeyInitializerInstance := ""
 
+    layersInformation := ""
+    objectRegistry := ""
 
+
+    
+    __New(){
+
+    }
     ; layersInformation is keyboards.json information. It has a layer, for example "Primary" 
     ; and then either "Hotkeys" or "KeyboardOverlay", and then the information for that layer 
     ; (pertaining to hokteys or overlays obviously)
-    __New(layersInformation, objectRegistry){
+    SetInformation(layersInformation, objectRegistry){
+        this.layersInformation := layersInformation
+        this.objectRegistry := objectRegistry
         if (Type(layersInformation) = "KeyboardLayersInfoRegistry" AND Type(objectRegistry) = "ObjectRegistry"){
             this.HotkeyInitializerInstance := HotkeyInitializer(layersInformation, objectRegistry)
             this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(layersInformation, objectRegistry)

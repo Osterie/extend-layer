@@ -37,25 +37,28 @@ Class ExtraKeyboardsAppGuiController{
     ; TODO make sure user cant create multiple popups?
     EditHotkey(listView, indexOfKeyToEdit){
 
+        hotkeyInformation := HotkeyInfo()
+
+        ; hotkeyInformation
         if (indexOfKeyToEdit = 0){
-            emptyHotkeyInformation := HotkeyInfo()
-            this.CreatePopupForHotkeys(emptyHotkeyInformation)
+            ; this.CreatePopupForHotkeys(hotkeyInformation)
         }
         else{
-
-            layerInformation := this.GetCurrentLayerInfo()
-    
-            if (Type(layerInformation) == "HotkeysRegistry"){
-                hotkeyBuild := listView.GetText(indexOfKeyToEdit, 1)
-                hotkeyInformation := this.model.GetHotkeyInfoForCurrentLayer(hotkeyBuild)
-                ; hotkeyAction := listView.GetText(indexOfKeyToEdit, 2)
-                this.CreatePopupForHotkeys(hotkeyInformation)
-            }
-            else if (Type(layerInformation) == "KeyboardOverlayInfo"){
-                ; TODO implement
-                ; popupForConfiguringHotkey.CreatePopupForKeyboardOverlayInfo()
-            }
+            hotkeyBuild := listView.GetText(indexOfKeyToEdit, 1)
+            hotkeyInformation := this.model.GetHotkeyInfoForCurrentLayer(hotkeyBuild)
         }
+
+        layerInformation := this.GetCurrentLayerInfo()
+
+        if (Type(layerInformation) == "HotkeysRegistry"){
+            this.CreatePopupForHotkeys(hotkeyInformation)
+        }
+        else if (Type(layerInformation) == "KeyboardOverlayInfo"){
+            ; TODO implement
+            ; popupForConfiguringHotkey.CreatePopupForKeyboardOverlayInfo()
+        }
+
+
     }
 
     ; TODO move to view
@@ -128,7 +131,7 @@ Class ExtraKeyboardsAppGuiController{
         WinWait("SettingsEditorDialog")
         WinWaitClose
 
-        this.view.UpdateSettingsForAction()
+        this.view.UpdateSettingsForActions()
     }
 
     SettingsEditorDialogSaveButtonEvent(currentFunctionSettings, setting){
