@@ -34,8 +34,6 @@ class SettingsEditorDialog extends DomainSpecificGui{
         SaveButton.onEvent("Click", (*) => this.NotifyListenersSave())
         CancelButton := this.Add("Button", "w100 h20", "Cancel")
         CancelButton.onEvent("Click", (*) =>this.Destroy())
-
-        this.Show()
     }
 
     SubscribeToSaveEvent(event){

@@ -93,6 +93,8 @@ Class ExtraKeyboardsAppGuiController{
             editorForActionSettings.DisableSettingNameEdit()
             editorForActionSettings.SubscribeToSaveEvent(ObjBindMethod(this, "SettingsEditorDialogSaveButtonEvent", currentFunctionSettings))
     
+            editorForActionSettings.show()
+            
             WinWaitClose("Settings Editor Dialog" , , 1000)
     
             this.view.UpdateSettingsForActions()
