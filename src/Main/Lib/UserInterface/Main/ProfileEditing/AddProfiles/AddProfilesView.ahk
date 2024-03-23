@@ -7,26 +7,51 @@ class AddProfilesView extends DomainSpecificGui{
     addProfileButton := ""
 
     __New(ownerHwnd := ""){
-        Super.__New("+Resize +MinSize320x240", "Add Profile")
+        Super.__New("+Resize", "Add Profile")
+        this.SetFont("s10")
         this.SetOwner(ownerHwnd)
     }
 
     CreateView(controller, profiles){
 
-        this.Add("Text", , "Selected Profile:")
-        customProfilesDropDownMenu := this.Add("DropDownList", "ym+1 Choose1", profiles)
+        this.Add("Text", "w150" , "Selected Profile:         ")
 
-        this.Add("Text", "ym+1", "Name of profile to add:")
-        profileNameField := this.Add("Edit", "r1 ym+1", "")
+        customProfilesDropDownMenu := this.Add("DropDownList", "xp yp+20 Choose1", profiles)
+
+        this.Add("Text", "w150 ym", "Name of profile to add:")
+        profileNameField := this.Add("Edit", "r1 xp yp+20", "")
         profileNameField.OnEvent("Change", (*) => this.HandleInputFieldChange(profileNameField.Text))
 
-        this.addProfileButton := this.Add("Button", "Default w80 ym+1", "Add profile")
+
+        this.addProfileButton := this.Add("Button", "Default w80 xp yp+50", "Add profile")
         this.addProfileButton.OnEvent("Click", (*) => controller.HandleAddProfileConfirmedEvent(customProfilesDropDownMenu.Text, profileNameField.Text))
         this.DisableAddProfileButton()
 
-
-        cancelButton := this.Add("Button", "Default w80 ym+1", "Cancel")
+        cancelButton := this.Add("Button", "Default w80 yp ", "Cancel")
         cancelButton.OnEvent("Click", (*) => this.Destroy())
+    }
+    
+    ; CreateView(controller, profiles){
+
+    ;     this.Add("Text", "w150" , "Selected Profile:         ")
+
+    ;     customProfilesDropDownMenu := this.Add("DropDownList", "yp Choose1", profiles)
+
+    ;     this.Add("Text", "w150 xm yp+50", "Name of profile to add:")
+    ;     profileNameField := this.Add("Edit", "r1 yp", "")
+    ;     profileNameField.OnEvent("Change", (*) => this.HandleInputFieldChange(profileNameField.Text))
+
+
+    ;     this.addProfileButton := this.Add("Button", "Default w80 xp yp+50", "Add profile")
+    ;     this.addProfileButton.OnEvent("Click", (*) => controller.HandleAddProfileConfirmedEvent(customProfilesDropDownMenu.Text, profileNameField.Text))
+    ;     this.DisableAddProfileButton()
+
+    ;     cancelButton := this.Add("Button", "Default w80 yp ", "Cancel")
+    ;     cancelButton.OnEvent("Click", (*) => this.Destroy())
+    ; }
+
+    CreateSelectedProfileRegion(){
+        
     }
 
     HandleInputFieldChange(profileNameFieldText){

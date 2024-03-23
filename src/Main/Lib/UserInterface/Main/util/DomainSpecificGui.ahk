@@ -9,21 +9,22 @@ class DomainSpecificGui extends Gui{
         super.__New(options, title, this)
         this.OnEvent('Escape', (*) => this.Destroy())
         this.SetColors()
-        this.SetFont("c6688FF Bold")
+        this.SetFont("c27eaf1 Bold")
     }
     
     SetColors(){
-        this.BackColor := "051336"
+        this.BackColor := "35326b"
 
         ; Top bar or whatever it is called
-        GuiColorsChanger.DwmSetCaptionColor(this, 0x300f45) ; color is in RGB format
+        
+        GuiColorsChanger.DwmSetCaptionColor(this, 0x7800ff) ; color is in RGB format
         GuiColorsChanger.DwmSetTextColor(this, 0x27eaf1)
     }
     
     Add(ControlType , Options := "", Text := ""){
         GuiCtrl := super.Add(ControlType, Options, Text)
 
-        controlColor := "060621"
+        controlColor := "14132b"
         fontColor := "27eaf1"
         GuiColorsChanger.setControlColor(GuiCtrl, controlColor)
         GuiColorsChanger.setControlTextColor(GuiCtrl, fontColor)
