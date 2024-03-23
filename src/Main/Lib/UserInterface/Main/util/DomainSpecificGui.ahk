@@ -59,7 +59,7 @@ class DomainSpecificGui extends Gui{
     }
 
     SetOwner(owner){
-        this.opt("+Owner " . owner)
+        this.opt("+Owner" . owner)
     }
 
 }
