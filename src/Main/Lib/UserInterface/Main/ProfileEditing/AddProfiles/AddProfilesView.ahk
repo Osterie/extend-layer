@@ -16,10 +16,10 @@ class AddProfilesView extends DomainSpecificGui{
 
         this.Add("Text", "w150" , "Selected Profile:         ")
 
-        customProfilesDropDownMenu := this.Add("DropDownList", "xp yp+20 Choose1", profiles)
+        customProfilesDropDownMenu := this.Add("DropDownList", "xp yp+25 Choose1", profiles)
 
         this.Add("Text", "w150 ym", "Name of profile to add:")
-        profileNameField := this.Add("Edit", "r1 xp yp+20", "")
+        profileNameField := this.Add("Edit", "r1 xp yp+25", "")
         profileNameField.OnEvent("Change", (*) => this.HandleInputFieldChange(profileNameField.Text))
 
 
@@ -30,7 +30,7 @@ class AddProfilesView extends DomainSpecificGui{
         cancelButton := this.Add("Button", "Default w80 yp ", "Cancel")
         cancelButton.OnEvent("Click", (*) => this.Destroy())
     }
-    
+
     ; CreateView(controller, profiles){
 
     ;     this.Add("Text", "w150" , "Selected Profile:         ")
