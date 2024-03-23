@@ -67,7 +67,7 @@ Class ExtraKeyboardsAppGuiController{
     ; TODO move to view?
     CreatePopupForHotkeys(hotkeyInformation){
         popupForConfiguringHotkeyModel := HotKeyConfigurationModel(this.GetActiveObjectsRegistry(), this.GetKeyNames(), hotkeyInformation)
-        popupForConfiguringHotkey := HotKeyConfigurationView(this.GetHwnd())
+        popupForConfiguringHotkey := HotKeyConfigurationView("+Resize +MinSize300x280", this.GetHwnd())
         popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
         popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController)
 
@@ -88,7 +88,7 @@ Class ExtraKeyboardsAppGuiController{
             currentFunctionSettings := this.model.GetCurrentFunction()
             selectedSetting := this.model.GetSettingsForCurrentAction().GetSetting(settingName)
     
-            editorForActionSettings := SettingsEditorDialog()
+            editorForActionSettings := SettingsEditorDialog(this.getHwnd())
             editorForActionSettings.CreateControls(selectedSetting)
             editorForActionSettings.DisableSettingNameEdit()
             editorForActionSettings.SubscribeToSaveEvent(ObjBindMethod(this, "SettingsEditorDialogSaveButtonEvent", currentFunctionSettings))

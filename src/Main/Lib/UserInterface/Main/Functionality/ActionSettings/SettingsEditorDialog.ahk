@@ -9,9 +9,14 @@ class SettingsEditorDialog extends DomainSpecificGui{
 
     saveEventSubscribers := ""
 
-    __New(){
+    __New(ownerHwnd := ""){
         this.saveEventSubscribers := Array()
         Super.__New("+Resize", "Settings Editor Dialog")
+
+        if (ownerHwnd != ""){
+            this.SetOwner(ownerHwnd)
+        }
+        
     }
 
     CreateControls(setting){
