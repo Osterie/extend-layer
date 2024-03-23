@@ -9,11 +9,17 @@ Class ExtraKeyboardsAppGuiModel{
 
     keyNames := ""
     currentLayer := ""
+    currentFunction := ""
     activeObjectsRegistry := ""
     keyboardLayerIdentifiers := ""
     keyboardLayersInfoRegister := ""
 
+    actionSettings := ""
+    
+
     __New(activeObjectsRegistry, keyboardLayersInfoRegister, keyNames){
+        ReaderForActionSettings := ActionSettingsReader(FilePaths.GetPathToCurrentSettings())
+        this.actionSettings := ReaderForActionSettings.ReadSettings()
         
         this.keyNames := keyNames
         this.activeObjectsRegistry := activeObjectsRegistry
@@ -42,28 +48,25 @@ Class ExtraKeyboardsAppGuiModel{
         ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() . "\Keyboards.json")
     }
 
-    GetFunctionNames(){
-        pathToObjectsIniFile := this.GetPathToCurrentSettings()
-        ; TODO this should be abstracted, create a method and stuff, i DONT want IniFileReader here.
-        fileReader := IniFileReader()
-        functionsNames := []
-        try{
-            functionsNames := fileReader.ReadSectionNamesToArray(pathToObjectsIniFile)
-        }
-        catch{
-            functionName := []
-        }
-        
-        return functionsNames
+    GetActionNames(){
+        return this.actionSettings.GetActionNames()
     }
 
-    GetSettingsForFunction(functionName){
-        ; TODO perhaps return an object of type action/function setting?
-        iniFileRead := IniFileReader()
-        currentSettingsSettingValuePair := iniFileRead.ReadSectionKeyPairValuesIntoTwoDimensionalArray(this.GetPathToCurrentSettings(), functionName)
-        return currentSettingsSettingValuePair
+    GetSettingsForActionAsArray(actionName){
+        return this.actionSettings.GetSettingsForActionAsArray(actionName)
     }
 
+    GetSettingsForCurrentActionAsArray(){
+        return this.GetSettingsForActionAsArray(this.GetCurrentFunction())
+    }
+
+    GetSettingsForAction(actionName){
+        return this.actionSettings.GetSettingsForAction(actionName)
+    }
+
+    GetSettingsForCurrentAction(){
+        return this.GetSettingsForAction(this.GetCurrentFunction())
+    }
 
     GetFriendlyHotkeysForCurrentLayer(){
         itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer)
@@ -78,6 +81,14 @@ Class ExtraKeyboardsAppGuiModel{
 
     GetCurrentLayer(){
         return this.currentLayer
+    }
+
+    SetCurrentFunction(functionName){
+        this.currentFunction := functionName
+    }
+
+    GetCurrentFunction(){
+        return this.currentFunction
     }
 
     GetKeyboardLayerIdentifiers(){
@@ -96,13 +107,9 @@ Class ExtraKeyboardsAppGuiModel{
         return this.keyNames
     }
 
-    ChangeFunctionSetting(settingName, settingValue, currentFunctionSettings){
-        try{
-            IniWrite(settingValue, this.GetPathToCurrentSettings(), currentFunctionSettings, settingName)
-        }
-        catch{
-            MsgBox("Failed to save settings")
-        }
+    ChangeFunctionSetting(setting, actionName){
+        this.actionSettings.ChangeActionSetting(actionName, this.GetPathToCurrentSettings(), setting)
+        
     }
 
     GetPathToCurrentSettings(){

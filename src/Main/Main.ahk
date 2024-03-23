@@ -4,6 +4,9 @@
 ; [^ = Ctrl] [+ = Shift] [! = Alt] [# = Win]
 #Requires Autohotkey v2.0
 
+#Include <Prototyping\Array>
+#Include <Prototyping\Map>
+
 #Include "<UserInterface\ExtraKeyboardsApp>"
 
 #Include <Util\StartupConfiguration\ObjectRegistryInitializer>
@@ -14,6 +17,8 @@
 
 #Include <Util\MetaInfo\MetaInfoStorage\Objects\ObjectRegistry>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+
+#Include <Util\MetaInfo\MetaInfoReading\ActionSettingsReader>
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -55,21 +60,27 @@ Class Main{
     ObjectRegister := ObjectRegistry()
     KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
 
+    scriptRunning := false
 
     __New(){
-
     }
 
     ; Main method used to start the script.
     Start(){
         try{
+            if (this.scriptRunning){
+                this.SetHotkeysForAllLayers(false)
+            }
+            ; TODO check if script is already running
+            ; TODO if script is already running, show a message box and exit
             this.RunLogicalStartup()
         }
         catch Error as e{
-            ; MsgBox("Error in running startup: " e.Message " " e.Line " " e.File " " e.Extra " " e.Stack " " e.What)
+            MsgBox("Error in running startup: " e.Message " " e.Line " " e.File " " e.Extra " " e.Stack " " e.What)
         }
         finally{
             this.RunAppGui()
+            this.scriptRunning := true
         }
     }
 
@@ -87,7 +98,7 @@ Class Main{
 
     RunMainStartup(enableHotkeys := true){
         this.CreateKeyboardOverlays()
-        this.CreateHotkeysForAllLayers(enableHotkeys)
+        this.SetHotkeysForAllLayers(enableHotkeys)
     }
 
     InitializeObjectRegistry(){
@@ -110,7 +121,9 @@ Class Main{
 
     InitializeMainStartupConfigurator(){
         ; This is used to read ini files, and create hotkeys from them
-        this.StartupConfigurator := MainStartupConfigurator(this.KeyboardLayersInfoRegister, this.ObjectRegister)
+        this.StartupConfigurator := MainStartupConfigurator()
+
+        this.StartupConfigurator.SetInformation(this.KeyboardLayersInfoRegister, this.ObjectRegister)
     }
     
     CreateKeyboardOverlays(){
@@ -118,7 +131,7 @@ Class Main{
         this.StartupConfigurator.ReadAllKeyboardOverlays()
     }
 
-    CreateHotkeysForAllLayers(enableHotkeys := true){
+    SetHotkeysForAllLayers(enableHotkeys := true){
         this.StartupConfigurator.CreateGlobalHotkeysForAllKeyboardOverlays()
 
         ; Reads and initializes all the hotkeys which are active for every keyboard layer.
@@ -174,3 +187,10 @@ MainScript.Start()
 ; Used to show user the script is enabled
 ToolTip "Script enabled!"
 SetTimer () => ToolTip(), -3000
+
+
+IsRunning(Path) {
+    SetTitleMatchMode 2
+    DetectHiddenWindows 1
+    return !!WinExist(Path)
+}

@@ -57,4 +57,9 @@ class DomainSpecificGui extends Gui{
     GetHwnd(){
         return this.Hwnd
     }
+
+    SetOwner(owner){
+        this.opt("+Owner" . owner)
+    }
+
 }

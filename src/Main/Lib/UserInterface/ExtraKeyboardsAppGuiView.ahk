@@ -15,6 +15,9 @@
 ; TODO everything should inherit from a base gui class which fixes the colors and such of all the guis.
 Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
 
+    settingsValuesListView := ""
+    hotkeysListView := ""
+
     __New(){
         super.__New("+Resize +MinSize920x480", "Extra Keyboards App")
     }
@@ -55,23 +58,44 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         keyboardLayoutChanger := TreeViewMaker()
         keyboardLayoutChanger.createElementsForGui(this, this.controller.GetKeyboardLayerIdentifiers())
         
-        listViewControl := ListViewMaker()
-        listViewControl.CreateListView(this, ["KeyCombo","Action"])
+        this.hotkeysListView := ListViewMaker()
+        this.hotkeysListView.CreateListView(this, "r20 w600 x+10 -multi" , ["KeyCombo","Action"])
         
-        keyboardLayoutChanger.AddEventAction("ItemSelect", (*) => this.controller.ShowHotkeysForLayer(listViewControl, keyboardLayoutChanger.GetSelectionText()))
-        listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "EditHotkey"))
+        keyboardLayoutChanger.AddEventAction("ItemSelect", (*) => this.controller.ShowHotkeysForLayer(keyboardLayoutChanger.GetSelectionText()))
+        this.hotkeysListView.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "EditHotkey"))
+    }
+
+    UpdateHotkeys(){
+        this.hotkeysListView.SetNewListViewItems(this.controller.GetHotkeys())
     }
 
     CreateFunctionSettingsTab(){
         functionsNamesTreeView := TreeViewMaker()
-        functionsNamesTreeView.createElementsForGui(this, this.controller.GetFunctionNames())
+        functionsNamesTreeView.createElementsForGui(this, this.controller.GetActionNames())
         
-        settingsValuesListView := ListViewMaker()
-        settingsValuesListView.CreateListView(this, ["Setting","Value"])
+        this.settingsValuesListView := ListViewMaker()
+        this.settingsValuesListView.CreateListView(this, "r20 w600 x+10 -multi",  ["Setting","Value"])
         
-        functionsNamesTreeView.AddEventAction("ItemSelect", (*) => this.controller.HandleFunctionFromTreeViewSelected(settingsValuesListView, functionsNamesTreeView.GetSelectionText()))
-        settingsValuesListView.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "HandleSettingClicked", functionsNamesTreeView))
+        functionsNamesTreeView.AddEventAction("ItemSelect", (*) => this.controller.ShowSettingsForAction(functionsNamesTreeView.GetSelectionText()))
+        this.settingsValuesListView.AddEventAction("DoubleClick", (*) => this.controller.HandleSettingClicked(this.settingsValuesListView.GetSelectionText()))
     }
+
+    UpdateSettingsForActions(){
+        this.settingsValuesListView.SetNewListViewItems(this.controller.GetSettings())
+    }
+
+    
+
+    ; CreateTabGeneral(){
+    ;     treeViewControl := TreeViewMaker()
+    ;     treeViewControl.createElementsForGui(this, treeViewItems)
+        
+    ;     listViewMadeFromTreeView := ListViewMaker()
+    ;     listViewMadeFromTreeView.CreateListView(this, listViewHeaders)
+        
+    ;     treeViewControl.AddEventAction("ItemSelect", (*) => treeViewItemClickedCallback(listViewMadeFromTreeView, treeViewControl.GetSelectionText()))
+    ;     listViewMadeFromTreeView.AddEventAction("DoubleClick", listViewItemDoubleClickedCallback(treeViewControl))
+    ; }
 
     CreateDocumentationTab(){
         this.Add("Edit", "r20")  ; r20 means 20 rows tall.

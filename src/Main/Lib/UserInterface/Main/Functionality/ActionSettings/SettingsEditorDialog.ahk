@@ -9,12 +9,20 @@ class SettingsEditorDialog extends DomainSpecificGui{
 
     saveEventSubscribers := ""
 
-    __New(){
+    __New(ownerHwnd := ""){
         this.saveEventSubscribers := Array()
-        Super.__New("+Resize", "Settings")
+        Super.__New("+Resize", "Settings Editor Dialog")
+
+        if (ownerHwnd != ""){
+            this.SetOwner(ownerHwnd)
+        }
+        
     }
 
-    CreateControls(settingName, settingValue){
+    CreateControls(setting){
+
+        settingName := setting.GetSettingName()
+        settingValue := setting.GetSettingValue()
         
         this.Add("Text", "w300 h20", "Setting:")
         this.settingNameEdit := this.Add("Edit", "xm w300 h20", settingName)
@@ -26,8 +34,6 @@ class SettingsEditorDialog extends DomainSpecificGui{
         SaveButton.onEvent("Click", (*) => this.NotifyListenersSave())
         CancelButton := this.Add("Button", "w100 h20", "Cancel")
         CancelButton.onEvent("Click", (*) =>this.Destroy())
-
-        this.Show()
     }
 
     SubscribeToSaveEvent(event){
@@ -36,12 +42,16 @@ class SettingsEditorDialog extends DomainSpecificGui{
 
     NotifyListenersSave(){
         Loop this.saveEventSubscribers.Length{
-            this.saveEventSubscribers[A_Index](this.GetSetting(), this.GetSettingValue())
+            this.saveEventSubscribers[A_Index](this.GetSetting())
         }
         this.Destroy()
     }
 
     GetSetting(){
+        return Setting(this.getSettingName(), this.getSettingValue())
+    }
+
+    GetSettingName(){
         return this.settingNameEdit.Value
     }
     

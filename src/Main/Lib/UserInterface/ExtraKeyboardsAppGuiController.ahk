@@ -7,6 +7,8 @@
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationController.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationModel.ahk"
 
+; #Include <Util\MetaInfo\MetaInfoStorage\Settings\Setting>
+
 Class ExtraKeyboardsAppGuiController{
 
     MainScript := ""
@@ -24,53 +26,85 @@ Class ExtraKeyboardsAppGuiController{
         this.view.Destroy()
     }
 
-    ShowHotkeysForLayer(listViewControl, currentLayer){
+    ShowHotkeysForLayer(currentLayer){
         
         this.model.SetCurrentLayer(currentLayer)
-        hotkeysForLayer := this.model.GetFriendlyHotkeysForCurrentLayer()
-
-        listViewControl.SetNewListViewItems(hotkeysForLayer)
+        this.view.UpdateHotkeys()
     }
 
     ; TODO make sure user cant create multiple popups?
     EditHotkey(listView, indexOfKeyToEdit){
 
-        if (indexOfKeyToEdit = 0){
-            emptyHotkeyInformation := HotkeyInfo()
-            this.CreatePopupForHotkeys(emptyHotkeyInformation)
-        }
-        else{
+        layerInformation := this.GetCurrentLayerInfo()
 
-            layerInformation := this.GetCurrentLayerInfo()
+        if (Type(layerInformation) == "HotkeysRegistry"){
+            hotkeyInformation := HotkeyInfo()
     
-            if (Type(layerInformation) == "HotkeysRegistry"){
+            ; hotkeyInformation
+            if (indexOfKeyToEdit = 0){
+                ; this.CreatePopupForHotkeys(hotkeyInformation)
+            }
+            else{
                 hotkeyBuild := listView.GetText(indexOfKeyToEdit, 1)
                 hotkeyInformation := this.model.GetHotkeyInfoForCurrentLayer(hotkeyBuild)
-                ; hotkeyAction := listView.GetText(indexOfKeyToEdit, 2)
-                this.CreatePopupForHotkeys(hotkeyInformation)
             }
-            else if (Type(layerInformation) == "KeyboardOverlayInfo"){
-                ; TODO implement
-                ; popupForConfiguringHotkey.CreatePopupForKeyboardOverlayInfo()
-            }
+            this.CreatePopupForHotkeys(hotkeyInformation)
         }
+        else if (Type(layerInformation) == "KeyboardOverlayInfo"){
+            ; TODO implement
+            ; popupForConfiguringHotkey.CreatePopupForKeyboardOverlayInfo()
+        }
+
+        WinWaitClose("Hotkey Configuration" , , 1000)
+        ; else if (WinWaitActive("Keyboard Overlay Configuration" , , 1000)){
+        ;     WinWaitClose()
+        ; }
+        this.view.UpdateHotkeys()
+
     }
 
-    ; TODO move to view
+    ; TODO move to view?
     CreatePopupForHotkeys(hotkeyInformation){
         popupForConfiguringHotkeyModel := HotKeyConfigurationModel(this.GetActiveObjectsRegistry(), this.GetKeyNames(), hotkeyInformation)
-        popupForConfiguringHotkey := HotKeyConfigurationView(this.GetHwnd())
+        popupForConfiguringHotkey := HotKeyConfigurationView("+Resize +MinSize300x280", this.GetHwnd())
         popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
         popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController)
+
+        popupForConfiguringHotkey.getHwnd()
         
         
         popupForConfiguringHotkeyController.subscribeToSaveEvent(ObjBindMethod(this, "changeHotkeys"))
         popupForConfiguringHotkeyController.subscribeToDeleteEvent(ObjBindMethod(this, "deleteHotkey"))
-
-        ; TODO add delete button event.
     }
 
-    changeHotkeys(hotkeyInformation, originalHotkeyKey){
+    ShowSettingsForAction(functionName){
+        this.model.SetCurrentFunction(functionName)
+        this.view.UpdateSettingsForActions()
+    }
+
+    HandleSettingClicked(settingName){
+        if (settingName != ""){
+            currentFunctionSettings := this.model.GetCurrentFunction()
+            selectedSetting := this.model.GetSettingsForCurrentAction().GetSetting(settingName)
+    
+            editorForActionSettings := SettingsEditorDialog(this.getHwnd())
+            editorForActionSettings.CreateControls(selectedSetting)
+            editorForActionSettings.DisableSettingNameEdit()
+            editorForActionSettings.SubscribeToSaveEvent(ObjBindMethod(this, "SettingsEditorDialogSaveButtonEvent", currentFunctionSettings))
+    
+            editorForActionSettings.show()
+
+            WinWaitClose("Settings Editor Dialog" , , 1000)
+    
+            this.view.UpdateSettingsForActions()
+        }
+    }
+
+    SettingsEditorDialogSaveButtonEvent(currentFunctionSettings, setting){
+        this.model.ChangeFunctionSetting(setting, currentFunctionSettings)
+    }
+
+    ChangeHotkeys(hotkeyInformation, originalHotkeyKey){
         newHotkeyKey := hotkeyInformation.getHotkeyName()
 
 
@@ -98,7 +132,7 @@ Class ExtraKeyboardsAppGuiController{
         this.MainScript.RunLogicalStartup()
     }
 
-    deleteHotkey(hotkeyKey){
+    DeleteHotkey(hotkeyKey){
         try{
             this.model.DeleteHotkey(hotkeyKey)
             msgbox("Deleted hotkey")
@@ -109,24 +143,12 @@ Class ExtraKeyboardsAppGuiController{
         this.MainScript.RunLogicalStartup()
     }
 
-    HandleFunctionFromTreeViewSelected(listViewControl, functionName){
-        listViewControl.SetNewListViewItems(this.model.GetSettingsForFunction(functionName))
+    GetSettings(){
+        return this.model.GetSettingsForCurrentActionAsArray()
     }
 
-    HandleSettingClicked(functionsNamesTreeView, listView, rowNumber){
-        currentFunctionSettings := functionsNamesTreeView.GetSelectionText()
-
-        settingName := listView.GetText(rowNumber, 1)
-        settingValue := listView.GetText(rowNumber, 2)
-
-        editorForActionSettings := SettingsEditorDialog()
-        editorForActionSettings.CreateControls(settingName, settingValue)
-        editorForActionSettings.DisableSettingNameEdit()
-        editorForActionSettings.SubscribeToSaveEvent(ObjBindMethod(this, "SettingsEditorDialogSaveButtonEvent", currentFunctionSettings))
-    }
-
-    SettingsEditorDialogSaveButtonEvent(currentFunctionSettings, settingName, settingValue){
-        this.model.ChangeFunctionSetting(settingName, settingValue, currentFunctionSettings)
+    GetHotkeys(){
+        return this.model.GetFriendlyHotkeysForCurrentLayer()
     }
 
     GetPathToCurrentSettings(){
@@ -153,8 +175,8 @@ Class ExtraKeyboardsAppGuiController{
         return this.model.GetKeyNames()
     }
 
-    GetFunctionNames(){
-        return this.model.GetFunctionNames()
+    GetActionNames(){
+        return this.model.GetActionNames()
     }
 
     GetHwnd(){
