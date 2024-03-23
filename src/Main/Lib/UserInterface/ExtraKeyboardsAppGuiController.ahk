@@ -26,12 +26,10 @@ Class ExtraKeyboardsAppGuiController{
         this.view.Destroy()
     }
 
-    ShowHotkeysForLayer(listViewControl, currentLayer){
+    ShowHotkeysForLayer(currentLayer){
         
         this.model.SetCurrentLayer(currentLayer)
-        hotkeysForLayer := this.model.GetFriendlyHotkeysForCurrentLayer()
-
-        listViewControl.SetNewListViewItems(hotkeysForLayer)
+        this.view.UpdateHotkeys()
     }
 
     ; TODO make sure user cant create multiple popups?
@@ -58,24 +56,54 @@ Class ExtraKeyboardsAppGuiController{
             ; popupForConfiguringHotkey.CreatePopupForKeyboardOverlayInfo()
         }
 
+        WinWaitClose("Hotkey Configuration" , , 1000)
+        ; else if (WinWaitActive("Keyboard Overlay Configuration" , , 1000)){
+        ;     WinWaitClose()
+        ; }
+        this.view.UpdateHotkeys()
 
     }
 
-    ; TODO move to view
+    ; TODO move to view?
     CreatePopupForHotkeys(hotkeyInformation){
         popupForConfiguringHotkeyModel := HotKeyConfigurationModel(this.GetActiveObjectsRegistry(), this.GetKeyNames(), hotkeyInformation)
         popupForConfiguringHotkey := HotKeyConfigurationView(this.GetHwnd())
         popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
         popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController)
+
+        popupForConfiguringHotkey.getHwnd()
         
         
         popupForConfiguringHotkeyController.subscribeToSaveEvent(ObjBindMethod(this, "changeHotkeys"))
         popupForConfiguringHotkeyController.subscribeToDeleteEvent(ObjBindMethod(this, "deleteHotkey"))
-
-        ; TODO add delete button event.
     }
 
-    changeHotkeys(hotkeyInformation, originalHotkeyKey){
+    ShowSettingsForAction(functionName){
+        this.model.SetCurrentFunction(functionName)
+        this.view.UpdateSettingsForActions()
+    }
+
+    HandleSettingClicked(settingName){
+        if (settingName != ""){
+            currentFunctionSettings := this.model.GetCurrentFunction()
+            selectedSetting := this.model.GetSettingsForCurrentAction().GetSetting(settingName)
+    
+            editorForActionSettings := SettingsEditorDialog()
+            editorForActionSettings.CreateControls(selectedSetting)
+            editorForActionSettings.DisableSettingNameEdit()
+            editorForActionSettings.SubscribeToSaveEvent(ObjBindMethod(this, "SettingsEditorDialogSaveButtonEvent", currentFunctionSettings))
+    
+            WinWaitClose("Settings Editor Dialog" , , 1000)
+    
+            this.view.UpdateSettingsForActions()
+        }
+    }
+
+    SettingsEditorDialogSaveButtonEvent(currentFunctionSettings, setting){
+        this.model.ChangeFunctionSetting(setting, currentFunctionSettings)
+    }
+
+    ChangeHotkeys(hotkeyInformation, originalHotkeyKey){
         newHotkeyKey := hotkeyInformation.getHotkeyName()
 
 
@@ -103,7 +131,7 @@ Class ExtraKeyboardsAppGuiController{
         this.MainScript.RunLogicalStartup()
     }
 
-    deleteHotkey(hotkeyKey){
+    DeleteHotkey(hotkeyKey){
         try{
             this.model.DeleteHotkey(hotkeyKey)
             msgbox("Deleted hotkey")
@@ -114,32 +142,12 @@ Class ExtraKeyboardsAppGuiController{
         this.MainScript.RunLogicalStartup()
     }
 
-    ShowSettingsForAction(listViewControl, functionName){
-        this.model.SetCurrentFunction(functionName)
-        listViewControl.SetNewListViewItems(this.GetSettings())
-    }
-
-    HandleSettingClicked(settingName){
-        currentFunctionSettings := this.model.GetCurrentFunction()
-        selectedSetting := this.model.GetSettingsForCurrentAction().GetSetting(settingName)
-
-        editorForActionSettings := SettingsEditorDialog()
-        editorForActionSettings.CreateControls(selectedSetting)
-        editorForActionSettings.DisableSettingNameEdit()
-        editorForActionSettings.SubscribeToSaveEvent(ObjBindMethod(this, "SettingsEditorDialogSaveButtonEvent", currentFunctionSettings))
-
-        WinWait("SettingsEditorDialog")
-        WinWaitClose
-
-        this.view.UpdateSettingsForActions()
-    }
-
-    SettingsEditorDialogSaveButtonEvent(currentFunctionSettings, setting){
-        this.model.ChangeFunctionSetting(setting, currentFunctionSettings)
-    }
-
     GetSettings(){
         return this.model.GetSettingsForCurrentActionAsArray()
+    }
+
+    GetHotkeys(){
+        return this.model.GetFriendlyHotkeysForCurrentLayer()
     }
 
     GetPathToCurrentSettings(){

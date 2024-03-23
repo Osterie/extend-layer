@@ -16,6 +16,7 @@
 Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
 
     settingsValuesListView := ""
+    hotkeysListView := ""
 
     __New(){
         super.__New("+Resize +MinSize920x480", "Extra Keyboards App")
@@ -57,15 +58,15 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         keyboardLayoutChanger := TreeViewMaker()
         keyboardLayoutChanger.createElementsForGui(this, this.controller.GetKeyboardLayerIdentifiers())
         
-        listViewControl := ListViewMaker()
-        listViewControl.CreateListView(this, ["KeyCombo","Action"])
+        this.hotkeysListView := ListViewMaker()
+        this.hotkeysListView.CreateListView(this, "r20 w600 x+10 -multi" , ["KeyCombo","Action"])
         
-        keyboardLayoutChanger.AddEventAction("ItemSelect", (*) => this.controller.ShowHotkeysForLayer(listViewControl, keyboardLayoutChanger.GetSelectionText()))
-        listViewControl.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "EditHotkey"))
+        keyboardLayoutChanger.AddEventAction("ItemSelect", (*) => this.controller.ShowHotkeysForLayer(keyboardLayoutChanger.GetSelectionText()))
+        this.hotkeysListView.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "EditHotkey"))
     }
 
     UpdateHotkeys(){
-        
+        this.hotkeysListView.SetNewListViewItems(this.controller.GetHotkeys())
     }
 
     CreateFunctionSettingsTab(){
@@ -73,9 +74,9 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         functionsNamesTreeView.createElementsForGui(this, this.controller.GetActionNames())
         
         this.settingsValuesListView := ListViewMaker()
-        this.settingsValuesListView.CreateListView(this, ["Setting","Value"])
+        this.settingsValuesListView.CreateListView(this, "r20 w600 x+10 -multi",  ["Setting","Value"])
         
-        functionsNamesTreeView.AddEventAction("ItemSelect", (*) => this.controller.ShowSettingsForAction(this.settingsValuesListView, functionsNamesTreeView.GetSelectionText()))
+        functionsNamesTreeView.AddEventAction("ItemSelect", (*) => this.controller.ShowSettingsForAction(functionsNamesTreeView.GetSelectionText()))
         this.settingsValuesListView.AddEventAction("DoubleClick", (*) => this.controller.HandleSettingClicked(this.settingsValuesListView.GetSelectionText()))
     }
 

@@ -11,11 +11,11 @@ class ListViewMaker{
         ; Empty
     }
 
-    CreateListView(guiObject, columnNames){
+    CreateListView(guiObject, options, columnNames){
 
         this.columnNames := columnNames
         
-        this.listView := guiObject.Add("ListView", "r20 w600 x+10", columnNames)
+        this.listView := guiObject.Add("ListView", options, columnNames)
 
         ; Attach the ImageLists to the ListView so that it can later display the icons:
         this.listView.SetImageList(this.getImageList())
@@ -73,6 +73,13 @@ class ListViewMaker{
     }
 
     GetSelectionText(columnNumber := 1){
-        return this.listView.GetText(this.listView.GetNext( , "Focused"), columnNumber)
+        selectedText := ""
+        if (this.listView.GetNext( , "Focused") = 0){
+            selectedText := ""
+        }
+        else{
+            selectedText := this.listView.GetText(this.listView.GetNext( , "Focused"), columnNumber)
+        }
+        return selectedText
     }
 }

@@ -13,7 +13,7 @@ class HotKeyConfigurationView extends DomainSpecificGui{
     model := ""
 
     __New(ownerHwnd := ""){
-        super.__New("+Resize +MinSize300x280 " . "+Owner" ownerHwnd)
+        super.__New("+Resize +MinSize300x280 " . "+Owner" ownerHwnd, "Hotkey Configuration")
     }
 
     CreateMain(controller){
