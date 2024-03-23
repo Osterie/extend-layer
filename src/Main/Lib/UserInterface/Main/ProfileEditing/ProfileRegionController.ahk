@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include ".\EditProfiles\EditorView.ahk"
-#Include ".\AddProfiles\AddProfilesView.ahk"
+#Include ".\AddProfiles\AddProfileDialog.ahk"
 
 class ProfileRegionController{
 
@@ -100,7 +100,7 @@ class ProfileRegionController{
     }
 
     HandleAddProfileEvent(){
-        this.addprofileView := AddProfilesView(this.GetHwnd())
+        this.addprofileView := AddProfileDialog(this.GetHwnd())
         this.addprofileView.CreateView(this, this.model.GetPresetProfiles())
         this.addprofileView.Show()
     }

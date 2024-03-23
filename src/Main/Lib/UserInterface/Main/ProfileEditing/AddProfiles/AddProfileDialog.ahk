@@ -2,7 +2,7 @@
 
 #Include <UserInterface\Main\Util\DomainSpecificGui>
 
-class AddProfilesView extends DomainSpecificGui{
+class AddProfileDialog extends DomainSpecificGui{
 
     addProfileButton := ""
 
