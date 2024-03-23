@@ -47,15 +47,10 @@ class ProfileRegionController{
         this.model.setCurrentProfile(profileSelected)
     }
 
-    HandleEditProfilesEvent(*){
-        this.CreateEditorView()
-    }
-
-    CreateEditorView(){
+    doOpenEditProfileView(){
         this.editView := EditorView(this.GetHwnd())
         this.editView.CreateView(this)
     }
-
 
     HandleRenameProfile(profileToRename, inputPrompt){
         if inputPrompt.Result = "Cancel"{
@@ -73,10 +68,6 @@ class ProfileRegionController{
                 msgbox("Successfully renamed profile to " . inputPrompt.Value)
             }
         }
-    }
-
-    HandleDeleteProfileButtonClickEvent(){
-        this.editView.CreateDeleteProfileInputBox()
     }
 
     HandleDeleteProfile(profileToDelete, inputPrompt){
@@ -99,9 +90,10 @@ class ProfileRegionController{
         }
     }
 
-    HandleAddProfileEvent(){
+    doOpenAddProfileDialog(){
         this.addprofileView := AddProfileDialog(this.GetHwnd())
-        this.addprofileView.CreateView(this, this.model.GetPresetProfiles())
+        this.addprofileView.CreateView(this.model.GetPresetProfiles())
+        this.addProfileView.SubscribeToProfileAddedEvent(ObjBindMethod(this, "HandleAddProfileConfirmedEvent"))
         this.addprofileView.Show()
     }
 
