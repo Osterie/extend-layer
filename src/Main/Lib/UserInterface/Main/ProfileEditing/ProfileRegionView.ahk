@@ -10,6 +10,7 @@ class ProfileRegionView{
 
     profileChangedEventSubscribers := Array()
 
+    guiHwnd := ""
 
     CreateView(guiObject, controller){
 
@@ -21,8 +22,7 @@ class ProfileRegionView{
         currentProfileIndex := controller.getCurrentProfileIndex()
         this.profilesDropDownMenu := this.createProfilesDropDownMenu(guiObject, profiles, currentProfileIndex)
         
-        this.profilesDropDownMenu.OnEvent("Change", ObjBindMethod(controller, "HandleProfileChangedEvent"))
-        this.profilesDropDownMenu.OnEvent("Change", (*) => this.NotifyListenersProfileChanged())
+        this.profilesDropDownMenu.OnEvent("Change", (*) => this.NotifyListenersProfileChanged(this.profilesDropDownMenu.Text))
 
 
         editProfilesButton := guiObject.Add("Button", "Default w80 ym+1", "Edit profiles")
@@ -36,13 +36,14 @@ class ProfileRegionView{
         ; importProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleImportProfileEvent")())
         ; exportProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleExportProfileEvent")())
 
+        this.guiHwnd := guiObject.GetHwnd()
               
         guiObject.Show()
     }
 
-    NotifyListenersProfileChanged(){
+    NotifyListenersProfileChanged(newProfileName){
         for (event in this.profileChangedEventSubscribers){
-            event()
+            event(newProfileName)
         }
     }
 
@@ -78,5 +79,9 @@ class ProfileRegionView{
         }
 
         return profilesDropDownMenu
+    }
+
+    GetHwnd(){
+        return this.guiHwnd
     }
 }

@@ -90,7 +90,6 @@ class FolderManager{
 
     DeleteFolder(folderName) {
 
-
         folderDeleted := false
         
         if (this.folders.isInRegistry(folderName)) {

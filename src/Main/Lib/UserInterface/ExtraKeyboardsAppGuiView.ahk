@@ -33,11 +33,11 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
     }
 
     CreateProfileEditor(){
-        profileModel := ProfileRegionModel(this)
+        profileModel := ProfileRegionModel()
         profileView := ProfileRegionView()
         profileView.SubscribeToProfileChangedEvent(ObjBindMethod(this.controller, "HandleProfileChangedEvent"))
         profileController := ProfileRegionController(profileModel, profileView)
-        profileController.CreateView()
+        profileController.CreateView(this)
     }
 
     CreateTabs(){

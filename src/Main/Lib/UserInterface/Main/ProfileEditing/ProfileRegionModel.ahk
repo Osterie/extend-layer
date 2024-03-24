@@ -12,70 +12,30 @@ class ProfileRegionModel{
     ExistingProfilesManager := ""
     ; A constant which is the path to the preset profiles
 
-    ; TODO dont need these
-    PATH_TO_EMPTY_PROFILE := ""
-    PATH_TO_PRESET_PROFILES := ""
-    PATH_TO_EXISTING_PROFILES := ""
-    PATH_TO_META_FILE := ""
-
-    currentProfile := ""
-
-    ; Gui part
-    profilesDropDownMenu := ""
-
-    profiles := ""
-
-    guiObject := ""
-
-
-    __New(guiObject){
-
-        this.guiObject := guiObject
-        this.PATH_TO_META_FILE := FilePaths.GetPathToMetaFile()
-        this.PATH_TO_EXISTING_PROFILES := FilePaths.GetPathToProfiles()
-        this.PATH_TO_EMPTY_PROFILE := FilePaths.GetPathToEmptyProfile()
-        this.PATH_TO_PRESET_PROFILES := FilePaths.GetPathToPresetProfiles()
-
+    __New(){
 
         this.ExistingProfilesManager := FolderManager()
         this.PresetProfilesManager := FolderManager()
 
-        this.PresetProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_PRESET_PROFILES)
-        this.PresetProfilesManager.addFolderToRegistry("EmptyProfile", this.PATH_TO_EMPTY_PROFILE)
-        this.ExistingProfilesManager.addSubFoldersToRegistryFromFolder(this.PATH_TO_EXISTING_PROFILES)
+        this.PresetProfilesManager.addSubFoldersToRegistryFromFolder(FilePaths.GetPathToPresetProfiles())
+        this.PresetProfilesManager.addFolderToRegistry("EmptyProfile", FilePaths.GetPathToEmptyProfile())
+        this.ExistingProfilesManager.addSubFoldersToRegistryFromFolder(FilePaths.GetPathToProfiles())
 
-        this.currentProfile := iniRead(this.PATH_TO_META_FILE, "General", "activeUserProfile")
-
-        this.profiles := this.ExistingProfilesManager.getFolderNames()
-
-
-    }
-
-    updateProfiles(){
-        this.profiles := this.ExistingProfilesManager.getFolderNames()
-    }
-
-    getGuiObject(){
-        return this.guiObject
     }
 
     getProfiles(){
-        return this.profiles
+        return this.ExistingProfilesManager.getFolderNames()
     }
 
     getPresetProfiles(){
         return this.PresetProfilesManager.getFolderNames()
     }
 
-    setCurrentProfile(profileName){
-        this.currentProfile := profileName
-        iniWrite(this.currentProfile, this.PATH_TO_META_FILE, "General", "activeUserProfile")
-    }
-
     getCurrentProfileIndex(){
         currentProfileIndex := -1
-        Loop this.profiles.Length{
-            if (this.profiles[A_Index] = FilePaths.GetCurrentProfile()){
+        profiles := this.getProfiles()
+        Loop profiles.Length{
+            if (profiles[A_Index] = FilePaths.GetCurrentProfile()){
                 currentProfileIndex := A_Index
             }
         }
@@ -86,8 +46,7 @@ class ProfileRegionModel{
         renamedSuccesfully := false
         
         if (this.ExistingProfilesManager.RenameFolder(profileName, newProfileName)){
-            this.updateProfiles()
-            if (profileName = this.currentProfile){
+            if (profileName = FilePaths.GetCurrentProfile()){
                 this.setCurrentProfile(newProfileName)
             }
 
@@ -106,10 +65,10 @@ class ProfileRegionModel{
 
         if (this.ExistingProfilesManager.DeleteFolder(profileToDelete)){
             ; Deleted profile succesfully
-            this.updateProfiles()
-            if (this.profiles.Length != 0){
-                if (profileToDelete = this.currentProfile){
-                    this.setCurrentProfile(this.profiles[1])
+            profiles := this.getProfiles()
+            if (profiles.Length != 0){
+                if (profileToDelete = FilePaths.GetCurrentProfile()){
+                    this.setCurrentProfile(profiles[1])
                 }
             }
 
@@ -131,9 +90,8 @@ class ProfileRegionModel{
             try{
                 presetProfileName := profileName
                 profilePath := this.PresetProfilesManager.getFolderPathByName(profile)
-                this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, this.PATH_TO_EXISTING_PROFILES . "\" . profileName, profileName, profileName)
+                this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, FilePaths.GetPathToProfiles() . "\" . profileName, profileName, profileName)
                 profileAdded := true
-                this.updateProfiles()
             }
             catch{
                 profileAdded := false
@@ -143,33 +101,18 @@ class ProfileRegionModel{
     }
 
     getCurrentProfile(){
-        return this.currentProfile
+        return FilePaths.GetCurrentProfile()
     }
 
 
     hasProfile(profileName){
         hasProfile := false
-        Loop this.profiles.Length{
-            if (this.profiles[A_Index] = profileName){
+        profiles := this.getProfiles()
+        Loop profiles.Length{
+            if (profiles[A_Index] = profileName){
                 hasProfile := true
             }
         }
         return hasProfile
     }
-
-    UpdateProfileDropDownMenu(guiObject){
-        guiObject.Delete()
-        guiObject.Add(this.ExistingProfilesManager.getFolderNames())
-        guiObject.Choose(this.currentProfile)
-    }
-
-
-
-    ; ProfileChangedFromDropDownMenuEvent(profilesDropDownMenu){
-    ;     iniWrite(profilesDropDownMenu.Text, this.PATH_TO_META_FILE, "General", "activeUserProfile")
-    ; }
-
-
-
- 
 }
