@@ -42,12 +42,12 @@ class FolderManager{
     RenameFolder(oldName, newName) {
 
         folderChanged := false
-        if (this.folders.isInRegistry(newName)) {
+        if (this.folders.hasFolder(newName)) {
             folderChanged := false
         }
         else{
 
-            if (this.folders.isInRegistry(oldName)) {
+            if (this.folders.hasFolder(oldName)) {
 
                 oldPath := this.getFolderPathByName(oldName)
                 newPath := this.folders.getNewPath(oldPath, oldName, newName)
@@ -76,7 +76,7 @@ class FolderManager{
         
         copiedFolder := false
         
-        if(this.folders.isInRegistry(newFolderName)){
+        if(this.folders.hasFolder(newFolderName)){
             copiedFolder := false
         }
         else{
@@ -92,7 +92,7 @@ class FolderManager{
 
         folderDeleted := false
         
-        if (this.folders.isInRegistry(folderName)) {
+        if (this.folders.hasFolder(folderName)) {
 
             pathToFolderToBeDeleted := this.getFolderPathByName(folderName)
 
@@ -126,5 +126,9 @@ class FolderManager{
 
     getFirstFoundFolderIndex(folderName){
         return this.folders.getFirstFoundFolderIndex(folderName)
+    }
+
+    hasFolder(folderName){
+        return this.folders.hasFolder(folderName)
     }
 }

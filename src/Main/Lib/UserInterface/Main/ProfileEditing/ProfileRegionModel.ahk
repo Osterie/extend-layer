@@ -83,14 +83,14 @@ class ProfileRegionModel{
 
     AddProfile(profile, profileName){
         profileAdded := false
-        if (this.hasProfile(profileName)){
+        if (this.ExistingProfilesManager.hasFolder(profileName)){
             profileAdded := false
         }
         else{
             try{
                 presetProfileName := profileName
                 profilePath := this.PresetProfilesManager.getFolderPathByName(profile)
-                this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, FilePaths.GetPathToProfiles() . "\" . profileName, profileName, profileName)
+                this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, FilePaths.GetPathToProfiles() . "/" . profileName, profileName, profileName)
                 profileAdded := true
             }
             catch{
@@ -98,21 +98,5 @@ class ProfileRegionModel{
             }
         }
         return profileAdded
-    }
-
-    getCurrentProfile(){
-        return FilePaths.GetCurrentProfile()
-    }
-
-
-    hasProfile(profileName){
-        hasProfile := false
-        profiles := this.getProfiles()
-        Loop profiles.Length{
-            if (profiles[A_Index] = profileName){
-                hasProfile := true
-            }
-        }
-        return hasProfile
     }
 }
