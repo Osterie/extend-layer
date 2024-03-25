@@ -8,7 +8,6 @@
 
 class ProfileRegionController{
 
-    model := ""
     view := ""
 
     editView := ""
@@ -16,9 +15,22 @@ class ProfileRegionController{
 
     addprofileView := ""
 
-    __New(model, view){
-        this.model := model
+    ; Used to manage the preset user profiles, the user is only allowed to add a preset profile as a new profile
+    PresetProfilesManager := ""
+    ; Used to manage the existing user profiles, the user is allowed to edit, delete, and add new profiles
+    ExistingProfilesManager := ""
+    
+
+    __New(view){
         this.view := view 
+
+        this.ExistingProfilesManager := FolderManager()
+        this.PresetProfilesManager := FolderManager()
+
+        this.PresetProfilesManager.addSubFoldersToRegistryFromFolder(FilePaths.GetPathToPresetProfiles())
+        this.PresetProfilesManager.addFolderToRegistry("EmptyProfile", FilePaths.GetPathToEmptyProfile())
+        this.ExistingProfilesManager.addSubFoldersToRegistryFromFolder(FilePaths.GetPathToProfiles())
+
     }
 
     CreateView(guiObject){
@@ -26,15 +38,27 @@ class ProfileRegionController{
     }
 
     GetProfiles(){
-        return this.model.getProfiles()
+        return this.ExistingProfilesManager.getFolderNames()
+    }
+    
+    getPresetProfiles(){
+        return this.PresetProfilesManager.getFolderNames()
     }
 
-    GetCurrentProfileIndex(){
-        return this.model.getCurrentProfileIndex()
+    getCurrentProfileIndex(){
+        currentProfileIndex := -1
+        profiles := this.getProfiles()
+        Loop profiles.Length{
+            
+            if (profiles[A_Index] = FilePaths.GetCurrentProfile()){
+                currentProfileIndex := A_Index
+            }
+        }
+        return currentProfileIndex
     }
 
     GetCurrentProfile(){
-        return this.model.getCurrentProfile()
+        return FilePaths.GetCurrentProfile()
     }
 
     doOpenEditProfileView(){
@@ -43,30 +67,42 @@ class ProfileRegionController{
     }
 
     HandleRenameProfile(profileToRename, inputPrompt){
-        if inputPrompt.Result = "Cancel"{
+        newProfileName := inputPrompt.Value
+        inputPromptResult := inputPrompt.Result
+
+        if (inputPromptResult = "Cancel"){
             msgbox("Cancelled renaming profile")
             ; Do nothing
         }
-        else if(inputPrompt.Value = ""){
+        else if(newProfileName = ""){
             msgbox("No new name for profile given, cancelling")
             ; Do Nothing
         }
         else{
-            if(this.model.renameProfile(profileToRename, inputPrompt.Value)){
+            
+            if(this.ExistingProfilesManager.RenameFolder(profileToRename, newProfileName )){
+                FilePaths.SetCurrentProfile(newProfileName)
                 this.view.UpdateProfilesDropDownMenu()
                 this.editView.UpdateProfilesDropDownMenu()
-                msgbox("Successfully renamed profile to " . inputPrompt.Value)
+                msgbox("Successfully renamed profile to " . newProfileName)
+            }
+            else{
+                msgbox("failed to change profile name, perhaps name already exists or illegal characters were used.")
             }
         }
     }
 
     HandleDeleteProfile(profileToDelete, inputPrompt){
-        if inputPrompt.Result = "Cancel"{
+        inputPromptResult := inputPrompt.Result
+
+
+        if (inputPromptResult = "Cancel"){
             msgbox("Cancelled deleting profile")
             ; Do nothing
         }
         else if (StrLower(inputPrompt.Value) = "yes"){
-            if (this.model.deleteProfile(profileToDelete)){
+            
+            if (this.ExistingProfilesManager.DeleteFolder(profileToDelete)){
                 this.view.UpdateProfilesDropDownMenu()
                 this.editView.UpdateProfilesDropDownMenu()
                 msgbox("Successfully deleted profile " . profileToDelete)
@@ -82,19 +118,26 @@ class ProfileRegionController{
 
     doOpenAddProfileDialog(){
         this.addprofileView := AddProfileDialog(this.GetHwnd())
-        this.addprofileView.CreateView(this.model.GetPresetProfiles())
+        this.addprofileView.CreateView(this.GetPresetProfiles())
         this.addProfileView.SubscribeToProfileAddedEvent(ObjBindMethod(this, "HandleAddProfileConfirmedEvent"))
         this.addprofileView.Show()
     }
 
     HandleAddProfileConfirmedEvent(profileToAdd, profileName){
-        if (this.model.addProfile(profileToAdd, profileName)){
-            this.view.UpdateProfilesDropDownMenu()
-            this.addprofileView.Destroy()
-            msgbox("Successfully added profile " . profileName)
+        if (this.ExistingProfilesManager.hasFolder(profileName)){
+            msgbox("Failed to add profile. A profile with the given name already exists")
         }
         else{
-            msgbox("Failed to add profile, perhaps a profile with the given name already exists")
+            try{
+                profilePath := this.PresetProfilesManager.getFolderPathByName(profileToAdd)
+                this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, FilePaths.GetPathToProfiles() . "/" . profileName, profileName, profileName)
+                this.view.UpdateProfilesDropDownMenu()
+                this.addprofileView.Destroy()
+                msgbox("Successfully added profile " . profileName)
+            }
+            catch{
+                msgbox("Failed to add profile, perhaps a profile with the given name already exists")
+            }
         }
     }
 
@@ -166,9 +209,6 @@ class ProfileRegionController{
 ;         return this.profiles
 ;     }
 
-;     getPresetProfiles(){
-;         return this.PresetProfilesManager.getFolderNames()
-;     }
 
 ;     getCurrentProfileIndex(){
 ;         currentProfileIndex := -1
