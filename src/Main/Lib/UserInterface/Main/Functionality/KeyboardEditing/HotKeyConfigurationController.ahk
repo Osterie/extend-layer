@@ -20,13 +20,12 @@ class HotKeyConfigurationController{
     __New(model, view){
         this.model := model
         this.view := view
-        this.hotkeyCrafterController_ := HotkeyCrafterController(this.GetAvailableKeyNames(), this.GetActiveObjectsRegistry())
+        this.hotkeyCrafterController_ := HotkeyCrafterController(this.GetActiveObjectsRegistry())
     }
 
     changeHotkey(whatToChange){
         this.view.hide()
 
-        availableKeyNames := this.model.GetAvailableKeyNames()
         hotkeyInfo := this.model.GetHotkeyInfo()
         if (hotkeyInfo != ""){
             originalHotkey := hotkeyInfo.getFriendlyHotkeyName()
@@ -39,11 +38,11 @@ class HotKeyConfigurationController{
 
         whatToChange := StrLower(whatToChange)
         if (whatToChange == "hotkey"){
-            this.changeOriginalHotkey(availableKeyNames, originalHotkey)
+            this.changeOriginalHotkey(originalHotkey)
         }
         else if (whatToChange == "action"){
             activeObjectsRegistry := this.model.GetActiveObjectsRegistry()
-            this.changeOriginalAction(activeObjectsRegistry, availableKeyNames, action)
+            this.changeOriginalAction(activeObjectsRegistry, action)
         }
 
         WinWait("HotkeyCrafterGui")
@@ -52,10 +51,8 @@ class HotKeyConfigurationController{
 
     }
 
-    changeOriginalHotkey(availableKeyNames, originalHotkey){
-
+    changeOriginalHotkey(originalHotkey){
         
-
         hotkeyCrafterView_ := HotkeyCrafterView(this.hotkeyCrafterController_)
         hotkeyCrafterView_.create(originalHotkey)
         hotkeyCrafterView_.CreateButtons()
@@ -65,7 +62,7 @@ class HotKeyConfigurationController{
         hotkeyCrafterView_.Show()
     }
 
-    changeOriginalAction(activeObjectsRegistry, availableKeyNames, action){
+    changeOriginalAction(activeObjectsRegistry, action){
         ActionCrafterView_ := ActionCrafterView(this.hotkeyCrafterController_)
         this.hotkeyCrafterController_.AddActionCrafterView(ActionCrafterView_)
 
@@ -126,10 +123,6 @@ class HotKeyConfigurationController{
 
     GetModel(){
         return this.model
-    }
-
-    GetAvailableKeyNames(){
-        return this.model.GetAvailableKeyNames()
     }
 
     GetActiveObjectsRegistry(){

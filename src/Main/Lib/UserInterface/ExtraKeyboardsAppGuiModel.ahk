@@ -7,7 +7,6 @@
 
 Class ExtraKeyboardsAppGuiModel{
 
-    keyNames := ""
     currentLayer := ""
     currentFunction := ""
     activeObjectsRegistry := ""
@@ -17,15 +16,13 @@ Class ExtraKeyboardsAppGuiModel{
     actionSettings := ""
     
 
-    __New(activeObjectsRegistry, keyboardLayersInfoRegister, keyNames){
+    __New(activeObjectsRegistry, keyboardLayersInfoRegister){
         ReaderForActionSettings := ActionSettingsReader(FilePaths.GetPathToCurrentSettings())
         this.actionSettings := ReaderForActionSettings.ReadSettings()
         
-        this.keyNames := keyNames
         this.activeObjectsRegistry := activeObjectsRegistry
         this.keyboardLayerIdentifiers := keyboardLayersInfoRegister.getLayerIdentifiers()
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
-
     }
 
     ChangeHotkey(originalHotkey, newHotkey, newAction){
@@ -103,13 +100,8 @@ Class ExtraKeyboardsAppGuiModel{
         return this.activeObjectsRegistry
     }
 
-    GetKeyNames(){
-        return this.keyNames
-    }
-
     ChangeFunctionSetting(setting, actionName){
         this.actionSettings.ChangeActionSetting(actionName, this.GetPathToCurrentSettings(), setting)
-        
     }
 
     GetPathToCurrentSettings(){

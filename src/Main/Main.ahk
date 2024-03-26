@@ -11,7 +11,6 @@
 
 #Include <Util\StartupConfiguration\ObjectRegistryInitializer>
 
-#Include <Util\MetaInfo\MetaInfoReading\KeyNamesReader>
 #Include <Util\MetaInfo\MetaInfoReading\ObjectsJsonReader>
 #Include <Util\MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader>
 
@@ -55,7 +54,6 @@ SendMode "Event"
 
 Class Main{
 
-    keyNames := ""
     StartupConfigurator := ""
     ObjectRegister := ObjectRegistry()
     KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
@@ -92,7 +90,6 @@ Class Main{
     Initialize(){
         this.InitializeObjectRegistry()
         this.InitializeKeyboardLayersInfo()
-        this.InitializeKeyNames()
         this.InitializeMainStartupConfigurator()
     }
 
@@ -111,12 +108,6 @@ Class Main{
         JsonReaderForKeyboardLayersInfo := KeyboardLayersInfoJsonReader()
         JsonReaderForKeyboardLayersInfo.ReadKeyboardLayersInfoForCurrentProfile()
         this.KeyboardLayersInfoRegister := JsonReaderForKeyboardLayersInfo.getKeyboardLayersInfoRegister()
-    }
-
-    InitializeKeyNames(){
-        keyNamesFileObjReader := KeyNamesReader()
-        fileObjectOfKeyNames := FileOpen(FilePaths.GetPathToKeyNames(), "rw" , "UTF-8")
-        this.keyNames := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
     }
 
     InitializeMainStartupConfigurator(){
@@ -154,7 +145,7 @@ Class Main{
     }
 
     RunAppGui(){
-        app := ExtraKeyboardsApp(this.ObjectRegister, this.KeyboardLayersInfoRegister, this, this.keyNames)
+        app := ExtraKeyboardsApp(this.ObjectRegister, this.KeyboardLayersInfoRegister, this)
         app.Start()
     }
 

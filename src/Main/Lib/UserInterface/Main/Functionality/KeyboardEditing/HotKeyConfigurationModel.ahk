@@ -8,15 +8,13 @@
 class HotKeyConfigurationModel{
 
     activeObjectsRegistry := ""
-    availableKeyNames := Array()
     hotkeyInformation := ""
 
     originalHotkeyKey := ""
     originalActionFriendly := ""
 
-    __New(activeObjectsRegistry, availableKeyNames, hotkeyInformation){
+    __New(activeObjectsRegistry,hotkeyInformation){
         this.activeObjectsRegistry := activeObjectsRegistry
-        this.availableKeyNames := availableKeyNames
         
         this.hotkeyInformation := hotkeyInformation
         this.originalHotkeyKey := this.hotkeyInformation.getHotkeyName()
@@ -25,10 +23,6 @@ class HotKeyConfigurationModel{
 
     GetActiveObjectsRegistry(){
         return this.activeObjectsRegistry
-    }
-
-    GetAvailableKeyNames(){
-        return this.availableKeyNames
     }
 
     SetHotkeyKey(newHotkey){

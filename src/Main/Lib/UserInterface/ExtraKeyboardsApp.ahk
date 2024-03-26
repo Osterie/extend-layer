@@ -27,8 +27,8 @@ Class ExtraKeyboardsApp{
     
     UserInterface := ""
 
-    __New(activeObjectsRegistry, keyboardLayersInfoRegister, mainScript, keyNames){
-        this.Model := ExtraKeyboardsAppGuiModel(activeObjectsRegistry, keyboardLayersInfoRegister, keyNames)
+    __New(activeObjectsRegistry, keyboardLayersInfoRegister, mainScript){
+        this.Model := ExtraKeyboardsAppGuiModel(activeObjectsRegistry, keyboardLayersInfoRegister)
         this.UserInterface := ExtraKeyboardsAppGuiView()
         this.Controller := ExtraKeyboardsAppGuiController(this.Model, this.UserInterface, mainScript)
     }

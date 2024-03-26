@@ -1,10 +1,11 @@
 #Requires AutoHotkey v2.0
 
+#Include <Util\MetaInfo\MetaInfoReading\KeyNamesReader>
 #Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
+
 
 class HotkeyCrafterController{
  
-    availableKeyNames := ""
     activeObjectsRegistry := ""
     actionCrafterView := ""
 
@@ -12,9 +13,8 @@ class HotkeyCrafterController{
 
     currentAction := ""
 
-    __New(availableKeyNames, activeObjectsRegistry){
+    __New(activeObjectsRegistry){
         this.isCraftingSpecialAction_ := true
-        this.availableKeyNames := availableKeyNames
         this.activeObjectsRegistry := activeObjectsRegistry
         this.currentAction := ""
     }
@@ -24,7 +24,10 @@ class HotkeyCrafterController{
     }   
 
     GetAvailableKeyNames(){
-        return this.availableKeyNames
+        keyNamesFileObjReader := KeyNamesReader()
+        fileObjectOfKeyNames := FileOpen(FilePaths.GetPathToKeyNames(), "rw" , "UTF-8")
+        availableKeyNames := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
+        return availableKeyNames
     }
 
     GetActiveObjectsRegistry(){

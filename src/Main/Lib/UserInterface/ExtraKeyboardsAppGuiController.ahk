@@ -66,7 +66,7 @@ Class ExtraKeyboardsAppGuiController{
 
     ; TODO move to view?
     CreatePopupForHotkeys(hotkeyInformation){
-        popupForConfiguringHotkeyModel := HotKeyConfigurationModel(this.GetActiveObjectsRegistry(), this.GetKeyNames(), hotkeyInformation)
+        popupForConfiguringHotkeyModel := HotKeyConfigurationModel(this.GetActiveObjectsRegistry(), hotkeyInformation)
         popupForConfiguringHotkey := HotKeyConfigurationView("+Resize +MinSize300x280", this.GetHwnd())
         popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
         popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController)
@@ -170,10 +170,6 @@ Class ExtraKeyboardsAppGuiController{
 
     GetActiveObjectsRegistry(){
         return this.model.GetActiveObjectsRegistry()
-    }
-
-    GetKeyNames(){
-        return this.model.GetKeyNames()
     }
 
     GetActionNames(){

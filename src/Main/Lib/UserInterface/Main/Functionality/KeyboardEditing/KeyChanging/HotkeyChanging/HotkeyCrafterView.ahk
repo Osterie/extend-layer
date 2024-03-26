@@ -31,7 +31,7 @@ class HotkeyCrafterView extends DomainSpecificGui{
         this.SimpleHotkeyCrafter := SimpleHotkeyCraftingControl(this, "w300 h50", HotkeyFormatConverter.convertFromFriendlyName(originalHotkey, " + "))
         this.SimpleHotkeyCrafter.SubscribeToHotkeySelectedEvent(ObjBindMethod(this, "updateSaveButtonStatus"))
         
-        this.advancedHotkeyCrafter := AdvancedHotkeyCraftingControl(this, "w370 h200 xp yp", this.controller.getAvailableKeyNames())
+        this.advancedHotkeyCrafter := AdvancedHotkeyCraftingControl(this, "w370 h200 xp yp", this.controller.GetAvailableKeyNames())
         this.advancedHotkeyCrafter.SubscribeToHotkeySelectedEvent(ObjBindMethod(this, "updateSaveButtonStatus"))
         
         this.advancedHotkeyCrafter.hide()
