@@ -98,6 +98,10 @@ class HotKeyInfo{
         return stringToReturn
     }
 
+    actionIsSet(){
+        return this.actionSet
+    }
+
     getHotkeyName(){
         return this.fromKey
     }

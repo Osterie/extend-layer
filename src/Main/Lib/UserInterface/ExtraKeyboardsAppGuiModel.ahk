@@ -33,9 +33,7 @@ Class ExtraKeyboardsAppGuiModel{
     }
 
     AddHotkey(newAction){
-
         this.keyboardLayersInfoRegister.AddHotkey(this.GetCurrentLayer(), newAction)
-
         ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() . "\Keyboards.json")
     }
 
@@ -115,7 +113,7 @@ Class ExtraKeyboardsAppGuiModel{
 
     GetHotkeyInfoForCurrentLayer(hotkeyKey){
         hotkeyInformation := this.keyboardLayersInfoRegister.GetHotkeyInfoForLayer(this.GetCurrentLayer(), hotkeyKey)
-        hotkeyToReturn := HotkeyInfo(hotkeyKey)
+        hotkeyToReturn := HotkeyInfo(hotkeyInformation.getHotkeyName())
 
         if (hotkeyInformation.hotkeyIsObject()){
             hotkeyToReturn.setInfoForSpecialHotKey(hotkeyInformation.GetobjectName(), hotkeyInformation.GetMethodName(), hotkeyInformation.getparameters())

@@ -36,6 +36,7 @@ Class ExtraKeyboardsAppGuiController{
     }
 
     ; TODO make sure user cant create multiple popups?
+    ; TODO change name for this...
     EditHotkey(listView, indexOfKeyToEdit){
 
         layerInformation := this.GetCurrentLayerInfo()
@@ -75,7 +76,7 @@ Class ExtraKeyboardsAppGuiController{
         popupForConfiguringHotkey.getHwnd()
         
         
-        popupForConfiguringHotkeyController.subscribeToSaveEvent(ObjBindMethod(this, "changeHotkeys"))
+        popupForConfiguringHotkeyController.subscribeToSaveEvent(ObjBindMethod(this, "AddOrChangeHotkey"))
         popupForConfiguringHotkeyController.subscribeToDeleteEvent(ObjBindMethod(this, "deleteHotkey"))
     }
 
@@ -106,20 +107,25 @@ Class ExtraKeyboardsAppGuiController{
         this.model.ChangeFunctionSetting(setting, currentFunctionSettings)
     }
 
-    ChangeHotkeys(hotkeyInformation, originalHotkeyKey){
+    AddOrChangeHotkey(hotkeyInformation, originalHotkeyKey){
         newHotkeyKey := hotkeyInformation.getHotkeyName()
 
         ; If it does not exist, add it
         ; TODO this is bad, how the heck does EKAPGC know the default values is NONE?
+        ; Add
         if (originalHotkeyKey = ""){
-            try{
-                hotkeyInformation.changeHotkey(newHotkeyKey)
-                this.model.AddHotkey(hotkeyInformation)
+            if (hotkeyInformation.actionIsSet() AND hotkeyInformation.getHotkeyName() != ""){
+                try{
+                    this.model.AddHotkey(hotkeyInformation)
+                }
+                catch Error as e{
+                    msgbox("Could not add hotkey. " . e.Message)
+                }
             }
-            catch Error as e{
-                msgbox("Could not add hotkey. " . e.Message)
+            else {
+                msgbox("Please select a hotkey and an action")
             }
-        }
+        } ; Change
         else{
             try{
                 this.model.ChangeHotkey(originalHotkeyKey, newHotkeyKey, hotkeyInformation)
@@ -130,8 +136,8 @@ Class ExtraKeyboardsAppGuiController{
         }
 
         ; TODO update view...
-
         this.MainScript.RunLogicalStartup()
+
     }
 
     DeleteHotkey(hotkeyKey){
