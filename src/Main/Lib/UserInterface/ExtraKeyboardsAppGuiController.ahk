@@ -7,6 +7,8 @@
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationController.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationModel.ahk"
 
+#Include <Util\StartupConfiguration\HotkeyInitializer>
+
 ; #Include <Util\MetaInfo\MetaInfoStorage\Settings\Setting>
 
 Class ExtraKeyboardsAppGuiController{
@@ -105,9 +107,7 @@ Class ExtraKeyboardsAppGuiController{
     }
 
     ChangeHotkeys(hotkeyInformation, originalHotkeyKey){
-        msgbox("save and donenee11")
         newHotkeyKey := hotkeyInformation.getHotkeyName()
-
 
         ; If it does not exist, add it
         ; TODO this is bad, how the heck does EKAPGC know the default values is NONE?
@@ -123,7 +123,6 @@ Class ExtraKeyboardsAppGuiController{
         else{
             try{
                 this.model.ChangeHotkey(originalHotkeyKey, newHotkeyKey, hotkeyInformation)
-                msgbox("Changed hotkey")
             }
             catch Error as e{
                 msgbox("Could not modify hotkey. " . e.Message)
@@ -137,10 +136,13 @@ Class ExtraKeyboardsAppGuiController{
 
     DeleteHotkey(hotkeyKey){
         try{
+            
+            this.MainScript.SetHotkeysForAllLayers(false)
             this.model.DeleteHotkey(hotkeyKey)
             msgbox("Deleted hotkey")
         }
         catch Error as e{
+            this.MainScript.SetHotkeysForAllLayers(false)
             msgbox("Could not delete hotkey. " . e.Message)
         }
         this.MainScript.RunLogicalStartup()

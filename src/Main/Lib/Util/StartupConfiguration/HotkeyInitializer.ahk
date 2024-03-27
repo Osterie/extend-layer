@@ -4,26 +4,28 @@
 
 Class HotkeyInitializer{
 
-    layersInformation := ""
     objectRegistry := ""
 
-    __New(layersInformation, objectRegistry){
-        this.layersInformation := layersInformation
-        this.objectRegistry := objectRegistry
+    __New(){
     }
     
-    InitializeHotkeys(keyboardLayerName, enableHotkeys := true){
+    InitializeHotkeys(layersInformation, objectRegistry, keyboardLayerName, enableHotkeys := true){
+        this.objectRegistry := objectRegistry
 
-        currentKeyboardLayerInformation := this.layersInformation.GetRegistryByLayerIdentifier(keyboardLayerName)
+        currentKeyboardLayerInformation := layersInformation.GetRegistryByLayerIdentifier(keyboardLayerName)
         currentKeyboardLayerHotkeys := currentKeyboardLayerInformation.GetHotkeys()
 
         For key, hotkeyInformation in currentKeyboardLayerHotkeys{
-            if (hotkeyInformation.hotkeyIsObject()){
-                this.InitializeDefaultKeyToFunction(hotkeyInformation, enableHotkeys)
-            }
-            else{
-                this.InitializeDefaultKeyToNewKey(hotkeyInformation, enableHotkeys)
-            }
+            this.InitializeHotkey(hotkeyInformation, enableHotkeys)
+        }
+    }
+
+    InitializeHotkey(hotkeyInformation, enableHotkeys := true){
+        if (hotkeyInformation.hotkeyIsObject()){
+            this.InitializeDefaultKeyToFunction(hotkeyInformation, enableHotkeys)
+        }
+        else{
+            this.InitializeDefaultKeyToNewKey(hotkeyInformation, enableHotkeys)
         }
     }
 
@@ -75,6 +77,17 @@ Class HotkeyInitializer{
             msgbox("error in runHotkeyForKey, state is not on or off")
         }
     }
+
+    ; DisableHotkey(hotkeyInformation){
+    ;     hotkeyKey := hotkeyInformation.getHotkeyName()
+    ;     if (hotkeyInformation.hotkeyIsObject()){
+
+    ;     }
+    ;     else{
+    ;         HotKey(hotkeyKey, (ThisHotkey) => this.SendKeysUp(newHotKey, newHotKeyModifiers), "Off") 
+    ;         HotKey(hotkeyKey . " Up", (ThisHotkey) => this.SendKeysDown(newHotKey, newHotKeyModifiers), "Off")
+    ;     }
+    ; }
 
     ; Sends key(s) down, including possible modifiers
     SendKeysDown(keysDown, modifiers){

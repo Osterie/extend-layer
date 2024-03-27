@@ -41,6 +41,7 @@ Class ExtraKeyboardsAppGuiModel{
 
     DeleteHotkey(hotkeyKey){
         this.keyboardLayersInfoRegister.DeleteHotkey(this.GetCurrentLayer(), hotkeyKey)
+        
 
         ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() . "\Keyboards.json")
     }
