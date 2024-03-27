@@ -41,7 +41,6 @@ Class ExtraKeyboardsAppGuiController{
         if (Type(layerInformation) == "HotkeysRegistry"){
             hotkeyInformation := HotkeyInfo()
     
-            ; hotkeyInformation
             if (indexOfKeyToEdit = 0){
                 ; this.CreatePopupForHotkeys(hotkeyInformation)
             }
@@ -106,6 +105,7 @@ Class ExtraKeyboardsAppGuiController{
     }
 
     ChangeHotkeys(hotkeyInformation, originalHotkeyKey){
+        msgbox("save and donenee11")
         newHotkeyKey := hotkeyInformation.getHotkeyName()
 
 
@@ -129,6 +129,8 @@ Class ExtraKeyboardsAppGuiController{
                 msgbox("Could not modify hotkey. " . e.Message)
             }
         }
+
+        ; TODO update view...
 
         this.MainScript.RunLogicalStartup()
     }

@@ -12,6 +12,9 @@ class HotKeyConfigurationController{
     model := ""
     view := ""
 
+
+    
+
     saveEventSubscribers := Array()
     deleteEventSubscribers := Array()
 
@@ -41,8 +44,7 @@ class HotKeyConfigurationController{
             this.changeOriginalHotkey(originalHotkey)
         }
         else if (whatToChange == "action"){
-            activeObjectsRegistry := this.model.GetActiveObjectsRegistry()
-            this.changeOriginalAction(activeObjectsRegistry, action)
+            this.changeOriginalAction(action)
         }
 
         WinWait("HotkeyCrafterGui")
@@ -54,6 +56,7 @@ class HotKeyConfigurationController{
     changeOriginalHotkey(originalHotkey){
         
         hotkeyCrafterView_ := HotkeyCrafterView(this.hotkeyCrafterController_)
+        
         hotkeyCrafterView_.create(originalHotkey)
         hotkeyCrafterView_.CreateButtons()
         hotkeyCrafterView_.SetInformativeTopText("Original Hotkey: " . originalHotkey)
@@ -62,7 +65,8 @@ class HotKeyConfigurationController{
         hotkeyCrafterView_.Show()
     }
 
-    changeOriginalAction(activeObjectsRegistry, action){
+    ; TODO remove first parameter
+    changeOriginalAction(action){
         ActionCrafterView_ := ActionCrafterView(this.hotkeyCrafterController_)
         this.hotkeyCrafterController_.AddActionCrafterView(ActionCrafterView_)
 
@@ -101,22 +105,23 @@ class HotKeyConfigurationController{
     saveButtonClickedForHotkeyChangeEvent(newHotkey){
         newHotkeyKey := newHotkey.getNewHotkeyModifiers()
         newHotkeyKey .= newHotkey.getNewHotkeyName()
+
+        ; this.hotkeyCrafterController_.ChangeHotkey(this.model.GetHotkeyInfo(), newHotkey)
         this.model.SetHotkeyKey(newHotkeyKey)
         this.view.updateHotkeyText()
         this.view.Show()
-
     }
 
     saveButtonClickedForActionChangeEvent(newAction){
         
-        if (newAction.getMethodName() != ""){
-            this.model.SetHotkeyAction(newAction)
-            this.view.updateActionText()
-        }
-        else{
-            this.model.SetHotkeyAction(newAction)
-            this.view.updateActionText()
-        }
+        this.model.SetHotkeyAction(newAction)
+        this.view.updateActionText()
+        ; if (newAction.getMethodName() != ""){
+        ; }
+        ; else{
+        ;     this.model.SetHotkeyAction(newAction)
+        ;     this.view.updateActionText()
+        ; }
         
         this.view.Show()
     }

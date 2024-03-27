@@ -113,7 +113,16 @@ Class ExtraKeyboardsAppGuiModel{
     }
 
     GetHotkeyInfoForCurrentLayer(hotkeyKey){
-        return this.keyboardLayersInfoRegister.GetHotkeyInfoForLayer(this.GetCurrentLayer(), hotkeyKey)
+        hotkeyInformation := this.keyboardLayersInfoRegister.GetHotkeyInfoForLayer(this.GetCurrentLayer(), hotkeyKey)
+        hotkeyToReturn := HotkeyInfo(hotkeyKey)
+
+        if (hotkeyInformation.hotkeyIsObject()){
+            hotkeyToReturn.setInfoForSpecialHotKey(hotkeyInformation.GetobjectName(), hotkeyInformation.GetMethodName(), hotkeyInformation.getparameters())
+        }
+        else{
+            hotkeyToReturn.setInfoForNormalHotKey(hotkeyInformation.getNewHotkeyName(), hotkeyInformation.getNewHotkeyModifiers())
+        }
+        return hotkeyToReturn
     }
 
     ; GetFriendlyHotkeysForLayer(layerIdentifier){

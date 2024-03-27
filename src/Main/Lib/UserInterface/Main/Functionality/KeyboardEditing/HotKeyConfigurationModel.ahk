@@ -13,7 +13,7 @@ class HotKeyConfigurationModel{
     originalHotkeyKey := ""
     originalActionFriendly := ""
 
-    __New(activeObjectsRegistry,hotkeyInformation){
+    __New(activeObjectsRegistry, hotkeyInformation){
         this.activeObjectsRegistry := activeObjectsRegistry
         
         this.hotkeyInformation := hotkeyInformation
@@ -25,6 +25,8 @@ class HotKeyConfigurationModel{
         return this.activeObjectsRegistry
     }
 
+
+    ; TODO dont do this here... do it after save+done is clicked...!!
     SetHotkeyKey(newHotkey){
         this.hotkeyInformation.changeHotkey(newHotkey)
     }
