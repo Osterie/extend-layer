@@ -49,9 +49,6 @@ SendMode "Event"
 ; 	Run("*RunAs `"" A_ScriptFullPath "`"") 
 ; }
 
-; ------------Global or whatever stusff----------------
-
-
 Class Main{
 
     StartupConfigurator := ""
@@ -67,7 +64,11 @@ Class Main{
     Start(){
         try{
             if (this.scriptRunning){
+                ; TODO destroy guis..
                 this.SetHotkeysForAllLayers(false)
+                this.StartupConfigurator := ""
+                this.ObjectRegister := ObjectRegistry()
+                this.KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
             }
             ; TODO check if script is already running
             ; TODO if script is already running, show a message box and exit
@@ -180,8 +181,8 @@ ToolTip "Script enabled!"
 SetTimer () => ToolTip(), -3000
 
 
-IsRunning(Path) {
-    SetTitleMatchMode 2
-    DetectHiddenWindows 1
-    return !!WinExist(Path)
-}
+; IsRunning(Path) {
+;     SetTitleMatchMode 2
+;     DetectHiddenWindows 1
+;     return !!WinExist(Path)
+; }

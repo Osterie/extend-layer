@@ -99,6 +99,8 @@ Class ExtraKeyboardsAppGuiController{
 
             WinWaitClose("Settings Editor Dialog" , , 1000)
     
+            this.MainScript.RunLogicalStartup()
+
             this.view.UpdateSettingsForActions()
         }
     }
@@ -134,10 +136,7 @@ Class ExtraKeyboardsAppGuiController{
                 msgbox("Could not modify hotkey. " . e.Message)
             }
         }
-
-        ; TODO update view...
         this.MainScript.RunLogicalStartup()
-
     }
 
     DeleteHotkey(hotkeyKey){

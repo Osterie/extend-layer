@@ -108,6 +108,7 @@ class ObjectsInitializer{
         ; |------------Layer indicators------------|
 
         ; Used to switch the active layer
+        ; TODO dont do it like this!?
         layers := LayerController()
         layers.addLayerIndicator(1, "Green")
         layers.addLayerIndicator(2, "Red")
