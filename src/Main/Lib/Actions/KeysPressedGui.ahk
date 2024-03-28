@@ -2,8 +2,10 @@
 
 #Include <UserInterface\Main\util\GuiSizeChanger>
 
+#Include <Actions\Action>
+
 ; TODO use MVC design pattern.
-Class KeysPressedGui{
+Class KeysPressedGui extends Action{
 
     GuiShowKeysPressed := ""
     showKeysPressedControl := ""
@@ -36,10 +38,10 @@ Class KeysPressedGui{
 
     ShowKeysPressed(){
         this.CreateInputReader()
-        this.ShowGui()
+        this.Show()
     }
 
-    ShowGui(){
+    Show(){
         this.guiHidden := false
         this.GuiShowKeysPressed.Show()
     }
@@ -48,15 +50,15 @@ Class KeysPressedGui{
         this.DestroyInputReader()
         this.storedKeys := ""
         GuiSizeChanger.SetTextAndResize(this.showKeysPressedControl, this.storedKeys)
-        this.HideGui()
+        this.Hide()
     }
 
-    HideGui(){
+    Hide(){
         this.guiHidden := true
         this.GuiShowKeysPressed.Hide()
     }
 
-    DestroyGui(){
+    Destroy(){
         this.GuiShowKeysPressed.Destroy()
     }
     

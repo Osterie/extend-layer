@@ -34,7 +34,7 @@
             "key": "Esc",
             "modifiers": ""
         },
-        "*å":{
+        "*[":{
             "isObject": false,
             "key": "Esc",
             "modifiers": ""
@@ -104,7 +104,7 @@
             "key": "Del",
             "modifiers": ""
         },
-        "*ø": {
+        "*;": {
             "isObject": false,
             "key": "BackSpace",
             "modifiers": ""

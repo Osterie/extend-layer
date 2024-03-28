@@ -1,5 +1,6 @@
 #Requires AutoHotkey v2.0
 
+; TODO perhaps this should work together with the main startupr configurator which creates all the hotkeys
 class KeyboardLayersInfoRegistry{
 
     KeyboardOverlaysRegistry := ""

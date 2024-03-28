@@ -1,8 +1,9 @@
 #Requires AutoHotkey v2.0
 
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include <Actions\Action>
 
-Class CommandPromptOpener{
+Class CommandPromptOpener extends Action{
 
     defaultPath := ""
 

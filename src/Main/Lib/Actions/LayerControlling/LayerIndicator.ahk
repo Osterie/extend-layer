@@ -1,6 +1,8 @@
 ﻿#Requires Autohotkey v2.0
 
-Class LayerIndicator{
+#Include <Actions\Action>
+
+Class LayerIndicator extends Action{ 
 
     indicatorColor := ""
     layer := 0
@@ -18,17 +20,17 @@ Class LayerIndicator{
         this.layerIndicatorGui.BackColor := this.indicatorColor
     }
 
-    destroyGui(){
+    Destroy(){
         this.layerIndicatorGui.destroy()
     }
 
-    showGui(){
+    Show(){
         guiHeight := A_ScreenHeight-142
         WinSetAlwaysOnTop 1, this.layerIndicatorGui
         this.layerIndicatorGui.show("x0 y" . guiHeight . " w50 h142 NoActivate")
     }
 
-    hideGui(){
+    Hide(){
         this.layerIndicatorGui.hide()
     }
 

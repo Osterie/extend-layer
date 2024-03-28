@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <UserInterface\Main\ProfileEditing\ProfileRegionModel>
+
 #Include <UserInterface\Main\ProfileEditing\ProfileRegionView>
 #Include <UserInterface\Main\ProfileEditing\ProfileRegionController>
 #Include <UserInterface\Main\util\TreeViewMaker>
@@ -33,11 +33,10 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
     }
 
     CreateProfileEditor(){
-        profileModel := ProfileRegionModel(this)
         profileView := ProfileRegionView()
         profileView.SubscribeToProfileChangedEvent(ObjBindMethod(this.controller, "HandleProfileChangedEvent"))
-        profileController := ProfileRegionController(profileModel, profileView)
-        profileController.CreateView()
+        profileController := ProfileRegionController(profileView)
+        profileController.CreateView(this)
     }
 
     CreateTabs(){

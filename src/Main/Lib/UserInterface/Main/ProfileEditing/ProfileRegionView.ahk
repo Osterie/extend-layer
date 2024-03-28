@@ -10,9 +10,9 @@ class ProfileRegionView{
 
     profileChangedEventSubscribers := Array()
 
+    guiHwnd := ""
 
     CreateView(guiObject, controller){
-
 
         this.controller := controller
 
@@ -22,8 +22,7 @@ class ProfileRegionView{
         currentProfileIndex := controller.getCurrentProfileIndex()
         this.profilesDropDownMenu := this.createProfilesDropDownMenu(guiObject, profiles, currentProfileIndex)
         
-        this.profilesDropDownMenu.OnEvent("Change", ObjBindMethod(controller, "HandleProfileChangedEvent"))
-        this.profilesDropDownMenu.OnEvent("Change", (*) => this.NotifyListenersProfileChanged())
+        this.profilesDropDownMenu.OnEvent("Change", (*) => this.NotifyListenersProfileChanged(this.profilesDropDownMenu.Text))
 
 
         editProfilesButton := guiObject.Add("Button", "Default w80 ym+1", "Edit profiles")
@@ -32,18 +31,19 @@ class ProfileRegionView{
         exportProfileButton := guiObject.Add("Button", "Default w80 ym+1", "Export profile")
         
 
-        editProfilesButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleEditProfilesEvent")())
-        addProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleAddProfileEvent")())
+        editProfilesButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "doOpenEditProfileView")())
+        addProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "doOpenAddProfileDialog")())
         ; importProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleImportProfileEvent")())
         ; exportProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleExportProfileEvent")())
 
+        this.guiHwnd := guiObject.GetHwnd()
               
         guiObject.Show()
     }
 
-    NotifyListenersProfileChanged(){
+    NotifyListenersProfileChanged(newProfileName){
         for (event in this.profileChangedEventSubscribers){
-            event()
+            event(newProfileName)
         }
     }
 
@@ -58,7 +58,6 @@ class ProfileRegionView{
             this.profilesDropDownMenu.Value := this.controller.getCurrentProfileIndex()
         }
     }
-
 
     CreateProfilesDropDownMenu(guiObject, profiles, profileIndex){
         
@@ -82,7 +81,7 @@ class ProfileRegionView{
         return profilesDropDownMenu
     }
 
-    getProfilesDropDownMenu(){
-        return this.profilesDropDownMenu
+    GetHwnd(){
+        return this.guiHwnd
     }
 }

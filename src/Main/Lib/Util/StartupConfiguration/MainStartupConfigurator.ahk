@@ -24,16 +24,23 @@ Class MainStartupConfigurator{
         this.layersInformation := layersInformation
         this.objectRegistry := objectRegistry
         if (Type(layersInformation) = "KeyboardLayersInfoRegistry" AND Type(objectRegistry) = "ObjectRegistry"){
-            this.HotkeyInitializerInstance := HotkeyInitializer(layersInformation, objectRegistry)
+            this.HotkeyInitializerInstance := HotkeyInitializer()
+            ; TODO probably dont pass these arguemnts hereere...
             this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(layersInformation, objectRegistry)
         }
         else{
-            ; throw Error("Invalid parameters passed to MainStartupConfigurator")
+            throw Error("Invalid parameters passed to MainStartupConfigurator")
         }
     }
 
-    InitializeLayer(section, enableHotkeys := "on"){
-        this.HotkeyInitializerInstance.InitializeHotkeys(section . "-Hotkeys", enableHotkeys)
+    InitializeLayer(layersInformation, objectRegistry, section, enableHotkeys := "on"){
+        if (Type(layersInformation) = "KeyboardLayersInfoRegistry" AND Type(objectRegistry) = "ObjectRegistry"){
+            this.HotkeyInitializerInstance.InitializeHotkeys(layersInformation, objectRegistry, section . "-Hotkeys", enableHotkeys)
+        }
+        else{
+            throw Error("Invalid parameters passed to MainStartupConfigurator")
+        }
+        
         this.KeyboardOverlayInitializerInstance.ChangeHotkeysStateForKeyboardOverlaysByLayerSection(section . "-KeyboardOverlay", enableHotkeys)
     }
 

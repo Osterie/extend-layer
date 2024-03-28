@@ -41,4 +41,8 @@ class ObjectInfo{
     getMethodsWithDescriptions(){
         return this.methodsWithDescriptions
     }
+
+    DestroyObject(){
+        this.objectInstance.Destroy()
+    }
 }

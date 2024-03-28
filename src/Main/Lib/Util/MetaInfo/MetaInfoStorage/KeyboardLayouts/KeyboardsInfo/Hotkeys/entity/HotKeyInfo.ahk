@@ -2,6 +2,7 @@
 
 #Include <Util\HotkeyFormatConverter>
 
+; TODO perhaps this should work together with the main startupr configurator which creates all the hotkeys
 class HotKeyInfo{
 
     ; The key to press to trigger the "toKey" or the "objectName.methodName(parameters)" action.
@@ -95,6 +96,10 @@ class HotKeyInfo{
 
 
         return stringToReturn
+    }
+
+    actionIsSet(){
+        return this.actionSet
     }
 
     getHotkeyName(){

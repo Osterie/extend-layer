@@ -7,6 +7,8 @@
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationController.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationModel.ahk"
 
+#Include <Util\StartupConfiguration\HotkeyInitializer>
+
 ; #Include <Util\MetaInfo\MetaInfoStorage\Settings\Setting>
 
 Class ExtraKeyboardsAppGuiController{
@@ -20,8 +22,9 @@ Class ExtraKeyboardsAppGuiController{
         this.MainScript := MainScript
     }
 
-    HandleProfileChangedEvent(){
+    HandleProfileChangedEvent(newProfileName){
         ; TODO this should probably be changed? it is sort of heavy to basically restart the entire program when changing profiles.
+        FilePaths.SetCurrentProfile(newProfileName)
         this.mainScript.Start()
         this.view.Destroy()
     }
@@ -33,6 +36,7 @@ Class ExtraKeyboardsAppGuiController{
     }
 
     ; TODO make sure user cant create multiple popups?
+    ; TODO change name for this...
     EditHotkey(listView, indexOfKeyToEdit){
 
         layerInformation := this.GetCurrentLayerInfo()
@@ -40,7 +44,6 @@ Class ExtraKeyboardsAppGuiController{
         if (Type(layerInformation) == "HotkeysRegistry"){
             hotkeyInformation := HotkeyInfo()
     
-            ; hotkeyInformation
             if (indexOfKeyToEdit = 0){
                 ; this.CreatePopupForHotkeys(hotkeyInformation)
             }
@@ -65,7 +68,7 @@ Class ExtraKeyboardsAppGuiController{
 
     ; TODO move to view?
     CreatePopupForHotkeys(hotkeyInformation){
-        popupForConfiguringHotkeyModel := HotKeyConfigurationModel(this.GetActiveObjectsRegistry(), this.GetKeyNames(), hotkeyInformation)
+        popupForConfiguringHotkeyModel := HotKeyConfigurationModel(this.GetActiveObjectsRegistry(), hotkeyInformation)
         popupForConfiguringHotkey := HotKeyConfigurationView("+Resize +MinSize300x280", this.GetHwnd())
         popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
         popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController)
@@ -73,7 +76,7 @@ Class ExtraKeyboardsAppGuiController{
         popupForConfiguringHotkey.getHwnd()
         
         
-        popupForConfiguringHotkeyController.subscribeToSaveEvent(ObjBindMethod(this, "changeHotkeys"))
+        popupForConfiguringHotkeyController.subscribeToSaveEvent(ObjBindMethod(this, "AddOrChangeHotkey"))
         popupForConfiguringHotkeyController.subscribeToDeleteEvent(ObjBindMethod(this, "deleteHotkey"))
     }
 
@@ -96,6 +99,8 @@ Class ExtraKeyboardsAppGuiController{
 
             WinWaitClose("Settings Editor Dialog" , , 1000)
     
+            this.MainScript.RunLogicalStartup()
+
             this.view.UpdateSettingsForActions()
         }
     }
@@ -104,40 +109,45 @@ Class ExtraKeyboardsAppGuiController{
         this.model.ChangeFunctionSetting(setting, currentFunctionSettings)
     }
 
-    ChangeHotkeys(hotkeyInformation, originalHotkeyKey){
+    AddOrChangeHotkey(hotkeyInformation, originalHotkeyKey){
         newHotkeyKey := hotkeyInformation.getHotkeyName()
-
 
         ; If it does not exist, add it
         ; TODO this is bad, how the heck does EKAPGC know the default values is NONE?
+        ; Add
         if (originalHotkeyKey = ""){
-            try{
-                hotkeyInformation.changeHotkey(newHotkeyKey)
-                this.model.AddHotkey(hotkeyInformation)
+            if (hotkeyInformation.actionIsSet() AND hotkeyInformation.getHotkeyName() != ""){
+                try{
+                    this.model.AddHotkey(hotkeyInformation)
+                }
+                catch Error as e{
+                    msgbox("Could not add hotkey. " . e.Message)
+                }
             }
-            catch Error as e{
-                msgbox("Could not add hotkey. " . e.Message)
+            else {
+                msgbox("Please select a hotkey and an action")
             }
-        }
+        } ; Change
         else{
             try{
                 this.model.ChangeHotkey(originalHotkeyKey, newHotkeyKey, hotkeyInformation)
-                msgbox("Changed hotkey")
             }
             catch Error as e{
                 msgbox("Could not modify hotkey. " . e.Message)
             }
         }
-
         this.MainScript.RunLogicalStartup()
     }
 
     DeleteHotkey(hotkeyKey){
         try{
+            
+            this.MainScript.SetHotkeysForAllLayers(false)
             this.model.DeleteHotkey(hotkeyKey)
             msgbox("Deleted hotkey")
         }
         catch Error as e{
+            this.MainScript.SetHotkeysForAllLayers(false)
             msgbox("Could not delete hotkey. " . e.Message)
         }
         this.MainScript.RunLogicalStartup()
@@ -169,10 +179,6 @@ Class ExtraKeyboardsAppGuiController{
 
     GetActiveObjectsRegistry(){
         return this.model.GetActiveObjectsRegistry()
-    }
-
-    GetKeyNames(){
-        return this.model.GetKeyNames()
     }
 
     GetActionNames(){

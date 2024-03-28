@@ -14,7 +14,6 @@ class ObjectRegistryInitializer {
     }
     
     InitializeObjects(){
-
         initializerForObjects := ObjectsInitializer()
         initializerForObjects.InitializeObjects()
         this.Objects := initializerForObjects.GetObjects()

@@ -1,7 +1,10 @@
 #Requires Autohotkey v2.0
 #Include "..\Clock\CountdownDisplay.ahk"
 
-Class ScreenPrivacyController{
+
+#Include <Actions\Action>
+
+Class ScreenPrivacyController extends Action{
 
     ; TODO, perhaps this could be combined with monitor.ahk, or something similar with a different name?
     GUIPrivacyBox := ""
@@ -15,18 +18,18 @@ Class ScreenPrivacyController{
         this.GUIPrivacyBox.BackColor := "Black"
     }
 
-    DestroyGui(){
+    Destroy(){
         this.GUIPrivacyBox.Destroy()
         this.GUICountdown.StopCountdown()
-        this.GUICountdown.DestroyGui()
+        this.GUICountdown.Destroy()
     }
 
-    HideGui(){
+    Hide(){
         this.GUIPrivacyBox.Hide()
         
         try{
             this.GUICountdown.StopCountdown()
-            this.GUICountdown.DestroyGui()
+            this.GUICountdown.Destroy()
         }
     }
 
@@ -43,14 +46,14 @@ Class ScreenPrivacyController{
         
         ; this.GUICountdown.SetCountdown(this.minutes, this.seconds)
         this.GUICountdown.CreateGui()
-        this.GUICountdown.ShowGui()
+        this.GUICountdown.Show()
         this.GUICountdown.StartCountdown()
     }
     ; Hides the active window
     HideWindow(){
         try{
             this.GUICountdown.StopCountdown()
-            this.GUICountdown.DestroyGui()
+            this.GUICountdown.Destroy()
         }
 
         WinGetPos(&X, &Y, &Width, &Height, "A")
@@ -62,7 +65,7 @@ Class ScreenPrivacyController{
     HideTabs(){
         try{
             this.GUICountdown.StopCountdown()
-            this.GUICountdown.DestroyGui()
+            this.GUICountdown.Destroy()
         }
         ; TODO make this work for more browsers 
         Title := WinGetTitle("A")

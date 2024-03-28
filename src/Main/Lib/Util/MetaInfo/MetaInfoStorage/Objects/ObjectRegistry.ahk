@@ -45,7 +45,12 @@ Class ObjectRegistry{
                 }
             }
         }
+    }
 
+    DestroyObjects(){
+        for objectName, objectInfo in this.ObjectMap{
+            objectInfo.DestroyObject()
+        }
     }
 
 }

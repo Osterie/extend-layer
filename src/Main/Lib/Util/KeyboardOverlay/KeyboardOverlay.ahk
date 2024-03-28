@@ -1,6 +1,8 @@
 #Requires AutoHotkey v2.0
 
-Class KeyboardOverlay{
+#Include <Actions\Action>
+
+Class KeyboardOverlay extends Action{
 
     ; Changing this font size will resize the keyboard:
     fontSize := "10"
@@ -41,7 +43,7 @@ Class KeyboardOverlay{
         this.keyboardOverlay.Title := "Virtual Keyboard View"
     }
 
-    ShowGui(){
+    Show(){
         try{
             this.keyboardOverlay.Show("xCenter NoActivate")
             WinGetPos(, , &windowWidth, &windowHeight, "Virtual Keyboard View")
@@ -50,13 +52,13 @@ Class KeyboardOverlay{
         }
     }
 
-    HideGui(){
+    Hide(){
         try{
             this.keyboardOverlay.Hide()
         }
     }
 
-    DestroyGui(){
+    Destroy(){
         this.keyboardOverlay.Destroy()
     }
 

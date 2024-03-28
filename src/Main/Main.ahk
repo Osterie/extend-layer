@@ -11,7 +11,6 @@
 
 #Include <Util\StartupConfiguration\ObjectRegistryInitializer>
 
-#Include <Util\MetaInfo\MetaInfoReading\KeyNamesReader>
 #Include <Util\MetaInfo\MetaInfoReading\ObjectsJsonReader>
 #Include <Util\MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader>
 
@@ -50,12 +49,8 @@ SendMode "Event"
 ; 	Run("*RunAs `"" A_ScriptFullPath "`"") 
 ; }
 
-; ------------Global or whatever stusff----------------
-
-
 Class Main{
 
-    keyNames := ""
     StartupConfigurator := ""
     ObjectRegister := ObjectRegistry()
     KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
@@ -68,11 +63,6 @@ Class Main{
     ; Main method used to start the script.
     Start(){
         try{
-            if (this.scriptRunning){
-                this.SetHotkeysForAllLayers(false)
-            }
-            ; TODO check if script is already running
-            ; TODO if script is already running, show a message box and exit
             this.RunLogicalStartup()
         }
         catch Error as e{
@@ -85,6 +75,14 @@ Class Main{
     }
 
     RunLogicalStartup(){
+        if (this.scriptRunning){
+            this.DestroyObjectRegistry()
+            this.SetHotkeysForAllLayers(false)
+            this.StartupConfigurator := ""
+            this.ObjectRegister := ObjectRegistry()
+            ; TODO probably needs to be destroyed...
+            this.KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
+        }
         this.Initialize()
         this.RunMainStartup()
     }
@@ -92,7 +90,6 @@ Class Main{
     Initialize(){
         this.InitializeObjectRegistry()
         this.InitializeKeyboardLayersInfo()
-        this.InitializeKeyNames()
         this.InitializeMainStartupConfigurator()
     }
 
@@ -107,16 +104,14 @@ Class Main{
         this.ObjectRegister := objectRegisterInitializer.GetObjectRegistry()
     }
 
+    DestroyObjectRegistry(){
+        this.ObjectRegister.DestroyObjects()
+    }
+
     InitializeKeyboardLayersInfo(){
         JsonReaderForKeyboardLayersInfo := KeyboardLayersInfoJsonReader()
         JsonReaderForKeyboardLayersInfo.ReadKeyboardLayersInfoForCurrentProfile()
         this.KeyboardLayersInfoRegister := JsonReaderForKeyboardLayersInfo.getKeyboardLayersInfoRegister()
-    }
-
-    InitializeKeyNames(){
-        keyNamesFileObjReader := KeyNamesReader()
-        fileObjectOfKeyNames := FileOpen(FilePaths.GetPathToKeyNames(), "rw" , "UTF-8")
-        this.keyNames := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
     }
 
     InitializeMainStartupConfigurator(){
@@ -135,26 +130,26 @@ Class Main{
         this.StartupConfigurator.CreateGlobalHotkeysForAllKeyboardOverlays()
 
         ; Reads and initializes all the hotkeys which are active for every keyboard layer.
-        this.StartupConfigurator.InitializeLayer("GlobalLayer", enableHotkeys)
+        this.StartupConfigurator.InitializeLayer(this.KeyboardLayersInfoRegister, this.ObjectRegister,  "GlobalLayer", enableHotkeys)
         
         HotIf "MainScript.getLayerController().getActiveLayer() == 0"
             ; Reads and initializes all the hotkeys for the normal keyboard layer.
-            this.StartupConfigurator.InitializeLayer("NormalLayer", enableHotkeys)
+            this.StartupConfigurator.InitializeLayer(this.KeyboardLayersInfoRegister, this.ObjectRegister, "NormalLayer", enableHotkeys)
         HotIf
         
         HotIf "MainScript.getLayerController().getActiveLayer() == 1"
             ; Reads and initializes all the hotkeys for the second keyboard layer.
-            this.StartupConfigurator.InitializeLayer("SecondaryLayer", enableHotkeys)
+            this.StartupConfigurator.InitializeLayer(this.KeyboardLayersInfoRegister, this.ObjectRegister, "SecondaryLayer", enableHotkeys)
         HotIf
         
         HotIf "MainScript.getLayerController().getActiveLayer() == 2"
             ; Reads and initializes all the hotkeys for the third keyboard layer.
-            this.StartupConfigurator.InitializeLayer("TertiaryLayer", enableHotkeys)
+            this.StartupConfigurator.InitializeLayer(this.KeyboardLayersInfoRegister, this.ObjectRegister, "TertiaryLayer", enableHotkeys)
         HotIf
     }
 
     RunAppGui(){
-        app := ExtraKeyboardsApp(this.ObjectRegister, this.KeyboardLayersInfoRegister, this, this.keyNames)
+        app := ExtraKeyboardsApp(this.ObjectRegister, this.KeyboardLayersInfoRegister, this)
         app.Start()
     }
 
@@ -189,8 +184,8 @@ ToolTip "Script enabled!"
 SetTimer () => ToolTip(), -3000
 
 
-IsRunning(Path) {
-    SetTitleMatchMode 2
-    DetectHiddenWindows 1
-    return !!WinExist(Path)
-}
+; IsRunning(Path) {
+;     SetTitleMatchMode 2
+;     DetectHiddenWindows 1
+;     return !!WinExist(Path)
+; }

@@ -18,7 +18,7 @@ Class FolderRegistry{
 
     addFolder(folderName, folderPath) {
         folderAdded := false
-        if (this.isInRegistry(folderName)) {
+        if (this.hasFolder(folderName)) {
             folderAdded := false
         }
         else{
@@ -34,12 +34,12 @@ Class FolderRegistry{
 
         folderChanged := false
 
-        if (this.isInRegistry(newName)) {
+        if (this.hasFolder(newName)) {
             folderChanged := false
         }
         else{
 
-            if (this.isInRegistry(oldName)) {
+            if (this.hasFolder(oldName)) {
 
                 oldPath := this.folders[oldName]
                 newPath := this.getNewPath(oldPath, oldName, newName)
@@ -62,7 +62,7 @@ Class FolderRegistry{
 
     DeleteFolder(folderName) {
         folderDeleted := false
-        if (this.isInRegistry(folderName)) {
+        if (this.hasFolder(folderName)) {
             this.folders.Delete(folderName)
             folderDeleted := true
         }
@@ -114,7 +114,7 @@ Class FolderRegistry{
 
     ; Returns true if the given folder is already in the registry
     ; Private method
-    isInRegistry(folderName){
+    hasFolder(folderName){
         return this.folders.Has(folderName)
     }
 

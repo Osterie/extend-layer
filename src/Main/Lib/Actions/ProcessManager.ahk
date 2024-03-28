@@ -1,6 +1,8 @@
 #Requires AutoHotkey v2.0
 
-Class ProcessManager{
+#Include <Actions\Action>
+
+Class ProcessManager extends Action{
 
     CloseFocusedProcess(){
         Send("!{f4}")

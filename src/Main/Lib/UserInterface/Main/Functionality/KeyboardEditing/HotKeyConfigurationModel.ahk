@@ -8,15 +8,13 @@
 class HotKeyConfigurationModel{
 
     activeObjectsRegistry := ""
-    availableKeyNames := Array()
     hotkeyInformation := ""
 
     originalHotkeyKey := ""
     originalActionFriendly := ""
 
-    __New(activeObjectsRegistry, availableKeyNames, hotkeyInformation){
+    __New(activeObjectsRegistry, hotkeyInformation){
         this.activeObjectsRegistry := activeObjectsRegistry
-        this.availableKeyNames := availableKeyNames
         
         this.hotkeyInformation := hotkeyInformation
         this.originalHotkeyKey := this.hotkeyInformation.getHotkeyName()
@@ -27,10 +25,8 @@ class HotKeyConfigurationModel{
         return this.activeObjectsRegistry
     }
 
-    GetAvailableKeyNames(){
-        return this.availableKeyNames
-    }
 
+    ; TODO dont do this here... do it after save+done is clicked...!!
     SetHotkeyKey(newHotkey){
         this.hotkeyInformation.changeHotkey(newHotkey)
     }

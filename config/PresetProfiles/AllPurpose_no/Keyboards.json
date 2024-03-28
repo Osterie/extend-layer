@@ -293,7 +293,7 @@
 			"isObject":1
 		},
 		"f":{
-			"MethodName":"HideGui",
+			"MethodName":"Hide",
 			"ObjectName":"PrivacyController",
 			"Parameters":[],
 			"isObject":1

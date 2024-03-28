@@ -12,6 +12,9 @@ class HotKeyConfigurationController{
     model := ""
     view := ""
 
+
+    
+
     saveEventSubscribers := Array()
     deleteEventSubscribers := Array()
 
@@ -20,13 +23,12 @@ class HotKeyConfigurationController{
     __New(model, view){
         this.model := model
         this.view := view
-        this.hotkeyCrafterController_ := HotkeyCrafterController(this.GetAvailableKeyNames(), this.GetActiveObjectsRegistry())
+        this.hotkeyCrafterController_ := HotkeyCrafterController(this.GetActiveObjectsRegistry())
     }
 
     changeHotkey(whatToChange){
         this.view.hide()
 
-        availableKeyNames := this.model.GetAvailableKeyNames()
         hotkeyInfo := this.model.GetHotkeyInfo()
         if (hotkeyInfo != ""){
             originalHotkey := hotkeyInfo.getFriendlyHotkeyName()
@@ -39,11 +41,10 @@ class HotKeyConfigurationController{
 
         whatToChange := StrLower(whatToChange)
         if (whatToChange == "hotkey"){
-            this.changeOriginalHotkey(availableKeyNames, originalHotkey)
+            this.changeOriginalHotkey(originalHotkey)
         }
         else if (whatToChange == "action"){
-            activeObjectsRegistry := this.model.GetActiveObjectsRegistry()
-            this.changeOriginalAction(activeObjectsRegistry, availableKeyNames, action)
+            this.changeOriginalAction(action)
         }
 
         WinWait("HotkeyCrafterGui")
@@ -52,11 +53,10 @@ class HotKeyConfigurationController{
 
     }
 
-    changeOriginalHotkey(availableKeyNames, originalHotkey){
-
+    changeOriginalHotkey(originalHotkey){
         
-
         hotkeyCrafterView_ := HotkeyCrafterView(this.hotkeyCrafterController_)
+        
         hotkeyCrafterView_.create(originalHotkey)
         hotkeyCrafterView_.CreateButtons()
         hotkeyCrafterView_.SetInformativeTopText("Original Hotkey: " . originalHotkey)
@@ -65,7 +65,8 @@ class HotKeyConfigurationController{
         hotkeyCrafterView_.Show()
     }
 
-    changeOriginalAction(activeObjectsRegistry, availableKeyNames, action){
+    ; TODO remove first parameter
+    changeOriginalAction(action){
         ActionCrafterView_ := ActionCrafterView(this.hotkeyCrafterController_)
         this.hotkeyCrafterController_.AddActionCrafterView(ActionCrafterView_)
 
@@ -104,32 +105,29 @@ class HotKeyConfigurationController{
     saveButtonClickedForHotkeyChangeEvent(newHotkey){
         newHotkeyKey := newHotkey.getNewHotkeyModifiers()
         newHotkeyKey .= newHotkey.getNewHotkeyName()
+
+        ; this.hotkeyCrafterController_.ChangeHotkey(this.model.GetHotkeyInfo(), newHotkey)
         this.model.SetHotkeyKey(newHotkeyKey)
         this.view.updateHotkeyText()
         this.view.Show()
-
     }
 
     saveButtonClickedForActionChangeEvent(newAction){
         
-        if (newAction.getMethodName() != ""){
-            this.model.SetHotkeyAction(newAction)
-            this.view.updateActionText()
-        }
-        else{
-            this.model.SetHotkeyAction(newAction)
-            this.view.updateActionText()
-        }
+        this.model.SetHotkeyAction(newAction)
+        this.view.updateActionText()
+        ; if (newAction.getMethodName() != ""){
+        ; }
+        ; else{
+        ;     this.model.SetHotkeyAction(newAction)
+        ;     this.view.updateActionText()
+        ; }
         
         this.view.Show()
     }
 
     GetModel(){
         return this.model
-    }
-
-    GetAvailableKeyNames(){
-        return this.model.GetAvailableKeyNames()
     }
 
     GetActiveObjectsRegistry(){

@@ -7,7 +7,6 @@
 
 Class ExtraKeyboardsAppGuiModel{
 
-    keyNames := ""
     currentLayer := ""
     currentFunction := ""
     activeObjectsRegistry := ""
@@ -17,15 +16,13 @@ Class ExtraKeyboardsAppGuiModel{
     actionSettings := ""
     
 
-    __New(activeObjectsRegistry, keyboardLayersInfoRegister, keyNames){
+    __New(activeObjectsRegistry, keyboardLayersInfoRegister){
         ReaderForActionSettings := ActionSettingsReader(FilePaths.GetPathToCurrentSettings())
         this.actionSettings := ReaderForActionSettings.ReadSettings()
         
-        this.keyNames := keyNames
         this.activeObjectsRegistry := activeObjectsRegistry
         this.keyboardLayerIdentifiers := keyboardLayersInfoRegister.getLayerIdentifiers()
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
-
     }
 
     ChangeHotkey(originalHotkey, newHotkey, newAction){
@@ -36,14 +33,13 @@ Class ExtraKeyboardsAppGuiModel{
     }
 
     AddHotkey(newAction){
-
         this.keyboardLayersInfoRegister.AddHotkey(this.GetCurrentLayer(), newAction)
-
         ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() . "\Keyboards.json")
     }
 
     DeleteHotkey(hotkeyKey){
         this.keyboardLayersInfoRegister.DeleteHotkey(this.GetCurrentLayer(), hotkeyKey)
+        
 
         ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() . "\Keyboards.json")
     }
@@ -103,13 +99,8 @@ Class ExtraKeyboardsAppGuiModel{
         return this.activeObjectsRegistry
     }
 
-    GetKeyNames(){
-        return this.keyNames
-    }
-
     ChangeFunctionSetting(setting, actionName){
         this.actionSettings.ChangeActionSetting(actionName, this.GetPathToCurrentSettings(), setting)
-        
     }
 
     GetPathToCurrentSettings(){
@@ -121,7 +112,16 @@ Class ExtraKeyboardsAppGuiModel{
     }
 
     GetHotkeyInfoForCurrentLayer(hotkeyKey){
-        return this.keyboardLayersInfoRegister.GetHotkeyInfoForLayer(this.GetCurrentLayer(), hotkeyKey)
+        hotkeyInformation := this.keyboardLayersInfoRegister.GetHotkeyInfoForLayer(this.GetCurrentLayer(), hotkeyKey)
+        hotkeyToReturn := HotkeyInfo(hotkeyInformation.getHotkeyName())
+
+        if (hotkeyInformation.hotkeyIsObject()){
+            hotkeyToReturn.setInfoForSpecialHotKey(hotkeyInformation.GetobjectName(), hotkeyInformation.GetMethodName(), hotkeyInformation.getparameters())
+        }
+        else{
+            hotkeyToReturn.setInfoForNormalHotKey(hotkeyInformation.getNewHotkeyName(), hotkeyInformation.getNewHotkeyModifiers())
+        }
+        return hotkeyToReturn
     }
 
     ; GetFriendlyHotkeysForLayer(layerIdentifier){

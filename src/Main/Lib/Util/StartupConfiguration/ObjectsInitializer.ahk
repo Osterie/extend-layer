@@ -1,6 +1,6 @@
 #Requires Autohotkey v2.0
 
-#Include <LayerControlling\LayerController>
+#Include <Actions\LayerControlling\LayerController>
 #Include <Util\KeyboardOverlay\KeyboardOverlay>
 #Include <Util\KeyboardOverlay\KeyboardOverlayRegistry>
 
@@ -108,6 +108,7 @@ class ObjectsInitializer{
         ; |------------Layer indicators------------|
 
         ; Used to switch the active layer
+        ; TODO dont do it like this!?
         layers := LayerController()
         layers.addLayerIndicator(1, "Green")
         layers.addLayerIndicator(2, "Red")
