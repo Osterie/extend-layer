@@ -5,7 +5,9 @@
 ; TODO: perhaps it should be called registry?
 
 ; TODO; instead of multiple guis, it would be possible to just change the color and have the same gui no change...
-Class LayerController{
+#Include <Actions\Action>
+
+Class LayerController extends Action{
     
     layers := []
     activeLayer := 0
@@ -18,12 +20,12 @@ Class LayerController{
 
     showLayerIndicator(layer){
         this.activeLayer := layer
-        this.layers[layer].showGui()
+        this.layers[layer].Show()
         this.hideInactiveLayers()
     }
 
     hideLayerIndicator(layer){
-        this.layers[layer].hideGui()
+        this.layers[layer].Hide()
     }
 
     hideInactiveLayers(){

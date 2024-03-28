@@ -272,8 +272,8 @@
                 "Description": "Hides the active window",
                 "Parameters": []
             },
-            "HideGui": {
-                "MethodName": "HideGui",
+            "Hide": {
+                "MethodName": "Hide",
                 "FriendlyName": "Hide the screen hider itself (turn it off)",
                 "Description": "Hides the screen hider itself",
                 "Parameters": []

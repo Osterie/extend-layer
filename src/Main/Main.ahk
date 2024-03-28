@@ -65,13 +65,12 @@ Class Main{
         try{
             if (this.scriptRunning){
                 ; TODO destroy guis..
+                this.DestroyObjectRegistry()
                 this.SetHotkeysForAllLayers(false)
                 this.StartupConfigurator := ""
                 this.ObjectRegister := ObjectRegistry()
                 this.KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
             }
-            ; TODO check if script is already running
-            ; TODO if script is already running, show a message box and exit
             this.RunLogicalStartup()
         }
         catch Error as e{
@@ -103,6 +102,10 @@ Class Main{
         objectRegisterInitializer := ObjectRegistryInitializer()
         objectRegisterInitializer.InitializeObjectRegistry()
         this.ObjectRegister := objectRegisterInitializer.GetObjectRegistry()
+    }
+
+    DestroyObjectRegistry(){
+        this.ObjectRegister.DestroyObjects()
     }
 
     InitializeKeyboardLayersInfo(){

@@ -1,6 +1,7 @@
 #Requires Autohotkey v2.0
 
-Class KeyboardOverlayRegistry{
+; TODO dont extends actin, extends overlay or something...
+Class KeyboardOverlayRegistry extends Action{
     
     keyboardOverlays := Map()
     activeOverlay := ""
@@ -11,26 +12,26 @@ Class KeyboardOverlayRegistry{
 
     ShowKeyboardOverlay(keyboardOverlayName){
         this.activeOverlay := keyboardOverlayName
-        this.keyboardOverlays[keyboardOverlayName].ShowGui()
+        this.keyboardOverlays[keyboardOverlayName].Show()
         this.HideInactiveLayers()
     }
     
     HideKeyboardOverlay(keyboardOverlayName){
         this.activeOverlay := keyboardOverlayName
-        this.keyboardOverlays[keyboardOverlayName].HideGui()
+        this.keyboardOverlays[keyboardOverlayName].Hide()
     }
 
     HideInactiveLayers(){
         for keyboardOverlayName, KeyboardOverlayObject in this.keyboardOverlays{
             if (keyboardOverlayName != this.activeOverlay){
-                KeyboardOverlayObject.HideGui()
+                KeyboardOverlayObject.Hide()
             }
         }
     }
 
     HideAllLayers(){
         for keyboardOverlayName, KeyboardOverlayObject in this.keyboardOverlays{
-            KeyboardOverlayObject.HideGui()
+            KeyboardOverlayObject.Hide()
         }
     }
 

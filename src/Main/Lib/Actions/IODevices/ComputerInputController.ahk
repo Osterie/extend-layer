@@ -2,8 +2,9 @@
 
 #Include ".\Keyboard.ahk"
 #Include ".\Mouse.ahk"
+#Include <Actions\Action>
 
-Class ComputerInputController{
+Class ComputerInputController extends Action{
 
     MouseInput := ""
     KeyboardInput := ""

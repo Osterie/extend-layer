@@ -2,7 +2,9 @@
 #Include ".\Translator.ahk"
 #Include "..\..\IODevices\ComputerInputController.ahk"
 
-Class WebNavigator{
+#Include <Actions\Action>
+
+Class WebNavigator extends Action{
 
     chatGptLoadTime := 3000
 

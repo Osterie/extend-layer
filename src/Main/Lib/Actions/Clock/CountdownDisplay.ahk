@@ -3,7 +3,10 @@
 
 ; TODO: could create a clock gui class, which can create a gui for countdown or clock
 
-Class CountdownDisplay{
+#Include <Actions\Action>
+
+
+Class CountdownDisplay extends Action{
 
     countdownStopped := false
     CountDown := ""
@@ -25,15 +28,17 @@ Class CountdownDisplay{
         this.GUICountdown.Add("Text", "w200 Center vCountdown", this.CountDown.getTimeAsString())
     }
     
-    DestroyGui(){
-        this.GUICountdown.Destroy()
+    Destroy(){
+        try{
+            this.GUICountdown.Destroy()
+        }
     }
 
-    ShowGui(){
+    Show(){
         this.GUICountdown.Show()
     }
 
-    HideGui(){
+    Hide(){
         this.GUICountdown.Hide()
     }
 

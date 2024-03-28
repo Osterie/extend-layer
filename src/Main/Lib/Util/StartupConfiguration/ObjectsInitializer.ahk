@@ -1,6 +1,6 @@
 #Requires Autohotkey v2.0
 
-#Include <LayerControlling\LayerController>
+#Include <Actions\LayerControlling\LayerController>
 #Include <Util\KeyboardOverlay\KeyboardOverlay>
 #Include <Util\KeyboardOverlay\KeyboardOverlayRegistry>
 

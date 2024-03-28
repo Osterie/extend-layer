@@ -2,7 +2,9 @@
 
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
 
-Class Mouse{
+#Include <Actions\Action>
+
+Class Mouse extends Action{
 
     autoClickerCPS := 10
     autoClickerEnabled := false

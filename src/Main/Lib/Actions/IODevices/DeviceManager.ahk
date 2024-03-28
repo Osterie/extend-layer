@@ -5,8 +5,10 @@
 ; TODO ini file should probably contain paths to the scripts which control the devices
 ; TODO maybe possible to create a class which can run powershell scripts, which can be created by the user (perhaps uploaded by the user) and which they have to add the path to in the ini file or something (dont have to have path, only name i guesss.)
 
+#Include <Actions\Action>
 
-Class DeviceManager{
+
+Class DeviceManager extends Action{
 
     bluetoothActionToToggle := ""
     touchPadActionToToggle := ""

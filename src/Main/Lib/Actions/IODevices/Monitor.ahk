@@ -1,6 +1,8 @@
 ﻿#Requires Autohotkey v2.0
 
-Class Monitor{
+#Include <Actions\Action>
+
+Class Monitor extends Action{
 
     ; red 
     ; green
