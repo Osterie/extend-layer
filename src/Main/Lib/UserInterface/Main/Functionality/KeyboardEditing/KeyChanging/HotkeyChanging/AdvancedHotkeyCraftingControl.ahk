@@ -87,7 +87,7 @@ class AdvancedHotkeyCraftingControl{
     }
 
     GetKey(){
-        return this.controlsForAdvancedHotkeys.getControl("AvailableKeyNamesDropDown").Text
+        return StrLower(this.controlsForAdvancedHotkeys.getControl("AvailableKeyNamesDropDown").Text)
     }
 
     GetModifiers(){
