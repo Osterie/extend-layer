@@ -63,14 +63,6 @@ Class Main{
     ; Main method used to start the script.
     Start(){
         try{
-            if (this.scriptRunning){
-                this.DestroyObjectRegistry()
-                this.SetHotkeysForAllLayers(false)
-                this.StartupConfigurator := ""
-                this.ObjectRegister := ObjectRegistry()
-                ; TODO probably needs to be destroyed...
-                this.KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
-            }
             this.RunLogicalStartup()
         }
         catch Error as e{
@@ -83,6 +75,14 @@ Class Main{
     }
 
     RunLogicalStartup(){
+        if (this.scriptRunning){
+            this.DestroyObjectRegistry()
+            this.SetHotkeysForAllLayers(false)
+            this.StartupConfigurator := ""
+            this.ObjectRegister := ObjectRegistry()
+            ; TODO probably needs to be destroyed...
+            this.KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
+        }
         this.Initialize()
         this.RunMainStartup()
     }
