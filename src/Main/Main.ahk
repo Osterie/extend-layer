@@ -64,11 +64,11 @@ Class Main{
     Start(){
         try{
             if (this.scriptRunning){
-                ; TODO destroy guis..
                 this.DestroyObjectRegistry()
                 this.SetHotkeysForAllLayers(false)
                 this.StartupConfigurator := ""
                 this.ObjectRegister := ObjectRegistry()
+                ; TODO probably needs to be destroyed...
                 this.KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
             }
             this.RunLogicalStartup()

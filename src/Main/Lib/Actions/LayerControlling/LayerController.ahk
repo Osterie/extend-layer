@@ -18,6 +18,10 @@ Class LayerController extends Action{
         this.layers.InsertAt(layer, layerIndicatorInstance) 
     }
 
+    destroyLayerIndicator(layer){
+        this.layers[layer].Destroy()
+    }
+
     showLayerIndicator(layer){
         this.activeLayer := layer
         this.layers[layer].Show()
@@ -79,5 +83,11 @@ Class LayerController extends Action{
 
     setActiveLayer(activeLayer){
         this.activeLayer := activeLayer
+    }
+
+    Destroy(){
+        loop this.layers.Length{
+            this.destroyLayerIndicator(A_Index)
+        }
     }
 }
