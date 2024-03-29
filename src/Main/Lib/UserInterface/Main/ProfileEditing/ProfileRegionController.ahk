@@ -9,17 +9,13 @@
 class ProfileRegionController{
 
     view := ""
-
     editView := ""
-
-
     addprofileView := ""
 
     ; Used to manage the preset user profiles, the user is only allowed to add a preset profile as a new profile
     PresetProfilesManager := ""
     ; Used to manage the existing user profiles, the user is allowed to edit, delete, and add new profiles
     ExistingProfilesManager := ""
-    
 
     __New(view){
         this.view := view 
