@@ -130,7 +130,7 @@ class ProfileRegionController{
         else{
             try{
                 profilePath := this.PresetProfilesManager.getFolderPathByName(profileToAdd)
-                this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, FilePaths.GetPathToProfiles() . "/" . profileName, profileName, profileName)
+                this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, FilePaths.GetPathToProfiles() . "/" . profileName, profileName)
                 this.view.UpdateProfilesDropDownMenu()
                 this.addprofileView.Destroy()
                 msgbox("Successfully added profile " . profileName)
@@ -142,9 +142,46 @@ class ProfileRegionController{
     }
 
     doImportProfile(){
+
         ; TODO check if the profile already exists
         ; TODO check if the profile has a keyboards.json and ClassObjects.ini file.
-        msgbox("Importing profile (Not yet implemented)")
+        selectedFilePath := FileSelect("D", , "Choose a location to save profile",)
+        if selectedFilePath = ""{
+            ; Canceled
+        }
+        else{
+            try{
+                filesFoundWhichShouldBeFound := 0
+                amountOfFilesToFind := 2
+                Loop Files (selectedFilePath . "\*"){
+                    subFolderName := A_LoopFileName
+                    if (subFolderName = "keyboards.json" || subFolderName = "ClassObjects.ini"){
+                        filesFoundWhichShouldBeFound++
+                    }
+                    amountOfFilesToFind -= 1
+                    if (amountOfFilesToFind = 0){
+                        break
+                    }
+                }
+                if (filesFoundWhichShouldBeFound := 2){
+                    parts := StrSplit(selectedFilePath, "\")
+                    folderName := parts[parts.length]
+                    if (this.ExistingProfilesManager.CopyFolderToNewLocation(selectedFilePath, FilePaths.GetPathToProfiles() . "/" . folderName, folderName)){
+                        msgbox("Successfully imported profile " . folderName)
+                        this.view.UpdateProfilesDropDownMenu()
+                    }
+                    else{
+                        msgbox("Failed to import profile, perhaps a profile with the given name already exists")
+                    }
+                }
+                else{
+                    msgbox("The folder you selected is not a valid profile.")
+                }
+            }
+            catch Error as e{
+                MsgBox("Failed to import rofile")
+            }
+        }
     }
     
     doExportProfile(){
