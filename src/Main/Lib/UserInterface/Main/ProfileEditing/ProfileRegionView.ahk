@@ -33,8 +33,8 @@ class ProfileRegionView{
 
         editProfilesButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "doOpenEditProfileView")())
         addProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "doOpenAddProfileDialog")())
-        ; importProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleImportProfileEvent")())
-        ; exportProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "HandleExportProfileEvent")())
+        importProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "doImportProfile")())
+        exportProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "doExportProfile")())
 
         this.guiHwnd := guiObject.GetHwnd()
               

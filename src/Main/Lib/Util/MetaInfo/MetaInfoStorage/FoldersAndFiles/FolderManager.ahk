@@ -72,7 +72,7 @@ class FolderManager{
         ; Todo implement
     ; }
 
-    CopyFolderToNewLocation(fromFolderPath, toFolderPath, oldFolderName, newFolderName){
+    CopyFolderToNewLocation(fromFolderPath, toFolderPath, newFolderName){
         
         copiedFolder := false
         

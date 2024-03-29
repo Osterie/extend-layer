@@ -9,7 +9,7 @@ class FilePaths{
     static KEY_NAMES := "../../resources/keyNames.txt"
 
     static PATH_TO_PRESET_PROFILES := "../../config/PresetProfiles"
-    static PATH_TO_PROFILES := "../../config/UserProfiles/"
+    static PATH_TO_PROFILES := "../../config/UserProfiles"
 
     static PATH_TO_EMPTY_PROFILE := "../../config/PresetProfiles/EmptyProfile"
     static PATH_TO_EMPTY_KEYBOARD_PROFILE := "../../config/PresetProfiles/EmptyProfile/Keyboards.json"
@@ -45,10 +45,10 @@ class FilePaths{
             this.CURRENT_PROFILE := this.DEFAULT_PROFILE
         }
         finally{
-            if (FileExist(this.PATH_TO_PROFILES . this.CURRENT_PROFILE)){
+            if (FileExist(this.PATH_TO_PROFILES . "/" . this.CURRENT_PROFILE)){
                 ; do nothing
             }
-            else if (!FileExist(this.PATH_TO_PROFILES . this.CURRENT_PROFILE)){
+            else if (!FileExist(this.PATH_TO_PROFILES . "/" . this.CURRENT_PROFILE)){
                 this.CURRENT_PROFILE := this.DEFAULT_PROFILE
             }
             else{
@@ -60,7 +60,7 @@ class FilePaths{
     }
 
     static GetPathToCurrentProfile(){
-        PATH_TO_CURRENT_PROFILE := this.getPathToProfiles() . this.GetCurrentProfile()
+        PATH_TO_CURRENT_PROFILE := this.getPathToProfiles() . "/" . this.GetCurrentProfile()
         if (!FileExist(PATH_TO_CURRENT_PROFILE)){
             PATH_TO_CURRENT_PROFILE := this.GetPathToEmptyProfile()
         }
