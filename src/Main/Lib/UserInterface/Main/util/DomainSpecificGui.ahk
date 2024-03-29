@@ -21,16 +21,19 @@ class DomainSpecificGui extends Gui{
         GuiColorsChanger.DwmSetCaptionColor(this, 0x7800ff) ; color is in RGB format
         GuiColorsChanger.DwmSetTextColor(this, 0x27eaf1)
     }
-    
-    Add(ControlType , Options := "", Text := ""){
-        GuiCtrl := super.Add(ControlType, Options, Text)
 
+    SetControlColor(control){
         controlColor := "14132b"
         fontColor := "27eaf1"
-        GuiColorsChanger.setControlColor(GuiCtrl, controlColor)
-        GuiColorsChanger.setControlTextColor(GuiCtrl, fontColor)
+        GuiColorsChanger.setControlColor(control, controlColor)
+        GuiColorsChanger.setControlTextColor(control, fontColor)
+    }
 
-        return GuiCtrl
+    Add(ControlType , Options := "", Text := ""){
+        guiControl := super.Add(ControlType, Options, Text)
+
+        this.SetControlColor(guiControl)
+        return guiControl
     }
 
     ; OnEvent(eventType, param1?, param2?, param3?) {

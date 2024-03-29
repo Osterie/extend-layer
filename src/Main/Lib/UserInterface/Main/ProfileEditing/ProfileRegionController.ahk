@@ -145,7 +145,6 @@ class ProfileRegionController{
 
     ; TODO this methods is way too long..
     doImportProfile(){
-        test := DirSelect()
         selectedFilePath := FileSelect("D", , "Choose a location to save profile",)
         ; Guard condition
         if selectedFilePath = ""{
