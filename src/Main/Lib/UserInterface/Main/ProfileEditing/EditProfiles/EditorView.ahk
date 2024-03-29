@@ -39,7 +39,7 @@ class EditorView extends DomainSpecificGui{
     CreateDeleteProfileInputBox(){
         profileToDelete := this.profilesToEditDropDownMenu.Text
         inputPrompt := InputBox("Are you sure you want to delete the profile named '" . profileToDelete .  "'? Deleted profiles cannot be resuscitated. Type yes to confirm", "Delete profile",, profileToDelete)
-        this.controller.HandleDeleteProfile(profileToDelete, inputPrompt)
+        this.controller.doDeleteProfile(profileToDelete, inputPrompt)
     }
 
     UpdateProfilesDropDownMenu(){

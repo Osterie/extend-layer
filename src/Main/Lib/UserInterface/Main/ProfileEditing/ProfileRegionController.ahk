@@ -92,7 +92,7 @@ class ProfileRegionController{
         }
     }
 
-    HandleDeleteProfile(profileToDelete, inputPrompt){
+    DoDeleteProfile(profileToDelete, inputPrompt){
         inputPromptResult := inputPrompt.Result
 
 
@@ -119,11 +119,11 @@ class ProfileRegionController{
     doOpenAddProfileDialog(){
         this.addprofileView := AddProfileDialog(this.GetHwnd())
         this.addprofileView.CreateView(this.GetPresetProfiles())
-        this.addProfileView.SubscribeToProfileAddedEvent(ObjBindMethod(this, "HandleAddProfileConfirmedEvent"))
+        this.addProfileView.SubscribeToProfileAddedEvent(ObjBindMethod(this, "doAddProfile"))
         this.addprofileView.Show()
     }
 
-    HandleAddProfileConfirmedEvent(profileToAdd, profileName){
+    doAddProfile(profileToAdd, profileName){
         if (this.ExistingProfilesManager.hasFolder(profileName)){
             msgbox("Failed to add profile. A profile with the given name already exists")
         }
@@ -144,7 +144,7 @@ class ProfileRegionController{
     doImportProfile(){
         ; TODO check if the profile already exists
         ; TODO check if the profile has a keyboards.json and ClassObjects.ini file.
-        msgbox("Importing profile")
+        msgbox("Importing profile (Not yet implemented)")
     }
     
     doExportProfile(){
