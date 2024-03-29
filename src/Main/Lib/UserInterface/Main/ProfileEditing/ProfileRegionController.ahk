@@ -141,6 +141,30 @@ class ProfileRegionController{
         }
     }
 
+    doImportProfile(){
+        ; TODO check if the profile already exists
+        ; TODO check if the profile has a keyboards.json and ClassObjects.ini file.
+        msgbox("Importing profile")
+    }
+    
+    doExportProfile(){
+        selectedFilePath := FileSelect("DS", , "Choose a location to save profile",)
+        if selectedFilePath = ""{
+            ; Canceled
+        }
+        else{
+            
+            try{
+                profileName := FilePaths.GetCurrentProfile()
+                profilePath := this.ExistingProfilesManager.getFolderPathByName(profileName)
+                DirCopy(profilePath, selectedFilePath . "/" . profileName)
+            }
+            catch Error as e{
+                MsgBox("Failed to export profile, perhaps because a folder of that name already exists in " . selectedFilePath)
+            }
+        }
+    }
+
     UpdateProfileDropDownMenu(){
         this.view.Delete()
         this.view.Add(this.ExistingProfilesManager.getFolderNames())
