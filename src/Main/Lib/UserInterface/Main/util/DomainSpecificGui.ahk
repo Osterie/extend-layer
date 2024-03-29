@@ -3,6 +3,7 @@
 #Include <UserInterface\Main\util\GuiColorsChanger>
 
 
+; TODO on focus, change color of text and control, so that tab navigation is easiers...
 class DomainSpecificGui extends Gui{
 
     __New(options := "", title := "", eventObj := ""){
