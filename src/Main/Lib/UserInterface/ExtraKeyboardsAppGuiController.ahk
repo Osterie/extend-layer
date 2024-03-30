@@ -29,6 +29,12 @@ Class ExtraKeyboardsAppGuiController{
         this.view.Destroy()
     }
 
+    DoLayerSelected(currentLayer){
+        this.ShowHotkeysForLayer(currentLayer)
+        this.View.UpdateButtonForAddingInfo()
+
+    }
+
     ShowHotkeysForLayer(currentLayer){
         
         this.model.SetCurrentLayer(currentLayer)
@@ -37,7 +43,7 @@ Class ExtraKeyboardsAppGuiController{
 
     ; TODO make sure user cant create multiple popups?
     ; TODO change name for this...
-    EditHotkey(listView, indexOfKeyToEdit){
+    AddOrEditHotkey(listView, indexOfKeyToEdit){
 
         layerInformation := this.GetCurrentLayerInfo()
 

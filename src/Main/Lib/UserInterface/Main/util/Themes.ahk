@@ -11,6 +11,6 @@ class Themes{
     }
 
     static RedIsh(){
-        return GuiTheme("6b3535", "f12727", "2b1414")
+        return GuiTheme("6b3535", "f12727", "2b1414", "7a0707")
     }
 }

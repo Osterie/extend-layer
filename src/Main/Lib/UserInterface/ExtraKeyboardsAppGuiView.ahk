@@ -60,8 +60,31 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         this.hotkeysListView := ListViewMaker()
         this.hotkeysListView.CreateListView(this, "r20 w600 x+10 -multi" , ["KeyCombo","Action"])
         
-        keyboardLayoutChanger.AddEventAction("ItemSelect", (*) => this.controller.ShowHotkeysForLayer(keyboardLayoutChanger.GetSelectionText()))
-        this.hotkeysListView.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "EditHotkey"))
+        keyboardLayoutChanger.AddEventAction("ItemSelect", (*) => this.controller.DoLayerSelected(keyboardLayoutChanger.GetSelectionText()))
+        this.hotkeysListView.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "AddOrEditHotkey"))
+
+        this.ButtonForAddingInfo := this.Add("Button", "", "Add")
+        this.ButtonForAddingInfo.Opt("Hidden1")
+
+        this.ButtonForEditingInfo := this.Add("Button", "Yp", "Edit")
+        this.ButtonForEditingInfo.Opt("Hidden1")
+
+        this.ButtonForDeletingInfo := this.Add("Button", "Yp", "Delete")
+        this.ButtonForDeletingInfo.Opt("Hidden1")
+    }
+
+    UpdateButtonForAddingInfo(){
+        if (this.controller.GetCurrentLayer() == ""){
+            this.ButtonForAddingInfo.Opt("Hidden1")
+            this.ButtonForEditingInfo.Opt("Hidden1")
+            this.ButtonForDeletingInfo.Opt("Hidden1")
+        } 
+        else {
+            this.ButtonForAddingInfo.Opt("Hidden0")
+            this.ButtonForEditingInfo.Opt("Hidden0")
+            this.ButtonForDeletingInfo.Opt("Hidden0")
+        }
+        
     }
 
     UpdateHotkeys(){

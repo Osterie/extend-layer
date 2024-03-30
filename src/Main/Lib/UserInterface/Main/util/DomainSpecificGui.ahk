@@ -13,7 +13,7 @@ class DomainSpecificGui extends Gui{
     __New(options := "", title := "", eventObj := ""){
         super.__New(options, title, this)
 
-        this.theme := Themes.BlueIsh()
+        this.theme := Themes.blueIsh()
 
         this.OnEvent('Escape', (*) => this.Destroy())
         this.BackColor := this.theme.BackgroundColor()
@@ -28,6 +28,7 @@ class DomainSpecificGui extends Gui{
     SetColors(){
         ; Top bar or whatever it is called
         GuiColorsChanger.DwmSetCaptionColor(this, "0x" this.theme.CaptionColor()) ; color is in RGB format
+        ; TODO add color for this too
         GuiColorsChanger.DwmSetTextColor(this, "0x" . this.theme.TextColor())
     }
 
