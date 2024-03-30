@@ -41,9 +41,7 @@ class HotkeysRegistry{
                 this.hotkeys[hotkeyName].changeHotkey(newHotkey)
                 this.hotkeys[newHotKey] := this.hotkeys[hotkeyName]
             }
-            ; If the new hotkey is empty, the original hotkey is just deleted instead of being replaced
             this.hotkeys.Delete(hotkeyName)
-            Hotkey(hotkeyName, "Off")
         }
     }
 

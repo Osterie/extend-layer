@@ -61,7 +61,9 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         this.hotkeysListView.CreateListView(this, "r20 w600 x+10 -multi" , ["KeyCombo","Action"])
         
         keyboardLayoutChanger.AddEventAction("ItemSelect", (*) => this.controller.DoLayerSelected(keyboardLayoutChanger.GetSelectionText()))
-        this.hotkeysListView.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "AddOrEditHotkey"))
+        this.hotkeysListView.AddEventAction("ItemSelect", (*) => this.EnableConfigurationButtons())
+        this.hotkeysListView.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "DoAddOrEditHotkey"))
+
 
         this.ButtonForAddingInfo := this.Add("Button", "", "Add")
         this.ButtonForAddingInfo.Opt("Hidden1")
@@ -71,9 +73,12 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
 
         this.ButtonForDeletingInfo := this.Add("Button", "Yp", "Delete")
         this.ButtonForDeletingInfo.Opt("Hidden1")
+
     }
 
-    UpdateButtonForAddingInfo(){
+    UpdateConfigurationButtons(){
+        this.DisableConfigurationButtons()
+
         if (this.controller.GetCurrentLayer() == ""){
             this.ButtonForAddingInfo.Opt("Hidden1")
             this.ButtonForEditingInfo.Opt("Hidden1")
@@ -84,7 +89,16 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
             this.ButtonForEditingInfo.Opt("Hidden0")
             this.ButtonForDeletingInfo.Opt("Hidden0")
         }
-        
+    }
+
+    EnableConfigurationButtons(){
+        this.ButtonForEditingInfo.Enabled := true
+        this.ButtonForDeletingInfo.Enabled := true
+    }
+
+    DisableConfigurationButtons(){
+        this.ButtonForEditingInfo.Enabled := false
+        this.ButtonForDeletingInfo.Enabled := false
     }
 
     UpdateHotkeys(){

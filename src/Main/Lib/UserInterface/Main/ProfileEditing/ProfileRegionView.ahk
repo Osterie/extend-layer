@@ -78,7 +78,7 @@ class ProfileRegionView{
             profilesDropDownMenu := guiObject.Add("DropDownList", "ym+1 Choose" . profileIndex, profiles)
         }
 
-        profilesDropDownMenu.OnEvent("Focus", (*) => this.unFocusDropDownMenu(profilesDropDownMenu))
+        ; profilesDropDownMenu.OnEvent("Focus", (*) => this.unFocusDropDownMenu(profilesDropDownMenu))
 
         return profilesDropDownMenu
     }
