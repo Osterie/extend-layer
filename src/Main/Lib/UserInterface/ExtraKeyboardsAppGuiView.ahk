@@ -6,6 +6,8 @@
 #Include <UserInterface\Main\util\TreeViewMaker>
 #Include <UserInterface\Main\util\ListViewMaker>
 
+#Include <Util\HotkeyFormatConverter>
+
 #Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
 
@@ -79,6 +81,8 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         this.ButtonForEditingInfo.Opt("Hidden1")
 
         this.ButtonForDeletingInfo := this.Add("Button", "Yp", "Delete")
+        this.ButtonForDeletingInfo.OnEvent("Click", (*) => this.controller.DeleteHotkey(HotkeyFormatConverter.convertFromFriendlyName(this.hotkeysListView.GetSelectionText())))
+
         this.ButtonForDeletingInfo.Opt("Hidden1")
 
     }
