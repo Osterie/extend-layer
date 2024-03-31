@@ -110,7 +110,12 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
             this.DisableConfigurationButtons()
         }
         else{
-            this.EnableConfigurationButtons()
+            if (this.hotkeysListView.GetCount() = 0){
+                this.DisableConfigurationButtons()
+            }
+            else{
+                this.EnableConfigurationButtons()
+            }
         }
     }
 
