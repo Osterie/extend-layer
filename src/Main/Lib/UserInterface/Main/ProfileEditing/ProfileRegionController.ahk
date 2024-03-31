@@ -121,8 +121,6 @@ class ProfileRegionController{
 
     doAddProfile(profileToAdd, profileName){
         ; Guard condition
-        msgbox(profileToAdd)
-        msgbox(profileName)
         if (this.ExistingProfilesManager.hasFolder(profileName)){
             msgbox("Failed to add profile. A profile with the given name already exists")
             return
@@ -183,11 +181,11 @@ class ProfileRegionController{
                 filesToBeFound--
             }
             amountOfFilesToLookFor -= 1
-            if (amountOfFilesToLookFor = 0){
+            if (amountOfFilesToLookFor = -1){
                 break
             }
         }
-        if (filesToBeFound = 0){
+        if (filesToBeFound = 0 && amountOfFilesToLookFor != -1){
             validProfile := true
         }
         else{
