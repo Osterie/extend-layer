@@ -67,7 +67,12 @@ Class ExtraKeyboardsAppGuiController{
         ; else if (WinWaitActive("Keyboard Overlay Configuration" , , 1000)){
         ;     WinWaitClose()
         ; }
-        this.view.UpdateHotkeys()
+        try{
+            this.view.UpdateHotkeys()
+        }
+        catch Error as e{
+            ; The main gui was probably closed
+        }
 
     }
 
@@ -106,7 +111,12 @@ Class ExtraKeyboardsAppGuiController{
     
             this.MainScript.RunLogicalStartup()
 
-            this.view.UpdateSettingsForActions()
+            try{
+                this.view.UpdateSettingsForActions()
+            }
+            catch Error as e{
+                ; The main gui was probably closed
+            }
         }
     }
 
