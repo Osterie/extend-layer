@@ -12,6 +12,8 @@ class ProfileRegionView{
 
     guiHwnd := ""
 
+    editProfilesButton := ""
+
     CreateView(guiObject, controller){
 
         this.controller := controller
@@ -24,20 +26,18 @@ class ProfileRegionView{
         
         this.profilesDropDownMenu.OnEvent("Change", (*) => this.NotifyListenersProfileChanged(this.profilesDropDownMenu.Text))
 
-
-        editProfilesButton := guiObject.Add("Button", "Default w80 ym+1", "Edit profiles")
-        addProfileButton := guiObject.Add("Button", "Default w80 ym+1", "Add profile")
-        importProfileButton := guiObject.Add("Button", "Default w80 ym+1", "Import profile")
-        exportProfileButton := guiObject.Add("Button", "Default w80 ym+1", "Export profile")
+        this.editProfilesButton := guiObject.Add("Button", "Default w80 ym+1", "&Edit profiles")
+        addProfileButton := guiObject.Add("Button", "Default w80 ym+1", "&Add profile")
+        importProfileButton := guiObject.Add("Button", "Default w80 ym+1", "&Import profile")
+        exportProfileButton := guiObject.Add("Button", "Default w80 ym+1", "E&xport profile")
         
 
-        editProfilesButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "doOpenEditProfileView")())
+        this.editProfilesButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "doOpenEditProfileView")())
         addProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "doOpenAddProfileDialog")())
         importProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "doImportProfile")())
         exportProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "doExportProfile")())
 
         this.guiHwnd := guiObject.GetHwnd()
-              
         guiObject.Show()
     }
 
@@ -78,7 +78,14 @@ class ProfileRegionView{
             profilesDropDownMenu := guiObject.Add("DropDownList", "ym+1 Choose" . profileIndex, profiles)
         }
 
+        ; profilesDropDownMenu.OnEvent("Focus", (*) => this.unFocusDropDownMenu(profilesDropDownMenu))
+
         return profilesDropDownMenu
+    }
+
+    unFocusDropDownMenu(dropDownMenu){
+        ; This avoid focusing the dropdown, which is really irritating
+        this.editProfilesButton.Focus()
     }
 
     GetHwnd(){

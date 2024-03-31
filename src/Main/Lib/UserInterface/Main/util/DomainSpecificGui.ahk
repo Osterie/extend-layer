@@ -1,37 +1,59 @@
 #Requires AutoHotkey v2.0
 
 #Include <UserInterface\Main\util\GuiColorsChanger>
+#Include <UserInterface\Main\util\Themes>
 
 
+; TODO on focus, change color of text and control, so that tab navigation is easiers...
 class DomainSpecificGui extends Gui{
 
+    theme := ""
+
+    ; TODO fetch color profile from meta file.
     __New(options := "", title := "", eventObj := ""){
         super.__New(options, title, this)
+
+        this.theme := Themes.blueIsh()
+
         this.OnEvent('Escape', (*) => this.Destroy())
+        this.BackColor := this.theme.BackgroundColor()
         this.SetColors()
-        this.SetFont("c27eaf1 Bold")
+        this.SetFont("c" . this.theme.TextColor() .  " Bold")
+    }
+
+    SetColorProfile(){
+
     }
     
     SetColors(){
-        this.BackColor := "35326b"
-
         ; Top bar or whatever it is called
-        
-        GuiColorsChanger.DwmSetCaptionColor(this, 0x7800ff) ; color is in RGB format
-        GuiColorsChanger.DwmSetTextColor(this, 0x27eaf1)
+        GuiColorsChanger.DwmSetCaptionColor(this, "0x" this.theme.CaptionColor()) ; color is in RGB format
+        ; TODO add color for this too
+        GuiColorsChanger.DwmSetTextColor(this, "0x" . this.theme.TextColor())
     }
-    
+
+    SetControlColor(control){
+        GuiColorsChanger.setControlColor(control, this.theme.ControlColor())
+        GuiColorsChanger.setControlTextColor(control, this.theme.TextColor())
+    }
+
     Add(ControlType , Options := "", Text := ""){
-        GuiCtrl := super.Add(ControlType, Options, Text)
-
-        controlColor := "14132b"
-        fontColor := "27eaf1"
-        GuiColorsChanger.setControlColor(GuiCtrl, controlColor)
-        GuiColorsChanger.setControlTextColor(GuiCtrl, fontColor)
-
-        return GuiCtrl
+        guiControl := super.Add(ControlType, Options, Text)
+        this.SetControlColor(guiControl)
+        return guiControl
     }
 
+    GetHwnd(){
+        return this.Hwnd
+    }
+
+    SetOwner(ownerHwnd := ""){
+        if (ownerHwnd != ""){
+            this.opt("+Owner" . ownerHwnd)
+        }
+    }
+
+    
     ; OnEvent(eventType, param1?, param2?, param3?) {
     ;     ; Check if a control is being added
     ;     msgbox(eventType)
@@ -54,14 +76,4 @@ class DomainSpecificGui extends Gui{
     ;     }
     ;     super.OnEvent(eventType, parameters*)
     ; } 
-
-    GetHwnd(){
-        return this.Hwnd
-    }
-
-    SetOwner(ownerHwnd := ""){
-        if (ownerHwnd != ""){
-            this.opt("+Owner" . ownerHwnd)
-        }
-    }
 }

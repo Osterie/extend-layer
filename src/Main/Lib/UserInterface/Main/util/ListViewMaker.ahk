@@ -30,13 +30,26 @@ class ListViewMaker{
 
     ; Takes a two dimensional array, items, and adds each item to the listView
     SetNewListViewItems(items){
-        this.listView.Delete()
+        ; TODO dont delete all items, just add new ones or modify existing ones.
+        ; this.listView.Delete()
 
         minWidths := this.GetMinWidthsForItems(items)
 
+        listViewLength := this.listView.GetCount()
+
+        if (listViewLength > items.Length){
+            Loop listViewLength - items.Length{
+                this.listView.Delete(listViewLength-A_Index+1)
+            }
+        }
 
         Loop items.Length{
-            this.listView.Add("Icon3", items[A_index]*)
+            if (A_index > listViewLength){
+                this.listView.Add("Icon3", items[A_index]*)
+            }
+            else{
+                this.listView.Modify(A_index, "Icon3",items[A_index]*)
+            }
         }
         Sleep(20)
         this.SetColumnWidths(minWidths)

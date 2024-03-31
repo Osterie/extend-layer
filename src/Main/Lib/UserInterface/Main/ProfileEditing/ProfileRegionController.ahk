@@ -9,17 +9,13 @@
 class ProfileRegionController{
 
     view := ""
-
     editView := ""
-
-
     addprofileView := ""
 
     ; Used to manage the preset user profiles, the user is only allowed to add a preset profile as a new profile
     PresetProfilesManager := ""
     ; Used to manage the existing user profiles, the user is allowed to edit, delete, and add new profiles
     ExistingProfilesManager := ""
-    
 
     __New(view){
         this.view := view 
@@ -124,64 +120,78 @@ class ProfileRegionController{
     }
 
     doAddProfile(profileToAdd, profileName){
+        ; Guard condition
         if (this.ExistingProfilesManager.hasFolder(profileName)){
             msgbox("Failed to add profile. A profile with the given name already exists")
+            return
         }
-        else{
-            try{
-                profilePath := this.PresetProfilesManager.getFolderPathByName(profileToAdd)
-                this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, FilePaths.GetPathToProfiles() . "/" . profileName, profileName)
-                this.view.UpdateProfilesDropDownMenu()
-                this.addprofileView.Destroy()
-                msgbox("Successfully added profile " . profileName)
-            }
-            catch{
-                msgbox("Failed to add profile, perhaps a profile with the given name already exists")
-            }
+        try{
+            profilePath := this.PresetProfilesManager.getFolderPathByName(profileToAdd)
+            this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, FilePaths.GetPathToProfiles() . "/" . profileName, profileName)
+            this.view.UpdateProfilesDropDownMenu()
+            this.addprofileView.Destroy()
+            msgbox("Successfully added profile " . profileName)
+        }
+        catch{
+            msgbox("Failed to add profile, perhaps a profile with the given name already exists")
         }
     }
 
+    ; TODO this methods is way too long..
     doImportProfile(){
-
-        ; TODO check if the profile already exists
-        ; TODO check if the profile has a keyboards.json and ClassObjects.ini file.
         selectedFilePath := FileSelect("D", , "Choose a location to save profile",)
+        ; Guard condition
         if selectedFilePath = ""{
             ; Canceled
+            return
+        }
+        if (!this.profileIsValid(selectedFilePath)){
+            msgbox("The folder you selected is not a valid profile.")
+            return
+        }
+        try{
+            folderName := this.getEndOfPath(selectedFilePath)
+            if (this.ExistingProfilesManager.CopyFolderToNewLocation(selectedFilePath, FilePaths.GetPathToProfiles() . "/" . folderName, folderName)){
+                msgbox("Successfully imported profile " . folderName)
+                this.view.UpdateProfilesDropDownMenu()
+            }
+            else{
+                msgbox("Failed to import profile, perhaps a profile with the given name already exists")
+            }
+        }
+        catch Error as e{
+            MsgBox("Failed to import profile")
+        }
+    }
+
+    ; TODO create a helper class for this
+    getEndOfPath(path){
+        parts := StrSplit(path, "\")
+        return parts[parts.length]
+    }
+
+    ; TODO create a helper class for this
+    profileIsValid(profilePath){
+        validProfile := false
+        filesToBeFound := 2
+        amountOfFilesToLookFor := 2
+        Loop Files (profilePath . "\*"){
+            subFolderName := A_LoopFileName
+            if (subFolderName = "Keyboards.json" || subFolderName = "ClassObjects.ini"){
+                filesToBeFound--
+            }
+            amountOfFilesToLookFor -= 1
+            if (amountOfFilesToLookFor = -1){
+                break
+            }
+        }
+        if (filesToBeFound = 0 && amountOfFilesToLookFor != -1){
+            validProfile := true
         }
         else{
-            try{
-                filesFoundWhichShouldBeFound := 0
-                amountOfFilesToFind := 2
-                Loop Files (selectedFilePath . "\*"){
-                    subFolderName := A_LoopFileName
-                    if (subFolderName = "keyboards.json" || subFolderName = "ClassObjects.ini"){
-                        filesFoundWhichShouldBeFound++
-                    }
-                    amountOfFilesToFind -= 1
-                    if (amountOfFilesToFind = 0){
-                        break
-                    }
-                }
-                if (filesFoundWhichShouldBeFound := 2){
-                    parts := StrSplit(selectedFilePath, "\")
-                    folderName := parts[parts.length]
-                    if (this.ExistingProfilesManager.CopyFolderToNewLocation(selectedFilePath, FilePaths.GetPathToProfiles() . "/" . folderName, folderName)){
-                        msgbox("Successfully imported profile " . folderName)
-                        this.view.UpdateProfilesDropDownMenu()
-                    }
-                    else{
-                        msgbox("Failed to import profile, perhaps a profile with the given name already exists")
-                    }
-                }
-                else{
-                    msgbox("The folder you selected is not a valid profile.")
-                }
-            }
-            catch Error as e{
-                MsgBox("Failed to import rofile")
-            }
+            validProfile := false
         }
+        return validProfile
     }
     
     doExportProfile(){

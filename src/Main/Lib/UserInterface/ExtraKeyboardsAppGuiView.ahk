@@ -40,7 +40,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
     }
 
     CreateTabs(){
-        Tab := this.AddTab3("yp+40 xm", ["Keyboards","Change Action Settings","Documentation"])
+        Tab := this.Add("Tab3", "yp+40 xm", ["&Keyboards","&Change Action Settings","Documentation"])
         Tab.UseTab(1)
         this.CreateKeyboardsTab()
 
@@ -60,8 +60,57 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         this.hotkeysListView := ListViewMaker()
         this.hotkeysListView.CreateListView(this, "r20 w600 x+10 -multi" , ["KeyCombo","Action"])
         
-        keyboardLayoutChanger.AddEventAction("ItemSelect", (*) => this.controller.ShowHotkeysForLayer(keyboardLayoutChanger.GetSelectionText()))
-        this.hotkeysListView.AddEventAction("DoubleClick", ObjBindMethod(this.controller, "EditHotkey"))
+
+        this.ButtonForAddingInfo := this.Add("Button", "", "Add")
+        this.ButtonForAddingInfo.OnEvent("Click", (*) => this.controller.DoAddOrEditHotkey())
+
+        this.ButtonForAddingInfo.Opt("Hidden1")
+
+        this.ButtonForEditingInfo := this.Add("Button", "Yp", "Edit")
+        this.ButtonForEditingInfo.Opt("Hidden1")
+
+        this.ButtonForDeletingInfo := this.Add("Button", "Yp", "Delete")
+        this.ButtonForDeletingInfo.Opt("Hidden1")
+
+
+        this.hotkeysListView.AddEventAction("ItemSelect", (listView, rowSelected, ColumnSelected) => this.ChangeConfigurationButtonsStatus(rowSelected))
+        keyboardLayoutChanger.AddEventAction("ItemSelect", (*) => this.controller.DoLayerSelected(keyboardLayoutChanger.GetSelectionText()))
+        this.hotkeysListView.AddEventAction("DoubleClick", (listView, rowClicked) => this.controller.DoAddOrEditHotkey(listView.GetText(rowClicked, 1)))
+
+    }
+
+    UpdateConfigurationButtons(){
+        this.DisableConfigurationButtons()
+
+        if (this.controller.GetCurrentLayer() == ""){
+            this.ButtonForAddingInfo.Opt("Hidden1")
+            this.ButtonForEditingInfo.Opt("Hidden1")
+            this.ButtonForDeletingInfo.Opt("Hidden1")
+        } 
+        else {
+            this.ButtonForAddingInfo.Opt("Hidden0")
+            this.ButtonForEditingInfo.Opt("Hidden0")
+            this.ButtonForDeletingInfo.Opt("Hidden0")
+        }
+    }
+
+    ChangeConfigurationButtonsStatus(rowFocused){
+        if (rowFocused = 0){
+            this.DisableConfigurationButtons()
+        }
+        else{
+            this.EnableConfigurationButtons()
+        }
+    }
+
+    EnableConfigurationButtons(){
+        this.ButtonForEditingInfo.Enabled := true
+        this.ButtonForDeletingInfo.Enabled := true
+    }
+
+    DisableConfigurationButtons(){
+        this.ButtonForEditingInfo.Enabled := false
+        this.ButtonForDeletingInfo.Enabled := false
     }
 
     UpdateHotkeys(){

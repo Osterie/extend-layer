@@ -42,19 +42,19 @@ class HotKeyConfigurationView extends DomainSpecificGui{
     }
 
     createChangeButtons(){
-        buttonToChangeOriginalHotkey := this.AddButton("Default w100 xm", "Change Hotkey")
+        buttonToChangeOriginalHotkey := this.Add("Button", "Default w100 xm", "Change Hotkey")
         buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.controller.changeHotkey("Hotkey"))
         
-        buttonToChangeOriginalAction := this.AddButton("Default w100", "Change Action")
+        buttonToChangeOriginalAction := this.Add("Button", "Default w100", "Change Action")
         buttonToChangeOriginalAction.onEvent("Click", (*) => this.controller.changeHotkey("Action"))
     }
 
     createFinalizationButtons(){
-        saveButton := this.AddButton("Default w100", "Save+Done")
+        saveButton := this.Add("Button", "Default w100", "Save+Done")
         saveButton.onEvent("Click", (*) => this.controller.NotifyListenersSave())
-        cancelButton := this.AddButton("Default w100", "Cancel+Done")
+        cancelButton := this.Add("Button", "Default w100", "Cancel+Done")
         cancelButton.onEvent("Click", (*) => this.Destroy())
-        deleteButton := this.AddButton("Default w100", "Delete+Done")
+        deleteButton := this.Add("Button", "Default w100", "Delete+Done")
         deleteButton.onEvent("Click", (*) => this.controller.NotifyListenersDelete())
     }
     
