@@ -155,6 +155,8 @@ Class ExtraKeyboardsAppGuiController{
             this.MainScript.SetHotkeysForAllLayers(false)
             msgbox("Could not delete hotkey. " . e.Message)
         }
+        this.view.UpdateHotkeys()
+        this.view.ChangeConfigurationButtonsStatus(1)
         this.MainScript.RunLogicalStartup()
     }
 

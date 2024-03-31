@@ -138,6 +138,8 @@ class ProfileRegionController{
     }
 
     ; TODO this methods is way too long..
+    ; TODO make it suppport multi select
+    ; TODO make it possible to drag files onto gui to add profiles..
     doImportProfile(){
         selectedFilePath := FileSelect("D", , "Choose a location to save profile",)
         ; Guard condition
