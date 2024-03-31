@@ -61,12 +61,12 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         this.hotkeysListView.CreateListView(this, "r20 w600 x+10 -multi" , ["KeyCombo","Action"])
         
 
-        this.ButtonForAddingInfo := this.Add("Button", "", "Add")
+        this.ButtonForAddingInfo := this.Add("Button", "Default", "Add")
         this.ButtonForAddingInfo.OnEvent("Click", (*) => this.controller.DoAddOrEditHotkey())
-
         this.ButtonForAddingInfo.Opt("Hidden1")
 
-        this.ButtonForEditingInfo := this.Add("Button", "Yp", "Edit")
+        this.ButtonForEditingInfo := this.Add("Button", " Yp", "Edit")
+        this.ButtonForEditingInfo.OnEvent("Click", (*) => this.controller.DoAddOrEditHotkey(this.hotkeysListView.GetSelectionText()))
         this.ButtonForEditingInfo.Opt("Hidden1")
 
         this.ButtonForDeletingInfo := this.Add("Button", "Yp", "Delete")
@@ -104,12 +104,16 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
     }
 
     EnableConfigurationButtons(){
+        this.ButtonForAddingInfo.Opt("-Default")
         this.ButtonForEditingInfo.Enabled := true
+        this.ButtonForEditingInfo.Opt("+Default")
         this.ButtonForDeletingInfo.Enabled := true
     }
 
     DisableConfigurationButtons(){
+        this.ButtonForAddingInfo.Opt("+Default")
         this.ButtonForEditingInfo.Enabled := false
+        this.ButtonForEditingInfo.Opt("-Default")
         this.ButtonForDeletingInfo.Enabled := false
     }
 
