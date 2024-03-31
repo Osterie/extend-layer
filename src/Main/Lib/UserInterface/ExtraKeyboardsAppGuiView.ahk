@@ -61,7 +61,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         this.hotkeysListView.CreateListView(this, "r20 w600 x+10 -multi" , ["KeyCombo","Action"])
         
 
-        this.ButtonForAddingInfo := this.Add("Button", "Default", "Add")
+        this.ButtonForAddingInfo := this.Add("Button", "", "Add")
         this.ButtonForAddingInfo.OnEvent("Click", (*) => this.controller.DoAddOrEditHotkey())
         this.ButtonForAddingInfo.Opt("Hidden1")
 
@@ -94,6 +94,9 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         }
     }
 
+    ; If the focues row is 0 (a row without values) the edit and delete buttons are disabled,
+    ; Since they should only be active when a row with values is selected.
+    ; If the row is not 0, the edit and delete buttons are enabled.
     ChangeConfigurationButtonsStatus(rowFocused){
         if (rowFocused = 0){
             this.DisableConfigurationButtons()
@@ -103,6 +106,8 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         }
     }
 
+    ; Enables the edit/delete button, and makes the edit button the default button.
+    ; Meaning that it is pressed when the user presses enter
     EnableConfigurationButtons(){
         this.ButtonForAddingInfo.Opt("-Default")
         this.ButtonForEditingInfo.Enabled := true
@@ -110,6 +115,8 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         this.ButtonForDeletingInfo.Enabled := true
     }
 
+    ; Disables the edit/delete button, and makes the add button the default button.
+    ; Meaning that it is pressed when the user presses enter
     DisableConfigurationButtons(){
         this.ButtonForAddingInfo.Opt("+Default")
         this.ButtonForEditingInfo.Enabled := false
