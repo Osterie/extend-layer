@@ -60,7 +60,16 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         this.hotkeysListView := ListViewMaker()
         this.hotkeysListView.CreateListView(this, "r20 w600 x+10 -multi" , ["KeyCombo","Action"])
         
+        this.CreateConfigurationButtons()
 
+        this.hotkeysListView.AddEventAction("ItemSelect", (listView, rowSelected, ColumnSelected) => this.ChangeConfigurationButtonsStatus(rowSelected))
+        keyboardLayoutChanger.AddEventAction("ItemSelect", (*) => this.controller.DoLayerSelected(keyboardLayoutChanger.GetSelectionText()))
+        this.hotkeysListView.AddEventAction("DoubleClick", (listView, rowClicked) => this.controller.DoAddOrEditHotkey(listView.GetText(rowClicked, 1)))
+
+    }
+
+    CreateConfigurationButtons(){
+        
         this.ButtonForAddingInfo := this.Add("Button", "", "Add")
         this.ButtonForAddingInfo.OnEvent("Click", (*) => this.controller.DoAddOrEditHotkey())
         this.ButtonForAddingInfo.Opt("Hidden1")
@@ -71,11 +80,6 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
 
         this.ButtonForDeletingInfo := this.Add("Button", "Yp", "Delete")
         this.ButtonForDeletingInfo.Opt("Hidden1")
-
-
-        this.hotkeysListView.AddEventAction("ItemSelect", (listView, rowSelected, ColumnSelected) => this.ChangeConfigurationButtonsStatus(rowSelected))
-        keyboardLayoutChanger.AddEventAction("ItemSelect", (*) => this.controller.DoLayerSelected(keyboardLayoutChanger.GetSelectionText()))
-        this.hotkeysListView.AddEventAction("DoubleClick", (listView, rowClicked) => this.controller.DoAddOrEditHotkey(listView.GetText(rowClicked, 1)))
 
     }
 
