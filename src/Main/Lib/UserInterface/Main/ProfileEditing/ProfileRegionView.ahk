@@ -38,7 +38,6 @@ class ProfileRegionView{
         exportProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "doExportProfile")())
 
         this.guiHwnd := guiObject.GetHwnd()
-        guiObject.Show()
     }
 
     NotifyListenersProfileChanged(newProfileName){

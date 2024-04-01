@@ -5,10 +5,14 @@
 #Include <UserInterface\Main\util\TreeViewMaker>
 #Include <UserInterface\Main\util\ListViewMaker>
 
+
 #Include <Util\HotkeyFormatConverter>
+#Include <Util\MetaInfo\MetaInfoStorage\Themes\logic\Themes>
 #Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
 #Include <UserInterface\Main\Util\DomainSpecificGui>
+
+; TODO fix issue with multiple dialogs being possible to open at the same time
 
 Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
 
@@ -23,12 +27,48 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
     ; Creates the main gui for the application
     CreateMain(controller){
         this.controller := controller
-
+        this.CreateMenuBar()
         this.CreateProfileEditor()
         this.CreateTabs()
         
         ; Show gui in the top left corner of the screen
-        this.Show("x0 y0")
+        ; this.Show("x0 y0")
+    }
+
+    CreateMenuBar(){
+    
+        FileMenu := Menu()
+        FileMenu.Add("Script Icon", HandleSuspendClicked)
+        FileMenu.Add("Suspend Icon", HandleSuspendClicked)
+        FileMenu.Add("Pause Icon", HandleSuspendClicked)
+        FileMenu.SetIcon("Script Icon", A_AhkPath, 2) ; 2nd icon group from the file
+        FileMenu.SetIcon("Suspend Icon", A_AhkPath, -206) ; icon with resource ID 206
+        FileMenu.SetIcon("Pause Icon", A_AhkPath, -207) ; icon with resource ID 207
+        MyMenuBar := MenuBar()
+        MyMenuBar.SetColor("ff0000")
+        MyMenuBar.Add("&Suspend Script", (ItemName, ItemPos, MyMenuBar) => HandleSuspendClicked(ItemName, ItemPos, MyMenuBar))
+        MyMenuBar.SetColor("ff0000")
+        ; this.theme := Themes.getInstance().GetTheme(FilePaths.GetCurrentTheme())
+        ; MyMenuBar.SetColor(this.theme.ControlColor(), 1)
+        Sleep(50)
+        MyMenuBar.SetColor("ff0000")
+        Sleep(50)
+        MyMenuBar.Add("&File", FileMenu)
+        this.MenuBar := MyMenuBar
+        this.MenuBar.SetColor("ff0000")
+        
+
+        HandleSuspendClicked(ItemName, ItemPos, MyMenuBar) {
+            if (ItemName = "&Suspend Script"){
+                MyMenuBar.Rename(ItemName, "&Start Script")
+                Suspend(1)
+            }
+            else{
+                MyMenuBar.Rename(ItemName, "&Suspend Script")
+                Suspend(0)
+            }
+
+        }
     }
 
     ; Creates the region for profile editing
