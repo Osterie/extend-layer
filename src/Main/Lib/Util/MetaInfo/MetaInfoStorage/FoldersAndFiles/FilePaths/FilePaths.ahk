@@ -1,8 +1,9 @@
 class FilePaths{
 
+    static PATH_TO_THEMES := "../../config/Themes.json"
+
     static PATH_TO_META_INI_FILE := "../../config/meta.ini"
 
-    static CURRENT_PROFILE := "EmptyProfile"
     static DEFAULT_PROFILE := "Default"
 
     static OBJECT_INFO := "../../config/ObjectInfo.json"
@@ -15,6 +16,30 @@ class FilePaths{
     static PATH_TO_EMPTY_KEYBOARD_PROFILE := "../../config/PresetProfiles/EmptyProfile/Keyboards.json"
     static PATH_TO_EMPTY_SETTINGS_PROFILE := "../../config/PresetProfiles/EmptyProfile/ClassObjects.ini"
 
+    static GetThemes(){
+        return this.PATH_TO_THEMES
+    }
+
+    static GetDefaultTheme(){
+        DEFAULT_THEME := iniRead(this.GetPathToMetaFile(), "Themes", "defaultTheme")
+        return DEFAULT_THEME
+    }
+
+    static SetCurrentTheme(currentTheme){
+        iniWrite(currentTheme, this.PATH_TO_META_INI_FILE, "Themes", "activeTheme")
+    }
+
+    static GetCurrentTheme(){
+        try{
+            CURRENT_THEME := iniRead(this.GetPathToMetaFile(), "Themes", "activeTheme")
+        }
+        catch OSError{
+            this.SetCurrentTheme(this.GetDefaultTheme())
+            CURRENT_THEME := this.GetDefaultTheme()
+        }
+        
+        return CURRENT_THEME
+    }
 
     static GetPathToCurrentKeyboardLayout(){
         PATH_TO_CURRENT_KEYBOARD_LAYOUT := this.GetPathToCurrentProfile() . "/Keyboards.json"
@@ -33,30 +58,30 @@ class FilePaths{
     }
 
     static SetCurrentProfile(currentProfileName){
-        iniWrite(currentProfileName, this.PATH_TO_META_INI_FILE, "General", "activeUserProfile")
+        iniWrite(currentProfileName, this.PATH_TO_META_INI_FILE, "Profiles", "activeUserProfile")
     }
 
     static GetCurrentProfile(){
         try{
-            this.CURRENT_PROFILE := iniRead(this.GetPathToMetaFile(), "General", "activeUserProfile")
+            CURRENT_PROFILE := iniRead(this.GetPathToMetaFile(), "Profiles", "activeUserProfile")
         }
         catch OSError{
             this.SetCurrentProfile(this.DEFAULT_PROFILE)
-            this.CURRENT_PROFILE := this.DEFAULT_PROFILE
+            CURRENT_PROFILE := this.DEFAULT_PROFILE
         }
         finally{
-            if (FileExist(this.PATH_TO_PROFILES . "/" . this.CURRENT_PROFILE)){
+            if (FileExist(this.PATH_TO_PROFILES . "/" . CURRENT_PROFILE)){
                 ; do nothing
             }
-            else if (!FileExist(this.PATH_TO_PROFILES . "/" . this.CURRENT_PROFILE)){
-                this.CURRENT_PROFILE := this.DEFAULT_PROFILE
+            else if (!FileExist(this.PATH_TO_PROFILES . "/" . CURRENT_PROFILE)){
+                CURRENT_PROFILE := this.DEFAULT_PROFILE
             }
             else{
-                this.CURRENT_PROFILE := "EmptyProfile"
+                CURRENT_PROFILE := "EmptyProfile"
             }
         }
         
-        return this.CURRENT_PROFILE
+        return CURRENT_PROFILE
     }
 
     static GetPathToCurrentProfile(){

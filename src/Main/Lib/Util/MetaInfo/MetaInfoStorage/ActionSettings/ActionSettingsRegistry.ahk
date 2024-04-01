@@ -37,7 +37,7 @@ class ActionSettingsRegistry{
     }
 
     GetActionNames(){
-        return this.actionSettingsRegistry.toKeys()
+        return this.actionSettingsRegistry.Keys()
     }
 
     GetSettingsForAction(actionName){

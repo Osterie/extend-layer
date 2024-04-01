@@ -1,19 +1,24 @@
 #Requires AutoHotkey v2.0
 
 #Include <UserInterface\Main\util\GuiColorsChanger>
-#Include <UserInterface\Main\util\Themes>
+
+#Include <Util\MetaInfo\MetaInfoStorage\Themes\logic\Themes>
+
 
 
 ; TODO on focus, change color of text and control, so that tab navigation is easiers...
 class DomainSpecificGui extends Gui{
 
     theme := ""
+    themes_ := ""
 
     ; TODO fetch color profile from meta file.
     __New(options := "", title := "", eventObj := ""){
         super.__New(options, title, this)
 
-        this.theme := Themes.blueIsh()
+        ; this.themes_ := Themes()
+
+        this.theme := Themes.getInstance().GetTheme(FilePaths.GetCurrentTheme())
 
         this.OnEvent('Escape', (*) => this.Destroy())
         this.BackColor := this.theme.BackgroundColor()
@@ -22,14 +27,14 @@ class DomainSpecificGui extends Gui{
     }
 
     SetColorProfile(){
-
+        ; TODO fetch color profile from meta file.
     }
     
     SetColors(){
         ; Top bar or whatever it is called
         GuiColorsChanger.DwmSetCaptionColor(this, "0x" this.theme.CaptionColor()) ; color is in RGB format
         ; TODO add color for this too
-        GuiColorsChanger.DwmSetTextColor(this, "0x" . this.theme.TextColor())
+        GuiColorsChanger.DwmSetTextColor(this, "0x" . this.theme.CaptionFontColor())
     }
 
     SetControlColor(control){

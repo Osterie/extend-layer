@@ -9,8 +9,6 @@
 
 #Include <Util\StartupConfiguration\HotkeyInitializer>
 
-; #Include <Util\MetaInfo\MetaInfoStorage\Settings\Setting>
-
 Class ExtraKeyboardsAppGuiController{
 
     MainScript := ""

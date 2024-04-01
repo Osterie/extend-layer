@@ -1,8 +1,8 @@
 #Requires AutoHotkey v2.0
 
 
-Map.Prototype.DefineProp("toValues", {Call:mapToValues})
-Map.Prototype.DefineProp("toKeys", {Call:mapToKeys})
+Map.Prototype.DefineProp("Values", {Call:mapToValues})
+Map.Prototype.DefineProp("Keys", {Call:mapToKeys})
   ; When a descriptor is called, it ALWAYS sends a reference to the object as the first param.  
   ; It's known as the "this" variable when working inside an object/class/etc.  
   ; The search param is the expected item to find.  
