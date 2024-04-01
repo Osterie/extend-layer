@@ -1,39 +1,82 @@
 #Requires AutoHotkey v2.0
 
-
 #Include <UserInterface\Main\ProfileEditing\ProfileRegionView>
 #Include <UserInterface\Main\ProfileEditing\ProfileRegionController>
 #Include <UserInterface\Main\util\TreeViewMaker>
 #Include <UserInterface\Main\util\ListViewMaker>
 
+
 #Include <Util\HotkeyFormatConverter>
-
+#Include <Util\MetaInfo\MetaInfoStorage\Themes\logic\Themes>
 #Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
-
 
 #Include <UserInterface\Main\Util\DomainSpecificGui>
 
+; TODO fix issue with multiple dialogs being possible to open at the same time
 
-; TODO everything should inherit from a base gui class which fixes the colors and such of all the guis.
 Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
 
     settingsValuesListView := ""
     hotkeysListView := ""
 
+    ; Constructor for the ExtraKeyboardsAppGuiView class
     __New(){
         super.__New("+Resize +MinSize920x480", "Extra Keyboards App")
     }
 
+    ; Creates the main gui for the application
     CreateMain(controller){
         this.controller := controller
-
+        this.CreateMenuBar()
         this.CreateProfileEditor()
         this.CreateTabs()
         
-        ; Create gui in the top left corner of the screen
+        ; Show gui in the top left corner of the screen
         this.Show("x0 y0")
     }
 
+    CreateMenuBar(){
+
+        themesInstance := Themes.getInstance()
+        theme := themesInstance.GetTheme(FilePaths.GetCurrentTheme())
+        availableThemes := themesInstance.GetThemeNames()
+        
+        MyMenuBar := MenuBar()
+
+        FileMenu := Menu()
+        Loop availableThemes.Length{
+            FileMenu.Add(availableThemes[A_index], HandleThemeClicked)
+        }
+        ; FileMenu.SetIcon("Script Icon", A_AhkPath, 2) ; 2nd icon group from the file
+        ; FileMenu.SetIcon("Suspend Icon", A_AhkPath, -206) ; icon with resource ID 206
+        ; FileMenu.SetIcon("Pause Icon", A_AhkPath, -207) ; icon with resource ID 207
+        ; FileMenu.SetColor(theme.ControlColor(), 1)
+
+        MyMenuBar.Add("&Themes", FileMenu)
+        
+        MyMenuBar.Add("&Suspend Script", (ItemName, ItemPos, MyMenuBar) => HandleSuspendClicked(ItemName, ItemPos, MyMenuBar))
+        
+        this.MenuBar := MyMenuBar
+
+        HandleThemeClicked(ItemName, ItemPos, MyMenuBar){
+            FilePaths.SetCurrentTheme(ItemName)
+            this.UpdateColorTheme()
+        }
+
+        HandleSuspendClicked(ItemName, ItemPos, MyMenuBar) {
+            if (ItemName = "&Suspend Script"){
+                MyMenuBar.Rename(ItemName, "&Start Script")
+                Suspend(1)
+            }
+            else{
+                MyMenuBar.Rename(ItemName, "&Suspend Script")
+                Suspend(0)
+            }
+
+        }
+    }
+
+    ; Creates the region for profile editing
     CreateProfileEditor(){
         profileView := ProfileRegionView()
         profileView.SubscribeToProfileChangedEvent(ObjBindMethod(this.controller, "HandleProfileChangedEvent"))
@@ -41,6 +84,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         profileController.CreateView(this)
     }
 
+    ; Creates the tabs for the application
     CreateTabs(){
         Tab := this.Add("Tab3", "yp+40 xm", ["&Keyboards","&Change Action Settings","Documentation"])
         Tab.UseTab(1)
@@ -55,6 +99,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         Tab.UseTab(0) ; subsequently-added controls will not belong to the tab control.
     }
 
+    ; Creates the tab for the keyboard settings
     CreateKeyboardsTab(){
         keyboardLayoutChanger := TreeViewMaker()
         keyboardLayoutChanger.createElementsForGui(this, this.controller.GetKeyboardLayerIdentifiers())
@@ -70,6 +115,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
 
     }
 
+    ; Creates the buttons for adding/editing/deleting a hotkey.
     CreateConfigurationButtons(){
         
         this.ButtonForAddingInfo := this.Add("Button", "", "Add")
@@ -87,6 +133,9 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
 
     }
 
+    ; Disables the buttons for editing/deleting a hotkey.
+    ; Shows the buttons for adding/editing/deleting a hotkey if a layer is selected.
+    ; Else hides the buttons for adding/editing/deleting a hotkey.
     UpdateConfigurationButtons(){
         this.DisableConfigurationButtons()
 
@@ -137,10 +186,12 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         this.ButtonForDeletingInfo.Enabled := false
     }
 
+    ; Updates the hotkeys list view with the newest hotkeys
     UpdateHotkeys(){
         this.hotkeysListView.SetNewListViewItems(this.controller.GetHotkeys())
     }
 
+    ; Creates the tab for the action settings
     CreateFunctionSettingsTab(){
         functionsNamesTreeView := TreeViewMaker()
         functionsNamesTreeView.createElementsForGui(this, this.controller.GetActionNames())
@@ -152,6 +203,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         this.settingsValuesListView.AddEventAction("DoubleClick", (*) => this.controller.HandleSettingClicked(this.settingsValuesListView.GetSelectionText()))
     }
 
+    ; Updates the settings list view with the newest settings
     UpdateSettingsForActions(){
         this.settingsValuesListView.SetNewListViewItems(this.controller.GetSettings())
     }
@@ -169,6 +221,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
     ;     listViewMadeFromTreeView.AddEventAction("DoubleClick", listViewItemDoubleClickedCallback(treeViewControl))
     ; }
 
+    ; Creates the tab for the documentation
     CreateDocumentationTab(){
         this.Add("Edit", "r20")  ; r20 means 20 rows tall.
     }

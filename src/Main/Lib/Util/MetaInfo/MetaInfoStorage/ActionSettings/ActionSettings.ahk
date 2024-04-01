@@ -29,7 +29,7 @@ class ActionSettings {
     }
 
     GetSettings(){
-        return this.settingsForAction.toValues()
+        return this.settingsForAction.Values()
     }
 
     GetActionName(){

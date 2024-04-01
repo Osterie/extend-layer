@@ -1,8 +1,8 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\MetaInfo\MetaInfoStorage\Settings\Setting>
-#Include <Util\MetaInfo\MetaInfoStorage\Settings\ActionSettings>
-#Include <Util\MetaInfo\MetaInfoStorage\Settings\ActionSettingsRegistry>
+#Include <Util\MetaInfo\MetaInfoStorage\ActionSettings\Setting>
+#Include <Util\MetaInfo\MetaInfoStorage\ActionSettings\ActionSettings>
+#Include <Util\MetaInfo\MetaInfoStorage\ActionSettings\ActionSettingsRegistry>
 
 
 
