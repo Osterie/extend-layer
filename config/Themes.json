@@ -1,8 +1,8 @@
 {
     "BlueIsh": {
-        "BackgroundColor" : "35326b",
+        "BackgroundColor" : "35356b",
         "TextColor" :  "27eaf1",
-        "ControlColor" :  "14132b",
+        "ControlColor" :  "14142b",
         "CaptionColor" : "7800ff",
         "CaptionFontColor" : "00ff00"
     },
@@ -11,6 +11,13 @@
         "TextColor" :  "f12727",
         "ControlColor" :  "2b1414",
         "CaptionColor" : "7a0707",
+        "CaptionFontColor" : "00ff00"
+    },
+    "GreenIsh" : {
+        "BackgroundColor" : "356b35",
+        "TextColor" :  "27f127",
+        "ControlColor" :  "142b14",
+        "CaptionColor" : "077a07",
         "CaptionFontColor" : "00ff00"
     }
 }
