@@ -60,6 +60,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
 
         HandleThemeClicked(ItemName, ItemPos, MyMenuBar){
             FilePaths.SetCurrentTheme(ItemName)
+            this.UpdateColorTheme()
         }
 
         HandleSuspendClicked(ItemName, ItemPos, MyMenuBar) {

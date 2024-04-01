@@ -26,8 +26,19 @@ class DomainSpecificGui extends Gui{
         this.SetFont("c" . this.theme.TextColor() .  " Bold")
     }
 
-    SetColorProfile(){
-        ; TODO fetch color profile from meta file.
+    UpdateColorTheme(){
+        this.theme := Themes.getInstance().GetTheme(FilePaths.GetCurrentTheme())
+        this.BackColor := this.theme.BackgroundColor()
+        this.SetColors()
+        this.SetFont("c" . this.theme.TextColor() .  " Bold")
+        this.SetColors()
+        this.UpdateControlsColors()
+    }
+
+    UpdateControlsColors(){
+        for control in this{
+            this.SetControlColor(control)
+        }
     }
     
     SetColors(){
