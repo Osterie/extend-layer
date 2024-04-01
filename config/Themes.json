@@ -4,13 +4,13 @@
         "TextColor" :  "27eaf1",
         "ControlColor" :  "14132b",
         "CaptionColor" : "7800ff",
-        "CaptionFontColor" :   "27eaf1"
+        "CaptionFontColor" : "00ff00"
     },
     "RedIsh" : {
         "BackgroundColor" : "6b3535",
         "TextColor" :  "f12727",
         "ControlColor" :  "2b1414",
         "CaptionColor" : "7a0707",
-        "CaptionFontColor" :   "f12727"
+        "CaptionFontColor" : "00ff00"
     }
 }
