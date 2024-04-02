@@ -38,7 +38,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
     CreateMenuBar(){
 
         MyMenuBar := MenuBar()
-        FileMenu := Menu()
+        ThemeCategoriesMenu := Menu()
         ; availableThemes := Themes.getInstance().GetThemeNames()
 
         themesInstance := Themes.getInstance()
@@ -46,36 +46,20 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         
 
         Loop themeCategories.Length{
-            Submenu1 := Menu()
+            themeCategoriesSubMenu := Menu()
 
             themeCategoryName := themeCategories[A_index]
             themesForCategory := themesInstance.GetThemeNamesForCategory(themeCategoryName)
 
-
             Loop themesForCategory.Length{
-                Submenu1.Add(themesForCategory[A_index], HandleThemeClicked)
-                
-                ; Create a submenu in the first menu (a right-arrow indicator). When the user selects it, the second menu is displayed.
-                ; FileMenu.Add(availableThemes[A_index], HandleThemeClicked)
+                subMenuItem := themesForCategory[A_index]
+                themeCategoriesSubMenu.Add(subMenuItem, HandleThemeClicked)
             }
-            FileMenu.Add(themeCategoryName, Submenu1)
+            ThemeCategoriesMenu.Add(themeCategoryName, themeCategoriesSubMenu)
         }
-        MyMenuBar.Add("&Themes", FileMenu)
-        ; FileMenu.SetIcon("Script Icon", A_AhkPath, 2) ; 2nd icon group from the file
-        ; FileMenu.SetIcon("Suspend Icon", A_AhkPath, -206) ; icon with resource ID 206
-        ; FileMenu.SetIcon("Pause Icon", A_AhkPath, -207) ; icon with resource ID 207
-        ; FileMenu.SetColor(theme.ControlColor(), 1)
-
-        
-        ; MyMenuBar.Add("&Themes", FileMenu)
-        
+        MyMenuBar.Add("&Themes", ThemeCategoriesMenu)
         MyMenuBar.Add("&Suspend Script", (ItemName, ItemPos, MyMenuBar) => HandleSuspendClicked(ItemName, ItemPos, MyMenuBar))
-        
-
-
-
         this.MenuBar := MyMenuBar
-
 
         HandleThemeClicked(ItemName, ItemPos, MyMenuBar){
             FilePaths.SetCurrentTheme(ItemName)
