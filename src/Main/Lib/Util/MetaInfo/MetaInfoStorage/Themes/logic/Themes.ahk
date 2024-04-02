@@ -3,6 +3,7 @@
 #Include "..\entity\Theme.ahk"
 #Include <Util\MetaInfo\MetaInfoReading\ThemesReader>
 
+; TODO set current theme here?
 class Themes{
     
     static theSingleInstance := 0
@@ -32,7 +33,14 @@ class Themes{
     }
 
     GetTheme(name){
-        return this.themes_[name]
+        themeToReturn := ""
+        try{
+            themeToReturn := this.themes_[name]
+        }
+        catch Error as e{
+            throw Error("The theme with the name " . name . " does not exist.")
+        }
+        return themeToReturn
     }
 
     GetThemeNames(){

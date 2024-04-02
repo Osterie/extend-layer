@@ -37,9 +37,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
 
     CreateMenuBar(){
 
-        themesInstance := Themes.getInstance()
-        theme := themesInstance.GetTheme(FilePaths.GetCurrentTheme())
-        availableThemes := themesInstance.GetThemeNames()
+        availableThemes := Themes.getInstance().GetThemeNames()
         
         MyMenuBar := MenuBar()
 

@@ -19,5 +19,19 @@
         "ControlColor" :  "142b14",
         "CaptionColor" : "077a07",
         "CaptionFontColor" : "00ff00"
+    },
+    "Darkish" : {
+        "BackgroundColor" : "000000",
+        "TextColor" :  "ffffff",
+        "ControlColor" :  "333333",
+        "CaptionColor" : "666666",
+        "CaptionFontColor" : "ffffff"
+    },
+    "Lightish" : {
+        "BackgroundColor" : "ffffff",
+        "TextColor" :  "000000",
+        "ControlColor" :  "cccccc",
+        "CaptionColor" : "ffffff",
+        "CaptionFontColor" : "000000"
     }
 }

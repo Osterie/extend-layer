@@ -16,9 +16,12 @@ class DomainSpecificGui extends Gui{
     __New(options := "", title := "", eventObj := ""){
         super.__New(options, title, this)
 
-        ; this.themes_ := Themes()
-
-        this.theme := Themes.getInstance().GetTheme(FilePaths.GetCurrentTheme())
+        try{
+            this.theme := Themes.getInstance().GetTheme(FilePaths.GetCurrentTheme())
+        }
+        catch{
+            this.theme := Themes.getInstance().GetTheme(FilePaths.GetDefaultTheme())
+        }
 
         this.OnEvent('Escape', (*) => this.Destroy())
         this.BackColor := this.theme.BackgroundColor()
