@@ -36,6 +36,17 @@ class Themes{
         }
     }
 
+    GetCategoryForTheme(name){
+        category := ""
+        Loop this.themes_.Length{
+            if (this.themes_[A_Index].ThemeName() = name){
+                category := this.themes_[A_Index].Category()
+                break
+            }
+        }
+        return category
+    }
+
     GetThemeCategories(){
         themeCategories := Array()
         Loop this.themes_.Length{
@@ -84,5 +95,4 @@ class Themes{
         }
         return themeNames
     }
-
 }
