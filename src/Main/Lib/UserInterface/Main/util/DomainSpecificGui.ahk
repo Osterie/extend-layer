@@ -16,11 +16,13 @@ class DomainSpecificGui extends Gui{
     __New(options := "", title := "", eventObj := ""){
         super.__New(options, title, this)
 
-        try{
-            this.theme := Themes.getInstance().GetTheme(FilePaths.GetCurrentTheme())
-        }
-        catch{
+        this.theme := Themes.getInstance().GetTheme(FilePaths.GetCurrentTheme())
+        if (this.theme = ""){
             this.theme := Themes.getInstance().GetTheme(FilePaths.GetDefaultTheme())
+            if (this.theme = ""){
+                msgbox("Failed to load any theme")
+                Throw Error("Failed to load any theme")
+            }
         }
 
         this.OnEvent('Escape', (*) => this.Destroy())

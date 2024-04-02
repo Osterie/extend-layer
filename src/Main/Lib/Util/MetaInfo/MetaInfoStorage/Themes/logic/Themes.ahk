@@ -7,7 +7,7 @@
 class Themes{
     
     static theSingleInstance := 0
-    themes_ := Map()
+    themes_ := Array()
 
     __New(){
         themesReader_ := ThemesReader()
@@ -21,30 +21,68 @@ class Themes{
         return Themes.theSingleInstance
     }
 
-    AddTheme(name, theme){
+    AddTheme(theme){
         if (Type(theme) != "Theme"){
             throw Error("The theme must be an instance of Theme.")
         }
-        this.themes_[name] := theme
+        this.themes.Push(theme)
     }
 
     RemoveTheme(name){
-        this.themes_.Delete(name)
+        Loop this.themes_.Length{
+            if (this.themes_[A_Index].ThemeName() = name){
+                this.themes_.Delete(A_Index)
+            }
+        }
+    }
+
+    GetThemeCategories(){
+        themeCategories := Array()
+        Loop this.themes_.Length{
+            if (!themeCategories.Contains(this.themes_[A_Index].Category())){
+                themeCategories.Push(this.themes_[A_Index].Category())
+            }
+        }
+        return themeCategories
     }
 
     GetTheme(name){
         themeToReturn := ""
-        try{
-            themeToReturn := this.themes_[name]
-        }
-        catch Error as e{
-            throw Error("The theme with the name " . name . " does not exist.")
+        Loop this.themes_.Length{
+            if (this.themes_[A_Index].ThemeName() = name){
+                themeToReturn := this.themes_[A_Index]
+                break
+            }
         }
         return themeToReturn
     }
 
+    GetThemesForCategory(category){
+        themesForCategory := Array()
+        Loop this.themes_.Length{
+            if (this.themes_[A_Index].Category() = category){
+                themesForCategory.Push(this.themes_[A_Index])
+            }
+        }
+        return themesForCategory
+    }
+
     GetThemeNames(){
-        return this.themes_.Keys()
+        themeNames := Array()
+        Loop this.themes_.Length{
+            themeNames.Push(this.themes_[A_Index].ThemeName())
+        }
+        return themeNames
+    }
+
+    GetThemeNamesForCategory(category){
+        themeNames := Array()
+        Loop this.themes_.Length{
+            if (this.themes_[A_Index].Category() = category){
+                themeNames.Push(this.themes_[A_Index].ThemeName())
+            }
+        }
+        return themeNames
     }
 
 }
