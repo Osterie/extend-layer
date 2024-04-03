@@ -1,5 +1,6 @@
 #Requires AutoHotkey v2.0
 
+; TODO can be a more general class? perhaps create a "imporvedMenu" class which creates menus with more methods, like uncheking all, checking all etc.
 class ThemesMenu extends Menu{
 
     __New(callback){
@@ -9,6 +10,7 @@ class ThemesMenu extends Menu{
     }
 
 
+    ; TODO modularize
     CreateMenuBar(){
 
 
@@ -44,9 +46,9 @@ class ThemesMenu extends Menu{
     HandleThemeClicked(ItemName, ItemPos, MyMenuBar){
 
         themesInstance := Themes.getInstance()
-
         currentTheme := FilePaths.GetCurrentTheme()
         currentThemeCategory := themesInstance.GetCategoryForTheme(currentTheme)
+
         newTheme := themesInstance.GetCategoryForTheme(ItemName)
 
         this.UnCheck(currentThemeCategory)
@@ -59,9 +61,7 @@ class ThemesMenu extends Menu{
             }
         }
         MyMenuBar.Check(ItemName)
-
         FilePaths.SetCurrentTheme(ItemName)
-        
         this.callBack()
     }
 
