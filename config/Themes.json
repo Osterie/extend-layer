@@ -21,13 +21,6 @@
             "CaptionColor" : "7800ff",
             "CaptionFontColor" : "00ff00"
         }},
-        {"Ugly" : {
-            "BackgroundColor" : "ff0000",
-            "TextColor" :  "00ff00",
-            "ControlColor" :  "0000ff",
-            "CaptionColor" : "ffff00",
-            "CaptionFontColor" : "000000"
-        }},
         {"PurpleDream": {
             "BackgroundColor": "4b2b5f",
             "TextColor": "e6c8ff",
@@ -69,6 +62,13 @@
             "ControlColor": "5596e6",
             "CaptionColor": "1e467e",
             "CaptionFontColor": "ffffff"
+        }},
+        {"Ugly" : {
+            "BackgroundColor" : "ff0000",
+            "TextColor" :  "00ff00",
+            "ControlColor" :  "0000ff",
+            "CaptionColor" : "ffff00",
+            "CaptionFontColor" : "000000"
         }}
     ],
     "Dark": [
@@ -95,18 +95,18 @@
             "CaptionColor": "333333",
             "CaptionFontColor": "ffffff"
         }},
-        {"SlateGrey": {
-            "BackgroundColor": "596275",
-            "TextColor": "ffffff",
-            "ControlColor": "8995a0",
-            "CaptionColor": "34495e",
-            "CaptionFontColor": "ffffff"
-        }},
         {"ModernGrey": {
             "BackgroundColor": "f5f5f5",
             "TextColor": "333333",
             "ControlColor": "cccccc",
             "CaptionColor": "666666",
+            "CaptionFontColor": "ffffff"
+        }},
+        {"SlateGrey": {
+            "BackgroundColor": "596275",
+            "TextColor": "ffffff",
+            "ControlColor": "8995a0",
+            "CaptionColor": "34495e",
             "CaptionFontColor": "ffffff"
         }}
     ]
