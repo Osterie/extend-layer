@@ -40,34 +40,57 @@
 
 class ImprovedMenu extends Menu{
 
+    subMenus := Array()
+    itemNames := Array()
+
     __New(){
-        Super.__New()
-        this.menuItems := Array()
+        ; super.__New()
     }
 
     Add(MenuItemName := "", CallbackOrSubmenu := "", Options := ""){
-        this.Add(MenuItemName, CallbackOrSubmenu, Options)
-        msgbox(Type(CallbackOrSubmenu))
-        ; TODO handle better... and make method?
+        super.Add(MenuItemName, CallbackOrSubmenu, Options)
+        ; msgbox(Type(CallbackOrSubmenu))
+
+        ; TODO handle differently?
         if (Type(CallbackOrSubmenu) = "ImprovedMenu"){
-            this.menuItems.Push(CallbackOrSubmenu)
+            this.subMenus.Push(CallbackOrSubmenu)
         }
-        else if (Type(CallbackOrSubmenu) = "Menu"){
-            throw Error("Unable to add value of type menu to Improved Menu")
-        }
-        else{
             
-            this.menuItems.Push(MenuItemName)
-        }
+        this.itemNames.Push(MenuItemName)
+        ; else if (Type(CallbackOrSubmenu) = "Menu"){
+        ;     throw Error("Unable to add value of type menu to Improved Menu")
+        ; }
+        ; else{
+            
+        ;     this.subMenus.Push(MenuItemName)
+        ; }
     }
 
-    
-    UncheckAll(menu_){
-        currentTheme := FilePaths.GetCurrentTheme()
-        Loop menu_.Length{
-            try{
-                menu_[A_index].UnCheck(currentTheme)
+    UnCheck(MenuItemName?){
+        if IsSet(MenuItemName){
+            msgbox("se")
+            super.UnCheck(MenuItemName)
+        }
+        else{
+            Loop this.itemNames.Length{
+                super.UnCheck(this.itemNames[A_index])
             }
         }
+    }
+    
+    UncheckAll(){
+        Loop this.subMenus.Length{
+            if (this.subMenus[A_index].hasSubmenus()){
+                this.subMenus[A_index].UncheckAll()
+            }
+            else{
+                this.subMenus[A_index].UnCheck()
+            }
+        }
+        this.UnCheck()
+    }
+
+    hasSubmenus(){
+        return this.subMenus.Length > 0
     }
 }

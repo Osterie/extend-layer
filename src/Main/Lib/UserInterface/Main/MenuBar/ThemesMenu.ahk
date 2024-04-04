@@ -3,7 +3,7 @@
 #Include <UserInterface\Main\util\Menus\ImprovedMenu>
 
 ; TODO can be a more general class? perhaps create a "imporvedMenu" class which creates menus with more methods, like uncheking all, checking all etc.
-class ThemesMenu extends Menu{
+class ThemesMenu extends ImprovedMenu{
 
     __New(callback){
         this.callback := callback
@@ -21,7 +21,7 @@ class ThemesMenu extends Menu{
         
         Loop themeCategories.Length{
             
-            themeCategoriesSubMenu := Menu()
+            themeCategoriesSubMenu := ImprovedMenu()
             
             themeCategoryName := themeCategories[A_index]
             themesForCategory := themesInstance.GetThemeNamesForCategory(themeCategoryName)
@@ -53,23 +53,23 @@ class ThemesMenu extends Menu{
 
         newTheme := themesInstance.GetCategoryForTheme(ItemName)
 
-        this.UnCheck(currentThemeCategory)
-        this.Check(newTheme)
-
-        this.UncheckAll(this.themeCategoryMenus)
+        
+        this.UncheckAll()
+        ; this.UnCheck(currentThemeCategory)
         MyMenuBar.Check(ItemName)
+        this.Check(newTheme)
         FilePaths.SetCurrentTheme(ItemName)
         this.callBack()
     }
 
-    UncheckAll(menu_){
-        currentTheme := FilePaths.GetCurrentTheme()
-        Loop menu_.Length{
-            try{
-                menu_[A_index].UnCheck(currentTheme)
-            }
-        }
-    }
+    ; UncheckAll(menu_){
+    ;     currentTheme := FilePaths.GetCurrentTheme()
+    ;     Loop menu_.Length{
+    ;         try{
+    ;             menu_[A_index].UnCheck(currentTheme)
+    ;         }
+    ;     }
+    ; }
 
     GetMenu(){
         return this
