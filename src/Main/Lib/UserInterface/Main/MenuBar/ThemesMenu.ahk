@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
 
+#Include <UserInterface\Main\util\Menus\ImprovedMenu>
+
 ; TODO can be a more general class? perhaps create a "imporvedMenu" class which creates menus with more methods, like uncheking all, checking all etc.
 class ThemesMenu extends Menu{
 
@@ -9,10 +11,8 @@ class ThemesMenu extends Menu{
         this.CreateMenuBar()
     }
 
-
     ; TODO modularize
     CreateMenuBar(){
-
 
         themesInstance := Themes.getInstance()
         themeCategories := themesInstance.GetThemeCategories()
@@ -20,8 +20,9 @@ class ThemesMenu extends Menu{
         currentThemeCategory := themesInstance.GetCategoryForTheme(currentTheme)
         
         Loop themeCategories.Length{
+            
             themeCategoriesSubMenu := Menu()
-
+            
             themeCategoryName := themeCategories[A_index]
             themesForCategory := themesInstance.GetThemeNamesForCategory(themeCategoryName)
 
@@ -34,6 +35,7 @@ class ThemesMenu extends Menu{
                 }
             }
 
+            ; COntains darkish, lightish, colorful
             this.themeCategoryMenus.Push(themeCategoriesSubMenu)
             this.Add(themeCategoryName, themeCategoriesSubMenu)
             if (currentThemeCategory = themeCategoryName){
@@ -54,15 +56,19 @@ class ThemesMenu extends Menu{
         this.UnCheck(currentThemeCategory)
         this.Check(newTheme)
 
-        Loop this.themeCategoryMenus.Length{
-            try{
-                this.themeCategoryMenus[A_index].UnCheck(currentTheme)
-
-            }
-        }
+        this.UncheckAll(this.themeCategoryMenus)
         MyMenuBar.Check(ItemName)
         FilePaths.SetCurrentTheme(ItemName)
         this.callBack()
+    }
+
+    UncheckAll(menu_){
+        currentTheme := FilePaths.GetCurrentTheme()
+        Loop menu_.Length{
+            try{
+                menu_[A_index].UnCheck(currentTheme)
+            }
+        }
     }
 
     GetMenu(){
