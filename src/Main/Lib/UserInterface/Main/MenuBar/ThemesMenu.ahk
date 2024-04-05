@@ -18,7 +18,8 @@ class ThemesMenu extends ImprovedMenu{
         themeCategories := Themes.getInstance().GetThemeCategories()
         
         Loop themeCategories.Length{
-            themeCategoriesSubMenu := this.CreateThemeCategoriesSubMenu(themeCategories[A_index])
+            themeCategoryName := themeCategories[A_index] 
+            themeCategoriesSubMenu := this.CreateThemeCategoriesSubMenu(themeCategoryName)
             this.Add(themeCategoryName, themeCategoriesSubMenu)
         }
     }
@@ -31,34 +32,29 @@ class ThemesMenu extends ImprovedMenu{
 
         Loop themesForCategory.Length{
             subMenuItem := themesForCategory[A_index]
-            themeCategoriesSubMenu.Add(subMenuItem, (themeClicked, ItemPos, MenuClicked) => this.HandleThemeClicked(themeClicked, ItemPos, MenuClicked))
+            themeCategoriesSubMenu.Add(subMenuItem, (themeClicked, ItemPos, themeCategoriesSubMenu) => this.HandleThemeClicked(themeClicked, ItemPos, themeCategoriesSubMenu))
         }
 
         return themeCategoriesSubMenu
     }
 
-
     CheckCurrentThemeMenu(){
-        themesInstance := Themes.getInstance()
-        themeCategories := themesInstance.GetThemeCategories()
         currentTheme := FilePaths.GetCurrentTheme()
+        currentThemeCategory := Themes.getInstance().GetCategoryForTheme(currentTheme)
 
-        currentThemeCategory := themesInstance.GetCategoryForTheme(currentTheme)
         this.Check(currentThemeCategory)
         this.CheckChildren(currentTheme)
     }
+    
+    HandleThemeClicked(themeClicked, ItemPos, themeCategoriesSubMenu){
 
-    HandleThemeClicked(themeClicked, ItemPos, MenuClicked){
+        ; themeCategoryClicked := Themes.getInstance().GetCategoryForTheme(themeClicked)
 
-        themesInstance := Themes.getInstance()
-        currentTheme := FilePaths.GetCurrentTheme()
-
-        newTheme := themesInstance.GetCategoryForTheme(themeClicked)
-
-        this.Check(newTheme)
-        MenuClicked.Check(themeClicked)
+        ; this.Check(themeCategoryClicked)
+        ; themeCategoriesSubMenu.Check(themeClicked)
 
         FilePaths.SetCurrentTheme(themeClicked)
+        this.CheckCurrentThemeMenu()
         this.callBack()
     }
 }
