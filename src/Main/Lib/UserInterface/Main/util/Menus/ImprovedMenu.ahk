@@ -42,9 +42,14 @@ class ImprovedMenu extends Menu{
 
     subMenus := Array()
     itemNames := Array()
+    MenuItemsRadioLike := false
 
     __New(){
         ; super.__New()
+    }
+
+    SetMenuItemsRadioLikeOption(boolean){
+        this.MenuItemsRadioLike := boolean
     }
 
     Add(MenuItemName := "", CallbackOrSubmenu := "", Options := ""){
@@ -68,6 +73,24 @@ class ImprovedMenu extends Menu{
             }
         }
         this.UnCheck()
+    }
+
+    Check(MenuItemName?){
+        if IsSet(MenuItemName){
+            if (this.MenuItemsRadioLike){
+                this.UncheckAll()
+                super.Check(MenuItemName)
+            }
+            else{
+
+            }
+            super.Check(MenuItemName)
+        }
+        else{
+            Loop this.itemNames.Length{
+                super.Check(this.itemNames[A_index])
+            }
+        }
     }
 
     UnCheck(MenuItemName?){

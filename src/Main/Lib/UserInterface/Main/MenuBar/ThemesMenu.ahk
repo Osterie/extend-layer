@@ -7,6 +7,7 @@ class ThemesMenu extends ImprovedMenu{
 
     __New(callback){
         this.callback := callback
+        this.SetMenuItemsRadioLikeOption(true)
         this.themeCategoryMenus := Array()
         this.CreateMenuBar()
     }
@@ -22,6 +23,7 @@ class ThemesMenu extends ImprovedMenu{
         Loop themeCategories.Length{
             
             themeCategoriesSubMenu := ImprovedMenu()
+            themeCategoriesSubMenu.SetMenuItemsRadioLikeOption(true)
             
             themeCategoryName := themeCategories[A_index]
             themesForCategory := themesInstance.GetThemeNamesForCategory(themeCategoryName)
@@ -53,21 +55,12 @@ class ThemesMenu extends ImprovedMenu{
 
         newTheme := themesInstance.GetCategoryForTheme(ItemName)
 
-        
-        this.UncheckAll()
-        ; this.UnCheck(currentThemeCategory)
-        MyMenuBar.Check(ItemName)
+        ; Radio button like. Uncheck all and then check the super menu and its submenues down to the path.
+        ; this.UncheckAll()
         this.Check(newTheme)
+        MyMenuBar.Check(ItemName)
+
         FilePaths.SetCurrentTheme(ItemName)
         this.callBack()
     }
-
-    ; UncheckAll(menu_){
-    ;     currentTheme := FilePaths.GetCurrentTheme()
-    ;     Loop menu_.Length{
-    ;         try{
-    ;             menu_[A_index].UnCheck(currentTheme)
-    ;         }
-    ;     }
-    ; }
 }
