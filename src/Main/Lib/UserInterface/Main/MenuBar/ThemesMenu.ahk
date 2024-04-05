@@ -2,7 +2,6 @@
 
 #Include <UserInterface\Main\util\Menus\ImprovedMenu>
 
-; TODO can be a more general class? perhaps create a "imporvedMenu" class which creates menus with more methods, like uncheking all, checking all etc.
 class ThemesMenu extends ImprovedMenu{
 
     __New(callback){
@@ -12,9 +11,7 @@ class ThemesMenu extends ImprovedMenu{
         this.CheckCurrentThemeMenu()
     }
 
-    ; TODO modularize
     CreateMenuBar(){
-
         themeCategories := Themes.getInstance().GetThemeCategories()
         
         Loop themeCategories.Length{
@@ -27,15 +24,19 @@ class ThemesMenu extends ImprovedMenu{
     CreateThemeCategoriesSubMenu(themeCategoryName){
         themeCategoriesSubMenu := ImprovedMenu()
         themeCategoriesSubMenu.SetMenuItemsRadioLikeOption(true)
+        
+        this.SetThemeCategoriesSubMenuItems(themeCategoriesSubMenu, themeCategoryName)
+        
+        return themeCategoriesSubMenu
+    }
 
+    SetThemeCategoriesSubMenuItems(themeCategoriesSubMenu, themeCategoryName){
         themesForCategory := Themes.getInstance().GetThemeNamesForCategory(themeCategoryName)
 
         Loop themesForCategory.Length{
             subMenuItem := themesForCategory[A_index]
-            themeCategoriesSubMenu.Add(subMenuItem, (themeClicked, ItemPos, themeCategoriesSubMenu) => this.HandleThemeClicked(themeClicked, ItemPos, themeCategoriesSubMenu))
+            themeCategoriesSubMenu.Add(subMenuItem, (themeClicked, *) => this.HandleThemeClicked(themeClicked))
         }
-
-        return themeCategoriesSubMenu
     }
 
     CheckCurrentThemeMenu(){
@@ -45,14 +46,8 @@ class ThemesMenu extends ImprovedMenu{
         this.Check(currentThemeCategory)
         this.CheckChildren(currentTheme)
     }
-    
-    HandleThemeClicked(themeClicked, ItemPos, themeCategoriesSubMenu){
 
-        ; themeCategoryClicked := Themes.getInstance().GetCategoryForTheme(themeClicked)
-
-        ; this.Check(themeCategoryClicked)
-        ; themeCategoriesSubMenu.Check(themeClicked)
-
+    HandleThemeClicked(themeClicked){
         FilePaths.SetCurrentTheme(themeClicked)
         this.CheckCurrentThemeMenu()
         this.callBack()
