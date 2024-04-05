@@ -2,3 +2,4 @@ config/UserProfiles/*
 !config/UserProfiles/Default
 tests/*
 TODO.ahk
+READMETODO.md
