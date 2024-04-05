@@ -18,7 +18,6 @@ My favorite use for the extend layer, is coding in an IDE, for example VsCode. T
 2. [Summary](#summary)
 3. [What does Extend-layer do?](#what-does-extend-layer-do)
 4. [How to use this program](#how-to-use-this-program)
-5. [Functions and how to use them](#functions-and-how-to-use-them)
 
 ## Getting started
 To run this script, do the following:
@@ -45,36 +44,27 @@ To run this script, do the following:
 2. Create Multiple virtual keyboards.
 3. Create your own scripts and run them with a key bind.
 
-## What does Extend-layer do?
+## What does Extend layer do?
 ### Extra virtual keyboards
-Choose a key which can be used to switch to a different layer, by default this key is caps-lock, because what else would you use it for?
-### Rebinding keys to a new key
-#### Key modifiers
-There are a couple key modifiers,
-When rebinding a key you have to give a modifier for the original key you are remapping. Lets say you want to rebind "p" to "esc". If you want always want "p" to act as "esc", then you have to specify "*p", (ADD PICTURES FROM GUI!) which will change "p" to "esc" for any modifier, but if you only want Shift+p to act as "esc", then you must specify "+p".
-- \*
-- \^
-- \!
-- \+
-- \#
+Extend layer allows you to create multiple virtual keyboards. This is useful if you have a keyboard with a limited amount of keys, or if you want to create a keyboard for a specific program. For example, you can create a keyboard for a game, a keyboard for coding, a keyboard for browsing, etc. You can switch between these keyboards with a chosen keybind. By default the keybind is "CapsLock" to switch to a second keyboard layer and "Capslock + Shift" to switch to a third keyboard layer. You can change these keybinds to whatever you want.
 
-### Rebinding keys to special functionalities
-There are many premade special functionalities in this program, for example changing screen brightness, traveling to a url, excecuting scripts, and much more.
-#### Rebinding a key to a shortcut
-#### Rebinding a key to self-created script
-#### Rebinding a key to launch a program
-#### Creating macros
-### Create your own autohotkey script and bind it to a key
+### Rebinding keys to another key or a special action
+The program allows you to rebind keys to other keys or special actions. 
+For example, you can rebind the [I, J, K, L] keys to [Up, Left, Down, Right] to easily switch to navigating without having to move your right hand across half the universe to reach the arrow keys.
+
+Additionally, you can rebind the keys, for example "a" to a special action like changing screen brightness, traveling to a url, excecuting a script, and much more.
+
 
 ## How to use this program?
 After following the [getting started guide](#getting-started).
-Run ExtraKeyboardsApp.ahk. This will open a gui where you can change you profile and edit keybinds.
+Run ExtraKeyboardsApp.ahk. This will open a gui where you can add some premade profiles, or create your own profile, and edit keybinds.
 
-### How to change a key bind?
+### How to create a new profile?
+
+
+
+### How to add/modify/delete a key bind?
 
 #### Changing a key to a normal key
 #### Changing a key to a functionality
 
-
-
-## Functions and how to use them
