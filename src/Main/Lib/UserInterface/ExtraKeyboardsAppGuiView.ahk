@@ -4,7 +4,7 @@
 #Include <UserInterface\Main\ProfileEditing\ProfileRegionController>
 #Include <UserInterface\Main\util\TreeViewMaker>
 #Include <UserInterface\Main\util\ListViewMaker>
-
+#Include <UserInterface\Main\MenuBar\ThemesMenu>
 
 #Include <Util\HotkeyFormatConverter>
 #Include <Util\MetaInfo\MetaInfoStorage\Themes\logic\Themes>
@@ -37,31 +37,15 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
 
     CreateMenuBar(){
 
-        themesInstance := Themes.getInstance()
-        theme := themesInstance.GetTheme(FilePaths.GetCurrentTheme())
-        availableThemes := themesInstance.GetThemeNames()
-        
         MyMenuBar := MenuBar()
+            
+        ThemeCategoriesMenu := ThemesMenu((*) => this.UpdateColorTheme())
 
-        FileMenu := Menu()
-        Loop availableThemes.Length{
-            FileMenu.Add(availableThemes[A_index], HandleThemeClicked)
-        }
-        ; FileMenu.SetIcon("Script Icon", A_AhkPath, 2) ; 2nd icon group from the file
-        ; FileMenu.SetIcon("Suspend Icon", A_AhkPath, -206) ; icon with resource ID 206
-        ; FileMenu.SetIcon("Pause Icon", A_AhkPath, -207) ; icon with resource ID 207
-        ; FileMenu.SetColor(theme.ControlColor(), 1)
-
-        MyMenuBar.Add("&Themes", FileMenu)
         
+        MyMenuBar.Add("&Themes", ThemeCategoriesMenu)
         MyMenuBar.Add("&Suspend Script", (ItemName, ItemPos, MyMenuBar) => HandleSuspendClicked(ItemName, ItemPos, MyMenuBar))
-        
         this.MenuBar := MyMenuBar
 
-        HandleThemeClicked(ItemName, ItemPos, MyMenuBar){
-            FilePaths.SetCurrentTheme(ItemName)
-            this.UpdateColorTheme()
-        }
 
         HandleSuspendClicked(ItemName, ItemPos, MyMenuBar) {
             if (ItemName = "&Suspend Script"){

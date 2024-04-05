@@ -10,7 +10,7 @@
 class ThemesReader{
 
     PATH_TO_THEMES := ""
-    Themes_ := Map()
+    Themes_ := Array()
 
     __New(){
         this.PATH_TO_THEMES := FilePaths.GetThemes()
@@ -29,16 +29,26 @@ class ThemesReader{
         ; -----------Read JSON----------------
 
         ; TODO! add try catch to all of these. If one of these informations are missing something wrong will happen!
-        For themeName , themeInformation in themesJsonInfo{
-            BackgroundColor := themeInformation["BackgroundColor"]
-            TextColor := themeInformation["TextColor"]
-            ControlColor := themeInformation["ControlColor"]
-            CaptionColor := themeInformation["CaptionColor"]
-            CaptionFontColor := themeInformation["CaptionFontColor"]
-
-            themeToAdd := Theme(BackgroundColor, TextColor, ControlColor, CaptionColor, CaptionFontColor)
-            this.Themes_[themeName] := themeToAdd
+        
+        For themeCategory, categoryThemes in themesJsonInfo{
+            Loop categoryThemes.Length{
+                
+                themeInformationMap := categoryThemes[A_Index]
+    
+                ; The map has only one key because of the way the json is created
+                For themeName, themeInformation in themeInformationMap{
+                    BackgroundColor := themeInformation["BackgroundColor"]
+                    TextColor := themeInformation["TextColor"]
+                    ControlColor := themeInformation["ControlColor"]
+                    CaptionColor := themeInformation["CaptionColor"]
+                    CaptionFontColor := themeInformation["CaptionFontColor"]
+    
+                    themeToAdd := Theme(themeName, themeCategory, BackgroundColor, TextColor, ControlColor, CaptionColor, CaptionFontColor)
+                    this.Themes_.Push(themeToAdd)
+                }
+            }
         }
+        
         return this.Themes_
     }
 }
