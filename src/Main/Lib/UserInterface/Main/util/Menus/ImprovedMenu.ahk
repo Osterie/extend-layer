@@ -54,36 +54,38 @@ class ImprovedMenu extends Menu{
 
     Add(MenuItemName := "", CallbackOrSubmenu := "", Options := ""){
         super.Add(MenuItemName, CallbackOrSubmenu, Options)
-
-        ; TODO handle differently?
+        this.itemNames.Push(MenuItemName)
         if (Type(CallbackOrSubmenu) = "ImprovedMenu"){
             this.subMenus.Push(CallbackOrSubmenu)
         }
-            
-        this.itemNames.Push(MenuItemName)
     }
 
-    UncheckAll(){
-        Loop this.subMenus.Length{
-            if (this.subMenus[A_index].hasSubmenus()){
-                this.subMenus[A_index].UncheckAll()
-            }
-            else{
-                this.subMenus[A_index].UnCheck()
-            }
-        }
-        this.UnCheck()
-    }
 
     Check(MenuItemName?){
-        if IsSet(MenuItemName){
-            if (this.MenuItemsRadioLike){
-                this.UncheckAll()
-                super.Check(MenuItemName)
-            }
-            else{
+        if (this.MenuItemsRadioLike){
+            this.CheckRadio(MenuItemName?)
+        }
+        else{
+            this.CheckDefault(MenuItemName?)
+        }
+    }
 
+    ; Private method
+    CheckRadio(MenuItemName?){
+        if IsSet(MenuItemName){
+            try{
+                this.UnCheckSelf()
             }
+            super.Check(MenuItemName)
+        }
+        else{
+            throw Error("For radio-like menus, you must specify a MenuItemName to check.")
+        }        
+    }
+
+    ; Private method
+    CheckDefault(MenuItemName?){
+        if IsSet(MenuItemName){
             super.Check(MenuItemName)
         }
         else{
@@ -98,9 +100,49 @@ class ImprovedMenu extends Menu{
             super.UnCheck(MenuItemName)
         }
         else{
-            Loop this.itemNames.Length{
-                super.UnCheck(this.itemNames[A_index])
+            this.UnCheckSelf()
+        }
+    }
+
+    CheckAll(MenuItemName?){
+        this.CheckChildren(MenuItemName?)
+        this.Check()
+    }
+
+    CheckChildren(MenuItemName?){
+        Loop this.subMenus.Length{
+            if (this.subMenus[A_index].hasSubmenus()){
+                this.subMenus[A_index].CheckAll(MenuItemName?)
             }
+            else{
+                try{
+                    this.subMenus[A_index].Check(MenuItemName?)
+                }
+            }
+        }
+    }
+
+    UnCheckChildren(MenuItemName?){
+        Loop this.subMenus.Length{
+            if (this.subMenus[A_index].hasSubmenus()){
+                this.subMenus[A_index].UncheckAll(MenuItemName?)
+            }
+            else{
+                try{
+                    this.subMenus[A_index].UnCheck(MenuItemName?)
+                }
+            }
+        }
+    }
+
+    UncheckAll(MenuItemName?){
+        this.UnCheckChildren(MenuItemName?)
+        this.UnCheckSelf()
+    }
+
+    UncheckSelf(){
+        Loop this.itemNames.Length{
+            super.UnCheck(this.itemNames[A_index])
         }
     }
 

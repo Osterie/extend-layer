@@ -8,7 +8,6 @@ class ThemesMenu extends ImprovedMenu{
     __New(callback){
         this.callback := callback
         this.SetMenuItemsRadioLikeOption(true)
-        this.themeCategoryMenus := Array()
         this.CreateMenuBar()
     }
 
@@ -18,7 +17,6 @@ class ThemesMenu extends ImprovedMenu{
         themesInstance := Themes.getInstance()
         themeCategories := themesInstance.GetThemeCategories()
         currentTheme := FilePaths.GetCurrentTheme()
-        currentThemeCategory := themesInstance.GetCategoryForTheme(currentTheme)
         
         Loop themeCategories.Length{
             
@@ -30,37 +28,32 @@ class ThemesMenu extends ImprovedMenu{
 
             Loop themesForCategory.Length{
                 subMenuItem := themesForCategory[A_index]
-                themeCategoriesSubMenu.Add(subMenuItem, (ItemName, ItemPos, MyMenuBar) => this.HandleThemeClicked(ItemName, ItemPos, MyMenuBar))
-                ; themeCategoriesSubMenu.Add(subMenuItem, this.HandleThemeClicked)
+                themeCategoriesSubMenu.Add(subMenuItem, (themeClicked, ItemPos, MenuClicked) => this.HandleThemeClicked(themeClicked, ItemPos, MenuClicked))
                 if (currentTheme = subMenuItem){
+                    msgbox("check")
                     themeCategoriesSubMenu.Check(subMenuItem)
                 }
             }
-
-            ; COntains darkish, lightish, colorful
-            this.themeCategoryMenus.Push(themeCategoriesSubMenu)
             this.Add(themeCategoryName, themeCategoriesSubMenu)
-            if (currentThemeCategory = themeCategoryName){
-                this.Check(themeCategoryName)
-            }
         }
-
+        
+        currentThemeCategory := themesInstance.GetCategoryForTheme(currentTheme)
+        this.Check(currentThemeCategory)
     }
 
-    HandleThemeClicked(ItemName, ItemPos, MyMenuBar){
+    HandleThemeClicked(themeClicked, ItemPos, MenuClicked){
 
         themesInstance := Themes.getInstance()
         currentTheme := FilePaths.GetCurrentTheme()
-        currentThemeCategory := themesInstance.GetCategoryForTheme(currentTheme)
 
-        newTheme := themesInstance.GetCategoryForTheme(ItemName)
+        newTheme := themesInstance.GetCategoryForTheme(themeClicked)
 
         ; Radio button like. Uncheck all and then check the super menu and its submenues down to the path.
         ; this.UncheckAll()
         this.Check(newTheme)
-        MyMenuBar.Check(ItemName)
+        MenuClicked.Check(themeClicked)
 
-        FilePaths.SetCurrentTheme(ItemName)
+        FilePaths.SetCurrentTheme(themeClicked)
         this.callBack()
     }
 }
