@@ -42,7 +42,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         ThemeCategoriesMenu := ThemesMenu((*) => this.UpdateColorTheme())
 
         
-        MyMenuBar.Add("&Themes", ThemeCategoriesMenu.GetMenu())
+        MyMenuBar.Add("&Themes", ThemeCategoriesMenu)
         MyMenuBar.Add("&Suspend Script", (ItemName, ItemPos, MyMenuBar) => HandleSuspendClicked(ItemName, ItemPos, MyMenuBar))
         this.MenuBar := MyMenuBar
 

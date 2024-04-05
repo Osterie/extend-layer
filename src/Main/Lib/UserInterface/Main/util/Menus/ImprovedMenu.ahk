@@ -49,7 +49,6 @@ class ImprovedMenu extends Menu{
 
     Add(MenuItemName := "", CallbackOrSubmenu := "", Options := ""){
         super.Add(MenuItemName, CallbackOrSubmenu, Options)
-        ; msgbox(Type(CallbackOrSubmenu))
 
         ; TODO handle differently?
         if (Type(CallbackOrSubmenu) = "ImprovedMenu"){
@@ -57,27 +56,8 @@ class ImprovedMenu extends Menu{
         }
             
         this.itemNames.Push(MenuItemName)
-        ; else if (Type(CallbackOrSubmenu) = "Menu"){
-        ;     throw Error("Unable to add value of type menu to Improved Menu")
-        ; }
-        ; else{
-            
-        ;     this.subMenus.Push(MenuItemName)
-        ; }
     }
 
-    UnCheck(MenuItemName?){
-        if IsSet(MenuItemName){
-            msgbox("se")
-            super.UnCheck(MenuItemName)
-        }
-        else{
-            Loop this.itemNames.Length{
-                super.UnCheck(this.itemNames[A_index])
-            }
-        }
-    }
-    
     UncheckAll(){
         Loop this.subMenus.Length{
             if (this.subMenus[A_index].hasSubmenus()){
@@ -88,6 +68,17 @@ class ImprovedMenu extends Menu{
             }
         }
         this.UnCheck()
+    }
+
+    UnCheck(MenuItemName?){
+        if IsSet(MenuItemName){
+            super.UnCheck(MenuItemName)
+        }
+        else{
+            Loop this.itemNames.Length{
+                super.UnCheck(this.itemNames[A_index])
+            }
+        }
     }
 
     hasSubmenus(){

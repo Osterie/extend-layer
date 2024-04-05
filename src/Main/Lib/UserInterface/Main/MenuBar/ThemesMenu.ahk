@@ -70,9 +70,4 @@ class ThemesMenu extends ImprovedMenu{
     ;         }
     ;     }
     ; }
-
-    GetMenu(){
-        return this
-    }
-
 }
