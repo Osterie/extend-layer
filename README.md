@@ -4,7 +4,7 @@
 
 # Extend layer
 
-The preset profiles are HEAVILY "inspired" by the extend layer created by DreymaR [link](https://dreymar.colemak.org/layers-extend.html). Check it out.
+The preset profiles are HEAVILY "inspired" by the [extend layer](https://dreymar.colemak.org/layers-extend.html) created by DreymaR. Check it out.
 If you use this program i recommend reading about the extend layer and copying this [Image](https://dreymar.colemak.org/res/div/Extend/Extend-ISO-NoMod-Win_96d-Labels.png) since it is basically the layout of the preset profile. In the future i will create a better way to keep track of which keys are where and what they do, since the extend layer i have created is not identical to the DreymaR extend layer.
 
 !WARNING! If you start using the Extend Layer, you will NEVER go back.
@@ -42,7 +42,6 @@ To run this script, do the following:
 ## Summary
 1. Remap keys to new keys or new functionalities using a Gui.
 2. Create Multiple virtual keyboards.
-3. Create your own scripts and run them with a key bind.
 
 ## What does Extend layer do?
 ### Extra virtual keyboards
@@ -56,6 +55,12 @@ Additionally, you can rebind the keys, for example "a" to a special action like 
 
 
 ## How to use this program?
+
+1. [Add/Create a new profile](#how-to-add/create-a-new-profile?)
+2. [Add/Modify/Delete a key bind](#how-to-add/modify/delete-a-key-bind?)
+3. [What does Extend-layer do?](#what-does-extend-layer-do)
+4. [How to use this program](#how-to-use-this-program)
+
 After following the [getting started guide](#getting-started).
 Run ExtraKeyboardsApp.ahk. This will open a gui where you can add some premade profiles, or create your own profile, and edit keybinds.
 
@@ -66,7 +71,6 @@ Run ExtraKeyboardsApp.ahk. This will open a gui where you can add some premade p
 
 2. A dialog will open where you can select a predefined profile and choose a name for the profile.
 ![Choose a profile image](../images/assets/READMEImages/AddProfileDialogOpen.png?raw=true)
-
 
 3. After selecting a profile, and giving it a unique name, click "Add Profile".
 
@@ -93,11 +97,17 @@ If you haven't selected an existing keybind, only the "add" keybind button is en
 
 ![buttons for adding, editing or deleting a hotkey highlighted](../images/assets/READMEImages/AddEditDeleteHotkeyHighlighted.png?raw=true)
 
+4. Add, edit or delete a keybind by clicking the corresponding button.
+- [Add a keybind](#add-a-keybind)
+- [Edit a keybind](#edit-a-keybind)
+- [Delete a keybind](#delete-a-keybind)
+
 #### Add a keybind
 1. After following the steps above, click the above highlighted "Add" button. (Alternatively you can press enter if the focused element is the different layers section (left side with GlobalLayer-Hotkeys and such))
 
 2. A dialog will open where you have to have to set the hotkey and the action. The hotkey is the key you want to bind to a new action. The action is what you want the hotkey to do. Action can be a special action or a new key.
-![alt text](../images/assets/READMEImages/AddHotkeyDialog.png?raw=true)
+
+![Dialog for adding a hotkey](../images/assets/READMEImages/AddHotkeyDialog.png?raw=true)
 
 ##### Set Hotkey
 1. Click the "Set Hotkey" button.
@@ -113,7 +123,7 @@ If you haven't selected an existing keybind, only the "add" keybind button is en
 To set the hotkey you want, simply select the highlighted input field and press the key you want to bind to the action. You can also press key modifiers like shift, alt and ctrl, however not Win.
 
 After choosing a keybind, press the save button.
-![alt text](../images/assets/READMEImages/SetHotkeySimple.png?raw=true)
+![Setting a hotkey simple method](../images/assets/READMEImages/SetHotkeySimple.png?raw=true)
 
 
 ###### *Advanced*
@@ -125,7 +135,7 @@ To create a hotkey you need to:
 - Save!
 
 
-![alt text](../images/assets/READMEImages/SetHotkeyAdvanced.png?raw=true)
+![Setting a hotkey advanced method](../images/assets/READMEImages/SetHotkeyAdvanced.png?raw=true)
 
 ##### Set Action
 
@@ -135,7 +145,7 @@ To create a hotkey you need to:
 
 3. Follow the guide [*Special Action*](#special-action) or follow parts of the [*Set Hotkey*](#set-hotkey) guide. When setting the new action to be a new key it is pretty much the same as the guide for setting a new hotkey (the image below is for setting a new key)
 
-![alt text](../images/assets/READMEImages/SetActionNewKey.png?raw=true)
+![Setting an action to a new key](../images/assets/READMEImages/SetActionNewKey.png?raw=true)
 
 ###### Special Action
 
@@ -148,4 +158,18 @@ After selecting an action you will get an some information:
 
 After you have selected an action an filled out it's parameters, save!
 
-![alt text](../images/assets/READMEImages/SetActionSpecialAction.png?raw=true)
+![Setting an action to a special action](../images/assets/READMEImages/SetActionSpecialAction.png?raw=true)
+
+
+#### Edit a keybind
+
+1. Follow first the general steps for [adding/editing/deleting](how-to-add/modify/delete-a-key-bind?) a keybind, which is just finding which key you want to edit.
+2. After having selected the keybind you want to delete, click the "Edit" button.
+3. A dialog will open where you can edit the hotkey and the action. Follow the guide for [adding a keybind](#add-a-keybind) to set the hotkey and the action.
+
+
+#### Delete a keybind
+
+1. Follow first the general steps for [adding/editing/deleting](how-to-add/modify/delete-a-key-bind?) a keybind, which is just finding which key you want to delete.
+2. After having selected the keybind you want to delete, click the "Delete" button.
+3. The keybind will be deleted!
