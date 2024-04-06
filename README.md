@@ -135,7 +135,7 @@ To create a hotkey you need to:
 
 3. Follow the guide [*Special Action*](#special-action) or follow parts of the [*Set Hotkey*](#set-hotkey) guide. When setting the new action to be a new key it is pretty much the same as the guide for setting a new hotkey (the image below is for setting a new key)
 
-![alt text](../images/assets/READMEImages/SetActionNewKey-1.png?raw=true)
+![alt text](../images/assets/READMEImages/SetActionNewKey.png?raw=true)
 
 ###### Special Action
 
