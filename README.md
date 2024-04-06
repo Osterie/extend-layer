@@ -62,10 +62,10 @@ Run ExtraKeyboardsApp.ahk. This will open a gui where you can add some premade p
 ### How to add/create a new profile?
 
 1. Click the "Add Profile" button.
-![alt text](AddProfileHighlighted.png)
+![Add profile button image](../images/assets/READMEImages/AddProfileHighlighted.png?raw=true)
 
 2. A dialog will open where you can select a predefined profile and choose a name for the profile.
-![alt text](AddProfileDialogOpen.png)
+![Choose a profile image](../images/assets/READMEImages/AddProfileDialogOpen.png?raw=true)
 
 
 3. After selecting a profile, and giving it a unique name, click "Add Profile".
@@ -73,7 +73,7 @@ Run ExtraKeyboardsApp.ahk. This will open a gui where you can add some premade p
 There are some predefined profiles to choose between, but if you want to create your own profile from scratch you can select "EmptyProfile".
 
 Some profiles have a suffix like "_en" or "_no" which means that the profile is created for a specific keyboard layout. For example, "_en" is for the english keyboard layout and "_no" is for the norwegian keyboard layout.
-![alt text](AddProfileCreatingOwnProfile.png)
+![Create your own profile image](../images/assets/READMEImages/AddProfileCreatingOwnProfile.png?raw=true)
 
 
 4. All done! You have created a new profile. You can now edit the keybinds and add new keybinds to your liking for this profile.
@@ -82,25 +82,22 @@ Some profiles have a suffix like "_en" or "_no" which means that the profile is 
 ### How to add/modify/delete a key bind?
 
 1. Select the profile you want to edit.
-![The current profile highlighted](CurrentProfileHighlighted.png)
+![The current profile highlighted](../images/assets/READMEImages/CurrentProfileHighlighted.png?raw=true)
 
 2. Click on the "Keyboards" tab. This will show all the keyboard layers for the selected profile.
-![Different keyboard layers highlighted](KeyboardLayersHighlighted.png)
+![Different keyboard layers highlighted](../images/assets/READMEImages/KeyboardLayersHighlighted.png?raw=true)
 
 3. Click on the keyboard layer you want to edit. This will show all the keybinds for the selected keyboard layer. From here you can add, edit or delete keybinds. 
 
 If you haven't selected an existing keybind, only the "add" keybind button is enabled. If you select an existing keybind, the "edit" and "delete" keybind buttons are enabled.
 
-![buttons for adding, editing or deleting a hotkey highlighted](AddEditDeleteHotkeyHighlighted.png)
+![buttons for adding, editing or deleting a hotkey highlighted](../images/assets/READMEImages/AddEditDeleteHotkeyHighlighted.png?raw=true)
 
 #### Add a keybind
 1. After following the steps above, click the above highlighted "Add" button. (Alternatively you can press enter if the focused element is the different layers section (left side with GlobalLayer-Hotkeys and such))
 
 2. A dialog will open where you have to have to set the hotkey and the action. The hotkey is the key you want to bind to a new action. The action is what you want the hotkey to do. Action can be a special action or a new key.
-![alt text](AddHotkeyDialog.png)
-
-Navn;dato;nummer;fødsel;mail
-adrian;asss;fasdfs;asdfasd;adfa
+![alt text](../images/assets/READMEImages/AddHotkeyDialog.png?raw=true)
 
 ##### Set Hotkey
 1. Click the "Set Hotkey" button.
@@ -116,7 +113,7 @@ adrian;asss;fasdfs;asdfasd;adfa
 To set the hotkey you want, simply select the highlighted input field and press the key you want to bind to the action. You can also press key modifiers like shift, alt and ctrl, however not Win.
 
 After choosing a keybind, press the save button.
-![alt text](SetHotkeySimple.png)
+![alt text](../images/assets/READMEImages/SetHotkeySimple.png?raw=true)
 
 
 ###### *Advanced*
@@ -128,7 +125,7 @@ To create a hotkey you need to:
 - Save!
 
 
-![alt text](SetHotkeyAdvanced.png)
+![alt text](../images/assets/READMEImages/SetHotkeyAdvanced.png?raw=true)
 
 ##### Set Action
 
@@ -138,7 +135,7 @@ To create a hotkey you need to:
 
 3. Follow the guide [*Special Action*](#special-action) or follow parts of the [*Set Hotkey*](#set-hotkey) guide. When setting the new action to be a new key it is pretty much the same as the guide for setting a new hotkey (the image below is for setting a new key)
 
-![alt text](SetActionNewKey-1.png)
+![alt text](../images/assets/READMEImages/SetActionNewKey-1.png?raw=true)
 
 ###### Special Action
 
@@ -151,4 +148,4 @@ After selecting an action you will get an some information:
 
 After you have selected an action an filled out it's parameters, save!
 
-![alt text](SetActionSpecialAction.png)
+![alt text](../images/assets/READMEImages/SetActionSpecialAction.png?raw=true)
