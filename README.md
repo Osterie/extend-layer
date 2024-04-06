@@ -55,6 +55,12 @@ Additionally, you can rebind the keys, for example "a" to a special action like 
 
 
 ## How to use this program?
+
+1. [Add/Create a new profile](#how-to-add/create-a-new-profile?)
+2. [Add/Modify/Delete a key bind](#how-to-add/modify/delete-a-key-bind?)
+3. [What does Extend-layer do?](#what-does-extend-layer-do)
+4. [How to use this program](#how-to-use-this-program)
+
 After following the [getting started guide](#getting-started).
 Run ExtraKeyboardsApp.ahk. This will open a gui where you can add some premade profiles, or create your own profile, and edit keybinds.
 
@@ -91,10 +97,16 @@ If you haven't selected an existing keybind, only the "add" keybind button is en
 
 ![buttons for adding, editing or deleting a hotkey highlighted](../images/assets/READMEImages/AddEditDeleteHotkeyHighlighted.png?raw=true)
 
+4. Add, edit or delete a keybind by clicking the corresponding button.
+- [Add a keybind](#add-a-keybind)
+- [Edit a keybind](#edit-a-keybind)
+- [Delete a keybind](#delete-a-keybind)
+
 #### Add a keybind
 1. After following the steps above, click the above highlighted "Add" button. (Alternatively you can press enter if the focused element is the different layers section (left side with GlobalLayer-Hotkeys and such))
 
 2. A dialog will open where you have to have to set the hotkey and the action. The hotkey is the key you want to bind to a new action. The action is what you want the hotkey to do. Action can be a special action or a new key.
+
 ![Dialog for adding a hotkey](../images/assets/READMEImages/AddHotkeyDialog.png?raw=true)
 
 ##### Set Hotkey
@@ -147,3 +159,17 @@ After selecting an action you will get an some information:
 After you have selected an action an filled out it's parameters, save!
 
 ![Setting an action to a special action](../images/assets/READMEImages/SetActionSpecialAction.png?raw=true)
+
+
+#### Edit a keybind
+
+1. Follow first the general steps for [adding/editing/deleting](how-to-add/modify/delete-a-key-bind?) a keybind, which is just finding which key you want to edit.
+2. After having selected the keybind you want to delete, click the "Edit" button.
+3. A dialog will open where you can edit the hotkey and the action. Follow the guide for [adding a keybind](#add-a-keybind) to set the hotkey and the action.
+
+
+#### Delete a keybind
+
+1. Follow first the general steps for [adding/editing/deleting](how-to-add/modify/delete-a-key-bind?) a keybind, which is just finding which key you want to delete.
+2. After having selected the keybind you want to delete, click the "Delete" button.
+3. The keybind will be deleted!
