@@ -5,4 +5,4 @@ config/UserProfiles/*
 tests/*
 TODO.ahk
 READMETODO.md
-assets\imageSearchImages\*
+assets/imageSearchImages/*
