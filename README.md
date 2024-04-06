@@ -59,12 +59,96 @@ Additionally, you can rebind the keys, for example "a" to a special action like 
 After following the [getting started guide](#getting-started).
 Run ExtraKeyboardsApp.ahk. This will open a gui where you can add some premade profiles, or create your own profile, and edit keybinds.
 
-### How to create a new profile?
+### How to add/create a new profile?
 
+1. Click the "Add Profile" button.
+![alt text](AddProfileHighlighted.png)
+
+2. A dialog will open where you can select a predefined profile and choose a name for the profile.
+![alt text](AddProfileDialogOpen.png)
+
+
+3. After selecting a profile, and giving it a unique name, click "Add Profile".
+
+There are some predefined profiles to choose between, but if you want to create your own profile from scratch you can select "EmptyProfile".
+
+Some profiles have a suffix like "_en" or "_no" which means that the profile is created for a specific keyboard layout. For example, "_en" is for the english keyboard layout and "_no" is for the norwegian keyboard layout.
+![alt text](AddProfileCreatingOwnProfile.png)
+
+
+4. All done! You have created a new profile. You can now edit the keybinds and add new keybinds to your liking for this profile.
 
 
 ### How to add/modify/delete a key bind?
 
-#### Changing a key to a normal key
-#### Changing a key to a functionality
+1. Select the profile you want to edit.
+![The current profile highlighted](CurrentProfileHighlighted.png)
 
+2. Click on the "Keyboards" tab. This will show all the keyboard layers for the selected profile.
+![Different keyboard layers highlighted](KeyboardLayersHighlighted.png)
+
+3. Click on the keyboard layer you want to edit. This will show all the keybinds for the selected keyboard layer. From here you can add, edit or delete keybinds. 
+
+If you haven't selected an existing keybind, only the "add" keybind button is enabled. If you select an existing keybind, the "edit" and "delete" keybind buttons are enabled.
+
+![buttons for adding, editing or deleting a hotkey highlighted](AddEditDeleteHotkeyHighlighted.png)
+
+#### Add a keybind
+1. After following the steps above, click the above highlighted "Add" button. (Alternatively you can press enter if the focused element is the different layers section (left side with GlobalLayer-Hotkeys and such))
+
+2. A dialog will open where you have to have to set the hotkey and the action. The hotkey is the key you want to bind to a new action. The action is what you want the hotkey to do. Action can be a special action or a new key.
+![alt text](AddHotkeyDialog.png)
+
+Navn;dato;nummer;fødsel;mail
+adrian;asss;fasdfs;asdfasd;adfa
+
+##### Set Hotkey
+1. Click the "Set Hotkey" button.
+
+2. A dialog will open where you can set the hotkey. There are two different modes to this. [*Simple*](#simple) and [*advanced*](#advanced), which can be switched between by clicking the "Advanced mode" button.
+
+3. Follow the guide [*Simple*](#simple) or [*advanced*](#advanced) hotkey setting.
+
+4. Remember to also set an [action!](#set-action)
+
+###### *Simple*
+
+To set the hotkey you want, simply select the highlighted input field and press the key you want to bind to the action. You can also press key modifiers like shift, alt and ctrl, however not Win.
+
+After choosing a keybind, press the save button.
+![alt text](SetHotkeySimple.png)
+
+
+###### *Advanced*
+
+To create a hotkey you need to:
+- Select the modifier keys you want to use.
+- Select the key you want to from the dropdown menu.
+- If you want, change if the keybind should activate when the key is pressed down, or released.
+- Save!
+
+
+![alt text](SetHotkeyAdvanced.png)
+
+##### Set Action
+
+1. Click the "Set Action" button.
+
+2. A dialog will open where you can set the Action. You can either set the action to a new key, or a special action.
+
+3. Follow the guide [*Special Action*](#special-action) or follow parts of the [*Set Hotkey*](#set-hotkey) guide. When setting the new action to be a new key it is pretty much the same as the guide for setting a new hotkey (the image below is for setting a new key)
+
+![alt text](SetActionNewKey-1.png)
+
+###### Special Action
+
+To set the action to a special action, you need to select the action you want from the dropdown menu. After selecting the action, press the save button.
+
+After selecting an action you will get an some information:
+1. Action description: describes what the selected action does. 
+2. Action to do: what the action does.
+3. Action parameters: what parameters the action takes. For example, if the action is to change screen brightness, the parameter could be a number between 0 and 100, where 0 is the lowest brightness and 100 is the highest brightness. You yourself must fill out the parameters for an action to your liking.
+
+After you have selected an action an filled out it's parameters, save!
+
+![alt text](SetActionSpecialAction.png)

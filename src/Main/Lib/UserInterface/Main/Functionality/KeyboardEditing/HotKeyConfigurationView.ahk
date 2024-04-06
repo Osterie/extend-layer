@@ -42,10 +42,10 @@ class HotKeyConfigurationView extends DomainSpecificGui{
     }
 
     createChangeButtons(){
-        buttonToChangeOriginalHotkey := this.Add("Button", "Default w100 xm", "Change Hotkey")
+        buttonToChangeOriginalHotkey := this.Add("Button", "Default w100 xm", "Set Hotkey")
         buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.controller.changeHotkey("Hotkey"))
         
-        buttonToChangeOriginalAction := this.Add("Button", "Default w100", "Change Action")
+        buttonToChangeOriginalAction := this.Add("Button", "Default w100", "Set Action")
         buttonToChangeOriginalAction.onEvent("Click", (*) => this.controller.changeHotkey("Action"))
     }
 
@@ -54,8 +54,10 @@ class HotKeyConfigurationView extends DomainSpecificGui{
         saveButton.onEvent("Click", (*) => this.controller.NotifyListenersSave())
         cancelButton := this.Add("Button", "Default w100", "Cancel+Done")
         cancelButton.onEvent("Click", (*) => this.Destroy())
-        deleteButton := this.Add("Button", "Default w100", "Delete+Done")
-        deleteButton.onEvent("Click", (*) => this.controller.NotifyListenersDelete())
+        if (this.model.getOriginalHotkey() != ""){
+            deleteButton := this.Add("Button", "Default w100", "Delete+Done")
+            deleteButton.onEvent("Click", (*) => this.controller.NotifyListenersDelete())
+        }
     }
     
     ; TODO updateHotkeyText and UpdateActionText are very similar, can be refactored

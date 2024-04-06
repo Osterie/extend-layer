@@ -18,14 +18,13 @@ class HotkeyCrafterView extends DomainSpecificGui{
 
     __New(controller){
         super.__New(, "HotkeyCrafterGui")
-        this.Opt("+Resize +MinSize480x480")
         
         this.controller := controller
         this.controlsForButtons := guiControlsRegistry()
     }
 
     Create(originalHotkey){
-        this.advancedModeCheckBox := this.Add("Checkbox", "h50 xp+15 yp+15", "Advanced mode")
+        this.advancedModeCheckBox := this.Add("Checkbox", "xp yp+30", "Advanced mode")
         this.advancedModeCheckBox.onEvent("Click", (*) => this.advancedModeButtonChangedEvent())
 
         this.SimpleHotkeyCrafter := SimpleHotkeyCraftingControl(this, "w300 h50", HotkeyFormatConverter.convertFromFriendlyName(originalHotkey, " + "))
