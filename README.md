@@ -64,6 +64,10 @@ The program has multiple of these predefined profiles with predefined virtual ke
 
 ### How the gui looks
 
+![Default extra virual keyboard layout](../images/assets/READMEImages/OverviewOfGui.png?raw=true)
+
+This shows the main window of the program. Here you can add profiles, edit profiles, add keybinds, edit keybinds, delete keybinds, and switch between different profiles. For information on how to actually do this, follow the guides in ["How to use this program?"](#how-to-use-this-program)
+
 
 
 ## What does Extend layer do?
