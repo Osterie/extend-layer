@@ -1,21 +1,14 @@
 <pre>
-  An autohotkey program to change key binds and create extra keyboards.
+  An autohotkey program to create extra virtual keyboards and change key binds.
 </pre>
 
 # Extend layer
 
-Extend layer allows you to create multiple virtual keyboards. This is useful if you have a keyboard with a limited amount of keys, or if you want to create a keyboard for a specific program. For example, you can create a keyboard for a game, a keyboard for coding, a keyboard for browsing, etc. You can switch between these keyboards with a chosen keybind. By default the keybind is **CapsLock** to switch to a second keyboard layer and **Capslock + Shift** to switch to a third keyboard layer. You can change these keybinds to whatever you want.
-
-<!-- TODO instert one paragraph of project description -->
-
-If you use this program i recommend reading about the extend layer and copying this [Image](https://dreymar.colemak.org/res/div/Extend/Extend-ISO-NoMod-Win_96d-Labels.png) since it is basically the layout of the preset profile. In the future i will create a better way to keep track of which keys are where and what they do, since the extend layer i have created is not identical to the DreymaR extend layer.
-
-
-!WARNING! If you start using the Extend Layer, you will NEVER go back.
-The extend layer makes navigation a lot more ergonomic and fast. I highly reccomend learning the shortcuts from the extend layer [WebPage](https://dreymar.colemak.org/layers-extend.html#:~:text=F12%20is%20faster.-,GENERAL,-SHORTCUTS).
-
-My favorite use for the extend layer, is coding in an IDE, for example VsCode. The extend layer really complements the existing shortcuts of VsCode and makes coding a lot faster, more ergonomic and more satisfying.
-
+Extend layer is an autohotkey program created to improve the functionality of your keyboard. The program allows you to:
+- Create multiple custom virtual keyboards 💻
+- Choose between predefined virtual keyboards 📚
+- Switch between different profiles of virtual keyboards 🔄
+- Rebind keys to other keys or special actions ⚙️
 
 ## Quick links
 
@@ -56,6 +49,18 @@ To run this script, do the following:
 ### Extra virtual keyboards
 
 Extend layer allows you to create multiple virtual keyboards. This is useful if you have a keyboard with a limited amount of keys, or if you want to create a keyboard for a specific program. For example, you can create a keyboard for a game, a keyboard for coding, a keyboard for browsing, etc. You can switch between these keyboards with a chosen keybind. By default the keybind is **CapsLock** to switch to a second keyboard layer and **Capslock + Shift** to switch to a third keyboard layer. You can change these keybinds to whatever you want.
+
+An example of one of the predefined keyboards is shown below. This is from the default profile used when you first download and run the application. The image shows the layout of the second virtual keyboard, which is activated by hitting **CapsLock**
+
+![Default extra virual keyboard layout](../images/assets/READMEImages/KeyboardLayoutDefault.png?raw=true)
+
+
+
+!WARNING! If you start using the Extend Layer, you will NEVER go back.
+The extend layer makes navigation a lot more ergonomic and fast. I highly reccomend learning the shortcuts from the extend layer [webpage](https://dreymar.colemak.org/layers-extend.html#:~:text=F12%20is%20faster.-,GENERAL,-SHORTCUTS).
+
+My favorite use for the extend layer, is coding in an IDE, for example VsCode. The extend layer really complements the existing shortcuts of VsCode and makes coding a lot faster, more ergonomic and more satisfying.
+
 
 ### Rebinding keys to another key or a special action
 
