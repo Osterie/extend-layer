@@ -41,7 +41,7 @@ Class LayerController extends Action{
     }
 
     ; sets the layer to toggleValue if layer is 0, or to 0 if active laye is not zero
-    toggleLayerIndicator(toggleValue){
+    toggleLayer(toggleValue){
         if (this.activeLayer == 0){
             this.activeLayer := toggleValue
             this.showLayerIndicator(this.activeLayer)
@@ -53,7 +53,7 @@ Class LayerController extends Action{
     }
 
     ; increases activeLayer by 1, if upperLimit is reached, it is set back to 1 (Note, not does not go back to 0)
-    cycleLayerIndicators(defaultSetLayer){
+    cycleLayers(defaultSetLayer){
         layersAmount := this.layers.Length
         if (this.activeLayer == 0){
             this.activeLayer := defaultSetLayer
