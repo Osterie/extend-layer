@@ -19,9 +19,9 @@ Extend layer is an autohotkey program created to improve the functionality of yo
 ## Getting started
 
 To run this script, do the following:
-1. [Download Autohotkey v2.0](#download-and-install-autohotkey-v20) if you don't already have it.
-2. [Download and run the script](#download-and-run-the-script)
-3. [Run the script on startup](#how-to-run-script-on-startup) if you want to.
+1. [Download Autohotkey v2.0](#1-download-and-install-autohotkey-v20) if you don't already have it.
+2. [Download and run the script](#2-download-and-run-the-script)
+3. [Run the script on startup](#3-how-to-run-script-on-startup) if you want to.
 
 ### 1. Download and install Autohotkey v2.0
 
@@ -68,8 +68,6 @@ The program has multiple of these predefined profiles with predefined virtual ke
 
 This shows the main window of the program. Here you can add profiles, edit profiles, add keybinds, edit keybinds, delete keybinds, and switch between different profiles. For information on how to actually do this, follow the guides in ["How to use this program?"](#how-to-use-this-program)
 
-
-
 ## What does Extend layer do?
 
 ### Extra virtual keyboards
@@ -102,8 +100,8 @@ Additionally, you can rebind the keys, for example **a** to a special action lik
 
 ## How to use this program?
 
-1. [Add/Create a new profile](#how-to-add-create-a-new-profile-)
-2. [Add/Modify/Delete a key bind](#how-to-add/modify/delete-a-key-bind?)
+1. [Add/Create a new profile](#how-to-addcreate-a-new-profile)
+2. [Add/Modify/Delete a key bind](#how-to-addmodifydelete-a-key-bind)
 
 After following the [getting started guide](#getting-started).
 Run ExtraKeyboardsApp.ahk. This will open a gui where you can add some premade profiles, or create your own profile, and edit keybinds.
@@ -197,7 +195,7 @@ To create a hotkey you need to:
 
 ![Setting an action to a new key](../images/assets/READMEImages/SetActionNewKey.png?raw=true)
 
-###### Action
+###### Special Action
 
 To set the action to a special action, you need to select the action you want from the dropdown menu. After selecting the action, press the save button.
 
@@ -227,4 +225,4 @@ After you have selected an action an filled out it's parameters, save!
 The preset profiles are HEAVILY **inspired** by the [extend layer](https://dreymar.colemak.org/layers-extend.html) created by DreymaR. Check it out.
 
 
-To create images of the keyboard layouts i used a great online [Keyboard Layout Editor](http://www.keyboard-layout-editor.com/#/).
+To create images of the keyboard layouts I used a great online [Keyboard Layout Editor](http://www.keyboard-layout-editor.com/#/).
