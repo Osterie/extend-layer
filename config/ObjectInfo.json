@@ -366,8 +366,8 @@
         "ClassName": "LayerController",
         "Description": "Used for changign the active keyboard laye and its layer indicator",
         "Methods": {
-            "toggleLayerIndicator":{
-                "MethodName": "toggleLayerIndicator",
+            "toggleLayer":{
+                "MethodName": "toggleLayer",
                 "FriendlyName": "Toggle layer indicator",
                 "Description": "Toggles the active layer between off and the given layer.",
                 "Parameters": [
@@ -378,8 +378,8 @@
                     }
                 ]
             },
-            "cycleLayerIndicators":{
-                "MethodName": "cycleLayerIndicators",
+            "cycleLayers":{
+                "MethodName": "cycleLayers",
                 "FriendlyName": "Cycle layer indicators",
                 "Description": "Cycles the layer indicators for a given layer",
                 "Parameters": [

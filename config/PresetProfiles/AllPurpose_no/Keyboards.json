@@ -1,13 +1,13 @@
 {
 	"GlobalLayer-Hotkeys":{
 		"+CapsLock":{
-			"MethodName":"cycleLayerIndicators",
+			"MethodName":"cycleLayers",
 			"ObjectName":"layers",
 			"Parameters":[2],
 			"isObject":1
 		},
 		"CapsLock":{
-			"MethodName":"toggleLayerIndicator",
+			"MethodName":"toggleLayer",
 			"ObjectName":"layers",
 			"Parameters":[1],
 			"isObject":1

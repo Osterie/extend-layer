@@ -4,13 +4,13 @@
         "CapsLock": {
             "isObject": true,
             "ObjectName": "layers",
-            "MethodName": "toggleLayerIndicator",
+            "MethodName": "toggleLayer",
             "Parameters": [1]
         },
         "+CapsLock": {
             "isObject": true,
             "ObjectName": "layers",
-            "MethodName": "cycleLayerIndicators",
+            "MethodName": "cycleLayers",
             "Parameters": [2]
         }
     },

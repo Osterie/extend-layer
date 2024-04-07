@@ -52,6 +52,20 @@ To run this script, do the following:
 - Choose between predefined virtual keyboards 📚
 - Rebind keys to other keys or special actions ⚙️
 
+### Example of a predefined virtual keyboard
+
+Below is an example of a predefined virtual keyboard, found in the **Default** profile. The image shows the layout of the second virtual keyboard of this profile, which is activated by hitting **CapsLock**.
+
+![Default extra virual keyboard layout](../images/assets/READMEImages/KeyboardLayoutDefault.png?raw=true)
+
+This profile moves the keys used for text navigation, text editing, browser navigation, and such, often found far from the center of the keyboard, to the center of the keyboard.
+
+The program has multiple of these predefined profiles with predefined virtual keyboards, and you can create your own custom profiles with virtual keyboards.
+
+### How the gui looks
+
+
+
 ## What does Extend layer do?
 
 ### Extra virtual keyboards
@@ -62,7 +76,9 @@ An example of one of the predefined keyboards, found in the **Default** profile,
 
 ![Default extra virual keyboard layout](../images/assets/READMEImages/KeyboardLayoutDefault.png?raw=true)
 
-As you can see this keyboard moves the keys used for navigation, like the arrows keys, home, end, page up, page down, etc. This is especially useful if, lets say, you work in a code editor, which often requires you to navigate a lot, either by mouse or keyboard. By moving the navigation keys to a more ergonomic position, you can navigate faster and more comfortably. It's very easy to just press "o" (End) to reach the end of a line, instead of clicking it using the mouse, or reaching a far distance with your right hand to press the end key.
+As you can see this keyboard moves the keys used for text navigation, text editing, browser navigation, and such, often found far from the center of the keyboard, to the center of the keyboard.
+
+The Arrows keys, Home, End, Page up, Page down, Del, Backspace, Undo, Cut, Copy, Paste and the modifier keys are especially useful. These keys are found far from the center of the keyboard, but this keyboard layer moves them to the center. This is especially useful if, lets say, you work in a code editor, which often requires you to navigate a lot, either by mouse or keyboard. By moving the navigation keys to a more ergonomic position, you can navigate faster and more comfortably. It's very easy to just press "o" (End) to reach the end of a line, instead of clicking it using the mouse, or reaching a far distance with your right hand to press the end key.
 
 #### Extra
 
@@ -91,9 +107,11 @@ Run ExtraKeyboardsApp.ahk. This will open a gui where you can add some premade p
 ### How to add/create a new profile?
 
 1. Click the **Add Profile** button.
+
 ![Add profile button image](../images/assets/READMEImages/AddProfileHighlighted.png?raw=true)
 
 2. A dialog will open where you can select a predefined profile and choose a name for the profile.
+
 ![Choose a profile image](../images/assets/READMEImages/AddProfileDialogOpen.png?raw=true)
 
 3. After selecting a profile, and giving it a unique name, click **Add Profile**.
@@ -101,18 +119,19 @@ Run ExtraKeyboardsApp.ahk. This will open a gui where you can add some premade p
 There are some predefined profiles to choose between, but if you want to create your own profile from scratch you can select **EmptyProfile**.
 
 Some profiles have a suffix like **_en** or **_no** which means that the profile is created for a specific keyboard layout. For example, **_en** is for the english keyboard layout and **_no** is for the norwegian keyboard layout.
+
 ![Create your own profile image](../images/assets/READMEImages/AddProfileCreatingOwnProfile.png?raw=true)
 
-
 4. All done! You have created a new profile. You can now edit the keybinds and add new keybinds to your liking for this profile.
-
 
 ### How to add/modify/delete a key bind?
 
 1. Select the profile you want to edit.
+
 ![The current profile highlighted](../images/assets/READMEImages/CurrentProfileHighlighted.png?raw=true)
 
 2. Click on the **Keyboards** tab. This will show all the keyboard layers for the selected profile.
+
 ![Different keyboard layers highlighted](../images/assets/READMEImages/KeyboardLayersHighlighted.png?raw=true)
 
 3. Click on the keyboard layer you want to edit. This will show all the keybinds for the selected keyboard layer. From here you can add, edit or delete keybinds. 
@@ -151,6 +170,7 @@ If you haven't selected an existing keybind, only the **add** keybind button is 
 To set the hotkey you want, simply select the highlighted input field and press the key you want to bind to the action. You can also press key modifiers like shift, alt and ctrl, however not Win.
 
 After choosing a keybind, press the save button.
+
 ![Setting a hotkey simple method](../images/assets/READMEImages/SetHotkeySimple.png?raw=true)
 
 ###### *Advanced*
@@ -160,7 +180,6 @@ To create a hotkey you need to:
 - Select the key you want to from the dropdown menu.
 - If you want, change if the keybind should activate when the key is pressed down, or released.
 - Save!
-
 
 ![Setting a hotkey advanced method](../images/assets/READMEImages/SetHotkeyAdvanced.png?raw=true)
 
