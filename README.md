@@ -1,6 +1,4 @@
-<pre>
-  An autohotkey program to create extra virtual keyboards and change key binds.
-</pre>
+        An autohotkey program to create custom profiles extra virtual keyboards and change key binds.
 
 # Extend layer
 
@@ -21,20 +19,27 @@ Extend layer is an autohotkey program created to improve the functionality of yo
 ## Getting started
 
 To run this script, do the following:
+1. [Download Autohotkey v2.0](#download-and-install-autohotkey-v20) if you don't already have it.
+2. [Download and run the script](#download-and-run-the-script)
+3. [Run the script on startup](#how-to-run-script-on-startup) if you want to.
 
-1. __Download and install Autohotkey v2.0__ <br>
-  There are multiple options for this, the easiest is downloading it with [this .exe file.](https://www.autohotkey.com/download/ahk-v2.exe) <br>
-  Alternatively, you can [download it here.](https://www.autohotkey.com/download/) <br>
-  Or go to the official [autohotkey website](https://www.autohotkey.com/) and click the download button then choose Download v2.0. <br>
+### 1. Download and install Autohotkey v2.0
 
-2. __Download and run the script__
+  - Alternatives to downloading and installing Autohotkey v2.0 are:
+  - Download with [this .exe file.](https://www.autohotkey.com/download/ahk-v2.exe)
+  - Download from autohotkeys [download page.](https://www.autohotkey.com/download/)
+  - Go to the official [autohotkey website](https://www.autohotkey.com/), click the download button and then choose Download v2.0.
+
+### 2. Download and run the script
+
    1. Go to [Releases](https://github.com/Osterie/extend-layer/releases/).
-   2. Download the source code for the latest version.
+   2. Download the source code for the latest version found under "Assets".
    3. After downloading the source code, unzip it to an appropriate location on your computer.
-   4. To run the program, run the **Run_this.ahk** file by double clicking it.
+   4. To run the program, open the unzipped project, then naviage to and run the **Run_this.ahk** file by double clicking it.
    5. If you want, you can right click **Run_this.ahk** and create a shortcut which you can drag to your desktop.
    
-3. __How to run script on startup.__<br>
+### 3. How to run script on startup
+
    On Windows:
    1. Use the shortcut Win+R to run windows utility, and then write **shell:startup** and press enter.
    2. Create a shortcut of the **Run_this.ahk** file and drag it to the file explorer tab you just opened with shell:startup
