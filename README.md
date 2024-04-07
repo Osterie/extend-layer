@@ -48,13 +48,15 @@ To run this script, do the following:
 
 ### Extra virtual keyboards
 
-Extend layer allows you to create multiple virtual keyboards. This is useful if you have a keyboard with a limited amount of keys, or if you want to create a keyboard for a specific program. For example, you can create a keyboard for a game, a keyboard for coding, a keyboard for browsing, etc. You can switch between these keyboards with a chosen keybind. By default the keybind is **CapsLock** to switch to a second keyboard layer and **Capslock + Shift** to switch to a third keyboard layer. You can change these keybinds to whatever you want.
+Extend layer allows you to create multiple virtual keyboards, and different profiles each containing different virtual keyboards. This is useful if you have a keyboard with a limited amount of keys, or if you want to create a keyboard for a specific program. For example, you can create a profile containing keyboards for a game, keyboards for coding, keyboards for browsing, etc. You can switch between the different keyboard in a profile using a chosen keybind. By default the keybind is **CapsLock** to switch to a second keyboard layer and **Capslock + Shift** to switch to a third keyboard layer. You can change these keybinds however you want.
 
-An example of one of the predefined keyboards is shown below. This is from the default profile used when you first download and run the application. The image shows the layout of the second virtual keyboard, which is activated by hitting **CapsLock**
+An example of one of the predefined keyboards, found in the **Default** profile, is shown below.  The default profile is created when you first download and run the application. The image shows the layout of the second virtual keyboard of this profile, which is activated by hitting **CapsLock**
 
 ![Default extra virual keyboard layout](../images/assets/READMEImages/KeyboardLayoutDefault.png?raw=true)
 
+As you can see this keyboard moves the keys used for navigation, like the arrows keys, home, end, page up, page down, etc. This is especially useful if, lets say, you work in a code editor, which often requires you to navigate a lot, either by mouse or keyboard. By moving the navigation keys to a more ergonomic position, you can navigate faster and more comfortably. It's very easy to just press "o" (End) to reach the end of a line, instead of clicking it using the mouse, or reaching a far distance with your right hand to press the end key.
 
+#### Extra
 
 !WARNING! If you start using the Extend Layer, you will NEVER go back.
 The extend layer makes navigation a lot more ergonomic and fast. I highly reccomend learning the shortcuts from the extend layer [webpage](https://dreymar.colemak.org/layers-extend.html#:~:text=F12%20is%20faster.-,GENERAL,-SHORTCUTS).
