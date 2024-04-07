@@ -46,8 +46,11 @@ To run this script, do the following:
 
 ## Summary
 
-1. Remap keys to new keys or new functionalities using a Gui.
-2. Create Multiple virtual keyboards.
+- Create custom profiles which have different virtual keyboards
+- Switch between different profiles of virtual keyboards 🔄
+- Create multiple custom virtual keyboards 💻
+- Choose between predefined virtual keyboards 📚
+- Rebind keys to other keys or special actions ⚙️
 
 ## What does Extend layer do?
 
