@@ -19,16 +19,16 @@ Extend layer is an autohotkey program created to improve the functionality of yo
 ## Getting started
 
 To run this script, do the following:
-1. [Download Autohotkey v2.0](#1-download-and-install-autohotkey-v20) if you don't already have it.
-2. [Download and run the script](#2-download-and-run-the-script)
-3. [Run the script on startup](#3-how-to-run-script-on-startup) if you want to.
+1. If you don't already have it, [download Autohotkey v2.0](#1-download-and-install-autohotkey-v20) 
+2. [Download and excecute the script](#2-download-and-run-the-script)
+3. If you want to, [Run the script on startup](#3-how-to-run-script-on-startup)
 
 ### 1. Download and install Autohotkey v2.0
 
   - Alternatives to downloading and installing Autohotkey v2.0 are:
-  - Download with [this .exe file.](https://www.autohotkey.com/download/ahk-v2.exe)
-  - Download from autohotkeys [download page.](https://www.autohotkey.com/download/)
-  - Go to the official [autohotkey website](https://www.autohotkey.com/), click the download button and then choose Download v2.0.
+      1. Run [this](https://www.autohotkey.com/download/ahk-v2.exe) .exe file.
+      2. Download from autohotkeys [download page.](https://www.autohotkey.com/download/)
+      3. Go to the official [autohotkey website](https://www.autohotkey.com/), click the download button and then choose Download v2.0.
 
 ### 2. Download and run the script
 
