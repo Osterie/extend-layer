@@ -19,9 +19,9 @@ Extend layer is an autohotkey program created to improve the functionality of yo
 ## Getting started
 
 To run this script, do the following:
-1. [Download Autohotkey v2.0](#1-download-and-install-autohotkey-v20) if you don't already have it.
-2. [Download and run the script](#2-download-and-run-the-script)
-3. [Run the script on startup](#3-how-to-run-script-on-startup) if you want to.
+1. If you don't already have it, [download Autohotkey v2.0](#1-download-and-install-autohotkey-v20) 
+2. [Download and excecute the script](#2-download-and-run-the-script)
+3. If you want to, [Run the script on startup](#3-how-to-run-script-on-startup)
 
 ### 1. Download and install Autohotkey v2.0
 
