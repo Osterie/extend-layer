@@ -26,9 +26,9 @@ To run this script, do the following:
 ### 1. Download and install Autohotkey v2.0
 
   - Alternatives to downloading and installing Autohotkey v2.0 are:
-  - Download with [this .exe file.](https://www.autohotkey.com/download/ahk-v2.exe)
-  - Download from autohotkeys [download page.](https://www.autohotkey.com/download/)
-  - Go to the official [autohotkey website](https://www.autohotkey.com/), click the download button and then choose Download v2.0.
+      1. Run [this](https://www.autohotkey.com/download/ahk-v2.exe) .exe file.
+      2. Download from autohotkeys [download page.](https://www.autohotkey.com/download/)
+      3. Go to the official [autohotkey website](https://www.autohotkey.com/), click the download button and then choose Download v2.0.
 
 ### 2. Download and run the script
 
