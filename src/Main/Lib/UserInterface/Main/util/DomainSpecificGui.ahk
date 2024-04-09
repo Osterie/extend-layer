@@ -10,33 +10,33 @@
 class DomainSpecificGui extends Gui{
 
     theme := ""
-    themes_ := ""
 
     ; TODO fetch color profile from meta file.
     __New(options := "", title := "", eventObj := ""){
         super.__New(options, title, this)
 
-        this.theme := Themes.getInstance().GetTheme(FilePaths.GetCurrentTheme())
-        if (this.theme = ""){
-            this.theme := Themes.getInstance().GetTheme(FilePaths.GetDefaultTheme())
-            if (this.theme = ""){
-                msgbox("Failed to load any theme")
+
+
+        this.OnEvent('Escape', (*) => this.Destroy())
+        this.UpdateColorTheme()
+    }
+
+    GetCurrentTheme(){
+        theme := Themes.getInstance().GetTheme(FilePaths.GetCurrentTheme())
+        if (theme = ""){
+            theme := Themes.getInstance().GetTheme(FilePaths.GetDefaultTheme())
+            if (theme = ""){
                 Throw Error("Failed to load any theme")
             }
         }
-
-        this.OnEvent('Escape', (*) => this.Destroy())
-        this.BackColor := this.theme.BackgroundColor()
-        this.SetColors()
-        this.SetFont("c" . this.theme.TextColor() .  " Bold")
+        return theme
     }
 
     UpdateColorTheme(){
-        this.theme := Themes.getInstance().GetTheme(FilePaths.GetCurrentTheme())
+        this.theme := this.GetCurrentTheme()
         this.BackColor := this.theme.BackgroundColor()
-        this.SetColors()
+        this.SetCaptionColor()
         this.SetFont("c" . this.theme.TextColor() .  " Bold")
-        this.SetColors()
         this.UpdateControlsColors()
     }
 
@@ -46,10 +46,8 @@ class DomainSpecificGui extends Gui{
         }
     }
     
-    SetColors(){
-        ; Top bar or whatever it is called
+    SetCaptionColor(){
         GuiColorsChanger.DwmSetCaptionColor(this, "0x" this.theme.CaptionColor()) ; color is in RGB format
-        ; TODO add color for this too
         GuiColorsChanger.DwmSetTextColor(this, "0x" . this.theme.CaptionFontColor())
     }
 
