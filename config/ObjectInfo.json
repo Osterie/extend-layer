@@ -184,6 +184,32 @@
         }
     },
 
+    "SpotifyController": {
+        "ObjectName": "SpotifyController_",
+        "ClassName": "SpotifyController",
+        "Description": "No use yet",
+        "Methods": {
+            "next": {
+                "MethodName": "next",
+                "FriendlyName": "Play next song",
+                "Description": "Plays the next song in the playing playlist",
+                "Parameters": []
+            },
+            "previous": {
+                "MethodName": "previous",
+                "FriendlyName": "Play previous song",
+                "Description": "Plays the previous song in the playing playlist",
+                "Parameters": []
+            },
+            "playPause": {
+                "MethodName": "playPause",
+                "FriendlyName": "Play or pause song",
+                "Description": "Plays or pauses the current song",
+                "Parameters": []
+            }
+        }
+    },
+
     "WebNavigator":{
         "ObjectName": "WebSearcher",
         "ClassName": "WebNavigator",

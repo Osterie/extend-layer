@@ -11,6 +11,7 @@
 #Include <Actions\IODevices\Monitor>
 #Include <Actions\IODevices\DeviceManager>
 #Include <Actions\IODevices\ComputerInputController>
+#Include <Actions\AppControllers\SpotifyController>
 #Include <Actions\Privacy\ScreenPrivacyController>
 #Include <Actions\Privacy\UnauthorizedUseDetector>
 #Include <Actions\BatteryAndPower\BatteryController>
@@ -104,6 +105,9 @@ class ObjectsInitializer{
         else{
             UnautorizedUserDetector.DisableLockComputerOnTaskBarClick()
         }
+
+        SpotifyController_ := SpotifyController()
+        this.Objects["SpotifyController_"] := SpotifyController_
 
         ; |------------Layer indicators------------|
 

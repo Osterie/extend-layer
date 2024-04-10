@@ -68,7 +68,7 @@ class HotKeyConfigurationView extends DomainSpecificGui{
             this.currentHotkeyTextControl.SetFont("s10 cGreen")
         }
         else{
-            this.SetColors()
+            this.SetCurrentThemeFontColor()
         }
 
         GuiSizeChanger.SetTextAndResize(this.currentHotkeyTextControl, this.currentHotkeyTextControl.Value )
@@ -81,7 +81,7 @@ class HotKeyConfigurationView extends DomainSpecificGui{
             this.currentActionTextControl.SetFont("s10 cGreen")
         }
         else{
-            this.SetColors()
+            this.SetCurrentThemeFontColor()
         }
 
         GuiSizeChanger.SetTextAndResize(this.currentActionTextControl, this.currentActionTextControl.Value )

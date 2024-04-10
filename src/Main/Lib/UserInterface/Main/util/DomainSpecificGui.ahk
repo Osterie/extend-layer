@@ -14,9 +14,6 @@ class DomainSpecificGui extends Gui{
     ; TODO fetch color profile from meta file.
     __New(options := "", title := "", eventObj := ""){
         super.__New(options, title, this)
-
-
-
         this.OnEvent('Escape', (*) => this.Destroy())
         this.UpdateColorTheme()
     }
@@ -25,7 +22,7 @@ class DomainSpecificGui extends Gui{
         theme := Themes.getInstance().GetTheme(FilePaths.GetCurrentTheme())
         if (theme = ""){
             theme := Themes.getInstance().GetTheme(FilePaths.GetDefaultTheme())
-            if (theme = ""){
+            if (theme =     ""){
                 Throw Error("Failed to load any theme")
             }
         }
@@ -36,8 +33,12 @@ class DomainSpecificGui extends Gui{
         this.theme := this.GetCurrentTheme()
         this.BackColor := this.theme.BackgroundColor()
         this.SetCaptionColor()
-        this.SetFont("c" . this.theme.TextColor() .  " Bold")
+        this.SetCurrentThemeFontColor()
         this.UpdateControlsColors()
+    }
+
+    SetCurrentThemeFontColor(){
+        this.SetFont("c" . this.theme.TextColor() .  " Bold")
     }
 
     UpdateControlsColors(){
