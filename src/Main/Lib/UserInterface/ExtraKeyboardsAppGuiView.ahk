@@ -21,7 +21,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
 
     ; Constructor for the ExtraKeyboardsAppGuiView class
     __New(){
-        super.__New("+Resize +MinSize920x480", "Extra Keyboards App")
+        super.__New("+MinSize920x480", "Extra Keyboards App")
     }
 
     ; Creates the main gui for the application
@@ -32,7 +32,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
         this.CreateTabs()
         
         ; Show gui in the top left corner of the screen
-        this.Show("x0 y0")
+        this.Show()
     }
 
     CreateMenuBar(){
