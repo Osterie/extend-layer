@@ -158,7 +158,6 @@ Class Main{
     }
 }
 
-
 #SuspendExempt
 ^!s::Suspend  ; Ctrl+Alt+S
 #SuspendExempt False
@@ -176,16 +175,6 @@ MainScript.Start()
 #HotIf MainScript.getLayerController().getActiveLayer() == 2 
 #HotIf
 
-; Shows key history, used for debugging
-; b:: KeyHistory
-
 ; Used to show user the script is enabled
 ToolTip "Script enabled!"
 SetTimer () => ToolTip(), -3000
-
-
-; IsRunning(Path) {
-;     SetTitleMatchMode 2
-;     DetectHiddenWindows 1
-;     return !!WinExist(Path)
-; }
