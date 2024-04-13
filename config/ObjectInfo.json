@@ -184,9 +184,9 @@
         }
     },
 
-    "SpotifyController": {
-        "ObjectName": "SpotifyController_",
-        "ClassName": "SpotifyController",
+    "SoundController": {
+        "ObjectName": "SoundController_",
+        "ClassName": "SoundController",
         "Description": "No use yet",
         "Methods": {
             "next": {
