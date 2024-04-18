@@ -2,6 +2,7 @@
 
 #Include ".\EditProfiles\EditorView.ahk"
 #Include ".\AddProfiles\AddProfileDialog.ahk"
+#Include ".\ProfileImporter.ahk"
 
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FolderManager>
@@ -17,6 +18,9 @@ class ProfileRegionController{
     ; Used to manage the existing user profiles, the user is allowed to edit, delete, and add new profiles
     ExistingProfilesManager := ""
 
+    ; Used to import profiles
+    ProfileImporter_ := ""
+
     __New(view){
         this.view := view 
 
@@ -26,6 +30,8 @@ class ProfileRegionController{
         this.PresetProfilesManager.addSubFoldersToRegistryFromFolder(FilePaths.GetPathToPresetProfiles())
         this.PresetProfilesManager.addFolderToRegistry("EmptyProfile", FilePaths.GetPathToEmptyProfile())
         this.ExistingProfilesManager.addSubFoldersToRegistryFromFolder(FilePaths.GetPathToProfiles())
+
+        this.ProfileImporter_ := ProfileImporter(this.ExistingProfilesManager)
 
     }
 
@@ -137,65 +143,11 @@ class ProfileRegionController{
         }
     }
 
-    ; TODO this methods is way too long..
-    ; TODO make it suppport multi select
-    ; TODO make it possible to drag files onto gui to add profiles..
     doImportProfile(){
-        selectedFilePath := FileSelect("D", , "Choose the profile to import",)
-        ; Guard condition
-        if selectedFilePath = ""{
-            ; Canceled
-            return
-        }
-        if (!this.profileIsValid(selectedFilePath)){
-            msgbox("The folder you selected is not a valid profile.")
-            return
-        }
-        try{
-            folderName := this.getEndOfPath(selectedFilePath)
-            if (this.ExistingProfilesManager.CopyFolderToNewLocation(selectedFilePath, FilePaths.GetPathToProfiles() . "/" . folderName, folderName)){
-                msgbox("Successfully imported profile " . folderName)
-                this.view.UpdateProfilesDropDownMenu()
-            }
-            else{
-                msgbox("Failed to import profile, perhaps a profile with the given name already exists")
-            }
-        }
-        catch Error as e{
-            MsgBox("Failed to import profile")
-        }
+        this.ProfileImporter_.ImportProfile()
+        this.view.UpdateProfilesDropDownMenu()
     }
 
-    ; TODO create a helper class for this
-    getEndOfPath(path){
-        parts := StrSplit(path, "\")
-        return parts[parts.length]
-    }
-
-    ; TODO create a helper class for this
-    profileIsValid(profilePath){
-        validProfile := false
-        filesToBeFound := 2
-        amountOfFilesToLookFor := 2
-        Loop Files (profilePath . "\*"){
-            subFolderName := A_LoopFileName
-            if (subFolderName = "Keyboards.json" || subFolderName = "ClassObjects.ini"){
-                filesToBeFound--
-            }
-            amountOfFilesToLookFor -= 1
-            if (amountOfFilesToLookFor = -1){
-                break
-            }
-        }
-        if (filesToBeFound = 0 && amountOfFilesToLookFor != -1){
-            validProfile := true
-        }
-        else{
-            validProfile := false
-        }
-        return validProfile
-    }
-    
     doExportProfile(){
         selectedFilePath := FileSelect("DS", , "Choose a location to save profile",)
         if selectedFilePath = ""{

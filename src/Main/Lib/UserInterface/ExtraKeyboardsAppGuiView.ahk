@@ -27,6 +27,7 @@ Class ExtraKeyboardsAppGuiView extends DomainSpecificGui{
     ; Creates the main gui for the application
     CreateMain(controller){
         this.controller := controller
+        ; this.onEvent("DropFiles", (Files) => this.controller.HandleDropFilesEvent(Files))
         this.CreateMenuBar()
         this.CreateProfileEditor()
         this.CreateTabs()
