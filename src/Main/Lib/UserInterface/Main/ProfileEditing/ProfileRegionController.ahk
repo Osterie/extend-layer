@@ -3,6 +3,7 @@
 #Include ".\EditProfiles\EditorView.ahk"
 #Include ".\AddProfiles\AddProfileDialog.ahk"
 #Include ".\ProfileImporter.ahk"
+#Include ".\ProfileExporter.ahk"
 
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FolderManager>
@@ -20,6 +21,9 @@ class ProfileRegionController{
 
     ; Used to import profiles
     ProfileImporter_ := ""
+    ; Used to export profiles
+    ProfileExporter_ := ""
+
 
     __New(view){
         this.view := view 
@@ -32,6 +36,7 @@ class ProfileRegionController{
         this.ExistingProfilesManager.addSubFoldersToRegistryFromFolder(FilePaths.GetPathToProfiles())
 
         this.ProfileImporter_ := ProfileImporter(this.ExistingProfilesManager)
+        this.ProfileExporter_ := ProfileExporter(this.ExistingProfilesManager)
 
     }
 
@@ -144,26 +149,12 @@ class ProfileRegionController{
     }
 
     doImportProfile(){
-        this.ProfileImporter_.ImportProfile()
+        this.ProfileImporter_.importProfile()
         this.view.UpdateProfilesDropDownMenu()
     }
 
     doExportProfile(){
-        selectedFilePath := FileSelect("DS", , "Choose a location to save profile",)
-        if selectedFilePath = ""{
-            ; Canceled
-        }
-        else{
-            
-            try{
-                profileName := FilePaths.GetCurrentProfile()
-                profilePath := this.ExistingProfilesManager.getFolderPathByName(profileName)
-                DirCopy(profilePath, selectedFilePath . "/" . profileName)
-            }
-            catch Error as e{
-                MsgBox("Failed to export profile, perhaps because a folder of that name already exists in " . selectedFilePath)
-            }
-        }
+        this.ProfileExporter_.exportProfile()
     }
 
     UpdateProfileDropDownMenu(){
