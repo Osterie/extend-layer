@@ -1,5 +1,5 @@
 #Requires AutoHotkey v2.0
-#Include <UserInterface\ExtraKeyboardsAppguiView>
+#Include <UserInterface\ExtraKeyboardsAppGui>
 #Include <UserInterface\ExtraKeyboardsAppguiController>
 #Include <UserInterface\ExtraKeyboardsAppguiModel>
 
@@ -29,7 +29,7 @@ Class ExtraKeyboardsAppLauncher{
 
     __New(activeObjectsRegistry, keyboardLayersInfoRegister, mainScript){
         this.Model := ExtraKeyboardsAppGuiModel(activeObjectsRegistry, keyboardLayersInfoRegister)
-        this.UserInterface := ExtraKeyboardsAppGuiView()
+        this.UserInterface := ExtraKeyboardsAppGui()
         this.Controller := ExtraKeyboardsAppGuiController(this.Model, this.UserInterface, mainScript)
     }
 
