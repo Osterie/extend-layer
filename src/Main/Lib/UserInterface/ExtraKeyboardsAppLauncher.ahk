@@ -23,7 +23,7 @@ ProcessSetPriority "High"
 SendMode "Event"
 
 
-Class ExtraKeyboardsApp{
+Class ExtraKeyboardsAppLauncher{
     
     UserInterface := ""
 
