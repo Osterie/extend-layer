@@ -3,6 +3,7 @@
 ; TODO inheritance importer and exporter?
 class ProfileExporter{
 
+    ; TODO remove the reliance on this...
     __New(ExistingProfilesManager){
         this.ExistingProfilesManager := ExistingProfilesManager
     }

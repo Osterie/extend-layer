@@ -27,9 +27,6 @@ Class ExtraKeyboardsAppGuiController{
         this.view.Destroy()
     }
 
-    HandleDropFilesEvent(files){
-        this.model.HandleDropFilesEvent(files)
-    }
 
     DoLayerSelected(currentLayer){
         this.ShowHotkeysForLayer(currentLayer)
