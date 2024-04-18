@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
 
-class ProfileRegionView{
+class ProfileRegion{
 
     ; Gui part
     profilesDropDownMenu := ""
