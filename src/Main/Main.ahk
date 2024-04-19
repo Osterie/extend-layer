@@ -76,7 +76,7 @@ Class Main{
 
     RunLogicalStartup(){
         if (this.scriptRunning){
-            this.DestroyObjectRegistry()
+            this.ObjectRegister.DestroyObjects()
             this.SetHotkeysForAllLayers(false)
             this.StartupConfigurator := ""
             this.ObjectRegister := ObjectRegistry()
@@ -102,10 +102,6 @@ Class Main{
         objectRegisterInitializer := ObjectRegistryInitializer()
         objectRegisterInitializer.InitializeObjectRegistry()
         this.ObjectRegister := objectRegisterInitializer.GetObjectRegistry()
-    }
-
-    DestroyObjectRegistry(){
-        this.ObjectRegister.DestroyObjects()
     }
 
     InitializeKeyboardLayersInfo(){

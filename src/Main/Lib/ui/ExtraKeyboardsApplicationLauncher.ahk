@@ -25,19 +25,15 @@ SendMode "Event"
 
 Class ExtraKeyboardsApplicationLauncher{
     
-    UserInterface := ""
+    ExtraKeyboardsApplication_ := ""
 
     __New(activeObjectsRegistry, keyboardLayersInfoRegister, mainScript){
-        this.Model := ExtraKeyboards(activeObjectsRegistry, keyboardLayersInfoRegister)
-        this.UserInterface := ExtraKeyboardsApplication()
-        this.Controller := ExtraKeyboardsApplicationController(this.Model, this.UserInterface, mainScript)
+        this.ExtraKeyboards_ := ExtraKeyboards(activeObjectsRegistry, keyboardLayersInfoRegister)
+        this.ExtraKeyboardsApplication_ := ExtraKeyboardsApplication()
+        this.ExtraKeyboardsApplicationController_ := ExtraKeyboardsApplicationController(this.ExtraKeyboards_, this.ExtraKeyboardsApplication_, mainScript)
     }
 
     Start(){
-        this.UserInterface.CreateMain(this.Controller)
-    }
-
-    getExtraKeyboardsApplicationgui(){
-        return this.UserInterface
+        this.ExtraKeyboardsApplication_.CreateMain(this.ExtraKeyboardsApplicationController_)
     }
 }

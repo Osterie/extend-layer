@@ -14,12 +14,12 @@
 
 ; TODO fix issue with multiple dialogs being possible to open at the same time
 
-Class ExtraKeyboardsApplicationGui extends DomainSpecificGui{
+Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     settingsValuesListView := ""
     hotkeysListView := ""
 
-    ; Constructor for the ExtraKeyboardsApplicationGui class
+    ; Constructor for the ExtraKeyboardsApplication class
     __New(){
         super.__New("+MinSize920x480", "Extra Keyboards App")
     }

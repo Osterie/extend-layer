@@ -10,18 +10,15 @@ Class ExtraKeyboards{
     currentLayer := ""
     currentFunction := ""
     activeObjectsRegistry := ""
-    keyboardLayerIdentifiers := ""
     keyboardLayersInfoRegister := ""
 
     actionSettings := ""
     
-
     __New(activeObjectsRegistry, keyboardLayersInfoRegister){
         ReaderForActionSettings := ActionSettingsReader(FilePaths.GetPathToCurrentSettings())
         this.actionSettings := ReaderForActionSettings.ReadSettings()
         
         this.activeObjectsRegistry := activeObjectsRegistry
-        this.keyboardLayerIdentifiers := keyboardLayersInfoRegister.getLayerIdentifiers()
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
     }
 
@@ -88,7 +85,7 @@ Class ExtraKeyboards{
     }
 
     GetKeyboardLayerIdentifiers(){
-        return this.keyboardLayerIdentifiers
+        return this.keyboardLayersInfoRegister.getLayerIdentifiers()
     }
 
     GetCurrentLayerInfo(){
