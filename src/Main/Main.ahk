@@ -7,7 +7,7 @@
 #Include <Prototyping\Array>
 #Include <Prototyping\Map>
 
-#Include "<UserInterface\ExtraKeyboardsAppLauncher>"
+#Include "<ui\ExtraKeyboardsAppLauncher>"
 
 #Include <Util\StartupConfiguration\ObjectRegistryInitializer>
 

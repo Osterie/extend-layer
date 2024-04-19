@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#Include ".\EditProfiles\EditorView.ahk"
-#Include ".\AddProfiles\AddProfileDialog.ahk"
+#Include ".\editprofiles\EditorView.ahk"
+#Include ".\addprofiles\AddProfileDialog.ahk"
 #Include ".\ProfileImporter.ahk"
 #Include ".\ProfileExporter.ahk"
 

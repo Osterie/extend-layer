@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <UserInterface\Main\Util\DomainSpecificGui>
+#Include <ui\Main\Util\DomainSpecificGui>
 
 
 class EditorView extends DomainSpecificGui{

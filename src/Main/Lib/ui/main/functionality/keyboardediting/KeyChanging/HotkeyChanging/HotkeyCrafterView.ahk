@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#Include <UserInterface\Main\util\GuiControlsRegistry>
-#Include <UserInterface\Main\Util\DomainSpecificGui>
+#Include <ui\Main\util\GuiControlsRegistry>
+#Include <ui\Main\Util\DomainSpecificGui>
 #Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
 #Include ".\AdvancedHotkeyCraftingControl.ahk"

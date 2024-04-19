@@ -1,11 +1,11 @@
 #Requires AutoHotkey v2.0
 
-#Include <UserInterface\Main\util\GuiControlsRegistry>
+#Include <ui\Main\util\GuiControlsRegistry>
 #Include "..\HotkeyChanging\HotkeyCrafterView.ahk"
 
 #Include ".\ParameterControlsGroup.ahk"
 #Include ".\ParameterControl.ahk"
-#Include <UserInterface\Main\util\GuiSizeChanger>
+#Include <ui\Main\util\GuiSizeChanger>
 
 class ActionCrafterView extends HotkeyCrafterView{
 

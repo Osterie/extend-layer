@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <UserInterface\Main\util\GuiControlsRegistry>
+#Include <ui\Main\util\GuiControlsRegistry>
 
 
 class AdvancedHotkeyCraftingControl{

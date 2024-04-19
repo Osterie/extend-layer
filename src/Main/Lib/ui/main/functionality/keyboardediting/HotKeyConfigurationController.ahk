@@ -3,7 +3,7 @@
 #Include ".\KeyChanging\HotkeyChanging\HotkeyCrafterView.ahk"
 #Include ".\KeyChanging\ActionChanging\ActionCrafterView.ahk"
 #Include ".\KeyChanging\HotkeyCrafterController.ahk"
-#Include <UserInterface\Main\util\GuiSizeChanger>
+#Include <ui\Main\util\GuiSizeChanger>
 
 #Include <Util\HotkeyFormatConverter>
 

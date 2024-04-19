@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <UserInterface\Main\util\Menus\ImprovedMenu>
+#Include <ui\Main\util\Menus\ImprovedMenu>
 
 class ThemesMenu extends ImprovedMenu{
 

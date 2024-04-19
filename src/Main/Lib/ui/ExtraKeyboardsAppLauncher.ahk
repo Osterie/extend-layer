@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
-#Include <UserInterface\ExtraKeyboardsAppGui>
-#Include <UserInterface\ExtraKeyboardsAppguiController>
-#Include <UserInterface\ExtraKeyboardsAppguiModel>
+#Include <ui\ExtraKeyboardsAppGui>
+#Include <ui\ExtraKeyboardsAppguiController>
+#Include <ui\ExtraKeyboardsAppguiModel>
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|

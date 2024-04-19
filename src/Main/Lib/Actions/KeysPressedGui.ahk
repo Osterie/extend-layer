@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <UserInterface\Main\util\GuiSizeChanger>
+#Include <ui\Main\util\GuiSizeChanger>
 
 #Include <Actions\Action>
 

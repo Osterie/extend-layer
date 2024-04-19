@@ -1,16 +1,16 @@
 #Requires AutoHotkey v2.0
 
-#Include <UserInterface\Main\ProfileEditing\ProfileRegion>
-#Include <UserInterface\Main\ProfileEditing\ProfileRegionController>
-#Include <UserInterface\Main\util\TreeViewMaker>
-#Include <UserInterface\Main\util\ListViewMaker>
-#Include <UserInterface\Main\MenuBar\ThemesMenu>
+#Include <ui\Main\profileediting\ProfileRegion>
+#Include <ui\Main\profileediting\ProfileRegionController>
+#Include <ui\Main\util\TreeViewMaker>
+#Include <ui\Main\util\ListViewMaker>
+#Include <ui\Main\MenuBar\ThemesMenu>
 
 #Include <Util\HotkeyFormatConverter>
 #Include <Util\MetaInfo\MetaInfoStorage\Themes\logic\Themes>
 #Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
-#Include <UserInterface\Main\Util\DomainSpecificGui>
+#Include <ui\Main\Util\DomainSpecificGui>
 
 ; TODO fix issue with multiple dialogs being possible to open at the same time
 
