@@ -7,7 +7,7 @@
 #Include ".\AdvancedHotkeyCraftingControl.ahk"
 #Include ".\SimpleHotkeyCraftingControl.ahk"
 
-class HotkeyCrafterView extends DomainSpecificGui{ 
+class HotkeyCrafter extends DomainSpecificGui{ 
 
     controlsForButtons := ""
     advancedModeCheckBox := ""

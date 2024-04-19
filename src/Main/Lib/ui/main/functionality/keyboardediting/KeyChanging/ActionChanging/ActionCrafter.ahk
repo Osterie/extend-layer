@@ -1,13 +1,13 @@
 #Requires AutoHotkey v2.0
 
 #Include <ui\Main\util\GuiControlsRegistry>
-#Include "..\HotkeyChanging\HotkeyCrafterView.ahk"
+#Include "..\HotkeyChanging\HotkeyCrafter.ahk"
 
 #Include ".\ParameterControlsGroup.ahk"
 #Include ".\ParameterControl.ahk"
 #Include <ui\Main\util\GuiSizeChanger>
 
-class ActionCrafterView extends HotkeyCrafterView{
+class ActionCrafter extends HotkeyCrafter{
 
     saveEventSubscribers := Array()
 

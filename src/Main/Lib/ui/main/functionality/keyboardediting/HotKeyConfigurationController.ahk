@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#Include ".\KeyChanging\HotkeyChanging\HotkeyCrafterView.ahk"
-#Include ".\KeyChanging\ActionChanging\ActionCrafterView.ahk"
+#Include ".\KeyChanging\HotkeyChanging\HotkeyCrafter.ahk"
+#Include ".\KeyChanging\ActionChanging\ActionCrafter.ahk"
 #Include ".\KeyChanging\HotkeyCrafterController.ahk"
 #Include <ui\Main\util\GuiSizeChanger>
 
@@ -55,7 +55,7 @@ class HotKeyConfigurationController{
 
     changeOriginalHotkey(originalHotkey){
         
-        hotkeyCrafterView_ := HotkeyCrafterView(this.hotkeyCrafterController_)
+        hotkeyCrafterView_ := HotkeyCrafter(this.hotkeyCrafterController_)
         
         hotkeyCrafterView_.create(originalHotkey)
         hotkeyCrafterView_.CreateButtons()
@@ -67,15 +67,15 @@ class HotKeyConfigurationController{
 
     ; TODO remove first parameter
     changeOriginalAction(action){
-        ActionCrafterView_ := ActionCrafterView(this.hotkeyCrafterController_)
-        this.hotkeyCrafterController_.AddActionCrafterView(ActionCrafterView_)
+        ActionCrafter_ := ActionCrafter(this.hotkeyCrafterController_)
+        this.hotkeyCrafterController_.AddActionCrafter(ActionCrafter_)
 
-        ActionCrafterView_.create(action)
-        ActionCrafterView_.CreateButtons()
-        ActionCrafterView_.SetInformativeTopText("Original Action: " . action)
+        ActionCrafter_.create(action)
+        ActionCrafter_.CreateButtons()
+        ActionCrafter_.SetInformativeTopText("Original Action: " . action)
 
-        ActionCrafterView_.subscribeToSaveEvent(ObjBindMethod(this, "saveButtonClickedForActionChangeEvent"))
-        ActionCrafterView_.Show()
+        ActionCrafter_.subscribeToSaveEvent(ObjBindMethod(this, "saveButtonClickedForActionChangeEvent"))
+        ActionCrafter_.Show()
     }
 
     subscribeToSaveEvent(event){

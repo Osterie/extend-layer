@@ -3,7 +3,7 @@
 #Include <Util\JsonParsing\JsonFormatter\JsonFormatter>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
 #Include "Main\Functionality\ActionSettings\SettingsEditorDialog.ahk"
-#Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationView.ahk"
+#Include "Main\Functionality\KeyboardEditing\HotKeyConfiguration.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationController.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationModel.ahk"
 
@@ -78,7 +78,7 @@ Class ExtraKeyboardsAppGuiController{
     ; TODO move to view?
     CreatePopupForHotkeys(hotkeyInformation){
         popupForConfiguringHotkeyModel := HotKeyConfigurationModel(this.GetActiveObjectsRegistry(), hotkeyInformation)
-        popupForConfiguringHotkey := HotKeyConfigurationView("+Resize +MinSize300x280", this.GetHwnd())
+        popupForConfiguringHotkey := HotKeyConfiguration("+Resize +MinSize300x280", this.GetHwnd())
         popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
         popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController)
 

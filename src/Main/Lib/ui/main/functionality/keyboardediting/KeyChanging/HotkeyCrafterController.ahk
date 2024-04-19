@@ -19,7 +19,7 @@ class HotkeyCrafterController{
         this.currentAction := ""
     }
 
-    AddActionCrafterView(actionCrafterView){
+    AddActionCrafter(actionCrafterView){
         this.actionCrafterView := actionCrafterView
     }   
 

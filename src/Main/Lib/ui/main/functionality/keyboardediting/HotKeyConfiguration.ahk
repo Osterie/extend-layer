@@ -3,7 +3,7 @@
 #Include <ui\Main\util\GuiSizeChanger>
 #Include <ui\Main\Util\DomainSpecificGui>
 
-class HotKeyConfigurationView extends DomainSpecificGui{
+class HotKeyConfiguration extends DomainSpecificGui{
 
 
     currentHotkeyTextControl := ""
