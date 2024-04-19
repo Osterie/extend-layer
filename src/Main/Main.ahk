@@ -7,7 +7,7 @@
 #Include <Prototyping\Array>
 #Include <Prototyping\Map>
 
-#Include "<ui\ExtraKeyboardsAppLauncher>"
+#Include "<ui\ExtraKeyboardsApplicationLauncher>"
 
 #Include <Util\StartupConfiguration\ObjectRegistryInitializer>
 
@@ -149,7 +149,7 @@ Class Main{
     }
 
     RunAppGui(){
-        app := ExtraKeyboardsAppLauncher(this.ObjectRegister, this.KeyboardLayersInfoRegister, this)
+        app := ExtraKeyboardsApplicationLauncher(this.ObjectRegister, this.KeyboardLayersInfoRegister, this)
         app.Start()
     }
 

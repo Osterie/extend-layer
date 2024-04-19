@@ -9,7 +9,7 @@
 
 #Include <Util\StartupConfiguration\HotkeyInitializer>
 
-Class ExtraKeyboardsAppGuiController{
+Class ExtraKeyboardsApplicationController{
 
     MainScript := ""
 

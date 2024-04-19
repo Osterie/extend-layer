@@ -5,7 +5,7 @@
 #Include <Util\MetaInfo\MetaInfoReading\KeyboadLayersInfoClassObjectReader>
 #Include <Util\MetaInfo\MetaInfoWriting\ToJsonFileWriter>
 
-Class ExtraKeyboardsAppGuiModel{
+Class ExtraKeyboardsApplicationModel{
 
     currentLayer := ""
     currentFunction := ""

@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
-#Include <ui\ExtraKeyboardsAppGui>
-#Include <ui\ExtraKeyboardsAppguiController>
-#Include <ui\ExtraKeyboardsAppguiModel>
+#Include <ui\ExtraKeyboardsApplication>
+#Include <ui\ExtraKeyboardsApplicationController>
+#Include <ui\ExtraKeyboardsApplicationModel>
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -23,21 +23,21 @@ ProcessSetPriority "High"
 SendMode "Event"
 
 
-Class ExtraKeyboardsAppLauncher{
+Class ExtraKeyboardsApplicationLauncher{
     
     UserInterface := ""
 
     __New(activeObjectsRegistry, keyboardLayersInfoRegister, mainScript){
-        this.Model := ExtraKeyboardsAppGuiModel(activeObjectsRegistry, keyboardLayersInfoRegister)
-        this.UserInterface := ExtraKeyboardsAppGui()
-        this.Controller := ExtraKeyboardsAppGuiController(this.Model, this.UserInterface, mainScript)
+        this.Model := ExtraKeyboardsApplicationModel(activeObjectsRegistry, keyboardLayersInfoRegister)
+        this.UserInterface := ExtraKeyboardsApplication()
+        this.Controller := ExtraKeyboardsApplicationController(this.Model, this.UserInterface, mainScript)
     }
 
     Start(){
         this.UserInterface.CreateMain(this.Controller)
     }
 
-    getExtraKeyboardsAppgui(){
+    getExtraKeyboardsApplicationgui(){
         return this.UserInterface
     }
 }
