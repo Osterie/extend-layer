@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 #Include <ui\ExtraKeyboardsApplication>
 #Include <ui\ExtraKeyboardsApplicationController>
-#Include <ui\ExtraKeyboardsApplicationModel>
+#Include <ui\ExtraKeyboards>
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -28,7 +28,7 @@ Class ExtraKeyboardsApplicationLauncher{
     UserInterface := ""
 
     __New(activeObjectsRegistry, keyboardLayersInfoRegister, mainScript){
-        this.Model := ExtraKeyboardsApplicationModel(activeObjectsRegistry, keyboardLayersInfoRegister)
+        this.Model := ExtraKeyboards(activeObjectsRegistry, keyboardLayersInfoRegister)
         this.UserInterface := ExtraKeyboardsApplication()
         this.Controller := ExtraKeyboardsApplicationController(this.Model, this.UserInterface, mainScript)
     }

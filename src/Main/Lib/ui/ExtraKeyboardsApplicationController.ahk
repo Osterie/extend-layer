@@ -13,9 +13,9 @@ Class ExtraKeyboardsApplicationController{
 
     MainScript := ""
 
-    __New(model, view, MainScript){
+    __New(ExtraKeyboards, view, MainScript){
         this.view := view
-        this.model := model
+        this.ExtraKeyboards := ExtraKeyboards
         
         this.MainScript := MainScript
     }
@@ -35,7 +35,7 @@ Class ExtraKeyboardsApplicationController{
 
     ShowHotkeysForLayer(currentLayer){
         
-        this.model.SetCurrentLayer(currentLayer)
+        this.ExtraKeyboards.SetCurrentLayer(currentLayer)
         this.view.UpdateHotkeys()
     }
 
@@ -53,7 +53,7 @@ Class ExtraKeyboardsApplicationController{
 
             }
             else{
-                hotkeyInformation := this.model.GetHotkeyInfoForCurrentLayer(hotkeyBuild)
+                hotkeyInformation := this.ExtraKeyboards.GetHotkeyInfoForCurrentLayer(hotkeyBuild)
             }
             this.CreatePopupForHotkeys(hotkeyInformation)
         }
@@ -90,14 +90,14 @@ Class ExtraKeyboardsApplicationController{
     }
 
     ShowSettingsForAction(functionName){
-        this.model.SetCurrentFunction(functionName)
+        this.ExtraKeyboards.SetCurrentFunction(functionName)
         this.view.UpdateSettingsForActions()
     }
 
     HandleSettingClicked(settingName){
         if (settingName != ""){
-            currentFunctionSettings := this.model.GetCurrentFunction()
-            selectedSetting := this.model.GetSettingsForCurrentAction().GetSetting(settingName)
+            currentFunctionSettings := this.ExtraKeyboards.GetCurrentFunction()
+            selectedSetting := this.ExtraKeyboards.GetSettingsForCurrentAction().GetSetting(settingName)
     
             editorForActionSettings := SettingsEditorDialog(this.getHwnd())
             editorForActionSettings.CreateControls(selectedSetting)
@@ -120,7 +120,7 @@ Class ExtraKeyboardsApplicationController{
     }
 
     SettingsEditorDialogSaveButtonEvent(currentFunctionSettings, setting){
-        this.model.ChangeFunctionSetting(setting, currentFunctionSettings)
+        this.ExtraKeyboards.ChangeFunctionSetting(setting, currentFunctionSettings)
     }
 
     AddOrChangeHotkey(hotkeyInformation, originalHotkeyKey){
@@ -132,7 +132,7 @@ Class ExtraKeyboardsApplicationController{
         if (originalHotkeyKey = ""){
             if (hotkeyInformation.actionIsSet() AND hotkeyInformation.getHotkeyName() != ""){
                 try{
-                    this.model.AddHotkey(hotkeyInformation)
+                    this.ExtraKeyboards.AddHotkey(hotkeyInformation)
                 }
                 catch Error as e{
                     msgbox("Could not add hotkey. " . e.Message)
@@ -144,7 +144,7 @@ Class ExtraKeyboardsApplicationController{
         } ; Change
         else{
             try{
-                this.model.ChangeHotkey(originalHotkeyKey, newHotkeyKey, hotkeyInformation)
+                this.ExtraKeyboards.ChangeHotkey(originalHotkeyKey, newHotkeyKey, hotkeyInformation)
             }
             catch Error as e{
                 msgbox("Could not modify hotkey. " . e.Message)
@@ -157,7 +157,7 @@ Class ExtraKeyboardsApplicationController{
         try{
             
             this.MainScript.SetHotkeysForAllLayers(false)
-            this.model.DeleteHotkey(hotkeyKey)
+            this.ExtraKeyboards.DeleteHotkey(hotkeyKey)
             msgbox("Deleted hotkey")
         }
         catch Error as e{
@@ -170,35 +170,35 @@ Class ExtraKeyboardsApplicationController{
     }
 
     GetSettings(){
-        return this.model.GetSettingsForCurrentActionAsArray()
+        return this.ExtraKeyboards.GetSettingsForCurrentActionAsArray()
     }
 
     GetHotkeys(){
-        return this.model.GetFriendlyHotkeysForCurrentLayer()
+        return this.ExtraKeyboards.GetFriendlyHotkeysForCurrentLayer()
     }
 
     GetPathToCurrentSettings(){
-        return this.model.GetPathToCurrentSettings()
+        return this.ExtraKeyboards.GetPathToCurrentSettings()
     }
 
     GetCurrentLayer(){
-        return this.model.GetCurrentLayer()
+        return this.ExtraKeyboards.GetCurrentLayer()
     }
 
     GetKeyboardLayerIdentifiers(){
-        return this.model.GetKeyboardLayerIdentifiers()
+        return this.ExtraKeyboards.GetKeyboardLayerIdentifiers()
     }
     
     GetCurrentLayerInfo(){
-        return this.model.GetCurrentLayerInfo()
+        return this.ExtraKeyboards.GetCurrentLayerInfo()
     }
 
     GetActiveObjectsRegistry(){
-        return this.model.GetActiveObjectsRegistry()
+        return this.ExtraKeyboards.GetActiveObjectsRegistry()
     }
 
     GetActionNames(){
-        return this.model.GetActionNames()
+        return this.ExtraKeyboards.GetActionNames()
     }
 
     GetHwnd(){
