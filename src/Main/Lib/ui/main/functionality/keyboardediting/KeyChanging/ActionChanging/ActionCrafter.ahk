@@ -24,7 +24,7 @@ class ActionCrafter extends HotkeyCrafter{
         this.controlsForSpecificSpecialActionCrafting := guiControlsRegistry()
     }
 
-    Create(originalAction){
+    Create(){
         this.CreateCrafterTypeRadioButtons()
         super.Create("")
         super.hide()

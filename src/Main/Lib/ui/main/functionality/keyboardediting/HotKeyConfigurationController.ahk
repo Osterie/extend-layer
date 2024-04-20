@@ -29,14 +29,13 @@ class HotKeyConfigurationController{
     changeHotkey(whatToChange){
         this.view.hide()
 
+        originalAction := ""
+        originalHotkey := ""
+
         hotkeyInfo := this.model.GetHotkeyInfo()
         if (hotkeyInfo != ""){
             originalHotkey := hotkeyInfo.getFriendlyHotkeyName()
-            action := hotkeyInfo.toString()
-        }
-        else{
-            originalHotkey := "NONE"
-            action := "NONE"
+            originalAction := hotkeyInfo.toString()
         }
 
         whatToChange := StrLower(whatToChange)
@@ -44,7 +43,7 @@ class HotKeyConfigurationController{
             this.changeOriginalHotkey(originalHotkey)
         }
         else if (whatToChange == "action"){
-            this.changeOriginalAction(action)
+            this.changeOriginalAction(originalAction)
         }
 
         WinWait("HotkeyCrafterGui")
@@ -53,8 +52,11 @@ class HotKeyConfigurationController{
 
     }
 
-    changeOriginalHotkey(originalHotkey){
-        
+    changeOriginalHotkey(originalHotkey := "NO HOTKEY"){
+        if (originalHotkey = ""){
+            originalHotkey := "NO HOTKEY"
+        }
+
         hotkeyCrafterView_ := HotkeyCrafter(this.hotkeyCrafterController_)
         
         hotkeyCrafterView_.create(originalHotkey)
@@ -65,14 +67,16 @@ class HotKeyConfigurationController{
         hotkeyCrafterView_.Show()
     }
 
-    ; TODO remove first parameter
-    changeOriginalAction(action){
+    changeOriginalAction(originalAction := "NO ACTION"){
+        if (originalAction = ""){
+            originalAction := "NO ACTION"
+        }
         ActionCrafter_ := ActionCrafter(this.hotkeyCrafterController_)
         this.hotkeyCrafterController_.AddActionCrafter(ActionCrafter_)
 
-        ActionCrafter_.create(action)
+        ActionCrafter_.create()
         ActionCrafter_.CreateButtons()
-        ActionCrafter_.SetInformativeTopText("Original Action: " . action)
+        ActionCrafter_.SetInformativeTopText("Original Action: " . originalAction)
 
         ActionCrafter_.subscribeToSaveEvent(ObjBindMethod(this, "saveButtonClickedForActionChangeEvent"))
         ActionCrafter_.Show()

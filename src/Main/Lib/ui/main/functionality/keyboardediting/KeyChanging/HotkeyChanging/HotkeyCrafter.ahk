@@ -23,7 +23,7 @@ class HotkeyCrafter extends DomainSpecificGui{
         this.controlsForButtons := guiControlsRegistry()
     }
 
-    Create(originalHotkey){
+    Create(originalHotkey := ""){
         this.advancedModeCheckBox := this.Add("Checkbox", "xp yp+30", "Advanced mode")
         this.advancedModeCheckBox.onEvent("Click", (*) => this.advancedModeButtonChangedEvent())
 
