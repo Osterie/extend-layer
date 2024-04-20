@@ -5,7 +5,7 @@
 #Include "Main\Functionality\ActionSettings\SettingsEditorDialog.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfiguration.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationController.ahk"
-#Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationModel.ahk"
+#Include "Main\Functionality\KeyboardEditing\HotkeyConfigurator.ahk"
 
 #Include <Util\StartupConfiguration\HotkeyInitializer>
 
@@ -77,7 +77,7 @@ Class ExtraKeyboardsApplicationController{
 
     ; TODO move to view?
     CreatePopupForHotkeys(hotkeyInformation){
-        popupForConfiguringHotkeyModel := HotKeyConfigurationModel(this.GetActiveObjectsRegistry(), hotkeyInformation)
+        popupForConfiguringHotkeyModel := HotkeyConfigurator(this.GetActiveObjectsRegistry(), hotkeyInformation)
         popupForConfiguringHotkey := HotKeyConfiguration("+Resize +MinSize300x280", this.GetHwnd())
         popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
         popupForConfiguringHotkey.CreateMain(popupForConfiguringHotkeyController)

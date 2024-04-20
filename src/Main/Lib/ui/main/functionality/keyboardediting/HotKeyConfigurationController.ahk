@@ -12,9 +12,6 @@ class HotKeyConfigurationController{
     model := ""
     view := ""
 
-
-    
-
     saveEventSubscribers := Array()
     deleteEventSubscribers := Array()
 
@@ -110,7 +107,6 @@ class HotKeyConfigurationController{
         newHotkeyKey := newHotkey.getNewHotkeyModifiers()
         newHotkeyKey .= newHotkey.getNewHotkeyName()
 
-        ; this.hotkeyCrafterController_.ChangeHotkey(this.model.GetHotkeyInfo(), newHotkey)
         this.model.SetHotkeyKey(newHotkeyKey)
         this.view.updateHotkeyText()
         this.view.Show()
