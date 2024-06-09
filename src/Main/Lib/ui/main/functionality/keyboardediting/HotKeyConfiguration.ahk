@@ -75,9 +75,9 @@ class HotKeyConfiguration extends DomainSpecificGui{
     }
 
     updateActionText(){
-        this.currentActionTextControl.Value := ("Action: `n" . this.model.GetActionFriendly())
+        this.currentActionTextControl.Value := ("Action: `n" . this.model.GetAction())
 
-        if (this.model.getOriginalActionFriendly() != this.model.GetActionFriendly()){
+        if (this.model.getOriginalAction() != this.model.GetAction()){
             this.currentActionTextControl.SetFont("s10 cGreen")
         }
         else{

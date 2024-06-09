@@ -45,7 +45,7 @@ class HotkeyConfigurator{
         return this.originalHotkeyKey
     }
 
-    GetOriginalActionFriendly(){
+    GetOriginalAction(){
         return this.originalActionFriendly
     }
 
@@ -57,7 +57,7 @@ class HotkeyConfigurator{
         return this.hotkeyToSendListenersInformation.getFriendlyHotkeyName()
     }
 
-    GetActionFriendly(){
+    GetAction(){
         return this.hotkeyToSendListenersInformation.toString()
     }
 
