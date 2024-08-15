@@ -210,13 +210,13 @@ After you have selected an action an filled out it's parameters, save!
 
 #### Edit a keybind
 
-1. Follow first the general steps for [adding/editing/deleting](how-to-add/modify/delete-a-key-bind?) a keybind, which is just finding which key you want to edit.
+1. Follow first the general steps for [adding/editing/deleting](#how-to-addmodifydelete-a-key-bind) a keybind, which is just finding which key you want to edit.
 2. After having selected the keybind you want to delete, click the **Edit** button.
 3. A dialog will open where you can edit the hotkey and the action. Follow the guide for [adding a keybind](#add-a-keybind) to set the hotkey and the action.
 
 #### Delete a keybind
 
-1. Follow first the general steps for [adding/editing/deleting](how-to-add/modify/delete-a-key-bind?) a keybind, which is just finding which key you want to delete.
+1. Follow first the general steps for [adding/editing/deleting](how-to-addmodifydelete-a-key-bind) a keybind, which is just finding which key you want to delete.
 2. After having selected the keybind you want to delete, click the **Delete** button.
 3. The keybind will be deleted!
 
