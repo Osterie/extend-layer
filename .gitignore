@@ -3,6 +3,8 @@ PrivateConfig.ini
 config/UserProfiles/*
 !config/UserProfiles/Default
 tests/*
+
 TODO.ahk
 READMETODO.md
 assets/imageSearchImages/*
+!assets/imageSearchImages/testImage.png

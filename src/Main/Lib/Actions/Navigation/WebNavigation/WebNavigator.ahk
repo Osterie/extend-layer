@@ -67,7 +67,7 @@ Class WebNavigator extends Action{
 
                 ; this checks if the clipboard content (which is the new site url, after logging in) is the same as the given url.
                 if (!InStr(currentSiteUrl, targetSiteUrl)){
-                    this.ChangeCurrentUrl()
+                    this.ChangeCurrentUrl(currentSiteUrl)
                 }
             }
             catch{
