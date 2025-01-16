@@ -83,6 +83,12 @@ Class LayerController extends Action{
 
     setActiveLayer(activeLayer){
         this.activeLayer := activeLayer
+        if (activeLayer != 0){
+            this.showLayerIndicator(activeLayer)
+        }
+        else{
+            this.hideInactiveLayers()
+        }
     }
 
     Destroy(){

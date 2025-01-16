@@ -104,7 +104,7 @@ Additionally, you can rebind the keys, for example **a** to a special action lik
 2. [Add/Modify/Delete a key bind](#how-to-addmodifydelete-a-key-bind)
 
 After following the [getting started guide](#getting-started).
-Run ExtraKeyboardsApp.ahk. This will open a gui where you can add some premade profiles, or create your own profile, and edit keybinds.
+Run the program (through "Run_this.ahk"). This will open a gui where you can add some premade profiles, or create your own profile, and edit keybinds.
 
 ### How to add/create a new profile?
 

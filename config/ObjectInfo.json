@@ -184,6 +184,32 @@
         }
     },
 
+    "SoundController": {
+        "ObjectName": "SoundController_",
+        "ClassName": "SoundController",
+        "Description": "No use yet",
+        "Methods": {
+            "next": {
+                "MethodName": "next",
+                "FriendlyName": "Play next song",
+                "Description": "Plays the next song in the playing playlist",
+                "Parameters": []
+            },
+            "previous": {
+                "MethodName": "previous",
+                "FriendlyName": "Play previous song",
+                "Description": "Plays the previous song in the playing playlist",
+                "Parameters": []
+            },
+            "playPause": {
+                "MethodName": "playPause",
+                "FriendlyName": "Play or pause song",
+                "Description": "Plays or pauses the current song",
+                "Parameters": []
+            }
+        }
+    },
+
     "WebNavigator":{
         "ObjectName": "WebSearcher",
         "ClassName": "WebNavigator",
@@ -194,6 +220,28 @@
                 "FriendlyName": "Close tabs to the right in a browser",
                 "Description": "Closes all tabs to the right of the active tab in google chrome",
                 "Parameters": []
+            },
+            "LoginToSite": {
+                "MethodName": "LoginToSite",
+                "FriendlyName": "Login to site",
+                "Description": "Logins to a given site based on url, provided images and a load time",
+                "Parameters": [
+                    {
+                        "Name": "Site URL",
+                        "Type": "string",
+                        "Description": "URL to a website. Example: https://github.com/Osterie"
+                    },
+                    {
+                        "Name": "Image paths",
+                        "Type": "string",
+                        "Description": "Not yet implemented //TODO implement" 
+                    },
+                    {
+                        "Name": "Load time",
+                        "Type": "int",
+                        "Description": "the time the site uses to show a login button which can be clicked"
+                    }
+                ]
             }
         }
     },

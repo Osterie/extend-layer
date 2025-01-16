@@ -12,7 +12,7 @@ SetWorkingDir(A_ScriptDir)
 ^!l::Run(A_ScriptDir "\Main\Main.ahk")
 ; For testing
 ^!i::Run(A_ScriptDir "\..\tests\destroyingGusi.ahk")
-^!u::Run(A_ScriptDir "\ExtraKeyboardsApp.ahk")
+; ^!u::Run(A_ScriptDir "\ExtraKeyboardsApplicationLauncher.ahk")
 
 ^!p::Run(A_ScriptDir "\library\JsonTesting\jsonTest.ahk")
 

@@ -130,7 +130,7 @@ Class WebNavigator extends Action{
 
     ; Public method
     SearchFromInputBox(){
-        inputBoxWebSearch := InputBox("What would you like to search in the browser?", "Web search", "w150 h150")
+        inputBoxWebSearch := InputBox("What would you like to search for in the browser?", "Web search", "w150 h150")
         ; Only if the search is not cancelled will it search
         if (inputBoxWebSearch.Result = "Ok"){
             this.SearchInBrowser(inputBoxWebSearch.Value)

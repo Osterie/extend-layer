@@ -11,6 +11,7 @@
 #Include <Actions\IODevices\Monitor>
 #Include <Actions\IODevices\DeviceManager>
 #Include <Actions\IODevices\ComputerInputController>
+#Include <Actions\AppControllers\SoundController>
 #Include <Actions\Privacy\ScreenPrivacyController>
 #Include <Actions\Privacy\UnauthorizedUseDetector>
 #Include <Actions\BatteryAndPower\BatteryController>
@@ -104,6 +105,9 @@ class ObjectsInitializer{
         else{
             UnautorizedUserDetector.DisableLockComputerOnTaskBarClick()
         }
+
+        SoundController_ := SoundController()
+        this.Objects["SoundController_"] := SoundController_
 
         ; |------------Layer indicators------------|
 

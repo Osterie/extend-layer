@@ -7,7 +7,7 @@
 #Include <Prototyping\Array>
 #Include <Prototyping\Map>
 
-#Include "<UserInterface\ExtraKeyboardsApp>"
+#Include "<ui\ExtraKeyboardsApplicationLauncher>"
 
 #Include <Util\StartupConfiguration\ObjectRegistryInitializer>
 
@@ -76,7 +76,7 @@ Class Main{
 
     RunLogicalStartup(){
         if (this.scriptRunning){
-            this.DestroyObjectRegistry()
+            this.ObjectRegister.DestroyObjects()
             this.SetHotkeysForAllLayers(false)
             this.StartupConfigurator := ""
             this.ObjectRegister := ObjectRegistry()
@@ -102,10 +102,6 @@ Class Main{
         objectRegisterInitializer := ObjectRegistryInitializer()
         objectRegisterInitializer.InitializeObjectRegistry()
         this.ObjectRegister := objectRegisterInitializer.GetObjectRegistry()
-    }
-
-    DestroyObjectRegistry(){
-        this.ObjectRegister.DestroyObjects()
     }
 
     InitializeKeyboardLayersInfo(){
@@ -149,7 +145,7 @@ Class Main{
     }
 
     RunAppGui(){
-        app := ExtraKeyboardsApp(this.ObjectRegister, this.KeyboardLayersInfoRegister, this)
+        app := ExtraKeyboardsApplicationLauncher(this.ObjectRegister, this.KeyboardLayersInfoRegister, this)
         app.Start()
     }
 
@@ -157,7 +153,6 @@ Class Main{
         return this.ObjectRegister.GetObjectInfo("layers").GetObjectInstance()
     }
 }
-
 
 #SuspendExempt
 ^!s::Suspend  ; Ctrl+Alt+S
@@ -176,16 +171,6 @@ MainScript.Start()
 #HotIf MainScript.getLayerController().getActiveLayer() == 2 
 #HotIf
 
-; Shows key history, used for debugging
-; b:: KeyHistory
-
 ; Used to show user the script is enabled
 ToolTip "Script enabled!"
 SetTimer () => ToolTip(), -3000
-
-
-; IsRunning(Path) {
-;     SetTitleMatchMode 2
-;     DetectHiddenWindows 1
-;     return !!WinExist(Path)
-; }
