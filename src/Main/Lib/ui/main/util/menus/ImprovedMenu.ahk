@@ -52,14 +52,31 @@ class ImprovedMenu extends Menu{
         this.MenuItemsRadioLike := boolean
     }
 
-    Add(MenuItemName := "", CallbackOrSubmenu := "", Options := ""){
-        super.Add(MenuItemName, CallbackOrSubmenu, Options)
-        this.itemNames.Push(MenuItemName)
+    Add(MenuItemName := unset, CallbackOrSubmenu := unset, Options := unset) {
+        ; Initialize an empty array to collect arguments to pass to super.Add
+        params := Array()
+    
+        ; Add only set parameters to the params array
+        if IsSet(MenuItemName){
+            params.Push(MenuItemName)
+        }
+        if IsSet(CallbackOrSubmenu){
+            params.Push(CallbackOrSubmenu)
+        }
+        if IsSet(Options){
+            params.Push(Options)
+        }
+    
+        super.Add(params*)
+    
+        if IsSet(MenuItemName){
+            this.itemNames.Push(MenuItemName)
+        }
+    
         if (Type(CallbackOrSubmenu) = "ImprovedMenu"){
             this.subMenus.Push(CallbackOrSubmenu)
         }
     }
-
 
     Check(MenuItemName?){
         if (this.MenuItemsRadioLike){
