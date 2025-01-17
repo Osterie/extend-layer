@@ -12,11 +12,12 @@
 Class ExtraKeyboardsApplicationController{
 
     MainScript := ""
+    ExitAppOnGuiClose := false
 
     __New(ExtraKeyboards, view, MainScript){
         this.view := view
         this.ExtraKeyboards := ExtraKeyboards
-        
+        this.ExitAppOnGuiClose := FilePaths.GetCloseScriptOnGuiClose()
         this.MainScript := MainScript
     }
 
@@ -94,7 +95,7 @@ Class ExtraKeyboardsApplicationController{
         this.view.UpdateSettingsForActions()
     }
 
-    HandleSettingClicked(settingName){
+    HandleFunctionSettingClicked(settingName){
         if (settingName != ""){
             currentFunctionSettings := this.ExtraKeyboards.GetCurrentFunction()
             selectedSetting := this.ExtraKeyboards.GetSettingsForCurrentAction().GetSetting(settingName)
@@ -151,6 +152,16 @@ Class ExtraKeyboardsApplicationController{
             }
         }
         this.MainScript.RunLogicalStartup()
+    }
+
+    UpdateGuiSettings(){
+        this.ExitAppOnGuiClose := FilePaths.GetCloseScriptOnGuiClose()
+    }
+
+    DoDestroy(){
+        if (this.ExitAppOnGuiClose){
+            ExitApp
+        }
     }
 
     DeleteHotkey(hotkeyKey){

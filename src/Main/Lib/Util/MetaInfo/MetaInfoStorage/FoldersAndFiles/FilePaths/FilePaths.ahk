@@ -41,6 +41,26 @@ class FilePaths{
         return CURRENT_THEME
     }
 
+    static SetCloseScriptOnGuiClose(closeScript){
+        if (closeScript != 1 && closeScript != 0){
+            MsgBox("Invalid value for exitAppOnGuiClose. Must be either true or false")
+            return
+        }
+        iniWrite(closeScript, this.PATH_TO_META_INI_FILE, "Gui Settings", "closeScriptOnGuiClose")
+    }
+
+    static GetCloseScriptOnGuiClose(){
+        try{
+            closeScript := iniRead(this.GetPathToMetaFile(), "Gui Settings", "closeScriptOnGuiClose")
+        }
+        catch OSError{
+            MsgBox("Could not read closeScriptOnGuiClose from meta.ini. Setting to default value.")
+            this.SetCloseScriptOnGuiClose(0)
+            closeScript := 0
+        }
+        return closeScript
+    }
+
     static GetPathToCurrentKeyboardLayout(){
         PATH_TO_CURRENT_KEYBOARD_LAYOUT := this.GetPathToCurrentProfile() . "/Keyboards.json"
         if (FileExist(PATH_TO_CURRENT_KEYBOARD_LAYOUT) = false){

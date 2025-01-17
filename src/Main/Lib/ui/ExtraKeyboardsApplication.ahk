@@ -5,6 +5,7 @@
 #Include <ui\Main\util\TreeViewMaker>
 #Include <ui\Main\util\ListViewMaker>
 #Include <ui\Main\MenuBar\ThemesMenu>
+#Include <ui\Main\MenuBar\SettingsMenu>
 
 #Include <Util\HotkeyFormatConverter>
 #Include <Util\MetaInfo\MetaInfoStorage\Themes\logic\Themes>
@@ -27,6 +28,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
     ; Creates the main gui for the application
     CreateMain(controller){
         this.controller := controller
+        this.OnEvent('Close', (*) => this.Destroy())
         this.CreateMenuBar()
         this.CreateProfileEditor()
         this.CreateTabs()
@@ -39,11 +41,15 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
         MyMenuBar := MenuBar()
             
+        _SettingsMenu := SettingsMenu((*) => this.UpdateGuiSettings())
         ThemeCategoriesMenu := ThemesMenu((*) => this.UpdateColorTheme())
 
         
         MyMenuBar.Add("&Themes", ThemeCategoriesMenu)
+        ; TODO can do suspend differently. have custom suspend menu bar class
         MyMenuBar.Add("&Suspend Script", (ItemName, ItemPos, MyMenuBar) => HandleSuspendClicked(ItemName, ItemPos, MyMenuBar))
+        MyMenuBar.Add("&Settings", _SettingsMenu)
+
         this.MenuBar := MyMenuBar
 
 
@@ -135,6 +141,11 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
         }
     }
 
+    UpdateGuiSettings(){
+        ; TODO in future, support more settings.
+        this.controller.UpdateGuiSettings()
+    }
+
     ; If the focues row is 0 (a row without values) the edit and delete buttons are disabled,
     ; Since they should only be active when a row with values is selected.
     ; If the row is not 0, the edit and delete buttons are enabled.
@@ -184,15 +195,13 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
         this.settingsValuesListView.CreateListView(this, "r20 w600 x+10 -multi",  ["Setting","Value"])
         
         functionsNamesTreeView.AddEventAction("ItemSelect", (*) => this.controller.ShowSettingsForAction(functionsNamesTreeView.GetSelectionText()))
-        this.settingsValuesListView.AddEventAction("DoubleClick", (*) => this.controller.HandleSettingClicked(this.settingsValuesListView.GetSelectionText()))
+        this.settingsValuesListView.AddEventAction("DoubleClick", (*) => this.controller.HandleFunctionSettingClicked(this.settingsValuesListView.GetSelectionText()))
     }
 
     ; Updates the settings list view with the newest settings
     UpdateSettingsForActions(){
         this.settingsValuesListView.SetNewListViewItems(this.controller.GetSettings())
     }
-
-    
 
     ; CreateTabGeneral(){
     ;     treeViewControl := TreeViewMaker()
@@ -208,5 +217,10 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
     ; Creates the tab for the documentation
     CreateDocumentationTab(){
         this.Add("Edit", "r20")  ; r20 means 20 rows tall.
+    }
+
+    Destroy(){
+        super.Destroy()
+        this.controller.DoDestroy()
     }
 }
