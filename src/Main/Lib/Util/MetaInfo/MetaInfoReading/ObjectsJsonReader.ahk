@@ -43,9 +43,10 @@ class ObjectsJsonReader{
             objectMethods := MethodRegistry()
             allMethodsOfClass := ClassInformation["Methods"]
 
-            For MethodName, MethodInformation in allMethodsOfClass{
+            For index, MethodInformation in allMethodsOfClass {
                 
                 methodDescription := MethodInformation["Description"]
+                methodName := MethodInformation["MethodName"]
                 methodFriendlyName := MethodInformation["FriendlyName"]
                 allMethodParameters := MethodInformation["Parameters"]
                 methodInformation := MethodInfo(methodName, methodDescription, methodFriendlyName)
