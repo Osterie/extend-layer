@@ -34,8 +34,8 @@ class ObjectsJsonReader{
         ; -----------Read JSON----------------
 
         ; TODO! add try catch to all of these. If one of these informations are missing something wrong will happen!
-        For ClassName , ClassInformation in allClassesInformationJson{
-            
+        For classIndex , ClassInformation in allClassesInformationJson{
+
             ObjectName := ClassInformation["ObjectName"]
             className := ClassInformation["ClassName"]
             classDescription := ClassInformation["Description"]

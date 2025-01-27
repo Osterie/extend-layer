@@ -1,5 +1,5 @@
-{
-    "Mouse": {
+[
+    {
         "ObjectName": "MouseInstance",
         "ClassName": "Mouse",
         "Description": "Used for controlling the mouse, can click, move, autoclick and such",
@@ -53,7 +53,7 @@
             }
         ]
     },
-    "Keyboard": {
+    {
         "ObjectName": "KeyboardInstance",
         "ClassName": "Keyboard",
         "Description": "Can be used to send keyboard input, even repearedly",
@@ -84,7 +84,7 @@
             }
         ]
     },
-    "ProcessManager":{
+    {
         "ObjectName": "ProcessManagerInstance",
         "ClassName": "ProcessManager",
         "Description": "Can be used to close processes or close this script.",
@@ -109,8 +109,7 @@
             }
         ]
     },
-
-    "CommandPromptOpener": {
+    {
         "ObjectName": "CommandPrompt",
         "ClassName": "CommandPromptOpener",
         "Description": "Used for opening cmd",
@@ -123,11 +122,10 @@
             }
         ]
     },
-
-    "BatteryController":{
+    {
         "ObjectName": "Battery",
         "ClassName": "BatteryController",
-        "Description": "Change battery settings (WIP, don't use yet, probably wont work)",
+        "Description": "Change battery settings (WIP, do not use yet, probably wont work)",
         "Methods": [
             {
                 "MethodName": "ToggleBatterySaverMode",
@@ -149,8 +147,7 @@
             }
         ]
     },
-
-    "FileExplorerNavigator":{
+    {
         "ObjectName": "FileExplorer",
         "ClassName": "FileExplorerNavigator",
         "Description": "Used for navigating in the file explorer",
@@ -163,14 +160,13 @@
                     {
                         "Name": "Folder path",
                         "Type": "string",
-                        "Description": "A path to a folder. from the root. Example: C:\\Users\\User\\Desktop\\Folder"
+                        "Description": "A path to a folder. from the root. Example: C:/Users/User/Desktop/Folder"
                     }
                 ]
             }
         ]
     },
-
-    "KeyboardOverlayRegistry": {
+    {
         "ObjectName": "OverlayRegistry",
         "ClassName": "KeyboardOverlayRegistry",
         "Description": "No use yet",
@@ -183,8 +179,7 @@
             }
         ]
     },
-
-    "SoundController": {
+    {
         "ObjectName": "SoundController_",
         "ClassName": "SoundController",
         "Description": "No use yet",
@@ -209,8 +204,7 @@
             }
         ]
     },
-
-    "WebNavigator":{
+    {
         "ObjectName": "WebSearcher",
         "ClassName": "WebNavigator",
         "Description": "Used for navigating or other shortcuts in the web browser",
@@ -234,7 +228,7 @@
                     {
                         "Name": "Image paths",
                         "Type": "string",
-                        "Description": "Not yet implemented //TODO implement" 
+                        "Description": "Not yet implemented //TODO implement"
                     },
                     {
                         "Name": "Load time",
@@ -245,8 +239,7 @@
             }
         ]
     },
-
-    "KeysPressedGui" : {
+    {
         "ObjectName": "OnScreenWriter",
         "ClassName": "KeysPressedGui",
         "Description": "Used for showing keys pressed on screen",
@@ -259,8 +252,7 @@
             }
         ]
     },
-
-    "ComputerInputController" : {
+    {
         "ObjectName": "ComputerInput",
         "ClassName": "ComputerInputController",
         "Description": "Used for blocking input from the keyboard and/or mouse",
@@ -303,7 +295,7 @@
             }
         ]
     },
-    "ScreenPrivacyController":{
+    {
         "ObjectName": "PrivacyController",
         "ClassName": "ScreenPrivacyController",
         "Description": "Used for hiding content on screen",
@@ -334,15 +326,13 @@
             }
         ]
     },
-
-    "DeviceManager":{
+    {
         "ObjectName": "DeviceManipulator",
         "ClassName": "DeviceManager",
         "Description": "Not in use yet. WIP",
         "Methods": []
     },
-
-    "Monitor":{
+    {
         "ObjectName": "MonitorInstance",
         "ClassName": "Monitor",
         "Description": "Used for controlling the monitor, can change brightness and gamma",
@@ -392,7 +382,6 @@
                         "Description": "The blue value to set the gamme. 0-255"
                     }
                 ]
-
             },
             {
                 "MethodName": "ToggleHighestGamma",
@@ -408,7 +397,7 @@
             }
         ]
     },
-    "LayerController":{
+    {
         "ObjectName": "layers",
         "ClassName": "LayerController",
         "Description": "Used for changign the active keyboard laye and its layer indicator",
@@ -439,4 +428,4 @@
             }
         ]
     }
-}
+]
