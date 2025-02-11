@@ -12,8 +12,8 @@ Class LayerController extends Action{
     layers := []
     activeLayer := 0
 
-    addLayerIndicator(layer, color){
-        layerIndicatorInstance := LayerIndicator(layer, color)
+    addLayerIndicator(layer, color, transparent := false){
+        layerIndicatorInstance := LayerIndicator(layer, color, transparent)
         layerIndicatorInstance.createLayerIndicator()
         this.layers.InsertAt(layer, layerIndicatorInstance) 
     }

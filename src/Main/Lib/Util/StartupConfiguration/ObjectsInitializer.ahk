@@ -114,8 +114,15 @@ class ObjectsInitializer{
         ; Used to switch the active layer
         ; TODO dont do it like this!?
         layers := LayerController()
-        layers.addLayerIndicator(1, "Green")
-        layers.addLayerIndicator(2, "Red")
+        
+        layer1Color := IniRead(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorColor1")
+        layer2Color := IniRead(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorColor2")
+        
+        layer1Transparent := IniRead(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorTransparent1")
+        layer2Transparent := IniRead(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorTransparent2")
+        
+        layers.addLayerIndicator(1, layer1Color, layer1Transparent)
+        layers.addLayerIndicator(2, layer2Color, layer2Transparent)
 
         this.Objects["layers"] := layers
 
