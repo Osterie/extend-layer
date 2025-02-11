@@ -7,10 +7,12 @@ Class LayerIndicator extends Action{
     indicatorColor := ""
     layer := 0
     layerIndicatorGui := 0
+    isTransparent := 0
 
-    __New(layer, color) {
+    __New(layer, color, transparent := 0) {
         this.layer := layer
         this.indicatorColor := color
+        this.isTransparent := transparent
     }
 
     ; TODO create settings for changing the location, color, size, and such of the layer indicator...
@@ -18,6 +20,9 @@ Class LayerIndicator extends Action{
         this.layerIndicatorGui := Gui()
         this.layerIndicatorGui.Opt("+E0x20 -Caption +AlwaysOnTop -MaximizeBox +ToolWindow")
         this.layerIndicatorGui.BackColor := this.indicatorColor
+        if (this.isTransparent == 1){
+            WinSetTransColor(this.indicatorColor, this.layerIndicatorGui)
+        }
     }
 
     Destroy(){

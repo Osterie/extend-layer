@@ -34,8 +34,8 @@ class ObjectsJsonReader{
         ; -----------Read JSON----------------
 
         ; TODO! add try catch to all of these. If one of these informations are missing something wrong will happen!
-        For ClassName , ClassInformation in allClassesInformationJson{
-            
+        For classIndex , ClassInformation in allClassesInformationJson{
+
             ObjectName := ClassInformation["ObjectName"]
             className := ClassInformation["ClassName"]
             classDescription := ClassInformation["Description"]
@@ -43,9 +43,10 @@ class ObjectsJsonReader{
             objectMethods := MethodRegistry()
             allMethodsOfClass := ClassInformation["Methods"]
 
-            For MethodName, MethodInformation in allMethodsOfClass{
+            For index, MethodInformation in allMethodsOfClass {
                 
                 methodDescription := MethodInformation["Description"]
+                methodName := MethodInformation["MethodName"]
                 methodFriendlyName := MethodInformation["FriendlyName"]
                 allMethodParameters := MethodInformation["Parameters"]
                 methodInformation := MethodInfo(methodName, methodDescription, methodFriendlyName)
