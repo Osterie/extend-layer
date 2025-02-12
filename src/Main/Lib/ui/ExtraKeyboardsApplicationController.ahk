@@ -24,7 +24,9 @@ Class ExtraKeyboardsApplicationController{
     HandleProfileChangedEvent(newProfileName){
         ; TODO this should probably be changed? it is sort of heavy to basically restart the entire program when changing profiles.
         FilePaths.SetCurrentProfile(newProfileName)
-        this.mainScript.Start()
+        ; this.mainScript.Start()
+        ; TODO is there a better solution?
+        Run(A_ScriptDir "\Main.ahk")
         this.view.Destroy()
     }
 
