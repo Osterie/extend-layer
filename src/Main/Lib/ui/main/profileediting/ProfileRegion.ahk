@@ -29,7 +29,7 @@ class ProfileRegion{
         this.editProfilesButton := guiObject.Add("Button", "w80 ym+1", "&Edit profiles")
         addProfileButton := guiObject.Add("Button", "w80 ym+1", "&Add profile")
         importProfileButton := guiObject.Add("Button", "w80 ym+1", "&Import profile")
-        exportProfileButton := guiObject.Add("Button", "w80 ym+1", "E&xport profile")
+        exportProfileButton := guiObject.Add("Button", "w90 ym+1", "E&xport profile")
         
 
         this.editProfilesButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "doOpenEditProfileView")())

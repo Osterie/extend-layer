@@ -118,8 +118,8 @@ class ObjectsInitializer{
 
         showLayerIndicatorOnAllMonitors := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Layer", "ShowLayerIndicatorOnAllMonitors", "0")
         
+        layers := LayerController(showLayerIndicatorOnAllMonitors)
 
-        layers := LayerController()
         
         layer1Color := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorColor1", '"Green"')
         layer2Color := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorColor2", '"Red"')
