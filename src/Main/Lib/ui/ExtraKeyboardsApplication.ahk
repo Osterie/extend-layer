@@ -22,7 +22,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     ; Constructor for the ExtraKeyboardsApplication class
     __New(){
-        super.__New("+MinSize920x480", "Extra Keyboards App")
+        super.__New("+MinSize920x480", "Extend Layer")
     }
 
     ; Creates the main gui for the application

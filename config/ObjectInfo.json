@@ -79,6 +79,11 @@
                         "Name": "Keyboard key",
                         "Type": "string",
                         "Description": "The key to repeatedly to send"
+                    },
+                    {
+                        "Name": "Sends per second",
+                        "Type": "int",
+                        "Description": "The amount of times to send the key per second"
                     }
                 ]
             }

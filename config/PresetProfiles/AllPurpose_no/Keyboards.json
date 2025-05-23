@@ -237,29 +237,10 @@
 		}
 	},
 	"TertiaryLayer-Hotkeys":{
-		"+=":{
-			"MethodName":"SendRepeatInput",
-			"ObjectName":"KeyboardInstance",
-			"Parameters":["{Space}",
-			50],
-			"isObject":1
-		},
 		"0":{
 			"MethodName":"ToggleAutoClicker",
 			"ObjectName":"MouseInstance",
 			"Parameters":[],
-			"isObject":1
-		},
-		"1":{
-			"MethodName":"SendKeyBoardInput",
-			"ObjectName":"KeyboardInstance",
-			"Parameters":["{raw}&#x2207;"],
-			"isObject":1
-		},
-		"2":{
-			"MethodName":"SendKeyBoardInput",
-			"ObjectName":"KeyboardInstance",
-			"Parameters":["{raw}&#8706;"],
 			"isObject":1
 		},
 		"Esc":{
