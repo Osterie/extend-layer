@@ -400,7 +400,7 @@
     {
         "ObjectName": "layers",
         "ClassName": "LayerController",
-        "Description": "Used for changign the active keyboard laye and its layer indicator",
+        "Description": "Used for changing the active keyboard laye and its layer indicator",
         "Methods": [
             {
                 "MethodName": "toggleLayer",

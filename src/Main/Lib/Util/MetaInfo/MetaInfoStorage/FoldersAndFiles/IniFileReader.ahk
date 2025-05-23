@@ -52,6 +52,22 @@ Class IniFileReader{
         return readValue
     }
 
+    ReadOrCreateLine(iniFile, section, key, defaultValue){
+        if (defaultValue == ""){
+            MsgBox("Default value cannot be empty", "Notify")
+            throw "Default value cannot be empty"
+        }
+        key := this.ValidateText(key)
+        readValue := IniRead(iniFile, section, key, "")
+        if (readValue == ""){
+            readValue := defaultValue
+            IniWrite(readValue, iniFile, section, key)
+            msgbox("The key " . key . " was not found in the ini file, so it was created with the value " . readValue . ".")
+        }
+        readValue := this.ValidateText(readValue)
+        return readValue
+    }
+
     ; Given a ini file line with key and value, get the key
     GetKeyFromLine(iniFileLine){
         keyToReturn := StrSplit(iniFileLine, "=")[1]
@@ -94,6 +110,7 @@ Class IniFileReader{
         ; TODO improve further to handle all cases, could remove spaces and make lowercase...
         text := StrReplace(text, "win+", "#")
         text := StrReplace(text, "win +", "#")
+        text := StrReplace(text, '"', "")
         return text
     }
 }

@@ -9,7 +9,7 @@ Class LayerIndicator extends Action{
     layerIndicatorGui := 0
     isTransparent := 0
 
-    __New(layer, color, transparent := 0) {
+    __New(layer, color, transparent := 0){
         this.layer := layer
         this.indicatorColor := color
         this.isTransparent := transparent

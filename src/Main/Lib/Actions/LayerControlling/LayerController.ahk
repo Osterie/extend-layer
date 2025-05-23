@@ -11,6 +11,11 @@ Class LayerController extends Action{
     
     layers := []
     activeLayer := 0
+    showLayerIndicatorOnAllMonitors := 0
+
+    __New(showLayerIndicatorOnAllMonitors := 0){
+        this.showLayerIndicatorOnAllMonitors := showLayerIndicatorOnAllMonitors
+    }
 
     addLayerIndicator(layer, color, transparent := false){
         layerIndicatorInstance := LayerIndicator(layer, color, transparent)

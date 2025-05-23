@@ -1,11 +1,14 @@
 #Requires AutoHotkey v2.0
 
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\IniFileReader>
+
 #Include <Actions\Action>
 
 Class CommandPromptOpener extends Action{
 
     defaultPath := ""
+    IniFileReader := IniFileReader()
 
     __New(){
         this.SetDefaultPathFromFile()
@@ -71,13 +74,8 @@ Class CommandPromptOpener extends Action{
     }
 
     SetDefaultPathFromFile(){
-        try{
-            commandPromptDefaultPath := IniRead(FilePaths.GetPathToCurrentSettings(), "CommandPrompt", "DefaultPath")
-            this.SetDefaultPath(commandPromptDefaultPath)
-        }
-        catch{
-            msgbox("Error reading the default path from the settings file for Command Prompt Opener.", "Notify")
-        }
+        commandPromptDefaultPath := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "CommandPrompt", "DefaultPath", '"\C:\Users\"')
+        this.SetDefaultPath(commandPromptDefaultPath)
     }
 
     SetDefaultPath(defaultPath){
