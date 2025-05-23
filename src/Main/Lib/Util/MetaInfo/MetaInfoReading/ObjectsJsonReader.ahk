@@ -51,7 +51,7 @@ class ObjectsJsonReader{
                 allMethodParameters := MethodInformation["Parameters"]
                 methodInformation := MethodInfo(methodName, methodDescription, methodFriendlyName)
                 
-                For ParameterName, ParameterInformation in allMethodParameters{
+                For Name, ParameterInformation in allMethodParameters{
                     
                     parameterName := ParameterInformation["Name"]
                     parameterType := ParameterInformation["Type"]

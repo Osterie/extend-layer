@@ -3,6 +3,7 @@
 #Include <Actions\LayerControlling\LayerController>
 #Include <Util\KeyboardOverlay\KeyboardOverlay>
 #Include <Util\KeyboardOverlay\KeyboardOverlayRegistry>
+#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\IniFileReader>
 
 #Include <Actions\KeysPressedGui>
 #Include <Actions\ProcessManager>
@@ -22,6 +23,7 @@
 class ObjectsInitializer{
 
     objects := Map()
+    IniFileReader := IniFileReader()
 
     InitializeObjects(){
     
@@ -62,7 +64,7 @@ class ObjectsInitializer{
         ; TODO move the ini reads to the class
         ; Sets the countdown for the screen hider to 3 minutes. (change to your screen sleep time)
         ; This shows a countdown on the screen, and when it reaches 0, the screen goes to sleep
-        monitorSleepTimeMinutes := IniRead(FilePaths.GetPathToCurrentSettings(), "PrivacyController", "MonitorSleepTimeMinutes")
+        monitorSleepTimeMinutes := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "PrivacyController", "MonitorSleepTimeMinutes", "5")
         PrivacyController.ChangeCountdown(monitorSleepTimeMinutes,0)
         this.Objects["PrivacyController"] := PrivacyController
 
@@ -79,8 +81,8 @@ class ObjectsInitializer{
         this.Objects["MonitorInstance"] := MonitorInstance
 
         ; Used to switch between power saver mode and normal power mode (does not work as expected currently, percentage to switch to power saver is changed, but power saver is never turned on...)
-        powerSaverModeGUID := IniRead(FilePaths.GetPathToCurrentSettings(), "Battery", "PowerSaverModeGUID")
-        defaultPowerModeGUID := IniRead(FilePaths.GetPathToCurrentSettings(), "Battery", "DefaultPowerModeGUID")
+        powerSaverModeGUID := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Battery", "PowerSaverModeGUID", '"7ac15103-7e10-499d-b365-9647e042cde2"')
+        defaultPowerModeGUID := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Battery", "DefaultPowerModeGUID", '"8759706d-706b-4c22-b2ec-f91e1ef6ed38"')
         Battery := BatteryController(50, 50)
         Battery.setPowerSaverModeGUID(powerSaverModeGUID)
         Battery.setDefaultPowerModeGUID(defaultPowerModeGUID)
@@ -88,7 +90,7 @@ class ObjectsInitializer{
         this.Objects["Battery"] := Battery
 
         ; Used to search for stuff in the browser, translate, and excecute shortcues like close tabs to the right in browser
-        chatGptLoadTime := IniRead(FilePaths.GetPathToCurrentSettings(), "WebNavigator", "chatGptLoadTime")
+        chatGptLoadTime := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "WebNavigator", "chatGptLoadTime", "3000")
         WebSearcher := WebNavigator()
         WebSearcher.SetChatGptLoadTime(chatGptLoadTime)
         this.Objects["WebSearcher"] := WebSearcher
@@ -97,7 +99,7 @@ class ObjectsInitializer{
         UnautorizedUserDetector := UnauthorizedUseDetector()
         this.Objects["UnautorizedUserDetector"] := UnautorizedUserDetector
 
-        lockComputerOnTaskBarClick := IniRead(FilePaths.GetPathToCurrentSettings(), "UnauthorizedUseDetector", "lockComputerOnTaskBarClick")
+        lockComputerOnTaskBarClick := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "UnauthorizedUseDetector", "lockComputerOnTaskBarClick", "false")
 
         if (lockComputerOnTaskBarClick = "true"){
             UnautorizedUserDetector.ActivateLockComputerOnTaskBarClick()
@@ -113,13 +115,17 @@ class ObjectsInitializer{
 
         ; Used to switch the active layer
         ; TODO dont do it like this!?
+
+        showLayerIndicatorOnAllMonitors := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Layer", "ShowLayerIndicatorOnAllMonitors", "0")
+        
+
         layers := LayerController()
         
-        layer1Color := IniRead(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorColor1")
-        layer2Color := IniRead(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorColor2")
+        layer1Color := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorColor1", '"Green"')
+        layer2Color := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorColor2", '"Red"')
         
-        layer1Transparent := IniRead(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorTransparent1")
-        layer2Transparent := IniRead(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorTransparent2")
+        layer1Transparent := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorTransparent1", "0")
+        layer2Transparent := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorTransparent2", "0")
         
         layers.addLayerIndicator(1, layer1Color, layer1Transparent)
         layers.addLayerIndicator(2, layer2Color, layer2Transparent)

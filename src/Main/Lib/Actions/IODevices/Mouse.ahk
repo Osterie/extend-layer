@@ -1,6 +1,8 @@
 #Requires AutoHotkey v2.0
 
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\IniFileReader>
+
 
 #Include <Actions\Action>
 
@@ -9,6 +11,8 @@ Class Mouse extends Action{
     autoClickerCPS := 10
     autoClickerEnabled := false
     SendClickObjectMethod := ObjBindMethod(this, "SendClick")
+    IniFileReader := IniFileReader()
+
 
     __New(readSettingsFromFile := false){
         if (readSettingsFromFile){
@@ -18,7 +22,7 @@ Class Mouse extends Action{
 
     SetAutoClickerCPSFromFile(){
         try{
-            autoClickerCPS := IniRead(FilePaths.GetPathToCurrentSettings(), "Mouse", "AutoClickerClickCps")
+            autoClickerCPS := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Mouse", "AutoClickerClickCps", 10)
         }
         catch{
             autoClickerCPS := 10
