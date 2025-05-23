@@ -8,9 +8,9 @@ Class LayerIndicator extends Action{
     layer := 0
     layerIndicatorGui := 0
     isTransparent := 0
-    monitor := "default"
+    monitor := MonitorGetPrimary()
 
-    __New(layer, color, transparent := 0, monitor := "default"){
+    __New(layer, color, transparent := 0, monitor := MonitorGetPrimary()){
         this.layer := layer
         this.indicatorColor := color
         this.isTransparent := transparent
@@ -31,18 +31,18 @@ Class LayerIndicator extends Action{
         this.layerIndicatorGui.destroy()
     }
 
-    Show(){
-        if (this.monitor = "default"){
-            guiHeight := A_ScreenHeight-142
+    Show(x := 0, y := A_ScreenHeight-142, w := 50, h := 142){
+        
+        if (this.monitor = MonitorGetPrimary()){
             WinSetAlwaysOnTop 1, this.layerIndicatorGui
-            this.layerIndicatorGui.show("x0 y" . guiHeight . " w50 h142 NoActivate")
+            this.layerIndicatorGui.show("x" . x . " y" . y . " w" . w . " h" . h . " NoActivate")
         }
         else{
-            this.ShowOnOtherMonitor()
+            this.ShowOnOtherMonitor(x, y, w, h)
         }
     }
 
-    ShowOnOtherMonitor(){
+    ShowOnOtherMonitor(x := 0, y := A_ScreenHeight-142, w := 50, h := 142){
         if (!IsInteger(this.monitor)){
             MsgBox("Invalid monitor number: " . this.monitor)
             return
@@ -54,9 +54,9 @@ Class LayerIndicator extends Action{
 
         MonitorGetWorkArea this.monitor, &workLeft, &workTop, &workRight, &workBottom
 
-        guiHeight := workBottom-142
         WinSetAlwaysOnTop 1, this.layerIndicatorGui
-        this.layerIndicatorGui.show("x" . workLeft . " y" . guiHeight . " w50 h142 NoActivate")
+        this.layerIndicatorGui.show("x" . x . " y" . y . " w" . w . " h" . h . " NoActivate")
+
     }
 
     Hide(){

@@ -118,7 +118,9 @@ class ObjectsInitializer{
 
         showLayerIndicatorOnAllMonitors := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Layer", "ShowLayerIndicatorOnAllMonitors", "0")
         
-        layers := LayerController(showLayerIndicatorOnAllMonitors)
+        layerPositionMode := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerPositionMode", "0")
+        
+        layers := LayerController(showLayerIndicatorOnAllMonitors, layerPositionMode)
 
         
         layer1Color := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorColor1", '"Green"')
@@ -128,7 +130,7 @@ class ObjectsInitializer{
         layer2Transparent := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorTransparent2", "0")
         
         layers.addLayerIndicator(1, layer1Color, layer1Transparent)
-        layers.addLayerIndicator(2, layer2Color, layer2Transparent)
+        layers.addLayerIndicator(2,  layer2Color, layer2Transparent)
 
         this.Objects["layers"] := layers
 
