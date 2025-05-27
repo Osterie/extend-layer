@@ -140,7 +140,11 @@ Class LayerController extends Action{
             layerIndicatorInstance := layerIndicatorInstances[A_Index]
             monitorOfLayerIndicator := layerIndicatorInstance.monitor
             MonitorGetWorkArea monitorOfLayerIndicator, &workLeft, &workTop, &workRight, &workBottom
-
+            
+            if (counter >= 5){
+                counter := 1
+            }
+            
             if (counter = 1){
                 x := workLeft
                 y := workBottom-142
@@ -157,9 +161,7 @@ Class LayerController extends Action{
                 x := workRight-50
                 y := workTop
             }
-            else{
-                counter := 0
-            }
+
             counter := counter+1
 
             layerIndicatorInstance.Show(x, y)
