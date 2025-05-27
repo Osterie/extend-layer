@@ -22,15 +22,15 @@ Class LayerController extends Action{
         this.layerPositionMode := layerPositionMode
     }
 
-    addLayerIndicator(layer, color, transparent := false){
+    addLayerIndicator(layer, color, transparent := false, image := ""){
         if (this.showLayerIndicatorOnAllMonitors = 0){
             if (this.layerPositionMode = 2){
                 Loop 4{
-                    this.createLayerIndicator(layer, color, transparent)
+                    this.createLayerIndicator(layer, color, transparent, image)
                 }
             }
             else{
-                this.createLayerIndicator(layer, color, transparent)
+                this.createLayerIndicator(layer, color, transparent, image)
             }
         }
         else if (this.showLayerIndicatorOnAllMonitors = 1){
@@ -38,13 +38,13 @@ Class LayerController extends Action{
                 Loop MonitorGetCount(){
                     monitorIndex := A_Index
                     Loop 4{
-                    this.createLayerIndicator(layer, color, transparent, monitorIndex)
+                    this.createLayerIndicator(layer, color, transparent, image, monitorIndex)
                     }
                 }
             }
             else{
                 Loop MonitorGetCount(){
-                    this.createLayerIndicator(layer, color, transparent, A_Index)
+                    this.createLayerIndicator(layer, color, transparent, image, A_Index)
                 }
             }
         }
@@ -53,13 +53,13 @@ Class LayerController extends Action{
         }
     }
 
-    createLayerIndicator(layer, color, transparent := false, monitorIndex := 0){
+    createLayerIndicator(layer, color, transparent := false, image := "", monitorIndex := 0){
         layerIndicatorInstance := 0
         if (monitorIndex = 0){
-            layerIndicatorInstance := LayerIndicator(layer, color, transparent)
+            layerIndicatorInstance := LayerIndicator(layer, color, transparent, image)
         }
         else{
-            layerIndicatorInstance := LayerIndicator(layer, color, transparent, monitorIndex)
+            layerIndicatorInstance := LayerIndicator(layer, color, transparent, image, monitorIndex)
         }
 
         layerIndicatorInstance.createLayerIndicator()
@@ -112,12 +112,15 @@ Class LayerController extends Action{
     }
 
     showLayerPositionMode0(layerIndicatorInstances){
+        
         Loop layerIndicatorInstances.Length{
             layerIndicatorInstance := layerIndicatorInstances[A_Index]
             monitorOfLayerIndicator := layerIndicatorInstance.monitor
             MonitorGetWorkArea monitorOfLayerIndicator, &workLeft, &workTop, &workRight, &workBottom
+            
+            heightOffset := layerIndicatorInstance.getIndicatorHeight()
 
-            layerIndicatorInstance.Show(workLeft, workBottom-142)
+            layerIndicatorInstance.Show(workLeft, workBottom-heightOffset)
         }
     }
 
@@ -127,8 +130,10 @@ Class LayerController extends Action{
             monitorOfLayerIndicator := layerIndicatorInstance.monitor
             MonitorGetWorkArea monitorOfLayerIndicator, &workLeft, &workTop, &workRight, &workBottom
 
+            widthOffset := layerIndicatorInstance.getIndicatorWidth()
+
             centerOfScreen := workLeft + ( (workRight - workLeft) / 2 )
-            centerOfScreen := centerOfScreen - 25
+            centerOfScreen := centerOfScreen - (widthOffset/2)
 
             layerIndicatorInstance.Show(centerOfScreen, workTop)
         }
@@ -141,24 +146,27 @@ Class LayerController extends Action{
             monitorOfLayerIndicator := layerIndicatorInstance.monitor
             MonitorGetWorkArea monitorOfLayerIndicator, &workLeft, &workTop, &workRight, &workBottom
             
+            heightOffset := layerIndicatorInstance.getIndicatorHeight()
+            widthOffset := layerIndicatorInstance.getIndicatorWidth()
+
             if (counter >= 5){
                 counter := 1
             }
             
             if (counter = 1){
                 x := workLeft
-                y := workBottom-142
+                y := workBottom-heightOffset
             }
             else if (counter = 2){
-                x := workRight-50
-                y := workBottom-142
+                x := workRight-widthOffset
+                y := workBottom-heightOffset
             }
             else if (counter = 3){
                 x := workLeft
                 y := workTop
             }
             else if (counter = 4){
-                x := workRight-50
+                x := workRight-widthOffset
                 y := workTop
             }
 

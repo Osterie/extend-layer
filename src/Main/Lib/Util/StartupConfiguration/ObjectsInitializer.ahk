@@ -128,9 +128,12 @@ class ObjectsInitializer{
         
         layer1Transparent := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorTransparent1", "0")
         layer2Transparent := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorTransparent2", "0")
+
+        layer1Image := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorImage1", "NONE")
+        layer2Image := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Layer", "LayerIndicatorImage2", "NONE")
         
-        layers.addLayerIndicator(1, layer1Color, layer1Transparent)
-        layers.addLayerIndicator(2,  layer2Color, layer2Transparent)
+        layers.addLayerIndicator(1, layer1Color, layer1Transparent, layer1Image)
+        layers.addLayerIndicator(2,  layer2Color, layer2Transparent, layer2Image)
 
         this.Objects["layers"] := layers
 
