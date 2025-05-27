@@ -28,15 +28,10 @@ class LayerIndicator extends Action {
     createLayerIndicator() {
         this.layerIndicatorGui := Gui()
         this.layerIndicatorGui.Opt("+E0x20 -Caption +AlwaysOnTop -MaximizeBox +ToolWindow")
-
-        this.addImageControl()
-
         this.layerIndicatorGui.BackColor := this.indicatorColor
-        if (this.isTransparent == 1) {
-            WinSetTransparent(0, this.layerIndicatorGui)
-        }
+        this.addImageControl()
     }
-
+    
     addImageControl() {
         SplitPath(this.image, &OutFileName, &OutDir, &OutExtension, &OutNameNoExt, &OutDrive)
 
@@ -76,7 +71,9 @@ class LayerIndicator extends Action {
     }
 
     Show(x := 0, y := A_ScreenHeight - this.getIndicatorHeight(), w := this.getIndicatorWidth(), h := this.getIndicatorHeight()) {
-
+        if (this.isTransparent == 1) {
+            return
+        }
         WinSetAlwaysOnTop 1, this.layerIndicatorGui
         this.layerIndicatorGui.show("x" . x . " y" . y . " w" . w . " h" . h . " NoActivate")
     }
