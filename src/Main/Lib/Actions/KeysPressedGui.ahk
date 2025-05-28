@@ -116,7 +116,6 @@ Class KeysPressedGui extends Action{
                 LastUnderScorePosition := InStr(this.storedKeys, " ", 0, -1)  ; get position of last occurrence of " "
                 this.storedKeys := SubStr(this.storedKeys, 1, LastUnderScorePosition)  ; get substring from start to last dot
             }
-    
             else if (key == "enter"){
                 this.storedKeys := this.storedKeys . "`n"
             }
@@ -129,7 +128,6 @@ Class KeysPressedGui extends Action{
     }
 
     ValidateKeyPressed(pressedKey){
-
         pressedKey := StrReplace(pressedKey, "*", "")
         pressedKey := StrReplace(pressedKey, "~", "")
     

@@ -3,6 +3,7 @@
 #Include "..\..\IODevices\ComputerInputController.ahk"
 
 #Include <Actions\Action>
+#Include <Util\Sanitizers\KeyboardKeySanitizer>
 
 Class WebNavigator extends Action{
 
@@ -49,13 +50,17 @@ Class WebNavigator extends Action{
     ; Public method
     ; Images should be for example "loginButton.png"
     LoginToSite(url, images, loadTime){
-
         this.OpenUrl(url)
+
+        if (images = ""){
+            return
+        }
+
         Sleep(loadTime)
 
         loginButtonClicked := false
         timesTriedToClickLoginButton := 1
-        targetSiteUrl := this.TrimUrl(url)
+        targetSiteUrl := KeyboardKeySanitizer.sanitizeUrl(url)
 
         while ( (timesTriedToClickLoginButton <= images.Length) && !loginButtonClicked ){
             try{
@@ -63,7 +68,7 @@ Class WebNavigator extends Action{
                 ; if it reaches here, the login button is clicked
                 loginButtonClicked := true
 
-                currentSiteUrl := this.TrimUrl(this.GetCurrentUrl())
+                currentSiteUrl := KeyboardKeySanitizer.sanitizeUrl(this.GetCurrentUrl())
 
                 ; this checks if the clipboard content (which is the new site url, after logging in) is the same as the given url.
                 if (!InStr(currentSiteUrl, targetSiteUrl)){
@@ -97,15 +102,6 @@ Class WebNavigator extends Action{
         Send("!d")
         Send(newUrl)
         Send("{Enter}")
-    }
-
-    ; Private method
-    TrimUrl(url){
-        trimmedUrl := StrReplace(url, "https://www", "")
-        trimmedUrl := StrReplace(trimmedUrl, "https://", "")
-        trimmedUrl := StrReplace(trimmedUrl, "http://www", "")
-        trimmedUrl := StrReplace(trimmedUrl, "http://", "")
-        return trimmedUrl
     }
 
     ; Private method
@@ -185,6 +181,7 @@ Class WebNavigator extends Action{
     }
 
     OpenUrl(url){
+        ; TODO what if user does not have chrome, check and use other browser. 
         Run("chrome.exe " url)
     }
 

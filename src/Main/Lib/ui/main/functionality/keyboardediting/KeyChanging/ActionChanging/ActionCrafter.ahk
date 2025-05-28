@@ -144,7 +144,7 @@ class ActionCrafter extends HotkeyCrafter{
         this.controlsForSpecificSpecialActionCrafting.getControl("groupBoxForActionDescription").Move(, , , newHeight)
         actionDescriptionControl.Move(, , , newHeight-30)
 
-        if(parameters.count = 0){
+        if(parameters.Length = 0){
             this.controlsForAllSpecialActionCrafting.getControl("noParametersForActionText").Opt("Hidden0")
         }
         else{

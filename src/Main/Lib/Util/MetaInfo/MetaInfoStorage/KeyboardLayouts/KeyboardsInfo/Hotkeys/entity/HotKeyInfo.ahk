@@ -38,7 +38,7 @@ class HotKeyInfo{
 
     setNormalHotkeySingle(toKeyWithModifiers){
         modifiersAndHotkey := HotkeyFormatConverter.splitModifiersAndHotkey(toKeyWithModifiers)
-        this.setNewHotkeyModifiers(modifiersAndHotkey[0])
+        this.setNewHotkeyModifiers(modifiersAndHotkey[1])
         this.toKey := modifiersAndHotkey[2]
     }
 

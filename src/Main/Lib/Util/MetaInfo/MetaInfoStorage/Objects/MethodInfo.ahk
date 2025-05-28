@@ -9,7 +9,7 @@ class MethodInfo{
 
     methodName := ""
     methodDescription := ""
-    methodParameters := Map()
+    methodParameters := Array()
     friendlyName := ""
 
     ; Since a method does not alw
@@ -20,7 +20,8 @@ class MethodInfo{
     }
 
     addParameter(parameterInfo){
-        this.methodParameters[parameterInfo.getName()] := parameterInfo
+        this.methodParameters.Push(parameterInfo)
+        ; this.methodParameters[parameterInfo.getName()] := parameterInfo
     }
 
     getMethodName(){
@@ -35,7 +36,10 @@ class MethodInfo{
         return this.methodParameters
     }
 
-    getMethodParameterDescription(parameterName){
+    getMethodParameterInfo(parameterName){
+        if (!this.methodParameters.HasKey(parameterName)){
+            return "Parameter not found"
+        }
         return this.methodParameters[parameterName]
     }
     getFriendlyName(){
