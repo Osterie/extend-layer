@@ -32,6 +32,7 @@ class KeyboardLayersInfoRegistry{
 
     ; TODO remove me perhaps, a new and better method is being developed...
     ChangeHotkey(layerIdentifier, hotkeyName, newHotkey){
+        newHotkey := this.cleanNewHotkey(newHotkey)
         this.HotkeysRegistry[layerIdentifier].ChangeHotkeyKey(hotkeyName, newHotkey)
     }
 
@@ -80,5 +81,10 @@ class KeyboardLayersInfoRegistry{
 
     GetHotkeyInfoForLayer(layerIdentifier, hotkeyKey){
         return this.GetRegistryByLayerIdentifier(layerIdentifier).GetHotkey(hotkeyKey)
+    }
+
+    cleanNewHotkey(newHotkey){
+        newHotkey := StrReplace(newHotkey, "*", "")
+        newHotkey := StrReplace(newHotkey, " Up", "")
     }
 }
