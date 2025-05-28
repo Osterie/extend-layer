@@ -25,7 +25,7 @@ class AdvancedHotkeyCraftingControl{
         groupBoxForAdvancedHotkeyCrafting := this.guiToAddTo.Add("GroupBox", "Section " . position, "Advanced hotkey crafting:")
         this.CreateModifierControls()
         this.CreateHotkeySelectionControls(availableKeyNames)
-        this.CreateHotkeyStateControls()
+        ; this.CreateHotkeyStateControls() // Uncommented since adding support for key up/down state would require changes in the hotkey initialization logic
         
         this.controlsForAdvancedHotkeys.addControl("GroupBoxAdvancedCrafting", groupBoxForAdvancedHotkeyCrafting)
     }
@@ -110,7 +110,6 @@ class AdvancedHotkeyCraftingControl{
             "ShiftCheckbox", "+",
             "AltCheckbox", "!",
             "WinCheckbox", "#",
-            "KeyUpRadio", " Up"
         )
 
         for controlName, symbol in modifiers {
@@ -124,10 +123,26 @@ class AdvancedHotkeyCraftingControl{
         return hotkeyModifiers
     }
 
+    GetUpModifier(){
+        if (this.destinationKeyMode = true){
+            MsgBox("This hotkey is for destination key, so it cannot be set to up or down state.")
+            return ""
+        }
+        if (this.controlsForAdvancedHotkeys.getControl("KeyDownRadio").Value = 1){
+            MsgBox("This hotkey is set to down state, so it cannot be set to up state.")
+            return ""
+        }
+        else if (this.controlsForAdvancedHotkeys.getControl("KeyUpRadio").Value = 1){
+            MsgBox("This hotkey is set to up state, so it will be returned as such.")
+            return " Up"
+        }
+        MsgBox("This hotkey is not set to up or down state, so it will be returned as such.")
+        return ""
+    }
 
     
     GetValue(){
-        return this.getModifiers() . this.GetKey()
+        return this.GetModifiers() . this.GetKey() . this.GetUpModifier()
     }
 
     SubscribeToHotkeySelectedEvent(event){

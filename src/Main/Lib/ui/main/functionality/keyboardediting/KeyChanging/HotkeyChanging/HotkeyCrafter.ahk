@@ -30,7 +30,7 @@ class HotkeyCrafter extends DomainSpecificGui{
         this.SimpleHotkeyCrafter := SimpleHotkeyCraftingControl(this, "w300 h50", HotkeyFormatConverter.convertFromFriendlyName(originalHotkey, " + "))
         this.SimpleHotkeyCrafter.SubscribeToHotkeySelectedEvent(ObjBindMethod(this, "updateSaveButtonStatus"))
         
-        this.advancedHotkeyCrafter := AdvancedHotkeyCraftingControl(this, "w370 h200 xp yp", this.controller.GetAvailableKeyNames(), destinationKeyMode)
+        this.advancedHotkeyCrafter := AdvancedHotkeyCraftingControl(this, "w370 h250 xp yp", this.controller.GetAvailableKeyNames(), destinationKeyMode)
         this.advancedHotkeyCrafter.SubscribeToHotkeySelectedEvent(ObjBindMethod(this, "updateSaveButtonStatus"))
         
         this.advancedHotkeyCrafter.hide()
@@ -42,7 +42,7 @@ class HotkeyCrafter extends DomainSpecificGui{
     }
 
     createButtons(){
-        saveButton := this.Add("Button", " w100 h20 xM yp", "Save")
+        saveButton := this.Add("Button", " w100 h20 xM+20 yp+50", "Save")
         saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
         
         cancelButton := this.Add("Button", "w100 h20", "Cancel")
