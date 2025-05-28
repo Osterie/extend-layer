@@ -97,10 +97,12 @@ Class KeysPressedGui extends Action{
             Hotkey("~*" A_LoopField , , "off")
         }
     }
+
       
     OnKeyPressed(self){
         try {
-    
+            stored := "hello`nworld`nthis is a test"
+
             key := this.ValidateKeyPressed(A_ThisHotKey)
     
             if (key == "backspace"){
@@ -108,15 +110,20 @@ Class KeysPressedGui extends Action{
             }
             else if (key == "ctrl + backspace"){
     
-                if (SubStr(this.storedKeys, -1, 1) == " ") {
-                    this.storedKeys := SubStr(this.storedKeys, 1, -1*(1))
+                if (SubStr(this.storedKeys, -1) == " " || SubStr(this.storedKeys, -1) == "`n") {
+                    this.storedKeys := SubStr(this.storedKeys, 1, -1)
                 }
-    
-                else if (!InStr(this.storedKeys, " ")){
+                else if (!InStr(this.storedKeys, " ") && !InStr(this.storedKeys, "`n")) {
                     this.storedKeys := ""
+                    return
                 }
-                LastUnderScorePosition := InStr(this.storedKeys, " ", 0, -1)  ; get position of last occurrence of " "
-                this.storedKeys := SubStr(this.storedKeys, 1, LastUnderScorePosition)  ; get substring from start to last dot
+
+                lastSpacePosition := InStr(this.storedKeys, " ", 0, -1)  ; get position of last occurrence of " "
+                lastNewLinePosition := InStr(this.storedKeys, "`n", 0, -1)  ; get position of last occurrence of "`n"
+                
+                indexToUse := Max(lastSpacePosition, lastNewLinePosition)  ; get the maximum of the two positions
+
+                this.storedKeys := SubStr(this.storedKeys, 1, indexToUse)  ; get substring from start to last dot
             }
             else if (key == "enter"){
                 this.storedKeys := this.storedKeys . "`n"

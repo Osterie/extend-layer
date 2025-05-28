@@ -5,7 +5,7 @@
 #Include <Util\KeyboardOverlay\KeyboardOverlayRegistry>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\IniFileReader>
 
-#Include <Actions\KeysPressedGui>
+#Include <Actions\KeysPressedDisplay\KeysPressedGui>
 #Include <Actions\ProcessManager>
 #Include <Actions\CommandPromptOpener>
 #Include <Actions\IODevices\Mouse>
