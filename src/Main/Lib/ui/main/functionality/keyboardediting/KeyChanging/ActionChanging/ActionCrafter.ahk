@@ -23,7 +23,7 @@ class ActionCrafter extends HotkeyCrafter{
 
     Create(){
         this.CreateCrafterTypeRadioButtons()
-        super.Create("")
+        super.Create("", true)
         super.hide()
         this.CreateSpecialActionsListView()
         this.CreateActionDescription("xp w400 h45")

@@ -6,7 +6,7 @@ class GuiControlsRegistry{
 
     __New(){
         this.Controls := Map()
-        ; this.Controls.Default := ""
+        this.Controls.Default := ""
     }
 
     addControl(controlName, control){

@@ -110,8 +110,6 @@ class HotKeyInfo{
     }
 
     setNewHotkeyModifiers(newModifiers){
-        newModifiers := StrReplace(newModifiers, "*", "")
-        newModifiers := StrReplace(newModifiers, " Up", "")
         this.modifiers := newModifiers
     }
 

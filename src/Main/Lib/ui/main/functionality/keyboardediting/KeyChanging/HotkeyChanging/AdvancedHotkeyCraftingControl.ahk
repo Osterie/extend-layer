@@ -11,9 +11,13 @@ class AdvancedHotkeyCraftingControl{
     controlsForModifiers := ""
     hotkeySavedEventSubscribers := ""
 
+    destinationKeyMode := false
+
+
     ; TODO this gui should know about availabkelKeyNames himself?
-    __New(guiToAddTo, position, availableKeyNames){
+    __New(guiToAddTo, position, availableKeyNames, destinationKeyMode := false){
         this.guiToAddTo := guiToAddTo
+        this.destinationKeyMode := destinationKeyMode
         this.controlsForAdvancedHotkeys := GuiControlsRegistry()
         this.controlsForModifiers := GuiControlsRegistry()
         this.hotkeySavedEventSubscribers := Array()
@@ -29,21 +33,25 @@ class AdvancedHotkeyCraftingControl{
     CreateModifierControls(){
         groupBoxForModifiers := this.guiToAddTo.Add("GroupBox", "Section w300 h50 xp+30 yp+20", "Modifiers:")
         
-        anyModifierCheckbox := this.guiToAddTo.Add("CheckBox","xs+25 ys+20", "Any")
-        anyModifierCheckbox.OnEvent("Click", (*) => this.AnyModifierCheckboxClickEvent())
+        if (this.destinationKeyMode = false){
+            anyModifierCheckbox := this.guiToAddTo.Add("CheckBox","xs+25 ys+20", "Any")
+            anyModifierCheckbox.OnEvent("Click", (*) => this.AnyModifierCheckboxClickEvent())
+            this.controlsForModifiers.addControl("anyModifierCheckbox", anyModifierCheckbox)
+            this.controlsForAdvancedHotkeys.addControl("AnyModifierCheckbox", anyModifierCheckbox)
+        }
+        
+        
         controlCheckbox := this.guiToAddTo.Add("CheckBox","xp+40 ys+20", "Control")
         shiftCheckbox := this.guiToAddTo.Add("CheckBox","xp+60 ys+20", "Shift")
         altCheckbox := this.guiToAddTo.Add("CheckBox","xp+55 ys+20", "Alt")
         winCheckbox := this.guiToAddTo.Add("CheckBox","xp+40 ys+20", "Win")
 
-        this.controlsForModifiers.addControl("anyModifierCheckbox", anyModifierCheckbox)
         this.controlsForModifiers.addControl("ControlCheckbox", controlCheckbox)
         this.controlsForModifiers.addControl("ShiftCheckbox", shiftCheckbox)
         this.controlsForModifiers.addControl("AltCheckbox", altCheckbox)
         this.controlsForModifiers.addControl("WinCheckbox", winCheckbox)
 
         this.controlsForAdvancedHotkeys.addControl("GroupBoxForModifiers", groupBoxForModifiers)
-        this.controlsForAdvancedHotkeys.addControl("AnyModifierCheckbox", anyModifierCheckbox)
         this.controlsForAdvancedHotkeys.addControl("ControlCheckbox", controlCheckbox)
         this.controlsForAdvancedHotkeys.addControl("ShiftCheckbox", shiftCheckbox)
         this.controlsForAdvancedHotkeys.addControl("AltCheckbox", altCheckbox)
@@ -59,6 +67,9 @@ class AdvancedHotkeyCraftingControl{
     }
 
     CreateHotkeyStateControls(){
+        if (this.destinationKeyMode = true){
+            return
+        }
         keyDownRadio := this.guiToAddTo.Add("Radio","Checked xs+95 ys+120", "When key down")
         keyUpRadio := this.guiToAddTo.Add("Radio",, "When key up")
 
@@ -90,28 +101,30 @@ class AdvancedHotkeyCraftingControl{
         return StrLower(this.controlsForAdvancedHotkeys.getControl("AvailableKeyNamesDropDown").Text)
     }
 
-    GetModifiers(){
+    GetModifiers() {
         hotkeyModifiers := ""
-        if (this.controlsForAdvancedHotkeys.getControl("AnyModifierCheckbox").Value = 1){
-            hotkeyModifiers .= "*"    
-        }
-        if (this.controlsForAdvancedHotkeys.getControl("ControlCheckbox").Value = 1){
-            hotkeyModifiers .= "^"
-        }
-        if (this.controlsForAdvancedHotkeys.getControl("ShiftCheckbox").Value = 1){
-            hotkeyModifiers .= "+"
-        }
-        if (this.controlsForAdvancedHotkeys.getControl("AltCheckbox").Value = 1){
-            hotkeyModifiers .= "!"
-        }
-        if (this.controlsForAdvancedHotkeys.getControl("WinCheckbox").Value = 1){
-            hotkeyModifiers .= "#"
-        }
-        if (this.controlsForAdvancedHotkeys.getControl("KeyUpRadio").Value = 1){
-            hotkeyModifiers .= " Up"
+
+        modifiers := Map(
+            "AnyModifierCheckbox", "*",
+            "ControlCheckbox", "^",
+            "ShiftCheckbox", "+",
+            "AltCheckbox", "!",
+            "WinCheckbox", "#",
+            "KeyUpRadio", " Up"
+        )
+
+        for controlName, symbol in modifiers {
+            control := this.controlsForAdvancedHotkeys.GetControl(controlName)
+            if (control != ""){
+                if (control.Value = 1){
+                    hotkeyModifiers .= symbol
+                }
+            }
         }
         return hotkeyModifiers
     }
+
+
     
     GetValue(){
         return this.getModifiers() . this.GetKey()

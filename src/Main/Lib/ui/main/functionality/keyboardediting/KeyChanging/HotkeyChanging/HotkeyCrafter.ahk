@@ -23,14 +23,14 @@ class HotkeyCrafter extends DomainSpecificGui{
         this.controlsForButtons := GuiControlsRegistry()
     }
 
-    Create(originalHotkey := ""){
+    Create(originalHotkey := "", destinationKeyMode := false){
         this.advancedModeCheckBox := this.Add("Checkbox", "xp yp+30", "Advanced mode")
         this.advancedModeCheckBox.onEvent("Click", (*) => this.advancedModeButtonChangedEvent())
 
         this.SimpleHotkeyCrafter := SimpleHotkeyCraftingControl(this, "w300 h50", HotkeyFormatConverter.convertFromFriendlyName(originalHotkey, " + "))
         this.SimpleHotkeyCrafter.SubscribeToHotkeySelectedEvent(ObjBindMethod(this, "updateSaveButtonStatus"))
         
-        this.advancedHotkeyCrafter := AdvancedHotkeyCraftingControl(this, "w370 h200 xp yp", this.controller.GetAvailableKeyNames())
+        this.advancedHotkeyCrafter := AdvancedHotkeyCraftingControl(this, "w370 h200 xp yp", this.controller.GetAvailableKeyNames(), destinationKeyMode)
         this.advancedHotkeyCrafter.SubscribeToHotkeySelectedEvent(ObjBindMethod(this, "updateSaveButtonStatus"))
         
         this.advancedHotkeyCrafter.hide()
