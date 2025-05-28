@@ -60,7 +60,7 @@ Class HotkeyInitializer{
         hotkeyKey := hotkeyInformation.getHotkeyName()
         newHotKey := hotkeyInformation.getNewHotkeyName()
         newHotKeyModifiers := hotkeyInformation.getNewHotkeyModifiers()
-        
+
         this.runHotkeyForKey(hotkeyKey, newHotKey, newHotKeyModifiers, enableHotkeys)
     }
 

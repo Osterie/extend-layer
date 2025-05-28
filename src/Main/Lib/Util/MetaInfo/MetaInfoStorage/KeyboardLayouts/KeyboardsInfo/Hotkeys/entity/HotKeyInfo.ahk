@@ -28,7 +28,7 @@ class HotKeyInfo{
         this.isObject := false
 
         if (IsSet(modifiers)){
-            this.modifiers := modifiers
+            this.setNewHotkeyModifiers(modifiers)
             this.toKey := toKey
         }
         else{
@@ -38,9 +38,8 @@ class HotKeyInfo{
 
     setNormalHotkeySingle(toKeyWithModifiers){
         modifiersAndHotkey := HotkeyFormatConverter.splitModifiersAndHotkey(toKeyWithModifiers)
-        this.modifiers := modifiersAndHotkey[1]
+        this.setNewHotkeyModifiers(modifiersAndHotkey[0])
         this.toKey := modifiersAndHotkey[2]
-
     }
 
     setInfoForSpecialHotKey(objectName, MethodName, parameters){
@@ -109,6 +108,13 @@ class HotKeyInfo{
     getNewHotkeyName(){
         return this.toKey
     }
+
+    setNewHotkeyModifiers(newModifiers){
+        newModifiers := StrReplace(newModifiers, "*", "")
+        newModifiers := StrReplace(newModifiers, " Up", "")
+        this.modifiers := newModifiers
+    }
+
     getNewHotkeyModifiers(){
         return this.modifiers
     }

@@ -11,9 +11,6 @@ class ActionCrafter extends HotkeyCrafter{
 
     saveEventSubscribers := Array()
 
-    specialActionRadio := ""
-    newKeyRadio := ""
-
     controlsForAllSpecialActionCrafting := ""
     controlsForSpecificSpecialActionCrafting := ""
 
@@ -51,10 +48,10 @@ class ActionCrafter extends HotkeyCrafter{
     }
 
     CreateCrafterTypeRadioButtons(){
-        this.specialActionRadio := this.Add("Radio", "Checked y30 x10", "Special Action")
-        this.specialActionRadio.OnEvent("Click", (*) => this.controller.doSpecialActionCrafting())
-        this.newKeyRadio := this.Add("Radio", "", "New Key")
-        this.newKeyRadio.OnEvent("Click", (*) => this.controller.doNewKeyActionCrafting())
+        specialActionRadio := this.Add("Radio", "Checked y30 x10", "Special Action")
+        specialActionRadio.OnEvent("Click", (*) => this.controller.doSpecialActionCrafting())
+        newKeyRadio := this.Add("Radio", "", "New Key")
+        newKeyRadio.OnEvent("Click", (*) => this.controller.doNewKeyActionCrafting())
     }
 
     SetSpecialActionAsActive(){
