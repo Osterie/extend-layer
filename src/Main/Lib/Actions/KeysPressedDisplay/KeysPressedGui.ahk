@@ -2,8 +2,11 @@
 
 #Include <ui\Main\util\GuiSizeChanger>
 
-#Include <Actions\Action>
+#Include <Util\InputReader>
 
+#Include <Actions\Action>
+; TODO add more text-editor like features, cursors, move cursors, mark text? etc.
+; TODO can create a text editor class, and this class is like that but for display purposes (show other people some text you type.)
 ; TODO use MVC design pattern.
 Class KeysPressedGui extends Action{
 
@@ -13,6 +16,8 @@ Class KeysPressedGui extends Action{
     abortKey := ""
     storedKeys := ""
     guiHidden := true
+
+    InputReader := InputReader()  ; Create an instance of InputReader to handle key presses
 
     ; TODO add method to change font size...
 
@@ -24,9 +29,6 @@ Class KeysPressedGui extends Action{
         this.showKeysPressedControl := this.GuiShowKeysPressed.Add("Text")
     }
 
-    ; The reason for the asterisk is because the Hotkey function is used to create hotkeys.
-    ; And when it is used with a function or class method, the function or class method are automatically given one argument, which is the name of the hotkey that was pressed.
-    ; Which is sad
     ToggleShowKeysPressed(){
         if (this.guiHidden){
             this.ShowKeysPressed()
@@ -37,7 +39,7 @@ Class KeysPressedGui extends Action{
     }
 
     ShowKeysPressed(){
-        this.CreateInputReader()
+        this.InputReader.CreateInputReader(this.OnKeyPressed.Bind(this))
         this.Show()
     }
 
@@ -49,7 +51,7 @@ Class KeysPressedGui extends Action{
     }
 
     HideKeysPressed(){
-        this.DestroyInputReader()
+        this.InputReader.DestroyInputReader()
         this.storedKeys := ""
         GuiSizeChanger.SetTextAndResize(this.showKeysPressedControl, this.storedKeys)
         this.Hide()
@@ -67,42 +69,9 @@ Class KeysPressedGui extends Action{
     IsHidden(){
         return this.guiHidden
     }
-
-    CreateInputReader() {
-        Loop 95
-        {
-            k := Chr(A_Index + 31)
-            k := (k = " ") ? "Space" : k
-            Hotkey("~*" k, this.OnKeyPressed.Bind(this), "on")
-        }
-    
-        Otherkeys := "Enter|BackSpace|ø|å|æ"
-        Loop Parse, Otherkeys, "|"
-        {
-            Hotkey("~*" A_LoopField, this.OnKeyPressed.Bind(this), "on")
-        }
-    }
-    
-    DestroyInputReader(){
-        Loop 95
-        {
-            k := Chr(A_Index + 31)
-            k := (k = " ") ? "Space" : k
-            Hotkey("~*" k , , "off")
-        }
-    
-        Otherkeys := "Enter|BackSpace|ø|å|æ"
-        Loop Parse, Otherkeys, "|"
-        {
-            Hotkey("~*" A_LoopField , , "off")
-        }
-    }
-
       
     OnKeyPressed(self){
         try {
-            stored := "hello`nworld`nthis is a test"
-
             key := this.ValidateKeyPressed(A_ThisHotKey)
     
             if (key == "backspace"){
