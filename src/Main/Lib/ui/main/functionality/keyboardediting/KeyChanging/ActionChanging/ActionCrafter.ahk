@@ -17,8 +17,8 @@ class ActionCrafter extends HotkeyCrafter{
     __New(controller){
         super.__New(controller)
         this.Opt("+Resize +MinSize840x580")
-        this.controlsForAllSpecialActionCrafting := guiControlsRegistry()
-        this.controlsForSpecificSpecialActionCrafting := guiControlsRegistry()
+        this.controlsForAllSpecialActionCrafting := GuiControlsRegistry()
+        this.controlsForSpecificSpecialActionCrafting := GuiControlsRegistry()
     }
 
     Create(){

@@ -14,8 +14,8 @@ class AdvancedHotkeyCraftingControl{
     ; TODO this gui should know about availabkelKeyNames himself?
     __New(guiToAddTo, position, availableKeyNames){
         this.guiToAddTo := guiToAddTo
-        this.controlsForAdvancedHotkeys := guiControlsRegistry()
-        this.controlsForModifiers := guiControlsRegistry()
+        this.controlsForAdvancedHotkeys := GuiControlsRegistry()
+        this.controlsForModifiers := GuiControlsRegistry()
         this.hotkeySavedEventSubscribers := Array()
 
         groupBoxForAdvancedHotkeyCrafting := this.guiToAddTo.Add("GroupBox", "Section " . position, "Advanced hotkey crafting:")

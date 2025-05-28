@@ -20,7 +20,7 @@ class HotkeyCrafter extends DomainSpecificGui{
         super.__New(, "HotkeyCrafterGui")
         
         this.controller := controller
-        this.controlsForButtons := guiControlsRegistry()
+        this.controlsForButtons := GuiControlsRegistry()
     }
 
     Create(originalHotkey := ""){

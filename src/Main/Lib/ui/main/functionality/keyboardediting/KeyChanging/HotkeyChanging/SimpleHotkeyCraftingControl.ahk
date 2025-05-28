@@ -11,7 +11,7 @@ class SimpleHotkeyCraftingControl{
     hotkeySavedEventSubscribers := ""
 
     __New(GuiToAddTo, position, originalHotkey){
-        this.controlsForSimpleHotkeys := guiControlsRegistry()
+        this.controlsForSimpleHotkeys := GuiControlsRegistry()
         this.GuiToAddTo := GuiToAddTo
         this.hotkeySavedEventSubscribers := Array()
         ; msgbox(originalHotkey)
