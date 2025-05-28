@@ -18,7 +18,7 @@ Class KeysPressedGui extends Action{
 
     CreateGui(){
         this.GuiShowKeysPressed := Gui()
-        this.GuiShowKeysPressed.Opt("-Caption +AlwaysOnTop +Owner +LastFound")
+        this.GuiShowKeysPressed.Opt("-Caption +AlwaysOnTop +Owner +LastFound +Disabled")
         this.GuiShowKeysPressed.BackColor := "EEAA99"
         this.GuiShowKeysPressed.SetFont("s40 w70 q4", "Cascadia Code")
         this.showKeysPressedControl := this.GuiShowKeysPressed.Add("Text")
@@ -43,7 +43,9 @@ Class KeysPressedGui extends Action{
 
     Show(){
         this.guiHidden := false
-        this.GuiShowKeysPressed.Show()
+        
+        WinSetAlwaysOnTop 1, this.GuiShowKeysPressed
+        this.GuiShowKeysPressed.Show("NoActivate")
     }
 
     HideKeysPressed(){
