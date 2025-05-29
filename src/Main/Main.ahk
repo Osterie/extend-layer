@@ -19,6 +19,11 @@
 
 #Include <Util\MetaInfo\MetaInfoReading\ActionSettingsReader>
 
+; #Include <Updater\GithubReleaseChecker>
+
+; ; Example usage
+; releaseChecker := GithubReleaseChecker()
+
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
 ; |--------------------------------------------------|

@@ -1,6 +1,10 @@
+#Requires AutoHotkey v2.0
+
 class FilePaths{
 
     static PATH_TO_THEMES := "../../config/Themes.json"
+
+    static PATH_TO_LOGS := "../../logs"
 
     static PATH_TO_META_INI_FILE := "../../config/meta.ini"
 
@@ -15,6 +19,10 @@ class FilePaths{
     static PATH_TO_EMPTY_PROFILE := "../../config/PresetProfiles/EmptyProfile"
     static PATH_TO_EMPTY_KEYBOARD_PROFILE := "../../config/PresetProfiles/EmptyProfile/Keyboards.json"
     static PATH_TO_EMPTY_SETTINGS_PROFILE := "../../config/PresetProfiles/EmptyProfile/ClassObjects.ini"
+
+    static GetPathToLogs(){
+        return this.PATH_TO_LOGS
+    }
 
     static GetThemes(){
         return this.PATH_TO_THEMES

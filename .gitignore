@@ -2,6 +2,7 @@ config/UserProfiles/*
 !config/UserProfiles/Default
 tests/*
 
+logs
 TODO.ahk
 READMETODO.md
 assets/imageSearchImages/*

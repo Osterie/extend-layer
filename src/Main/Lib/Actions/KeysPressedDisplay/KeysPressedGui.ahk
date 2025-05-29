@@ -12,15 +12,12 @@ Class KeysPressedGui extends Action{
 
     GuiShowKeysPressed := ""
     showKeysPressedControl := ""
-    InputReaderInstance := ""
-    abortKey := ""
     storedKeys := ""
     guiHidden := true
 
     InputReader := InputReader()  ; Create an instance of InputReader to handle key presses
 
     ; TODO add method to change font size...
-
     CreateGui(){
         this.GuiShowKeysPressed := Gui()
         this.GuiShowKeysPressed.Opt("-Caption +AlwaysOnTop +Owner +LastFound +Disabled")
