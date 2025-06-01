@@ -19,10 +19,13 @@
 
 #Include <Util\MetaInfo\MetaInfoReading\ActionSettingsReader>
 
-; #Include <Updater\GithubReleaseChecker>
+; #Include <Updater\AutoUpdater>
+
 
 ; ; Example usage
-; releaseChecker := GithubReleaseChecker("Osterie", "extend-layer", "v0.4.3-alpha")
+; autoUpdater_ := AutoUpdater()
+
+; autoUpdater_.checkForUpdates()
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|

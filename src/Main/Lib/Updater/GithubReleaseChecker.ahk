@@ -9,6 +9,7 @@
 #Include <Util\Formaters\TimestampConverter>
 
 
+
 class GithubReleaseChecker {
 
     RestClient := RestClient()  ; Instance of RestClient to handle HTTP requests
@@ -26,7 +27,6 @@ class GithubReleaseChecker {
         latestVersion := release.getVersion()
 
         if (currentVersion = latestVersion) {
-            MsgBox("You are using the latest version: " currentVersion)
             return true
         }
         else{

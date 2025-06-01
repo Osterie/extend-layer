@@ -6,6 +6,10 @@ class FilePaths{
 
     static PATH_TO_LOGS := "../../logs"
 
+    static PATH_TO_UPDATE_MANIFEST := "../../update-manifest.json"
+
+    static PATH_TO_VERSION := "../../config/Version.json"
+
     static PATH_TO_META_INI_FILE := "../../config/meta.ini"
 
     static DEFAULT_PROFILE := "Default"
@@ -22,6 +26,14 @@ class FilePaths{
 
     static GetPathToLogs(){
         return this.PATH_TO_LOGS
+    }
+
+    static getPathToVersion(){
+        return this.PATH_TO_VERSION
+    }
+
+    static getPathToUpdateManifest(){
+        return this.PATH_TO_UPDATE_MANIFEST
     }
 
     static GetThemes(){
