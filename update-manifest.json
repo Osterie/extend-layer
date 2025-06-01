@@ -1,0 +1,17 @@
+{
+  "overwrite": [
+    "assets",
+    "config",
+    "resources",
+    "scripts",
+    "src",
+    "README.md",
+    "Run_this.ahk",
+    "update-manifest.json"
+  ],
+  "skip": [
+    "config/UserProfiles",
+    "config/meta.ini",
+    "logs"
+  ]
+}

@@ -22,7 +22,7 @@
 ; #Include <Updater\GithubReleaseChecker>
 
 ; ; Example usage
-; releaseChecker := GithubReleaseChecker()
+; releaseChecker := GithubReleaseChecker("Osterie", "extend-layer", "v0.4.3-alpha")
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
