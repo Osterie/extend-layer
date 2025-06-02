@@ -15,27 +15,45 @@ class GithubReleaseChecker {
     RestClient := RestClient()  ; Instance of RestClient to handle HTTP requests
     Logger := Logger.getInstance()
     TimestampConverter := TimestampConverter()  ; Instance of TimestampConverter to handle timestamp formatting
+    GithubRelease := ""  ; Instance of GithubRelease to handle release information
+
+    owner := ""
+    repo := ""  ; The GitHub repository owner and name
+    currentVersion := ""  ; The current version of the software
 
     __New(owner, repo, currentVersion) {
-        this.CheckForUpdates(owner, repo, currentVersion)
+        this.owner := owner
+        this.repo := repo
+        this.currentVersion := currentVersion
+
+        if (this.owner = "" || this.repo = "" || this.currentVersion = "") {
+            throw Error("Owner, repo, and current version must be provided.")
+        }
+
+        this.GithubRelease := this.GetLatestReleaseInfo()
     }
 
-    CheckForUpdates(owner, repo, currentVersion) {
-        release := this.getLatestReleaseInfo(owner, repo)
+    updateAvailable() {
+        latestVersion := this.GetLatestVersionInfo()
 
-        currentVersion := "v0.4.3-alpha"  ; Example current version, replace with actual current version retrieval logic
-        latestVersion := release.getVersion()
-
-        if (currentVersion = latestVersion) {
-            return true
+        if (this.currentVersion = latestVersion) {
+            return false
         }
         else{
-            MsgBox("A new version is available: " latestVersion " (current: " currentVersion ")")
+            return true
         }
     }
 
-    GetLatestReleaseInfo(owner, repo) {
-        response := this.RestClient.Get("https://api.github.com/repos/" owner "/" repo "/releases/latest")
+    GetDownloadUrl(){
+        return this.GithubRelease.getZipDownloadUrl()
+    }
+
+    GetLatestVersionInfo() {
+        return this.GithubRelease.getVersion()
+    }
+
+    GetLatestReleaseInfo() {
+        response := this.RestClient.Get("https://api.github.com/repos/" this.owner "/" this.repo "/releases/latest")
         if (response.status != 200) {
             this.Logger.logError("Failed to fetch release information. Status: " response.status)
             throw Error("Failed to fetch release information. Status: " response.status)

@@ -25,7 +25,7 @@
 ; ; Example usage
 ; autoUpdater_ := AutoUpdater()
 
-; autoUpdater_.checkForUpdates()
+autoUpdater_.checkForUpdates()
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|

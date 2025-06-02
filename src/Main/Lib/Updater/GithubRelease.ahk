@@ -47,4 +47,13 @@ class GithubRelease {
     getReleaseDateCompact() {
         return this.TimestampConverter.ISOToCompact(this.releaseDate)
     }
+
+    getZipDownloadUrl() {
+        try {
+            return this.releaseInfo["zipball_url"]
+        } catch Error as e {
+            this.Logger.logError("Error retrieving zip download URL: " e.message, e.file, e.line)
+            throw ValueError("Error retrieving zip download URL: " e.message)
+        }
+    }
 }
