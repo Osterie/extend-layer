@@ -2,7 +2,7 @@
 
 class UnZipper{
  
-    Unzip(zipFilePath, destDir) {
+    Unzip(zipFilePath, destDir, replace := false) {
         shell := ComObject("Shell.Application")
         zip := shell.NameSpace(zipFilePath)
         if (!zip){
@@ -15,7 +15,14 @@ class UnZipper{
         folder := shell.NameSpace(destDir)
 
         ; Copy the contents of the ZIP file to the destination directory
-        folder.CopyHere(zip.Items(), 4) ; 4 = No progress UI
+
+        options := 4
+
+        if (replace) {
+            options += 16 ; 16 = Allow replacing existing files
+        }
+        MsgBox(options)
+        folder.CopyHere(zip.Items(), options) ; 4 = No progress UI
         
         ; https://learn.microsoft.com/en-us/windows/win32/shell/folder-copyhere
 
