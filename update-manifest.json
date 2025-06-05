@@ -10,8 +10,8 @@
     "update-manifest.json"
   ],
   "skip": [
-    "config/UserProfiles",
-    "config/meta.ini",
+    "config\\UserProfiles",
+    "config\\meta.ini",
     "logs"
   ]
 }

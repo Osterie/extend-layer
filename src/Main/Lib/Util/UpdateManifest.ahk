@@ -32,6 +32,7 @@ class UpdateManifest {
 
         try{
             overwritePaths := updateManifest["overwrite"]
+            overwritePaths := this.FormatPaths(overwritePaths)
         }
         catch {
             this.Logger.logError("Could not read 'overwrite' paths from UpdateManifest.")
@@ -62,6 +63,7 @@ class UpdateManifest {
 
         try{
             skipPaths := updateManifest["skip"]
+            skipPaths := this.FormatPaths(skipPaths)
         }
         catch {
             this.Logger.logError("Could not read 'skip' paths from UpdateManifest.")
@@ -117,5 +119,34 @@ class UpdateManifest {
         }
 
         return jsonUpdateManifestAsJson
+    }
+
+    FormatPaths(paths){
+        Loop paths.Length {
+            paths[A_Index] := this.NormalizePath(paths[A_Index])
+        }
+        return paths
+    }
+
+    ; Remove trailing backslashes (except for root like "C:\")
+    ; Replace forward slashes with backslashes
+    ; Replace double backslashes with single backslash
+    NormalizePath(path) {
+        pathLengthBefore := StrLen(path)
+        if (InStr(path, "/")){
+            this.Logger.logInfo("Path contains forward slashes, normalizing: " . path)
+        }
+        path := StrReplace(path, "/", "\") ; Replace forward slashes with backslashes
+        path := StrReplace(path, "\\", "\") ; Replace double backslashes with single backslash
+
+        while (StrLen(path) > 3 && SubStr(path, -1) == "\"){
+            path := SubStr(path, 1, -1)
+        }
+        
+        pathLengthAfter := StrLen(path)
+        if (pathLengthAfter < pathLengthBefore) {
+            this.Logger.logInfo("Normalized path: " . path)
+        }
+        return path
     }
 }
