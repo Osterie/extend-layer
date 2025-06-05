@@ -50,22 +50,28 @@ class Logger {
     ; Checks if the log directory exists, creates it if not,
     ; and ensures the log file does not exceed a certain size
     writeToLog(msg) {
-        this.checkAndCreateLogDir()
         this.ensureLogFileSize()
         FileAppend(msg "`n", this.logFile)
     }
-
+    
     ; Check if the log directory exists, if not, creates it
     checkAndCreateLogDir() {
         if !DirExist(this.logDir) {
             DirCreate(this.logDir)
+            FileAppend("", this.logFile)
         }
     }
-
+    
     ; Ensure the log file does not exceed a certain size (5MB)
     ; If it does, delete the file
     ensureLogFileSize() {
-        currentSize := FileGetSize(this.logFile, "M")
+        this.checkAndCreateLogDir()
+        try{
+            currentSize := FileGetSize(this.logFile, "M")
+        } catch {
+            currentSize := 0
+            FileAppend("", this.logFile) ; Create the file if it doesn't exist
+        }
         if (currentSize > 5) { ; 5MB
             FileDelete(this.logFile)
         }

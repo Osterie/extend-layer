@@ -10,6 +10,7 @@
 Class LayerController extends Action{
     
     layers := Map()
+    layers.Default := []
     activeLayer := 0
     showLayerIndicatorOnAllMonitors := 0
     ; 0 is default, show layer indicator in bottom left corner of the screen
@@ -90,7 +91,8 @@ Class LayerController extends Action{
 
     showLayerIndicator(layer){
         this.activeLayer := layer
-        layerIndicatorInstances := this.layers.Get(layer)
+
+        layerIndicatorInstances := this.layers.Get(this.activeLayer)
         if (layerIndicatorInstances == 0){
             MsgBox("Layer indicator instance not found for layer: " . layer)
             return
