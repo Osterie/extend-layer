@@ -14,6 +14,8 @@ class FilePaths{
 
     static DEFAULT_PROFILE := "Default"
 
+    static ABSOLUTE_PATH_TO_ROOT := A_ScriptDir . "/../../"
+
     static OBJECT_INFO := "../../config/ObjectInfo.json"
     static KEY_NAMES := "../../resources/keyNames.txt"
 
@@ -26,6 +28,10 @@ class FilePaths{
 
     static GetPathToLogs(){
         return this.PATH_TO_LOGS
+    }
+
+    static GetAbsolutePathToRoot(){
+        return this.ABSOLUTE_PATH_TO_ROOT
     }
 
     static getPathToVersion(){

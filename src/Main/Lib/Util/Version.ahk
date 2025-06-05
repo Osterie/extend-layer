@@ -73,4 +73,25 @@ class Version {
 
         return jsonVersionObject
     }
+
+    UpdateVersion(newVersion) {
+        if (newVersion = "") {
+            this.Logger.logError("New version cannot be empty.")
+            throw ValueError("New version cannot be empty.")
+        }
+        this.currentVersion := newVersion
+
+
+        jsonVersionObject := Map()
+        jsonVersionObject["version"] := newVersion
+
+        try {
+            FileDelete(FilePaths.getPathToVersion())
+            FileAppend(jxon_dump(jsonVersionObject), FilePaths.getPathToVersion(), "UTF-8")
+        }
+        catch {
+            this.Logger.logError("Could not write the new version to the file: " . FilePaths.getPathToVersion())
+            throw ValueError("Could not write the new version to the file: " . FilePaths.getPathToVersion())
+        }
+    }
 }
