@@ -129,9 +129,29 @@ class AutoUpdater {
             ; If the overwrite was successful, then copy the files from the temporary location to the current version location.
             ; MsgBox("Copying files from temporary location: " temporaryLocation " to current version location: " FilePaths.GetAbsolutePathToRoot())
 
+            ; todo TRY CATCH. CATCH
             ; DirCopy(temporaryLocation, FilePaths.GetAbsolutePathToRoot(), true) ; true = overwrite
-            this.Logger.logInfo("Successfully updated current version from: " pathToUnzippedFiles " to: " FilePaths.GetAbsolutePathToRoot())
-            this.Version.UpdateVersion(this.releaseChecker.GetLatestVersionInfo())
+            ; this.Version.UpdateVersion(this.releaseChecker.GetLatestVersionInfo())
+
+            ; updaterExe := FilePaths.GetAbsolutePathToRoot() . "\src\Main\Lib\Updater\AutoUpdater.exe"
+            ; Run, "%updaterExe%" "%temporaryLocation%" "% FilePaths.GetAbsolutePathToRoot() %" "%A_ScriptFullPath%"
+            ; ExitApp
+
+            ; At end of your update function
+
+            ; if success {
+                updaterExe := A_ScriptDir  "\Lib\Updater\Updater.exe"
+                mainScript := A_ScriptFullPath
+
+                ; MsgBox(updaterExe)
+                ; MsgBox(FileExist(updaterExe) ? "Updater executable found." : "Updater executable not found. Please check the path.")
+                ; MsgBox(FileExist(temporaryLocation) ? "Temporary location found." : "Temporary location not found. Please check the path.")
+                ; MsgBox(FileExist(FilePaths.GetAbsolutePathToRoot()) ? "Current version location found." : "Current version location not found. Please check the path.")
+                ; MsgBox(FileExist(mainScript) ? "Main script found." : "Main script not found. Please check the path.")
+
+                Run updaterExe ' "' temporaryLocation '" "' FilePaths.GetAbsolutePathToRoot() '" "' mainScript '" "' this.releaseChecker.GetLatestVersionInfo() '"'
+                ExitApp
+            ; }
 
         }
         else{
