@@ -13,21 +13,43 @@ destinationDir := A_Args[2]
 mainScript     := A_Args[3]
 latestVersionInfo := A_Args[4]
 
-pathToVersion := "..\..\..\..\config\Version.json"
+pathToVersion := destinationDir . "\config\Version.json"
+
+if !FileExist(sourceDir) {
+    MsgBox "❌ Source directory does not exist: " sourceDir
+    ExitApp
+}
+if !FileExist(destinationDir) {
+    MsgBox "❌ Destination directory does not exist: " destinationDir
+    ExitApp
+}
+if !FileExist(mainScript) {
+    MsgBox "❌ Main script does not exist: " mainScript
+    ExitApp
+}
+
 
 ; Optional: wait to ensure the main script has exited
 Sleep 2000
 
 try {
     DirCopy(sourceDir, destinationDir, true) ; true = overwrite
+} 
+catch Error as err {
+    MsgBox "❌ Update failed:`n" err.Message
+    ExitApp
+}
 
+try{
     jsonVersionObject := Map()
     jsonVersionObject["version"] := latestVersionInfo
-    FileDelete(pathToVersion)
+    if (FileExist(pathToVersion)){
+        FileDelete(pathToVersion)
+    }
     FileAppend(jxon_dump(jsonVersionObject), pathToVersion, "UTF-8")
-
-} catch Error as err {
-    MsgBox "❌ Update failed:`n" err.Message
+}
+catch Error  as err {
+    MsgBox "❌ Failed to update version information:`n" err.Message
     ExitApp
 }
 

@@ -20,7 +20,14 @@ class AutoUpdater {
 
     
     __New() {
-        currentVersion := this.GetCurrentVersion()
+        currentVersion := ""
+        try{
+            currentVersion := this.GetCurrentVersion()
+        }
+        catch{
+            this.Logger.logError("Failed to get current version. Using default version: v0.0.0", "AutoUpdater.ahk", A_LineNumber)
+            currentVersion := "v0.0.0"  ; Default version if current version cannot be retrieved
+        }
         this.releaseChecker := GithubReleaseChecker("Osterie", "extend-layer", currentVersion)
     }
 
@@ -149,8 +156,42 @@ class AutoUpdater {
                 ; MsgBox(FileExist(FilePaths.GetAbsolutePathToRoot()) ? "Current version location found." : "Current version location not found. Please check the path.")
                 ; MsgBox(FileExist(mainScript) ? "Main script found." : "Main script not found. Please check the path.")
 
-                Run updaterExe ' "' temporaryLocation '" "' FilePaths.GetAbsolutePathToRoot() '" "' mainScript '" "' this.releaseChecker.GetLatestVersionInfo() '"'
-                ExitApp
+                ; tempUpdaterPath := A_Temp "\Updater.exe"
+                ; FileCopy updaterExe, tempUpdaterPath, true
+
+                ; Run tempUpdaterPath ' "' tempDataPath '" "' currentInstallPath '" "' mainScript '" "' version '"'
+                ; ExitApp
+
+
+            ; Define original and temporary paths
+            originalUpdater := A_ScriptDir  "\Lib\Updater\Updater.exe"
+            tempUpdater := A_Temp "\Updater.exe"
+
+            ; Copy the updater to a safe location (Temp folder)
+            FileCopy originalUpdater, tempUpdater, true ; true = overwrite if exists
+
+            ; Build command-line arguments
+            mainScript := A_ScriptFullPath
+            rootPath := FilePaths.GetAbsolutePathToRoot()
+            version := this.releaseChecker.GetLatestVersionInfo()
+
+            ; Confirm all critical files exist
+            if !FileExist(tempUpdater) {
+                MsgBox "Failed to copy Updater.exe to temp directory."
+                return
+            }
+
+            ; Optional debug
+            ; MsgBox "Running updater from: " tempUpdater "`nWith arguments:`n" temporaryLocation "`n" rootPath "`n" mainScript "`n" version
+
+            ; Run updater from temp and exit current app
+            Run '"' tempUpdater '" "' temporaryLocation '" "' rootPath '" "' mainScript '" "' version '"'
+            ExitApp
+
+
+
+                ; Run updaterExe ' "' temporaryLocation '" "' FilePaths.GetAbsolutePathToRoot() '" "' mainScript '" "' this.releaseChecker.GetLatestVersionInfo() '"'
+                ; ExitApp
             ; }
 
         }
