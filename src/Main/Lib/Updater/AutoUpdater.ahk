@@ -185,7 +185,9 @@ class AutoUpdater {
             ; MsgBox "Running updater from: " tempUpdater "`nWith arguments:`n" temporaryLocation "`n" rootPath "`n" mainScript "`n" version
 
             ; Run updater from temp and exit current app
-            Run '"' tempUpdater '" "' temporaryLocation '" "' rootPath '" "' mainScript '" "' version '"'
+
+            pathToVersionFile := FilePaths.GetAbsolutePathToRoot() . "config\Version.json"
+            Run '"' tempUpdater '" "' temporaryLocation '" "' rootPath '" "' mainScript '" "' version '" "' pathToVersionFile '"'
             ExitApp
 
 

@@ -2,9 +2,9 @@
 #SingleInstance Force
 #NoTrayIcon
 
-; Only run in compiled mode and with 3 arguments
-if !A_IsCompiled || A_Args.Length != 4 {
-    MsgBox "This script should only be run in compiled mode with 3 arguments."
+; Only run in compiled mode and with 5 arguments
+if !A_IsCompiled || A_Args.Length != 5 {
+    MsgBox "This script should only be run in compiled mode with 5 arguments."
     ExitApp
 }
 
@@ -12,8 +12,7 @@ sourceDir     := A_Args[1]
 destinationDir := A_Args[2]
 mainScript     := A_Args[3]
 latestVersionInfo := A_Args[4]
-
-pathToVersion := destinationDir . "\config\Version.json"
+pathToVersionFile := A_Args[5]
 
 if !FileExist(sourceDir) {
     MsgBox "❌ Source directory does not exist: " sourceDir
@@ -43,10 +42,10 @@ catch Error as err {
 try{
     jsonVersionObject := Map()
     jsonVersionObject["version"] := latestVersionInfo
-    if (FileExist(pathToVersion)){
-        FileDelete(pathToVersion)
+    if (FileExist(pathToVersionFile)){
+        FileDelete(pathToVersionFile)
     }
-    FileAppend(jxon_dump(jsonVersionObject), pathToVersion, "UTF-8")
+    FileAppend(jxon_dump(jsonVersionObject), pathToVersionFile, "UTF-8")
 }
 catch Error  as err {
     MsgBox "❌ Failed to update version information:`n" err.Message
