@@ -56,7 +56,7 @@ class UpdateDialog extends DomainSpecificGui{
         ; TODO update.
         autoUpdater_ := AutoUpdater()
         try{
-            ; autoUpdater_.checkForUpdates()
+            autoUpdater_.checkForUpdates()
         }
         catch Error as e{
             this.Logger.logError("Update failed: " e.message, e.file, e.line)

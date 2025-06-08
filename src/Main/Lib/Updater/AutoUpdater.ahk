@@ -25,8 +25,8 @@ class AutoUpdater {
             currentVersion := this.GetCurrentVersion()
         }
         catch{
-            this.Logger.logError("Failed to get current version. Using default version: v0.0.0", "AutoUpdater.ahk", A_LineNumber)
-            currentVersion := "v0.0.0"  ; Default version if current version cannot be retrieved
+            this.Logger.logError("Failed to get current version. Using default version: unknown", "AutoUpdater.ahk", A_LineNumber)
+            currentVersion := "unknown"  ; Default version if current version cannot be retrieved
         }
         this.releaseChecker := GithubReleaseChecker("Osterie", "extend-layer", currentVersion)
     }
@@ -50,7 +50,13 @@ class AutoUpdater {
     
             downloadPath := A_Temp "\extend-layer-update.zip"
             unzipLocation := A_Temp "\extend-layer-update"
+            if (FileExist(downloadPath)) {
+                DirDelete(downloadPath) ; Delete the old download if it exists
+            }
             Download(downloadUrl, downloadPath)
+            if (FileExist(unzipLocation)) {
+                DirDelete(unzipLocation, true) ; Delete the old unzip location if it exists
+            }
             this.UnZipper.Unzip(downloadPath, unzipLocation, true) ; Unzip to the script directory
             
             ; try{
@@ -193,6 +199,10 @@ class AutoUpdater {
                     }
                 } else {
                     MsgBox "Updater process not found."
+                }
+
+                if (FileExist(tempUpdater)) {
+                    FileDelete tempUpdater ; Delete the temporary updater if it exists
                 }
 
                 FileCopy originalUpdater, tempUpdater, true ; true = overwrite if exists
