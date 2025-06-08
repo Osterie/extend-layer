@@ -32,7 +32,20 @@ if !FileExist(mainScript) {
 Sleep 2000
 
 try {
+    DetectHiddenWindows("on")
+    controlScriptIsRunning := false
+    If WinExist("controlScript.exe"){
+        controlScriptIsRunning := true
+        WinWaitClose("controlScript.exe", "", 5000) ; Wait for it to close, timeout after 5 seconds
+    }
+
     DirCopy(sourceDir, destinationDir, true) ; true = overwrite
+
+    if (controlScriptIsRunning) {
+        ; Restart the control script if it was running
+        MsgBox(A_ScriptDir "\controlScript.exe" " will be restarted.")
+        Run A_ScriptDir "\controlScript.exe"
+    }
 } 
 catch Error as err {
     MsgBox "❌ Update failed:`n" err.Message
