@@ -4,7 +4,7 @@
 
 ; Only run in compiled mode and with 6 arguments
 if !A_IsCompiled || A_Args.Length != 6 {
-    MsgBox "This script should only be run in compiled mode with 6 arguments."
+    MsgBox "Update failed. This script should only be run in compiled mode with 6 arguments."
     ExitApp
 }
 
@@ -16,15 +16,15 @@ pathToVersionFile := A_Args[5]
 pathToControlScript := A_Args[6]
 
 if !FileExist(sourceDir) {
-    MsgBox "❌ Source directory does not exist: " sourceDir
+    MsgBox "Update failed. ❌ Source directory does not exist: " sourceDir
     ExitApp
 }
 if !FileExist(destinationDir) {
-    MsgBox "❌ Destination directory does not exist: " destinationDir
+    MsgBox "Update failed. ❌ Destination directory does not exist: " destinationDir
     ExitApp
 }
 if !FileExist(mainScript) {
-    MsgBox "❌ Main script does not exist: " mainScript
+    MsgBox "Update failed. ❌ Main script does not exist: " mainScript
     ExitApp
 }
 
@@ -40,8 +40,6 @@ try {
     if pid {
         controlScriptIsRunning := true
 
-        MsgBox "Closing controlScript (PID: " pid ")"
-
         ; Attempt to close the window gracefully
         ProcessClose("controlScript.exe")
 
@@ -49,24 +47,20 @@ try {
         Loop 10 {
             Sleep 500
             if !ProcessExist("controlScript.exe") {
-                MsgBox "controlScript closed successfully."
                 break
             }
         }
 
         ; Check again after waiting
         if ProcessExist("controlScript.exe") {
-            MsgBox "controlScript did not close in time."
             throw Error("controlScript did not close in time.")
         }
-    } else {
-        MsgBox "controlScript process not found."
-    }
+    } 
+
     DirCopy(sourceDir, destinationDir, true) ; true = overwrite
 
     if (controlScriptIsRunning) {
         ; Restart the control script if it was running
-        MsgBox(pathToControlScript " will be restarted.")
         try{
             Run pathToControlScript
         }

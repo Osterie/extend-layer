@@ -51,7 +51,7 @@ class AutoUpdater {
             downloadPath := A_Temp "\extend-layer-update.zip"
             unzipLocation := A_Temp "\extend-layer-update"
             if (FileExist(downloadPath)) {
-                DirDelete(downloadPath) ; Delete the old download if it exists
+                FileDelete(downloadPath) ; Delete the old download if it exists
             }
             Download(downloadUrl, downloadPath)
             if (FileExist(unzipLocation)) {
@@ -178,7 +178,6 @@ class AutoUpdater {
 
                 pid := ProcessExist("Updater.exe")
                 if pid {
-                    MsgBox "Closing Updater (PID: " pid ")"
 
                     ; Attempt to close the window gracefully
                     ProcessClose("Updater.exe")
@@ -187,19 +186,15 @@ class AutoUpdater {
                     Loop 10 {
                         Sleep 500
                         if !ProcessExist("Updater.exe") {
-                            MsgBox "Updater closed successfully."
                             break
                         }
                     }
 
                     ; Check again after waiting
                     if ProcessExist("Updater.exe") {
-                        MsgBox "Updater did not close in time."
                         throw Error("Updater did not close in time.")
                     }
-                } else {
-                    MsgBox "Updater process not found."
-                }
+                } 
 
                 if (FileExist(tempUpdater)) {
                     FileDelete tempUpdater ; Delete the temporary updater if it exists
@@ -218,8 +213,8 @@ class AutoUpdater {
 
             ; Confirm all critical files exist
             if !FileExist(tempUpdater) {
-                MsgBox "Failed to copy Updater.exe to temp directory."
-                return
+                this.Logger.logError("Failed to copy Updater.exe to temp directory.")
+                throw Error("Failed to copy Updater.exe to temp directory.")
             }
 
             ; Optional debug
