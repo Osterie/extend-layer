@@ -167,8 +167,39 @@ class AutoUpdater {
             originalUpdater := A_ScriptDir  "\Lib\Updater\Updater.exe"
             tempUpdater := A_Temp "\Updater.exe"
 
-            ; Copy the updater to a safe location (Temp folder)
-            FileCopy originalUpdater, tempUpdater, true ; true = overwrite if exists
+            try{
+                DetectHiddenWindows true
+
+                pid := ProcessExist("Updater.exe")
+                if pid {
+                    MsgBox "Closing Updater (PID: " pid ")"
+
+                    ; Attempt to close the window gracefully
+                    ProcessClose("Updater.exe")
+
+                    ; Wait up to 5 seconds (500 ms × 10) for process to exit
+                    Loop 10 {
+                        Sleep 500
+                        if !ProcessExist("Updater.exe") {
+                            MsgBox "Updater closed successfully."
+                            break
+                        }
+                    }
+
+                    ; Check again after waiting
+                    if ProcessExist("Updater.exe") {
+                        MsgBox "Updater did not close in time."
+                        throw Error("Updater did not close in time.")
+                    }
+                } else {
+                    MsgBox "Updater process not found."
+                }
+
+                FileCopy originalUpdater, tempUpdater, true ; true = overwrite if exists
+            }
+            catch Error as e{
+                throw e
+            }
 
             ; Build command-line arguments
             mainScript := A_ScriptFullPath
@@ -187,7 +218,8 @@ class AutoUpdater {
             ; Run updater from temp and exit current app
 
             pathToVersionFile := FilePaths.GetAbsolutePathToRoot() . "config\Version.json"
-            Run '"' tempUpdater '" "' temporaryLocation '" "' rootPath '" "' mainScript '" "' version '" "' pathToVersionFile '"'
+            pathToControlScript := FilePaths.GetAbsolutePathToRoot() . "src\controlScript.exe"
+            Run '"' tempUpdater '" "' temporaryLocation '" "' rootPath '" "' mainScript '" "' version '" "' pathToVersionFile '" "' pathToControlScript '"'
             ExitApp
 
 

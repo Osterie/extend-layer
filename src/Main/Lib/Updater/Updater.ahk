@@ -2,9 +2,9 @@
 #SingleInstance Force
 #NoTrayIcon
 
-; Only run in compiled mode and with 5 arguments
-if !A_IsCompiled || A_Args.Length != 5 {
-    MsgBox "This script should only be run in compiled mode with 5 arguments."
+; Only run in compiled mode and with 6 arguments
+if !A_IsCompiled || A_Args.Length != 6 {
+    MsgBox "This script should only be run in compiled mode with 6 arguments."
     ExitApp
 }
 
@@ -13,6 +13,7 @@ destinationDir := A_Args[2]
 mainScript     := A_Args[3]
 latestVersionInfo := A_Args[4]
 pathToVersionFile := A_Args[5]
+pathToControlScript := A_Args[6]
 
 if !FileExist(sourceDir) {
     MsgBox "❌ Source directory does not exist: " sourceDir
@@ -32,19 +33,47 @@ if !FileExist(mainScript) {
 Sleep 2000
 
 try {
-    DetectHiddenWindows("on")
-    controlScriptIsRunning := false
-    If WinExist("controlScript.exe"){
-        controlScriptIsRunning := true
-        WinWaitClose("controlScript.exe", "", 5000) ; Wait for it to close, timeout after 5 seconds
-    }
 
+
+    controlScriptIsRunning := false
+    pid := ProcessExist("controlScript.exe")
+    if pid {
+        controlScriptIsRunning := true
+
+        MsgBox "Closing controlScript (PID: " pid ")"
+
+        ; Attempt to close the window gracefully
+        ProcessClose("controlScript.exe")
+
+        ; Wait up to 5 seconds (500 ms × 10) for process to exit
+        Loop 10 {
+            Sleep 500
+            if !ProcessExist("controlScript.exe") {
+                MsgBox "controlScript closed successfully."
+                break
+            }
+        }
+
+        ; Check again after waiting
+        if ProcessExist("controlScript.exe") {
+            MsgBox "controlScript did not close in time."
+            throw Error("controlScript did not close in time.")
+        }
+    } else {
+        MsgBox "controlScript process not found."
+    }
     DirCopy(sourceDir, destinationDir, true) ; true = overwrite
 
     if (controlScriptIsRunning) {
         ; Restart the control script if it was running
-        MsgBox(A_ScriptDir "\controlScript.exe" " will be restarted.")
-        Run A_ScriptDir "\controlScript.exe"
+        MsgBox(pathToControlScript " will be restarted.")
+        try{
+            Run pathToControlScript
+        }
+        catch{
+            MsgBox "❌ Failed to restart controlScript.exe"
+            ; ExitApp
+        }
     }
 } 
 catch Error as err {
