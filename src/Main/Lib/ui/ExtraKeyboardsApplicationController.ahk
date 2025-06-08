@@ -7,6 +7,8 @@
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationController.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotkeyConfigurator.ahk"
 
+#Include <Updater\UpdateDialog>
+
 #Include <Util\StartupConfiguration\HotkeyInitializer>
 
 Class ExtraKeyboardsApplicationController{
@@ -30,6 +32,10 @@ Class ExtraKeyboardsApplicationController{
         this.view.Destroy()
     }
 
+    HandleUpdateAvailableClicked(){
+        UpdateDialog_ := UpdateDialog()
+        UpdateDialog_.show()
+    }
 
     DoLayerSelected(currentLayer){
         this.ShowHotkeysForLayer(currentLayer)

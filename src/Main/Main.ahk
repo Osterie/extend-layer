@@ -19,14 +19,6 @@
 
 #Include <Util\MetaInfo\MetaInfoReading\ActionSettingsReader>
 
-; #Include <Updater\AutoUpdater>
-
-
-; ; Example usage
-; autoUpdater_ := AutoUpdater()
-
-; autoUpdater_.checkForUpdates()
-
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
 ; |--------------------------------------------------|

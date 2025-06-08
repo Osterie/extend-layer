@@ -7,6 +7,7 @@
 #Include <ui\Main\MenuBar\ThemesMenu>
 #Include <ui\Main\MenuBar\SettingsMenu>
 
+#Include <Updater\UpdateChecker>
 #Include <Util\HotkeyFormatConverter>
 #Include <Util\MetaInfo\MetaInfoStorage\Themes\logic\Themes>
 #Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
@@ -33,7 +34,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
         this.CreateProfileEditor()
         this.CreateTabs()
         
-        ; ; Show gui in the top left corner of the screen
+        ; Show gui in the top left corner of the screen
         this.Show()
     }
 
@@ -44,26 +45,34 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
         _SettingsMenu := SettingsMenu((*) => this.UpdateGuiSettings())
         ThemeCategoriesMenu := ThemesMenu((*) => this.UpdateColorTheme())
 
+        UpdateChecker_ := UpdateChecker()
+
         
         MyMenuBar.Add("&Themes", ThemeCategoriesMenu)
         ; TODO can do suspend differently. have custom suspend menu bar class
-        MyMenuBar.Add("&Suspend Script", (ItemName, ItemPos, MyMenuBar) => HandleSuspendClicked(ItemName, ItemPos, MyMenuBar))
+        MyMenuBar.Add("&Suspend Script", (ItemName, ItemPos, MyMenuBar) => this.HandleSuspendClicked(ItemName, ItemPos, MyMenuBar))
         MyMenuBar.Add("&Settings", _SettingsMenu)
 
-        this.MenuBar := MyMenuBar
-
-
-        HandleSuspendClicked(ItemName, ItemPos, MyMenuBar) {
-            if (ItemName = "&Suspend Script"){
-                MyMenuBar.Rename(ItemName, "&Start Script")
-                Suspend(1)
-            }
-            else{
-                MyMenuBar.Rename(ItemName, "&Suspend Script")
-                Suspend(0)
-            }
-
+        if (UpdateChecker_.UpdateAvailable()){
+            MyMenuBar.Add("🔄Update available!", (ItemName, ItemPos, MyMenuBar) => this.HandleUpdateAvailableClicked(ItemName, ItemPos, MyMenuBar))
         }
+
+        this.MenuBar := MyMenuBar
+    }
+
+    HandleSuspendClicked(ItemName, ItemPos, MyMenuBar) {
+        if (ItemName = "&Suspend Script"){
+            MyMenuBar.Rename(ItemName, "&Start Script")
+            Suspend(1)
+        }
+        else{
+            MyMenuBar.Rename(ItemName, "&Suspend Script")
+            Suspend(0)
+        }
+    }
+
+    HandleUpdateAvailableClicked(ItemName, ItemPos, MyMenuBar) {
+        this.controller.HandleUpdateAvailableClicked()
     }
 
     ; Creates the region for profile editing
