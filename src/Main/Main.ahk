@@ -9,6 +9,10 @@
 
 #Include "<ui\ExtraKeyboardsApplicationLauncher>"
 
+#Include <Util\ExtendLayerInProtectedLocationDialog>
+
+#Include <Util\Logging\Logger>
+
 #Include <Util\StartupConfiguration\ObjectRegistryInitializer>
 
 #Include <Util\MetaInfo\MetaInfoReading\ObjectsJsonReader>
@@ -18,6 +22,39 @@
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
 
 #Include <Util\MetaInfo\MetaInfoReading\ActionSettingsReader>
+
+testFilePermissions(){
+    testFile := A_ScriptDir . "\testFilePermissions.txt"
+
+    ; This function is used to test if the script has the right permissions to read/write files.
+    ; It will throw an error if it does not have the right permissions.
+    try{
+        if (FileExist(testFile)){
+            FileDelete(testFile)
+        }
+        FileAppend("test", testFile)
+        FileDelete(testFile)
+    }
+    catch Error as e{
+        if (InStr(e.Message, "Access is denied")){
+            if (!A_IsAdmin){
+                ExtendLayerInProtectedLocationDialog_ := ExtendLayerInProtectedLocationDialog()
+                ExtendLayerInProtectedLocationDialog_.show()
+                WinWaitClose(ExtendLayerInProtectedLocationDialog_.GetHwnd())
+                ExitApp
+            }
+            else{
+                Logger.getInstance().logError("Error reading/writing file: " e.Message, e.File, e.Line)
+            }
+        }
+        else{
+            Logger.getInstance().logError("Error reading/writing file: " e.Message, e.File, e.Line)
+        }
+    }
+}
+
+testFilePermissions()
+
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -48,6 +85,8 @@ SendMode "Event"
 ;     ; "*RunAs*" is an option for the Run() function to run a program as admin
 ; 	Run("*RunAs `"" A_ScriptFullPath "`"") 
 ; }
+
+
 
 Class Main{
 

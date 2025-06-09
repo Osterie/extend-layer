@@ -2,18 +2,19 @@
 #SingleInstance Force
 #NoTrayIcon
 
-; Only run in compiled mode and with 6 arguments
-if !A_IsCompiled || A_Args.Length != 6 {
-    MsgBox "Update failed. This script should only be run in compiled mode with 6 arguments."
+; Only run in compiled mode, must be at least 2 argument, up to 6 arguments.
+if !A_IsCompiled || A_Args.Length < 2 || A_Args.Length > 6 {
+    MsgBox "Update failed. This script should only be run in compiled mode with 2 to 6 arguments."
     ExitApp
 }
 
-sourceDir     := A_Args[1]
+sourceDir := A_Args[1]
 destinationDir := A_Args[2]
-mainScript     := A_Args[3]
-latestVersionInfo := A_Args[4]
-pathToVersionFile := A_Args[5]
-pathToControlScript := A_Args[6]
+mainScript := A_Args.Length >= 3 ? A_Args[3] : ""
+latestVersionInfo := A_Args.Length >= 4 ? A_Args[4] : ""
+pathToVersionFile := A_Args.Length >= 5 ? A_Args[5] : ""
+pathToControlScript := A_Args.Length >= 6 ? A_Args[6] : ""
+
 
 if !FileExist(sourceDir) {
     MsgBox "Update failed. ❌ Source directory does not exist: " sourceDir
@@ -23,9 +24,11 @@ if !FileExist(destinationDir) {
     MsgBox "Update failed. ❌ Destination directory does not exist: " destinationDir
     ExitApp
 }
-if !FileExist(mainScript) {
-    MsgBox "Update failed. ❌ Main script does not exist: " mainScript
-    ExitApp
+if (mainScript != ""){
+    if !FileExist(mainScript) {
+        MsgBox "Update failed. ❌ Main script does not exist: " mainScript
+        ExitApp
+    }
 }
 
 
@@ -33,8 +36,6 @@ if !FileExist(mainScript) {
 Sleep 2000
 
 try {
-
-
     controlScriptIsRunning := false
     pid := ProcessExist("controlScript.exe")
     if pid {
@@ -61,12 +62,15 @@ try {
 
     if (controlScriptIsRunning) {
         ; Restart the control script if it was running
-        try{
-            Run pathToControlScript
-        }
-        catch{
-            MsgBox "❌ Failed to restart controlScript.exe"
-            ; ExitApp
+        if (pathToControlScript != ""){
+
+            try{
+                Run pathToControlScript
+            }
+            catch{
+                MsgBox "❌ Failed to restart controlScript.exe"
+                ; ExitApp
+            }
         }
     }
 } 
@@ -75,29 +79,32 @@ catch Error as err {
     ExitApp
 }
 
-try{
-    jsonVersionObject := Map()
-    jsonVersionObject["version"] := latestVersionInfo
-    if (FileExist(pathToVersionFile)){
-        FileDelete(pathToVersionFile)
+if (latestVersionInfo != "") {
+    try{
+        jsonVersionObject := Map()
+        jsonVersionObject["version"] := latestVersionInfo
+        if (FileExist(pathToVersionFile)){
+            FileDelete(pathToVersionFile)
+        }
+        FileAppend(jxon_dump(jsonVersionObject), pathToVersionFile, "UTF-8")
     }
-    FileAppend(jxon_dump(jsonVersionObject), pathToVersionFile, "UTF-8")
-}
-catch Error  as err {
-    MsgBox "❌ Failed to update version information:`n" err.Message
-    ExitApp
+    catch Error  as err {
+        MsgBox "❌ Failed to update version information:`n" err.Message
+        ExitApp
+    }
 }
 
-; Restart the main script
-try {
-    Run mainScript
-} catch Error as err {
-    MsgBox "✅ Update applied, but failed to restart main script:`n" err.Message
+; Restart the main script if it was provided
+if (mainScript != "") {
+    try {
+        Run mainScript
+    } catch Error as err {
+        MsgBox "✅ Update applied, but failed to restart main script:`n" err.Message
+        ExitApp
+    }
 }
 
 ExitApp
-
-
 
 
 Jxon_Dump(obj, indent:="", lvl:=1) {
