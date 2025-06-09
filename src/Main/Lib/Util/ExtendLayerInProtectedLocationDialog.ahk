@@ -90,15 +90,7 @@ class ExtendLayerInProtectedLocationDialog extends DomainSpecificGui{
                         if pid {
 
                             ; Attempt to close the window gracefully
-                            ProcessClose("Updater.exe")
-
-                            ; Wait up to 5 seconds (500 ms × 10) for process to exit
-                            Loop 10 {
-                                Sleep 500
-                                if !ProcessExist("Updater.exe") {
-                                    break
-                                }
-                            }
+                            ProcessWaitClose("Updater.exe", 2000)
 
                             ; Check again after waiting
                             if ProcessExist("Updater.exe") {
