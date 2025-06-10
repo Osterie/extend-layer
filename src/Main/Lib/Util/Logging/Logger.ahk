@@ -9,7 +9,7 @@ class Logger {
     logFile := this.logDir . "/error.log"
 
     __New() {
-        this.checkAndCreateLogDir()
+        ; Emtpy
     }
 
     static getInstance() {
@@ -57,8 +57,15 @@ class Logger {
     ; Check if the log directory exists, if not, creates it
     checkAndCreateLogDir() {
         if !DirExist(this.logDir) {
-            DirCreate(this.logDir)
-            FileAppend("", this.logFile)
+            try{
+                DirCreate(this.logDir)
+                FileAppend("", this.logFile)
+            }
+            catch (Error as e) {
+                if (InStr(e.Message, "Access is denied")){
+                    MsgBox("You do not have permission to create a log directory. Please move extend layer to a non-protected folder. Alternatively, but not recommended, run the script as an administrator.")
+                }
+            }
         }
     }
     
