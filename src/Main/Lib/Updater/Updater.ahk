@@ -96,7 +96,7 @@ closeProcess(process){
     while (ProcessExist(process) && tries < 10) {
         pid := ProcessExist(process)
         if pid {
-            ProcessWaitClose(pid, 2000)
+            ProcessWaitClose(pid, 2) ; Wait for 2 seconds
             tries++
             if !ProcessExist(process) {
                 return true

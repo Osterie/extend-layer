@@ -381,7 +381,7 @@ closeProcess(process){
     while (ProcessExist(process) && tries < 10) {
         pid := ProcessExist(process)
         if pid {
-            ProcessWaitClose(pid, 2000)
+            ProcessWaitClose(pid, 2)
             tries++
             if !ProcessExist(process) {
                 return true
