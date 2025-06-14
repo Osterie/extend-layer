@@ -36,22 +36,15 @@ if (mainScript != ""){
 Sleep 2000
 
 try {
-    controlScriptIsRunning := false
-    pid := ProcessExist("controlScript.exe")
-    if pid {
-        controlScriptIsRunning := true
 
-        ProcessWaitClose("controlScript.exe", 2000)
+    controlScriptWasRunning := ProcessExist("controlScript.exe") ? true : false
+    if (!closeProcess("controlScript.exe")) {
+        throw Error("controlScript did not close in time.")
+    }
 
-        ; Check again after waiting
-        if ProcessExist("controlScript.exe") {
-            throw Error("controlScript did not close in time.")
-        }
-    } 
+    ; DirCopy(sourceDir, destinationDir, true) ; true = overwrite
 
-    DirCopy(sourceDir, destinationDir, true) ; true = overwrite
-
-    if (controlScriptIsRunning) {
+    if (controlScriptWasRunning) {
         ; Restart the control script if it was running
         if (pathToControlScript != ""){
 
@@ -97,6 +90,24 @@ if (mainScript != "") {
 
 ExitApp
 
+; TODO move, to processmanager.ahk?
+closeProcess(process){
+    tries := 0
+    while (ProcessExist(process) && tries < 10) {
+        pid := ProcessExist(process)
+        if pid {
+            ProcessWaitClose(pid, 2000)
+            tries++
+            if !ProcessExist(process) {
+                return true
+            }
+        }
+    }
+    if !ProcessExist(process) {
+        return true
+    }
+    return false
+}
 
 Jxon_Dump(obj, indent:="", lvl:=1) {
 	if IsObject(obj) {

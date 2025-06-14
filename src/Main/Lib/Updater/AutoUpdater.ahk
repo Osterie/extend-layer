@@ -163,16 +163,10 @@ class AutoUpdater {
 
             try {
                 DetectHiddenWindows true
-
-                pid := ProcessExist("Updater.exe")
-                if pid {
-
-                    ProcessWaitClose("Updater.exe", 2000)
-
-                    ; Check again after waiting
-                    if ProcessExist("Updater.exe") {
-                        throw Error("Updater did not close in time.")
-                    }
+                result := closeProcess("Updater.exe")
+                if (!result) {
+                    this.Logger.logError("Failed to close Updater.exe before copying.")
+                    throw Error("Failed to close Updater.exe before copying.")
                 }
 
                 if (FileExist(tempUpdater)) {
@@ -379,4 +373,23 @@ class AutoUpdater {
 
         return currentVersion
     }
+}
+
+; TODO move, to processmanager.ahk?
+closeProcess(process){
+    tries := 0
+    while (ProcessExist(process) && tries < 10) {
+        pid := ProcessExist(process)
+        if pid {
+            ProcessWaitClose(pid, 2000)
+            tries++
+            if !ProcessExist(process) {
+                return true
+            }
+        }
+    }
+    if !ProcessExist(process) {
+        return true
+    }
+    return false
 }

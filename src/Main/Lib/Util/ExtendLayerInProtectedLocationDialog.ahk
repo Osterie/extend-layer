@@ -86,17 +86,9 @@ class ExtendLayerInProtectedLocationDialog extends DomainSpecificGui{
                     try{
                         DetectHiddenWindows true
 
-                        pid := ProcessExist("Updater.exe")
-                        if pid {
-
-                            ; Attempt to close the window gracefully
-                            ProcessWaitClose("Updater.exe", 2000)
-
-                            ; Check again after waiting
-                            if ProcessExist("Updater.exe") {
-                                throw Error("Updater did not close in time.")
-                            }
-                        } 
+                        if (!closeProcess("Updater.exe")) {
+                            throw Error("Updater did not close in time.")
+                        }
 
                         if (FileExist(tempUpdater)) {
                             FileDelete tempUpdater ; Delete the temporary updater if it exists
