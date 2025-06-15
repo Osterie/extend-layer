@@ -197,10 +197,12 @@ class AutoUpdater {
 
             pathToVersionFile := FilePaths.GetAbsolutePathToRoot() . "config\Version.json"
             pathToControlScript := FilePaths.GetAbsolutePathToRoot() . "src\controlScript.exe"
+            pid := DllCall("GetCurrentProcessId", "UInt")
+
 
             ; this.OnExitMethod := ObjBindMethod(this, "runUpdaterExe",tempUpdater, temporaryLocation, rootPath, mainScript, version, pathToVersionFile, pathToControlScript)
             this.OnExitMethod := (ExitReason?, ExitCode?) => this.runUpdaterExe(
-                tempUpdater, temporaryLocation, rootPath,
+                tempUpdater, temporaryLocation, rootPath, pid,
                 mainScript, version, pathToVersionFile, pathToControlScript
             )
             OnExit this.OnExitMethod
@@ -217,11 +219,11 @@ class AutoUpdater {
         }
     }
 
-    runUpdaterExe(tempUpdater, temporaryLocation, rootPath, mainScript, version, pathToVersionFile, pathToControlScript) {
+    runUpdaterExe(tempUpdater, temporaryLocation, rootPath, pid, mainScript, version, pathToVersionFile, pathToControlScript) {
         ; This function is used to run the updater executable with the provided arguments.
 
         ; Build command-line arguments
-        args := '"' temporaryLocation '" "' rootPath '" "' mainScript '" "' version '" "' pathToVersionFile '" "' pathToControlScript '"'
+        args := '"' temporaryLocation '" "' rootPath '" "' pid '" "' mainScript '" "' version '" "' pathToVersionFile '" "' pathToControlScript '"'
 
         ; Run updater from temporary location
         Run '"' tempUpdater '" ' args
@@ -381,7 +383,8 @@ closeProcess(process){
     while (ProcessExist(process) && tries < 10) {
         pid := ProcessExist(process)
         if pid {
-            ProcessWaitClose(pid, 2)
+            ProcessClose(pid)
+            Sleep 500 ; Wait for 0.5 seconds
             tries++
             if !ProcessExist(process) {
                 return true

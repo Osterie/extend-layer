@@ -2,18 +2,19 @@
 #SingleInstance Force
 #NoTrayIcon
 
-; Only run in compiled mode, must be at least 2 argument, up to 6 arguments.
-if !A_IsCompiled || A_Args.Length < 2 || A_Args.Length > 6 {
-    MsgBox "Update failed. This script should only be run in compiled mode with 2 to 6 arguments."
+; Only run in compiled mode, must be at least 2 argument, up to 7 arguments.
+if !A_IsCompiled || A_Args.Length < 2 || A_Args.Length > 7 {
+    MsgBox "Update failed. This script should only be run in compiled mode with 2 to 7 arguments."
     ExitApp
 }
 
 sourceDir := A_Args[1]
 destinationDir := A_Args[2]
-mainScript := A_Args.Length >= 3 ? A_Args[3] : ""
-latestVersionInfo := A_Args.Length >= 4 ? A_Args[4] : ""
-pathToVersionFile := A_Args.Length >= 5 ? A_Args[5] : ""
-pathToControlScript := A_Args.Length >= 6 ? A_Args[6] : ""
+callerPid := A_Args.Length >= 3 ? A_Args[3] : ""
+mainScript := A_Args.Length >= 4 ? A_Args[4] : ""
+latestVersionInfo := A_Args.Length >= 5 ? A_Args[5] : ""
+pathToVersionFile := A_Args.Length >= 6 ? A_Args[6] : ""
+pathToControlScript := A_Args.Length >= 7 ? A_Args[7] : ""
 
 
 if !FileExist(sourceDir) {
@@ -32,8 +33,7 @@ if (mainScript != ""){
 }
 
 
-; Optional: wait to ensure the main script has exited
-Sleep 2000
+ProcessWaitClose(callerPid, 20) ; Wait for the caller process to close, for up to 20 seconds.
 
 try {
 
@@ -42,7 +42,7 @@ try {
         throw Error("controlScript did not close in time.")
     }
 
-    ; DirCopy(sourceDir, destinationDir, true) ; true = overwrite
+    DirCopy(sourceDir, destinationDir, true) ; true = overwrite
 
     if (controlScriptWasRunning) {
         ; Restart the control script if it was running
@@ -96,7 +96,8 @@ closeProcess(process){
     while (ProcessExist(process) && tries < 10) {
         pid := ProcessExist(process)
         if pid {
-            ProcessWaitClose(pid, 2) ; Wait for 2 seconds
+            ProcessClose(pid)
+            Sleep 500 ; Wait for 0.5 seconds
             tries++
             if !ProcessExist(process) {
                 return true

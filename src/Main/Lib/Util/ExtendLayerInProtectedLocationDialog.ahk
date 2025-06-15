@@ -140,9 +140,9 @@ class ExtendLayerInProtectedLocationDialog extends DomainSpecificGui{
                     
                     if (newFolderLocationExists){
                         emptyArgument := ""
-                        Run '"' tempUpdater '" "' pathToCurrentLocation '" "' selectedFolder '" "' emptyArgument '" "' emptyArgument '" "' emptyArgument '" "' emptyArgument '"'
+                        pid := DllCall("GetCurrentProcessId", "UInt")
+                        Run '"' tempUpdater '" "' pathToCurrentLocation '" "' selectedFolder '" "' pid '" "' emptyArgument '" "' emptyArgument '" "' emptyArgument '" "' emptyArgument '"'
                         ExitApp
-                        MsgBox("Extend Layer has been copied to " selectedFolder ". You can now run it from there.")
                     }
 
                 }

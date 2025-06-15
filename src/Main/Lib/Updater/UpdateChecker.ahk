@@ -13,6 +13,7 @@ class UpdateChecker {
     Logger := Logger.getInstance()
 
     __New(){
+        ; TODO this try catch is bad.
         currentVersion := ""
         try{
             currentVersion := this.GetCurrentVersion()
