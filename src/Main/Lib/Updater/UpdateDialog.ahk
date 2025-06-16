@@ -53,7 +53,6 @@ class UpdateDialog extends DomainSpecificGui{
     }
 
     doUpdate(){
-        ; TODO update.
         autoUpdater_ := AutoUpdater()
         try{
             autoUpdater_.checkForUpdates()
