@@ -2,6 +2,7 @@
 
 #Include <Util\Version>
 #Include <Util\UpdateManifest>
+#Include <Util\Downloader>
 #Include <Updater\GithubReleaseChecker>
 #Include <Util\Logging\Logger>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
@@ -15,6 +16,9 @@ class AutoUpdater {
     UpdateManifest := UpdateManifest.getInstance()  ; Instance of UpdateManifest to read update manifest
     UnZipper := UnZipper()  ; Instance of UnZipper to handle ZIP extraction
     releaseChecker := ""  ; Instance of GithubReleaseChecker to check for updates
+
+    LATEST_RELEASE_DOWNLOAD_LOCATION := A_Temp "\extend-layer-update"  ; Default download location for the latest release
+    TEMPORARY_LOCATION_FOR_CURRENT_VERSION := A_Temp "\extend-layer-temporary"  ; Temporary location for the current version
 
     __New() {
         currentVersion := ""
@@ -37,76 +41,108 @@ class AutoUpdater {
     }
 
     checkForUpdates() {
-
         updateAvailable := this.releaseChecker.updateAvailable()
-
-        if (updateAvailable) {
-            downloadUrl := this.releaseChecker.GetDownloadUrl()
-            ; MsgBox(downloadUrl)
-
-            downloadPath := A_Temp "\extend-layer-update.zip"
-            unzipLocation := A_Temp "\extend-layer-update"
-            if (FileExist(downloadPath)) {
-                FileDelete(downloadPath) ; Delete the old download if it exists
-            }
-            Download(downloadUrl, downloadPath)
-            if (FileExist(unzipLocation)) {
-                DirDelete(unzipLocation, true) ; Delete the old unzip location if it exists
-            }
-            this.UnZipper.Unzip(downloadPath, unzipLocation, true) ; Unzip to the script directory
-
-            ; try{
-            this.UpdateCurrentVersion(unzipLocation)
-            ; }
-            ; catch{
-            ;     this.Logger.logError("Failed to update current version: ", "AutoUpdater.ahk", A_LineNumber)
-            ;     throw Error("Failed to update current version: " A_LineFile " Line: " A_LineNumber)
-            ; }
-
-            ; MsgBox("Update available! Current")
-
-            ; this.UpdateCurrentVersion(unzipLocation)
-
-            ; this.Logger.logInfo("Update available! Current version: " currentVersion ", Latest version: " latestVersion)
-            ; Here you can add code to handle the update, like downloading and installing it
-        } else {
-            ; MsgBox("Up to date!")
-            ; this.Logger.logInfo("No updates available. Current version: " currentVersion)
+        if (!updateAvailable) {
+            return false ; No updates available
         }
 
-        ; this.releaseChecker := GithubReleaseChecker("Osterie", "extend-layer", "v0.4.3-alpha")
-
-        ; 1. Download a copy of the current version to a temporary location.
-        ; 2. Use the updater to change the files in that temporary location incase any errors occur.
-        ; 3. If fail, throw an error and dont change the current version.
-        ; If not fail, then copy the files from the temporary location to the current version location.
-
-        ; Download(downloadUrl, A_ScriptDir)
-
-        ; A_Temp
-
+        this.updateCurrentVersion()
     }
 
-    UpdateCurrentVersion(unzipLocation) {
+    ; 1. Download a copy of the current version to a temporary location.
+    ; 2. Use the updater to change the files in that temporary location incase any errors occur.
+    ; 3. If fail, throw an error and dont change the current version.
+    ; If not fail, then copy the files from the temporary location to the current version location.
+    updateCurrentVersion() {
         ; TODO maybe need admin permissions
 
-        temporaryLocation := A_Temp "\extend-layer-temporary"
+        this.downloadLatestRelease()
+        this.copyCurrentVersionToTemporaryLocation()
+        success := this.updateVersionInTemporaryLocation()
 
-        if (DirExist(temporaryLocation)) {
-            DirDelete(temporaryLocation, true) ; true = recursive delete
+        if (!success) {
+            pathToUnzippedFiles := this.GetPathToUnzippedFiles(this.LATEST_RELEASE_DOWNLOAD_LOCATION)
+            this.Logger.logError("Failed to update current version from: " pathToUnzippedFiles " to: " FilePaths.GetAbsolutePathToRoot())
+            throw Error("Failed to update current version from: " pathToUnzippedFiles " to: " FilePaths.GetAbsolutePathToRoot())
         }
-        DirCopy(FilePaths.GetAbsolutePathToRoot(), temporaryLocation, true)
+        ; If the overwrite was successful, then copy the files from the temporary location to the current version location.
 
-        pathToUnzippedFiles := this.GetPathToUnzippedFiles(unzipLocation)
-        ; MsgBox(pathToUnzippedFiles)
+        ; Paths to original updater and location to copy it to. Updater is launched from the temporary location.
+        ; Since it is not possible to update the running script, we need to copy the updater to a temporary location and run it from there.
+        originalUpdater := A_ScriptDir "\Lib\Updater\Updater.exe"
+        tempUpdater := A_Temp "\Updater.exe"
+
+        if (!FileExist(originalUpdater)) {
+            this.Logger.logError("Updater.exe does not exist in the expected location: " originalUpdater)
+            throw Error("Updater.exe does not exist in the expected location: " originalUpdater)
+        }
+
+        try {
+            DetectHiddenWindows true
+            result := closeProcess("Updater.exe")
+            if (!result) {
+                this.Logger.logError("Failed to close Updater.exe before copying.")
+                throw Error("Failed to close Updater.exe before copying.")
+            }
+
+            if (FileExist(tempUpdater)) {
+                FileDelete tempUpdater ; Delete the temporary updater if it exists
+            }
+
+            FileCopy originalUpdater, tempUpdater, true ; true = overwrite if exists
+        }
+        catch Error as e {
+            this.Logger.logError("Failed to copy Updater.exe to temporary location: " e.Message, "AutoUpdater.ahk", A_LineNumber)
+            throw Error("Failed to copy Updater.exe to temporary location: " e.Message)
+        }
+
+        ; Build command-line arguments
+        mainScript := A_ScriptFullPath
+        rootPath := FilePaths.GetAbsolutePathToRoot()
+        version := this.releaseChecker.GetLatestVersionInfo()
+
+        ; Confirm all critical files exist
+        if !FileExist(tempUpdater) {
+            this.Logger.logError("Failed to copy Updater.exe to temp directory.")
+            throw Error("Failed to copy Updater.exe to temp directory.")
+        }
+
+        pathToVersionFile := FilePaths.GetAbsolutePathToRoot() . "config\Version.json"
+        pathToControlScript := FilePaths.GetAbsolutePathToRoot() . "src\controlScript.exe"
+        pid := DllCall("GetCurrentProcessId", "UInt")
+
+        ; Run updater from temporary location and exit current app
+        this.OnExitMethod := (ExitReason?, ExitCode?) => this.runUpdaterExe(
+            tempUpdater, this.TEMPORARY_LOCATION_FOR_CURRENT_VERSION, rootPath, pid,
+            mainScript, version, pathToVersionFile, pathToControlScript
+        )
+        OnExit this.OnExitMethod
+        ExitApp
+    }
+
+    downloadLatestRelease() {
+        downloadUrl := this.releaseChecker.GetDownloadUrl()
+        zipDownloadLocation := this.LATEST_RELEASE_DOWNLOAD_LOCATION . ".zip" ; Ensure the download location has a .zip extension
+        Downloader_ := Downloader() ; Create an instance of Downloader to handle the download
+        
+        Downloader_.DownloadZip(downloadUrl, zipDownloadLocation, this.LATEST_RELEASE_DOWNLOAD_LOCATION, true) ; Download the ZIP file
+    }
+
+    copyCurrentVersionToTemporaryLocation() {
+
+        if (DirExist(this.TEMPORARY_LOCATION_FOR_CURRENT_VERSION)) {
+            DirDelete(this.TEMPORARY_LOCATION_FOR_CURRENT_VERSION, true) ; true = recursive delete
+        }
+
+        ; Copy the current version to the temporary location
+        DirCopy(FilePaths.GetAbsolutePathToRoot(), this.TEMPORARY_LOCATION_FOR_CURRENT_VERSION, true) ; true = overwrite
+    }
+
+    updateVersionInTemporaryLocation() {
+        pathToUnzippedFiles := this.GetPathToUnzippedFiles(this.LATEST_RELEASE_DOWNLOAD_LOCATION)
 
         relativeWritePaths := this.UpdateManifest.GetOverwritePaths()
         relativeSkipPaths := this.UpdateManifest.GetSkipPaths()
-
-        ; fullOverWritePaths := Array()
-        ; Loop overWritePaths.Length {
-        ;     fullOverWritePaths.Push(pathToUnzippedFiles . "\" . overWritePaths[A_Index])
-        ; }
 
         fullSkipPaths := Array()
         loop relativeSkipPaths.Length {
@@ -116,116 +152,31 @@ class AutoUpdater {
         success := false
         try {
             ; TODO try catch to handle recursion errors and other errors. If fail, then dont merge temporary files into new version.
-            this.OverwriteFiles(pathToUnzippedFiles, temporaryLocation, relativeWritePaths, fullSkipPaths)
+            this.OverwriteFiles(pathToUnzippedFiles, this.TEMPORARY_LOCATION_FOR_CURRENT_VERSION, relativeWritePaths,
+                fullSkipPaths)
             success := true
         }
         catch {
             success := false
-            this.Logger.logError("Failed to overwrite files from unzipped location: " unzipLocation " to temporary location: " temporaryLocation,
+            this.Logger.logError("Failed to overwrite files from unzipped location: " this.LATEST_RELEASE_DOWNLOAD_LOCATION " to temporary location: " this
+                .TEMPORARY_LOCATION_FOR_CURRENT_VERSION,
                 "AutoUpdater.ahk", A_LineNumber)
-            throw Error("Failed to overwrite files from unzipped location: " unzipLocation " to temporary location: " temporaryLocation " Line: " A_LineNumber
+            throw Error("Failed to overwrite files from unzipped location: " this.LATEST_RELEASE_DOWNLOAD_LOCATION " to temporary location: " this
+                .TEMPORARY_LOCATION_FOR_CURRENT_VERSION " Line: " A_LineNumber
             )
         }
 
-        if (success) {
-            ; If the overwrite was successful, then copy the files from the temporary location to the current version location.
-            ; MsgBox("Copying files from temporary location: " temporaryLocation " to current version location: " FilePaths.GetAbsolutePathToRoot())
-
-            ; todo TRY CATCH. CATCH
-            ; DirCopy(temporaryLocation, FilePaths.GetAbsolutePathToRoot(), true) ; true = overwrite
-            ; this.Version.UpdateVersion(this.releaseChecker.GetLatestVersionInfo())
-
-            ; updaterExe := FilePaths.GetAbsolutePathToRoot() . "\src\Main\Lib\Updater\AutoUpdater.exe"
-            ; Run, "%updaterExe%" "%temporaryLocation%" "% FilePaths.GetAbsolutePathToRoot() %" "%A_ScriptFullPath%"
-            ; ExitApp
-
-            ; At end of your update function
-
-            ; if success {
-            updaterExe := A_ScriptDir "\Lib\Updater\Updater.exe"
-            mainScript := A_ScriptFullPath
-
-            ; MsgBox(updaterExe)
-            ; MsgBox(FileExist(updaterExe) ? "Updater executable found." : "Updater executable not found. Please check the path.")
-            ; MsgBox(FileExist(temporaryLocation) ? "Temporary location found." : "Temporary location not found. Please check the path.")
-            ; MsgBox(FileExist(FilePaths.GetAbsolutePathToRoot()) ? "Current version location found." : "Current version location not found. Please check the path.")
-            ; MsgBox(FileExist(mainScript) ? "Main script found." : "Main script not found. Please check the path.")
-
-            ; tempUpdaterPath := A_Temp "\Updater.exe"
-            ; FileCopy updaterExe, tempUpdaterPath, true
-
-            ; Run tempUpdaterPath ' "' tempDataPath '" "' currentInstallPath '" "' mainScript '" "' version '"'
-            ; ExitApp
-
-            ; Define original and temporary paths
-            originalUpdater := A_ScriptDir "\Lib\Updater\Updater.exe"
-            tempUpdater := A_Temp "\Updater.exe"
-
-            try {
-                DetectHiddenWindows true
-                result := closeProcess("Updater.exe")
-                if (!result) {
-                    this.Logger.logError("Failed to close Updater.exe before copying.")
-                    throw Error("Failed to close Updater.exe before copying.")
-                }
-
-                if (FileExist(tempUpdater)) {
-                    FileDelete tempUpdater ; Delete the temporary updater if it exists
-                }
-
-                FileCopy originalUpdater, tempUpdater, true ; true = overwrite if exists
-            }
-            catch Error as e {
-                throw e
-            }
-
-            ; Build command-line arguments
-            mainScript := A_ScriptFullPath
-            rootPath := FilePaths.GetAbsolutePathToRoot()
-            version := this.releaseChecker.GetLatestVersionInfo()
-
-            ; Confirm all critical files exist
-            if !FileExist(tempUpdater) {
-                this.Logger.logError("Failed to copy Updater.exe to temp directory.")
-                throw Error("Failed to copy Updater.exe to temp directory.")
-            }
-
-            ; Optional debug
-            ; MsgBox "Running updater from: " tempUpdater "`nWith arguments:`n" temporaryLocation "`n" rootPath "`n" mainScript "`n" version
-
-            ; Run updater from temp and exit current app
-
-            pathToVersionFile := FilePaths.GetAbsolutePathToRoot() . "config\Version.json"
-            pathToControlScript := FilePaths.GetAbsolutePathToRoot() . "src\controlScript.exe"
-            pid := DllCall("GetCurrentProcessId", "UInt")
-
-
-            ; this.OnExitMethod := ObjBindMethod(this, "runUpdaterExe",tempUpdater, temporaryLocation, rootPath, mainScript, version, pathToVersionFile, pathToControlScript)
-            this.OnExitMethod := (ExitReason?, ExitCode?) => this.runUpdaterExe(
-                tempUpdater, temporaryLocation, rootPath, pid,
-                mainScript, version, pathToVersionFile, pathToControlScript
-            )
-            OnExit this.OnExitMethod
-            ExitApp
-
-            ; Run updaterExe ' "' temporaryLocation '" "' FilePaths.GetAbsolutePathToRoot() '" "' mainScript '" "' this.releaseChecker.GetLatestVersionInfo() '"'
-            ; ExitApp
-            ; }
-
-        }
-        else {
-            this.Logger.logError("Failed to update current version from: " pathToUnzippedFiles " to: " FilePaths.GetAbsolutePathToRoot())
-            throw Error("Failed to update current version from: " pathToUnzippedFiles " to: " FilePaths.GetAbsolutePathToRoot())
-        }
+        return success
     }
 
-    runUpdaterExe(tempUpdater, temporaryLocation, rootPath, pid, mainScript, version, pathToVersionFile, pathToControlScript) {
-        ; This function is used to run the updater executable with the provided arguments.
+    ; This function is used to run the updater executable with the provided arguments.
+    runUpdaterExe(tempUpdater, temporaryLocation, rootPath, pid, mainScript, version, pathToVersionFile,
+        pathToControlScript) {
 
         ; Build command-line arguments
         args := '"' temporaryLocation '" "' rootPath '" "' pid '" "' mainScript '" "' version '" "' pathToVersionFile '" "' pathToControlScript '"'
 
-        ; Run updater from temporary location
+        ; Run updater from temporary location with given argumetns
         Run '"' tempUpdater '" ' args
     }
 
@@ -240,10 +191,11 @@ class AutoUpdater {
                 ; Overwrite
                 ; TODO use construct method
                 copyDestination := destinationBaseLocation . "\" . relativeOverwritePaths[A_Index]
-                ; MsgBox("Overwriting file: " fullOverwritePath . " With destination: " destinationBaseLocation . "\" . relativeOverwritePaths[A_Index])
+
                 if (DirExist(fullOverwritePath)) {
                     DirCopy(fullOverwritePath, copyDestination, true) ; true = overwrite
-                } else if (FileExist(fullOverwritePath)) {
+                }
+                else if (FileExist(fullOverwritePath)) {
                     FileCopy(fullOverwritePath, copyDestination, true) ; true = overwrite
                 }
                 else {
@@ -278,38 +230,6 @@ class AutoUpdater {
         }
     }
 
-    ; OverwriteFiles(sourceBaseLocation, destinationBaseLocation, fullOverwritePaths, fullSkipPaths) {
-    ;     Loop fullOverwritePaths.Length {
-    ;         fullOverwritePath := fullOverwritePaths[A_Index]
-
-    ;         skippedPath := this.GetSkippedFile(fullOverwritePath, fullSkipPaths)
-
-    ;         if (skippedPath == "") {
-    ;             ; Overwrite
-    ;             MsgBox("Overwriting file: " fullOverwritePath)
-    ;             if (DirExist(fullOverwritePath)) {
-    ;                 ; DirCopy(fullOverwritePath, sourceBaseLocation . "\" . fullOverwritePath, true) ; true = overwrite
-    ;             } else if (FileExist(fullOverwritePath)) {
-    ;                 ; FileCopy(fullOverwritePath, sourceBaseLocation . "\" . fullOverwritePath, true)
-    ;             }
-
-    ;         }
-    ;         else{
-    ;             ; Go deeper if possible, else go back.
-    ;             MsgBox("Skipping file: " fullOverwritePath . " GOING DEEPER: " this.GetFilesInDirectory(fullOverwritePath).Length)
-
-    ;             ; If the skippedPath is the same as the current overwritePath, then skip it.
-    ;             ; That means if it is a file, the file is skipped, if it is a directory, the directory is skipped.
-    ;             if (fullOverwritePath == skippedPath) {
-    ;                 MsgBox("Skipping path: " fullOverwritePath . " because the fil/directory is designated to be skipped.")
-    ;             }
-    ;             else{ ; If only part of the path is present in the fullSkipPath, then we need to go deeper.
-    ;                 this.OverwriteFiles(sourceBaseLocation, destinationBaseLocation, this.GetFilesInDirectory(fullOverwritePath), fullSkipPaths)
-    ;             }
-    ;         }
-    ;     }
-    ; }
-
     ConstructPath(baseLocation, relativePath) {
         if (relativePath == "") {
             return baseLocation
@@ -333,13 +253,6 @@ class AutoUpdater {
         }
         return files
     }
-    ; GetFilesInDirectory(directory) {
-    ;     files := Array()
-    ;     Loop Files, directory . "\*", "FD" { ; "F" means include files, "D" means include directories
-    ;         files.Push(A_LoopFileFullPath)
-    ;     }
-    ;     return files
-    ; }
 
     GetPathToUnzippedFiles(unzipLocation) {
         if (!FileExist(unzipLocation)) {
@@ -378,7 +291,7 @@ class AutoUpdater {
 }
 
 ; TODO move, to processmanager.ahk?
-closeProcess(process){
+closeProcess(process) {
     tries := 0
     while (ProcessExist(process) && tries < 10) {
         pid := ProcessExist(process)
