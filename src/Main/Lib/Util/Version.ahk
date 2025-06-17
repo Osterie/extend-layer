@@ -20,24 +20,22 @@ class Version {
         return Version.theSingleInstance
     }
 
-    GetCurrentVersion() {
+    updateVersion(newVersion) {
+        this.writeVersionToFile(newVersion)
+        this.currentVersion := newVersion
+    }
+
+    getCurrentVersion() {
         if (this.currentVersion = "") {
-            try{
-                this.currentVersion := this.GetVersionFromFile()
-            }
-            catch{
-                this.Logger.logError("Could not read the current version from the file. Using default version.")
-                throw ValueError("Could not read the current version from the file. Using default version.")
-            }
+            this.currentVersion := this.getVersionFromFile()
         }
         return this.currentVersion
     }
 
-    GetVersionFromFile() {
-
-        jsonVersionObject := this.ReadVersionFromFile()
+    getVersionFromFile() {
 
         currentVersion := ""
+        jsonVersionObject := this.readVersionFromFile()
 
         try {
             currentVersion := jsonVersionObject["version"]
@@ -49,49 +47,62 @@ class Version {
         return currentVersion
     }
 
-    ReadVersionFromFile() {
+    readVersionFromFile() {
         versionFilePath := FilePaths.getPathToVersion()
         if (!FileExist(versionFilePath)) {
             this.Logger.logError("Version file does not exist at: " . versionFilePath)
-            throw Error("Version file does not exist at: " . versionFilePath)
+            this.writeVersionToFile("unknown")
+            return this.createUnknownVersionObject()
         }
         
         jsonVersionObject := ""
         try {
             jsonStringCurrentVersion := FileRead(versionFilePath, "UTF-8")
+            jsonVersionObject := this.convertFileContentsToObject(jsonStringCurrentVersion)
         }
         catch {
-            this.Logger.logError("Could not read the file: " . versionFilePath)
-            throw ValueError("Could not read the file: " . versionFilePath)
-        }
-        jsonVersionObject := jxon_load(&jsonStringCurrentVersion)
-
-        if (jsonVersionObject = "") {
-            this.Logger.logError("The version file is empty or could not be parsed: " . versionFilePath)
-            throw ValueError("The version file is empty or could not be parsed.")
+            this.Logger.logError("Could not read the file: " . versionFilePath . " Writing default version, unknown.")
+            this.writeVersionToFile("unknown")
+            jsonVersionObject := this.createUnknownVersionObject()
         }
 
         return jsonVersionObject
     }
 
-    UpdateVersion(newVersion) {
-        if (newVersion = "") {
-            this.Logger.logError("New version cannot be empty.")
-            throw ValueError("New version cannot be empty.")
+    convertFileContentsToObject(versionFileContents) {
+        if (versionFileContents = "") {
+            this.Logger.logError("The version file is empty.")
+            throw ValueError("The version file is empty.")
         }
-        this.currentVersion := newVersion
+        jsonVersionObject := jxon_load(&versionFileContents)
+        return jsonVersionObject
+    }
 
-
-        jsonVersionObject := Map()
-        jsonVersionObject["version"] := newVersion
+    writeVersionToFile(version) {
+        jsonVersionObject := this.createJsonVersionObject(version)
 
         try {
             FileDelete(FilePaths.getPathToVersion())
             FileAppend(jxon_dump(jsonVersionObject), FilePaths.getPathToVersion(), "UTF-8")
         }
         catch {
-            this.Logger.logError("Could not write the new version to the file: " . FilePaths.getPathToVersion())
-            throw ValueError("Could not write the new version to the file: " . FilePaths.getPathToVersion())
+            this.Logger.logError("Could not write the version to the file: " . FilePaths.getPathToVersion())
+            throw Error("Could not write the version to the file: " . FilePaths.getPathToVersion())
         }
+    }
+
+    createJsonVersionObject(version) {
+        if (version = "") {
+            this.Logger.logError("Version cannot be empty.")
+            throw ValueError("Version cannot be empty.")
+        }
+        
+        jsonVersionObject := Map()
+        jsonVersionObject["version"] := version
+        return jsonVersionObject
+    }
+
+    createUnknownVersionObject() {
+        return this.createJsonVersionObject("unknown")
     }
 }

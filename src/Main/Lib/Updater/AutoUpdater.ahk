@@ -23,7 +23,7 @@ class AutoUpdater {
     TEMPORARY_UPDATER_LOCATION := A_Temp "\Updater.exe"
 
     __New() {
-        currentVersion := this.Version.GetCurrentVersion()
+        currentVersion := this.Version.getCurrentVersion()
         this.releaseChecker := GithubReleaseChecker("Osterie", "extend-layer", currentVersion)
     }
 
@@ -57,7 +57,7 @@ class AutoUpdater {
     }
 
     downloadLatestRelease() {
-        downloadUrl := this.releaseChecker.GetDownloadUrl()
+        downloadUrl := this.releaseChecker.getDownloadUrl()
         zipDownloadLocation := this.LATEST_RELEASE_DOWNLOAD_LOCATION . ".zip" ; Ensure the download location has a .zip extension
         unzippedDownloadLocation := this.LATEST_RELEASE_DOWNLOAD_LOCATION ; Location where the ZIP will be unzipped
 
@@ -80,7 +80,6 @@ class AutoUpdater {
         pathToUnzippedFiles := this.GetPathToUnzippedFiles(this.LATEST_RELEASE_DOWNLOAD_LOCATION)
 
         try {
-            ; TODO try catch to handle recursion errors and other errors. If fail, then dont merge temporary files into new version.
             FileOverwriteManager_.copyIntoNewLocation(pathToUnzippedFiles, this.CURRENT_VERSION_TEMPORARY_LOCATION, FilePaths.getPathToUpdateManifest())
         }
         catch {
@@ -92,7 +91,7 @@ class AutoUpdater {
 
     updateCurrentVersion(){
         this.prepareUpdaterExecutable()
-        this.runUpdaterExe() ; Run updater from temporary location and exit current app
+        this.runUpdaterExecutable() ; Run updater from temporary location and exit current app
     }
 
     prepareUpdaterExecutable(){
@@ -127,7 +126,7 @@ class AutoUpdater {
     }
 
     ; This method is used to run the updater executable with the provided arguments.
-    runUpdaterExe() {
+    runUpdaterExecutable() {
 
         if !FileExist(this.TEMPORARY_UPDATER_LOCATION) {
             this.Logger.logError("Failed to copy Updater.exe to temp directory.")
@@ -136,14 +135,13 @@ class AutoUpdater {
         
         ; Command line arguments to pass to the updater executable
         temporaryLocation := this.CURRENT_VERSION_TEMPORARY_LOCATION
-        mainScript := A_ScriptFullPath
         rootPath := FilePaths.GetAbsolutePathToRoot()
-        version := this.releaseChecker.GetLatestVersionInfo()
+        pid := DllCall("GetCurrentProcessId", "UInt")
+        mainScript := A_ScriptFullPath
+        version := this.releaseChecker.getLatestVersionInfo()
         
         pathToVersionFile := FilePaths.GetAbsolutePathToRoot() . "config\Version.json"
         pathToControlScript := FilePaths.GetAbsolutePathToRoot() . "src\controlScript.exe"
-        
-        pid := DllCall("GetCurrentProcessId", "UInt")
 
         ; Build command-line arguments
         args := '"' temporaryLocation '" "' rootPath '" "' pid '" "' mainScript '" "' version '" "' pathToVersionFile '" "' pathToControlScript '"'
@@ -177,7 +175,7 @@ class AutoUpdater {
     }
 }
 
-; TODO move, to processmanager.ahk?
+; TODO move, but not to ProcessManager, because it is an action class.
 closeProcess(process) {
     DetectHiddenWindows(true)
     tries := 0

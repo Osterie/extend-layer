@@ -102,7 +102,7 @@ class ExtendLayerInProtectedLocationDialog extends DomainSpecificGui{
 
                     ; Build command-line arguments
                     mainScript := A_ScriptFullPath
-                    currentVersion := Version.getInstance().GetCurrentVersion()
+                    currentVersion := Version.getInstance().getCurrentVersion()
 
                     ; Confirm all critical files exist
                     if !FileExist(tempUpdater) {

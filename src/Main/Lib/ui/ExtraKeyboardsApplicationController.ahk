@@ -32,7 +32,7 @@ Class ExtraKeyboardsApplicationController{
         this.view.Destroy()
     }
 
-    HandleUpdateAvailableClicked(){
+    HandleupdateAvailableClicked(){
         UpdateDialog_ := UpdateDialog()
         UpdateDialog_.show()
     }

@@ -8,13 +8,25 @@ Class ProcessManager extends Action{
         Send("!{f4}")
     }
 
-    CloseProcessByPID(pid){
-        ; TODO: Implement
-    }
-
-    CloseProcessByName(name){
-        ; TODO: Implement
-
+    ; Closes a process by its name, or PID
+    CloseProcess(process){
+        DetectHiddenWindows(true)
+        tries := 0
+        while (ProcessExist(process) && tries < 10) {
+            pid := ProcessExist(process)
+            if pid {
+                ProcessClose(pid)
+                Sleep 500 ; Wait for 0.5 seconds
+                tries++
+                if !ProcessExist(process) {
+                    return true
+                }
+            }
+        }
+        if !ProcessExist(process) {
+            return true
+        }
+        return false
     }
 
     GetProcessPathByPID(pid){
@@ -36,9 +48,6 @@ Class ProcessManager extends Action{
     ChangeProcessPriorityByPID(pid, priority){
         
     }
-
-    
-
 
     CloseActiveAutohotkeyScript(){
         Exitapp

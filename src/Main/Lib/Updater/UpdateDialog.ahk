@@ -31,8 +31,8 @@ class UpdateDialog extends DomainSpecificGui{
 
     createInfo(){
         this.currentHotkeyTextControl := this.Add("Text",, "A new version of Extend Layer is available. `n" .
-            "Current version: " . this.UpdateChecker.GetCurrentVersion() . "`n" .
-            "Newest version: " . this.UpdateChecker.GetLatestVersionInfo() . "`n" .
+            "Current version: " . this.UpdateChecker.getCurrentVersion() . "`n" .
+            "Newest version: " . this.UpdateChecker.getLatestVersionInfo() . "`n" .
             "Click the button below to update Extend Layer.")
     }
 

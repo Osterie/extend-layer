@@ -6,7 +6,7 @@
 class GithubRelease {
 
     Logger := Logger.getInstance()
-    TimestampConverter := TimestampConverter()  ; Instance of TimestampConverter to handle timestamp formatting
+    TimestampConverter := TimestampConverter()  ; Handles timestamp formatting
 
     releaseInfo := ""  ; The release information from GitHub api
     version := ""  ; The version string, e.g., "v0.4.3-alpha"

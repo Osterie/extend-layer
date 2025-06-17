@@ -53,8 +53,8 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
         MyMenuBar.Add("&Suspend Script", (ItemName, ItemPos, MyMenuBar) => this.HandleSuspendClicked(ItemName, ItemPos, MyMenuBar))
         MyMenuBar.Add("&Settings", _SettingsMenu)
 
-        if (UpdateChecker_.UpdateAvailable()){
-            MyMenuBar.Add("🔄Update available!", (ItemName, ItemPos, MyMenuBar) => this.HandleUpdateAvailableClicked(ItemName, ItemPos, MyMenuBar))
+        if (UpdateChecker_.updateAvailable()){
+            MyMenuBar.Add("🔄Update available!", (ItemName, ItemPos, MyMenuBar) => this.HandleupdateAvailableClicked(ItemName, ItemPos, MyMenuBar))
         }
 
         this.MenuBar := MyMenuBar
@@ -71,8 +71,8 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
         }
     }
 
-    HandleUpdateAvailableClicked(ItemName, ItemPos, MyMenuBar) {
-        this.controller.HandleUpdateAvailableClicked()
+    HandleupdateAvailableClicked(ItemName, ItemPos, MyMenuBar) {
+        this.controller.HandleupdateAvailableClicked()
     }
 
     ; Creates the region for profile editing

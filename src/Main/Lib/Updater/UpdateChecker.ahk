@@ -13,43 +13,24 @@ class UpdateChecker {
     Logger := Logger.getInstance()
 
     __New(){
-        ; TODO this try catch is bad.
-        currentVersion := ""
-        try{
-            currentVersion := this.GetCurrentVersion()
-        }
-        catch{
-            this.Logger.logError("Failed to get current version. Using default version: unknown", "AutoUpdater.ahk", A_LineNumber)
-            currentVersion := "unknown"  ; Default version if current version cannot be retrieved
-        }
-        this.ReleaseChecker := GithubReleaseChecker("Osterie", "extend-layer", currentVersion)
+        this.ReleaseChecker := GithubReleaseChecker("Osterie", "extend-layer", this.getCurrentVersion())
     }
 
-    UpdateAvailable() {
+    updateAvailable() {
         return this.ReleaseChecker.updateAvailable()
     }
 
-    GetCurrentVersion() {
-
-        currentVersion := ""
-        try {
-            currentVersion := this.Version.GetCurrentVersion()
-        }
-        catch {
-            this.Logger.logError("Failed to get current version. Using provided version: " currentVersion)
-            throw Error("Failed to get current version. Using provided version: " currentVersion)
-        }
-
-        return currentVersion
+    getCurrentVersion() {
+        return this.Version.getCurrentVersion()
     }
 
-    GetLatestVersionInfo() {
+    getLatestVersionInfo() {
         try {
-            return this.ReleaseChecker.GetLatestVersionInfo()
+            return this.ReleaseChecker.getLatestVersionInfo()
         }
         catch {
-            this.Logger.logError("Failed to get new version from GitHub. Using default version: unknown", "AutoUpdater.ahk", A_LineNumber)
-            return "unknown"  ; Default version if new version cannot be retrieved
+            this.Logger.logError("Failed to get new version from GitHub. Using default version: unknown_latest", "AutoUpdater.ahk", A_LineNumber)
+            return "unknown_latest"  ; Default version if new version cannot be retrieved
         }
     }
 }
