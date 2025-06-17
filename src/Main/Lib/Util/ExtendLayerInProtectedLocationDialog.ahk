@@ -5,9 +5,6 @@
 #Include <Util\Logging\Logger>
 #Include <Util\Version>
 
-#Include <Updater\UpdateChecker>
-#Include <Updater\AutoUpdater>
-
 class ExtendLayerInProtectedLocationDialog extends DomainSpecificGui{
 
     Logger := Logger.getInstance()
@@ -15,10 +12,10 @@ class ExtendLayerInProtectedLocationDialog extends DomainSpecificGui{
     __New(){
         super.__New("+Resize +MinSize300x280", "Extend Layer in Protected Location Dialog")
         
-        this.CreateMain()
+        this.createMain()
     }
     
-    CreateMain(){
+    createMain(){
         this.SetFont("s10", )
         this.createRecommendationInfo()
         this.createCloseButton()

@@ -3,7 +3,7 @@
 #NoTrayIcon
 
 ; Only run in compiled mode, must be at least 2 argument, up to 7 arguments.
-if !A_IsCompiled || A_Args.Length < 2 || A_Args.Length > 7 {
+if (!A_IsCompiled || A_Args.Length < 2 || A_Args.Length > 7) {
     MsgBox "Update failed. This script should only be run in compiled mode with 2 to 7 arguments."
     ExitApp
 }
@@ -16,54 +16,86 @@ latestVersionInfo := A_Args.Length >= 5 ? A_Args[5] : ""
 pathToVersionFile := A_Args.Length >= 6 ? A_Args[6] : ""
 pathToControlScript := A_Args.Length >= 7 ? A_Args[7] : ""
 
+; Check if the source and destination directories exist, and if main script exists, given that it is provided.
+checkDirectoriesAndMainScript()
 
-if !FileExist(sourceDir) {
-    MsgBox "Update failed. ❌ Source directory does not exist: " sourceDir
-    ExitApp
+; Wait for the caller process to close, for up to 20 seconds.
+ProcessWaitClose(callerPid, 20) 
+
+; Updates the current version by copying files from the given updated source directory to the current destination directory (where extend-layer is stored).
+updateCurrentVersion()
+
+; Update the version file with the latest version information.
+updateVersionFile()
+
+; Restart the main script if it was provided
+restartMainScript()
+
+ExitApp
+
+
+
+; ---------------------------
+; --------- Functions -------
+; ---------------------------
+
+
+; Check if the source and destination directories exist, and if main script exists, given that it is provided.
+checkDirectoriesAndMainScript() {
+    if !FileExist(sourceDir) {
+        MsgBox "Update failed. ❌ Source directory does not exist: " sourceDir
+        ExitApp
+    }
+    if !FileExist(destinationDir) {
+        MsgBox "Update failed. ❌ Destination directory does not exist: " destinationDir
+        ExitApp
+    }
+    if (mainScript != "") {
+        if !FileExist(mainScript) {
+            MsgBox "Update failed. ❌ Main script does not exist: " mainScript
+            ExitApp
+        }
+    }
 }
-if !FileExist(destinationDir) {
-    MsgBox "Update failed. ❌ Destination directory does not exist: " destinationDir
-    ExitApp
-}
-if (mainScript != ""){
-    if !FileExist(mainScript) {
-        MsgBox "Update failed. ❌ Main script does not exist: " mainScript
+
+updateCurrentVersion(){
+    try {
+
+        controlScriptWasRunning := ProcessExist("controlScript.exe") ? true : false
+        if (!closeProcess("controlScript.exe")) {
+            throw Error("controlScript did not close in time.")
+        }
+
+        DirCopy(sourceDir, destinationDir, true) ; true = overwrite
+
+        ; Restart the control script if it was running
+        if (controlScriptWasRunning) {
+            restartControlScript()
+        }
+    } 
+    catch Error as err {
+        MsgBox "❌ Update failed:`n" err.Message
         ExitApp
     }
 }
 
-
-ProcessWaitClose(callerPid, 20) ; Wait for the caller process to close, for up to 20 seconds.
-
-try {
-
-    controlScriptWasRunning := ProcessExist("controlScript.exe") ? true : false
-    if (!closeProcess("controlScript.exe")) {
-        throw Error("controlScript did not close in time.")
+restartControlScript() {
+    if (pathToControlScript == "") {
+        return ; No control script path provided, nothing to restart
     }
-
-    DirCopy(sourceDir, destinationDir, true) ; true = overwrite
-
-    if (controlScriptWasRunning) {
-        ; Restart the control script if it was running
-        if (pathToControlScript != ""){
-
-            try{
-                Run pathToControlScript
-            }
-            catch{
-                MsgBox "❌ Failed to restart controlScript.exe"
-                ; ExitApp
-            }
-        }
+    try {
+        Run pathToControlScript
+    } catch Error as err {
+        MsgBox "✅ Update applied, but failed to restart controlScript.exe:`n" err.Message
     }
-} 
-catch Error as err {
-    MsgBox "❌ Update failed:`n" err.Message
-    ExitApp
 }
 
-if (latestVersionInfo != "") {
+; Update the version file with the latest version information.
+updateVersionFile() {
+    if (latestVersionInfo == "") {
+        return ; No version info provided, nothing to update
+    }
+
     try{
         jsonVersionObject := Map()
         jsonVersionObject["version"] := latestVersionInfo
@@ -79,16 +111,22 @@ if (latestVersionInfo != "") {
 }
 
 ; Restart the main script if it was provided
-if (mainScript != "") {
-    try {
-        Run mainScript
-    } catch Error as err {
-        MsgBox "✅ Update applied, but failed to restart main script:`n" err.Message
-        ExitApp
+restartMainScript() {
+    if (mainScript != "") {
+        try {
+            Run mainScript
+        } catch Error as err {
+            MsgBox "✅ Update applied, but failed to restart main script:`n" err.Message
+            ExitApp
+        }
     }
 }
 
-ExitApp
+
+; ---------------------------
+; --------- Helpers ---------
+; ---------------------------
+
 
 ; TODO move, to processmanager.ahk?
 closeProcess(process){

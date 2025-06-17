@@ -34,6 +34,6 @@ Class ExtraKeyboardsApplicationLauncher{
     }
 
     Start(){
-        this.ExtraKeyboardsApplication_.CreateMain(this.ExtraKeyboardsApplicationController_)
+        this.ExtraKeyboardsApplication_.createMain(this.ExtraKeyboardsApplicationController_)
     }
 }

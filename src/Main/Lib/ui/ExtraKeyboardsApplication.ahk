@@ -27,7 +27,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
     }
 
     ; Creates the main gui for the application
-    CreateMain(controller){
+    createMain(controller){
         this.controller := controller
         this.OnEvent('Close', (*) => this.Destroy())
         this.CreateMenuBar()

@@ -5,7 +5,6 @@
 #Include <Util\Logging\Logger>
 #Include <Util\Version>
 
-
 class UpdateChecker {
     ReleaseChecker := ""
 

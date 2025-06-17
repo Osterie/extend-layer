@@ -17,7 +17,7 @@ class HotKeyConfiguration extends DomainSpecificGui{
         this.setOwner(ownerHwnd)
     }
 
-    CreateMain(controller){
+    createMain(controller){
         this.controller := controller
         this.model := controller.getModel()
         this.createCurrentHotkeyControl()
