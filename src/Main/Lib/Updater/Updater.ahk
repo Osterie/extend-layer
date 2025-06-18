@@ -8,13 +8,13 @@ if (!A_IsCompiled || A_Args.Length < 2 || A_Args.Length > 7) {
     ExitApp
 }
 
-sourceDir := A_Args[1]
-destinationDir := A_Args[2]
-callerPid := A_Args.Length >= 3 ? A_Args[3] : ""
-mainScript := A_Args.Length >= 4 ? A_Args[4] : ""
-latestVersionInfo := A_Args.Length >= 5 ? A_Args[5] : ""
-pathToVersionFile := A_Args.Length >= 6 ? A_Args[6] : ""
-pathToControlScript := A_Args.Length >= 7 ? A_Args[7] : ""
+sourceDir := A_Args[1] ; The source directory where the updated files are located. Required.
+destinationDir := A_Args[2] ; The destination directory where the current version is stored. Required.
+callerPid := A_Args.Length >= 3 ? A_Args[3] : "" ; The PID of the caller process that should be waited for. Optional, but highly recommended.
+mainScript := A_Args.Length >= 4 ? A_Args[4] : "" ; The main script to restart after the update. Optional.
+latestVersionInfo := A_Args.Length >= 5 ? A_Args[5] : "" ; The latest version information to update in the version file. Optional.
+pathToVersionFile := A_Args.Length >= 6 ? A_Args[6] : "" ; The path to the version file to update with the latest version information. Optional.
+pathToControlScript := A_Args.Length >= 7 ? A_Args[7] : "" ; The path to the control script to restart after the update. Optional.
 
 ; Check if the source and destination directories exist, and if main script exists, given that it is provided.
 checkDirectoriesAndMainScript()

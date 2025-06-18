@@ -1,6 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include <Updater\GithubReleaseChecker>
+#Include <Updater\UpdaterRunner>
 
 #Include <Util\Version>
 #Include <Util\Downloader>
@@ -90,67 +91,9 @@ class AutoUpdater {
     }
 
     updateCurrentVersion(){
-        this.prepareUpdaterExecutable()
-        this.runUpdaterExecutable() ; Run updater from temporary location and exit current app
-    }
-
-    prepareUpdaterExecutable(){
-        if (!FileExist(this.ORIGINAL_UPDATER_LOCATION)) {
-            this.Logger.logError("Updater.exe does not exist in the expected location: " this.ORIGINAL_UPDATER_LOCATION)
-            throw Error("Updater.exe does not exist in the expected location: " this.ORIGINAL_UPDATER_LOCATION)
-        }
-        
-        processSuccessfullyClosed := closeProcess("Updater.exe")
-        if (!processSuccessfullyClosed) {
-            this.Logger.logError("Failed to close Updater.exe before copying.")
-            throw Error("Failed to close Updater.exe before copying.")
-        }
-        
-        try {
-            ; Delete the temporary updater if it exists
-            if (FileExist(this.TEMPORARY_UPDATER_LOCATION)) {
-                FileDelete(this.TEMPORARY_UPDATER_LOCATION)
-            }
-            FileCopy(this.ORIGINAL_UPDATER_LOCATION, this.TEMPORARY_UPDATER_LOCATION, true) ; true = overwrite if exists
-        }
-        catch Error as e {
-            this.Logger.logError("Failed to copy Updater.exe to temporary location: " e.Message, "AutoUpdater.ahk", A_LineNumber)
-            throw Error("Failed to copy Updater.exe to temporary location: " e.Message)
-        }
-
-        ; Confirm updater was copied successfully to the temporary location
-        if !FileExist(this.TEMPORARY_UPDATER_LOCATION) {
-            this.Logger.logError("Failed to copy Updater.exe to temp directory.")
-            throw Error("Failed to copy Updater.exe to temp directory.")
-        }
-    }
-
-    ; This method is used to run the updater executable with the provided arguments.
-    runUpdaterExecutable() {
-
-        if !FileExist(this.TEMPORARY_UPDATER_LOCATION) {
-            this.Logger.logError("Failed to copy Updater.exe to temp directory.")
-            throw Error("Failed to copy Updater.exe to temp directory.")
-        }
-        
-        ; Command line arguments to pass to the updater executable
-        temporaryLocation := this.CURRENT_VERSION_TEMPORARY_LOCATION
-        rootPath := FilePaths.GetAbsolutePathToRoot()
-        pid := DllCall("GetCurrentProcessId", "UInt")
-        mainScript := A_ScriptFullPath
-        version := this.releaseChecker.getLatestVersionInfo()
-        
-        pathToVersionFile := FilePaths.GetAbsolutePathToRoot() . "config\Version.json"
-        pathToControlScript := FilePaths.GetAbsolutePathToRoot() . "src\controlScript.exe"
-
-        ; Build command-line arguments
-        args := '"' temporaryLocation '" "' rootPath '" "' pid '" "' mainScript '" "' version '" "' pathToVersionFile '" "' pathToControlScript '"'
-
-        ; Run updater from temporary location with given argumetns
-        Run '"' this.TEMPORARY_UPDATER_LOCATION '" ' args
-
-        ; Exit the current script after running the updater, which is responsible for updating the current version.
-        ExitApp
+        UpdaterRunner_ := UpdaterRunner()
+        ; Merges changes from the updated temporary location into the current version directory.
+        UpdaterRunner_.runUpdater(this.CURRENT_VERSION_TEMPORARY_LOCATION, FilePaths.GetAbsolutePathToRoot(), true, this.releaseChecker.getLatestVersionInfo())
     }
 
     GetPathToUnzippedFiles(unzipLocation) {
@@ -173,25 +116,4 @@ class AutoUpdater {
 
         return foundPath
     }
-}
-
-; TODO move, but not to ProcessManager, because it is an action class.
-closeProcess(process) {
-    DetectHiddenWindows(true)
-    tries := 0
-    while (ProcessExist(process) && tries < 10) {
-        pid := ProcessExist(process)
-        if pid {
-            ProcessClose(pid)
-            Sleep 500 ; Wait for 0.5 seconds
-            tries++
-            if !ProcessExist(process) {
-                return true
-            }
-        }
-    }
-    if !ProcessExist(process) {
-        return true
-    }
-    return false
 }
