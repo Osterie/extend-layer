@@ -85,7 +85,6 @@ The Arrows keys, Home, End, Page up, Page down, Del, Backspace, Undo, Cut, Copy,
 #### Extra
 
 !WARNING! If you start using the Extend Layer, you will NEVER go back.
-The extend layer makes navigation a lot more ergonomic and fast. I highly reccomend learning the shortcuts from the extend layer [webpage](https://dreymar.colemak.org/layers-extend.html#:~:text=F12%20is%20faster.-,GENERAL,-SHORTCUTS).
 
 My favorite use for the extend layer, is coding in an IDE, for example VsCode. The extend layer really complements the existing shortcuts of VsCode and makes coding a lot faster, more ergonomic and more satisfying.
 
@@ -222,7 +221,6 @@ After you have selected an action an filled out it's parameters, save!
 
 ## Acknowledgements
 
-The preset profiles are HEAVILY **inspired** by the [extend layer](https://dreymar.colemak.org/layers-extend.html) created by DreymaR. Check it out.
-
+The preset profiles are HEAVILY **inspired** by the [Extend Extra Extreme](https://dreymar.colemak.org/layers-extend.html) created by DreymaR. Check it out.
 
 To create images of the keyboard layouts I used a great online [Keyboard Layout Editor](http://www.keyboard-layout-editor.com/#/).
