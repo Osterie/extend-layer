@@ -19,7 +19,10 @@ class Downloader {
 
     ; Downloads a file from the given URL to the specified location.
     Download(url, downloadLocation, replace := false) {
-        if (replace && FileExist(downloadLocation)) {
+        if (replace && DirExist(downloadLocation)) {
+            DirDelete(downloadLocation) ; Remove existing folder if replace is true
+        }
+        else if (replace && FileExist(downloadLocation)) {
             FileDelete(downloadLocation) ; Remove existing file if replace is true
         }
 

@@ -56,7 +56,7 @@ class UpdateManifestReader {
             throw ValueError("UpdateManifest is empty or could not be read.")
         }
 
-        skipPaths := ""
+        skipPaths := []
 
         try{
             skipPaths := updateManifest["skip"]
@@ -67,7 +67,7 @@ class UpdateManifestReader {
             throw ValueError("Could not read 'skip' paths from UpdateManifest.")
         }
 
-        if (skipPaths = "") {
+        if (skipPaths = []) {
             this.Logger.logError("No 'skip' paths found in UpdateManifest.")
             throw ValueError("No 'skip' paths found in UpdateManifest.")
         }

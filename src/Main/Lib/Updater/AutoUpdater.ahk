@@ -78,15 +78,20 @@ class AutoUpdater {
 
     updateVersionInTemporaryLocation() {
         FileOverwriteManager_ := FileOverwriteManager()
-        pathToUnzippedFiles := this.GetPathToUnzippedFiles(this.LATEST_RELEASE_DOWNLOAD_LOCATION)
+        pathToUnzippedFiles := this.getPathToUnzippedFiles(this.LATEST_RELEASE_DOWNLOAD_LOCATION)
 
         try {
             FileOverwriteManager_.copyIntoNewLocation(pathToUnzippedFiles, this.CURRENT_VERSION_TEMPORARY_LOCATION, FilePaths.getPathToUpdateManifest(), true)
         }
-        catch {
+        catch Error as e{
             errorMessage := "Failed to overwrite files from unzipped location: " this.LATEST_RELEASE_DOWNLOAD_LOCATION " to temporary location: " this.CURRENT_VERSION_TEMPORARY_LOCATION
-            this.Logger.logError(errorMessage, "AutoUpdater.ahk", A_LineNumber)
-            throw Error(errorMessage . " Line: " . A_LineNumber)
+            this.Logger.logError(
+                errorMessage 
+                . e.Message
+                , "AutoUpdater.ahk"
+                , e.Line
+            )
+            throw Error(errorMessage . " " . e.Message . " at line: " . e.Line)
         }
     }
 
@@ -96,7 +101,7 @@ class AutoUpdater {
         UpdaterRunner_.runUpdater(this.CURRENT_VERSION_TEMPORARY_LOCATION, FilePaths.GetAbsolutePathToRoot(), true, this.releaseChecker.getLatestVersionInfo())
     }
 
-    GetPathToUnzippedFiles(unzipLocation) {
+    getPathToUnzippedFiles(unzipLocation) {
         if (!FileExist(unzipLocation)) {
             this.Logger.logError("Unzipped location does not exist: " unzipLocation)
             throw Error("Unzipped location does not exist: " unzipLocation)
