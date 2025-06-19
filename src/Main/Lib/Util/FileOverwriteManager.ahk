@@ -11,7 +11,7 @@ class FileOverwriteManager {
         ; Empty constructor
     }
 
-    copyIntoNewLocation(sourceBaseLocation, destinationBaseLocation, updateManifestPath){
+    copyIntoNewLocation(sourceBaseLocation, destinationBaseLocation, updateManifestPath, removeOldFiles := true) {
         UpdateManifestReader_ := UpdateManifestReader(updateManifestPath)
 
         relativeWritePaths := UpdateManifestReader_.GetOverwritePaths()
@@ -22,10 +22,10 @@ class FileOverwriteManager {
             fullSkipPaths.Push(sourceBaseLocation . "\" . relativeSkipPaths[A_Index])
         }
 
-        this.OverwriteFiles(sourceBaseLocation, destinationBaseLocation, relativeWritePaths, fullSkipPaths)
+        this.OverwriteFiles(sourceBaseLocation, destinationBaseLocation, relativeWritePaths, fullSkipPaths, removeOldFiles)
     }
 
-    OverwriteFiles(sourceBaseLocation, destinationBaseLocation, relativeOverwritePaths, fullSkipPaths) {
+    OverwriteFiles(sourceBaseLocation, destinationBaseLocation, relativeOverwritePaths, fullSkipPaths, removeOldFiles) {
         loop relativeOverwritePaths.Length {
 
             relativeOverwritePath := relativeOverwritePaths[A_Index]
@@ -39,10 +39,17 @@ class FileOverwriteManager {
                 ; Overwrite
                 copyDestination := this.ConstructPath(destinationBaseLocation, relativeOverwritePath)
 
+                ; TODO is it fine to delete the directory if it exists and then copy the new one? 
                 if (DirExist(fullOverwritePath)) {
+                    if (removeOldFiles && DirExist(copyDestination)) {
+                        DirDelete(copyDestination, true)
+                    }
                     DirCopy(fullOverwritePath, copyDestination, true) ; true = overwrite
                 }
                 else if (FileExist(fullOverwritePath)) {
+                    if (removeOldFiles && FileExist(copyDestination)) {
+                        FileDelete(copyDestination)
+                    }
                     FileCopy(fullOverwritePath, copyDestination, true) ; true = overwrite
                 }
                 else {
@@ -52,6 +59,9 @@ class FileOverwriteManager {
 
             }
             else {
+                ; Skip, but we need to ensure the directory structure exists in the destination location.
+                ; For example ".../src/Main/Lib/Directory" might not exist, so we need to create it if it does not exist.
+                ; If not, we would get an error when trying to write to the file ".../src/Main/Lib/Directory/file.txt" because the directory does not exist.
 
                 if (!DirExist(destinationBaseLocation . "\" . relativeOverwritePath)) {
                     if (!FileExist(destinationBaseLocation . "\" . relativeOverwritePath)) {
@@ -61,17 +71,22 @@ class FileOverwriteManager {
                     }
                     ; MsgBox(destinationBaseLocation . "\" . relativeOverwritePath)
                 }
+
                 ; Go deeper if possible, else go back.
-                ; MsgBox("Going deeper: " fullOverwritePath . " GOING DEEPER: " this.GetFilesInDirectory(fullOverwritePath, relativeOverwritePath).Length)
 
                 ; If the skippedPath is the same as the current overwritePath, then skip it.
                 ; That means if it is a file, the file is skipped, if it is a directory, the directory is skipped.
                 if (fullOverwritePath == skippedPath) {
-                    ; MsgBox("Skipping path: " fullOverwritePath . " because the fil/directory is designated to be skipped.")
+                    ; The current overwrite path is skipped, so we do not overwrite it.
+                    this.Logger.logInfo("Skipping file or directory: " fullOverwritePath)
                 }
-                else { ; If only part of the path is present in the fullSkipPath, then we need to go deeper.
-                    this.OverwriteFiles(sourceBaseLocation, destinationBaseLocation, this.GetFilesInDirectory(
-                        fullOverwritePath, relativeOverwritePath), fullSkipPaths)
+                else {
+                    ; Some files or directories in the current overwrite path are skipped, so we need to go deeper.
+                    ; For example: overwritePath = "src\Main\Lib\Directory"
+                    ; skipPaths = ["src\Main\Lib\Directory\file.txt", "src\Main\Lib\Directory\subdirectory"]
+                    ; We need to go deeper into the "src\Main\Lib\Directory" directory and overwrite the files in it, but skip the files and directories that are in the skipPaths.
+                    deeperOverwritePaths := this.GetFilesInDirectory(fullOverwritePath, relativeOverwritePath)
+                    this.OverwriteFiles(sourceBaseLocation, destinationBaseLocation, deeperOverwritePaths, fullSkipPaths, removeOldFiles)
                 }
             }
         }

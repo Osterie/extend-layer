@@ -2,6 +2,8 @@
 
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
 
+; Used to log errors and information to logger file.
+; This class is a singleton, meaning only one instance can exist at a time, use the getInstance() method to retrieve it. instead of creating a new instance.
 class Logger {
     static instance := false
 
@@ -12,23 +14,31 @@ class Logger {
         ; Emtpy
     }
 
+    ; Returns the singleton instance of Logger
     static getInstance() {
-        if !Logger.instance
+        if (Logger.instance = false){
             Logger.instance := Logger()
+        }
         return Logger.instance
     }
 
-    ; Optional: log info
+    ; Logs an informational message to the log file with a timestamp.
     logInfo(msg) {
         msg := this.constructTimestampedMessage(msg, "INFO")
         this.writeToLog(msg)
     }
 
+    ; Logs an error message to the log file with a timestamp and optional file and line information.
     logError(msg, file := "", line := "") {
         errorMessage := this.constructErrorMessage(msg, file, line)
         this.writeToLog(errorMessage)
     }
 
+    ; --------------
+    ; PRIATE METHODS
+    ; --------------
+
+    ; Constructs a timestamped message with the given type (default is "ERROR")
     constructTimestampedMessage(msg, type := "ERROR") {
         timestamp := FormatTime(A_Now, "yyyy-MM-dd HH:mm:ss")
         return "[" timestamp "] [" type "] " msg
@@ -56,15 +66,17 @@ class Logger {
     
     ; Check if the log directory exists, if not, creates it
     checkAndCreateLogDir() {
-        if !DirExist(this.logDir) {
-            try{
-                DirCreate(this.logDir)
-                FileAppend("", this.logFile)
-            }
-            catch (Error as e) {
-                if (InStr(e.Message, "Access is denied")){
-                    MsgBox("You do not have permission to create a log directory. Please move extend layer to a non-protected folder. Alternatively, but not recommended, run the script as an administrator.")
-                }
+        if DirExist(this.logDir) {
+            return
+        }
+
+        try{
+            DirCreate(this.logDir)
+            FileAppend("", this.logFile)
+        }
+        catch (Error as e) {
+            if (InStr(e.Message, "Access is denied")){
+                MsgBox("You do not have permission to create a log directory. Please move extend layer to a non-protected folder. Alternatively, but not recommended, run the script as an administrator.")
             }
         }
     }

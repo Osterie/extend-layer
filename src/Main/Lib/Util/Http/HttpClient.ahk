@@ -13,18 +13,44 @@ class HttpClient {
     Request(method, url, headers := Map(), body := "") {
         this.ValidateParameters(method, url, headers, body)
 
+        httpRequest := this.CreateHttpRequest(method, url)
+        this.SetHeaders(httpRequest, headers)
+
+        response := this.SendRequest(httpRequest, body)
+        
+        return this.CreateResponseObject(response)
+    }
+    
+    ; --------------- 
+    ; Private methods
+    ; ---------------  
+
+    ; Creates a new WinHttp request object with the specified method and URL.
+    CreateHttpRequest(method, url){
         httpRequest := ComObject("WinHttp.WinHttpRequest.5.1")
         httpRequest.Open(method, url, true)
+        return httpRequest
+    }
 
+    ; Sets the headers for the HTTP request.
+    SetHeaders(httpRequest, headers) {
+        for key, value in headers {
+            httpRequest.SetRequestHeader(key, value)
+        }
+    }
 
-        for name, value in headers
-            httpRequest.SetRequestHeader(name, value)
-
+    ; Sends the HTTP request and waits for the response, then returns the response object.
+    SendRequest(httpRequest, body) {
         httpRequest.Send(body)
         httpRequest.WaitForResponse()
+        return httpRequest
+    }
 
-        responseStatus := httpRequest.Status
-        responseText := httpRequest.ResponseText
+    ; Creates a response object containing the status code, body as string, and parsed JSON object of the response body.
+    CreateResponseObject(response) {
+
+        responseStatus := response.Status
+        responseText := response.ResponseText
 
         responseTextAsObject := Jxon_Load(&responseText)
         return { 
@@ -34,6 +60,8 @@ class HttpClient {
         }
     }
 
+    ; Validates the parameters for the HTTP request.
+    ; Throws an error if any parameter is invalid.
     ValidateParameters(method, url, headers, body) {
         if (Type(headers) != "Map") {
             throw TypeError("Headers must be a Map object.")

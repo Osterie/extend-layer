@@ -1,12 +1,13 @@
 #Requires AutoHotkey v2.0
 
+; Converts timestamps to different formats.
 class TimestampConverter{
 
     ; TimestampConverter.ISOToCompact("2025-05-23T15:21:21Z")
-    ; ; → "20250523152121"
+    ; "2025-05-23T15:21:21Z" → "20250523152121"
 
     ; TimestampConverter.CompactToISO("20250523152121")
-    ; ; → "2025-05-23T15:21:21Z"
+    ; 20250523152121 → "2025-05-23T15:21:21Z"
 
     ; Convert ISO 8601 timestamp to compact format (YYYYMMDDhhmmss)
     ISOToCompact(isoTimestamp) {
@@ -17,8 +18,14 @@ class TimestampConverter{
         return isoTimestamp
     }
 
+    ; Convert compact timestamp (YYYYMMDDhhmmss) to ISO 8601 format
     CompactToISO(compactTimestamp) {
-        ; Convert compact timestamp (YYYYMMDDhhmmss) to ISO 8601 format
+
+        if (StrLen(compactTimestamp) != 14) {
+            throw ValueError("Invalid compact timestamp format. Expected format: YYYYMMDDhhmmss")
+        }
+
+        isoTimestamp := ""
         try {
             year := SubStr(compactTimestamp, 1, 4)
             month := SubStr(compactTimestamp, 5, 2)
@@ -28,10 +35,9 @@ class TimestampConverter{
             second := SubStr(compactTimestamp, 13, 2)
 
             isoTimestamp := Format("{:04}-{:02}-{:02}T{:02}:{:02}:{:02}", year, month, day, hour, minute, second)
-            return isoTimestamp
         } catch Error as e {
-            MsgBox("Error converting compact timestamp: " e.message)
-            return ""
+            throw ValueError("Invalid compact timestamp format. Expected format: YYYYMMDDhhmmss. Error: " e.Message)
         }
+        return isoTimestamp
     }
 }

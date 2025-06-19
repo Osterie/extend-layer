@@ -22,6 +22,8 @@ checkDirectoriesAndMainScript()
 ; Wait for the caller process to close, for up to 20 seconds.
 ProcessWaitClose(callerPid, 20) 
 
+backupCurrentVersion()
+
 ; Updates the current version by copying files from the given updated source directory to the current destination directory (where extend-layer is stored).
 updateCurrentVersion()
 
@@ -33,7 +35,7 @@ restartMainScript()
 
 ExitApp
 
-
+; TODO backup current version. If update fails, restore the backup.
 
 ; ---------------------------
 ; --------- Functions -------
@@ -58,6 +60,52 @@ checkDirectoriesAndMainScript() {
     }
 }
 
+backupCurrentVersion() {
+    try {
+        ; Createa a backup of the current version before updating.
+        ; Backup is placed in windows temp directory with a timestamp.
+        backupDir := A_Temp . "\extend-layer-backup" . A_Now
+        DirCopy(destinationDir, backupDir, true) ; true = overwrite
+    } catch Error as err {
+        MsgBox "❌ Failed to create backup of current version:`n" err.Message
+        ExitApp
+    }
+}
+
+restoreBackup() {
+    try {
+        ; Restore the backup of the current version.
+        ; Backup is placed in windows temp directory with a timestamp.
+        backupDir := A_Temp . "\extend-layer-backup" . A_Now
+        if !DirExist(backupDir) {
+            MsgBox("❌ Backup directory does not exist: " backupDir)
+            ExitApp
+        }
+        DirDelete(destinationDir, true) ; true = recursive delete
+        DirCopy(backupDir, destinationDir, true) ; true = overwrite
+        MsgBox("✅ Backup restored successfully from: " backupDir)
+    } catch Error as err {
+        try{
+            backupRestoreLocation := destinationDir . "\backup-restore"
+            DirCopy(backupDir, backupRestoreLocation, true) ; true = overwrite
+        }
+        catch{
+            MsgBox("❌ Failed to restore backup of current version, and failed to copy backup to: " backupRestoreLocation 
+                . "`n" 
+                . err.Message
+            )
+            ExitApp
+        }
+        MsgBox("❌ Failed to restore backup of current version:`n" 
+        . err.Message 
+        . "`n You can find the backup at: " backupRestoreLocation 
+        . "Or at " 
+        . backupDir
+        )
+        ExitApp
+    }
+}
+
 updateCurrentVersion(){
     try {
 
@@ -65,6 +113,8 @@ updateCurrentVersion(){
         if (!closeProcess("controlScript.exe")) {
             throw Error("controlScript did not close in time.")
         }
+
+        DirDelete(destinationDir, true) ; true = recursive delete
 
         DirCopy(sourceDir, destinationDir, true) ; true = overwrite
 
@@ -74,7 +124,11 @@ updateCurrentVersion(){
         }
     } 
     catch Error as err {
-        MsgBox "❌ Update failed:`n" err.Message
+        MsgBox("❌ Update failed:`n" 
+            . err.Message
+            . "`nAttempting to restore backup..."
+        )
+        restoreBackup() ; Restore the backup if update fails
         ExitApp
     }
 }
