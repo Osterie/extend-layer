@@ -37,10 +37,12 @@ class MethodInfo{
     }
 
     getMethodParameterInfo(parameterName){
-        if (!this.methodParameters.HasKey(parameterName)){
-            return "Parameter not found"
+        for index, parameter in this.methodParameters {
+            if (parameter.getName() = parameterName) {
+                return parameter
+            }
         }
-        return this.methodParameters[parameterName]
+        throw Error("Parameter '" . parameterName . "' not found in method '" . this.methodName . "'.")
     }
     getFriendlyName(){
         return this.friendlyName

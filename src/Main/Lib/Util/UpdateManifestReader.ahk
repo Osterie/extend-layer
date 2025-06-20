@@ -24,7 +24,7 @@ class UpdateManifestReader {
     }
 
     getOverwritePaths() {
-        this.getUpdateManifestValue("overwrite")
+        return this.getUpdateManifestValue("overwrite")
     }
 
     getSkipPaths() {
@@ -37,7 +37,7 @@ class UpdateManifestReader {
             throw ValueError("UpdateManifest is empty or could not be read.")
         }
 
-        if (!this.updateManifestInfo.HasKey(key)) {
+        if (!this.updateManifestInfo.Has(key)) {
             this.Logger.logError("Key '" . key . "' does not exist in UpdateManifest.")
             throw ValueError("Key '" . key . "' does not exist in UpdateManifest.")
         }
