@@ -1,5 +1,7 @@
 #Requires Autohotkey v2.0
 
+#Include <Actions\Action>
+
 ; TODO dont extends actin, extends overlay or something...
 Class KeyboardOverlayRegistry extends Action{
     

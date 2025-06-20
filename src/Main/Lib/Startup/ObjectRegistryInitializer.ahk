@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\StartupConfiguration\ObjectsInitializer>
-#Include <Util\StartupConfiguration\MainStartupConfigurator>
+#Include <Startup\ObjectsInitializer>
+#Include <Startup\MainStartupConfigurator>
 
 class ObjectRegistryInitializer {
 

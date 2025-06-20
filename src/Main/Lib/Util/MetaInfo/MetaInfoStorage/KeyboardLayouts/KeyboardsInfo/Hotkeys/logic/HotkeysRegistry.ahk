@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\HotkeyFormatConverter>
+#Include <Util\Formaters\HotkeyFormatter>
 
 class HotkeysRegistry{
 
@@ -27,7 +27,7 @@ class HotkeysRegistry{
     GetHotkey(hotkeyName){
         hotkeyInfoToReturn := this.hotkeys.get(hotkeyName)
         if (hotkeyInfoToReturn = ""){
-            hotkeyInfoToReturn := this.hotkeys.get(HotkeyFormatConverter.convertFromFriendlyName(hotkeyName))
+            hotkeyInfoToReturn := this.hotkeys.get(HotkeyFormatter.convertFromFriendlyName(hotkeyName))
         }
         return hotkeyInfoToReturn
     }

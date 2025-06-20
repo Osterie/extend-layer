@@ -4,7 +4,7 @@
 #Include <Updater\UpdaterRunner>
 
 #Include <Util\Version>
-#Include <Util\Downloader>
+#Include <Util\Downloading\Downloader>
 #Include <Util\Logging\Logger>
 #Include <Util\FileOverwriteManager>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>

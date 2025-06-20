@@ -5,7 +5,7 @@
 #Include ".\KeyChanging\HotkeyCrafterController.ahk"
 #Include <ui\Main\util\GuiSizeChanger>
 
-#Include <Util\HotkeyFormatConverter>
+#Include <Util\Formaters\HotkeyFormatter>
 
 class HotKeyConfigurationController{
 

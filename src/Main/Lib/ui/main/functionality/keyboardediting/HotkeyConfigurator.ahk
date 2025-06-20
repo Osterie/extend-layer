@@ -1,8 +1,8 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\HotkeyFormatConverter>
+#Include <Util\Formaters\HotkeyFormatter>
 
-#Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
+#Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo> ; TODO remove
 
 ; TODO make this class is able to change hotkeys and actions
 class HotkeyConfigurator{

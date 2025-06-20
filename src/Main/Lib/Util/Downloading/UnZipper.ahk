@@ -3,7 +3,7 @@
 ; Used to unzip ZIP files.
 ; Read about the Shell.Application COM object: https://learn.microsoft.com/en-us/windows/win32/shell
 ; Read about the Folder object: https://learn.microsoft.com/en-us/windows/win32/shell/folder
-class UnZipper{
+class UnZipper {
  
     ; Unzips a ZIP file to the specified destination directory.
     ; zipFilePath: The path to the ZIP file to unzip.

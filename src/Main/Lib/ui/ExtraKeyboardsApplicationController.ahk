@@ -9,7 +9,7 @@
 
 #Include <Updater\UpdateDialog>
 
-#Include <Util\StartupConfiguration\HotkeyInitializer>
+#Include <Startup\HotkeyInitializer>
 
 Class ExtraKeyboardsApplicationController{
 

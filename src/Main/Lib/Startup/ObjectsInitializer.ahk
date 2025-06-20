@@ -1,8 +1,8 @@
 #Requires Autohotkey v2.0
 
 #Include <Actions\LayerControlling\LayerController>
-#Include <Util\KeyboardOverlay\KeyboardOverlay>
-#Include <Util\KeyboardOverlay\KeyboardOverlayRegistry>
+#Include <Actions\KeyboardOverlay\KeyboardOverlay>
+#Include <Actions\KeyboardOverlay\KeyboardOverlayRegistry>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\IniFileReader>
 
 #Include <Actions\KeysPressedDisplay\KeysPressedGui>

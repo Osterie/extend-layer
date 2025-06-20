@@ -7,13 +7,13 @@
 #Include <Prototyping\Array>
 #Include <Prototyping\Map>
 
-#Include "<ui\ExtraKeyboardsApplicationLauncher>"
+#Include <ui\ExtraKeyboardsApplicationLauncher>
 
 #Include <Util\ExtendLayerInProtectedLocationDialog>
 
 #Include <Util\Logging\Logger>
 
-#Include <Util\StartupConfiguration\ObjectRegistryInitializer>
+#Include <Startup\ObjectRegistryInitializer>
 
 #Include <Util\MetaInfo\MetaInfoReading\ObjectsJsonReader>
 #Include <Util\MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader>
@@ -153,33 +153,33 @@ Class Main{
         ; This is used to read ini files, and create hotkeys from them
         this.StartupConfigurator := MainStartupConfigurator()
 
-        this.StartupConfigurator.SetInformation(this.KeyboardLayersInfoRegister, this.ObjectRegister)
+        this.StartupConfigurator.setInformation(this.KeyboardLayersInfoRegister, this.ObjectRegister)
     }
     
     CreateKeyboardOverlays(){
         ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
-        this.StartupConfigurator.ReadAllKeyboardOverlays()
+        this.StartupConfigurator.readAllKeyboardOverlays()
     }
 
     SetHotkeysForAllLayers(enableHotkeys := true){
-        this.StartupConfigurator.CreateGlobalHotkeysForAllKeyboardOverlays()
+        this.StartupConfigurator.createGlobalHotkeysForAllKeyboardOverlays()
 
         ; Reads and initializes all the hotkeys which are active for every keyboard layer.
-        this.StartupConfigurator.InitializeLayer(this.KeyboardLayersInfoRegister, this.ObjectRegister,  "GlobalLayer", enableHotkeys)
+        this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, this.ObjectRegister,  "GlobalLayer", enableHotkeys)
         
         HotIf "MainScript.getLayerController().getActiveLayer() == 0"
             ; Reads and initializes all the hotkeys for the normal keyboard layer.
-            this.StartupConfigurator.InitializeLayer(this.KeyboardLayersInfoRegister, this.ObjectRegister, "NormalLayer", enableHotkeys)
+            this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, this.ObjectRegister, "NormalLayer", enableHotkeys)
         HotIf
         
         HotIf "MainScript.getLayerController().getActiveLayer() == 1"
             ; Reads and initializes all the hotkeys for the second keyboard layer.
-            this.StartupConfigurator.InitializeLayer(this.KeyboardLayersInfoRegister, this.ObjectRegister, "SecondaryLayer", enableHotkeys)
+            this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, this.ObjectRegister, "SecondaryLayer", enableHotkeys)
         HotIf
         
         HotIf "MainScript.getLayerController().getActiveLayer() == 2"
             ; Reads and initializes all the hotkeys for the third keyboard layer.
-            this.StartupConfigurator.InitializeLayer(this.KeyboardLayersInfoRegister, this.ObjectRegister, "TertiaryLayer", enableHotkeys)
+            this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, this.ObjectRegister, "TertiaryLayer", enableHotkeys)
         HotIf
     }
 

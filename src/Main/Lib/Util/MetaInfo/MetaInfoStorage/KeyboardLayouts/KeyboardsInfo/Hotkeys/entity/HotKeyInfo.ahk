@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\HotkeyFormatConverter>
+#Include <Util\Formaters\HotkeyFormatter>
 
 ; TODO perhaps this should work together with the main startupr configurator which creates all the hotkeys
 class HotKeyInfo{
@@ -37,7 +37,7 @@ class HotKeyInfo{
     }
 
     setNormalHotkeySingle(toKeyWithModifiers){
-        modifiersAndHotkey := HotkeyFormatConverter.splitModifiersAndHotkey(toKeyWithModifiers)
+        modifiersAndHotkey := HotkeyFormatter.splitModifiersAndHotkey(toKeyWithModifiers)
         this.setNewHotkeyModifiers(modifiersAndHotkey[1])
         this.toKey := modifiersAndHotkey[2]
     }
@@ -64,7 +64,7 @@ class HotKeyInfo{
                 return this.objectName . "." . this.methodName . "(" . this.parametersToString(this.parameters) . ")"
             }
             else{
-                return HotkeyFormatConverter.convertToFriendlyHotkeyName(this.modifiers . this.toKey)
+                return HotkeyFormatter.convertToFriendlyHotkeyName(this.modifiers . this.toKey)
             }
         }
         else{
@@ -120,7 +120,7 @@ class HotKeyInfo{
     getFriendlyHotkeyName(){
         friendlyNameToReturn := ""
         if (this.fromKey != ""){
-            friendlyNameToReturn := HotkeyFormatConverter.convertToFriendlyHotkeyName(this.fromKey)
+            friendlyNameToReturn := HotkeyFormatter.convertToFriendlyHotkeyName(this.fromKey)
         }
         return friendlyNameToReturn
     }

@@ -8,9 +8,10 @@
 #Include <ui\Main\MenuBar\SettingsMenu>
 
 #Include <Updater\UpdateChecker>
-#Include <Util\HotkeyFormatConverter>
-#Include <Util\MetaInfo\MetaInfoStorage\Themes\logic\Themes>
-#Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
+#Include <Util\Formaters\HotkeyFormatter>
+
+#Include <Util\MetaInfo\MetaInfoStorage\Themes\logic\Themes> ;TODO remove
+#Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo> ;TODO remove
 
 #Include <ui\Main\Util\DomainSpecificGui>
 
@@ -126,7 +127,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
         this.ButtonForEditingInfo.Opt("Hidden1")
 
         this.ButtonForDeletingInfo := this.Add("Button", "Yp", "Delete")
-        this.ButtonForDeletingInfo.OnEvent("Click", (*) => this.controller.DeleteHotkey(HotkeyFormatConverter.convertFromFriendlyName(this.hotkeysListView.GetSelectionText())))
+        this.ButtonForDeletingInfo.OnEvent("Click", (*) => this.controller.DeleteHotkey(HotkeyFormatter.convertFromFriendlyName(this.hotkeysListView.GetSelectionText())))
 
         this.ButtonForDeletingInfo.Opt("Hidden1")
 

@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-class HotkeyFormatConverter{
+class HotkeyFormatter{
 
     mapModifiersToFriendly := Map()
 
@@ -34,6 +34,7 @@ class HotkeyFormatConverter{
                 friendlyName .= mapModifiersToFriendly[A_LoopField]
             }
         }
+
         return friendlyName
     }
 
