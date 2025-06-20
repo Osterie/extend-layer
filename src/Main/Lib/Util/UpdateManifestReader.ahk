@@ -2,12 +2,13 @@
 
 #Include <Util\JsonParsing\JXON\JXON>
 #Include <Util\Logging\Logger>
+#Include <Util\Formaters\PathFormatter>
 
 class UpdateManifestReader {
 
     updateManifestInfo := ""
     Logger := Logger.getInstance()
-    updateManifestPath := ""
+    PathFormatter := PathFormatter()
 
     __New(pathToUpdateManifest) {
         if (!FileExist(pathToUpdateManifest)) {
@@ -15,134 +16,68 @@ class UpdateManifestReader {
             throw Error("UpdateManifest file does not exist at: " . pathToUpdateManifest)
         }
 
-        this.updateManifestPath := pathToUpdateManifest
+        this.updateManifestInfo := this.readUpdateManifestFromFile(pathToUpdateManifest)
     }
 
-    GetOverwritePaths() {
-        updateManifest := this.GetUpdateManifest()
-        if (updateManifest = "") {
-            this.Logger.logError("UpdateManifest is empty or could not be read.")
-            throw ValueError("UpdateManifest is empty or could not be read.")
-        }
-
-        overwritePaths := ""
-
-        try{
-            overwritePaths := updateManifest["overwrite"]
-            overwritePaths := this.FormatPaths(overwritePaths)
-        }
-        catch {
-            this.Logger.logError("Could not read 'overwrite' paths from UpdateManifest.")
-            throw ValueError("Could not read 'overwrite' paths from UpdateManifest.")
-        }
-
-        if (overwritePaths = "") {
-            this.Logger.logError("No 'overwrite' paths found in UpdateManifest.")
-            throw ValueError("No 'overwrite' paths found in UpdateManifest.")
-        }
-
-        if (IsObject(overwritePaths) = false) {
-            this.Logger.logError("'overwrite' paths in UpdateManifest are not an object.")
-            throw ValueError("'overwrite' paths in UpdateManifest are not an object.")
-        }
-
-        return overwritePaths
-    }
-
-    GetSkipPaths() {
-        updateManifest := this.GetUpdateManifest()
-        if (updateManifest = "") {
-            this.Logger.logError("UpdateManifest is empty or could not be read.")
-            throw ValueError("UpdateManifest is empty or could not be read.")
-        }
-
-        skipPaths := []
-
-        try{
-            skipPaths := updateManifest["skip"]
-            skipPaths := this.FormatPaths(skipPaths)
-        }
-        catch {
-            this.Logger.logError("Could not read 'skip' paths from UpdateManifest.")
-            throw ValueError("Could not read 'skip' paths from UpdateManifest.")
-        }
-
-        if (skipPaths = []) {
-            this.Logger.logError("No 'skip' paths found in UpdateManifest.")
-            throw ValueError("No 'skip' paths found in UpdateManifest.")
-        }
-
-        if (IsObject(skipPaths) = false) {
-            this.Logger.logError("'skip' paths in UpdateManifest are not an object.")
-            throw ValueError("'skip' paths in UpdateManifest are not an object.")
-        }
-
-        return skipPaths
-    }
-
-    GetUpdateManifest() {
-        if (this.updateManifestInfo = "") {
-            try{
-                this.updateManifestInfo := this.ReadUpdateManifestFromFile()
-            }
-            catch{
-                this.Logger.logError("Could not read the current UpdateManifest from file.")
-                throw ValueError("Could not read the current UpdateManifest from file.")
-            }
-        }
+    getUpdateManifest() {
         return this.updateManifestInfo
     }
 
-    ReadUpdateManifestFromFile() {
-        if (!FileExist(this.updateManifestPath)) {
-            this.Logger.logError("UpdateManifest file does not exist at: " . this.updateManifestPath)
-            throw Error("UpdateManifest file does not exist at: " . this.updateManifestPath)
+    getOverwritePaths() {
+        this.getUpdateManifestValue("overwrite")
+    }
+
+    getSkipPaths() {
+        return this.getUpdateManifestValue("skip")
+    }
+
+    getUpdateManifestValue(key) {
+        if (this.updateManifestInfo = "") {
+            this.Logger.logError("UpdateManifest is empty or could not be read.")
+            throw ValueError("UpdateManifest is empty or could not be read.")
+        }
+
+        if (!this.updateManifestInfo.HasKey(key)) {
+            this.Logger.logError("Key '" . key . "' does not exist in UpdateManifest.")
+            throw ValueError("Key '" . key . "' does not exist in UpdateManifest.")
+        }
+
+        updateManifestPaths := this.updateManifestInfo[key]
+        updateManifestPaths := this.PathFormatter.formatPaths(updateManifestPaths)
+
+        if (updateManifestPaths = []) {
+            this.Logger.logWarning("No " . key . " paths found in UpdateManifest.")
+        }
+
+        if (Type(updateManifestPaths) != "Array") {
+            this.Logger.logError(key . " paths in UpdateManifest are not an array.")
+            throw ValueError(key . " paths in UpdateManifest are not an array.")
+        }
+
+        return updateManifestPaths
+    }
+
+    readUpdateManifestFromFile(updateManifestPath) {
+        if (!FileExist(updateManifestPath)) {
+            this.Logger.logError("UpdateManifest file does not exist at: " . updateManifestPath)
+            throw Error("UpdateManifest file does not exist at: " . updateManifestPath)
         }
 
         try {
-            updateManifestAsString := FileRead(this.updateManifestPath, "UTF-8")
+            updateManifestAsString := FileRead(updateManifestPath, "UTF-8")
         }
         catch {
-            this.Logger.logError("Could not read the file: " . this.updateManifestPath)
-            throw ValueError("Could not read the file: " . this.updateManifestPath)
+            this.Logger.logError("Could not read the file: " . updateManifestPath)
+            throw ValueError("Could not read the file: " . updateManifestPath)
         }
 
         jsonUpdateManifestAsJson := jxon_load(&updateManifestAsString)
 
         if (jsonUpdateManifestAsJson = "") {
-            this.Logger.logError("The UpdateManifest file is empty or could not be parsed: " . this.updateManifestPath)
+            this.Logger.logError("The UpdateManifest file is empty or could not be parsed: " . updateManifestPath)
             throw ValueError("The UpdateManifest file is empty or could not be parsed.")
         }
 
         return jsonUpdateManifestAsJson
-    }
-
-    FormatPaths(paths){
-        Loop paths.Length {
-            paths[A_Index] := this.NormalizePath(paths[A_Index])
-        }
-        return paths
-    }
-
-    ; Remove trailing backslashes (except for root like "C:\")
-    ; Replace forward slashes with backslashes
-    ; Replace double backslashes with single backslash
-    NormalizePath(path) {
-        pathLengthBefore := StrLen(path)
-        if (InStr(path, "/")){
-            this.Logger.logInfo("Path contains forward slashes, normalizing: " . path)
-        }
-        path := StrReplace(path, "/", "\") ; Replace forward slashes with backslashes
-        path := StrReplace(path, "\\", "\") ; Replace double backslashes with single backslash
-
-        while (StrLen(path) > 3 && SubStr(path, -1) == "\"){
-            path := SubStr(path, 1, -1)
-        }
-        
-        pathLengthAfter := StrLen(path)
-        if (pathLengthAfter < pathLengthBefore) {
-            this.Logger.logInfo("Normalized path: " . path)
-        }
-        return path
     }
 }

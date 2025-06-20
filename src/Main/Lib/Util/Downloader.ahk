@@ -14,7 +14,7 @@ class Downloader {
     ; unzipLocation: The path where the zip file will be unzipped.
     DownloadZip(zipUrl, downloadLocation, unzipLocation, replace := false) {
         this.Download(zipUrl, downloadLocation, replace) ; Download the zip file
-        this.Unzip(downloadLocation, unzipLocation, replace) ; Unzip the downloaded file
+        this.unzip(downloadLocation, unzipLocation, replace) ; unzip the downloaded file
     }
 
     ; Downloads a file from the given URL to the specified location.
@@ -33,12 +33,12 @@ class Downloader {
     ; zipFile: The path to the zip file to unzip.
     ; unzipLocation: The path where the zip file will be unzipped.
     ; replace: If true, it will delete the existing directory before unzipping.
-    Unzip(zipFile, unzipLocation, replace := false) {
+    unzip(zipFile, unzipLocation, replace := false) {
         if (replace) {
             this.DeleteOldDownload(unzipLocation, true) ; Remove existing directory if replace is true
         }
 
-        this.UnZipper.Unzip(zipFile, unzipLocation, true) ; Unzip to the specified location
+        this.UnZipper.unzip(zipFile, unzipLocation, true) ; unzip to the specified location
     }
 
     ; Deletse the file/direcotory at the specified download location.

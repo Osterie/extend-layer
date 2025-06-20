@@ -5,7 +5,7 @@
 #Include <Util\Logging\Logger>
 
 class Version {
-    static theSingleInstance := 0
+    static instance := false
     currentVersion := ""
     latestVersion := ""
     Logger := Logger.getInstance()
@@ -14,10 +14,10 @@ class Version {
     }
 
     static getInstance() {
-        if (IsObject(Version.theSingleInstance) = 0) {
-            Version.theSingleInstance := Version() ; Default version
+        if (IsObject(Version.instance) = false) {
+            Version.instance := Version() ; Default version
         }
-        return Version.theSingleInstance
+        return Version.instance
     }
 
     updateVersion(newVersion) {

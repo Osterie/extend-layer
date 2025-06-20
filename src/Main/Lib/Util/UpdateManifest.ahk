@@ -4,7 +4,7 @@
 #Include <Util\UpdateManifestReader>
 
 class UpdateManifest {
-    static theSingleInstance := 0
+    static instance := false
 
     UpdateManifestReader := UpdateManifestReader(FilePaths.getPathToUpdateManifest())
 
@@ -12,17 +12,17 @@ class UpdateManifest {
     }
 
     static getInstance() {
-        if (IsObject(UpdateManifest.theSingleInstance) = 0) {
-            UpdateManifest.theSingleInstance := UpdateManifest() ; Default UpdateManifest
+        if (IsObject(UpdateManifest.instance) = false) {
+            UpdateManifest.instance := UpdateManifest() ; Default UpdateManifest
         }
-        return UpdateManifest.theSingleInstance
+        return UpdateManifest.instance
     }
 
-    GetOverwritePaths() {
-        return this.UpdateManifestReader.GetOverwritePaths()
+    getOverwritePaths() {
+        return this.UpdateManifestReader.getOverwritePaths()
     }
 
-    GetSkipPaths() {
-        return this.UpdateManifestReader.GetSkipPaths()
+    getSkipPaths() {
+        return this.UpdateManifestReader.getSkipPaths()
     }
 }

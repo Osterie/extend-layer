@@ -28,6 +28,11 @@ class Logger {
         this.writeToLog(msg)
     }
 
+    logWarning(msg) {
+        msg := this.constructTimestampedMessage(msg, "WARNING")
+        this.writeToLog(msg)
+    }
+
     ; Logs an error message to the log file with a timestamp and optional file and line information.
     logError(msg, file := "", line := "") {
         errorMessage := this.constructErrorMessage(msg, file, line)

@@ -14,7 +14,7 @@ class FileOverwriteManager {
     copyIntoNewLocation(sourceBaseLocation, destinationBaseLocation, updateManifestPath, removeOldFiles := true) {
         UpdateManifestReader_ := UpdateManifestReader(updateManifestPath)
 
-        relativeOverwritePaths := UpdateManifestReader_.GetOverwritePaths()
+        relativeOverwritePaths := UpdateManifestReader_.getOverwritePaths()
         fullSkipPaths := this.createFullSkipPaths(sourceBaseLocation, UpdateManifestReader_)
         this.overwriteFiles(sourceBaseLocation, destinationBaseLocation, relativeOverwritePaths, fullSkipPaths, removeOldFiles)
     }
@@ -101,7 +101,7 @@ class FileOverwriteManager {
     }
 
     createFullSkipPaths(sourceBaseLocation, UpdateManifestReader_){
-        relativeSkipPaths := UpdateManifestReader_.GetSkipPaths()
+        relativeSkipPaths := UpdateManifestReader_.getSkipPaths()
 
         fullSkipPaths := Array()
         loop relativeSkipPaths.Length {

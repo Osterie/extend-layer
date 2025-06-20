@@ -10,11 +10,10 @@
 class ThemesReader{
 
     PATH_TO_THEMES := ""
-    Themes_ := Array()
+    themes := Array()
 
     __New(){
         this.PATH_TO_THEMES := FilePaths.GetThemes()
-        ; this.Themes_ := Themes()
     }
 
     ReadThemes(){
@@ -44,11 +43,11 @@ class ThemesReader{
                     CaptionFontColor := themeInformation["CaptionFontColor"]
     
                     themeToAdd := Theme(themeName, themeCategory, BackgroundColor, TextColor, ControlColor, CaptionColor, CaptionFontColor)
-                    this.Themes_.Push(themeToAdd)
+                    this.themes.Push(themeToAdd)
                 }
             }
         }
         
-        return this.Themes_
+        return this.themes
     }
 }
