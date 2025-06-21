@@ -4,7 +4,7 @@
 
 #Include <Updater\UpdaterRunner>
 
-#Include <Util\Logging\Logger>
+#Include <Shared\Logger>
 
 class ExtendLayerInProtectedLocationDialog extends DomainSpecificGui {
 

@@ -7,7 +7,7 @@
 #Include "..\MetaInfoStorage\Objects\MethodRegistry.ahk"
 #Include "..\MetaInfoStorage\Objects\ParameterInfo.ahk"
 
-#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include <Shared\FilePaths>
 
 
 

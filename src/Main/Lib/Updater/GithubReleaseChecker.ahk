@@ -4,7 +4,7 @@
 
 #Include <Util\JsonParsing\JXON\JXON>
 #Include <Util\Http\RestClient>
-#Include <Util\Logging\Logger>
+#Include <Shared\Logger>
 #Include <Util\Formaters\TimestampConverter>
 
 class GithubReleaseChecker {

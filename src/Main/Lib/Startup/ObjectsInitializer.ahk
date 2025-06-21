@@ -18,7 +18,7 @@
 #Include <Actions\BatteryAndPower\BatteryController>
 #Include <Actions\Navigation\WebNavigation\WebNavigator>
 #Include <Actions\Navigation\FileNavigation\FileExplorerNavigator>
-#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include <Shared\FilePaths>
 
 class ObjectsInitializer{
 

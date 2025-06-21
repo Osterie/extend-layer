@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include <Shared\FilePaths>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\IniFileReader>
 
 

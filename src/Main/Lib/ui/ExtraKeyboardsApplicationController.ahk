@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include <Util\JsonParsing\JsonFormatter\JsonFormatter>
-#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include <Shared\FilePaths>
 #Include "Main\Functionality\ActionSettings\SettingsEditorDialog.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfiguration.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationController.ahk"

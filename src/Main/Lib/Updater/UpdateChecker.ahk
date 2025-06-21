@@ -2,8 +2,8 @@
 
 #Include <Updater\GithubReleaseChecker>
 
-#Include <Util\Logging\Logger>
-#Include <Util\Version>
+#Include <Shared\Logger>
+#Include <DataModels\AppData\Version>
 
 class UpdateChecker {
     ReleaseChecker := ""

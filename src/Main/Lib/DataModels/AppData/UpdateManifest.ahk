@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
-#Include <Util\UpdateManifestReader>
+#Include <Shared\FilePaths>
+#Include <Infrastructure\FileReaders\UpdateManifestReader>
 
 class UpdateManifest {
     static instance := false

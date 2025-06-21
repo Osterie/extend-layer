@@ -1,23 +1,16 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include <Shared\FilePaths>
 #Include <Util\JsonParsing\JXON\JXON>
-#Include <Util\Logging\Logger>
+#Include <Shared\Logger>
 
-class Version {
-    static instance := false
+class VersionReader {
+
     currentVersion := ""
     latestVersion := ""
     Logger := Logger.getInstance()
 
     __New() {
-    }
-
-    static getInstance() {
-        if (IsObject(Version.instance) = false) {
-            Version.instance := Version() ; Default version
-        }
-        return Version.instance
     }
 
     updateVersion(newVersion) {

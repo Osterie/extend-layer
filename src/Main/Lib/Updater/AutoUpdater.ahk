@@ -3,11 +3,11 @@
 #Include <Updater\GithubReleaseChecker>
 #Include <Updater\UpdaterRunner>
 
-#Include <Util\Version>
+#Include <DataModels\AppData\Version>
 #Include <Util\Downloading\Downloader>
-#Include <Util\Logging\Logger>
+#Include <Shared\Logger>
 #Include <Util\FileOverwriteManager>
-#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include <Shared\FilePaths>
 
 class AutoUpdater {
     static instance := false

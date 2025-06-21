@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\UpdateManifestReader>
-#Include <Util\Logging\Logger>
+#Include <Infrastructure\FileReaders\UpdateManifestReader>
+#Include <Shared\Logger>
 
 class FileOverwriteManager {
 

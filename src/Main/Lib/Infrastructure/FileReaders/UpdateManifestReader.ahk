@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include <Util\JsonParsing\JXON\JXON>
-#Include <Util\Logging\Logger>
+#Include <Shared\Logger>
 #Include <Util\Formaters\PathFormatter>
 
 class UpdateManifestReader {

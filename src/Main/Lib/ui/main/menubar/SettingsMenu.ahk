@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include <ui\Main\util\Menus\ImprovedMenu>
-#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include <Shared\FilePaths>
 
 class SettingsMenu extends ImprovedMenu{
 

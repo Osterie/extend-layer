@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\Logging\Logger>
-#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include <Shared\Logger>
+#Include <Shared\FilePaths>
 
 class UpdaterRunner {
 

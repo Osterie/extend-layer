@@ -5,7 +5,7 @@
 #Include ".\ProfileImporter.ahk"
 #Include ".\ProfileExporter.ahk"
 
-#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include <Shared\FilePaths>
 #Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FolderManager>
 
 class ProfileRegionController{

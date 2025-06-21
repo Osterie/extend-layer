@@ -11,7 +11,7 @@
 
 #Include <Util\ExtendLayerInProtectedLocationDialog>
 
-#Include <Util\Logging\Logger>
+#Include <Shared\Logger>
 
 #Include <Startup\ObjectRegistryInitializer>
 
@@ -19,9 +19,9 @@
 #Include <Util\MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader>
 
 #Include <Util\MetaInfo\MetaInfoStorage\Objects\ObjectRegistry>
-#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include <Shared\FilePaths>
 
-#Include <Util\MetaInfo\MetaInfoReading\ActionSettingsReader>
+#Include <Util\MetaInfo\MetaInfoReading\ActionSettingsReader> ; TODO remove
 
 testFilePermissions(){
     testFile := A_ScriptDir . "\testFilePermissions.txt"

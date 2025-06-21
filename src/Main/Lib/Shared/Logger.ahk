@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\FilePaths\FilePaths>
+#Include <Shared\FilePaths>
 
 ; Used to log errors and information to logger file.
 ; This class is a singleton, meaning only one instance can exist at a time, use the getInstance() method to retrieve it. instead of creating a new instance.

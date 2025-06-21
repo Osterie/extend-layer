@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include <Util\Formaters\TimestampConverter>
-#Include <Util\Logging\Logger>
+#Include <Shared\Logger>
 
 class GithubRelease {
 
