@@ -1,11 +1,11 @@
 #Requires AutoHotkey v2.0
 
-#Include "..\..\JsonParsing\JXON\JXON.ahk"
+#Include <Util\JsonParsing\JXON\JXON>
 
-#Include <Util\MetaInfo\MetaInfoStorage\Themes\entity\Theme>
-#Include <Util\MetaInfo\MetaInfoStorage\Themes\logic\Themes>
+#Include <Shared\FilePaths>
 
-
+#Include <DataModels\AppData\Themes\Theme>
+#Include <DataModels\AppData\Themes\Themes>
 
 class ThemesReader{
 

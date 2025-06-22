@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#Include "..\entity\Theme.ahk"
-#Include <Util\MetaInfo\MetaInfoReading\ThemesReader>
+#Include <DataModels\AppData\Themes\Theme>
+#Include <DataModels\AppData\Themes\ThemesReader>
 
 ; TODO set current theme here?
 class Themes{

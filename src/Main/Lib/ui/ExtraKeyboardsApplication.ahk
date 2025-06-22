@@ -10,9 +10,6 @@
 #Include <Updater\UpdateChecker>
 #Include <Util\Formaters\HotkeyFormatter>
 
-#Include <Util\MetaInfo\MetaInfoStorage\Themes\logic\Themes> ;TODO remove
-#Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo> ;TODO remove
-
 #Include <ui\Main\Util\DomainSpecificGui>
 
 ; TODO fix issue with multiple dialogs being possible to open at the same time
