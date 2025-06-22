@@ -1,16 +1,18 @@
 #Requires AutoHotkey v2.0
 
 #Include <Shared\FilePaths>
-#Include <Util\JsonParsing\JXON\JXON>
+#Include <Util\JsonParsing\JXON>
 #Include <Shared\Logger>
 
-class VersionReader {
+class VersionRepository {
 
     currentVersion := ""
     latestVersion := ""
     Logger := Logger.getInstance()
+    versionFilePath := ""
 
-    __New() {
+    __New(versionFilePath := FilePaths.getPathToVersion()) {
+        this.versionFilePath := versionFilePath
     }
 
     updateVersion(newVersion) {
@@ -41,20 +43,20 @@ class VersionReader {
     }
 
     readVersionFromFile() {
-        versionFilePath := FilePaths.getPathToVersion()
-        if (!FileExist(versionFilePath)) {
-            this.Logger.logError("Version file does not exist at: " . versionFilePath)
+        
+        if (!FileExist(this.versionFilePath)) {
+            this.Logger.logError("Version file does not exist at: " . this.versionFilePath)
             this.writeVersionToFile("unknown")
             return this.createUnknownVersionObject()
         }
         
         jsonVersionObject := ""
         try {
-            jsonStringCurrentVersion := FileRead(versionFilePath, "UTF-8")
+            jsonStringCurrentVersion := FileRead(this.versionFilePath, "UTF-8")
             jsonVersionObject := this.convertFileContentsToObject(jsonStringCurrentVersion)
         }
         catch {
-            this.Logger.logError("Could not read the file: " . versionFilePath . " Writing default version, unknown.")
+            this.Logger.logError("Could not read the file: " . this.versionFilePath . " Writing default version, unknown.")
             this.writeVersionToFile("unknown")
             jsonVersionObject := this.createUnknownVersionObject()
         }
@@ -75,12 +77,12 @@ class VersionReader {
         jsonVersionObject := this.createJsonVersionObject(version)
 
         try {
-            FileDelete(FilePaths.getPathToVersion())
-            FileAppend(jxon_dump(jsonVersionObject), FilePaths.getPathToVersion(), "UTF-8")
+            FileDelete(this.versionFilePath)
+            FileAppend(jxon_dump(jsonVersionObject), this.versionFilePath, "UTF-8")
         }
         catch {
-            this.Logger.logError("Could not write the version to the file: " . FilePaths.getPathToVersion())
-            throw Error("Could not write the version to the file: " . FilePaths.getPathToVersion())
+            this.Logger.logError("Could not write the version to the file: " . this.versionFilePath)
+            throw Error("Could not write the version to the file: " . this.versionFilePath)
         }
     }
 

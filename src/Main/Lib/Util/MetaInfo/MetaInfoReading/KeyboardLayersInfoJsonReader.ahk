@@ -12,6 +12,8 @@
 #Include ".\KeyboardLayouts\KeyboardsInfo\KeyboardOverlays\entity\KeyboardOverlayElement.ahk"
 #Include ".\KeyboardLayouts\KeyboardsInfo\KeyboardOverlays\KeyboardOverlayInfo.ahk"
 
+#Include <Util\JsonParsing\JXON>
+
 
 
 class KeyboardLayersInfoJsonReader{

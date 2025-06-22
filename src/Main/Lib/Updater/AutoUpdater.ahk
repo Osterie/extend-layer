@@ -3,7 +3,7 @@
 #Include <Updater\GithubReleaseChecker>
 #Include <Updater\UpdaterRunner>
 
-#Include <DataModels\AppData\Version>
+#Include <Infrastructure\Repositories\VersionRepository>
 #Include <Util\Downloading\Downloader>
 #Include <Shared\Logger>
 #Include <Util\FileOverwriteManager>
@@ -11,7 +11,7 @@
 
 class AutoUpdater {
     static instance := false
-    Version := Version.getInstance()
+    Version := VersionRepository()
     Logger := Logger.getInstance()
     releaseChecker := ""  ; Instance of GithubReleaseChecker to check for updates
 

@@ -2,7 +2,7 @@
 
 #Include <Updater\GithubRelease>
 
-#Include <Util\JsonParsing\JXON\JXON>
+#Include <Util\JsonParsing\JXON>
 #Include <Util\Http\RestClient>
 #Include <Shared\Logger>
 #Include <Util\Formaters\TimestampConverter>

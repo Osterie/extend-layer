@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\JsonParsing\JsonFormatter\JsonFormatter>
+#Include <Util\Formaters\JsonFormatter>
 #Include <Shared\FilePaths>
 #Include "Main\Functionality\ActionSettings\SettingsEditorDialog.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfiguration.ahk"

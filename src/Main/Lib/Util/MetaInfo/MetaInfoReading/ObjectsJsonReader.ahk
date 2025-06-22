@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include "..\..\JsonParsing\JXON\JXON.ahk"
+#Include <Util\JsonParsing\JXON>
 
 #Include "..\MetaInfoStorage\Objects\ObjectInfo.ahk"
 #Include "..\MetaInfoStorage\Objects\MethodInfo.ahk"

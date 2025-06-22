@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\JsonParsing\JXON\JXON>
+#Include <Util\JsonParsing\JXON>
 
 ; Class to handle HTTP requests using WinHttp
 class HttpClient {

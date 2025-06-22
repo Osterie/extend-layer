@@ -1,24 +1,13 @@
 #Requires AutoHotkey v2.0
 
 #Include <DataModels\AppData\Themes\Theme>
-#Include <DataModels\AppData\Themes\ThemesReader>
 
 ; TODO set current theme here?
 class Themes{
     
-    static instance := false
     themes := Array()
 
     __New(){
-        themesReader_ := ThemesReader()
-        this.themes := themesReader_.ReadThemes()
-    }
-
-    static getInstance() {
-        if ( IsObject( Themes.instance ) = false ) {
-            Themes.instance := Themes()
-        }
-        return Themes.instance
     }
 
     AddTheme(theme){

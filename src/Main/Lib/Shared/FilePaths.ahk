@@ -55,6 +55,7 @@ class FilePaths {
         iniWrite(currentTheme, this.PATH_TO_META_INI_FILE, "Themes", "activeTheme")
     }
 
+    ; TODO this should not be like this! move to repository for themes or something.
     static GetCurrentTheme() {
         try {
             CURRENT_THEME := iniRead(this.GetPathToMetaFile(), "Themes", "activeTheme")

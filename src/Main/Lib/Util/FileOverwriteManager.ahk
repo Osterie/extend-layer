@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <Infrastructure\FileReaders\UpdateManifestReader>
+#Include <Infrastructure\Repositories\UpdateManifestRepository>
 #Include <Shared\Logger>
 
 class FileOverwriteManager {
@@ -12,10 +12,10 @@ class FileOverwriteManager {
     }
 
     copyIntoNewLocation(sourceBaseLocation, destinationBaseLocation, updateManifestPath, removeOldFiles := true) {
-        UpdateManifestReader_ := UpdateManifestReader(updateManifestPath)
+        UpdateManifestRepository_ := UpdateManifestRepository(updateManifestPath)
 
-        relativeOverwritePaths := UpdateManifestReader_.getOverwritePaths()
-        fullSkipPaths := this.createFullSkipPaths(sourceBaseLocation, UpdateManifestReader_)
+        relativeOverwritePaths := UpdateManifestRepository_.getOverwritePaths()
+        fullSkipPaths := this.createFullSkipPaths(sourceBaseLocation, UpdateManifestRepository_)
         this.overwriteFiles(sourceBaseLocation, destinationBaseLocation, relativeOverwritePaths, fullSkipPaths, removeOldFiles)
     }
 
@@ -100,8 +100,8 @@ class FileOverwriteManager {
         }
     }
 
-    createFullSkipPaths(sourceBaseLocation, UpdateManifestReader_){
-        relativeSkipPaths := UpdateManifestReader_.getSkipPaths()
+    createFullSkipPaths(sourceBaseLocation, UpdateManifestRepository_){
+        relativeSkipPaths := UpdateManifestRepository_.getSkipPaths()
 
         fullSkipPaths := Array()
         loop relativeSkipPaths.Length {

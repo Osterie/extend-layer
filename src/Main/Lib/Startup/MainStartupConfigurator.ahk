@@ -3,7 +3,7 @@
 #Include <Startup\HotkeyInitializer>
 #Include <Startup\KeyboardOverlaysInitializer>
 
-#Include <Util\JsonParsing\JXON\JXON>
+#Include <Util\JsonParsing\JXON>
 
 class MainStartupConfigurator {
 

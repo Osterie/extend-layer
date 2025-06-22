@@ -1,8 +1,8 @@
 #Requires AutoHotkey v2.0
 
 #Include "..\MetaInfoStorage\KeyboardLayouts\KeyboardLayersInfoRegistry.ahk"
-#Include "..\..\JsonParsing\JXON\JXON.ahk"
-#Include "..\..\JsonParsing\JsonFormatter\JsonFormatter.ahk"
+#Include <Util\JsonParsing\JXON>
+#Include <Util\Formaters\JsonFormatter>
 
 class KeyboadLayersInfoClassObjectReader{
 

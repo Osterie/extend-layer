@@ -1,9 +1,17 @@
 #Requires AutoHotkey v2.0
 
+; TODO use more?
+
+#Include <Infrastructure\Repositories\KeyNamesRepository>
+
+
 class KeyboardKeySanitizer{
 
     static GetSanitizedKeyName(keyName){
-        keyNames := KeyNamesReader().ReadKeyNamesFromTextFileObject(FileOpen(FilePaths.GetPathToKeyNames(), "rw", "UTF-8")).GetKeyNames()
+
+        KeyNamesRepo := KeyNamesRepository()
+        keyNames := KeyNamesRepo.getKeyNames()
+
         if (keyNames.Has(keyName)){
             return keyName
         }
@@ -16,6 +24,7 @@ class KeyboardKeySanitizer{
         return this.GetSanitizedKeyName(keyName) != ""
     }
 
+    ; TODO move from here to somewhere else.
     static sanitizeUrl(url){
         url := StrReplace(url, "https://www", "")
         url := StrReplace(url, "http://www", "")

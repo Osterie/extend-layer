@@ -1,10 +1,10 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\JsonParsing\JXON\JXON>
+#Include <Util\JsonParsing\JXON>
 #Include <Shared\Logger>
 #Include <Util\Formaters\PathFormatter>
 
-class UpdateManifestReader {
+class UpdateManifestRepository {
 
     updateManifestInfo := ""
     Logger := Logger.getInstance()

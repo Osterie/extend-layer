@@ -2,11 +2,12 @@
 
 #Include <ui\Main\util\GuiColorsChanger>
 
-#Include <DataModels\AppData\Themes\Themes>
+#Include <Infrastructure\Repositories\ThemesRepository>
 
 ; TODO on focus, change color of text and control, so that tab navigation is easiers...
 class DomainSpecificGui extends Gui{
 
+    ThemesRepository := ThemesRepository.getInstance()
     theme := ""
 
     ; TODO fetch color profile from meta file.
@@ -17,9 +18,9 @@ class DomainSpecificGui extends Gui{
     }
 
     GetCurrentTheme(){
-        theme := Themes.getInstance().GetTheme(FilePaths.GetCurrentTheme())
+        theme := this.ThemesRepository.GetTheme(FilePaths.GetCurrentTheme())
         if (theme = ""){
-            theme := Themes.getInstance().GetTheme(FilePaths.GetDefaultTheme())
+            theme := this.ThemesRepository.GetTheme(FilePaths.GetDefaultTheme())
             if (theme =     ""){
                 Throw Error("Failed to load any theme")
             }

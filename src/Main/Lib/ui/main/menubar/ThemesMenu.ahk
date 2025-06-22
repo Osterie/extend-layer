@@ -2,7 +2,11 @@
 
 #Include <ui\Main\util\Menus\ImprovedMenu>
 
+#Include <Infrastructure\Repositories\ThemesRepository>
+
 class ThemesMenu extends ImprovedMenu{
+
+    ThemesRepository := ThemesRepository.getInstance()
 
     __New(callback){
         this.callback := callback
@@ -12,7 +16,7 @@ class ThemesMenu extends ImprovedMenu{
     }
 
     CreateMenuBar(){
-        themeCategories := Themes.getInstance().GetThemeCategories()
+        themeCategories := this.ThemesRepository.GetThemeCategories()
         
         Loop themeCategories.Length{
             themeCategoryName := themeCategories[A_index] 
@@ -31,7 +35,7 @@ class ThemesMenu extends ImprovedMenu{
     }
 
     SetThemeCategoriesSubMenuItems(themeCategoriesSubMenu, themeCategoryName){
-        themesForCategory := Themes.getInstance().GetThemeNamesForCategory(themeCategoryName)
+        themesForCategory := this.ThemesRepository.GetThemeNamesForCategory(themeCategoryName)
 
         Loop themesForCategory.Length{
             subMenuItem := themesForCategory[A_index]
@@ -41,7 +45,7 @@ class ThemesMenu extends ImprovedMenu{
 
     CheckCurrentThemeMenu(){
         currentTheme := FilePaths.GetCurrentTheme()
-        currentThemeCategory := Themes.getInstance().GetCategoryForTheme(currentTheme)
+        currentThemeCategory := this.ThemesRepository.GetCategoryForTheme(currentTheme)
 
         this.Check(currentThemeCategory)
         this.CheckChildren(currentTheme)

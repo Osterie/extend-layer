@@ -3,12 +3,12 @@
 #Include <Updater\GithubReleaseChecker>
 
 #Include <Shared\Logger>
-#Include <DataModels\AppData\Version>
+#Include <Infrastructure\Repositories\VersionRepository>
 
 class UpdateChecker {
     ReleaseChecker := ""
 
-    Version := Version.getInstance()
+    Version := VersionRepository()
     Logger := Logger.getInstance()
 
     __New(){

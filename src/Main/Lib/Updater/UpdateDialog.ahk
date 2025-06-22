@@ -6,7 +6,6 @@
 #Include <Updater\AutoUpdater>
 
 #Include <Shared\Logger>
-#Include <DataModels\AppData\Version>
 
 class UpdateDialog extends DomainSpecificGui{
 

@@ -1,7 +1,8 @@
 #Requires AutoHotkey v2.0
 
-class JsonFormatter{
+#Include <Util\JsonParsing\JXON>
 
+class JsonFormatter{
 
     FormatJsonObject(jsonObject){
         jsonString := Jxon_Dump(jsonObject)

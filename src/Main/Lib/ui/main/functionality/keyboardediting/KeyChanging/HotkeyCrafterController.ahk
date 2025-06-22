@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\MetaInfo\MetaInfoReading\KeyNamesReader>
+#Include <Infrastructure\Repositories\KeyNamesRepository>
 #Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
 
@@ -24,10 +24,8 @@ class HotkeyCrafterController{
     }   
 
     GetAvailableKeyNames(){
-        keyNamesFileObjReader := KeyNamesReader()
-        fileObjectOfKeyNames := FileOpen(FilePaths.GetPathToKeyNames(), "rw" , "UTF-8")
-        availableKeyNames := keyNamesFileObjReader.ReadKeyNamesFromTextFileObject(fileObjectOfKeyNames).GetKeyNames()
-        return availableKeyNames
+        KeyNamesRepo := KeyNamesRepository()
+        return KeyNamesRepo.getKeyNames()
     }
 
     GetActiveObjectsRegistry(){
