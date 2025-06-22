@@ -6,7 +6,7 @@
 #Include <DataModels\ActionSettings\ActionGroupSettings>
 #Include <DataModels\ActionSettings\ActionGroupSettingsRegistry>
 
-#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\IniFileReader>
+#Include <Infrastructure\IO\IniFileReader>
 
 class ActionSettingsRepository {
 
@@ -24,10 +24,10 @@ class ActionSettingsRepository {
 
     readSettings() {
 
-        sectionNames := this.IniFileReader.ReadSectionNamesToArray(this.iniFile)
+        sectionNames := this.IniFileReader.readSectionNamesToArray(this.iniFile)
 
         loop sectionNames.Length {
-            keyPairValuesArray := this.IniFileReader.ReadSectionKeyPairValuesIntoTwoDimensionalArray(this.iniFile,
+            keyPairValuesArray := this.IniFileReader.readSectionKeyPairValuesIntoTwoDimensionalArray(this.iniFile,
                 sectionNames[A_Index])
             actionName := sectionNames[A_Index]
             ActionGroupSettings_ := this.readSettingsForAction(actionName)
@@ -37,7 +37,7 @@ class ActionSettingsRepository {
 
     readSettingsForAction(actionName) {
 
-        keyPairValuesArray := this.IniFileReader.ReadSectionKeyPairValuesIntoTwoDimensionalArray(this.iniFile,
+        keyPairValuesArray := this.IniFileReader.readSectionKeyPairValuesIntoTwoDimensionalArray(this.iniFile,
             actionName)
 
         ActionGroupSettings_ := ActionGroupSettings(actionName)

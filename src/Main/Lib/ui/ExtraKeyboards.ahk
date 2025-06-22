@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\IniFileReader>
+#Include <Infrastructure\IO\IniFileReader>
 #Include <Shared\FilePaths>
 #Include <Util\MetaInfo\MetaInfoReading\KeyboadLayersInfoClassObjectReader>
 #Include <Util\MetaInfo\MetaInfoWriting\ToJsonFileWriter>

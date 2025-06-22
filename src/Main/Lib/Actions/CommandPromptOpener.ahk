@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include <Shared\FilePaths>
-#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\IniFileReader>
+#Include <Infrastructure\IO\IniFileReader>
 
 #Include <Actions\Action>
 
@@ -74,7 +74,7 @@ Class CommandPromptOpener extends Action{
     }
 
     SetDefaultPathFromFile(){
-        commandPromptDefaultPath := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "CommandPrompt", "DefaultPath", '"\C:\Users\"')
+        commandPromptDefaultPath := this.IniFileReader.readOrCreateLine(FilePaths.GetPathToCurrentSettings(), "CommandPrompt", "DefaultPath", '"\C:\Users\"')
         this.SetDefaultPath(commandPromptDefaultPath)
     }
 

@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include <Shared\FilePaths>
-#Include <Util\MetaInfo\MetaInfoStorage\FoldersAndFiles\IniFileReader>
+#Include <Infrastructure\IO\IniFileReader>
 
 
 #Include <Actions\Action>
@@ -22,7 +22,7 @@ Class Mouse extends Action{
 
     SetAutoClickerCPSFromFile(){
         try{
-            autoClickerCPS := this.IniFileReader.ReadOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Mouse", "AutoClickerClickCps", 10)
+            autoClickerCPS := this.IniFileReader.readOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Mouse", "AutoClickerClickCps", 10)
         }
         catch{
             autoClickerCPS := 10
