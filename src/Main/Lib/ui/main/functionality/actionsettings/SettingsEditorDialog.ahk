@@ -2,6 +2,8 @@
 
 #Include <ui\Main\Util\DomainSpecificGui>
 
+#Include <DataModels\ActionSettings\ActionSetting>
+
 class SettingsEditorDialog extends DomainSpecificGui{
     
     settingNameEdit := ""
@@ -17,13 +19,13 @@ class SettingsEditorDialog extends DomainSpecificGui{
 
     CreateControls(setting){
 
-        settingName := setting.GetSettingName()
-        settingValue := setting.GetSettingValue()
+        settingName := setting.getActionSettingName()
+        settingValue := setting.getActionSettingValue()
         
-        this.Add("Text", "w300 h20", "Setting:")
+        this.Add("Text", "w300 h20", "Action Setting:")
         this.settingNameEdit := this.Add("Edit", "xm w300 h20", settingName)
         
-        this.Add("Text", "xm w300 h20", "Setting value:")
+        this.Add("Text", "xm w300 h20", "Action Setting value:")
         this.settingValueEdit := this.Add("Edit", "xm w300 h20", settingValue)
         
         SaveButton := this.Add("Button", "w100 h20", "Save")
@@ -38,20 +40,20 @@ class SettingsEditorDialog extends DomainSpecificGui{
 
     NotifyListenersSave(){
         Loop this.saveEventSubscribers.Length{
-            this.saveEventSubscribers[A_Index](this.GetSetting())
+            this.saveEventSubscribers[A_Index](this.getActionSetting())
         }
         this.Destroy()
     }
 
-    GetSetting(){
-        return Setting(this.getSettingName(), this.getSettingValue())
+    getActionSetting(){
+        return ActionSetting(this.getActionSettingName(), this.getActionSettingValue())
     }
 
-    GetSettingName(){
+    getActionSettingName(){
         return this.settingNameEdit.Value
     }
     
-    GetSettingValue(){
+    getActionSettingValue(){
         return this.settingValueEdit.Value
     }
     

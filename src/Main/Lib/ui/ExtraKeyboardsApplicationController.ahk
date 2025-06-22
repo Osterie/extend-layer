@@ -106,7 +106,7 @@ Class ExtraKeyboardsApplicationController{
     HandleFunctionSettingClicked(settingName){
         if (settingName != ""){
             currentFunctionSettings := this.ExtraKeyboards.GetCurrentFunction()
-            selectedSetting := this.ExtraKeyboards.GetSettingsForCurrentAction().GetSetting(settingName)
+            selectedSetting := this.ExtraKeyboards.getActionSettingsForCurrentAction().getActionSetting(settingName)
     
             editorForActionSettings := SettingsEditorDialog(this.getHwnd())
             editorForActionSettings.CreateControls(selectedSetting)
@@ -141,7 +141,7 @@ Class ExtraKeyboardsApplicationController{
         if (originalHotkeyKey = ""){
             if (hotkeyInformation.actionIsSet() AND hotkeyInformation.getHotkeyName() != ""){
                 try{
-                    this.ExtraKeyboards.AddHotkey(hotkeyInformation)
+                    this.ExtraKeyboards.addHotkey(hotkeyInformation)
                 }
                 catch Error as e{
                     msgbox("Could not add hotkey. " . e.Message)
@@ -153,7 +153,7 @@ Class ExtraKeyboardsApplicationController{
         } ; Change
         else{
             try{
-                this.ExtraKeyboards.ChangeHotkey(originalHotkeyKey, newHotkeyKey, hotkeyInformation)
+                this.ExtraKeyboards.changeHotkey(originalHotkeyKey, newHotkeyKey, hotkeyInformation)
             }
             catch Error as e{
                 msgbox("Could not modify hotkey. " . e.Message)
@@ -172,11 +172,11 @@ Class ExtraKeyboardsApplicationController{
         }
     }
 
-    DeleteHotkey(hotkeyKey){
+    deleteHotkey(hotkeyKey){
         try{
             
             this.MainScript.SetHotkeysForAllLayers(false)
-            this.ExtraKeyboards.DeleteHotkey(hotkeyKey)
+            this.ExtraKeyboards.deleteHotkey(hotkeyKey)
             msgbox("Deleted hotkey")
         }
         catch Error as e{
@@ -188,8 +188,8 @@ Class ExtraKeyboardsApplicationController{
         this.MainScript.RunLogicalStartup()
     }
 
-    GetSettings(){
-        return this.ExtraKeyboards.GetSettingsForCurrentActionAsArray()
+    getActionSettings(){
+        return this.ExtraKeyboards.getActionSettingsForCurrentActionAsArray()
     }
 
     GetHotkeys(){
@@ -216,8 +216,8 @@ Class ExtraKeyboardsApplicationController{
         return this.ExtraKeyboards.GetActiveObjectsRegistry()
     }
 
-    GetActionNames(){
-        return this.ExtraKeyboards.GetActionNames()
+    getActionGroupNames(){
+        return this.ExtraKeyboards.getActionGroupNames()
     }
 
     GetHwnd(){

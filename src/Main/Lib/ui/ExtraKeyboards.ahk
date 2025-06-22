@@ -5,60 +5,61 @@
 #Include <Util\MetaInfo\MetaInfoReading\KeyboadLayersInfoClassObjectReader>
 #Include <Util\MetaInfo\MetaInfoWriting\ToJsonFileWriter>
 
+#Include <Infrastructure\Repositories\ActionSettingsRepository>
+
 Class ExtraKeyboards{
 
     currentLayer := ""
     currentFunction := ""
     activeObjectsRegistry := ""
     keyboardLayersInfoRegister := ""
+    ActionSettingsRepository := ActionSettingsRepository()
 
     actionSettings := ""
     
     __New(activeObjectsRegistry, keyboardLayersInfoRegister){
-        ReaderForActionSettings := ActionSettingsReader(FilePaths.GetPathToCurrentSettings())
-        this.actionSettings := ReaderForActionSettings.ReadSettings()
-        
+        this.actionSettings := this.ActionSettingsRepository.getActionGroupSettingsRegistry()
         this.activeObjectsRegistry := activeObjectsRegistry
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
     }
 
-    ChangeHotkey(originalHotkey, newHotkey, newAction){
-        this.keyboardLayersInfoRegister.ChangeHotkey(this.GetCurrentLayer(), originalHotkey, newHotkey)
+    changeHotkey(originalHotkey, newHotkey, newAction){
+        this.keyboardLayersInfoRegister.changeHotkey(this.GetCurrentLayer(), originalHotkey, newHotkey)
         this.keyboardLayersInfoRegister.ChangeAction(this.GetCurrentLayer(), newHotkey, newAction)
 
         ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() . "\Keyboards.json")
     }
 
-    AddHotkey(newAction){
-        this.keyboardLayersInfoRegister.AddHotkey(this.GetCurrentLayer(), newAction)
+    addHotkey(newAction){
+        this.keyboardLayersInfoRegister.addHotkey(this.GetCurrentLayer(), newAction)
         ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() . "\Keyboards.json")
     }
 
-    DeleteHotkey(hotkeyKey){
-        this.keyboardLayersInfoRegister.DeleteHotkey(this.GetCurrentLayer(), hotkeyKey)
+    deleteHotkey(hotkeyKey){
+        this.keyboardLayersInfoRegister.deleteHotkey(this.GetCurrentLayer(), hotkeyKey)
         
 
         ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() . "\Keyboards.json")
     }
 
-    GetActionNames(){
-        return this.actionSettings.GetActionNames()
+    getActionGroupNames(){
+        return this.actionSettings.getActionGroupNames()
     }
 
-    GetSettingsForActionAsArray(actionName){
-        return this.actionSettings.GetSettingsForActionAsArray(actionName)
+    getActionSettingsForActionAsArray(actionName){
+        return this.actionSettings.getActionSettingsForActionAsArray(actionName)
     }
 
-    GetSettingsForCurrentActionAsArray(){
-        return this.GetSettingsForActionAsArray(this.GetCurrentFunction())
+    getActionSettingsForCurrentActionAsArray(){
+        return this.getActionSettingsForActionAsArray(this.GetCurrentFunction())
     }
 
-    GetSettingsForAction(actionName){
-        return this.actionSettings.GetSettingsForAction(actionName)
+    getActionSettingsForAction(actionName){
+        return this.actionSettings.getActionSettingsForAction(actionName)
     }
 
-    GetSettingsForCurrentAction(){
-        return this.GetSettingsForAction(this.GetCurrentFunction())
+    getActionSettingsForCurrentAction(){
+        return this.getActionSettingsForAction(this.GetCurrentFunction())
     }
 
     GetFriendlyHotkeysForCurrentLayer(){

@@ -12,11 +12,11 @@ class HotkeysRegistry{
         this.hotkeys.Default := ""
     }
 
-    AddHotkey(HotkeyInfo){
+    addHotkey(HotkeyInfo){
         this.hotkeys[HotkeyInfo.getHotkeyName()] := HotkeyInfo
     }
 
-    DeleteHotkey(hotkeyName){
+    deleteHotkey(hotkeyName){
         this.hotkeys.Delete(hotkeyName)
     }
 

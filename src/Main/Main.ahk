@@ -21,8 +21,6 @@
 #Include <Util\MetaInfo\MetaInfoStorage\Objects\ObjectRegistry>
 #Include <Shared\FilePaths>
 
-#Include <Util\MetaInfo\MetaInfoReading\ActionSettingsReader> ; TODO remove
-
 testFilePermissions(){
     testFile := A_ScriptDir . "\testFilePermissions.txt"
 

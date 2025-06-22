@@ -8,7 +8,7 @@ class ToJsonFileWriter{
 
     static WriteKeyboardLayersInfoRegisterToJsonFile(keyboardLayersInfoRegister, pathToFile){
         toJsonReader := KeyboadLayersInfoClassObjectReader()
-        toJsonReader.ReadObjectToJson(keyboardLayersInfoRegister)
+        toJsonReader.readObjectToJson(keyboardLayersInfoRegister)
         jsonObject := toJsonReader.getJsonObject()
 
         formatterForJson := JsonFormatter()

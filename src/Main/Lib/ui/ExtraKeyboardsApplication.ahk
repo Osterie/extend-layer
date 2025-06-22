@@ -124,7 +124,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
         this.ButtonForEditingInfo.Opt("Hidden1")
 
         this.ButtonForDeletingInfo := this.Add("Button", "Yp", "Delete")
-        this.ButtonForDeletingInfo.OnEvent("Click", (*) => this.controller.DeleteHotkey(HotkeyFormatter.convertFromFriendlyName(this.hotkeysListView.GetSelectionText())))
+        this.ButtonForDeletingInfo.OnEvent("Click", (*) => this.controller.deleteHotkey(HotkeyFormatter.convertFromFriendlyName(this.hotkeysListView.GetSelectionText())))
 
         this.ButtonForDeletingInfo.Opt("Hidden1")
 
@@ -196,10 +196,10 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
     ; Creates the tab for the action settings
     CreateFunctionSettingsTab(){
         functionsNamesTreeView := TreeViewMaker()
-        functionsNamesTreeView.createElementsForGui(this, this.controller.GetActionNames())
+        functionsNamesTreeView.createElementsForGui(this, this.controller.getActionGroupNames())
         
         this.settingsValuesListView := ListViewMaker()
-        this.settingsValuesListView.CreateListView(this, "r20 w600 x+10 -multi",  ["Setting","Value"])
+        this.settingsValuesListView.CreateListView(this, "r20 w600 x+10 -multi",  ["ActionSetting","Value"])
         
         functionsNamesTreeView.AddEventAction("ItemSelect", (*) => this.controller.ShowSettingsForAction(functionsNamesTreeView.GetSelectionText()))
         this.settingsValuesListView.AddEventAction("DoubleClick", (*) => this.controller.HandleFunctionSettingClicked(this.settingsValuesListView.GetSelectionText()))
@@ -207,7 +207,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     ; Updates the settings list view with the newest settings
     UpdateSettingsForActions(){
-        this.settingsValuesListView.SetNewListViewItems(this.controller.GetSettings())
+        this.settingsValuesListView.SetNewListViewItems(this.controller.getActionSettings())
     }
 
     ; CreateTabGeneral(){

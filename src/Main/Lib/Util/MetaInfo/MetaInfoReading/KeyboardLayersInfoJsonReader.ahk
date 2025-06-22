@@ -48,7 +48,7 @@ class KeyboardLayersInfoJsonReader{
         ; TODO! add try catch to all of these. If one of these informations are missing something wrong will happen!
         For layerIdentifier , layerInfoContents in this.keyboardLayersInfo{
             if (InStr(layerIdentifier, "Hotkeys")){
-                this.ReadHotkeys(layerIdentifier, layerinfoContents)
+                this.readHotkeys(layerIdentifier, layerinfoContents)
             }
             else if (InStr(layerIdentifier, "KeyboardOverlay")){
                 this.ReadKeyboardOverlay(layerIdentifier, layerInfoContents)
@@ -59,7 +59,7 @@ class KeyboardLayersInfoJsonReader{
         }
     }
     
-    ReadHotkeys(layerIdentifier, layerInfoContents){
+    readHotkeys(layerIdentifier, layerInfoContents){
         HotkeysRegister := HotkeysRegistry(layerIdentifier)
         For hotkeyName, informationAboutHotkey in layerInfoContents{
             hotKeyInformation := HotKeyInfo(hotkeyName)

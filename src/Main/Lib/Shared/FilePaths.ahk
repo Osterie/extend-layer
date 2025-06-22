@@ -81,7 +81,7 @@ class FilePaths {
             closeScript := iniRead(this.GetPathToMetaFile(), "Gui Settings", "closeScriptOnGuiClose")
         }
         catch OSError {
-            MsgBox("Could not read closeScriptOnGuiClose from meta.ini. Setting to default value.")
+            MsgBox("Could not read closeScriptOnGuiClose from meta.ini. Action setting to default value.")
             this.SetCloseScriptOnGuiClose(0)
             closeScript := 0
         }

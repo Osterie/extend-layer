@@ -8,12 +8,12 @@ class KeyboadLayersInfoClassObjectReader{
 
     jsonObject := Map()
 
-    ReadObjectToJson(KeyboardLayersInfoRegister){
+    readObjectToJson(KeyboardLayersInfoRegister){
         if (Type(KeyboardLayersInfoRegister) = "KeyboardLayersInfoRegistry"){
             visualOverlayMap := KeyboardLayersInfoRegister.GetKeyboardOverlaysRegistry()
             hotkeysMap := KeyboardLayersInfoRegister.GetHotkeysRegistry()
-            this.ReadVisualOverlay(visualOverlayMap)
-            this.ReadHotkeys(hotkeysMap)
+            this.readVisualOverlay(visualOverlayMap)
+            this.readHotkeys(hotkeysMap)
         }
         ; TODO handle an else...
     }
@@ -22,7 +22,7 @@ class KeyboadLayersInfoClassObjectReader{
         return this.jsonObject
     }
 
-    ReadVisualOverlay(visualOverlayMap){
+    readVisualOverlay(visualOverlayMap){
 
         For overlayIdentifier, visualOverlayInfo in visualOverlayMap{
             this.jsonObject[overlayIdentifier] := Map()
@@ -38,7 +38,7 @@ class KeyboadLayersInfoClassObjectReader{
         }
     }
     
-    ReadHotkeys(hotkeysMap){
+    readHotkeys(hotkeysMap){
         For hotkeyIdentifier, hotkeyInfo in hotkeysMap{
             this.jsonObject[hotkeyIdentifier] := Map()
             
