@@ -8,6 +8,8 @@
 #Include <DataModels\Actions\Action>
 #Include <DataModels\Actions\ActionParameter>
 
+#Include <Startup\ObjectsInitializer>
+
 #Include <Shared\FilePaths>
 
 class ActionGroupsRepository {
@@ -32,6 +34,26 @@ class ActionGroupsRepository {
             ActionGroupsRepository.instance := ActionGroupsRepository()
         }
         return ActionGroupsRepository.instance
+    }
+
+    getAllFriendlyActionNames(){
+        return ActionGroupsRepository.getActionGroupRegistry().getAllFriendlyActionNames()
+    }
+
+    getActionGroup(actionGroupName) {
+        return ActionGroupsRepository.getActionGroupRegistry().getActionGroup(actionGroupName)
+    }
+
+    getActionObjectInstance(actionGroupName) {
+        actionGroup := ActionGroupsRepository.getActionGroupRegistry().getActionGroup(actionGroupName)
+        if (actionGroup = 0) {
+            throw ValueError("Action group not found: " . actionGroupName)
+        }
+        return actionGroup.GetObjectInstance()
+    }
+
+    getActionGroupByFriendlyActionName(friendlyActionName) {
+        return ActionGroupsRepository.getActionGroupRegistry().getActionGroupByFriendlyActionName(friendlyActionName)
     }
 
     destroyObjectInstances() {

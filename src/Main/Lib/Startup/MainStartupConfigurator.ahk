@@ -8,10 +8,9 @@
 class MainStartupConfigurator {
 
     KeyboardOverlayInitializerInstance := ""
-    HotkeyInitializerInstance := ""
+    HotkeyInitializerInstance := HotkeyInitializer()
 
     layersInformation := ""
-    objectRegistry := ""
 
     __New() {
 
@@ -19,30 +18,26 @@ class MainStartupConfigurator {
     ; layersInformation is keyboards.json information. It has a layer, for example "Primary"
     ; and then either "Hotkeys" or "KeyboardOverlay", and then the information for that layer
     ; (pertaining to hokteys or overlays obviously)
-    setInformation(layersInformation, objectRegistry) {
-        this.layersInformation := layersInformation
-        this.objectRegistry := objectRegistry
-        if (Type(layersInformation) = "KeyboardLayersInfoRegistry" AND Type(objectRegistry) = "ActionGroupRegistry") {
-            this.HotkeyInitializerInstance := HotkeyInitializer()
-            ; TODO probably dont pass these arguemnts hereere...
-            this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(layersInformation, objectRegistry)
-        }
-        else {
+    setInformation(layersInformation) {
+        if (Type(layersInformation) != "KeyboardLayersInfoRegistry") {
             throw Error("Invalid parameters passed to MainStartupConfigurator")
         }
+        this.layersInformation := layersInformation
+        this.HotkeyInitializerInstance := HotkeyInitializer()
+        this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(layersInformation)
     }
 
-    initializeLayer(layersInformation, objectRegistry, section, enableHotkeys := "on") {
-        if (Type(layersInformation) = "KeyboardLayersInfoRegistry" AND Type(objectRegistry) = "ActionGroupRegistry") {
-            this.HotkeyInitializerInstance.initializeHotkeys(layersInformation, objectRegistry, section . "-Hotkeys",
-                enableHotkeys)
-        }
-        else {
+    initializeLayer(layersInformation, section, enableHotkeys := "on") {
+        if (Type(layersInformation) != "KeyboardLayersInfoRegistry") {
             throw Error("Invalid parameters passed to MainStartupConfigurator")
         }
 
-        this.KeyboardOverlayInitializerInstance.changeHotkeysStateForKeyboardOverlaysByLayerSection(section .
-            "-KeyboardOverlay", enableHotkeys)
+        this.HotkeyInitializerInstance.initializeHotkeys(layersInformation, section . "-Hotkeys", enableHotkeys)
+
+        this.KeyboardOverlayInitializerInstance.changeHotkeysStateForKeyboardOverlaysByLayerSection(
+            section . "-KeyboardOverlay",
+            enableHotkeys
+        )
     }
 
     ; Reads the ini file for keyboard overlays, and then creates them based on the information in the ini file

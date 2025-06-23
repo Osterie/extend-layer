@@ -1,17 +1,18 @@
 #Requires AutoHotkey v2.0
 
+#Include <Infrastructure\Repositories\ActionGroupsRepository>
+
 #Include <Util\Formaters\HotkeyFormatter>
+
 
 Class HotkeyInitializer {
 
-    objectRegistry := ""
+    ActionGroupsRepository := ActionGroupsRepository.getInstance()
 
     __New(){
     }
     
-    initializeHotkeys(layersInformation, objectRegistry, keyboardLayerName, enableHotkeys := true){
-        this.objectRegistry := objectRegistry
-
+    initializeHotkeys(layersInformation, keyboardLayerName, enableHotkeys := true){
         currentKeyboardLayerInformation := layersInformation.GetRegistryByLayerIdentifier(keyboardLayerName)
         currentKeyboardLayerHotkeys := currentKeyboardLayerInformation.GetHotkeys()
 
@@ -102,7 +103,7 @@ Class HotkeyInitializer {
     }
 
     createObjectMethodCall(objectName, actionName, arguments){
-        objectInstance := this.objectRegistry.getActionGroup(objectName).GetObjectInstance()
+        objectInstance := this.ActionGroupsRepository.getActionObjectInstance(objectName)
         objectMethodCall := ObjBindMethod(objectInstance, actionName, arguments*)
         return objectMethodCall
     }

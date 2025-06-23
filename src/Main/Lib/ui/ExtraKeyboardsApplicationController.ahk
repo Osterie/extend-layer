@@ -9,8 +9,6 @@
 
 #Include <Updater\UpdateDialog>
 
-#Include <Startup\HotkeyInitializer>
-
 Class ExtraKeyboardsApplicationController{
 
     MainScript := ""
@@ -86,7 +84,7 @@ Class ExtraKeyboardsApplicationController{
 
     ; TODO move to view?
     CreatePopupForHotkeys(hotkeyInformation){
-        popupForConfiguringHotkeyModel := HotkeyConfigurator(this.GetActiveObjectsRegistry(), hotkeyInformation)
+        popupForConfiguringHotkeyModel := HotkeyConfigurator(hotkeyInformation)
         popupForConfiguringHotkey := HotKeyConfiguration("+Resize +MinSize300x280", this.GetHwnd())
         popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
         popupForConfiguringHotkey.createMain(popupForConfiguringHotkeyController)
@@ -210,10 +208,6 @@ Class ExtraKeyboardsApplicationController{
     
     GetCurrentLayerInfo(){
         return this.ExtraKeyboards.GetCurrentLayerInfo()
-    }
-
-    GetActiveObjectsRegistry(){
-        return this.ExtraKeyboards.GetActiveObjectsRegistry()
     }
 
     getActionGroupNames(){

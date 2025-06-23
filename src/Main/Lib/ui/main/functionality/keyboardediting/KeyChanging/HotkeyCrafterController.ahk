@@ -1,21 +1,22 @@
 #Requires AutoHotkey v2.0
 
+#Include <Infrastructure\Repositories\ActionGroupsRepository>
 #Include <Infrastructure\Repositories\KeyNamesRepository>
+
 #Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
 
-
 class HotkeyCrafterController{
- 
-    activeObjectsRegistry := ""
+
+    ActionGroupsRepository := ActionGroupsRepository.getInstance()
+
     actionCrafterView := ""
 
     isCraftingSpecialAction_ := ""
 
     currentAction := ""
 
-    __New(activeObjectsRegistry){
+    __New(){
         this.isCraftingSpecialAction_ := true
-        this.activeObjectsRegistry := activeObjectsRegistry
         this.currentAction := ""
     }
 
@@ -28,12 +29,8 @@ class HotkeyCrafterController{
         return KeyNamesRepo.getKeyNames()
     }
 
-    GetActiveObjectsRegistry(){
-        return this.activeObjectsRegistry
-    }
-
     GetSpecialActions(){
-        return this.getActiveObjectsRegistry().getAllFriendlyActionNames()
+        return this.ActionGroupsRepository.getAllFriendlyActionNames()
     }
 
     GetCurrentObjectName(){
@@ -92,7 +89,7 @@ class HotkeyCrafterController{
     ; TODO change some of these methods! another class should handle this.
     ; Private
     GetActionGroupsInfoByActionName(actionName){
-        return this.getActiveObjectsRegistry().getActionGroupByFriendlyActionName(actionName)
+        return this.ActionGroupsRepository.getActionGroupByFriendlyActionName(actionName)
     }
 
     ; Private

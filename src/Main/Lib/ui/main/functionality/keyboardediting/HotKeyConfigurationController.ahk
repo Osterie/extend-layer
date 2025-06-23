@@ -20,7 +20,7 @@ class HotKeyConfigurationController{
     __New(model, view){
         this.model := model
         this.view := view
-        this.hotkeyCrafterController_ := HotkeyCrafterController(this.GetActiveObjectsRegistry())
+        this.hotkeyCrafterController_ := HotkeyCrafterController()
     }
 
     changeHotkey(whatToChange){
@@ -122,11 +122,6 @@ class HotKeyConfigurationController{
     GetModel(){
         return this.model
     }
-
-    GetActiveObjectsRegistry(){
-        return this.model.GetActiveObjectsRegistry()
-    }
-
 }
 
 

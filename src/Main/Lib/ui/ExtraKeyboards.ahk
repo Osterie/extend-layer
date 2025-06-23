@@ -11,15 +11,14 @@ Class ExtraKeyboards{
 
     currentLayer := ""
     currentFunction := ""
-    activeObjectsRegistry := ""
+
     keyboardLayersInfoRegister := ""
     ActionSettingsRepository := ActionSettingsRepository()
 
     actionSettings := ""
     
-    __New(activeObjectsRegistry, keyboardLayersInfoRegister){
+    __New(keyboardLayersInfoRegister){
         this.actionSettings := this.ActionSettingsRepository.getActionGroupSettingsRegistry()
-        this.activeObjectsRegistry := activeObjectsRegistry
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
     }
 
@@ -91,10 +90,6 @@ Class ExtraKeyboards{
 
     GetCurrentLayerInfo(){
         return this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer)
-    }
-
-    GetActiveObjectsRegistry(){
-        return this.activeObjectsRegistry
     }
 
     ChangeFunctionSetting(setting, actionName){

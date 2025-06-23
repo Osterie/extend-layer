@@ -2,15 +2,17 @@
 
 #Include <Actions\KeyboardOverlay\KeyboardOverlay>
 
+#Include <Infrastructure\Repositories\ActionGroupsRepository>
+
 class KeyboardOverlaysInitializer {
 
     layersInformation := ""
-    objectRegistry := ""
 
-    __New(layersInformation, objectRegistry) {
+    ActionGroupsRepository := ActionGroupsRepository.getInstance()
+
+    __New(layersInformation) {
         this.layersInformation := layersInformation
-        this.objectRegistry := objectRegistry
-        this.instanceOfOverlayRegistry := this.objectRegistry.getActionGroup("OverlayRegistry").GetObjectInstance()
+        this.instanceOfOverlayRegistry := this.ActionGroupsRepository.getActionObjectInstance("OverlayRegistry")
     }
 
     ; TODO add method to read which keys are used to show keyboard overlays, should be in the correct layer section, because only then should they activate

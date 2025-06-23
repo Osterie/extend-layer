@@ -7,24 +7,16 @@
 ; TODO make this class is able to change hotkeys and actions
 class HotkeyConfigurator{
 
-    activeObjectsRegistry := ""
     hotkeyToSendListenersInformation := ""
 
     originalHotkeyKey := ""
     originalActionFriendly := ""
 
-    __New(activeObjectsRegistry, hotkeyToSendListenersInformation){
-        this.activeObjectsRegistry := activeObjectsRegistry
-        
+    __New(hotkeyToSendListenersInformation){
         this.hotkeyToSendListenersInformation := hotkeyToSendListenersInformation
         this.originalHotkeyKey := this.hotkeyToSendListenersInformation.getHotkeyName()
         this.originalActionFriendly := this.hotkeyToSendListenersInformation.toString()
     }
-
-    GetActiveObjectsRegistry(){
-        return this.activeObjectsRegistry
-    }
-
 
     ; TODO dont do this here... do it after save+done is clicked...!!
     SetHotkeyKey(newHotkey){

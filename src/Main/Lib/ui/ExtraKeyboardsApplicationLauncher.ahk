@@ -27,8 +27,8 @@ Class ExtraKeyboardsApplicationLauncher{
     
     ExtraKeyboardsApplication_ := ""
 
-    __New(activeObjectsRegistry, keyboardLayersInfoRegister, mainScript){
-        this.ExtraKeyboards_ := ExtraKeyboards(activeObjectsRegistry, keyboardLayersInfoRegister)
+    __New(keyboardLayersInfoRegister, mainScript){
+        this.ExtraKeyboards_ := ExtraKeyboards(keyboardLayersInfoRegister)
         this.ExtraKeyboardsApplication_ := ExtraKeyboardsApplication()
         this.ExtraKeyboardsApplicationController_ := ExtraKeyboardsApplicationController(this.ExtraKeyboards_, this.ExtraKeyboardsApplication_, mainScript)
     }
