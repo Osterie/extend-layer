@@ -14,8 +14,11 @@ class ActionRegistry {
     }
 
     ; Takes the parameter MethodInfo, which is of the datatype MethodInfo.
-    addAction(actionName, Action) {
-        this.Actions[actionName] := Action
+    addAction(Action) {
+        If (Type(Action) != "Action") {
+            throw TypeError("ActionRegistry: addAction: Action must be an object instance of Action class.")
+        }
+        this.Actions[Action.getActionName()] := Action
     }
 
     getAction(actionName) {

@@ -109,6 +109,7 @@ class FilePaths {
         iniWrite(currentProfileName, this.PATH_TO_META_INI_FILE, "Profiles", "activeUserProfile")
     }
 
+    ; TODO file paths should not do this. Also add error logging.
     static GetCurrentProfile() {
         try {
             CURRENT_PROFILE := iniRead(this.GetPathToMetaFile(), "Profiles", "activeUserProfile")

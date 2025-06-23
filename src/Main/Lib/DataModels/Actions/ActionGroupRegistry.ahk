@@ -9,8 +9,11 @@ class ActionGroupRegistry {
         this.ActionGroups.Default := 0
     }
 
-    addActionGroup(actionGroupName, actionGroup) {
-        this.ActionGroups[actionGroupName] := actionGroup
+    addActionGroup(actionGroup) {
+        if (Type(actionGroup) != "ActionGroup") {
+            throw TypeError("ActionGroupRegistry: addActionGroup: actionGroup must be an object instance of ActionGroup class.")
+        }
+        this.ActionGroups[actionGroup.getObjectName()] := actionGroup
     }
 
     getActionGroup(actionGroupName) {

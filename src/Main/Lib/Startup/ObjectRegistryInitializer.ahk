@@ -21,8 +21,8 @@ class ObjectRegistryInitializer {
     }
 
     ReadObjectsInformationFromJson(){
-        JsonReaderForObjects := ActionGroupsRepository(this.Objects)
-        this.ObjectRegister := JsonReaderForObjects.ReadObjectsFromJson()
+        actionGroupsRepo := ActionGroupsRepository(this.Objects)
+        this.ObjectRegister := actionGroupsRepo.getActionGroupRegistry()
     }
 
     GetObjectRegistry(){
