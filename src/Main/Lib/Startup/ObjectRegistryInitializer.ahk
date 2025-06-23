@@ -10,18 +10,18 @@ class ObjectRegistryInitializer {
     Objects := ""
 
     InitializeObjectRegistry(){
-        this.InitializeObjects()
+        this.initializeObjects()
         this.ReadObjectsInformationFromJson()
     }
     
-    InitializeObjects(){
+    initializeObjects(){
         initializerForObjects := ObjectsInitializer()
-        initializerForObjects.InitializeObjects()
+        initializerForObjects.initializeObjects()
         this.Objects := initializerForObjects.GetObjects()
     }
 
     ReadObjectsInformationFromJson(){
-        actionGroupsRepo := ActionGroupsRepository(this.Objects)
+        actionGroupsRepo := ActionGroupsRepository()
         this.ObjectRegister := actionGroupsRepo.getActionGroupRegistry()
     }
 

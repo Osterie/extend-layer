@@ -114,7 +114,7 @@ Class ExtraKeyboards{
         hotkeyToReturn := HotkeyInfo(hotkeyInformation.getHotkeyName())
 
         if (hotkeyInformation.hotkeyIsObject()){
-            hotkeyToReturn.setInfoForSpecialHotKey(hotkeyInformation.GetobjectName(), hotkeyInformation.GetMethodName(), hotkeyInformation.getparameters())
+            hotkeyToReturn.setInfoForSpecialHotKey(hotkeyInformation.getObjectName(), hotkeyInformation.getActionName(), hotkeyInformation.getparameters())
         }
         else{
             hotkeyToReturn.setInfoForNormalHotKey(hotkeyInformation.getNewHotkeyName(), hotkeyInformation.getNewHotkeyModifiers())

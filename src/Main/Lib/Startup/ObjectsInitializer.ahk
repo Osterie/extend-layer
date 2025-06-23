@@ -25,7 +25,7 @@ class ObjectsInitializer{
     objects := Map()
     IniFileReader := IniFileReader()
 
-    InitializeObjects(){
+    initializeObjects(){
     
         ; Used to control mouse actions, and disable/enable mouse
         MouseInstance := Mouse(true)

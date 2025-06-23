@@ -20,38 +20,37 @@
 #Include <DataModels\Actions\ActionGroupRegistry>
 #Include <Shared\FilePaths>
 
-testFilePermissions(){
+testFilePermissions() {
     testFile := A_ScriptDir . "\testFilePermissions.txt"
 
     ; This function is used to test if the script has the right permissions to read/write files.
     ; It will throw an error if it does not have the right permissions.
-    try{
-        if (FileExist(testFile)){
+    try {
+        if (FileExist(testFile)) {
             FileDelete(testFile)
         }
         FileAppend("test", testFile)
         FileDelete(testFile)
     }
-    catch Error as e{
-        if (InStr(e.Message, "Access is denied")){
-            if (!A_IsAdmin){
+    catch Error as e {
+        if (InStr(e.Message, "Access is denied")) {
+            if (!A_IsAdmin) {
                 ExtendLayerInProtectedLocationDialog_ := ExtendLayerInProtectedLocationDialog()
                 ExtendLayerInProtectedLocationDialog_.show()
                 WinWaitClose(ExtendLayerInProtectedLocationDialog_.GetHwnd())
                 ExitApp
             }
-            else{
+            else {
                 Logger.getInstance().logError("Error reading/writing file: " e.Message, e.File, e.Line)
             }
         }
-        else{
+        else {
             Logger.getInstance().logError("Error reading/writing file: " e.Message, e.File, e.Line)
         }
     }
 }
 
 testFilePermissions()
-
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -80,42 +79,39 @@ SendMode "Event"
 
 ; if (not A_IsAdmin){
 ;     ; "*RunAs*" is an option for the Run() function to run a program as admin
-; 	Run("*RunAs `"" A_ScriptFullPath "`"") 
+; 	Run("*RunAs `"" A_ScriptFullPath "`"")
 ; }
 
+class Main {
 
-
-Class Main{
-
-    StartupConfigurator := ""
-    ActionGroupRegistry := ActionGroupRegistry()
+    StartupConfigurator := MainStartupConfigurator()
     KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
+    ActionGroupsRepository := ActionGroupsRepository.getInstance()
 
     scriptRunning := false
 
-    __New(){
+    __New() {
     }
 
     ; Main method used to start the script.
-    Start(){
-        try{
+    Start() {
+        try {
             this.RunLogicalStartup()
         }
-        catch Error as e{
+        catch Error as e {
             MsgBox("Error in running startup: " e.Message " " e.Line " " e.File " " e.Extra " " e.Stack " " e.What)
         }
-        finally{
+        finally {
             this.RunAppGui()
             this.scriptRunning := true
         }
     }
 
-    RunLogicalStartup(){
-        if (this.scriptRunning){
-            this.ActionGroupRegistry.destroyObjectInstances()
+    RunLogicalStartup() {
+        if (this.scriptRunning) {
             this.SetHotkeysForAllLayers(false)
             this.StartupConfigurator := ""
-            this.ActionGroupRegistry := ActionGroupRegistry()
+            this.ActionGroupsRepository.reset()
             ; TODO probably needs to be destroyed...
             this.KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
         }
@@ -123,75 +119,74 @@ Class Main{
         this.RunMainStartup()
     }
 
-    Initialize(){
-        this.InitializeObjectRegistry()
+    Initialize() {
+        ; this.InitializeObjectRegistry()
         this.InitializeKeyboardLayersInfo()
         this.InitializeMainStartupConfigurator()
     }
 
-    RunMainStartup(enableHotkeys := true){
+    RunMainStartup(enableHotkeys := true) {
         this.CreateKeyboardOverlays()
         this.SetHotkeysForAllLayers(enableHotkeys)
     }
 
-    InitializeObjectRegistry(){
-        objectRegisterInitializer := ObjectRegistryInitializer()
-        objectRegisterInitializer.InitializeObjectRegistry()
-        this.ActionGroupRegistry := objectRegisterInitializer.GetObjectRegistry()
-    }
-
-    InitializeKeyboardLayersInfo(){
+    InitializeKeyboardLayersInfo() {
         JsonReaderForKeyboardLayersInfo := KeyboardLayersInfoJsonReader()
         JsonReaderForKeyboardLayersInfo.ReadKeyboardLayersInfoForCurrentProfile()
         this.KeyboardLayersInfoRegister := JsonReaderForKeyboardLayersInfo.getKeyboardLayersInfoRegister()
     }
 
-    InitializeMainStartupConfigurator(){
+    InitializeMainStartupConfigurator() {
         ; This is used to read ini files, and create hotkeys from them
         this.StartupConfigurator := MainStartupConfigurator()
 
-        this.StartupConfigurator.setInformation(this.KeyboardLayersInfoRegister, this.ActionGroupRegistry)
+        this.StartupConfigurator.setInformation(this.KeyboardLayersInfoRegister, ActionGroupsRepository.getActionGroupRegistry())
     }
-    
-    CreateKeyboardOverlays(){
+
+    CreateKeyboardOverlays() {
         ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
         this.StartupConfigurator.readAllKeyboardOverlays()
     }
 
-    SetHotkeysForAllLayers(enableHotkeys := true){
+    SetHotkeysForAllLayers(enableHotkeys := true) {
         this.StartupConfigurator.createGlobalHotkeysForAllKeyboardOverlays()
 
         ; Reads and initializes all the hotkeys which are active for every keyboard layer.
-        this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, this.ActionGroupRegistry,  "GlobalLayer", enableHotkeys)
-        
+        this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, ActionGroupsRepository.getActionGroupRegistry(),
+        "GlobalLayer", enableHotkeys)
+
         HotIf "MainScript.getLayerController().getActiveLayer() == 0"
-            ; Reads and initializes all the hotkeys for the normal keyboard layer.
-            this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, this.ActionGroupRegistry, "NormalLayer", enableHotkeys)
+        ; Reads and initializes all the hotkeys for the normal keyboard layer.
+        this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, ActionGroupsRepository.getActionGroupRegistry(),
+        "NormalLayer", enableHotkeys)
         HotIf
-        
+
         HotIf "MainScript.getLayerController().getActiveLayer() == 1"
-            ; Reads and initializes all the hotkeys for the second keyboard layer.
-            this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, this.ActionGroupRegistry, "SecondaryLayer", enableHotkeys)
+        ; Reads and initializes all the hotkeys for the second keyboard layer.
+        this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, ActionGroupsRepository.getActionGroupRegistry(),
+        "SecondaryLayer", enableHotkeys)
         HotIf
-        
+
         HotIf "MainScript.getLayerController().getActiveLayer() == 2"
-            ; Reads and initializes all the hotkeys for the third keyboard layer.
-            this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, this.ActionGroupRegistry, "TertiaryLayer", enableHotkeys)
+        ; Reads and initializes all the hotkeys for the third keyboard layer.
+        this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, ActionGroupsRepository.getActionGroupRegistry(),
+        "TertiaryLayer", enableHotkeys)
         HotIf
     }
 
-    RunAppGui(){
-        app := ExtraKeyboardsApplicationLauncher(this.ActionGroupRegistry, this.KeyboardLayersInfoRegister, this)
+    RunAppGui() {
+        app := ExtraKeyboardsApplicationLauncher(ActionGroupsRepository.getActionGroupRegistry(), this.KeyboardLayersInfoRegister,
+        this)
         app.Start()
     }
 
-    getLayerController(){
-        return this.ActionGroupRegistry.getActionGroup("layers").GetObjectInstance()
+    getLayerController() {
+        return ActionGroupsRepository.getActionGroupRegistry().getActionGroup("layers").GetObjectInstance()
     }
 }
 
 #SuspendExempt
-^!s::Suspend  ; Ctrl+Alt+S
+^!s:: Suspend  ; Ctrl+Alt+S
 #SuspendExempt False
 
 MainScript := Main()
@@ -204,7 +199,7 @@ MainScript.Start()
 #HotIf MainScript.getLayerController().getActiveLayer() == 1
 #HotIf
 
-#HotIf MainScript.getLayerController().getActiveLayer() == 2 
+#HotIf MainScript.getLayerController().getActiveLayer() == 2
 #HotIf
 
 ; Used to show user the script is enabled

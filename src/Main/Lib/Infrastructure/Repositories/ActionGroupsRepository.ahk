@@ -12,24 +12,53 @@
 
 class ActionGroupsRepository {
 
+    static instance := false
     PATH_TO_ACTION_GROUP_INFO := FilePaths.GetPathToActionGroupsInfo()
-    ActionGroupRegistry := ActionGroupRegistry()
+    static ActionGroupRegistry := ActionGroupRegistry()
 
     ; The action groups have to be registered with the object instances, so that they can be used later on for actions.
     ; Since action group is actually the name of a ahk class, for example "Mouse" or "Keyboard",
     ; we need to use an object instance of one of these classes to actually perform the actions, which are actually methods of these classes.
     objectInstances := Map()
 
-    __New(objectInstances) {
-        this.objectInstances := objectInstances
+    __New() {
+        this.initializeObjects()  ; Initialize the object instances that will be used in the action groups
         this.readObjectsFromJson()  ; Load the action groups from the JSON file
     }
 
-    getActionGroupRegistry() {
-        return this.ActionGroupRegistry
+    static getInstance() {
+        if (ActionGroupsRepository.instance = false) {
+            ActionGroupsRepository.instance := true
+            ActionGroupsRepository.instance := ActionGroupsRepository()
+        }
+        return ActionGroupsRepository.instance
     }
 
-    
+    destroyObjectInstances() {
+        ActionGroupsRepository.getActionGroupRegistry().destroyObjectInstances()
+    }
+
+    static getActionGroupRegistry() {
+        ActionGroupsRepository.getInstance()
+        return ActionGroupsRepository.ActionGroupRegistry
+    }
+
+    static setActionGroupRegistry(newRegistry) {
+        ActionGroupsRepository.ActionGroupRegistry := newRegistry
+    }
+
+    reset() {
+        ActionGroupsRepository.getActionGroupRegistry().destroyObjectInstances()
+        ActionGroupsRepository.setActionGroupRegistry(ActionGroupRegistry())
+        this.initializeObjects()
+        this.readObjectsFromJson()
+    }
+
+    initializeObjects() {
+        initializerForObjects := ObjectsInitializer()
+        initializerForObjects.initializeObjects()
+        this.objectInstances := initializerForObjects.GetObjects()
+    }
 
     readObjectsFromJson() {
         actionGroups := this.loadActionGroupsFromFile()
@@ -41,7 +70,7 @@ class ActionGroupsRepository {
             ActionGroup_ := this.createActionGroupFromInfo(actionGroupInfo)
 
             ; Add the completed object to the registry.
-            this.ActionGroupRegistry.addActionGroup(ActionGroup_)
+            ActionGroupsRepository.getActionGroupRegistry().addActionGroup(ActionGroup_)
         }
     }
 
@@ -59,7 +88,8 @@ class ActionGroupsRepository {
             ActionRegistry_.addAction(Action_)
         }
 
-        return ActionGroup(actionGroupObjectName, this.objectInstances[actionGroupObjectName], actionGroupDescription, ActionRegistry_)
+        return ActionGroup(actionGroupObjectName, this.objectInstances[actionGroupObjectName], actionGroupDescription,
+            ActionRegistry_)
     }
 
     createActionFromInfo(actionInfo) {
