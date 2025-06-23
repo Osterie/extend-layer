@@ -4,11 +4,11 @@
 
 #Include <Util\InputReader>
 
-#Include <Actions\Action>
+#Include <Actions\HotkeyAction>
 ; TODO add more text-editor like features, cursors, move cursors, mark text? etc.
 ; TODO can create a text editor class, and this class is like that but for display purposes (show other people some text you type.)
 ; TODO use MVC design pattern.
-Class KeysPressedGui extends Action{
+Class KeysPressedGui extends HotkeyAction{
 
     GuiShowKeysPressed := ""
     showKeysPressedControl := ""

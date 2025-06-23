@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
 ; TODO move out of AppControllers folder
-class SoundController extends Action{
+class SoundController extends HotkeyAction{
 
     playPause(){
         Send("{Media_Play_Pause}")

@@ -15,26 +15,14 @@ class FolderManager{
         this.folders.addSubFoldersFromFolder(folderPath)
     }
 
+    ; Returns true if the folder was added successfully, false if the folder already exists
     addFolderToRegistry(folderName, folderPath) {
-        addedFolder := false
-        if (this.folders.addFolder(folderName, folderPath)){
-            addedFolder := true
-        }
-        else{
-            addedFolder := false
-        }
-        return addedFolder
+        return this.folders.addFolder(folderName, folderPath)
     }
 
+    ; Return true if the folder was removed successfully, false if the folder does not exist
     RemoveFolderFromRegistry(folderName) {
-        folderRemoved := false
-        if (this.folders.DeleteFolder(folderName)) {
-            folderRemoved := true
-        }
-        else{
-            folderRemoved := false
-        }
-        return folderRemoved
+        return this.folders.DeleteFolder(folderName)
     }
 
     ; Takes the old name of the folder and gives it the new name, this will change the folder name in the registry and on the disk

@@ -1,10 +1,10 @@
 ﻿#Requires Autohotkey v2.0
 
-#Include <Actions\Action>
+#Include <Actions\HotkeyAction>
 #Include <Util\ImageSizeFinder>
 
 
-class LayerIndicator extends Action {
+class LayerIndicator extends HotkeyAction {
 
     indicatorColor := ""
     layer := 0

@@ -4,9 +4,9 @@
 #Include <Infrastructure\IO\IniFileReader>
 
 
-#Include <Actions\Action>
+#Include <Actions\HotkeyAction>
 
-Class Mouse extends Action{
+Class Mouse extends HotkeyAction{
 
     autoClickerCPS := 10
     autoClickerEnabled := false

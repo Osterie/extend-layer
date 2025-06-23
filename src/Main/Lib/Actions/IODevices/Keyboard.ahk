@@ -1,8 +1,8 @@
 #Requires AutoHotkey v2.0
 
-#Include <Actions\Action>
+#Include <Actions\HotkeyAction>
 
-class Keyboard extends Action{
+class Keyboard extends HotkeyAction{
 
 
     sendInputRepeatedly := false

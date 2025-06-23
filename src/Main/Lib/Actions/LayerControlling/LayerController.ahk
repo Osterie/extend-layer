@@ -5,9 +5,9 @@
 ; TODO: perhaps it should be called registry?
 
 ; TODO; instead of multiple guis, it would be possible to just change the color and have the same gui no change...
-#Include <Actions\Action>
+#Include <Actions\HotkeyAction>
 
-Class LayerController extends Action{
+Class LayerController extends HotkeyAction{
     
     layers := Map()
     layers.Default := []

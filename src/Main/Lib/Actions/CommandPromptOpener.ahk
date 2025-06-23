@@ -3,9 +3,9 @@
 #Include <Shared\FilePaths>
 #Include <Infrastructure\IO\IniFileReader>
 
-#Include <Actions\Action>
+#Include <Actions\HotkeyAction>
 
-Class CommandPromptOpener extends Action{
+Class CommandPromptOpener extends HotkeyAction{
 
     defaultPath := ""
     IniFileReader := IniFileReader()

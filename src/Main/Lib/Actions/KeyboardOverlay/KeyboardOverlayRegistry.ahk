@@ -1,9 +1,9 @@
 #Requires Autohotkey v2.0
 
-#Include <Actions\Action>
+#Include <Actions\HotkeyAction>
 
 ; TODO dont extends actin, extends overlay or something...
-Class KeyboardOverlayRegistry extends Action{
+Class KeyboardOverlayRegistry extends HotkeyAction{
     
     keyboardOverlays := Map()
     activeOverlay := ""

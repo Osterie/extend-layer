@@ -3,10 +3,10 @@
 
 ; TODO: could create a clock gui class, which can create a gui for countdown or clock
 
-#Include <Actions\Action>
+#Include <Actions\HotkeyAction>
 
 
-Class CountdownDisplay extends Action{
+Class CountdownDisplay extends HotkeyAction{
 
     countdownStopped := false
     CountDown := ""

@@ -2,10 +2,10 @@
 #Include ".\Translator.ahk"
 #Include "..\..\IODevices\ComputerInputController.ahk"
 
-#Include <Actions\Action>
+#Include <Actions\HotkeyAction>
 #Include <Util\Sanitizers\KeyboardKeySanitizer>
 
-Class WebNavigator extends Action{
+Class WebNavigator extends HotkeyAction{
 
     chatGptLoadTime := 3000
 

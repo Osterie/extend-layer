@@ -1,8 +1,8 @@
 #Requires AutoHotkey v2.0
 
-#Include <Actions\Action>
+#Include <Actions\HotkeyAction>
 
-Class KeyboardOverlay extends Action{
+Class KeyboardOverlay extends HotkeyAction{
 
     ; Changing this font size will resize the keyboard:
     fontSize := "10"

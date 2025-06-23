@@ -1,8 +1,8 @@
 #Requires AutoHotkey v2.0
 
-#Include <Actions\Action>
+#Include <Actions\HotkeyAction>
 
-Class FileExplorerNavigator extends Action{
+Class FileExplorerNavigator extends HotkeyAction{
 
 
     ; navigates to the specified folder

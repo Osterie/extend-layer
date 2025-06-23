@@ -2,9 +2,9 @@
 #Include "..\Clock\CountdownDisplay.ahk"
 
 
-#Include <Actions\Action>
+#Include <Actions\HotkeyAction>
 
-Class ScreenPrivacyController extends Action{
+Class ScreenPrivacyController extends HotkeyAction{
 
     ; TODO, perhaps this could be combined with monitor.ahk, or something similar with a different name?
     GUIPrivacyBox := ""

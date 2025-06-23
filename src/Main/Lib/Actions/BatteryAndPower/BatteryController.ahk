@@ -1,8 +1,8 @@
 #Requires AutoHotkey v2.0
 
-#Include <Actions\Action>
+#Include <Actions\HotkeyAction>
 
-Class BatteryController extends Action{
+Class BatteryController extends HotkeyAction{
 
     currentBatterySaverThreshold := 50
     defaultBatterySaverThreshold := 50
