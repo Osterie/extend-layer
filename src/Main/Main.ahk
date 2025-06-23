@@ -149,17 +149,17 @@ class Main {
         ; Reads and initializes all the hotkeys which are active for every keyboard layer.
         this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, "GlobalLayer", enableHotkeys)
 
-        HotIf "MainScript.getLayerController().getActiveLayer() == 0"
+        HotIf "MainScript.getActiveLayer() == 0"
         ; Reads and initializes all the hotkeys for the normal keyboard layer.
         this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, "NormalLayer", enableHotkeys)
         HotIf
 
-        HotIf "MainScript.getLayerController().getActiveLayer() == 1"
+        HotIf "MainScript.getActiveLayer() == 1"
         ; Reads and initializes all the hotkeys for the second keyboard layer.
         this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, "SecondaryLayer", enableHotkeys)
         HotIf
 
-        HotIf "MainScript.getLayerController().getActiveLayer() == 2"
+        HotIf "MainScript.getActiveLayer() == 2"
         ; Reads and initializes all the hotkeys for the third keyboard layer.
         this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, "TertiaryLayer", enableHotkeys)
         HotIf
@@ -170,8 +170,9 @@ class Main {
         app.start()
     }
 
-    getLayerController() {
-        return ActionGroupsRepository.getActionGroupRegistry().getActionGroup("layers").GetObjectInstance()
+    getActiveLayer() {
+        layerController := this.ActionGroupsRepository.getActionObjectInstance("layers")
+        return layerController.getActiveLayer()
     }
 }
 
@@ -183,13 +184,13 @@ MainScript := Main()
 MainScript.start()
 
 ; These are needed here so the HotIf statements can be used in the Main class
-#HotIf MainScript.getLayerController().getActiveLayer() == 0
+#HotIf MainScript.getActiveLayer() == 0
 #HotIf
 
-#HotIf MainScript.getLayerController().getActiveLayer() == 1
+#HotIf MainScript.getActiveLayer() == 1
 #HotIf
 
-#HotIf MainScript.getLayerController().getActiveLayer() == 2
+#HotIf MainScript.getActiveLayer() == 2
 #HotIf
 
 ; Used to show user the script is enabled
