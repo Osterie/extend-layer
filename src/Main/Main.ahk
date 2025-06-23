@@ -15,10 +15,9 @@
 
 #Include <Startup\ObjectRegistryInitializer>
 
-#Include <Util\MetaInfo\MetaInfoReading\ObjectsJsonReader>
 #Include <Util\MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader>
 
-#Include <Util\MetaInfo\MetaInfoStorage\Objects\ObjectRegistry>
+#Include <DataModels\Actions\ActionGroupRegistry>
 #Include <Shared\FilePaths>
 
 testFilePermissions(){
@@ -89,7 +88,7 @@ SendMode "Event"
 Class Main{
 
     StartupConfigurator := ""
-    ObjectRegister := ObjectRegistry()
+    ActionGroupRegistry := ActionGroupRegistry()
     KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
 
     scriptRunning := false
@@ -113,10 +112,10 @@ Class Main{
 
     RunLogicalStartup(){
         if (this.scriptRunning){
-            this.ObjectRegister.DestroyObjects()
+            this.ActionGroupRegistry.destroyObjectInstances()
             this.SetHotkeysForAllLayers(false)
             this.StartupConfigurator := ""
-            this.ObjectRegister := ObjectRegistry()
+            this.ActionGroupRegistry := ActionGroupRegistry()
             ; TODO probably needs to be destroyed...
             this.KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
         }
@@ -138,7 +137,7 @@ Class Main{
     InitializeObjectRegistry(){
         objectRegisterInitializer := ObjectRegistryInitializer()
         objectRegisterInitializer.InitializeObjectRegistry()
-        this.ObjectRegister := objectRegisterInitializer.GetObjectRegistry()
+        this.ActionGroupRegistry := objectRegisterInitializer.GetObjectRegistry()
     }
 
     InitializeKeyboardLayersInfo(){
@@ -151,7 +150,7 @@ Class Main{
         ; This is used to read ini files, and create hotkeys from them
         this.StartupConfigurator := MainStartupConfigurator()
 
-        this.StartupConfigurator.setInformation(this.KeyboardLayersInfoRegister, this.ObjectRegister)
+        this.StartupConfigurator.setInformation(this.KeyboardLayersInfoRegister, this.ActionGroupRegistry)
     }
     
     CreateKeyboardOverlays(){
@@ -163,31 +162,31 @@ Class Main{
         this.StartupConfigurator.createGlobalHotkeysForAllKeyboardOverlays()
 
         ; Reads and initializes all the hotkeys which are active for every keyboard layer.
-        this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, this.ObjectRegister,  "GlobalLayer", enableHotkeys)
+        this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, this.ActionGroupRegistry,  "GlobalLayer", enableHotkeys)
         
         HotIf "MainScript.getLayerController().getActiveLayer() == 0"
             ; Reads and initializes all the hotkeys for the normal keyboard layer.
-            this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, this.ObjectRegister, "NormalLayer", enableHotkeys)
+            this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, this.ActionGroupRegistry, "NormalLayer", enableHotkeys)
         HotIf
         
         HotIf "MainScript.getLayerController().getActiveLayer() == 1"
             ; Reads and initializes all the hotkeys for the second keyboard layer.
-            this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, this.ObjectRegister, "SecondaryLayer", enableHotkeys)
+            this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, this.ActionGroupRegistry, "SecondaryLayer", enableHotkeys)
         HotIf
         
         HotIf "MainScript.getLayerController().getActiveLayer() == 2"
             ; Reads and initializes all the hotkeys for the third keyboard layer.
-            this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, this.ObjectRegister, "TertiaryLayer", enableHotkeys)
+            this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, this.ActionGroupRegistry, "TertiaryLayer", enableHotkeys)
         HotIf
     }
 
     RunAppGui(){
-        app := ExtraKeyboardsApplicationLauncher(this.ObjectRegister, this.KeyboardLayersInfoRegister, this)
+        app := ExtraKeyboardsApplicationLauncher(this.ActionGroupRegistry, this.KeyboardLayersInfoRegister, this)
         app.Start()
     }
 
     getLayerController(){
-        return this.ObjectRegister.GetObjectInfo("layers").GetObjectInstance()
+        return this.ActionGroupRegistry.getActionGroup("layers").GetObjectInstance()
     }
 }
 

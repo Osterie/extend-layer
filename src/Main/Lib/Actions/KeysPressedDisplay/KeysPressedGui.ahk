@@ -59,8 +59,8 @@ Class KeysPressedGui extends HotkeyAction{
         this.GuiShowKeysPressed.Hide()
     }
 
-    Destroy(){
-        this.GuiShowKeysPressed.Destroy()
+    destroy(){
+        this.GuiShowKeysPressed.destroy()
     }
     
     IsHidden(){

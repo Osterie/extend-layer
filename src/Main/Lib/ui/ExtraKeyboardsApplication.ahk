@@ -27,7 +27,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
     ; Creates the main gui for the application
     createMain(controller){
         this.controller := controller
-        this.OnEvent('Close', (*) => this.Destroy())
+        this.OnEvent('Close', (*) => this.destroy())
         this.CreateMenuBar()
         this.CreateProfileEditor()
         this.CreateTabs()
@@ -226,8 +226,8 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
         this.Add("Edit", "r20")  ; r20 means 20 rows tall.
     }
 
-    Destroy(){
-        super.Destroy()
+    destroy(){
+        super.destroy()
         this.controller.DoDestroy()
     }
 }

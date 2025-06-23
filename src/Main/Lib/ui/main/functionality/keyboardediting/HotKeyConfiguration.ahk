@@ -53,7 +53,7 @@ class HotKeyConfiguration extends DomainSpecificGui{
         saveButton := this.Add("Button", "Default w100", "Save+Done")
         saveButton.onEvent("Click", (*) => this.controller.NotifyListenersSave())
         cancelButton := this.Add("Button", "Default w100", "Cancel+Done")
-        cancelButton.onEvent("Click", (*) => this.Destroy())
+        cancelButton.onEvent("Click", (*) => this.destroy())
         if (this.model.getOriginalHotkey() != ""){
             deleteButton := this.Add("Button", "Default w100", "Delete+Done")
             deleteButton.onEvent("Click", (*) => this.controller.NotifyListenersDelete())

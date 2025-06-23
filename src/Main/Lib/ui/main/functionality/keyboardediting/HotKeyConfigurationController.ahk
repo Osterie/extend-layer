@@ -116,13 +116,6 @@ class HotKeyConfigurationController{
         
         this.model.SetHotkeyAction(newAction)
         this.view.updateActionText()
-        ; if (newAction.getMethodName() != ""){
-        ; }
-        ; else{
-        ;     this.model.SetHotkeyAction(newAction)
-        ;     this.view.updateActionText()
-        ; }
-        
         this.view.Show()
     }
 

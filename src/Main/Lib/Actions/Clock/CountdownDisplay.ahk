@@ -28,9 +28,9 @@ Class CountdownDisplay extends HotkeyAction{
         this.GUICountdown.Add("Text", "w200 Center vCountdown", this.CountDown.getTimeAsString())
     }
     
-    Destroy(){
+    destroy(){
         try{
-            this.GUICountdown.Destroy()
+            this.GUICountdown.destroy()
         }
     }
 

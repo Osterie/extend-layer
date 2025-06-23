@@ -140,7 +140,7 @@ class ProfileRegionController{
             profilePath := this.PresetProfilesManager.getFolderPathByName(profileToAdd)
             this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, FilePaths.GetPathToProfiles() . "/" . profileName, profileName)
             this.view.UpdateProfilesDropDownMenu()
-            this.addprofileView.Destroy()
+            this.addprofileView.destroy()
             msgbox("Successfully added profile " . profileName)
         }
         catch{

@@ -22,7 +22,7 @@ class MainStartupConfigurator {
     setInformation(layersInformation, objectRegistry) {
         this.layersInformation := layersInformation
         this.objectRegistry := objectRegistry
-        if (Type(layersInformation) = "KeyboardLayersInfoRegistry" AND Type(objectRegistry) = "ObjectRegistry") {
+        if (Type(layersInformation) = "KeyboardLayersInfoRegistry" AND Type(objectRegistry) = "ActionGroupRegistry") {
             this.HotkeyInitializerInstance := HotkeyInitializer()
             ; TODO probably dont pass these arguemnts hereere...
             this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(layersInformation, objectRegistry)
@@ -33,7 +33,7 @@ class MainStartupConfigurator {
     }
 
     initializeLayer(layersInformation, objectRegistry, section, enableHotkeys := "on") {
-        if (Type(layersInformation) = "KeyboardLayersInfoRegistry" AND Type(objectRegistry) = "ObjectRegistry") {
+        if (Type(layersInformation) = "KeyboardLayersInfoRegistry" AND Type(objectRegistry) = "ActionGroupRegistry") {
             this.HotkeyInitializerInstance.initializeHotkeys(layersInformation, objectRegistry, section . "-Hotkeys",
                 enableHotkeys)
         }

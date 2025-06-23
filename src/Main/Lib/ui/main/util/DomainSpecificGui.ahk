@@ -13,7 +13,7 @@ class DomainSpecificGui extends Gui{
     ; TODO fetch color profile from meta file.
     __New(options := "", title := "", eventObj := ""){
         super.__New(options, title, this)
-        this.OnEvent('Escape', (*) => this.Destroy())
+        this.OnEvent('Escape', (*) => this.destroy())
         this.UpdateColorTheme()
     }
 

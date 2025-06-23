@@ -33,17 +33,17 @@ class HotkeyCrafterController{
     }
 
     GetSpecialActions(){
-        return this.getActiveObjectsRegistry().GetFriendlyNames()
+        return this.getActiveObjectsRegistry().getAllFriendlyActionNames()
     }
 
     GetCurrentObjectName(){
-        ObjectInfoOfAction := this.GetObjectInfoByActionName(this.currentAction)
+        ObjectInfoOfAction := this.GetActionGroupsInfoByActionName(this.currentAction)
         return ObjectInfoOfAction.getObjectName()
     }
 
     GetCurrentMethodName(){
-        MethodInfoOfAction := this.GetMethodInfoByActionName(this.currentAction)
-        return MethodInfoOfAction.getMethodName()
+        MethodInfoOfAction := this.getActionByFriendlyActionName(this.currentAction)
+        return MethodInfoOfAction.getActionName()
     }
 
     SetActionInformation(actionName){
@@ -51,13 +51,13 @@ class HotkeyCrafterController{
     }
 
     GetMethodDescription(){
-        MethodInfoOfAction := this.GetMethodInfoByActionName(this.currentAction)
-        return MethodInfoOfAction.getMethodDescription()
+        MethodInfoOfAction := this.getActionByFriendlyActionName(this.currentAction)
+        return MethodInfoOfAction.getActionDescription()
     }
 
     GetMethodParameters(){
-        MethodInfoOfAction := this.GetMethodInfoByActionName(this.currentAction)
-        return MethodInfoOfAction.getMethodParameters()
+        MethodInfoOfAction := this.getActionByFriendlyActionName(this.currentAction)
+        return MethodInfoOfAction.getActionParameters()
     }
 
     ; Change the view. Hides and shows controls such that the
@@ -89,15 +89,16 @@ class HotkeyCrafterController{
         return this.isCraftingSpecialAction_
     }
     
+    ; TODO change some of these methods! another class should handle this.
     ; Private
-    GetObjectInfoByActionName(actionName){
-        return this.getActiveObjectsRegistry().GetObjectByFriendlyMethodName(actionName)
+    GetActionGroupsInfoByActionName(actionName){
+        return this.getActiveObjectsRegistry().getActionGroupByFriendlyActionName(actionName)
     }
 
     ; Private
-    GetMethodInfoByActionName(actionName){
-        ObjectInfo := this.getObjectInfoByActionName(actionName)
-        return ObjectInfo.getMethodByFriendlyMethodName(actionName)
+    getActionByFriendlyActionName(friendlyActionName){
+        ActionGroup := this.GetActionGroupsInfoByActionName(friendlyActionName)
+        return ActionGroup.getActionByFriendlyActionName(friendlyActionName)
     }
 
     GetHotkey(parameters){

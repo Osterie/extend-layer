@@ -58,8 +58,8 @@ Class KeyboardOverlay extends HotkeyAction{
         }
     }
 
-    Destroy(){
-        this.keyboardOverlay.Destroy()
+    destroy(){
+        this.keyboardOverlay.destroy()
     }
 
     ; Adds a column to the keyboard overlay, first row showing what key to press to excecute the event in the second row

@@ -46,7 +46,7 @@ class HotkeyCrafter extends DomainSpecificGui{
         saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
         
         cancelButton := this.Add("Button", "w100 h20", "Cancel")
-        cancelButton.OnEvent("Click", (*) => this.Destroy())
+        cancelButton.OnEvent("Click", (*) => this.destroy())
 
         this.controlsForButtons.addControl("saveButton", saveButton)
         this.controlsForButtons.addControl("cancelButton", cancelButton)
@@ -101,7 +101,7 @@ class HotkeyCrafter extends DomainSpecificGui{
         Loop this.saveEventSubscribers.Length{
             this.saveEventSubscribers[A_Index](this.getNewHotkey())
         }
-        this.Destroy()
+        this.destroy()
     }
 
     ShowHotkeyCrafterControls(){

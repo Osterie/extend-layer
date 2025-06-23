@@ -66,7 +66,7 @@ class LayerIndicator extends HotkeyAction {
         this.setIndicatorHeight(140) ; Default height if no image is provided
     }
 
-    Destroy() {
+    destroy() {
         this.layerIndicatorGui.destroy()
     }
 

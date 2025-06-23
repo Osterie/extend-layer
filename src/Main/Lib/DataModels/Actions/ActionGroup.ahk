@@ -1,48 +1,59 @@
 #Requires AutoHotkey v2.0
 
+
 class ActionGroup {
 
     ; Name of the object (String)
-    objectName := ""
+    actionGroupObjectName := ""
     ; The instance of the object (the datatype is the one of the given object)
     objectInstance := ""
-    ; The methods of the object, which should be of the datatype MethodRegistry.
-    methodsWithDescriptions := ""
-    objectDescription := ""
+    ; The methods of the object, which should be of the datatype ActionRegistry.
+    actionRegistry := ""
+    description := ""
 
+    ; TODO check type of given parameters.
     ; TODO Try to add, if already exists, send a msgbox informing of such...
-    __New(objectName, objectInstance, objectDescription, methodsWithDescriptions) {
-        this.objectName := objectName
+    __New(actionGroupObjectName, objectInstance, description, actionRegistry) {
+        if (Type(actionGroupObjectName) != "String") {
+            throw TypeError("actionGroupObjectName must be a String, got: " . Type(actionGroupObjectName))
+        }
+        if (!IsObject(objectInstance)) {
+            throw TypeError("objectInstance must be an object, got: " . Type(objectInstance))
+        }
+        if (Type(actionRegistry) != "ActionRegistry") {
+            throw TypeError("actionRegistry must be of type ActionRegistry, got: " . Type(actionRegistry))
+        }
+        this.actionGroupObjectName := actionGroupObjectName
         this.objectInstance := objectInstance
-        this.methodsWithDescriptions := methodsWithDescriptions
-        this.objectDescription := objectDescription
+        this.actionRegistry := actionRegistry
+        this.description := description
     }
 
     getObjectName() {
-        return this.objectName
+        return this.actionGroupObjectName
     }
 
     getObjectInstance() {
         return this.objectInstance
     }
 
-    getObjectDescription() {
-        return this.objectDescription
+    getDescription() {
+        return this.description
     }
 
-    getFriendlyNames() {
-        return this.methodsWithDescriptions.getMethodsFriendlyNames()
+    getFriendlyNamesOfActions() {
+        return this.actionRegistry.getActionsFriendlyNames()
     }
 
-    getMethodByFriendlyMethodName(friendlyMethodName) {
-        return this.methodsWithDescriptions.getMethodByFriendlyName(friendlyMethodName)
+    getActionByFriendlyActionName(friendlyActionName) {
+        return this.actionRegistry.getActionByFriendlyName(friendlyActionName)
     }
 
-    getMethodsWithDescriptions() {
-        return this.methodsWithDescriptions
+    getActions() {
+        return this.actionRegistry
     }
 
-    DestroyObject() {
-        this.objectInstance.Destroy()
+    destroyObjectInstance() {
+        this.objectInstance.destroy()
     }
 }

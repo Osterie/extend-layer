@@ -18,10 +18,10 @@ Class ScreenPrivacyController extends HotkeyAction{
         this.GUIPrivacyBox.BackColor := "Black"
     }
 
-    Destroy(){
-        this.GUIPrivacyBox.Destroy()
+    destroy(){
+        this.GUIPrivacyBox.destroy()
         this.GUICountdown.StopCountdown()
-        this.GUICountdown.Destroy()
+        this.GUICountdown.destroy()
     }
 
     Hide(){
@@ -29,7 +29,7 @@ Class ScreenPrivacyController extends HotkeyAction{
         
         try{
             this.GUICountdown.StopCountdown()
-            this.GUICountdown.Destroy()
+            this.GUICountdown.destroy()
         }
     }
 
@@ -53,7 +53,7 @@ Class ScreenPrivacyController extends HotkeyAction{
     HideWindow(){
         try{
             this.GUICountdown.StopCountdown()
-            this.GUICountdown.Destroy()
+            this.GUICountdown.destroy()
         }
 
         WinGetPos(&X, &Y, &Width, &Height, "A")
@@ -65,7 +65,7 @@ Class ScreenPrivacyController extends HotkeyAction{
     HideTabs(){
         try{
             this.GUICountdown.StopCountdown()
-            this.GUICountdown.Destroy()
+            this.GUICountdown.destroy()
         }
         ; TODO make this work for more browsers 
         Title := WinGetTitle("A")

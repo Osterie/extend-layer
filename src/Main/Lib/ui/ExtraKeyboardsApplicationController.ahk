@@ -29,7 +29,7 @@ Class ExtraKeyboardsApplicationController{
         ; this.mainScript.Start()
         ; TODO is there a better solution?
         Run(A_ScriptDir "\Main.ahk")
-        this.view.Destroy()
+        this.view.destroy()
     }
 
     HandleupdateAvailableClicked(){

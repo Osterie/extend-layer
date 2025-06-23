@@ -34,10 +34,10 @@ Class HotkeyInitializer {
         
         hotkeyKey := hotkeyInformation.getHotkeyName()
         objectName := hotkeyInformation.getObjectName()
-        methodName := hotkeyInformation.getMethodName()
+        actionName := hotkeyInformation.getActionName()
         arguments := hotkeyInformation.getParameters()
  
-        objectMethodCall := this.createObjectMethodCall(objectName, methodName, arguments)
+        objectMethodCall := this.createObjectMethodCall(objectName, actionName, arguments)
         this.runHotkeyForFunction(hotkeyKey, objectMethodCall, enableHotkeys)
     }
 
@@ -101,9 +101,9 @@ Class HotkeyInitializer {
         Send("{blind}" . modifiers . keysUp)
     }
 
-    createObjectMethodCall(objectName, methodName, arguments){
-        objectInstance := this.objectRegistry.GetObjectInfo(objectName).GetObjectInstance()
-        objectMethodCall := ObjBindMethod(objectInstance, methodName, arguments*)
+    createObjectMethodCall(objectName, actionName, arguments){
+        objectInstance := this.objectRegistry.getActionGroup(objectName).GetObjectInstance()
+        objectMethodCall := ObjBindMethod(objectInstance, actionName, arguments*)
         return objectMethodCall
     }
 }

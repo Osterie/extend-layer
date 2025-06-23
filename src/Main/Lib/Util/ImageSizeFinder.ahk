@@ -14,7 +14,7 @@ class ImageSizeFinder {
         imgGui.GetPos(&x, &y, &w, &h)
         
         imgGui.hide()
-        imgGui.Destroy()
+        imgGui.destroy()
         return [w, h]
     }
     

@@ -2,6 +2,7 @@
 
 #Include <Startup\ObjectsInitializer>
 #Include <Startup\MainStartupConfigurator>
+#Include <Infrastructure\Repositories\ActionGroupsRepository>
 
 class ObjectRegistryInitializer {
 
@@ -20,7 +21,7 @@ class ObjectRegistryInitializer {
     }
 
     ReadObjectsInformationFromJson(){
-        JsonReaderForObjects := ObjectsJsonReader(this.Objects)
+        JsonReaderForObjects := ActionGroupsRepository(this.Objects)
         this.ObjectRegister := JsonReaderForObjects.ReadObjectsFromJson()
     }
 

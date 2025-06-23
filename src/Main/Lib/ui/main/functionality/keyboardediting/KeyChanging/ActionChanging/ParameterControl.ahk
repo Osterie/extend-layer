@@ -16,7 +16,7 @@ class ParameterControl{
     }
 
     CreateControls(parameterInfo?, position?){
-        if (IsSet(parameterInfo) && Type(parameterInfo) = "ParameterInfo"){
+        if (IsSet(parameterInfo) && Type(parameterInfo) = "ActionParameter"){
             this.valuesSet := true
             this.parameterNameControl := this.CreateParameterNameControl(parameterInfo.getName(), position?)
             this.parameterInputFieldControl := this.CreateParameterInputFieldControl(parameterInfo.getType(), )
@@ -59,7 +59,7 @@ class ParameterControl{
     }
 
     SetInfo(parameterInfo){
-        if (Type(parameterInfo) = "ParameterInfo"){
+        if (Type(parameterInfo) = "ActionParameter"){
             this.valuesSet := true
             this.SetParameterName(parameterInfo.getName())
             this.SetParameterType(parameterInfo.getType())

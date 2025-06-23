@@ -31,7 +31,7 @@ class SettingsEditorDialog extends DomainSpecificGui{
         SaveButton := this.Add("Button", "w100 h20", "Save")
         SaveButton.onEvent("Click", (*) => this.NotifyListenersSave())
         CancelButton := this.Add("Button", "w100 h20", "Cancel")
-        CancelButton.onEvent("Click", (*) =>this.Destroy())
+        CancelButton.onEvent("Click", (*) =>this.destroy())
     }
 
     SubscribeToSaveEvent(event){
@@ -42,7 +42,7 @@ class SettingsEditorDialog extends DomainSpecificGui{
         Loop this.saveEventSubscribers.Length{
             this.saveEventSubscribers[A_Index](this.getActionSetting())
         }
-        this.Destroy()
+        this.destroy()
     }
 
     getActionSetting(){

@@ -9,7 +9,7 @@ class HotKeyInfo{
     fromKey := ""
     isObject := ""
     objectName := ""
-    methodName := ""
+    actionName := ""
     parameters := []
     
     ; The key triggered by fromKey. For example, if fromKey is "a", and toKey is "b". Pressing "a" would result in "b" being sent.
@@ -42,11 +42,11 @@ class HotKeyInfo{
         this.toKey := modifiersAndHotkey[2]
     }
 
-    setInfoForSpecialHotKey(objectName, MethodName, parameters){
+    setInfoForSpecialHotKey(objectName, actionName, parameters){
         this.actionSet := true
         this.isObject := true
         this.objectName := objectName
-        this.methodName := methodName
+        this.actionName := actionName
         this.parameters := parameters
     }
 
@@ -61,7 +61,7 @@ class HotKeyInfo{
     toString(){
         if (this.actionSet){
             if(this.hotkeyIsObject()){
-                return this.objectName . "." . this.methodName . "(" . this.parametersToString(this.parameters) . ")"
+                return this.objectName . "." . this.actionName . "(" . this.parametersToString(this.parameters) . ")"
             }
             else{
                 return HotkeyFormatter.convertToFriendlyHotkeyName(this.modifiers . this.toKey)
@@ -129,8 +129,8 @@ class HotKeyInfo{
         return this.objectName
     }
 
-    getMethodName(){
-        return this.methodName
+    getActionName(){
+        return this.actionName
     }
 
     getParameters(){

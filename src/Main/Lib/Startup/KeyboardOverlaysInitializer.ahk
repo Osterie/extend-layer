@@ -10,7 +10,7 @@ class KeyboardOverlaysInitializer {
     __New(layersInformation, objectRegistry) {
         this.layersInformation := layersInformation
         this.objectRegistry := objectRegistry
-        this.instanceOfOverlayRegistry := this.objectRegistry.GetObjectInfo("OverlayRegistry").GetObjectInstance()
+        this.instanceOfOverlayRegistry := this.objectRegistry.getActionGroup("OverlayRegistry").GetObjectInstance()
     }
 
     ; TODO add method to read which keys are used to show keyboard overlays, should be in the correct layer section, because only then should they activate

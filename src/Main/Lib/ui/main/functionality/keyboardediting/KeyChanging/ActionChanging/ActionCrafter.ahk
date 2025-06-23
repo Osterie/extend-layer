@@ -83,7 +83,7 @@ class ActionCrafter extends HotkeyCrafter{
         saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
         
         cancelButton := this.Add("Button", "w100 h20", "Cancel")
-        cancelButton.OnEvent("Click", (*) => this.Destroy())
+        cancelButton.OnEvent("Click", (*) => this.destroy())
     }
 
     CreateSpecialActionMaker(){
@@ -191,6 +191,6 @@ class ActionCrafter extends HotkeyCrafter{
         Loop this.saveEventSubscribers.Length{
             this.saveEventSubscribers[A_Index](this.getNewAction())
         }
-        this.Destroy()
+        this.destroy()
     }
 }

@@ -85,7 +85,7 @@ Class LayerController extends HotkeyAction{
         }
         
         Loop layerIndicatorInstances.Length{
-            layerIndicatorInstances[A_Index].Destroy()
+            layerIndicatorInstances[A_Index].destroy()
         }
     }
 
@@ -249,7 +249,7 @@ Class LayerController extends HotkeyAction{
         }
     }
 
-    Destroy(){
+    destroy(){
         loop this.layers.Count{
             this.destroyLayerIndicator(A_Index)
         }

@@ -48,7 +48,7 @@ class KeyboadLayersInfoClassObjectReader{
                 if (hotkeyInformation.hotkeyIsObject()){
                     this.jsonObject[hotkeyIdentifier][hotkeyName]["isObject"] := true
                     this.jsonObject[hotkeyIdentifier][hotkeyName]["ObjectName"] := hotkeyInformation.getObjectName()
-                    this.jsonObject[hotkeyIdentifier][hotkeyName]["MethodName"] := hotkeyInformation.getMethodName()
+                    this.jsonObject[hotkeyIdentifier][hotkeyName]["MethodName"] := hotkeyInformation.getActionName()
                     this.jsonObject[hotkeyIdentifier][hotkeyName]["Parameters"] := hotkeyInformation.getParameters()
                 }
                 else{

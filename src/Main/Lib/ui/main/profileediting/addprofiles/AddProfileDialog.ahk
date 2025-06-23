@@ -33,7 +33,7 @@ class AddProfileDialog extends DomainSpecificGui{
         this.DisableAddProfileButton()
 
         cancelButton := this.Add("Button", "Default w80 yp ", "Cancel")
-        cancelButton.OnEvent("Click", (*) => this.Destroy())
+        cancelButton.OnEvent("Click", (*) => this.destroy())
     }
 
     SubscribeToProfileAddedEvent(event){
@@ -44,7 +44,7 @@ class AddProfileDialog extends DomainSpecificGui{
         Loop this.profileAddedSubscribers.Length{
             this.profileAddedSubscribers[A_Index](this.customProfilesDropDownMenu.Text, this.profileNameField.Text)
         }
-        this.Destroy()
+        this.destroy()
     }
 
     ; CreateView(controller, profiles){
@@ -63,7 +63,7 @@ class AddProfileDialog extends DomainSpecificGui{
     ;     this.DisableAddProfileButton()
 
     ;     cancelButton := this.Add("Button", "Default w80 yp ", "Cancel")
-    ;     cancelButton.OnEvent("Click", (*) => this.Destroy())
+    ;     cancelButton.OnEvent("Click", (*) => this.destroy())
     ; }
 
     CreateSelectedProfileRegion(){

@@ -2,54 +2,53 @@
 
 class ActionGroupRegistry {
 
-    ObjectMap := Map()
+    ActionGroups := Map()
 
     __New() {
-
-        ; if object is not found in map, 0 is returned
-        this.ObjectMap.Default := 0
+        ; if ActionGroup is not found in map, 0 is returned
+        this.ActionGroups.Default := 0
     }
 
-    AddObject(objectName, ObjectInfo) {
-        this.ObjectMap[objectName] := ObjectInfo
+    addActionGroup(actionGroupName, actionGroup) {
+        this.ActionGroups[actionGroupName] := actionGroup
     }
 
-    GetObjectInfo(objectName) {
-        return this.ObjectMap[objectName]
+    getActionGroup(actionGroupName) {
+        return this.ActionGroups[actionGroupName]
     }
 
-    GetMap() {
-        return this.ObjectMap
+    getActionGroups() {
+        return this.ActionGroups
     }
 
-    GetFriendlyNames() {
-        friendlyNames := Array()
-        for objectName, ObjectInfo in this.ObjectMap {
-            friendlyMethodNames := ObjectInfo.getFriendlyNames()
+    getAllFriendlyActionNames() {
+        allFriendlyActionNames := Array()
+        for actionGroupName, actionGroup in this.ActionGroups {
+            friendlyActionNames := actionGroup.getFriendlyNamesOfActions()
 
-            loop friendlyMethodNames.Length {
-                friendlyNames.Push(friendlyMethodNames[A_index])
+            loop friendlyActionNames.Length {
+                allFriendlyActionNames.Push(friendlyActionNames[A_index])
             }
         }
 
-        return friendlyNames
+        return allFriendlyActionNames
     }
 
-    GetObjectByFriendlyMethodName(friendlyMethodName) {
-        for objectName, ObjectInfo in this.ObjectMap {
-            friendlyMethodNames := ObjectInfo.getFriendlyNames()
+    getActionGroupByFriendlyActionName(friendlyActionName) {
+        for actionGroupName, actionGroup in this.ActionGroups {
+            friendlyActionNames := actionGroup.getFriendlyNamesOfActions()
 
-            loop friendlyMethodNames.Length {
-                if (friendlyMethodNames[A_index] = friendlyMethodName) {
-                    return ObjectInfo
+            loop friendlyActionNames.Length {
+                if (friendlyActionNames[A_index] = friendlyActionName) {
+                    return actionGroup
                 }
             }
         }
     }
 
-    DestroyObjects() {
-        for objectName, objectInfo in this.ObjectMap {
-            objectInfo.DestroyObject()
+    destroyObjectInstances() {
+        for actionGroupName, objectInfo in this.ActionGroups {
+            objectInfo.destroyObjectInstance()
         }
     }
 

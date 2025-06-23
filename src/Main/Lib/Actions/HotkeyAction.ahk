@@ -3,7 +3,7 @@
 ; A super class for all actions.
 class HotkeyAction {
 
-    Destroy(){
+    destroy(){
         
     }
 }

@@ -16,7 +16,8 @@ class FilePaths {
 
     static ABSOLUTE_PATH_TO_ROOT := A_ScriptDir . "/../../"
 
-    static OBJECT_INFO := "../../config/ObjectInfo.json"
+    static ACTION_GROUPS_INFO := "../../config/ActionGroupsInfo.json"
+    
     static KEY_NAMES := "../../resources/keyNames.txt"
 
     static PATH_TO_PRESET_PROFILES := "../../config/PresetProfiles"
@@ -167,8 +168,8 @@ class FilePaths {
         return this.PATH_TO_META_INI_FILE
     }
 
-    static GetObjectInfo() {
-        return this.OBJECT_INFO
+    static GetPathToActionGroupsInfo() {
+        return this.ACTION_GROUPS_INFO
     }
 
     static GetPathToProfiles() {
