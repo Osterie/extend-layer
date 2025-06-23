@@ -93,60 +93,57 @@ class Main {
     }
 
     ; Main method used to start the script.
-    Start() {
+    start() {
         try {
-            this.RunLogicalStartup()
+            this.runLogicalStartup()
         }
         catch Error as e {
             MsgBox("Error in running startup: " e.Message " " e.Line " " e.File " " e.Extra " " e.Stack " " e.What)
         }
         finally {
-            this.RunAppGui()
+            this.runAppGui()
             this.scriptRunning := true
         }
     }
 
-    RunLogicalStartup() {
+    runLogicalStartup() {
         if (this.scriptRunning) {
-            this.SetHotkeysForAllLayers(false)
-            this.StartupConfigurator := ""
+            this.setHotkeysForAllLayers(false)
             this.ActionGroupsRepository.reset()
             ; TODO probably needs to be destroyed...
             this.KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
         }
-        this.Initialize()
-        this.RunMainStartup()
+        this.initialize()
+        this.runMainStartup()
     }
 
-    Initialize() {
-        this.InitializeKeyboardLayersInfo()
-        this.InitializeMainStartupConfigurator()
+    initialize() {
+        this.initializeKeyboardLayersInfo()
+        this.initializeMainStartupConfigurator()
     }
 
-    RunMainStartup(enableHotkeys := true) {
-        this.CreateKeyboardOverlays()
-        this.SetHotkeysForAllLayers(enableHotkeys)
+    runMainStartup(enableHotkeys := true) {
+        this.createKeyboardOverlays()
+        this.setHotkeysForAllLayers(enableHotkeys)
     }
 
-    InitializeKeyboardLayersInfo() {
+    initializeKeyboardLayersInfo() {
         JsonReaderForKeyboardLayersInfo := KeyboardLayersInfoJsonReader()
         JsonReaderForKeyboardLayersInfo.ReadKeyboardLayersInfoForCurrentProfile()
         this.KeyboardLayersInfoRegister := JsonReaderForKeyboardLayersInfo.getKeyboardLayersInfoRegister()
     }
 
-    InitializeMainStartupConfigurator() {
-        ; This is used to read ini files, and create hotkeys from them
-        this.StartupConfigurator := MainStartupConfigurator()
-
+    ; This is used to read ini files, and create hotkeys from them
+    initializeMainStartupConfigurator() {
         this.StartupConfigurator.setInformation(this.KeyboardLayersInfoRegister)
     }
 
-    CreateKeyboardOverlays() {
-        ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
+    ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
+    createKeyboardOverlays() {
         this.StartupConfigurator.readAllKeyboardOverlays()
     }
 
-    SetHotkeysForAllLayers(enableHotkeys := true) {
+    setHotkeysForAllLayers(enableHotkeys := true) {
         this.StartupConfigurator.createGlobalHotkeysForAllKeyboardOverlays()
 
         ; Reads and initializes all the hotkeys which are active for every keyboard layer.
@@ -168,9 +165,9 @@ class Main {
         HotIf
     }
 
-    RunAppGui() {
+    runAppGui() {
         app := ExtraKeyboardsApplicationLauncher(this.KeyboardLayersInfoRegister, this)
-        app.Start()
+        app.start()
     }
 
     getLayerController() {
@@ -183,7 +180,7 @@ class Main {
 #SuspendExempt False
 
 MainScript := Main()
-MainScript.Start()
+MainScript.start()
 
 ; These are needed here so the HotIf statements can be used in the Main class
 #HotIf MainScript.getLayerController().getActiveLayer() == 0

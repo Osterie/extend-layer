@@ -24,7 +24,7 @@ Class ExtraKeyboardsApplicationController{
     HandleProfileChangedEvent(newProfileName){
         ; TODO this should probably be changed? it is sort of heavy to basically restart the entire program when changing profiles.
         FilePaths.SetCurrentProfile(newProfileName)
-        ; this.mainScript.Start()
+        ; this.mainScript.start()
         ; TODO is there a better solution?
         Run(A_ScriptDir "\Main.ahk")
         this.view.destroy()
@@ -115,7 +115,7 @@ Class ExtraKeyboardsApplicationController{
 
             WinWaitClose("Settings Editor Dialog" , , 1000)
     
-            this.MainScript.RunLogicalStartup()
+            this.MainScript.runLogicalStartup()
 
             try{
                 this.view.UpdateSettingsForActions()
@@ -157,7 +157,7 @@ Class ExtraKeyboardsApplicationController{
                 msgbox("Could not modify hotkey. " . e.Message)
             }
         }
-        this.MainScript.RunLogicalStartup()
+        this.MainScript.runLogicalStartup()
     }
 
     UpdateGuiSettings(){
@@ -173,17 +173,17 @@ Class ExtraKeyboardsApplicationController{
     deleteHotkey(hotkeyKey){
         try{
             
-            this.MainScript.SetHotkeysForAllLayers(false)
+            this.MainScript.setHotkeysForAllLayers(false)
             this.ExtraKeyboards.deleteHotkey(hotkeyKey)
             msgbox("Deleted hotkey")
         }
         catch Error as e{
-            this.MainScript.SetHotkeysForAllLayers(false)
+            this.MainScript.setHotkeysForAllLayers(false)
             msgbox("Could not delete hotkey. " . e.Message)
         }
         this.view.UpdateHotkeys()
         this.view.ChangeConfigurationButtonsStatus(1)
-        this.MainScript.RunLogicalStartup()
+        this.MainScript.runLogicalStartup()
     }
 
     getActionSettings(){

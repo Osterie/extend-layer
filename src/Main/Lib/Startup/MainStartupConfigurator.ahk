@@ -11,7 +11,7 @@ class MainStartupConfigurator {
     HotkeyInitializerInstance := HotkeyInitializer()
 
     layersInformation := ""
-
+    
     __New() {
 
     }
@@ -23,7 +23,6 @@ class MainStartupConfigurator {
             throw Error("Invalid parameters passed to MainStartupConfigurator")
         }
         this.layersInformation := layersInformation
-        this.HotkeyInitializerInstance := HotkeyInitializer()
         this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(layersInformation)
     }
 

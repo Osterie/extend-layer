@@ -33,7 +33,7 @@ Class ExtraKeyboardsApplicationLauncher{
         this.ExtraKeyboardsApplicationController_ := ExtraKeyboardsApplicationController(this.ExtraKeyboards_, this.ExtraKeyboardsApplication_, mainScript)
     }
 
-    Start(){
+    start(){
         this.ExtraKeyboardsApplication_.createMain(this.ExtraKeyboardsApplicationController_)
     }
 }
