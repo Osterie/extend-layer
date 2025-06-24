@@ -12,7 +12,7 @@
 #Include <Startup\MainStartupConfigurator>
 
 #Include <Infrastructure\Repositories\ActionGroupsRepository>
-#Include <Infrastructure\Repositories\KeyboardLayersInfoJsonReader>
+#Include <Infrastructure\Repositories\ExtendLayerProfile\ExtendLayerProfileRepository>
 
 #Include <Shared\Logger>
 #Include <Shared\FilePaths>
@@ -112,6 +112,7 @@ class Main {
         if (this.scriptRunning) {
             this.setHotkeysForAllLayers(false)
             this.ActionGroupsRepository.reset()
+            ExtendLayerProfileRepository.getInstance().load()
             ; TODO probably needs to be destroyed...
             this.ExtendLayerProfile := ExtendLayerProfile()
         }
@@ -130,9 +131,7 @@ class Main {
     }
 
     initializeKeyboardLayersInfo() {
-        JsonReaderForKeyboardLayersInfo := KeyboardLayersInfoJsonReader()
-        JsonReaderForKeyboardLayersInfo.ReadKeyboardLayersInfoForCurrentProfile()
-        this.ExtendLayerProfile := JsonReaderForKeyboardLayersInfo.getExtendLayerProfile()
+        this.ExtendLayerProfile := ExtendLayerProfileRepository.getInstance().getExtendLayerProfile()
     }
 
     ; This is used to read ini files, and create hotkeys from them

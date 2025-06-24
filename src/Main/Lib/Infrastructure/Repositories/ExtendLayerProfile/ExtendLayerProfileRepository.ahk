@@ -1,0 +1,47 @@
+#Requires AutoHotkey v2.0
+
+#Include <Infrastructure\Repositories\ExtendLayerProfile\ExtendLayerProfileFileReader>
+
+#Include <DataModels\KeyboardLayouts\ExtendLayerProfile>
+
+#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotKeyInfo>
+#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotkeyLayer>
+
+#Include <DataModels\KeyboardLayouts\KeyboardsInfo\KeyboardOverlayLayer\KeyboardOverlayElement>
+#Include <DataModels\KeyboardLayouts\KeyboardsInfo\KeyboardOverlayLayer\KeyboardOverlayLayer>
+
+#Include <Util\JsonParsing\JXON>
+
+#Include <Shared\FilePaths>
+#Include <Shared\Logger>
+
+; TODO make singleton and read current profile on initialization.
+class ExtendLayerProfileRepository {
+
+    static instance := false
+    Logger := Logger.getInstance()
+    ExtendLayerProfile := ExtendLayerProfile()
+    ExtendLayerProfileFileReader := ExtendLayerProfileFileReader()
+
+    __New() {
+        this.load()
+    }
+
+    static getInstance() {
+        if (ExtendLayerProfileRepository.instance = false) {
+            ExtendLayerProfileRepository.instance := true
+            ExtendLayerProfileRepository.instance := ExtendLayerProfileRepository()
+        }
+        return ExtendLayerProfileRepository.instance
+    }
+
+    ; TODO add a "for current profile"
+    load() {
+        currentProfilePath := FilePaths.GetPathToCurrentKeyboardLayout()
+        this.ExtendLayerProfile := this.ExtendLayerProfileFileReader.readExtendLayerProfile(currentProfilePath)
+    }
+
+    getExtendLayerProfile() {
+        return this.ExtendLayerProfile
+    }
+}

@@ -22,6 +22,8 @@ class ExtraKeyboards {
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
     }
 
+    ; TODO repository should do this!
+
     changeHotkey(originalHotkey, newHotkey, newAction) {
         this.keyboardLayersInfoRegister.changeHotkey(this.GetCurrentLayer(), originalHotkey, newHotkey)
         this.keyboardLayersInfoRegister.ChangeAction(this.GetCurrentLayer(), newHotkey, newAction)
