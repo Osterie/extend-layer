@@ -1,17 +1,22 @@
 #Requires AutoHotkey v2.0
 
 ; TODO move out of AppControllers folder
-class SoundController extends HotkeyAction{
+class SoundController extends HotkeyAction {
 
-    playPause(){
+    destroy() {
+        ; This method is called when the object is destroyed.
+        ; This method is required to be implemented in the subclass of HotkeyAction.
+    }
+
+    playPause() {
         Send("{Media_Play_Pause}")
     }
 
-    next(){
+    next() {
         Send("{Media_Next}")
     }
 
-    previous(){
+    previous() {
         Send("{Media_Prev}")
     }
 }

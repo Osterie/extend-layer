@@ -13,6 +13,10 @@ Class Mouse extends HotkeyAction{
     SendClickObjectMethod := ObjBindMethod(this, "SendClick")
     IniFileReader := IniFileReader()
 
+    destroy() {
+        this.UnBlockAllMouseInput()
+        this.StopAutoClicker()
+    }
 
     __New(readSettingsFromFile := false){
         if (readSettingsFromFile){

@@ -2,54 +2,52 @@
 
 #Include <Util\Formaters\HotkeyFormatter>
 
-#Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo> ; TODO remove
-
 ; TODO make this class is able to change hotkeys and actions
-class HotkeyConfigurator{
+class HotkeyConfigurator {
 
     hotkeyToSendListenersInformation := ""
 
     originalHotkeyKey := ""
     originalActionFriendly := ""
 
-    __New(hotkeyToSendListenersInformation){
+    __New(hotkeyToSendListenersInformation) {
         this.hotkeyToSendListenersInformation := hotkeyToSendListenersInformation
         this.originalHotkeyKey := this.hotkeyToSendListenersInformation.getHotkeyName()
         this.originalActionFriendly := this.hotkeyToSendListenersInformation.toString()
     }
 
     ; TODO dont do this here... do it after save+done is clicked...!!
-    SetHotkeyKey(newHotkey){
+    SetHotkeyKey(newHotkey) {
         this.hotkeyToSendListenersInformation.changeHotkey(newHotkey)
     }
 
-    SetHotkeyAction(newAction){
+    SetHotkeyAction(newAction) {
         hotkeyKey := this.hotkeyToSendListenersInformation.getHotkeyName()
         this.hotkeyToSendListenersInformation := newAction
         this.hotkeyToSendListenersInformation.changeHotkey(hotkeyKey)
     }
 
-    GetHotkeyInfo(){
+    GetHotkeyInfo() {
         return this.hotkeyToSendListenersInformation
     }
 
-    GetOriginalHotkey(){
+    GetOriginalHotkey() {
         return this.originalHotkeyKey
     }
 
-    GetOriginalAction(){
+    GetOriginalAction() {
         return this.originalActionFriendly
     }
 
-    GetHotkey(){
+    GetHotkey() {
         return this.hotkeyToSendListenersInformation.getHotkeyName()
     }
 
-    GetHotkeyFriendly(){
+    GetHotkeyFriendly() {
         return this.hotkeyToSendListenersInformation.getFriendlyHotkeyName()
     }
 
-    GetAction(){
+    GetAction() {
         return this.hotkeyToSendListenersInformation.toString()
     }
 

@@ -11,7 +11,8 @@ class ActionGroupRegistry {
 
     addActionGroup(actionGroup) {
         if (Type(actionGroup) != "ActionGroup") {
-            throw TypeError("ActionGroupRegistry: addActionGroup: actionGroup must be an object instance of ActionGroup class.")
+            throw TypeError(
+                "ActionGroupRegistry: addActionGroup: actionGroup must be an object instance of ActionGroup class.")
         }
         this.ActionGroups[actionGroup.getObjectName()] := actionGroup
     }
@@ -50,8 +51,8 @@ class ActionGroupRegistry {
     }
 
     destroyObjectInstances() {
-        for actionGroupName, objectInfo in this.ActionGroups {
-            objectInfo.destroyObjectInstance()
+        for actionGroupName, ActionGroup in this.ActionGroups {
+            ActionGroup.destroyObjectInstance()
         }
     }
 

@@ -60,6 +60,7 @@ Class KeysPressedGui extends HotkeyAction{
     }
 
     destroy(){
+        this.HideKeysPressed()
         this.GuiShowKeysPressed.destroy()
     }
     

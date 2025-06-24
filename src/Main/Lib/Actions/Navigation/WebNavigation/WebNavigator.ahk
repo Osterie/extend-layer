@@ -5,22 +5,26 @@
 #Include <Actions\HotkeyAction>
 #Include <Util\Sanitizers\KeyboardKeySanitizer>
 
-Class WebNavigator extends HotkeyAction{
+class WebNavigator extends HotkeyAction {
 
     chatGptLoadTime := 3000
 
     PATH_TO_IMAGE_ASSETS := A_ScriptDir . "\..\..\assets\imageSearchImages\"
     PATH_TO_TEST_IMAGE := this.PATH_TO_IMAGE_ASSETS . "testImage.png"
 
-    __New(){
-        If (!FileExist(this.PATH_TO_TEST_IMAGE)){
+    __New() {
+        if (!FileExist(this.PATH_TO_TEST_IMAGE)) {
             msgbox("WebNavigator could not find the test image at " this.PATH_TO_TEST_IMAGE)
         }
     }
 
+    destroy() {
+        ; Empty
+    }
+
     ; Public method
     ; Closes tabs to the right of the current tab, only works in chrome ATM TODO make it work for more browsers
-    CloseTabsToTheRight(){
+    CloseTabsToTheRight() {
 
         ComputerInput := ComputerInputController()
         Sleep(500)
@@ -42,17 +46,17 @@ Class WebNavigator extends HotkeyAction{
         Send("{Enter}")
         Sleep(80)
         ; Goes back to the body of the page
-        Send("{F6}") 
+        Send("{F6}")
 
         ComputerInput.UnBlockKeyboard()
     }
 
     ; Public method
     ; Images should be for example "loginButton.png"
-    LoginToSite(url, images, loadTime){
+    LoginToSite(url, images, loadTime) {
         this.OpenUrl(url)
 
-        if (images = ""){
+        if (images = "") {
             return
         }
 
@@ -62,8 +66,8 @@ Class WebNavigator extends HotkeyAction{
         timesTriedToClickLoginButton := 1
         targetSiteUrl := KeyboardKeySanitizer.sanitizeUrl(url)
 
-        while ( (timesTriedToClickLoginButton <= images.Length) && !loginButtonClicked ){
-            try{
+        while ((timesTriedToClickLoginButton <= images.Length) && !loginButtonClicked) {
+            try {
                 this.ClickLoginButton(this.PATH_TO_IMAGE_ASSETS . images[timesTriedToClickLoginButton])
                 ; if it reaches here, the login button is clicked
                 loginButtonClicked := true
@@ -71,12 +75,12 @@ Class WebNavigator extends HotkeyAction{
                 currentSiteUrl := KeyboardKeySanitizer.sanitizeUrl(this.GetCurrentUrl())
 
                 ; this checks if the clipboard content (which is the new site url, after logging in) is the same as the given url.
-                if (!InStr(currentSiteUrl, targetSiteUrl)){
+                if (!InStr(currentSiteUrl, targetSiteUrl)) {
                     this.ChangeCurrentUrl(currentSiteUrl)
                 }
             }
-            catch{
-                Sleep(loadTime/(images.Length))
+            catch {
+                Sleep(loadTime / (images.Length))
                 timesTriedToClickLoginButton += 1
             }
         }
@@ -84,7 +88,7 @@ Class WebNavigator extends HotkeyAction{
 
     ; TODO check if a webbrowser is active perhaps.
     ; Private method.
-    GetCurrentUrl(){
+    GetCurrentUrl() {
         Sleep(200)
         rememberedClipboardValue := A_Clipboard
 
@@ -98,48 +102,49 @@ Class WebNavigator extends HotkeyAction{
         return urlText
     }
 
-    ChangeCurrentUrl(newUrl){
+    ChangeCurrentUrl(newUrl) {
         Send("!d")
         Send(newUrl)
         Send("{Enter}")
     }
 
     ; Private method
-    ClickLoginButton(loginButtonImagePath){
-        ErrorLevel := !ImageSearch(&loginButtonXCoordinate, &loginButtonYCoordinate, 0, 0, A_ScreenWidth, A_ScreenHeight, loginButtonImagePath)
+    ClickLoginButton(loginButtonImagePath) {
+        ErrorLevel := !ImageSearch(&loginButtonXCoordinate, &loginButtonYCoordinate, 0, 0, A_ScreenWidth,
+            A_ScreenHeight, loginButtonImagePath)
         MouseClick("left", loginButtonXCoordinate, loginButtonYCoordinate)
     }
 
     ; Public method
     ; Searches google for the currently highlighteded text, or the text stored in the clipboard
-    LookUpHighlitedTextOrClipboardContent(){
-        
+    LookUpHighlitedTextOrClipboardContent() {
+
         rememberedClipboardValue := A_Clipboard
         Send("^c")
         Sleep(100)
 
         this.SearchInBrowser(A_Clipboard)
-        
+
         ;put the last copied thing back in the clipboard
         A_Clipboard := rememberedClipboardValue
     }
 
     ; Public method
-    SearchFromInputBox(){
+    SearchFromInputBox() {
         inputBoxWebSearch := InputBox("What would you like to search for in the browser?", "Web search", "w150 h150")
         ; Only if the search is not cancelled will it search
-        if (inputBoxWebSearch.Result = "Ok"){
+        if (inputBoxWebSearch.Result = "Ok") {
             this.SearchInBrowser(inputBoxWebSearch.Value)
         }
     }
 
     ; Private method
-    SearchInBrowser(searchTerm){
+    SearchInBrowser(searchTerm) {
         googleSearchUrl := "https://www.google.com/search?q="
         isUrl := this.isUrl(searchTerm)
-        
+
         ; if the highlighted text/the text in the clipboard is a url, then the url is opened
-        if (isUrl) {   
+        if (isUrl) {
             Run(searchTerm)
         }
         else { ;if not an url, search using google search
@@ -149,23 +154,23 @@ Class WebNavigator extends HotkeyAction{
     }
 
     ; Public method.
-    QuestionChatGpt(){
+    QuestionChatGpt() {
         ; saves current clipboard value to a variable
         clipboardValue := A_Clipboard
         ; saves a new value to the clipboard, if any text is highligted
         Send("^c")
         Sleep(100)
-        
+
         ; Opens the chat-gpt site and then pastes the clipboard value (which could be the text which was highlighted)
         this.AskChatGpt(A_Clipboard, this.chatGptLoadTime)
-        
+
         ;put the last copied thing back in the clipboard
         A_Clipboard := clipboardValue
     }
 
     ; Private method
     ; asks chat-gpt a question, loadTime is the estimated time the site takes to load in, in probably not the best way to do this
-    AskChatGpt(question, loadTime){
+    AskChatGpt(question, loadTime) {
         Run("https://chat.openai.com/")
         Sleep(loadTime)
         Send(question)
@@ -175,13 +180,13 @@ Class WebNavigator extends HotkeyAction{
 
     ; Public method
     ; Translates highligted text or the text in the clipboard, and then shows it in a message box
-    ShowTranslatedText(fromLanguage := "auto", toLanguage := "en", &variants := ""){
+    ShowTranslatedText(fromLanguage := "auto", toLanguage := "en", &variants := "") {
         translatedText := this.TranslateHighlightedTextOrClipboard(fromLanguage, toLanguage, &variants)
         MsgBox(translatedText)
     }
 
-    OpenUrl(url){
-        ; TODO what if user does not have chrome, check and use other browser. 
+    OpenUrl(url) {
+        ; TODO what if user does not have chrome, check and use other browser.
         Run("chrome.exe " url)
     }
 
@@ -189,7 +194,7 @@ Class WebNavigator extends HotkeyAction{
     ; if no fromLanguage is specified, then the language is automatically detected
     ; if no toLanguage is specified, then the language is translated to english
     ; if variants is not specified, only one result is returned
-    TranslateHighlightedTextOrClipboard(fromLanguage := "auto", toLanguage := "en", &variants := ""){
+    TranslateHighlightedTextOrClipboard(fromLanguage := "auto", toLanguage := "en", &variants := "") {
         ; saves current clipboard value to a variable
         clipboardValue := A_Clipboard
         ; saves a new value to the clipboard, if any text is highligted
@@ -208,30 +213,30 @@ Class WebNavigator extends HotkeyAction{
     ; if no fromLanguage is specified, then the language is automatically detected
     ; if no toLanguage is specified, then the language is translated to english
     ; if variants is not specified, only one result is returned
-    TranslateText(textToTranslate, fromLanguage := "auto", toLanguage := "en", &variants := ""){
+    TranslateText(textToTranslate, fromLanguage := "auto", toLanguage := "en", &variants := "") {
         TextTranslator := Translator()
 
         ; Takes a text to translate, the language to translate from, the language to translate to, and the variants of the text(optional)
         translatedText := TextTranslator.Translate(textToTranslate, fromLanguage, toLanguage, &variants)
         return translatedText
     }
-    
+
     ; meant to be a private method, checks if a text is a url
     ; returns a boolean
-    IsUrl(text){
+    IsUrl(text) {
         isUrl := ""
         ; if it starts with "https://", then the text is considered a url
         startOfText := SubStr(text, 1, 8)
-        if (startOfText = "https://") {   
+        if (startOfText = "https://") {
             isUrl := true
         }
-        else{
+        else {
             isUrl := false
         }
         return isUrl
     }
 
-    SetChatGptLoadTime(loadTime){
+    SetChatGptLoadTime(loadTime) {
         this.chatGptLoadTime := loadTime
     }
 }

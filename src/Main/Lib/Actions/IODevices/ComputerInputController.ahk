@@ -4,39 +4,45 @@
 #Include ".\Mouse.ahk"
 #Include <Actions\HotkeyAction>
 
-Class ComputerInputController extends HotkeyAction{
+class ComputerInputController extends HotkeyAction {
 
     MouseInput := ""
     KeyboardInput := ""
 
-    __New(){
+    __New() {
         this.MouseInput := Mouse()
         this.KeyboardInput := Keyboard()
     }
 
-    BlockAllInput(){
+    destroy() {
+        ; This method is called when the object is destroyed.
+        ; This method is required to be implemented in the subclass of HotkeyAction.
+        this.UnBlockAllInput()
+    }
+
+    BlockAllInput() {
         this.BlockKeyboard()
         this.BlockMouse()
     }
 
-    UnBlockAllInput(){
+    UnBlockAllInput() {
         this.UnBlockKeyboard()
         this.UnBlockMouse()
     }
 
-    BlockKeyboard(){
+    BlockKeyboard() {
         this.KeyboardInput.BlockKeyInput()
     }
 
-    UnBlockKeyboard(){
+    UnBlockKeyboard() {
         this.KeyboardInput.UnBlockKeyInput()
     }
 
-    BlockMouse(){
+    BlockMouse() {
         this.MouseInput.BlockAllMouseInput()
     }
 
-    UnBlockMouse(){
+    UnBlockMouse() {
         this.MouseInput.UnBlockAllMouseInput()
     }
 }

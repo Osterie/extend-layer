@@ -2,21 +2,23 @@
 
 ; #Include "..\MetaInfoStorage\KeyboardLayouts\KeyboardLayersInfoRegistry.ahk"
 
-#Include ..\MetaInfoStorage
+#Include <DataModels\KeyboardLayouts\ExtendLayerProfile>
 
-#Include ".\KeyboardLayouts\KeyboardLayersInfoRegistry.ahk"
-#Include ".\KeyboardLayouts\KeyboardsInfo\Hotkeys\logic\HotkeysRegistry.ahk"
-#Include ".\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo.ahk"
+#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotKey>
+#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotkeyLayer>
 
-#Include ".\KeyboardLayouts\KeyboardsInfo\KeyboardOverlays\logic\KeyboardOverlayElementRegistry.ahk"
-#Include ".\KeyboardLayouts\KeyboardsInfo\KeyboardOverlays\entity\KeyboardOverlayElement.ahk"
-#Include ".\KeyboardLayouts\KeyboardsInfo\KeyboardOverlays\KeyboardOverlayInfo.ahk"
+#Include <DataModels\KeyboardLayouts\KeyboardsInfo\KeyboardOverlayLayer\KeyboardOverlayElement>
+#Include <DataModels\KeyboardLayouts\KeyboardsInfo\KeyboardOverlayLayer\KeyboardOverlayLayer>
 
 #Include <Util\JsonParsing\JXON>
 
+#Include <Shared\FilePaths>
+#Include <Shared\Logger>
+
 class KeyboardLayersInfoJsonReader {
 
-    KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
+    Logger := Logger.getInstance()
+    KeyboardLayersInfoRegister := ExtendLayerProfile()
 
     __New() {
 
@@ -45,7 +47,12 @@ class KeyboardLayersInfoJsonReader {
                 this.readHotkeys(layerIdentifier, layerinfoContents)
             }
             else if (InStr(layerIdentifier, "KeyboardOverlay")) {
-                this.ReadKeyboardOverlay(layerIdentifier, layerInfoContents)
+                try {
+                    this.ReadKeyboardOverlay(layerIdentifier, layerInfoContents)
+                }
+                catch Error as e {
+                    Logger.logError("Error while reading keyboard overlay information: " . e.message)
+                }
             }
             else {
                 throw ("Unknown layer type: " . layerIdentifier)
@@ -54,9 +61,9 @@ class KeyboardLayersInfoJsonReader {
     }
 
     readHotkeys(layerIdentifier, layerInfoContents) {
-        HotkeysRegister := HotkeysRegistry(layerIdentifier)
+        HotkeysRegister := HotkeyLayer(layerIdentifier)
         for hotkeyName, informationAboutHotkey in layerInfoContents {
-            hotKeyInformation := HotKeyInfo(hotkeyName)
+            hotKeyInformation := HotKey(hotkeyName)
 
             if (informationAboutHotkey["isObject"]) {
                 hotKeyInformation.setInfoForSpecialHotKey(informationAboutHotkey["ObjectName"], informationAboutHotkey[
@@ -78,7 +85,7 @@ class KeyboardLayersInfoJsonReader {
         ShowKeyboardOverlayKey := ""
         KeyboardOverlayInformation := ""
         try {
-            KeyboardOverlayInformation := KeyboardOverlayInfo(layerInfoContents["ShowKeyboardOverlayKey"],
+            KeyboardOverlayInformation := KeyboardOverlayLayer(layerInfoContents["ShowKeyboardOverlayKey"],
                 layerIdentifier)
         }
         catch Error as e {

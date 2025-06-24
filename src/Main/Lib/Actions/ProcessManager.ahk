@@ -2,14 +2,18 @@
 
 #Include <Actions\HotkeyAction>
 
-Class ProcessManager extends HotkeyAction{
+class ProcessManager extends HotkeyAction {
 
-    CloseFocusedProcess(){
+    destroy() {
+        ; Empty
+    }
+
+    CloseFocusedProcess() {
         Send("!{f4}")
     }
 
     ; Closes a process by its name, or PID
-    CloseProcess(process){
+    CloseProcess(process) {
         DetectHiddenWindows(true)
         tries := 0
         while (ProcessExist(process) && tries < 10) {
@@ -29,7 +33,7 @@ Class ProcessManager extends HotkeyAction{
         return false
     }
 
-    GetProcessPathByPID(pid){
+    GetProcessPathByPID(pid) {
         ; TODO: Implement
 
         ; Run "license.rtf",,, &pid  ; This is likely to exist in C:\Windows\System32.
@@ -41,19 +45,19 @@ Class ProcessManager extends HotkeyAction{
         ;     .  "Path: " (path ?? "could not be retrieved")
     }
 
-    GetProcessNameByPID(pid){
+    GetProcessNameByPID(pid) {
         ; TODO: Implement
     }
 
-    ChangeProcessPriorityByPID(pid, priority){
-        
+    ChangeProcessPriorityByPID(pid, priority) {
+
     }
 
-    CloseActiveAutohotkeyScript(){
+    CloseActiveAutohotkeyScript() {
         Exitapp
     }
-    
-    SuspendActiveAutohotkeyScript(){
-        Suspend    
+
+    SuspendActiveAutohotkeyScript() {
+        Suspend
     }
 }

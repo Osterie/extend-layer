@@ -2,11 +2,14 @@
 
 #Include <Actions\HotkeyAction>
 
-Class FileExplorerNavigator extends HotkeyAction{
+class FileExplorerNavigator extends HotkeyAction {
 
+    destroy() {
+        ; Empty
+    }
 
     ; navigates to the specified folder
-    NavigateToFolder(folderPath){
+    NavigateToFolder(folderPath) {
         Run(folderPath)
     }
 

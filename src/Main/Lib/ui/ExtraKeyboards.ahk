@@ -2,12 +2,11 @@
 
 #Include <Infrastructure\IO\IniFileReader>
 #Include <Shared\FilePaths>
-#Include <Util\MetaInfo\MetaInfoReading\KeyboadLayersInfoClassObjectReader>
 #Include <Util\MetaInfo\MetaInfoWriting\ToJsonFileWriter>
 
 #Include <Infrastructure\Repositories\ActionSettingsRepository>
 
-Class ExtraKeyboards{
+class ExtraKeyboards {
 
     currentLayer := ""
     currentFunction := ""
@@ -16,102 +15,105 @@ Class ExtraKeyboards{
     ActionSettingsRepository := ActionSettingsRepository()
 
     actionSettings := ""
-    
-    __New(keyboardLayersInfoRegister){
+
+    __New(keyboardLayersInfoRegister) {
         this.actionSettings := this.ActionSettingsRepository.getActionGroupSettingsRegistry()
         this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
     }
 
-    changeHotkey(originalHotkey, newHotkey, newAction){
+    changeHotkey(originalHotkey, newHotkey, newAction) {
         this.keyboardLayersInfoRegister.changeHotkey(this.GetCurrentLayer(), originalHotkey, newHotkey)
         this.keyboardLayersInfoRegister.ChangeAction(this.GetCurrentLayer(), newHotkey, newAction)
 
-        ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() . "\Keyboards.json")
+        ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() .
+        "\Keyboards.json")
     }
 
-    addHotkey(newAction){
+    addHotkey(newAction) {
         this.keyboardLayersInfoRegister.addHotkey(this.GetCurrentLayer(), newAction)
-        ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() . "\Keyboards.json")
+        ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() .
+        "\Keyboards.json")
     }
 
-    deleteHotkey(hotkeyKey){
+    deleteHotkey(hotkeyKey) {
         this.keyboardLayersInfoRegister.deleteHotkey(this.GetCurrentLayer(), hotkeyKey)
-        
 
-        ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() . "\Keyboards.json")
+        ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() .
+        "\Keyboards.json")
     }
 
-    getActionGroupNames(){
+    getActionGroupNames() {
         return this.actionSettings.getActionGroupNames()
     }
 
-    getActionSettingsForActionAsArray(actionName){
+    getActionSettingsForActionAsArray(actionName) {
         return this.actionSettings.getActionSettingsForActionAsArray(actionName)
     }
 
-    getActionSettingsForCurrentActionAsArray(){
+    getActionSettingsForCurrentActionAsArray() {
         return this.getActionSettingsForActionAsArray(this.GetCurrentFunction())
     }
 
-    getActionSettingsForAction(actionName){
+    getActionSettingsForAction(actionName) {
         return this.actionSettings.getActionSettingsForAction(actionName)
     }
 
-    getActionSettingsForCurrentAction(){
+    getActionSettingsForCurrentAction() {
         return this.getActionSettingsForAction(this.GetCurrentFunction())
     }
 
-    GetFriendlyHotkeysForCurrentLayer(){
+    GetFriendlyHotkeysForCurrentLayer() {
         itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer)
         hotkeysForLayer := itemsToShowForListView.getFriendlyHotkeyActionPairValues()
 
         return hotkeysForLayer
     }
 
-    SetCurrentLayer(layerIdentifier){
+    SetCurrentLayer(layerIdentifier) {
         this.currentLayer := layerIdentifier
     }
 
-    GetCurrentLayer(){
+    GetCurrentLayer() {
         return this.currentLayer
     }
 
-    SetCurrentFunction(functionName){
+    SetCurrentFunction(functionName) {
         this.currentFunction := functionName
     }
 
-    GetCurrentFunction(){
+    GetCurrentFunction() {
         return this.currentFunction
     }
 
-    GetKeyboardLayerIdentifiers(){
+    GetKeyboardLayerIdentifiers() {
         return this.keyboardLayersInfoRegister.getLayerIdentifiers()
     }
 
-    GetCurrentLayerInfo(){
+    GetCurrentLayerInfo() {
         return this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer)
     }
 
-    ChangeFunctionSetting(setting, actionName){
+    ChangeFunctionSetting(setting, actionName) {
         this.actionSettings.ChangeActionSetting(actionName, this.GetPathToCurrentSettings(), setting)
     }
 
-    GetPathToCurrentSettings(){
+    GetPathToCurrentSettings() {
         return FilePaths.GetPathToCurrentSettings()
     }
 
-    GetPathToCurrentProfile(){
+    GetPathToCurrentProfile() {
         return FilePaths.GetPathToCurrentProfile()
     }
 
-    GetHotkeyInfoForCurrentLayer(hotkeyKey){
+    GetHotkeyInfoForCurrentLayer(hotkeyKey) {
         hotkeyInformation := this.keyboardLayersInfoRegister.GetHotkeyInfoForLayer(this.GetCurrentLayer(), hotkeyKey)
         hotkeyToReturn := HotkeyInfo(hotkeyInformation.getHotkeyName())
 
-        if (hotkeyInformation.hotkeyIsObject()){
-            hotkeyToReturn.setInfoForSpecialHotKey(hotkeyInformation.getObjectName(), hotkeyInformation.getActionName(), hotkeyInformation.getparameters())
+        if (hotkeyInformation.hotkeyIsObject()) {
+            hotkeyToReturn.setInfoForSpecialHotKey(hotkeyInformation.getObjectName(), hotkeyInformation.getActionName(),
+            hotkeyInformation.getparameters())
         }
-        else{
+        else {
             hotkeyToReturn.setInfoForNormalHotKey(hotkeyInformation.getNewHotkeyName(), hotkeyInformation.getNewHotkeyModifiers())
         }
         return hotkeyToReturn

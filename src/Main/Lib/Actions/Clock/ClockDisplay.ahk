@@ -1,48 +1,46 @@
 ﻿#Requires Autohotkey v2.0
 #Include ".\NumberDisplay.ahk"
 
-Class ClockDisplay{
+class ClockDisplay {
 
     minutes := ""
     seconds := ""
 
-    __New(initialMinutes, initialSeconds)
-    {
+    __New(initialMinutes, initialSeconds) {
         this.minutes := NumberDisplay(60)
         this.seconds := NumberDisplay(60)
 
         this.minutes.SetValue(initialMinutes)
         this.seconds.SetValue(initialSeconds)
-    }   
+    }
 
-    GetTimeAsString(){
+    GetTimeAsString() {
         timeAsString := this.minutes.GetDisplayValue() . ":" . this.seconds.GetDisplayValue()
         return timeAsString
     }
 
-    IncrementTime(){
+    IncrementTime() {
         this.seconds.IncrementValue()
-        if (this.seconds.GetValue() == 0)
-        {
+        if (this.seconds.GetValue() == 0) {
             this.minutes.IncrementValue()
         }
     }
 
-    DecrementTime(){
+    DecrementTime() {
         this.seconds.DecrementValue()
-        if (this.seconds.GetValue() == 59){
+        if (this.seconds.GetValue() == 59) {
             this.minutes.DecrementValue()
         }
     }
 
-    SetTime(minutes, seconds){
+    SetTime(minutes, seconds) {
         this.minutes.SetValue(minutes)
         this.seconds.SetValue(seconds)
     }
 
-    IsMidnight(){
+    IsMidnight() {
         midnight := false
-        if (this.seconds.GetValue() == 0 && this.minutes.GetValue() == 0){
+        if (this.seconds.GetValue() == 0 && this.minutes.GetValue() == 0) {
             midnight := true
         }
         return midnight

@@ -23,13 +23,23 @@ class InputReader{
         {
             k := Chr(A_Index + 31)
             k := (k = " ") ? "Space" : k
-            Hotkey("~*" k , , "off")
+            try{
+                Hotkey("~*" k , , "off")
+            }
+            catch Error as e {
+                ; Ignore errors if the hotkey does not exist.
+            }
         }
     
         Otherkeys := "Enter|BackSpace|ø|å|æ"
         Loop Parse, Otherkeys, "|"
         {
-            Hotkey("~*" A_LoopField , , "off")
+            try{
+                Hotkey("~*" A_LoopField , , "off")
+            }
+            catch Error as e {
+                ; Ignore errors if the hotkey does not exist.
+            }
         }
     }
 }

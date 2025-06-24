@@ -33,6 +33,7 @@ class KeyboadLayersInfoClassObjectReader {
                 this.jsonObject[overlayIdentifier]["overlayElements"][elementName] := Map()
                 this.jsonObject[overlayIdentifier]["overlayElements"][elementName]["key"] := elementInfo.getKey()
                 this.jsonObject[overlayIdentifier]["overlayElements"][elementName]["description"] := elementInfo.getDescription()
+
             }
         }
     }
