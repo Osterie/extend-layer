@@ -1,16 +1,16 @@
 #Requires AutoHotkey v2.0
 
-Class FolderRegistry{
+class FolderRegistry {
 
     ; A map of folders with folder name as key and folder path as value
     Folders := ""
 
-    __New(){
+    __New() {
         this.Folders := Map()
     }
 
-    addSubFoldersFromFolder(folderPath){
-        Loop Files folderPath . "\*", "D"{
+    addSubFoldersFromFolder(folderPath) {
+        loop files folderPath . "\*", "D" {
             subFolderName := A_LoopFileName
             this.addFolder(subFolderName, folderPath . "/" . subFolderName)
         }
@@ -21,7 +21,7 @@ Class FolderRegistry{
         if (this.hasFolder(folderName)) {
             folderAdded := false
         }
-        else{
+        else {
             this.folders[folderName] := folderPath
             folderAdded := true
         }
@@ -37,23 +37,23 @@ Class FolderRegistry{
         if (this.hasFolder(newName)) {
             folderChanged := false
         }
-        else{
+        else {
 
             if (this.hasFolder(oldName)) {
 
                 oldPath := this.folders[oldName]
                 newPath := this.getNewPath(oldPath, oldName, newName)
-                
-                try{
+
+                try {
                     this.folders[newName] := newPath
                     this.folders.Delete(oldName)
                     folderChanged := true
                 }
-                catch{
+                catch {
                     folderChanged := false
                 }
             }
-            else{
+            else {
                 folderChanged := false
             }
         }
@@ -66,7 +66,7 @@ Class FolderRegistry{
             this.folders.Delete(folderName)
             folderDeleted := true
         }
-        else{
+        else {
             folderDeleted := false
         }
         return folderDeleted
@@ -74,7 +74,7 @@ Class FolderRegistry{
 
     getMostRecentlyAddedFolder() {
         lastKey := ""
-        For key in this.folders{
+        for key in this.folders {
             lastKey := key
         }
 
@@ -83,13 +83,13 @@ Class FolderRegistry{
 
     getFolderPathByName(folderName) {
         folderPath := ""
-        try{
+        try {
             folderPath := this.folders[folderName]
         }
-        catch{
+        catch {
             throw TargetError("Folder not found")
         }
-        return folderPath 
+        return folderPath
     }
 
     getFolderNames() {
@@ -100,7 +100,7 @@ Class FolderRegistry{
         return folderNames
     }
 
-    getFirstFoundFolderIndex(folderName){
+    getFirstFoundFolderIndex(folderName) {
         foundIndex := -1
         indexFound := false
         for key in this.folders {
@@ -114,16 +114,16 @@ Class FolderRegistry{
 
     ; Returns true if the given folder is already in the registry
     ; Private method
-    hasFolder(folderName){
+    hasFolder(folderName) {
         return this.folders.Has(folderName)
     }
 
     ; Private method
-    getNewPath(oldPath, oldName, newName){
+    getNewPath(oldPath, oldName, newName) {
 
-        lastPositionFoundOfOldNameInOldPath := InStr(oldPath, oldName,,-1, -1)
+        lastPositionFoundOfOldNameInOldPath := InStr(oldPath, oldName, , -1, -1)
         ; The absolute path to the folder of the currently open file.
-        pathWithoutOldOrNewName := SubStr(oldPath, 1, lastPositionFoundOfOldNameInOldPath-1)
+        pathWithoutOldOrNewName := SubStr(oldPath, 1, lastPositionFoundOfOldNameInOldPath - 1)
         pathWithNewName := pathWithoutOldOrNewName . newName
         return pathWithNewName
 

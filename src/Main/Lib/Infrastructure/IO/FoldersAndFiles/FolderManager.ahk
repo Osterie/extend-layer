@@ -2,16 +2,16 @@
 
 #Include ".\FolderRegistry.ahk"
 
-class FolderManager{
+class FolderManager {
 
     ; A map of folders with folder name as key and folder path as value
     folders := ""
 
-    __New(){
+    __New() {
         this.folders := FolderRegistry()
     }
 
-    addSubFoldersToRegistryFromFolder(folderPath){
+    addSubFoldersToRegistryFromFolder(folderPath) {
         this.folders.addSubFoldersFromFolder(folderPath)
     }
 
@@ -33,23 +33,23 @@ class FolderManager{
         if (this.folders.hasFolder(newName)) {
             folderChanged := false
         }
-        else{
+        else {
 
             if (this.folders.hasFolder(oldName)) {
 
                 oldPath := this.getFolderPathByName(oldName)
                 newPath := this.folders.getNewPath(oldPath, oldName, newName)
-                
-                try{
+
+                try {
                     DirMove oldPath, newPath, "R"
                     this.folders.renameFolder(oldName, newName)
                     folderChanged := true
                 }
-                catch{
+                catch {
                     folderChanged := false
                 }
             }
-            else{
+            else {
                 folderChanged := false
             }
         }
@@ -57,43 +57,43 @@ class FolderManager{
     }
 
     ; MoveFolder(){
-        ; Todo implement
+    ; Todo implement
     ; }
 
-    CopyFolderToNewLocation(fromFolderPath, toFolderPath, newFolderName){
-        
+    CopyFolderToNewLocation(fromFolderPath, toFolderPath, newFolderName) {
+
         copiedFolder := false
-        
-        if(this.folders.hasFolder(newFolderName)){
+
+        if (this.folders.hasFolder(newFolderName)) {
             copiedFolder := false
         }
-        else{
+        else {
             DirCopy(fromFolderPath, toFolderPath)
             this.addFolderToRegistry(newFolderName, toFolderPath)
             copiedFolder := true
         }
-        
+
         return copiedFolder
     }
 
     DeleteFolder(folderName) {
 
         folderDeleted := false
-        
+
         if (this.folders.hasFolder(folderName)) {
 
             pathToFolderToBeDeleted := this.getFolderPathByName(folderName)
 
-            try{
+            try {
                 if (this.RemoveFolderFromRegistry(folderName)) {
                     DirDelete(pathToFolderToBeDeleted, true)
                     folderDeleted := true
                 }
-                else{
+                else {
                     folderDeleted := false
                 }
             }
-            catch{
+            catch {
                 folderDeleted := false
             }
         }
@@ -112,11 +112,11 @@ class FolderManager{
         return this.folders.getFolderNames()
     }
 
-    getFirstFoundFolderIndex(folderName){
+    getFirstFoundFolderIndex(folderName) {
         return this.folders.getFirstFoundFolderIndex(folderName)
     }
 
-    hasFolder(folderName){
+    hasFolder(folderName) {
         return this.folders.hasFolder(folderName)
     }
 }
