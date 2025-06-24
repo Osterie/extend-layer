@@ -19,7 +19,7 @@ class MainStartupConfigurator {
     ; and then either "Hotkeys" or "KeyboardOverlay", and then the information for that layer
     ; (pertaining to hokteys or overlays obviously)
     setInformation(layersInformation) {
-        if (Type(layersInformation) != "KeyboardLayersInfoRegistry") {
+        if (Type(layersInformation) != "ExtendLayerProfile") {
             throw Error("Invalid parameters passed to MainStartupConfigurator")
         }
         this.layersInformation := layersInformation
@@ -27,7 +27,7 @@ class MainStartupConfigurator {
     }
 
     initializeLayer(layersInformation, section, enableHotkeys := "on") {
-        if (Type(layersInformation) != "KeyboardLayersInfoRegistry") {
+        if (Type(layersInformation) != "ExtendLayerProfile") {
             throw Error("Invalid parameters passed to MainStartupConfigurator")
         }
 

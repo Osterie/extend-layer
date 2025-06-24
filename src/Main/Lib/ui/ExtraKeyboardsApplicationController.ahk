@@ -65,7 +65,7 @@ Class ExtraKeyboardsApplicationController{
             }
             this.CreatePopupForHotkeys(hotkeyInformation)
         }
-        else if (Type(layerInformation) == "KeyboardOverlayInfo"){
+        else if (Type(layerInformation) == "KeyboardOverlayLayer"){
             ; TODO implement
             ; popupForConfiguringHotkey.CreatePopupForKeyboardOverlayInfo()
         }

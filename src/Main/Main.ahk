@@ -7,15 +7,17 @@
 #Include <Prototyping\Array>
 #Include <Prototyping\Map>
 
+#Include <DataModels\KeyboardLayouts\ExtendLayerProfile>
+
 #Include <Startup\MainStartupConfigurator>
 
 #Include <Infrastructure\Repositories\ActionGroupsRepository>
+#Include <Infrastructure\Repositories\KeyboardLayersInfoJsonReader>
 
 #Include <Shared\Logger>
 #Include <Shared\FilePaths>
 
 #Include <Util\ExtendLayerInProtectedLocationDialog>
-#Include <Util\MetaInfo\MetaInfoReading\KeyboardLayersInfoJsonReader>
 
 #Include <ui\ExtraKeyboardsApplicationLauncher>
 
@@ -84,7 +86,7 @@ SendMode "Event"
 class Main {
 
     StartupConfigurator := MainStartupConfigurator()
-    KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
+    ExtendLayerProfile := ExtendLayerProfile()
     ActionGroupsRepository := ActionGroupsRepository.getInstance()
 
     scriptRunning := false
@@ -111,7 +113,7 @@ class Main {
             this.setHotkeysForAllLayers(false)
             this.ActionGroupsRepository.reset()
             ; TODO probably needs to be destroyed...
-            this.KeyboardLayersInfoRegister := KeyboardLayersInfoRegistry()
+            this.ExtendLayerProfile := ExtendLayerProfile()
         }
         this.initialize()
         this.runMainStartup()
@@ -130,12 +132,12 @@ class Main {
     initializeKeyboardLayersInfo() {
         JsonReaderForKeyboardLayersInfo := KeyboardLayersInfoJsonReader()
         JsonReaderForKeyboardLayersInfo.ReadKeyboardLayersInfoForCurrentProfile()
-        this.KeyboardLayersInfoRegister := JsonReaderForKeyboardLayersInfo.getKeyboardLayersInfoRegister()
+        this.ExtendLayerProfile := JsonReaderForKeyboardLayersInfo.getExtendLayerProfile()
     }
 
     ; This is used to read ini files, and create hotkeys from them
     initializeMainStartupConfigurator() {
-        this.StartupConfigurator.setInformation(this.KeyboardLayersInfoRegister)
+        this.StartupConfigurator.setInformation(this.ExtendLayerProfile)
     }
 
     ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
@@ -147,26 +149,26 @@ class Main {
         this.StartupConfigurator.createGlobalHotkeysForAllKeyboardOverlays()
 
         ; Reads and initializes all the hotkeys which are active for every keyboard layer.
-        this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, "GlobalLayer", enableHotkeys)
+        this.StartupConfigurator.initializeLayer(this.ExtendLayerProfile, "GlobalLayer", enableHotkeys)
 
         HotIf "MainScript.getActiveLayer() == 0"
         ; Reads and initializes all the hotkeys for the normal keyboard layer.
-        this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, "NormalLayer", enableHotkeys)
+        this.StartupConfigurator.initializeLayer(this.ExtendLayerProfile, "NormalLayer", enableHotkeys)
         HotIf
 
         HotIf "MainScript.getActiveLayer() == 1"
         ; Reads and initializes all the hotkeys for the second keyboard layer.
-        this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, "SecondaryLayer", enableHotkeys)
+        this.StartupConfigurator.initializeLayer(this.ExtendLayerProfile, "SecondaryLayer", enableHotkeys)
         HotIf
 
         HotIf "MainScript.getActiveLayer() == 2"
         ; Reads and initializes all the hotkeys for the third keyboard layer.
-        this.StartupConfigurator.initializeLayer(this.KeyboardLayersInfoRegister, "TertiaryLayer", enableHotkeys)
+        this.StartupConfigurator.initializeLayer(this.ExtendLayerProfile, "TertiaryLayer", enableHotkeys)
         HotIf
     }
 
     runAppGui() {
-        app := ExtraKeyboardsApplicationLauncher(this.KeyboardLayersInfoRegister, this)
+        app := ExtraKeyboardsApplicationLauncher(this.ExtendLayerProfile, this)
         app.start()
     }
 

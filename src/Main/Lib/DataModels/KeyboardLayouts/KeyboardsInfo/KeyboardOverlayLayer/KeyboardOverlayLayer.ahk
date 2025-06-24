@@ -26,64 +26,23 @@ class KeyboardOverlayLayer {
         return this.OverlayElements
     }
 
+    ; TODO renmae or remove, is this in use?
     getKeyPairValuesToString() {
-        return this.OverlayElements.getKeyPairValuesToString()
-        ;         elements := []
-        ; for elementNames, KeyboardOverlayElement in this.OverlayElements
-        ;     elements.push([KeyboardOverlayElement.getKey(), KeyboardOverlayElement.getDescription()])
-        ; return elements
+        elements := []
+        for elementNames, KeyboardOverlayElement in this.OverlayElements
+            elements.push([KeyboardOverlayElement.getKey(), KeyboardOverlayElement.getDescription()])
+        return elements
     }
 
     getShowKeyboardOverlayKey() {
         return this.ShowKeyboardOverlayKey
     }
 
-    getFriendlyHotkeyActionPairValues() {
-        return this.OverlayElements.getFriendlyHotkeyActionPairValues()
-
-        ;         elements := []
-        ; for elementNames, KeyboardOverlayElement in this.OverlayElements
-        ;     elements.push([KeyboardOverlayElement.getKey(), KeyboardOverlayElement.getDescription()])
-        ; return elements
-    }
-}
-
-#Requires AutoHotkey v2.0
-
-class KeyboardOverlayElementRegistry {
-
-    overlayElementsIdentifier := ""
-    OverlayElements := Map()
-
-    __New(overlayElementsIdentifier) {
-        this.overlayElementsIdentifier := overlayElementsIdentifier
-        ; this.overlayElementsIdentifier = "OverlayElements"
-    }
-
-    addKeyboardOverlayElement(KeyboardOverlayElement) {
-        this.OverlayElements.Set(KeyboardOverlayElement.getElementName(), KeyboardOverlayElement)
-    }
-
-    getKeyboardOverlayElement(keyboardElementName) {
-        return this.OverlayElements.Get(keyboardElementName)
-    }
-
-    getKeyboardOverlayElements() {
-        return this.OverlayElements
-    }
-
-    getKeyPairValuesToString() {
-        elements := []
-        for elementNames, KeyboardOverlayElement in this.OverlayElements
-            elements.push([KeyboardOverlayElement.getKey(), KeyboardOverlayElement.getDescription()])
-        return elements
-    }
-
+    ; TODO renmae or remove, is this in use?
     getFriendlyHotkeyActionPairValues() {
         elements := []
         for elementNames, KeyboardOverlayElement in this.OverlayElements
             elements.push([KeyboardOverlayElement.getKey(), KeyboardOverlayElement.getDescription()])
         return elements
     }
-
 }

@@ -1,7 +1,5 @@
 #Requires AutoHotkey v2.0
 
-; #Include "..\MetaInfoStorage\KeyboardLayouts\KeyboardLayersInfoRegistry.ahk"
-
 #Include <DataModels\KeyboardLayouts\ExtendLayerProfile>
 
 #Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotKeyInfo>
@@ -18,7 +16,7 @@
 class KeyboardLayersInfoJsonReader {
 
     Logger := Logger.getInstance()
-    KeyboardLayersInfoRegister := ExtendLayerProfile()
+    ExtendLayerProfile := ExtendLayerProfile()
 
     __New() {
 
@@ -61,9 +59,9 @@ class KeyboardLayersInfoJsonReader {
     }
 
     readHotkeys(layerIdentifier, layerInfoContents) {
-        HotkeysRegister := HotkeyLayer(layerIdentifier)
+        HotkeysLayer := HotkeyLayer(layerIdentifier)
         for hotkeyName, informationAboutHotkey in layerInfoContents {
-            hotKeyInformation := HotKey(hotkeyName)
+            hotKeyInformation := HotKeyInfo(hotkeyName)
 
             if (informationAboutHotkey["isObject"]) {
                 hotKeyInformation.setInfoForSpecialHotKey(informationAboutHotkey["ObjectName"], informationAboutHotkey[
@@ -76,9 +74,9 @@ class KeyboardLayersInfoJsonReader {
             else {
                 throw ("Unknown hotkey type: " . informationAboutHotkey)
             }
-            HotkeysRegister.addHotkey(hotKeyInformation)
+            HotkeysLayer.addHotkey(hotKeyInformation)
         }
-        this.KeyboardLayersInfoRegister.AddHotkeyLayer(HotkeysRegister)
+        this.ExtendLayerProfile.AddHotkeyLayer(HotkeysLayer)
     }
 
     ReadKeyboardOverlay(layerIdentifier, layerInfoContents) {
@@ -106,11 +104,11 @@ class KeyboardLayersInfoJsonReader {
             }
         }
 
-        this.KeyboardLayersInfoRegister.AddKeyboardOverlayLayerInfo(KeyboardOverlayInformation)
+        this.ExtendLayerProfile.AddKeyboardOverlayLayerInfo(KeyboardOverlayInformation)
     }
 
-    getKeyboardLayersInfoRegister() {
-        return this.KeyboardLayersInfoRegister
+    getExtendLayerProfile() {
+        return this.ExtendLayerProfile
     }
 
 }

@@ -118,17 +118,18 @@ class KeyboardOverlay extends HotkeyAction {
 
     }
 
-    fillKeyboardOverlayInformation(keyboardOverlayInfo) {
-        if (Type(keyboardOverlayInfo) = "keyboardOverlayInfo") {
-
-            KeyboardOverlayElements := keyboardOverlayInfo.getOverlayElements()
-
-            for overlayElementName, overlayElementInformation in KeyboardOverlayElements {
-                elementName := overlayElementInformation.getElementName()
-                description := overlayElementInformation.getDescription()
-                this.AddStaticColumn(elementName, description)
-            }
+    fillKeyboardOverlayInformation(KeyboardOverlayLayer) {
+        if (Type(KeyboardOverlayLayer) != "KeyboardOverlayLayer") {
+            this.Logger.logError("Invalid type for KeyboardOverlayLayer: " . Type(KeyboardOverlayLayer),
+            "KeyboardOverlay.fillKeyboardOverlayInformation")
+            throw TypeError("Expected KeyboardOverlayLayer, got " . Type(KeyboardOverlayLayer))
         }
+        KeyboardOverlayElements := KeyboardOverlayLayer.getOverlayElements()
 
+        for overlayElementName, overlayElementInformation in KeyboardOverlayElements {
+            elementName := overlayElementInformation.getElementName()
+            description := overlayElementInformation.getDescription()
+            this.AddStaticColumn(elementName, description)
+        }
     }
 }

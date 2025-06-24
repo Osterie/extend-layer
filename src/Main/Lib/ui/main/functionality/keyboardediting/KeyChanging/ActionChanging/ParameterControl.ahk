@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-class ParameterControl{
+class ParameterControl {
 
     parameterNameControl := ""
     parameterInputFieldControl := ""
@@ -9,91 +9,89 @@ class ParameterControl{
     valuesSet := ""
     guiToAddTo := ""
 
-    __New(guiToAddTo, parameterInfo?, position?){
+    __New(guiToAddTo, parameterInfo?, position?) {
         this.guiToAddTo := guiToAddTo
         this.valuesSet := false
         this.CreateControls(parameterInfo?, position?)
     }
 
-    CreateControls(parameterInfo?, position?){
-        if (IsSet(parameterInfo) && Type(parameterInfo) = "ActionParameter"){
+    CreateControls(parameterInfo?, position?) {
+        if (IsSet(parameterInfo) && Type(parameterInfo) = "ActionParameter") {
             this.valuesSet := true
             this.parameterNameControl := this.CreateParameterNameControl(parameterInfo.getName(), position?)
-            this.parameterInputFieldControl := this.CreateParameterInputFieldControl(parameterInfo.getType(), )
-            this.parameterDescriptionControl := this.CreateParameterDescriptionControl(parameterInfo.getDescription(), )
+            this.parameterInputFieldControl := this.CreateParameterInputFieldControl(parameterInfo.getType(),)
+            this.parameterDescriptionControl := this.CreateParameterDescriptionControl(parameterInfo.getDescription(),
+            )
         }
-        else{
+        else {
             this.parameterNameControl := this.CreateParameterNameControl(position?)
             this.parameterInputFieldControl := this.CreateParameterInputFieldControl()
             this.parameterDescriptionControl := this.CreateParameterDescriptionControl()
         }
     }
 
-    CreateParameterNameControl(position?, parameterName := ""){
-        if (IsSet(position)){
+    CreateParameterNameControl(position?, parameterName := "") {
+        if (IsSet(position)) {
             parameterNameControl := this.guiToAddTo.Add("Text", position, parameterName)
         }
-        else{
+        else {
             parameterNameControl := this.guiToAddTo.Add("Text", "xp yp+30 w335", parameterName)
         }
-        
+
         parameterNameControl.SetFont("Bold")
         return parameterNameControl
     }
 
-    CreateParameterInputFieldControl(parameterType := ""){
+    CreateParameterInputFieldControl(parameterType := "") {
         parameterInputFieldControl := this.guiToAddTo.Add("Edit", "xp yp+30 w335", "")
-        
-        if(StrLower(parameterType) = "int" or StrLower(parameterType) = "integer"){
+
+        if (StrLower(parameterType) = "int" or StrLower(parameterType) = "integer") {
             parameterInputFieldControl.Opt("+Number")
         }
-        else if(StrLower(parameterType) = "str" or StrLower(parameterType) = "string"){
+        else if (StrLower(parameterType) = "str" or StrLower(parameterType) = "string") {
             parameterInputFieldControl.Opt("-Number")
         }
         return parameterInputFieldControl
     }
 
-    CreateParameterDescriptionControl(parameterDescription := ""){
+    CreateParameterDescriptionControl(parameterDescription := "") {
         parameterDescriptionControl := this.guiToAddTo.Add("Text", "xp yp+30 w335", parameterDescription)
         return parameterDescriptionControl
     }
 
-    SetInfo(parameterInfo){
-        if (Type(parameterInfo) = "ActionParameter"){
-            this.valuesSet := true
-            this.SetParameterName(parameterInfo.getName())
-            this.SetParameterType(parameterInfo.getType())
-            this.SetParameterDescription(parameterInfo.getDescription())
-        }
-        else{
+    SetInfo(parameterInfo) {
+        if (Type(parameterInfo) != "ActionParameter") {
             throw Error("Invalid parameterInfo")
         }
+        this.valuesSet := true
+        this.SetParameterName(parameterInfo.getName())
+        this.SetParameterType(parameterInfo.getType())
+        this.SetParameterDescription(parameterInfo.getDescription())
     }
 
-    SetParameterName(parameterName){
+    SetParameterName(parameterName) {
         this.parameterNameControl.Value := parameterName
     }
 
-    SetParameterType(parameterType){
+    SetParameterType(parameterType) {
         this.parameterType := parameterType
-        if(StrLower(parameterType) = "int" or StrLower(parameterType) = "integer"){
+        if (StrLower(parameterType) = "int" or StrLower(parameterType) = "integer") {
             this.parameterInputFieldControl.Opt("+Number")
         }
-        else if(StrLower(parameterType) = "str" or StrLower(parameterType) = "string"){
+        else if (StrLower(parameterType) = "str" or StrLower(parameterType) = "string") {
             this.parameterInputFieldControl.Opt("-Number")
         }
     }
 
-
-    SetParameterDescription(parameterDescription){
+    SetParameterDescription(parameterDescription) {
         this.parameterDescriptionControl.Value := parameterDescription
     }
 
-    GetValue(){
+    GetValue() {
         return this.parameterInputFieldControl.Value
     }
 
-    GetPos(){
+    GetPos() {
         this.parameterNameControl.GetPos(&X1, &Y1, &w, &h)
         xPosition := X1
         yPosition := Y1
@@ -111,24 +109,24 @@ class ParameterControl{
         return objectToReturn
     }
 
-    IsSet(){
+    IsSet() {
         return this.valuesSet
     }
 
-    Clear(){
+    Clear() {
         this.valuesSet := false
         this.parameterNameControl.Value := ""
         this.parameterInputFieldControl.Value := ""
         this.parameterDescriptionControl.Value := ""
     }
 
-    Hide(){
+    Hide() {
         this.parameterNameControl.Opt("Hidden1")
         this.parameterInputFieldControl.Opt("Hidden1")
         this.parameterDescriptionControl.Opt("Hidden1")
     }
 
-    Show(){
+    Show() {
         this.parameterNameControl.Opt("Hidden0")
         this.parameterInputFieldControl.Opt("Hidden0")
         this.parameterDescriptionControl.Opt("Hidden0")

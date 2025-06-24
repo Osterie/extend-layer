@@ -1,20 +1,26 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardLayersInfoRegistry>
+#Include <DataModels\KeyboardLayouts\ExtendLayerProfile>
+
 #Include <Util\JsonParsing\JXON>
 #Include <Util\Formaters\JsonFormatter>
 
+#Include <Shared\Logger>
+
 class KeyboadLayersInfoClassObjectReader {
 
+    Logger := Logger.getInstance()
     jsonObject := Map()
 
     readObjectToJson(KeyboardLayersInfoRegister) {
-        if (Type(KeyboardLayersInfoRegister) = "KeyboardLayersInfoRegistry") {
-            visualOverlayMap := KeyboardLayersInfoRegister.GetKeyboardOverlaysRegistry()
-            hotkeysMap := KeyboardLayersInfoRegister.GetHotkeyLayer()
-            this.readVisualOverlay(visualOverlayMap)
-            this.readHotkeys(hotkeysMap)
+        if (Type(KeyboardLayersInfoRegister) != "ExtendLayerProfile") {
+            Logger.logError("The KeyboardLayersInfoRegister must be an instance of ExtendLayerProfile.")
+            throw TypeError("The KeyboardLayersInfoRegister must be an instance of ExtendLayerProfile.")
         }
+        visualOverlayMap := KeyboardLayersInfoRegister.GetKeyboardOverlaysRegistry()
+        hotkeysMap := KeyboardLayersInfoRegister.GetHotkeyLayer()
+        this.readVisualOverlay(visualOverlayMap)
+        this.readHotkeys(hotkeysMap)
         ; TODO handle an else...
     }
 
