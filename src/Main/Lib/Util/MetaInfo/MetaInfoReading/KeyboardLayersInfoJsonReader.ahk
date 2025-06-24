@@ -5,8 +5,9 @@
 #Include ..\MetaInfoStorage
 
 #Include ".\KeyboardLayouts\KeyboardLayersInfoRegistry.ahk"
-#Include ".\KeyboardLayouts\KeyboardsInfo\Hotkeys\logic\HotkeysRegistry.ahk"
-#Include ".\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo.ahk"
+#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotkeyLayer>
+#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotKeyInfo>
+
 
 #Include ".\KeyboardLayouts\KeyboardsInfo\KeyboardOverlays\logic\KeyboardOverlayElementRegistry.ahk"
 #Include ".\KeyboardLayouts\KeyboardsInfo\KeyboardOverlays\entity\KeyboardOverlayElement.ahk"
@@ -54,7 +55,7 @@ class KeyboardLayersInfoJsonReader {
     }
 
     readHotkeys(layerIdentifier, layerInfoContents) {
-        HotkeysRegister := HotkeysRegistry(layerIdentifier)
+        HotkeysLayer := HotkeyLayer(layerIdentifier)
         for hotkeyName, informationAboutHotkey in layerInfoContents {
             hotKeyInformation := HotKeyInfo(hotkeyName)
 
@@ -69,9 +70,9 @@ class KeyboardLayersInfoJsonReader {
             else {
                 throw ("Unknown hotkey type: " . informationAboutHotkey)
             }
-            HotkeysRegister.addHotkey(hotKeyInformation)
+            HotkeysLayer.addHotkey(hotKeyInformation)
         }
-        this.KeyboardLayersInfoRegister.AddHotkeysRegistry(HotkeysRegister)
+        this.KeyboardLayersInfoRegister.AddHotkeyLayer(HotkeysLayer)
     }
 
     ReadKeyboardOverlay(layerIdentifier, layerInfoContents) {

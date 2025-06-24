@@ -6,6 +6,7 @@
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfiguration.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationController.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotkeyConfigurator.ahk"
+#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotKeyInfo>
 
 #Include <Updater\UpdateDialog>
 
@@ -52,8 +53,8 @@ Class ExtraKeyboardsApplicationController{
 
         layerInformation := this.GetCurrentLayerInfo()
 
-        if (Type(layerInformation) == "HotkeysRegistry"){
-            hotkeyInformation := HotkeyInfo()
+        if (Type(layerInformation) == "HotkeyLayer"){
+            hotkeyInformation := HotKeyInfo()
     
             ; TODO find a better way than this...
             if (hotkeyBuild = "KeyCombo" || hotkeyBuild = ""){

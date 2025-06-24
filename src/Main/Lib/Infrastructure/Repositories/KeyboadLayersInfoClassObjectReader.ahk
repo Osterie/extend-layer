@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include "..\MetaInfoStorage\KeyboardLayouts\KeyboardLayersInfoRegistry.ahk"
+#Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardLayersInfoRegistry>
 #Include <Util\JsonParsing\JXON>
 #Include <Util\Formaters\JsonFormatter>
 
@@ -11,7 +11,7 @@ class KeyboadLayersInfoClassObjectReader {
     readObjectToJson(KeyboardLayersInfoRegister) {
         if (Type(KeyboardLayersInfoRegister) = "KeyboardLayersInfoRegistry") {
             visualOverlayMap := KeyboardLayersInfoRegister.GetKeyboardOverlaysRegistry()
-            hotkeysMap := KeyboardLayersInfoRegister.GetHotkeysRegistry()
+            hotkeysMap := KeyboardLayersInfoRegister.GetHotkeyLayer()
             this.readVisualOverlay(visualOverlayMap)
             this.readHotkeys(hotkeysMap)
         }

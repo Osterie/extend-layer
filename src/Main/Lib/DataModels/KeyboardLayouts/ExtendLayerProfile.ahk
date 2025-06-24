@@ -19,7 +19,7 @@ class ExtendLayerProfile {
         this.keyboardOverlays[KeyboardOverlay.GetLayerIdentifier()] := KeyboardOverlay
     }
 
-    AddHotkeysRegistry(Hotkeys) {
+    AddHotkeyLayer(Hotkeys) {
         this.hotkeys[Hotkeys.GetLayerIdentifier()] := Hotkeys
     }
 
@@ -75,7 +75,7 @@ class ExtendLayerProfile {
         return this.keyboardOverlays
     }
 
-    GetHotkeysRegistry() {
+    GetHotkeyLayer() {
         return this.hotkeys
     }
 

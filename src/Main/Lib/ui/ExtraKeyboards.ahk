@@ -3,6 +3,7 @@
 #Include <Infrastructure\IO\IniFileReader>
 #Include <Shared\FilePaths>
 #Include <Util\MetaInfo\MetaInfoWriting\ToJsonFileWriter>
+#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotKeyInfo>
 
 #Include <Infrastructure\Repositories\ActionSettingsRepository>
 

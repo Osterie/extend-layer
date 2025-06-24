@@ -2,7 +2,7 @@
 
 #Include <ui\Main\util\GuiControlsRegistry>
 #Include <ui\Main\Util\DomainSpecificGui>
-#Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
+#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotKeyInfo>
 
 #Include ".\AdvancedHotkeyCraftingControl.ahk"
 #Include ".\SimpleHotkeyCraftingControl.ahk"

@@ -3,7 +3,8 @@
 #Include <Util\Formaters\HotkeyFormatter>
 
 ; TODO perhaps this should work together with the main startupr configurator which creates all the hotkeys
-class HotKeyInfo{
+; HotKeyInfo
+class HotKeyInfo {
 
     ; The key to press to trigger the "toKey" or the "objectName.methodName(parameters)" action.
     fromKey := ""
@@ -11,38 +12,38 @@ class HotKeyInfo{
     objectName := ""
     actionName := ""
     parameters := []
-    
+
     ; The key triggered by fromKey. For example, if fromKey is "a", and toKey is "b". Pressing "a" would result in "b" being sent.
     toKey := ""
     modifiers := ""
 
     actionSet := false
 
-    __New(fromKey := ""){
+    __New(fromKey := "") {
         this.fromKey := fromKey
         this.actionSet := false
     }
 
-    setInfoForNormalHotKey(toKey, modifiers?){
+    setInfoForNormalHotKey(toKey, modifiers?) {
         this.actionSet := true
         this.isObject := false
 
-        if (IsSet(modifiers)){
+        if (IsSet(modifiers)) {
             this.setNewHotkeyModifiers(modifiers)
             this.toKey := toKey
         }
-        else{
+        else {
             this.setNormalHotkeySingle(toKey)
         }
     }
 
-    setNormalHotkeySingle(toKeyWithModifiers){
+    setNormalHotkeySingle(toKeyWithModifiers) {
         modifiersAndHotkey := HotkeyFormatter.splitModifiersAndHotkey(toKeyWithModifiers)
         this.setNewHotkeyModifiers(modifiersAndHotkey[1])
         this.toKey := modifiersAndHotkey[2]
     }
 
-    setInfoForSpecialHotKey(objectName, actionName, parameters){
+    setInfoForSpecialHotKey(objectName, actionName, parameters) {
         this.actionSet := true
         this.isObject := true
         this.objectName := objectName
@@ -50,90 +51,89 @@ class HotKeyInfo{
         this.parameters := parameters
     }
 
-    changeHotkey(newHotKeyName){
+    changeHotkey(newHotKeyName) {
         this.fromKey := newHotKeyName
     }
 
-    hotkeyIsObject(){
+    hotkeyIsObject() {
         return this.isObject
     }
 
-    toString(){
-        if (this.actionSet){
-            if(this.hotkeyIsObject()){
+    toString() {
+        if (this.actionSet) {
+            if (this.hotkeyIsObject()) {
                 return this.objectName . "." . this.actionName . "(" . this.parametersToString(this.parameters) . ")"
             }
-            else{
+            else {
                 return HotkeyFormatter.convertToFriendlyHotkeyName(this.modifiers . this.toKey)
             }
         }
-        else{
+        else {
             return ""
         }
     }
 
-    parametersToString(parameters){
-        if (this.parameters.length == 0){
+    parametersToString(parameters) {
+        if (this.parameters.length == 0) {
             return ""
         }
 
         stringToReturn := ""
 
-        for argument in this.parameters{
-            if (Type(argument) == "Array"){
-                For subArgument in argument{
+        for argument in this.parameters {
+            if (Type(argument) == "Array") {
+                for subArgument in argument {
                     stringToReturn .= subArgument . ","
                 }
             }
-            else{
+            else {
                 stringToReturn .= argument . ","
             }
         }
 
         ; Remove the last comma, which should not be there yaknow
-        stringToReturn := RegExReplace(stringToReturn, "," , "",,  1, -1)
-
+        stringToReturn := RegExReplace(stringToReturn, ",", "", , 1, -1)
 
         return stringToReturn
     }
 
-    actionIsSet(){
+    actionIsSet() {
         return this.actionSet
     }
 
-    getHotkeyName(){
+    getHotkeyName() {
         return this.fromKey
     }
 
-    getNewHotkeyName(){
+    getNewHotkeyName() {
         return this.toKey
     }
 
-    setNewHotkeyModifiers(newModifiers){
+    setNewHotkeyModifiers(newModifiers) {
         this.modifiers := newModifiers
     }
 
-    getNewHotkeyModifiers(){
+    getNewHotkeyModifiers() {
         return this.modifiers
     }
-    
-    getFriendlyHotkeyName(){
+
+    getFriendlyHotkeyName() {
         friendlyNameToReturn := ""
-        if (this.fromKey != ""){
+        if (this.fromKey != "") {
             friendlyNameToReturn := HotkeyFormatter.convertToFriendlyHotkeyName(this.fromKey)
         }
         return friendlyNameToReturn
     }
 
-    getObjectName(){
+    getObjectName() {
         return this.objectName
     }
 
-    getActionName(){
+    getActionName() {
         return this.actionName
     }
 
-    getParameters(){
+    getParameters() {
         return this.parameters
     }
 }

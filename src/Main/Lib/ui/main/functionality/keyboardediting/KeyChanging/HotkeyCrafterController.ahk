@@ -3,7 +3,7 @@
 #Include <Infrastructure\Repositories\ActionGroupsRepository>
 #Include <Infrastructure\Repositories\KeyNamesRepository>
 
-#Include <Util\MetaInfo\MetaInfoStorage\KeyboardLayouts\KeyboardsInfo\Hotkeys\entity\HotKeyInfo>
+#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotKeyInfo>
 
 class HotkeyCrafterController{
 

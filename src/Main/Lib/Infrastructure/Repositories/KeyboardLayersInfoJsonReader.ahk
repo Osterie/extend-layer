@@ -4,7 +4,7 @@
 
 #Include <DataModels\KeyboardLayouts\ExtendLayerProfile>
 
-#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotKey>
+#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotKeyInfo>
 #Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotkeyLayer>
 
 #Include <DataModels\KeyboardLayouts\KeyboardsInfo\KeyboardOverlayLayer\KeyboardOverlayElement>
@@ -78,7 +78,7 @@ class KeyboardLayersInfoJsonReader {
             }
             HotkeysRegister.addHotkey(hotKeyInformation)
         }
-        this.KeyboardLayersInfoRegister.AddHotkeysRegistry(HotkeysRegister)
+        this.KeyboardLayersInfoRegister.AddHotkeyLayer(HotkeysRegister)
     }
 
     ReadKeyboardOverlay(layerIdentifier, layerInfoContents) {
