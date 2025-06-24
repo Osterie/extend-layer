@@ -6,6 +6,7 @@
 #Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotKeyInfo>
 
 #Include <Infrastructure\Repositories\ActionSettingsRepository>
+#Include <Infrastructure\Repositories\ExtendLayerProfile\ExtendLayerProfileRepository>
 
 class ExtraKeyboards {
 
@@ -17,9 +18,9 @@ class ExtraKeyboards {
 
     actionSettings := ""
 
-    __New(keyboardLayersInfoRegister) {
+    __New() {
         this.actionSettings := this.ActionSettingsRepository.getActionGroupSettingsRegistry()
-        this.keyboardLayersInfoRegister := keyboardLayersInfoRegister
+        this.keyboardLayersInfoRegister := ExtendLayerProfileRepository.getInstance().getExtendLayerProfile()
     }
 
     ; TODO repository should do this!

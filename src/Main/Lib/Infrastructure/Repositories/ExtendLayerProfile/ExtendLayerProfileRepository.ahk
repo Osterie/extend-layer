@@ -35,13 +35,12 @@ class ExtendLayerProfileRepository {
         return ExtendLayerProfileRepository.instance
     }
 
-    ; TODO add a "for current profile"
+    getExtendLayerProfile() {
+        return this.ExtendLayerProfile
+    }
+
     load() {
         currentProfilePath := FilePaths.GetPathToCurrentKeyboardLayout()
         this.ExtendLayerProfile := this.ExtendLayerProfileFileReader.readExtendLayerProfile(currentProfilePath)
-    }
-
-    getExtendLayerProfile() {
-        return this.ExtendLayerProfile
     }
 }

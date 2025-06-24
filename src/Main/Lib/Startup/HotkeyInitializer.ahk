@@ -4,6 +4,8 @@
 
 #Include <Util\Formaters\HotkeyFormatter>
 
+#Include <Infrastructure\Repositories\ExtendLayerProfile\ExtendLayerProfileRepository>
+
 class HotkeyInitializer {
 
     ActionGroupsRepository := ActionGroupsRepository.getInstance()
@@ -12,8 +14,9 @@ class HotkeyInitializer {
     }
 
     ; TODO should objects be recycled here?
-    initializeHotkeys(layersInformation, keyboardLayerName, enableHotkeys := true) {
-        currentKeyboardLayerInformation := layersInformation.GetRegistryByLayerIdentifier(keyboardLayerName)
+    initializeHotkeys(keyboardLayerName, enableHotkeys := true) {
+        ExtendLayerProfile := ExtendLayerProfileRepository.getInstance().getExtendLayerProfile()
+        currentKeyboardLayerInformation := ExtendLayerProfile.GetRegistryByLayerIdentifier(keyboardLayerName)
         currentKeyboardLayerHotkeys := currentKeyboardLayerInformation.GetHotkeys()
 
         for key, hotkeyInformation in currentKeyboardLayerHotkeys {

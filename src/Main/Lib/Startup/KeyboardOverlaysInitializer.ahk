@@ -3,21 +3,21 @@
 #Include <Actions\KeyboardOverlay\KeyboardOverlay>
 
 #Include <Infrastructure\Repositories\ActionGroupsRepository>
+#Include <Infrastructure\Repositories\ExtendLayerProfile\ExtendLayerProfileRepository>
 
 class KeyboardOverlaysInitializer {
 
-    layersInformation := ""
-
     ActionGroupsRepository := ActionGroupsRepository.getInstance()
 
-    __New(layersInformation) {
-        this.layersInformation := layersInformation
+    ; TODO refactor. make ExtendLayerProfileRepository have some helpful methods.
+
+    __New() {
         this.instanceOfOverlayRegistry := this.ActionGroupsRepository.getActionObjectInstance("OverlayRegistry")
     }
 
     ; TODO add method to read which keys are used to show keyboard overlays, should be in the correct layer section, because only then should they activate
     readAllKeyboardOverlays() {
-        for key, value in this.layersInformation.GetKeyboardOverlaysRegistry() {
+        for key, value in ExtendLayerProfileRepository.getInstance().getExtendLayerProfile().GetKeyboardOverlaysRegistry() {
 
             NewKeyboardOverlay := KeyboardOverlay()
             NewKeyboardOverlay.CreateGui()
@@ -45,11 +45,11 @@ class KeyboardOverlaysInitializer {
     changeHotkeysStateForKeyboardOverlaysByLayerSection(layerSection, enableHotkeys := true) {
         try {
 
-            for key, value in this.layersInformation.GetKeyboardOverlaysRegistry() {
+            for key, value in ExtendLayerProfileRepository.getInstance().getExtendLayerProfile().GetKeyboardOverlaysRegistry() {
                 if (InStr(key, layerSection)) {
                     ; TODO use the keyboardOVelray class to create a new keyboard overlay, which then columns are added to
                     ; TODO, each layer should have the "KeyboardOverlayKey" in it, which is then created there and such blah blah blah
-                    showKeyboardOverlayKey := this.layersInformation.GetRegistryByLayerIdentifier(key).getShowKeyboardOverlayKey()
+                    showKeyboardOverlayKey := ExtendLayerProfileRepository.getInstance().getExtendLayerProfile().GetRegistryByLayerIdentifier(key).getShowKeyboardOverlayKey()
                     this.changeHotkeyStateForKeyboardOverlay(key, showKeyboardOverlayKey, enableHotkeys)
 
                 }
@@ -80,9 +80,9 @@ class KeyboardOverlaysInitializer {
 
     hotKeyForHidingKeyboardOverlaysUseMeGlobally() {
         try {
-            for key, value in this.layersInformation.GetKeyboardOverlaysRegistry() {
+            for key, value in ExtendLayerProfileRepository.getInstance().getExtendLayerProfile().GetKeyboardOverlaysRegistry() {
                 if (InStr(key, "KeyboardOverlay")) {
-                    showKeyboardOverlayKey := this.layersInformation.GetRegistryByLayerIdentifier(key).getShowKeyboardOverlayKey()
+                    showKeyboardOverlayKey := ExtendLayerProfileRepository.getInstance().getExtendLayerProfile().GetRegistryByLayerIdentifier(key).getShowKeyboardOverlayKey()
                     HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => this.instanceOfOverlayRegistry.hideAllLayers())
 
                 }

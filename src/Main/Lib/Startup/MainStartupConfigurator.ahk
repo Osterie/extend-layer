@@ -5,33 +5,21 @@
 
 #Include <Util\JsonParsing\JXON>
 
+#Include <Infrastructure\Repositories\ExtendLayerProfile\ExtendLayerProfileRepository>
+
 class MainStartupConfigurator {
 
     KeyboardOverlayInitializerInstance := ""
     HotkeyInitializerInstance := HotkeyInitializer()
 
-    layersInformation := ""
+    ; TODO refactor
     
     __New() {
-
-    }
-    ; layersInformation is keyboards.json information. It has a layer, for example "Primary"
-    ; and then either "Hotkeys" or "KeyboardOverlay", and then the information for that layer
-    ; (pertaining to hokteys or overlays obviously)
-    setInformation(layersInformation) {
-        if (Type(layersInformation) != "ExtendLayerProfile") {
-            throw Error("Invalid parameters passed to MainStartupConfigurator")
-        }
-        this.layersInformation := layersInformation
-        this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer(layersInformation)
+        this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer()
     }
 
-    initializeLayer(layersInformation, section, enableHotkeys := "on") {
-        if (Type(layersInformation) != "ExtendLayerProfile") {
-            throw Error("Invalid parameters passed to MainStartupConfigurator")
-        }
-
-        this.HotkeyInitializerInstance.initializeHotkeys(layersInformation, section . "-Hotkeys", enableHotkeys)
+    initializeLayer(section, enableHotkeys := "on") {
+        this.HotkeyInitializerInstance.initializeHotkeys(section . "-Hotkeys", enableHotkeys)
 
         this.KeyboardOverlayInitializerInstance.changeHotkeysStateForKeyboardOverlaysByLayerSection(
             section . "-KeyboardOverlay",
