@@ -10,7 +10,7 @@ class Monitor extends HotkeyAction {
     ; brightness
 
     destroy() {
-        this.SetGamma(128, 128, 128) ; reset gamma to default
+        ; this.SetGamma(128, 128, 128) ; reset gamma to default
     }
 
     ; Takes brightness values between 0 and 100 and sets screens brightness to that value
