@@ -17,7 +17,7 @@ class KeyboadLayersInfoClassObjectReader {
             Logger.logError("The KeyboardLayersInfoRegister must be an instance of ExtendLayerProfile.")
             throw TypeError("The KeyboardLayersInfoRegister must be an instance of ExtendLayerProfile.")
         }
-        visualOverlayMap := KeyboardLayersInfoRegister.GetKeyboardOverlaysRegistry()
+        visualOverlayMap := KeyboardLayersInfoRegister.GetKeyboardOverlays()
         hotkeysMap := KeyboardLayersInfoRegister.GetHotkeyLayer()
         this.readVisualOverlay(visualOverlayMap)
         this.readHotkeys(hotkeysMap)
@@ -48,7 +48,11 @@ class KeyboadLayersInfoClassObjectReader {
         for hotkeyIdentifier, hotkeyInfo in hotkeysMap {
             this.jsonObject[hotkeyIdentifier] := Map()
 
-            for hotkeyName, hotkeyInformation in hotkeyInfo.GetHotkeys() {
+            hotkeys := hotkeyInfo.GetHotkeys()
+            Loop hotkeys.Length {
+
+                hotkeyInformation := hotkeys[A_Index]
+                hotkeyName := hotkeyInformation.getHotkeyName()
                 this.jsonObject[hotkeyIdentifier][hotkeyName] := Map()
 
                 if (hotkeyInformation.hotkeyIsObject()) {

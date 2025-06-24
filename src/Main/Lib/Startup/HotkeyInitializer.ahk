@@ -15,11 +15,10 @@ class HotkeyInitializer {
 
     ; TODO should objects be recycled here?
     initializeHotkeys(keyboardLayerName, enableHotkeys := true) {
-        ExtendLayerProfile := ExtendLayerProfileRepository.getInstance().getExtendLayerProfile()
-        currentKeyboardLayerInformation := ExtendLayerProfile.GetRegistryByLayerIdentifier(keyboardLayerName)
-        currentKeyboardLayerHotkeys := currentKeyboardLayerInformation.GetHotkeys()
+        currentKeyboardLayerHotkeys := ExtendLayerProfileRepository.getInstance().getHotkeysForLayer(keyboardLayerName)
 
-        for key, hotkeyInformation in currentKeyboardLayerHotkeys {
+        Loop currentKeyboardLayerHotkeys.Length {
+            hotkeyInformation := currentKeyboardLayerHotkeys[A_Index]
             this.initializeHotkey(hotkeyInformation, enableHotkeys)
         }
     }

@@ -11,6 +11,8 @@
 
 class ExtendLayerProfileFileReader {
 
+    Logger := Logger.getInstance()
+
     ; TODO does not need to be field probably.
     ExtendLayerProfile := ExtendLayerProfile()
     
@@ -48,7 +50,7 @@ class ExtendLayerProfileFileReader {
                     ; this.ReadKeyboardOverlay(layerIdentifier, layerInfoContents)
                 }
                 catch Error as e {
-                    Logger.logError("Error while reading keyboard overlay information: " . e.message)
+                    this.Logger.logError("Error while reading keyboard overlay information: " . e.message)
                 }
             }
             else {

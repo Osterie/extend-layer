@@ -51,7 +51,11 @@ class HotkeyLayer {
     }
 
     GetHotkeys() {
-        return this.hotkeys
+        allHotkeys := []
+        for key, hotkey in this.hotkeys {
+            allHotkeys.push(hotkey)
+        }
+        return allHotkeys
     }
 
     getKeyPairValuesToString() {

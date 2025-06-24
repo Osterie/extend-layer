@@ -46,6 +46,8 @@ class ExtendLayerProfile {
     ;     this.hotkeys[layerIdentifier].SetHotkeyAction(hotkeyName, action)
     ; }
 
+    ; TODO refactor
+
     GetRegistryByLayerIdentifier(layerIdentifier) {
         registryToReturn := ""
         if (this.keyboardOverlays.Has(layerIdentifier)) {
@@ -54,10 +56,28 @@ class ExtendLayerProfile {
         else if (this.hotkeys.Has(layerIdentifier)) {
             registryToReturn := this.hotkeys[layerIdentifier]
         }
-        ; else{
-        ;     throw ("No registry found for layer identifier: " . layerIdentifier)
-        ; }
+        else{
+            throw ("No registry found for layer identifier: " . layerIdentifier)
+        }
         return registryToReturn
+    }
+
+    getKeyboardOverlayByLayerIdentifier(layerIdentifier) {
+        if (this.keyboardOverlays.Has(layerIdentifier)) {
+            return this.keyboardOverlays[layerIdentifier]
+        }
+        else {
+            throw ("No keyboard overlay found for layer identifier: " . layerIdentifier)
+        }
+    }
+
+    getHotkeyLayerByLayerIdentifier(layerIdentifier) {
+        if (this.hotkeys.Has(layerIdentifier)) {
+            return this.hotkeys[layerIdentifier]
+        }
+        else {
+            throw ("No hotkey layer found for layer identifier: " . layerIdentifier)
+        }
     }
 
     GetLayerIdentifiers() {
@@ -71,7 +91,8 @@ class ExtendLayerProfile {
         return layerIdentifiers
     }
 
-    GetKeyboardOverlaysRegistry() {
+    GetKeyboardOverlays() {
+        ; TODO return array instead of map?
         return this.keyboardOverlays
     }
 

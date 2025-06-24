@@ -13,18 +13,19 @@ class KeyboardOverlaysInitializer {
 
     __New() {
         this.instanceOfOverlayRegistry := this.ActionGroupsRepository.getActionObjectInstance("OverlayRegistry")
+        this.readAllKeyboardOverlays()
     }
 
     ; TODO add method to read which keys are used to show keyboard overlays, should be in the correct layer section, because only then should they activate
     readAllKeyboardOverlays() {
-        for key, value in ExtendLayerProfileRepository.getInstance().getExtendLayerProfile().GetKeyboardOverlaysRegistry() {
+        keyboardOverlayLayers := ExtendLayerProfileRepository.getInstance().GetKeyboardOverlays()
+        for keyboardOverlayName, keyboardOverlayLayer in keyboardOverlayLayers {
 
             NewKeyboardOverlay := KeyboardOverlay()
             NewKeyboardOverlay.CreateGui()
+            NewKeyboardOverlay.fillKeyboardOverlayInformation(keyboardOverlayLayer)
 
-            NewKeyboardOverlay.fillKeyboardOverlayInformation(value)
-
-            this.instanceOfOverlayRegistry.addKeyboardOverlay(NewKeyboardOverlay, key)
+            this.instanceOfOverlayRegistry.addKeyboardOverlay(NewKeyboardOverlay, keyboardOverlayName)
         }
     }
 
@@ -42,21 +43,21 @@ class KeyboardOverlaysInitializer {
     }
 
     ; FIXME does not work probably TODO
-    changeHotkeysStateForKeyboardOverlaysByLayerSection(layerSection, enableHotkeys := true) {
+    changeHotkeysStateForKeyboardOverlaysByLayerSection(keyboardOverlayLayer, enableHotkeys := true) {
         try {
-
-            for key, value in ExtendLayerProfileRepository.getInstance().getExtendLayerProfile().GetKeyboardOverlaysRegistry() {
-                if (InStr(key, layerSection)) {
+            keyboardOverlayLayers := ExtendLayerProfileRepository.getInstance().GetKeyboardOverlays()
+            for keyboardOverlayName, value in keyboardOverlayLayers {
+                if (InStr(keyboardOverlayName, keyboardOverlayLayer)) {
                     ; TODO use the keyboardOVelray class to create a new keyboard overlay, which then columns are added to
                     ; TODO, each layer should have the "KeyboardOverlayKey" in it, which is then created there and such blah blah blah
-                    showKeyboardOverlayKey := ExtendLayerProfileRepository.getInstance().getExtendLayerProfile().GetRegistryByLayerIdentifier(key).getShowKeyboardOverlayKey()
-                    this.changeHotkeyStateForKeyboardOverlay(key, showKeyboardOverlayKey, enableHotkeys)
-
+                    showKeyboardOverlayKey := ExtendLayerProfileRepository.getInstance().getShowKeyboardOverlayKey(keyboardOverlayName)
+                    this.changeHotkeyStateForKeyboardOverlay(keyboardOverlayName, showKeyboardOverlayKey, enableHotkeys)
                 }
             }
         }
-        catch {
-            msgbox("error in KeyboardOverlaysInitializer, layer section does not exist")
+        catch Error as e {
+
+            msgbox("error in KeyboardOverlaysInitializer: " . e.Message)
             ; overlay does not exist...
         }
     }
@@ -80,11 +81,11 @@ class KeyboardOverlaysInitializer {
 
     hotKeyForHidingKeyboardOverlaysUseMeGlobally() {
         try {
-            for key, value in ExtendLayerProfileRepository.getInstance().getExtendLayerProfile().GetKeyboardOverlaysRegistry() {
-                if (InStr(key, "KeyboardOverlay")) {
-                    showKeyboardOverlayKey := ExtendLayerProfileRepository.getInstance().getExtendLayerProfile().GetRegistryByLayerIdentifier(key).getShowKeyboardOverlayKey()
+            keyboardOverlayLayers := ExtendLayerProfileRepository.getInstance().GetKeyboardOverlays()
+            for keyboardOverlayName, keyboardOverlayLayer in keyboardOverlayLayers {
+                if (InStr(keyboardOverlayName, "KeyboardOverlay")) {
+                    showKeyboardOverlayKey := ExtendLayerProfileRepository.getInstance().getShowKeyboardOverlayKey(keyboardOverlayName)
                     HotKey(showKeyboardOverlayKey . " Up", (ThisHotkey) => this.instanceOfOverlayRegistry.hideAllLayers())
-
                 }
             }
         }

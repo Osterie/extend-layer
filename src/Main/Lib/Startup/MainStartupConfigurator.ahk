@@ -5,16 +5,15 @@
 
 #Include <Util\JsonParsing\JXON>
 
-#Include <Infrastructure\Repositories\ExtendLayerProfile\ExtendLayerProfileRepository>
-
 class MainStartupConfigurator {
 
-    KeyboardOverlayInitializerInstance := ""
+    KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer()
     HotkeyInitializerInstance := HotkeyInitializer()
 
     ; TODO refactor
     
     __New() {
+        this.HotkeyInitializerInstance := HotkeyInitializer()
         this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer()
     }
 
@@ -25,11 +24,6 @@ class MainStartupConfigurator {
             section . "-KeyboardOverlay",
             enableHotkeys
         )
-    }
-
-    ; Reads the ini file for keyboard overlays, and then creates them based on the information in the ini file
-    readAllKeyboardOverlays() {
-        this.KeyboardOverlayInitializerInstance.readAllKeyboardOverlays()
     }
 
     createGlobalHotkeysForAllKeyboardOverlays() {

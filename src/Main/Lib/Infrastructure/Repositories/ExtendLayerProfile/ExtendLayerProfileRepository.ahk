@@ -39,6 +39,35 @@ class ExtendLayerProfileRepository {
         return this.ExtendLayerProfile
     }
 
+    getKeyboardOverlays(){
+        ExtendLayerProfile := this.getExtendLayerProfile()
+        currentKeyboardOverlays := ExtendLayerProfile.GetKeyboardOverlays()
+
+        return currentKeyboardOverlays
+    }
+
+    getShowKeyboardOverlayKey(layerIdentifier) {
+        ExtendLayerProfile := this.getExtendLayerProfile()
+        currentKeyboardOverlayInformation := ExtendLayerProfile.getKeyboardOverlayByLayerIdentifier(layerIdentifier)
+        showKeyboardOverlayKey := currentKeyboardOverlayInformation.GetShowKeyboardOverlayKey()
+        return showKeyboardOverlayKey
+    }
+
+    getKeyboardOverlayByLayerIdentifier(layerIdentifier) {
+        ExtendLayerProfile := this.getExtendLayerProfile()
+        currentKeyboardOverlayInformation := ExtendLayerProfile.getKeyboardOverlayByLayerIdentifier(layerIdentifier)
+        currentKeyboardOverlayElements := currentKeyboardOverlayInformation.getOverlayElements()
+
+        return currentKeyboardOverlayElements
+    }
+
+    getHotkeysForLayer(layerIdentifier) {
+        ExtendLayerProfile := this.getExtendLayerProfile()
+        currentKeyboardLayerInformation := ExtendLayerProfile.GetRegistryByLayerIdentifier(layerIdentifier)
+        currentKeyboardLayerHotkeys := currentKeyboardLayerInformation.GetHotkeys()
+        return currentKeyboardLayerHotkeys
+    }
+
     load() {
         currentProfilePath := FilePaths.GetPathToCurrentKeyboardLayout()
         this.ExtendLayerProfile := this.ExtendLayerProfileFileReader.readExtendLayerProfile(currentProfilePath)

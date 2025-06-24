@@ -117,13 +117,7 @@ class Main {
     }
 
     runMainStartup(enableHotkeys := true) {
-        this.createKeyboardOverlays()
         this.setHotkeysForAllLayers(enableHotkeys)
-    }
-
-    ; Reads and initializes all keyboard overlays, based on how they are created in the ini file
-    createKeyboardOverlays() {
-        this.StartupConfigurator.readAllKeyboardOverlays()
     }
 
     setHotkeysForAllLayers(enableHotkeys := true) {
