@@ -72,4 +72,13 @@ class ExtendLayerProfileRepository {
         currentProfilePath := FilePaths.GetPathToCurrentKeyboardLayout()
         this.ExtendLayerProfile := this.ExtendLayerProfileFileReader.readExtendLayerProfile(currentProfilePath)
     }
+
+    save(ExtendLayerProfile) {
+        if (Type(ExtendLayerProfile) != "ExtendLayerProfile") {
+            this.Logger.logError("The ExtendLayerProfile must be an instance of ExtendLayerProfile.")
+            throw TypeError("The ExtendLayerProfile must be an instance of ExtendLayerProfile.")
+        }
+        currentProfilePath := FilePaths.GetPathToCurrentKeyboardLayout()
+        this.ExtendLayerProfileFileReader.writeExtendLayerProfile(ExtendLayerProfile, currentProfilePath)
+    }
 }

@@ -4,7 +4,7 @@
 #Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotKeyInfo>
 
 class HotkeyLayerMapper {
-    Map(layerIdentifier, layerInfoContents) {
+    MapToDomainClass(layerIdentifier, layerInfoContents) {
         layer := HotkeyLayer(layerIdentifier)
         for hotkeyName, info in layerInfoContents {
             hotkey := HotKeyInfo(hotkeyName)

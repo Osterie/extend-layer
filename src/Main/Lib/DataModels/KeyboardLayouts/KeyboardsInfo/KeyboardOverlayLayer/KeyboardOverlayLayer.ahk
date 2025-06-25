@@ -45,4 +45,22 @@ class KeyboardOverlayLayer {
             elements.push([KeyboardOverlayElement.getKey(), KeyboardOverlayElement.getDescription()])
         return elements
     }
+
+    toJson(){
+        jsonObject := Map()
+        jsonObject["ShowKeyboardOverlayKey"] := this.ShowKeyboardOverlayKey
+        jsonObject["overlayElements"] := Map()
+
+        for elementName, elementInfo in this.OverlayElements {
+            jsonObject["overlayElements"][elementName] := Map()
+            jsonObject["overlayElements"][elementName]["key"] := elementInfo.getKey()
+            jsonObject["overlayElements"][elementName]["description"] := elementInfo.getDescription()
+        }
+
+        return jsonObject
+    }
+
+    fromJson(jsonObject){
+        throw "Not implemented yet."
+    }
 }

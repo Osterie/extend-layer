@@ -14,9 +14,10 @@ class KeyboadLayersInfoClassObjectReader {
 
     readObjectToJson(KeyboardLayersInfoRegister) {
         if (Type(KeyboardLayersInfoRegister) != "ExtendLayerProfile") {
-            Logger.logError("The KeyboardLayersInfoRegister must be an instance of ExtendLayerProfile.")
+            this.Logger.logError("The KeyboardLayersInfoRegister must be an instance of ExtendLayerProfile.")
             throw TypeError("The KeyboardLayersInfoRegister must be an instance of ExtendLayerProfile.")
         }
+
         visualOverlayMap := KeyboardLayersInfoRegister.GetKeyboardOverlays()
         hotkeysMap := KeyboardLayersInfoRegister.GetHotkeyLayer()
         this.readVisualOverlay(visualOverlayMap)

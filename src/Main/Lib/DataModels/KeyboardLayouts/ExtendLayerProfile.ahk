@@ -4,19 +4,16 @@
 ; KeyboardLayersInfoRegistry
 class ExtendLayerProfile {
 
-    keyboardOverlays := ""
-    hotkeys := ""
+    keyboardOverlayLayers := Map()
+    hotkeys := Map()
 
     __New() {
-        this.keyboardOverlays := Map()
-        this.hotkeys := Map()
-
-        this.keyboardOverlays.Defualt := 0
+        this.keyboardOverlayLayers.Defualt := 0
         this.hotkeys.Defualt := 0
     }
 
-    AddKeyboardOverlayLayerInfo(KeyboardOverlay) {
-        this.keyboardOverlays[KeyboardOverlay.GetLayerIdentifier()] := KeyboardOverlay
+    AddKeyboardOverlayLayerInfo(KeyboardOverlayLayer) {
+        this.keyboardOverlayLayers[KeyboardOverlayLayer.GetLayerIdentifier()] := KeyboardOverlayLayer
     }
 
     AddHotkeyLayer(Hotkeys) {
@@ -50,8 +47,8 @@ class ExtendLayerProfile {
 
     GetRegistryByLayerIdentifier(layerIdentifier) {
         registryToReturn := ""
-        if (this.keyboardOverlays.Has(layerIdentifier)) {
-            registryToReturn := this.keyboardOverlays[layerIdentifier]
+        if (this.keyboardOverlayLayers.Has(layerIdentifier)) {
+            registryToReturn := this.keyboardOverlayLayers[layerIdentifier]
         }
         else if (this.hotkeys.Has(layerIdentifier)) {
             registryToReturn := this.hotkeys[layerIdentifier]
@@ -63,8 +60,8 @@ class ExtendLayerProfile {
     }
 
     getKeyboardOverlayByLayerIdentifier(layerIdentifier) {
-        if (this.keyboardOverlays.Has(layerIdentifier)) {
-            return this.keyboardOverlays[layerIdentifier]
+        if (this.keyboardOverlayLayers.Has(layerIdentifier)) {
+            return this.keyboardOverlayLayers[layerIdentifier]
         }
         else {
             throw ("No keyboard overlay found for layer identifier: " . layerIdentifier)
@@ -85,7 +82,7 @@ class ExtendLayerProfile {
         for layerIdentifier, layerInfo in this.hotkeys {
             layerIdentifiers.Push(layerIdentifier)
         }
-        for layerIdentifier, layerInfo in this.keyboardOverlays {
+        for layerIdentifier, layerInfo in this.keyboardOverlayLayers {
             layerIdentifiers.Push(layerIdentifier)
         }
         return layerIdentifiers
@@ -93,7 +90,7 @@ class ExtendLayerProfile {
 
     GetKeyboardOverlays() {
         ; TODO return array instead of map?
-        return this.keyboardOverlays
+        return this.keyboardOverlayLayers
     }
 
     GetHotkeyLayer() {
@@ -102,5 +99,24 @@ class ExtendLayerProfile {
 
     GetHotkeyInfoForLayer(layerIdentifier, hotkeyKey) {
         return this.GetRegistryByLayerIdentifier(layerIdentifier).GetHotkey(hotkeyKey)
+    }
+
+    toJson(){
+        jsonObject := Map()
+        
+        for hotkeyLayerIdentifier, HotkeyLayer in this.hotkeys {
+            jsonObject[hotkeyLayerIdentifier] := HotkeyLayer.toJson()
+        }
+        
+        for keyboardOverlayLayerIdentifier, KeyboardOverlayLayer in this.keyboardOverlayLayers {
+            jsonObject[keyboardOverlayLayerIdentifier] := KeyboardOverlayLayer.toJson()
+        }
+        
+        return jsonObject
+    }
+
+    fromJson(jsonObject) {
+        ; TODO implement this
+        throw "Not implemented yet"
     }
 }

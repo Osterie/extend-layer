@@ -1,8 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include <DataModels\KeyboardLayouts\ExtendLayerProfile>
-#Include <Infrastructure\Repositories\ExtendLayerProfile\HotkeyLayerMapper>
-#Include <Infrastructure\Repositories\ExtendLayerProfile\KeyboardOverlayMapper>
+#Include <Infrastructure\Repositories\ExtendLayerProfile\ExtendLayerProfileMapper>
 
 #Include <Util\JsonParsing\JXON>
 
@@ -15,15 +14,13 @@ class ExtendLayerProfileFileReader {
 
     ; TODO does not need to be field probably.
     ExtendLayerProfile := ExtendLayerProfile()
-    
+
     readExtendLayerProfile(profilePath) {
         if (!FileExist(profilePath)) {
             throw ValueError("The specified profile path does not exist: " . profilePath)
         }
 
-        HotkeyLayerMapper_ := HotkeyLayerMapper()
-        KeyboardOverlayMapper_ := KeyboardOverlayMapper()
-
+        ; TOOO make method for converting to json object.
         jsonString := ""
 
         try {
@@ -37,28 +34,26 @@ class ExtendLayerProfileFileReader {
 
         extendLayerProfileJsonObject := jxon_load(&jsonString)
 
-        for layerIdentifier, layerInfoContents in extendLayerProfileJsonObject {
-            if (InStr(layerIdentifier, "Hotkeys")) {
-                HotkeyLayer_ := HotkeyLayerMapper_.Map(layerIdentifier, layerInfoContents)
-                this.ExtendLayerProfile.addHotkeyLayer(HotkeyLayer_)
-                ; this.readHotkeys(layerIdentifier, layerinfoContents)
-            }
-            else if (InStr(layerIdentifier, "KeyboardOverlay")) {
-                try {
-                    KeyboardOverlayLayer_ := KeyboardOverlayMapper_.Map(layerIdentifier, layerInfoContents)
-                    this.ExtendLayerProfile.AddKeyboardOverlayLayerInfo(KeyboardOverlayLayer_)
-                    ; this.ReadKeyboardOverlay(layerIdentifier, layerInfoContents)
-                }
-                catch Error as e {
-                    this.Logger.logError("Error while reading keyboard overlay information: " . e.message)
-                }
-            }
-            else {
-                throw ("Unknown layer type: " . layerIdentifier)
-            }
-        }
+        ExtendLayerProfileMapper_ := ExtendLayerProfileMapper()
+        this.ExtendLayerProfile := ExtendLayerProfileMapper_.MapToDomainClass(extendLayerProfileJsonObject)
 
         return this.ExtendLayerProfile
-        
+
+    }
+
+    writeExtendLayerProfile(ExtendLayerProfile, profilePath) {
+        if (Type(ExtendLayerProfile) != "ExtendLayerProfile") {
+            this.Logger.logError("The provided ExtendLayerProfile must be an instance of ExtendLayerProfile.")
+            throw TypeError("The provided ExtendLayerProfile must be an instance of ExtendLayerProfile.")
+        }
+        if (!FileExist(profilePath)) {
+            this.Logger.logError("The specified profile path does not exist: " . profilePath)
+            throw ValueError("The specified profile path does not exist: " . profilePath)
+        }
+        formatterForJson := JsonFormatter()
+        jsonString := formatterForJson.FormatJsonObject(ExtendLayerProfile.toJson())
+
+        FileRecycle(profilePath)
+        FileAppend(jsonString, profilePath, "UTF-8")
     }
 }

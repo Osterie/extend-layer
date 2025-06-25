@@ -73,4 +73,27 @@ class HotkeyLayer {
 
         return elements
     }
+
+    toJson() {
+        jsonObject := Map()
+        for hotkeyName, hotkeyInfo in this.hotkeys {
+            jsonObject[hotkeyName] := Map()
+            if (hotkeyInfo.hotkeyIsObject()) {
+                jsonObject[hotkeyName]["isObject"] := true
+                jsonObject[hotkeyName]["ObjectName"] := hotkeyInfo.getObjectName()
+                jsonObject[hotkeyName]["MethodName"] := hotkeyInfo.getActionName()
+                jsonObject[hotkeyName]["Parameters"] := hotkeyInfo.getParameters()
+            } else {
+                jsonObject[hotkeyName]["isObject"] := false
+                jsonObject[hotkeyName]["key"] := hotkeyInfo.getNewHotkeyName()
+                jsonObject[hotkeyName]["modifiers"] := hotkeyInfo.getNewHotkeyModifiers()
+            }
+        }
+        return jsonObject
+    }
+
+    ; TODO implement?
+    fromJson(jsonObject) {
+        throw "Not implemented yet."
+    }
 }

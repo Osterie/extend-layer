@@ -5,7 +5,6 @@
 #Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotKeyInfo>
 
 #Include <Infrastructure\Repositories\ActionSettingsRepository>
-#Include <Infrastructure\Repositories\ExtendLayerProfile\ToJsonFileWriter>
 #Include <Infrastructure\Repositories\ExtendLayerProfile\ExtendLayerProfileRepository>
 
 class ExtraKeyboards {
@@ -29,21 +28,17 @@ class ExtraKeyboards {
         this.keyboardLayersInfoRegister.changeHotkey(this.GetCurrentLayer(), originalHotkey, newHotkey)
         this.keyboardLayersInfoRegister.ChangeAction(this.GetCurrentLayer(), newHotkey, newAction)
 
-        ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() .
-        "\Keyboards.json")
+        ExtendLayerProfileRepository.getInstance().save(this.keyboardLayersInfoRegister)
     }
 
     addHotkey(newAction) {
         this.keyboardLayersInfoRegister.addHotkey(this.GetCurrentLayer(), newAction)
-        ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() .
-        "\Keyboards.json")
+        ExtendLayerProfileRepository.getInstance().save(this.keyboardLayersInfoRegister)
     }
 
     deleteHotkey(hotkeyKey) {
         this.keyboardLayersInfoRegister.deleteHotkey(this.GetCurrentLayer(), hotkeyKey)
-
-        ToJsonFileWriter.WriteKeyboardLayersInfoRegisterToJsonFile(this.keyboardLayersInfoRegister, this.GetPathToCurrentProfile() .
-        "\Keyboards.json")
+        ExtendLayerProfileRepository.getInstance().save(this.keyboardLayersInfoRegister)
     }
 
     getActionGroupNames() {

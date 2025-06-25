@@ -4,7 +4,8 @@
 #Include <DataModels\KeyboardLayouts\KeyboardsInfo\KeyboardOverlayLayer\KeyboardOverlayElement>
 
 class KeyboardOverlayMapper {
-    Map(layerIdentifier, layerInfoContents) {
+    
+    MapToDomainClass(layerIdentifier, layerInfoContents) {
         if !layerInfoContents.Has("ShowKeyboardOverlayKey")
             throw "Missing 'ShowKeyboardOverlayKey'"
 
@@ -18,4 +19,6 @@ class KeyboardOverlayMapper {
         }
         return layer
     }
+
+    ; MapToJsonObject(KeyboardOverlayLayer)
 }
