@@ -6,7 +6,7 @@
 #Include <Infrastructure\Repositories\VersionRepository>
 #Include <Util\Downloading\Downloader>
 #Include <Shared\Logger>
-#Include <Util\FileOverwriteManager>
+#Include <Infrastructure\IO\FileOverwriteManager>
 #Include <Shared\FilePaths>
 
 class AutoUpdater {
