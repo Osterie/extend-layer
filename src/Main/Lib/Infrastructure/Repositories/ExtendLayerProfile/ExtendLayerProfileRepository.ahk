@@ -4,11 +4,11 @@
 
 #Include <DataModels\KeyboardLayouts\ExtendLayerProfile>
 
-#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotKeyInfo>
-#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotkeyLayer>
+#Include <DataModels\KeyboardLayouts\HotkeyLayer\HotKeyInfo>
+#Include <DataModels\KeyboardLayouts\HotkeyLayer\HotkeyLayer>
 
-#Include <DataModels\KeyboardLayouts\KeyboardsInfo\KeyboardOverlayLayer\KeyboardOverlayElement>
-#Include <DataModels\KeyboardLayouts\KeyboardsInfo\KeyboardOverlayLayer\KeyboardOverlayLayer>
+#Include <DataModels\KeyboardLayouts\KeyboardOverlayLayer\KeyboardOverlayElement>
+#Include <DataModels\KeyboardLayouts\KeyboardOverlayLayer\KeyboardOverlayLayer>
 
 #Include <Util\JsonParsing\JXON>
 

@@ -5,7 +5,7 @@
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfiguration.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationController.ahk"
 #Include "Main\Functionality\KeyboardEditing\HotkeyConfigurator.ahk"
-#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotKeyInfo>
+#Include <DataModels\KeyboardLayouts\HotkeyLayer\HotKeyInfo>
 
 #Include <Updater\UpdateDialog>
 

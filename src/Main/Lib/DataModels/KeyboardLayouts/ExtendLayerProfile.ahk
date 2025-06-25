@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotkeyLayer>
-#Include <DataModels\KeyboardLayouts\KeyboardsInfo\KeyboardOverlayLayer\KeyboardOverlayLayer>
+#Include <DataModels\KeyboardLayouts\HotkeyLayer\HotkeyLayer>
+#Include <DataModels\KeyboardLayouts\KeyboardOverlayLayer\KeyboardOverlayLayer>
 
 #Include <Shared\Logger>
 ; TODO perhaps this should work together with the main startupr configurator which creates all the hotkeys

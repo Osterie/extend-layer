@@ -2,7 +2,7 @@
 
 #Include <Infrastructure\IO\IniFileReader>
 #Include <Shared\FilePaths>
-#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotKeyInfo>
+#Include <DataModels\KeyboardLayouts\HotkeyLayer\HotKeyInfo>
 
 #Include <Infrastructure\Repositories\ActionSettingsRepository>
 #Include <Infrastructure\Repositories\ExtendLayerProfile\ExtendLayerProfileRepository>

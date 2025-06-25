@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotKeyInfo>
+#Include <DataModels\KeyboardLayouts\HotkeyLayer\HotKeyInfo>
 
 #Include <Util\Formaters\HotkeyFormatter>
 
