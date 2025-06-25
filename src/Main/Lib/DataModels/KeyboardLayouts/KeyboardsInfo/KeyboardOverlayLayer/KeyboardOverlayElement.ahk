@@ -26,4 +26,22 @@ class KeyboardOverlayElement {
     getDescription() {
         return this.description
     }
+
+    toJson() {
+        jsonObject := Map()
+        jsonObject["elementName"] := this.elementName
+        jsonObject["key"] := this.key
+        jsonObject["description"] := this.description
+        return jsonObject
+    }
+
+    static fromJson(jsonObject) {
+        if (jsonObject = "") {
+            return ""
+        }
+        elementName := jsonObject["elementName"]
+        key := jsonObject["key"]
+        description := jsonObject["description"]
+        return KeyboardOverlayElement(elementName, key, description)
+    }
 }

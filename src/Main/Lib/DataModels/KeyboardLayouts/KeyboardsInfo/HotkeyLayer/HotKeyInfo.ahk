@@ -136,4 +136,33 @@ class HotKeyInfo {
     getParameters() {
         return this.parameters
     }
+
+    toJson() {
+        jsonObject := Map()
+        if (this.hotkeyIsObject()) {
+            jsonObject["isObject"] := true
+            jsonObject["ObjectName"] := this.getObjectName()
+            jsonObject["MethodName"] := this.getActionName()
+            jsonObject["Parameters"] := this.getParameters()
+        } else {
+            jsonObject["isObject"] := false
+            jsonObject["key"] := this.getNewHotkeyName()
+            jsonObject["modifiers"] := this.getNewHotkeyModifiers()
+        }
+        return jsonObject
+    }
+
+    static fromJson(hotkeyName, jsonObject) {
+        hotkey := HotKeyInfo(hotkeyName)
+        if (jsonObject["isObject"]) {
+            hotkey.setInfoForSpecialHotKey(jsonObject["ObjectName"], jsonObject["MethodName"], jsonObject["Parameters"])
+        } 
+        else if (jsonObject["isObject"] = false) {
+            hotkey.setInfoForNormalHotKey(jsonObject["key"], jsonObject["modifiers"])
+        }
+        else {
+            throw ValueError("Unknown hotkey type: " . jsonObject)
+        }
+        return hotkey
+    }
 }

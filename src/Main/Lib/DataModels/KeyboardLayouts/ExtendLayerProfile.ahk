@@ -1,9 +1,14 @@
 #Requires AutoHotkey v2.0
 
+#Include <DataModels\KeyboardLayouts\KeyboardsInfo\HotkeyLayer\HotkeyLayer>
+#Include <DataModels\KeyboardLayouts\KeyboardsInfo\KeyboardOverlayLayer\KeyboardOverlayLayer>
+
+#Include <Shared\Logger>
 ; TODO perhaps this should work together with the main startupr configurator which creates all the hotkeys
 ; KeyboardLayersInfoRegistry
 class ExtendLayerProfile {
 
+    Logger := Logger.getInstance()
     keyboardOverlayLayers := Map()
     hotkeys := Map()
 
@@ -53,7 +58,7 @@ class ExtendLayerProfile {
         else if (this.hotkeys.Has(layerIdentifier)) {
             registryToReturn := this.hotkeys[layerIdentifier]
         }
-        else{
+        else {
             throw ("No registry found for layer identifier: " . layerIdentifier)
         }
         return registryToReturn
@@ -101,22 +106,43 @@ class ExtendLayerProfile {
         return this.GetRegistryByLayerIdentifier(layerIdentifier).GetHotkey(hotkeyKey)
     }
 
-    toJson(){
+    toJson() {
         jsonObject := Map()
-        
+
         for hotkeyLayerIdentifier, HotkeyLayer in this.hotkeys {
             jsonObject[hotkeyLayerIdentifier] := HotkeyLayer.toJson()
         }
-        
+
         for keyboardOverlayLayerIdentifier, KeyboardOverlayLayer in this.keyboardOverlayLayers {
             jsonObject[keyboardOverlayLayerIdentifier] := KeyboardOverlayLayer.toJson()
         }
-        
+
         return jsonObject
     }
 
-    fromJson(jsonObject) {
-        ; TODO implement this
-        throw "Not implemented yet"
+    static fromJson(jsonObject) {
+
+        ExtendLayerProfile_ := ExtendLayerProfile()
+
+        for layerIdentifier, layerInfoContents in jsonObject {
+            if (InStr(layerIdentifier, "Hotkeys")) {
+                HotkeyLayer_ := HotkeyLayer.fromJson(layerIdentifier, layerInfoContents)
+                ExtendLayerProfile_.addHotkeyLayer(HotkeyLayer_)
+            }
+            else if (InStr(layerIdentifier, "KeyboardOverlay")) {
+                try {
+                    KeyboardOverlayLayer_ := KeyboardOverlayLayer.fromJson(layerIdentifier, layerInfoContents)
+                    ExtendLayerProfile_.AddKeyboardOverlayLayerInfo(KeyboardOverlayLayer_)
+                }
+                catch Error as e {
+                    Logger.getInstance().logError("Error while reading keyboard overlay information: " . e.message)
+                }
+            }
+            else {
+                throw ("Unknown layer type: " . layerIdentifier)
+            }
+        }
+
+        return ExtendLayerProfile_
     }
 }

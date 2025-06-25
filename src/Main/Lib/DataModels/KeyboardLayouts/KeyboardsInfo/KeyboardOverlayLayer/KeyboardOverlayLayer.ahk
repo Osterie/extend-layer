@@ -51,16 +51,27 @@ class KeyboardOverlayLayer {
         jsonObject["ShowKeyboardOverlayKey"] := this.ShowKeyboardOverlayKey
         jsonObject["overlayElements"] := Map()
 
-        for elementName, elementInfo in this.OverlayElements {
-            jsonObject["overlayElements"][elementName] := Map()
-            jsonObject["overlayElements"][elementName]["key"] := elementInfo.getKey()
-            jsonObject["overlayElements"][elementName]["description"] := elementInfo.getDescription()
+        for elementName, keyboardOverlayElement in this.OverlayElements {
+            jsonObject["overlayElements"][elementName] := keyboardOverlayElement.toJson()
         }
 
         return jsonObject
     }
 
-    fromJson(jsonObject){
-        throw "Not implemented yet."
+    static fromJson(layerIdentifier, jsonObject){
+        if (!jsonObject.Has("ShowKeyboardOverlayKey")){
+            throw ValueError("Keyboard verlay json object missing 'ShowKeyboardOverlayKey'")
+        }
+        if (!jsonObject.Has("overlayElements")) {
+            throw ValueError("Keyboard verlay json object missing 'overlayElements'")
+        }
+
+        layer := KeyboardOverlayLayer(jsonObject["ShowKeyboardOverlayKey"], layerIdentifier)
+
+        for name, info in jsonObject["overlayElements"] {
+            KeyboardOverlayElement_ := KeyboardOverlayElement.fromJson(info)
+            layer.addKeyboardOverlayElement(KeyboardOverlayElement_)
+        }
+        return layer
     }
 }

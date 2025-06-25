@@ -1,9 +1,9 @@
 #Requires AutoHotkey v2.0
 
 #Include <DataModels\KeyboardLayouts\ExtendLayerProfile>
-#Include <Infrastructure\Repositories\ExtendLayerProfile\ExtendLayerProfileMapper>
 
 #Include <Util\JsonParsing\JXON>
+#Include <Util\Formaters\JsonFormatter>
 
 #Include <Shared\FilePaths>
 #Include <Shared\Logger>
@@ -11,9 +11,6 @@
 class ExtendLayerProfileFileReader {
 
     Logger := Logger.getInstance()
-
-    ; TODO does not need to be field probably.
-    ExtendLayerProfile := ExtendLayerProfile()
 
     readExtendLayerProfile(profilePath) {
         if (!FileExist(profilePath)) {
@@ -34,10 +31,7 @@ class ExtendLayerProfileFileReader {
 
         extendLayerProfileJsonObject := jxon_load(&jsonString)
 
-        ExtendLayerProfileMapper_ := ExtendLayerProfileMapper()
-        this.ExtendLayerProfile := ExtendLayerProfileMapper_.MapToDomainClass(extendLayerProfileJsonObject)
-
-        return this.ExtendLayerProfile
+        return ExtendLayerProfile.fromJson(extendLayerProfileJsonObject)
 
     }
 
