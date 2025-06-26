@@ -7,8 +7,8 @@ class UpdaterRunner {
 
     Logger := Logger.getInstance()
 
-    ORIGINAL_UPDATER_LOCATION := A_ScriptDir "\Lib\Updater\Updater.exe"
-    TEMPORARY_UPDATER_LOCATION := A_Temp "\Updater.exe"
+    ORIGINAL_UPDATER_LOCATION := A_ScriptDir "\Lib\Updater\Updater.ahk"
+    TEMPORARY_UPDATER_LOCATION := A_Temp "\Updater.ahk"
 
     
     runUpdater(sourceDirectory, destinationDirectory, rerunMainScript := false, newVersion := "") {
@@ -18,14 +18,19 @@ class UpdaterRunner {
 
     prepare(){
         if (!FileExist(this.ORIGINAL_UPDATER_LOCATION)) {
-            this.Logger.logError("Updater.exe does not exist in the expected location: " this.ORIGINAL_UPDATER_LOCATION)
-            throw Error("Updater.exe does not exist in the expected location: " this.ORIGINAL_UPDATER_LOCATION)
+            this.Logger.logError("Updater.ahk does not exist in the expected location: " this.ORIGINAL_UPDATER_LOCATION)
+            throw Error("Updater.ahk does not exist in the expected location: " this.ORIGINAL_UPDATER_LOCATION)
         }
-        
-        processSuccessfullyClosed := closeProcess("Updater.exe")
-        if (!processSuccessfullyClosed) {
-            this.Logger.logError("Failed to close Updater.exe before copying.")
-            throw Error("Failed to close Updater.exe before copying.")
+
+        hwnd := WinExist("Updater ahk_class AutoHotkey")
+
+        processSuccessfullyClosed := true
+        if hwnd {
+            updaterPid := WinGetPID("ahk_id " hwnd)
+            if (!closeProcess(updaterPid)) {
+                this.Logger.logError("Failed to close Updater.ahk before copying.")
+                throw Error("Failed to close Updater.ahk before copying.")
+            } 
         }
         
         try {
@@ -36,22 +41,22 @@ class UpdaterRunner {
             FileCopy(this.ORIGINAL_UPDATER_LOCATION, this.TEMPORARY_UPDATER_LOCATION, true) ; true = overwrite if exists
         }
         catch Error as e {
-            this.Logger.logError("Failed to copy Updater.exe to temporary location: " e.Message, "AutoUpdater.ahk", A_LineNumber)
-            throw Error("Failed to copy Updater.exe to temporary location: " e.Message)
+            this.Logger.logError("Failed to copy Updater.ahk to temporary location: " e.Message, "AutoUpdater.ahk", A_LineNumber)
+            throw Error("Failed to copy Updater.ahk to temporary location: " e.Message)
         }
 
         ; Confirm updater was copied successfully to the temporary location
         if !FileExist(this.TEMPORARY_UPDATER_LOCATION) {
-            this.Logger.logError("Failed to copy Updater.exe to temp directory.")
-            throw Error("Failed to copy Updater.exe to temp directory.")
+            this.Logger.logError("Failed to copy Updater.ahk to temp directory.")
+            throw Error("Failed to copy Updater.ahk to temp directory.")
         }
     }
 
     execute(sourceDirectory, destinationDirectory, rerunMainScript, newVersion) {
 
         if (!FileExist(this.TEMPORARY_UPDATER_LOCATION)) {
-            this.Logger.logError("Failed to copy Updater.exe to temp directory.")
-            throw Error("Failed to copy Updater.exe to temp directory.")
+            this.Logger.logError("Failed to copy Updater.ahk to temp directory.")
+            throw Error("Failed to copy Updater.ahk to temp directory.")
         }
         
         ; Command line arguments to pass to the updater executable
@@ -59,8 +64,9 @@ class UpdaterRunner {
         
         
         version := newVersion ; New version to update to, if provided. For example "v0.4.6-alpha"
+        ; TODO create FilePaths get methods.
         pathToVersionFile := FilePaths.GetAbsolutePathToRoot() . "config\Version.json" ; Path to the version file to update with the latest version information.
-        pathToControlScript := FilePaths.GetAbsolutePathToRoot() . "src\controlScript.exe" ; Path to the control script to restart after the update (only restarts if it is running).
+        pathToControlScript := FilePaths.GetAbsolutePathToRoot() . "src\controlScript.ahk" ; Path to the control script to restart after the update (only restarts if it is running).
         
         emptyArgument := ""
         if (newVersion = "") {

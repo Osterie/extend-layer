@@ -3,10 +3,14 @@
 #NoTrayIcon
 
 ; Only run in compiled mode, must be at least 2 argument, up to 7 arguments.
-if (!A_IsCompiled || A_Args.Length < 2 || A_Args.Length > 7) {
+if (A_Args.Length < 2 || A_Args.Length > 7) {
     MsgBox "Update failed. This script should only be run in compiled mode with 2 to 7 arguments."
     ExitApp
 }
+
+; --- Set a visible window title for easier identification ---
+DetectHiddenWindows(true)
+WinSetTitle("Updater", "ahk_id " A_ScriptHwnd)
 
 sourceDir := A_Args[1] ; The source directory where the updated files are located. Required.
 destinationDir := A_Args[2] ; The destination directory where the current version is stored. Required.
@@ -15,6 +19,9 @@ mainScript := A_Args.Length >= 4 ? A_Args[4] : "" ; The main script to restart a
 latestVersionInfo := A_Args.Length >= 5 ? A_Args[5] : "" ; The latest version information to update in the version file. Optional.
 pathToVersionFile := A_Args.Length >= 6 ? A_Args[6] : "" ; The path to the version file to update with the latest version information. Optional.
 pathToControlScript := A_Args.Length >= 7 ? A_Args[7] : "" ; The path to the control script to restart after the update. Optional.
+
+; Backup directory for the current version, which is created in the temp directory with a timestamp.
+backupDir := A_Temp . "\extend-layer-backup" . A_Now
 
 ; Check if the source and destination directories exist, and if main script exists, given that it is provided.
 checkDirectoriesAndMainScript()
@@ -64,7 +71,6 @@ backupCurrentVersion() {
     try {
         ; Createa a backup of the current version before updating.
         ; Backup is placed in windows temp directory with a timestamp.
-        backupDir := A_Temp . "\extend-layer-backup" . A_Now
         DirCopy(destinationDir, backupDir, true) ; true = overwrite
     } catch Error as err {
         MsgBox "❌ Failed to create backup of current version:`n" err.Message
@@ -76,31 +82,20 @@ restoreBackup() {
     try {
         ; Restore the backup of the current version.
         ; Backup is placed in windows temp directory with a timestamp.
-        backupDir := A_Temp . "\extend-layer-backup" . A_Now
         if !DirExist(backupDir) {
             MsgBox("❌ Backup directory does not exist: " backupDir)
             ExitApp
         }
-        DirDelete(destinationDir, true) ; true = recursive delete
+        if (DirExist(destinationDir)) {
+            DirDelete(destinationDir, true) ; true = recursive delete
+        }
         DirCopy(backupDir, destinationDir, true) ; true = overwrite
         MsgBox("✅ Backup restored successfully from: " backupDir)
     } catch Error as err {
-        try{
-            backupRestoreLocation := destinationDir . "\backup-restore"
-            DirCopy(backupDir, backupRestoreLocation, true) ; true = overwrite
-        }
-        catch{
-            MsgBox("❌ Failed to restore backup of current version, and failed to copy backup to: " backupRestoreLocation 
-                . "`n" 
-                . err.Message
-            )
-            ExitApp
-        }
         MsgBox("❌ Failed to restore backup of current version:`n" 
         . err.Message 
-        . "`n You can find the backup at: " backupRestoreLocation 
-        . "Or at " 
-        . backupDir
+        . err.Line
+        . "`n You can find the backup at: " backupDir 
         )
         ExitApp
     }
@@ -109,9 +104,14 @@ restoreBackup() {
 updateCurrentVersion(){
     try {
 
-        controlScriptWasRunning := ProcessExist("controlScript.exe") ? true : false
-        if (!closeProcess("controlScript.exe")) {
-            throw Error("controlScript did not close in time.")
+        hwnd := WinExist("ControlScript ahk_class AutoHotkey")
+
+        if (hwnd){
+            controlScriptPid := WinGetPID("ahk_id " hwnd)
+            controlScriptWasRunning := ProcessExist(controlScriptPid) ? true : false
+            if (!closeProcess(controlScriptPid)) {
+                throw Error("controlScript did not close in time.")
+            }
         }
 
         DirDelete(destinationDir, true) ; true = recursive delete
@@ -140,7 +140,7 @@ restartControlScript() {
     try {
         Run pathToControlScript
     } catch Error as err {
-        MsgBox "✅ Update applied, but failed to restart controlScript.exe:`n" err.Message
+        MsgBox "✅ Update applied, but failed to restart controlScript.ahk:`n" err.Message
     }
 }
 

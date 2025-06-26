@@ -20,8 +20,8 @@ class AutoUpdater {
 
     ; Paths to original updater and location to copy it to. Updater is launched from the temporary location.
     ; Since it is not possible to update the running script, we need to copy the updater to a temporary location and run it from there.
-    ORIGINAL_UPDATER_LOCATION := A_ScriptDir "\Lib\Updater\Updater.exe"
-    TEMPORARY_UPDATER_LOCATION := A_Temp "\Updater.exe"
+    ORIGINAL_UPDATER_LOCATION := A_ScriptDir "\Lib\Updater\Updater.ahk"
+    TEMPORARY_UPDATER_LOCATION := A_Temp "\Updater.ahk"
 
     __New() {
         currentVersion := this.Version.getCurrentVersion()
