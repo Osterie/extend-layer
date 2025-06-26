@@ -21,7 +21,14 @@ pathToVersionFile := A_Args.Length >= 6 ? A_Args[6] : "" ; The path to the versi
 pathToControlScript := A_Args.Length >= 7 ? A_Args[7] : "" ; The path to the control script to restart after the update. Optional.
 
 ; Backup directory for the current version, which is created in the temp directory with a timestamp.
-backupDir := A_Temp . "\extend-layer-backup" . A_Now
+backupDir := A_Temp . "\extend-layer\backups\extend-layer-backup" . A_Now
+
+if (!DirExist(A_Temp . "\extend-layer")) {
+    DirCreate(A_Temp . "\extend-layer") ; Create the extend-layer directory in the temp directory if it does not exist.
+}
+if (!DirExist(A_Temp . "\extend-layer\backups")) {
+    DirCreate(A_Temp . "\extend-layer\backups") ; Create the backups directory in the temp directory if it does not exist.
+}
 
 ; Check if the source and destination directories exist, and if main script exists, given that it is provided.
 checkDirectoriesAndMainScript()

@@ -8,7 +8,7 @@ class Logger {
     static instance := false
 
     logDir := FilePaths.GetPathToLogs()
-    logFile := this.logDir . "/error.log"
+    logFile := this.logDir . "\error.log"
 
     __New() {
         ; Emtpy

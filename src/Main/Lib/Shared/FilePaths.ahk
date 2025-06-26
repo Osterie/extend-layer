@@ -2,33 +2,43 @@
 
 class FilePaths {
 
-    static PATH_TO_THEMES := "../../config/Themes.json"
+    static PATH_TO_THEMES := "..\..\config\Themes.json"
 
-    static PATH_TO_LOGS := "../../logs"
+    static PATH_TO_LOGS := "..\..\logs"
 
-    static PATH_TO_UPDATE_MANIFEST := "../../update-manifest.json"
+    static PATH_TO_UPDATE_MANIFEST := "..\..\update-manifest.json"
 
-    static PATH_TO_VERSION := "../../config/Version.json"
+    static PATH_TO_VERSION := "..\..\config\Version.json"
 
-    static PATH_TO_META_INI_FILE := "../../config/meta.ini"
+    static PATH_TO_META_INI_FILE := "..\..\config\meta.ini"
 
     static DEFAULT_PROFILE := "Default"
-
-    static ABSOLUTE_PATH_TO_ROOT := A_ScriptDir . "/../../"
-
-    static ACTION_GROUPS_INFO := "../../config/ActionGroupsInfo.json"
     
-    static KEY_NAMES := "../../resources/keyNames.txt"
+    static PATH_TO_TEMPORARY_LOCATION := A_Temp . "\extend-layer"
 
-    static PATH_TO_PRESET_PROFILES := "../../config/PresetProfiles"
-    static PATH_TO_PROFILES := "../../config/UserProfiles"
+    static ABSOLUTE_PATH_TO_ROOT := A_ScriptDir . "\..\..\"
 
-    static PATH_TO_EMPTY_PROFILE := "../../config/PresetProfiles/EmptyProfile"
-    static PATH_TO_EMPTY_KEYBOARD_PROFILE := "../../config/PresetProfiles/EmptyProfile/Keyboards.json"
-    static PATH_TO_EMPTY_SETTINGS_PROFILE := "../../config/PresetProfiles/EmptyProfile/ClassObjects.ini"
+    
+    static ACTION_GROUPS_INFO := "..\..\config\ActionGroupsInfo.json"
+    
+    static KEY_NAMES := "..\..\resources\keyNames.txt"
+
+    static PATH_TO_PRESET_PROFILES := "..\..\config\PresetProfiles"
+    static PATH_TO_PROFILES := "..\..\config\UserProfiles"
+
+    static PATH_TO_EMPTY_PROFILE := "..\..\config\PresetProfiles\EmptyProfile"
+    static PATH_TO_EMPTY_KEYBOARD_PROFILE := "..\..\config\PresetProfiles\EmptyProfile\Keyboards.json"
+    static PATH_TO_EMPTY_SETTINGS_PROFILE := "..\..\config\PresetProfiles\EmptyProfile\ClassObjects.ini"
 
     static GetPathToLogs() {
         return this.PATH_TO_LOGS
+    }
+
+    static getPathToTemporaryLocation() {
+        if (!DirExist(this.PATH_TO_TEMPORARY_LOCATION)) {
+            DirCreate(this.PATH_TO_TEMPORARY_LOCATION)
+        }
+        return this.PATH_TO_TEMPORARY_LOCATION
     }
 
     static GetAbsolutePathToRoot() {
@@ -90,7 +100,7 @@ class FilePaths {
     }
 
     static GetPathToCurrentKeyboardLayout() {
-        PATH_TO_CURRENT_KEYBOARD_LAYOUT := this.GetPathToCurrentProfile() . "/Keyboards.json"
+        PATH_TO_CURRENT_KEYBOARD_LAYOUT := this.GetPathToCurrentProfile() . "\Keyboards.json"
         if (FileExist(PATH_TO_CURRENT_KEYBOARD_LAYOUT) = false) {
             PATH_TO_CURRENT_KEYBOARD_LAYOUT := this.GetPathToEmptyKeyboardProfile()
         }
@@ -98,7 +108,7 @@ class FilePaths {
     }
 
     static GetPathToCurrentSettings() {
-        PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := this.GetPathToCurrentProfile() . "/ClassObjects.ini"
+        PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := this.GetPathToCurrentProfile() . "\ClassObjects.ini"
         if (FileExist(PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE) = false) {
             PATH_TO_CLASS_OBJECTS_FOR_CURRENT_PROFILE := this.GetPathToEmptySettingsProfile()
         }
@@ -119,10 +129,10 @@ class FilePaths {
             CURRENT_PROFILE := this.DEFAULT_PROFILE
         }
         finally {
-            if (FileExist(this.PATH_TO_PROFILES . "/" . CURRENT_PROFILE)) {
+            if (FileExist(this.PATH_TO_PROFILES . "\" . CURRENT_PROFILE)) {
                 ; do nothing
             }
-            else if (!FileExist(this.PATH_TO_PROFILES . "/" . CURRENT_PROFILE)) {
+            else if (!FileExist(this.PATH_TO_PROFILES . "\" . CURRENT_PROFILE)) {
                 CURRENT_PROFILE := this.DEFAULT_PROFILE
             }
             else {
@@ -134,7 +144,7 @@ class FilePaths {
     }
 
     static GetPathToCurrentProfile() {
-        PATH_TO_CURRENT_PROFILE := this.getPathToProfiles() . "/" . this.GetCurrentProfile()
+        PATH_TO_CURRENT_PROFILE := this.getPathToProfiles() . "\" . this.GetCurrentProfile()
         if (!FileExist(PATH_TO_CURRENT_PROFILE)) {
             PATH_TO_CURRENT_PROFILE := this.GetPathToEmptyProfile()
         }

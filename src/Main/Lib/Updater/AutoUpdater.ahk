@@ -4,9 +4,11 @@
 #Include <Updater\UpdaterRunner>
 
 #Include <Infrastructure\Repositories\VersionRepository>
-#Include <Util\Downloading\Downloader>
-#Include <Shared\Logger>
 #Include <Infrastructure\IO\FileOverwriteManager>
+
+#Include <Util\Downloading\Downloader>
+
+#Include <Shared\Logger>
 #Include <Shared\FilePaths>
 
 class AutoUpdater {
@@ -15,13 +17,8 @@ class AutoUpdater {
     Logger := Logger.getInstance()
     releaseChecker := ""  ; Instance of GithubReleaseChecker to check for updates
 
-    LATEST_RELEASE_DOWNLOAD_LOCATION := A_Temp "\extend-layer-update"  ; Default download location for the latest release
-    CURRENT_VERSION_TEMPORARY_LOCATION := A_Temp "\extend-layer-temporary"  ; Temporary location for the current version
-
-    ; Paths to original updater and location to copy it to. Updater is launched from the temporary location.
-    ; Since it is not possible to update the running script, we need to copy the updater to a temporary location and run it from there.
-    ORIGINAL_UPDATER_LOCATION := A_ScriptDir "\Lib\Updater\Updater.ahk"
-    TEMPORARY_UPDATER_LOCATION := A_Temp "\Updater.ahk"
+    LATEST_RELEASE_DOWNLOAD_LOCATION := FilePaths.getPathToTemporaryLocation() . "\extend-layer-update"  ; Default download location for the latest release
+    CURRENT_VERSION_TEMPORARY_LOCATION := FilePaths.getPathToTemporaryLocation() . "\extend-layer-temporary"  ; Temporary location for the current version
 
     __New() {
         currentVersion := this.Version.getCurrentVersion()
@@ -45,7 +42,7 @@ class AutoUpdater {
             this.updateExtendLayer()
         }
         catch Error as e {
-            this.Logger.logError("Failed to update current version: " e.Message, "AutoUpdater.ahk", A_LineNumber)
+            this.Logger.logError("Failed to update current version: " e.Message, e.File, e.Line)
             throw Error("Failed to update current version: " e.Message)
         }
     }

@@ -8,7 +8,7 @@ class UpdaterRunner {
     Logger := Logger.getInstance()
 
     ORIGINAL_UPDATER_LOCATION := A_ScriptDir "\Lib\Updater\Updater.ahk"
-    TEMPORARY_UPDATER_LOCATION := A_Temp "\Updater.ahk"
+    TEMPORARY_UPDATER_LOCATION := FilePaths.getPathToTemporaryLocation() . "\Updater.ahk" ; Temporary location for the updater script
 
     
     runUpdater(sourceDirectory, destinationDirectory, rerunMainScript := false, newVersion := "") {

@@ -2,6 +2,7 @@
 
 #Include <Shared\Logger>
 
+; TODO use more.
 class PathFormatter {
 
     Logger := Logger.getInstance()

@@ -12,7 +12,7 @@ class FolderRegistry {
     addSubFoldersFromFolder(folderPath) {
         loop files folderPath . "\*", "D" {
             subFolderName := A_LoopFileName
-            this.addFolder(subFolderName, folderPath . "/" . subFolderName)
+            this.addFolder(subFolderName, folderPath . "\" . subFolderName)
         }
     }
 

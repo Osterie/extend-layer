@@ -79,8 +79,8 @@ class FileOverwriteManager {
         copyDestination := this.constructPath(destinationBaseLocation, relativeOverwritePath)
         
         ; Skip, but we need to ensure the directory structure exists in the destination location.
-        ; For example ".../src/Main/Lib/Directory" might not exist, so we need to create it if it does not exist.
-        ; If not, we would get an error when trying to write to the file ".../src/Main/Lib/Directory/file.txt" because the directory does not exist.
+        ; For example "...\src\Main\Lib\Directory" might not exist, so we need to create it if it does not exist.
+        ; If not, we would get an error when trying to write to the file "...\src\Main\Lib\Directory\file.txt" because the directory does not exist.
         this.createMissingDirectory(copyDestination)
 
 

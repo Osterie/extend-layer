@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
 
+#Include <Shared\FilePaths>
+
 class ProfileImporter{
 
     __New(ExistingProfilesManager){
@@ -19,7 +21,7 @@ class ProfileImporter{
         }
         try{
             folderName := this.getEndOfPath(selectedFilePath)
-            if (this.ExistingProfilesManager.CopyFolderToNewLocation(selectedFilePath, FilePaths.GetPathToProfiles() . "/" . folderName, folderName)){
+            if (this.ExistingProfilesManager.CopyFolderToNewLocation(selectedFilePath, FilePaths.GetPathToProfiles() . "\" . folderName, folderName)){
                 msgbox("Successfully imported profile " . folderName)
                 ; this.view.UpdateProfilesDropDownMenu()
             }
