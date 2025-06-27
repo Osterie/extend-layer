@@ -7,6 +7,8 @@
 #Include "Main\Functionality\KeyboardEditing\HotkeyConfigurator.ahk"
 #Include <DataModels\KeyboardLayouts\HotkeyLayer\HotKeyInfo>
 
+#Include <ui\ExtraKeyboards>
+
 #Include <Updater\UpdateDialog>
 
 Class ExtraKeyboardsApplicationController{

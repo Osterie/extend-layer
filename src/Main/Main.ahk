@@ -107,7 +107,7 @@ class Main {
 
     runLogicalStartup() {
         if (this.scriptRunning) {
-            ; TODO does this need to be reset?
+            ; TODO does this need to be reset? Only if action settings are changed!
             this.ActionGroupsRepository.reset()
             this.setHotkeysForAllLayers(false) ;TODO this is done somewhere else, improve.
             ExtendLayerProfileRepository.getInstance().load()
