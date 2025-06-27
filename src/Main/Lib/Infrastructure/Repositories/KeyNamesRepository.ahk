@@ -21,7 +21,7 @@ class KeyNamesRepository {
 
     readKeyNamesFromFile() {
         if (!FileExist(this.pathToKeyNames)) {
-            Logger.logError("Key names file does not exist at: " . this.pathToKeyNames)
+            this.Logger.logError("Key names file does not exist at: " . this.pathToKeyNames)
             throw Error("Key names file does not exist at: " . this.pathToKeyNames)
         }
 

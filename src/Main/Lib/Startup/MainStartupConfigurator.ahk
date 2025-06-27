@@ -17,7 +17,7 @@ class MainStartupConfigurator {
         this.KeyboardOverlayInitializerInstance := KeyboardOverlaysInitializer()
     }
 
-    initializeLayer(section, enableHotkeys := "on") {
+    initializeLayer(section, enableHotkeys := true) {
         this.HotkeyInitializerInstance.initializeHotkeys(section . "-Hotkeys", enableHotkeys)
 
         this.KeyboardOverlayInitializerInstance.changeHotkeysStateForKeyboardOverlaysByLayerSection(

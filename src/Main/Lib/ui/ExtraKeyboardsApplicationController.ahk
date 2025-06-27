@@ -139,6 +139,7 @@ Class ExtraKeyboardsApplicationController{
         if (originalHotkeyKey = ""){
             if (hotkeyInformation.actionIsSet() AND hotkeyInformation.getHotkeyName() != ""){
                 try{
+                    this.MainScript.setHotkeysForAllLayers(false) ;TODO can this be moved to a better location?
                     this.ExtraKeyboards.addHotkey(hotkeyInformation)
                 }
                 catch Error as e{
@@ -151,6 +152,7 @@ Class ExtraKeyboardsApplicationController{
         } ; Change
         else{
             try{
+                this.MainScript.setHotkeysForAllLayers(false) ;TODO can this be moved to a better location?
                 this.ExtraKeyboards.changeHotkey(originalHotkeyKey, newHotkeyKey, hotkeyInformation)
             }
             catch Error as e{
@@ -172,7 +174,6 @@ Class ExtraKeyboardsApplicationController{
 
     deleteHotkey(hotkeyKey){
         try{
-            
             this.MainScript.setHotkeysForAllLayers(false)
             this.ExtraKeyboards.deleteHotkey(hotkeyKey)
             msgbox("Deleted hotkey")

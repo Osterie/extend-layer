@@ -107,8 +107,9 @@ class Main {
 
     runLogicalStartup() {
         if (this.scriptRunning) {
-            this.setHotkeysForAllLayers(false)
+            ; TODO does this need to be reset?
             this.ActionGroupsRepository.reset()
+            this.setHotkeysForAllLayers(false) ;TODO this is done somewhere else, improve.
             ExtendLayerProfileRepository.getInstance().load()
             this.StartupConfigurator := MainStartupConfigurator() ; Reinitialize the configurator to reset the state
             ; TODO probably needs to be destroyed...

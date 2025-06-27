@@ -35,8 +35,43 @@ class ExtendLayerProfileRepository {
         return ExtendLayerProfileRepository.instance
     }
 
+    changeHotkey(layer, originalHotkey, newHotkey, newAction) {
+        ExtendLayerProfile := this.getExtendLayerProfile()
+        ExtendLayerProfile.changeHotkey(layer, originalHotkey, newHotkey)
+        ExtendLayerProfile.ChangeAction(layer, newHotkey, newAction)
+
+        this.save(ExtendLayerProfile)
+    }
+
+    addHotkey(layer, hotkeyAction) {
+        ExtendLayerProfile := this.getExtendLayerProfile()
+        ExtendLayerProfile.addHotkey(layer, hotkeyAction)
+
+        this.save(ExtendLayerProfile)
+    }
+
+    deleteHotkey(layer, hotkeyKey) {
+        ExtendLayerProfile := this.getExtendLayerProfile()
+        ExtendLayerProfile.deleteHotkey(layer, hotkeyKey)
+
+        this.save(ExtendLayerProfile)
+    }
+
+    GetActionsForLayer(layer) {
+        ExtendLayerProfile := this.getExtendLayerProfile()
+        HotkeyLayer := ExtendLayerProfile.GetRegistryByLayerIdentifier(layer)
+        hotkeysForLayer := HotkeyLayer.getFriendlyHotkeyActionPairValues()
+        return hotkeysForLayer
+    }
+
     getExtendLayerProfile() {
         return this.ExtendLayerProfile
+    }
+
+    getLayerIdentifiers() {
+        ExtendLayerProfile := this.getExtendLayerProfile()
+        layerIdentifiers := ExtendLayerProfile.GetLayerIdentifiers()
+        return layerIdentifiers
     }
 
     getKeyboardOverlays(){
@@ -61,11 +96,23 @@ class ExtendLayerProfileRepository {
         return currentKeyboardOverlayElements
     }
 
+    getRegistryByLayerIdentifier(layerIdentifier) {
+        ExtendLayerProfile := this.getExtendLayerProfile()
+        currentKeyboardLayerInformation := ExtendLayerProfile.GetRegistryByLayerIdentifier(layerIdentifier)
+        return currentKeyboardLayerInformation
+    }
+
     getHotkeysForLayer(layerIdentifier) {
         ExtendLayerProfile := this.getExtendLayerProfile()
         currentKeyboardLayerInformation := ExtendLayerProfile.GetRegistryByLayerIdentifier(layerIdentifier)
         currentKeyboardLayerHotkeys := currentKeyboardLayerInformation.GetHotkeys()
         return currentKeyboardLayerHotkeys
+    }
+
+    getHotkeyInfoForLayer(layerIdentifier, hotkeyKey) {
+        ExtendLayerProfile := this.getExtendLayerProfile()
+        HotkeyInfo := ExtendLayerProfile.GetHotkeyInfoForLayer(layerIdentifier, hotkeyKey)
+        return HotkeyInfo
     }
 
     load() {

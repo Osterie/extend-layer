@@ -12,33 +12,27 @@ class ExtraKeyboards {
     currentLayer := ""
     currentFunction := ""
 
-    keyboardLayersInfoRegister := ""
+    ; TODO make other classes use this repository instead of the ExtraKeyboards class.
     ActionSettingsRepository := ActionSettingsRepository()
 
     actionSettings := ""
 
     __New() {
         this.actionSettings := this.ActionSettingsRepository.getActionGroupSettingsRegistry()
-        this.keyboardLayersInfoRegister := ExtendLayerProfileRepository.getInstance().getExtendLayerProfile()
     }
 
     ; TODO repository should do this!
 
     changeHotkey(originalHotkey, newHotkey, newAction) {
-        this.keyboardLayersInfoRegister.changeHotkey(this.GetCurrentLayer(), originalHotkey, newHotkey)
-        this.keyboardLayersInfoRegister.ChangeAction(this.GetCurrentLayer(), newHotkey, newAction)
-
-        ExtendLayerProfileRepository.getInstance().save(this.keyboardLayersInfoRegister)
+        ExtendLayerProfileRepository.getInstance().changeHotkey(this.GetCurrentLayer(), originalHotkey, newHotkey, newAction)
     }
 
-    addHotkey(newAction) {
-        this.keyboardLayersInfoRegister.addHotkey(this.GetCurrentLayer(), newAction)
-        ExtendLayerProfileRepository.getInstance().save(this.keyboardLayersInfoRegister)
+    addHotkey(hotkeyAction) {
+        ExtendLayerProfileRepository.getInstance().addHotkey(this.GetCurrentLayer(), hotkeyAction)
     }
 
     deleteHotkey(hotkeyKey) {
-        this.keyboardLayersInfoRegister.deleteHotkey(this.GetCurrentLayer(), hotkeyKey)
-        ExtendLayerProfileRepository.getInstance().save(this.keyboardLayersInfoRegister)
+        ExtendLayerProfileRepository.getInstance().deleteHotkey(this.GetCurrentLayer(), hotkeyKey)
     }
 
     getActionGroupNames() {
@@ -62,10 +56,7 @@ class ExtraKeyboards {
     }
 
     GetFriendlyHotkeysForCurrentLayer() {
-        itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer)
-        hotkeysForLayer := itemsToShowForListView.getFriendlyHotkeyActionPairValues()
-
-        return hotkeysForLayer
+        return ExtendLayerProfileRepository.getInstance().GetActionsForLayer(this.currentLayer)
     }
 
     SetCurrentLayer(layerIdentifier) {
@@ -85,11 +76,11 @@ class ExtraKeyboards {
     }
 
     GetKeyboardLayerIdentifiers() {
-        return this.keyboardLayersInfoRegister.getLayerIdentifiers()
+        return ExtendLayerProfileRepository.getInstance().getLayerIdentifiers()
     }
 
     GetCurrentLayerInfo() {
-        return this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(this.currentLayer)
+        return ExtendLayerProfileRepository.getInstance().GetRegistryByLayerIdentifier(this.currentLayer)
     }
 
     ChangeFunctionSetting(setting, actionName) {
@@ -104,11 +95,16 @@ class ExtraKeyboards {
         return FilePaths.GetPathToCurrentProfile()
     }
 
+    ; This creates a copy of the HotkeyInfo instead of returning a reference to the original object.
+    ; This is done to prevent the caller from modifying the original object.
     GetHotkeyInfoForCurrentLayer(hotkeyKey) {
-        hotkeyInformation := this.keyboardLayersInfoRegister.GetHotkeyInfoForLayer(this.GetCurrentLayer(), hotkeyKey)
+        hotkeyInformation := ExtendLayerProfileRepository.getInstance().getExtendLayerProfile().GetHotkeyInfoForLayer(this.GetCurrentLayer(), hotkeyKey)
+
+        ; Layers := ExtendLayerProfileRepository.getInstance().getExtendLayerProfile().GetRegistryByLayerIdentifier(this.GetCurrentLayer())
+
         hotkeyToReturn := HotkeyInfo(hotkeyInformation.getHotkeyName())
 
-        if (hotkeyInformation.hotkeyIsObject()) {
+        if (hotkeyInformation.hotkeyIsObject()) { 
             hotkeyToReturn.setInfoForSpecialHotKey(hotkeyInformation.getObjectName(), hotkeyInformation.getActionName(),
             hotkeyInformation.getparameters())
         }
@@ -119,7 +115,7 @@ class ExtraKeyboards {
     }
 
     ; GetFriendlyHotkeysForLayer(layerIdentifier){
-    ;     itemsToShowForListView := this.keyboardLayersInfoRegister.GetRegistryByLayerIdentifier(layerIdentifier)
+    ;     itemsToShowForListView := ExtendLayerProfileRepository.getInstance().getExtendLayerProfile().GetRegistryByLayerIdentifier(layerIdentifier)
     ;     hotkeysForLayer := itemsToShowForListView.getFriendlyHotkeyActionPairValues()
 
     ;     return hotkeysForLayer

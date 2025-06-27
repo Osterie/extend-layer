@@ -26,7 +26,7 @@ class KeyboardOverlayLayer {
         return this.OverlayElements
     }
 
-    ; TODO renmae or remove, is this in use?
+    ; TODO these are named this way since they are like HotkeyLayer is used. But instead HotkeyLayer and KeyboardOverlayLayer should inherit from a common base class.
     getKeyPairValuesToString() {
         elements := []
         for elementNames, KeyboardOverlayElement in this.OverlayElements
@@ -38,7 +38,7 @@ class KeyboardOverlayLayer {
         return this.ShowKeyboardOverlayKey
     }
 
-    ; TODO renmae or remove, is this in use?
+    ; TODO these are named this way since they are like HotkeyLayer is used. But instead HotkeyLayer and KeyboardOverlayLayer should inherit from a common base class.
     getFriendlyHotkeyActionPairValues() {
         elements := []
         for elementNames, KeyboardOverlayElement in this.OverlayElements
