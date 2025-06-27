@@ -68,6 +68,7 @@ class HotkeyLayer {
         return elements
     }
 
+    ; TODO change! return the class isntead of this array of pairs.
     getFriendlyHotkeyActionPairValues() {
         elements := []
         for key, value in this.hotkeys

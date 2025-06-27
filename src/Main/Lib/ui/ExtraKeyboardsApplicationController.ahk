@@ -126,8 +126,8 @@ Class ExtraKeyboardsApplicationController{
         }
     }
 
-    SettingsEditorDialogSaveButtonEvent(currentFunctionSettings, setting){
-        this.ExtraKeyboards.ChangeFunctionSetting(setting, currentFunctionSettings)
+    SettingsEditorDialogSaveButtonEvent(actionName, ActionSetting){
+        this.ExtraKeyboards.ChangeFunctionSetting(actionName, ActionSetting)
     }
 
     AddOrChangeHotkey(hotkeyInformation, originalHotkeyKey){
@@ -193,10 +193,6 @@ Class ExtraKeyboardsApplicationController{
 
     GetHotkeys(){
         return this.ExtraKeyboards.GetFriendlyHotkeysForCurrentLayer()
-    }
-
-    GetPathToCurrentSettings(){
-        return this.ExtraKeyboards.GetPathToCurrentSettings()
     }
 
     GetCurrentLayer(){

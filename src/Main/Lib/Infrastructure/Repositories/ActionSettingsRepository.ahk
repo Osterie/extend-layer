@@ -22,6 +22,25 @@ class ActionSettingsRepository {
         return this.ActionGroupSettingsRegistry
     }
 
+    getActionGroupNames() {
+        return this.ActionGroupSettingsRegistry.getActionGroupNames()
+    }
+
+    
+    ChangeActionSetting(actionName, ActionSetting) {
+        filePathToSettings := FilePaths.GetPathToCurrentSettings()
+        this.getActionGroupSettingsRegistry().ChangeActionSetting(actionName, filePathToSettings, ActionSetting)
+    }
+
+    ; TODO rename...
+    getActionSettingsForActionAsArray(actionName) {
+        return this.ActionGroupSettingsRegistry.getActionSettingsForActionAsArray(actionName)
+    }
+
+    getActionSettingsForAction(actionName) {
+        return this.ActionGroupSettingsRegistry.getActionSettingsForAction(actionName)
+    }
+
     readSettings() {
 
         sectionNames := this.IniFileReader.readSectionNamesToArray(this.iniFile)

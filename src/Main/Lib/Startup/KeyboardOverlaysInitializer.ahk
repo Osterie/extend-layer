@@ -18,7 +18,7 @@ class KeyboardOverlaysInitializer {
 
     ; TODO add method to read which keys are used to show keyboard overlays, should be in the correct layer section, because only then should they activate
     readAllKeyboardOverlays() {
-        keyboardOverlayLayers := ExtendLayerProfileRepository.getInstance().GetKeyboardOverlays()
+        keyboardOverlayLayers := ExtendLayerProfileRepository.getInstance().GetKeyboardOverlayLayers()
         for keyboardOverlayName, keyboardOverlayLayer in keyboardOverlayLayers {
 
             NewKeyboardOverlay := KeyboardOverlay()
@@ -45,7 +45,7 @@ class KeyboardOverlaysInitializer {
     ; FIXME does not work probably TODO
     changeHotkeysStateForKeyboardOverlaysByLayerSection(keyboardOverlayLayer, enableHotkeys := true) {
         try {
-            keyboardOverlayLayers := ExtendLayerProfileRepository.getInstance().GetKeyboardOverlays()
+            keyboardOverlayLayers := ExtendLayerProfileRepository.getInstance().GetKeyboardOverlayLayers()
             for keyboardOverlayName, value in keyboardOverlayLayers {
                 if (InStr(keyboardOverlayName, keyboardOverlayLayer)) {
                     ; TODO use the keyboardOVelray class to create a new keyboard overlay, which then columns are added to
@@ -81,7 +81,7 @@ class KeyboardOverlaysInitializer {
 
     hotKeyForHidingKeyboardOverlaysUseMeGlobally() {
         try {
-            keyboardOverlayLayers := ExtendLayerProfileRepository.getInstance().GetKeyboardOverlays()
+            keyboardOverlayLayers := ExtendLayerProfileRepository.getInstance().GetKeyboardOverlayLayers()
             for keyboardOverlayName, keyboardOverlayLayer in keyboardOverlayLayers {
                 if (InStr(keyboardOverlayName, "KeyboardOverlay")) {
                     showKeyboardOverlayKey := ExtendLayerProfileRepository.getInstance().getShowKeyboardOverlayKey(keyboardOverlayName)

@@ -4,17 +4,17 @@
 #Include <DataModels\KeyboardLayouts\KeyboardOverlayLayer\KeyboardOverlayLayer>
 
 #Include <Shared\Logger>
-; TODO perhaps this should work together with the main startupr configurator which creates all the hotkeys
+; TODO perhaps this should work together with the main startupr configurator which creates all the hotkeysLayer
 ; KeyboardLayersInfoRegistry
 class ExtendLayerProfile {
 
     Logger := Logger.getInstance()
     keyboardOverlayLayers := Map()
-    hotkeys := Map()
+    hotkeysLayer := Map()
 
     __New() {
-        this.keyboardOverlayLayers.Defualt := 0
-        this.hotkeys.Defualt := 0
+        this.keyboardOverlayLayers.Default := 0
+        this.hotkeysLayer.Default := 0
     }
 
     AddKeyboardOverlayLayerInfo(KeyboardOverlayLayer) {
@@ -22,46 +22,46 @@ class ExtendLayerProfile {
     }
 
     AddHotkeyLayer(Hotkeys) {
-        this.hotkeys[Hotkeys.GetLayerIdentifier()] := Hotkeys
+        this.hotkeysLayer[Hotkeys.GetLayerIdentifier()] := Hotkeys
     }
 
     addHotkey(layerIdentifier, hotkeyAction) {
-        this.hotkeys[layerIdentifier].addHotkey(hotkeyAction)
+        this.hotkeysLayer[layerIdentifier].addHotkey(hotkeyAction)
     }
 
     deleteHotkey(layerIdentifier, hotkeyName) {
-        this.hotkeys[layerIdentifier].deleteHotkey(hotkeyName)
+        this.hotkeysLayer[layerIdentifier].deleteHotkey(hotkeyName)
     }
 
     ; TODO remove me perhaps, a new and better method is being developed...
     changeHotkey(layerIdentifier, hotkeyName, newHotkey) {
-        this.hotkeys[layerIdentifier].ChangeHotkeyKey(hotkeyName, newHotkey)
+        this.hotkeysLayer[layerIdentifier].ChangeHotkeyKey(hotkeyName, newHotkey)
     }
 
     ; TODO add checks if empty string or such is given.
     ChangeAction(layerIdentifier, hotkeyName, newAction) {
-        this.hotkeys[layerIdentifier].ChangeHotkeyAction(hotkeyName, newAction)
+        this.hotkeysLayer[layerIdentifier].ChangeHotkeyAction(hotkeyName, newAction)
     }
 
-    ; TODO implement this and use it for creating new actions/hotkeys with the gui.
+    ; TODO implement this and use it for creating new actions/hotkeysLayer with the gui.
     ; SetAction(layerIdentifier, hotkeyName, action){
-    ;     this.hotkeys[layerIdentifier].SetHotkeyAction(hotkeyName, action)
+    ;     this.hotkeysLayer[layerIdentifier].SetHotkeyAction(hotkeyName, action)
     ; }
 
     ; TODO refactor
 
-    GetRegistryByLayerIdentifier(layerIdentifier) {
-        registryToReturn := ""
+    getLayerByLayerIdentifier(layerIdentifier) {
+        layerToReturn := ""
         if (this.keyboardOverlayLayers.Has(layerIdentifier)) {
-            registryToReturn := this.keyboardOverlayLayers[layerIdentifier]
+            layerToReturn := this.keyboardOverlayLayers[layerIdentifier]
         }
-        else if (this.hotkeys.Has(layerIdentifier)) {
-            registryToReturn := this.hotkeys[layerIdentifier]
+        else if (this.hotkeysLayer.Has(layerIdentifier)) {
+            layerToReturn := this.hotkeysLayer[layerIdentifier]
         }
         else {
             throw ("No registry found for layer identifier: " . layerIdentifier)
         }
-        return registryToReturn
+        return layerToReturn
     }
 
     getKeyboardOverlayByLayerIdentifier(layerIdentifier) {
@@ -74,8 +74,8 @@ class ExtendLayerProfile {
     }
 
     getHotkeyLayerByLayerIdentifier(layerIdentifier) {
-        if (this.hotkeys.Has(layerIdentifier)) {
-            return this.hotkeys[layerIdentifier]
+        if (this.hotkeysLayer.Has(layerIdentifier)) {
+            return this.hotkeysLayer[layerIdentifier]
         }
         else {
             throw ("No hotkey layer found for layer identifier: " . layerIdentifier)
@@ -84,7 +84,7 @@ class ExtendLayerProfile {
 
     GetLayerIdentifiers() {
         layerIdentifiers := Array()
-        for layerIdentifier, layerInfo in this.hotkeys {
+        for layerIdentifier, layerInfo in this.hotkeysLayer {
             layerIdentifiers.Push(layerIdentifier)
         }
         for layerIdentifier, layerInfo in this.keyboardOverlayLayers {
@@ -93,23 +93,23 @@ class ExtendLayerProfile {
         return layerIdentifiers
     }
 
-    GetKeyboardOverlays() {
+    GetKeyboardOverlayLayers() {
         ; TODO return array instead of map?
         return this.keyboardOverlayLayers
     }
 
     GetHotkeyLayer() {
-        return this.hotkeys
+        return this.hotkeysLayer
     }
 
     GetHotkeyInfoForLayer(layerIdentifier, hotkeyKey) {
-        return this.GetRegistryByLayerIdentifier(layerIdentifier).GetHotkey(hotkeyKey)
+        return this.getLayerByLayerIdentifier(layerIdentifier).GetHotkey(hotkeyKey)
     }
 
     toJson() {
         jsonObject := Map()
 
-        for hotkeyLayerIdentifier, HotkeyLayer in this.hotkeys {
+        for hotkeyLayerIdentifier, HotkeyLayer in this.hotkeysLayer {
             jsonObject[hotkeyLayerIdentifier] := HotkeyLayer.toJson()
         }
 

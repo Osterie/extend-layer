@@ -15,10 +15,8 @@ class ExtraKeyboards {
     ; TODO make other classes use this repository instead of the ExtraKeyboards class.
     ActionSettingsRepository := ActionSettingsRepository()
 
-    actionSettings := ""
-
     __New() {
-        this.actionSettings := this.ActionSettingsRepository.getActionGroupSettingsRegistry()
+        
     }
 
     ; TODO repository should do this!
@@ -36,27 +34,19 @@ class ExtraKeyboards {
     }
 
     getActionGroupNames() {
-        return this.actionSettings.getActionGroupNames()
-    }
-
-    getActionSettingsForActionAsArray(actionName) {
-        return this.actionSettings.getActionSettingsForActionAsArray(actionName)
+        return this.ActionSettingsRepository.getActionGroupNames()
     }
 
     getActionSettingsForCurrentActionAsArray() {
-        return this.getActionSettingsForActionAsArray(this.GetCurrentFunction())
-    }
-
-    getActionSettingsForAction(actionName) {
-        return this.actionSettings.getActionSettingsForAction(actionName)
+        return this.ActionSettingsRepository.getActionSettingsForActionAsArray(this.GetCurrentFunction())
     }
 
     getActionSettingsForCurrentAction() {
-        return this.getActionSettingsForAction(this.GetCurrentFunction())
+        return this.ActionSettingsRepository.getActionSettingsForAction(this.GetCurrentFunction())
     }
 
     GetFriendlyHotkeysForCurrentLayer() {
-        return ExtendLayerProfileRepository.getInstance().GetActionsForLayer(this.currentLayer)
+        return ExtendLayerProfileRepository.getInstance().getPairValuesForLayer(this.currentLayer)
     }
 
     SetCurrentLayer(layerIdentifier) {
@@ -80,19 +70,11 @@ class ExtraKeyboards {
     }
 
     GetCurrentLayerInfo() {
-        return ExtendLayerProfileRepository.getInstance().GetRegistryByLayerIdentifier(this.currentLayer)
+        return ExtendLayerProfileRepository.getInstance().getLayerByLayerIdentifier(this.currentLayer)
     }
 
-    ChangeFunctionSetting(setting, actionName) {
-        this.actionSettings.ChangeActionSetting(actionName, this.GetPathToCurrentSettings(), setting)
-    }
-
-    GetPathToCurrentSettings() {
-        return FilePaths.GetPathToCurrentSettings()
-    }
-
-    GetPathToCurrentProfile() {
-        return FilePaths.GetPathToCurrentProfile()
+    ChangeFunctionSetting(actionName, ActionSetting) {
+        this.ActionSettingsRepository.ChangeActionSetting(actionName, ActionSetting)
     }
 
     ; This creates a copy of the HotkeyInfo instead of returning a reference to the original object.
@@ -100,7 +82,6 @@ class ExtraKeyboards {
     GetHotkeyInfoForCurrentLayer(hotkeyKey) {
         hotkeyInformation := ExtendLayerProfileRepository.getInstance().getExtendLayerProfile().GetHotkeyInfoForLayer(this.GetCurrentLayer(), hotkeyKey)
 
-        ; Layers := ExtendLayerProfileRepository.getInstance().getExtendLayerProfile().GetRegistryByLayerIdentifier(this.GetCurrentLayer())
 
         hotkeyToReturn := HotkeyInfo(hotkeyInformation.getHotkeyName())
 
@@ -113,11 +94,4 @@ class ExtraKeyboards {
         }
         return hotkeyToReturn
     }
-
-    ; GetFriendlyHotkeysForLayer(layerIdentifier){
-    ;     itemsToShowForListView := ExtendLayerProfileRepository.getInstance().getExtendLayerProfile().GetRegistryByLayerIdentifier(layerIdentifier)
-    ;     hotkeysForLayer := itemsToShowForListView.getFriendlyHotkeyActionPairValues()
-
-    ;     return hotkeysForLayer
-    ; }
 }

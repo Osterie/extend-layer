@@ -12,6 +12,7 @@
 
 #Include <Shared\FilePaths>
 
+; TODO does this need to be a singleton?
 class ActionGroupsRepository {
 
     static instance := false

@@ -39,6 +39,7 @@ class KeyboardOverlayLayer {
     }
 
     ; TODO these are named this way since they are like HotkeyLayer is used. But instead HotkeyLayer and KeyboardOverlayLayer should inherit from a common base class.
+    ; TODO change! return the class isntead of this array of pairs.
     getFriendlyHotkeyActionPairValues() {
         elements := []
         for elementNames, KeyboardOverlayElement in this.OverlayElements

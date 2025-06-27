@@ -19,6 +19,7 @@
 class ExtendLayerProfileRepository {
 
     static instance := false
+    
     Logger := Logger.getInstance()
     ExtendLayerProfile := ExtendLayerProfile()
     ExtendLayerProfileFileReader := ExtendLayerProfileFileReader()
@@ -34,6 +35,11 @@ class ExtendLayerProfileRepository {
         }
         return ExtendLayerProfileRepository.instance
     }
+
+    ; -------------------------------
+    ; ----- Changing Hotkeys --------
+    ; -------------------------------
+
 
     changeHotkey(layer, originalHotkey, newHotkey, newAction) {
         ExtendLayerProfile := this.getExtendLayerProfile()
@@ -57,12 +63,9 @@ class ExtendLayerProfileRepository {
         this.save(ExtendLayerProfile)
     }
 
-    GetActionsForLayer(layer) {
-        ExtendLayerProfile := this.getExtendLayerProfile()
-        HotkeyLayer := ExtendLayerProfile.GetRegistryByLayerIdentifier(layer)
-        hotkeysForLayer := HotkeyLayer.getFriendlyHotkeyActionPairValues()
-        return hotkeysForLayer
-    }
+    ; ------------------------------------
+    ; ------- Extend Layer Profile -------
+    ; ------------------------------------
 
     getExtendLayerProfile() {
         return this.ExtendLayerProfile
@@ -74,37 +77,60 @@ class ExtendLayerProfileRepository {
         return layerIdentifiers
     }
 
-    getKeyboardOverlays(){
+    getLayerByLayerIdentifier(layerIdentifier) {
         ExtendLayerProfile := this.getExtendLayerProfile()
-        currentKeyboardOverlays := ExtendLayerProfile.GetKeyboardOverlays()
+        return ExtendLayerProfile.getLayerByLayerIdentifier(layerIdentifier)
+    }
 
-        return currentKeyboardOverlays
+    ; TODO change! return the class isntead of this array of pairs.
+    getPairValuesForLayer(layerIdentifier) {
+        ExtendLayerProfile := this.getExtendLayerProfile()
+        keyboardOverlayLayer := ExtendLayerProfile.getLayerByLayerIdentifier(layerIdentifier)
+        keyboardOverlayElements := keyboardOverlayLayer.getFriendlyHotkeyActionPairValues()
+        return keyboardOverlayElements
+    }
+
+    ; ------------------------------------
+    ; ----- Keyboard Overlay Layer -------
+    ; ------------------------------------
+
+    GetKeyboardOverlayLayers(){
+        ExtendLayerProfile := this.getExtendLayerProfile()
+        return ExtendLayerProfile.GetKeyboardOverlayLayers()
+    }
+
+    ; TODO change name of method or what it returns! Since other getKeyboardOverlayByLayerIdentifier methods  return the KeyboardOverlayElements class, but this returns the map of elements.
+    getKeyboardOverlayByLayerIdentifier(layerIdentifier) {
+        ExtendLayerProfile := this.getExtendLayerProfile()
+        keyboardOverlayLayer := ExtendLayerProfile.getKeyboardOverlayByLayerIdentifier(layerIdentifier)
+        eyboardOverlayElements := keyboardOverlayLayer.getOverlayElements()
+
+        return eyboardOverlayElements
     }
 
     getShowKeyboardOverlayKey(layerIdentifier) {
         ExtendLayerProfile := this.getExtendLayerProfile()
-        currentKeyboardOverlayInformation := ExtendLayerProfile.getKeyboardOverlayByLayerIdentifier(layerIdentifier)
-        showKeyboardOverlayKey := currentKeyboardOverlayInformation.GetShowKeyboardOverlayKey()
+        keyboardOverlayLayer := ExtendLayerProfile.getKeyboardOverlayByLayerIdentifier(layerIdentifier)
+        showKeyboardOverlayKey := keyboardOverlayLayer.GetShowKeyboardOverlayKey()
         return showKeyboardOverlayKey
     }
 
-    getKeyboardOverlayByLayerIdentifier(layerIdentifier) {
-        ExtendLayerProfile := this.getExtendLayerProfile()
-        currentKeyboardOverlayInformation := ExtendLayerProfile.getKeyboardOverlayByLayerIdentifier(layerIdentifier)
-        currentKeyboardOverlayElements := currentKeyboardOverlayInformation.getOverlayElements()
 
-        return currentKeyboardOverlayElements
-    }
+    ; ------------------------------------
+    ; ---------- Hotkey Layer ------------
+    ; ------------------------------------
 
-    getRegistryByLayerIdentifier(layerIdentifier) {
+    ; TODO rename or change implementation
+    GetActionsForLayer(layer) {
         ExtendLayerProfile := this.getExtendLayerProfile()
-        currentKeyboardLayerInformation := ExtendLayerProfile.GetRegistryByLayerIdentifier(layerIdentifier)
-        return currentKeyboardLayerInformation
+        HotkeyLayer := ExtendLayerProfile.getHotkeyLayerByLayerIdentifier(layer)
+        hotkeysForLayer := HotkeyLayer.getFriendlyHotkeyActionPairValues()
+        return hotkeysForLayer
     }
 
     getHotkeysForLayer(layerIdentifier) {
         ExtendLayerProfile := this.getExtendLayerProfile()
-        currentKeyboardLayerInformation := ExtendLayerProfile.GetRegistryByLayerIdentifier(layerIdentifier)
+        currentKeyboardLayerInformation := ExtendLayerProfile.getHotkeyLayerByLayerIdentifier(layerIdentifier)
         currentKeyboardLayerHotkeys := currentKeyboardLayerInformation.GetHotkeys()
         return currentKeyboardLayerHotkeys
     }
@@ -114,6 +140,10 @@ class ExtendLayerProfileRepository {
         HotkeyInfo := ExtendLayerProfile.GetHotkeyInfoForLayer(layerIdentifier, hotkeyKey)
         return HotkeyInfo
     }
+
+    ; ---------------------------------------------
+    ; ----- Read from file / write to file --------
+    ; ---------------------------------------------
 
     load() {
         currentProfilePath := FilePaths.GetPathToCurrentKeyboardLayout()

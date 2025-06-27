@@ -17,14 +17,17 @@ class ActionGroupSettingsRegistry {
         }
     }
 
-    ChangeActionSetting(actionName, filePathToSettings, actionSetting) {
-        settingName := actionSetting.getActionSettingName()
-        settingValue := actionSetting.getActionSettingValue()
+    ChangeActionSetting(actionName, filePathToSettings, ActionSetting) {
+        if (Type(ActionSetting) != "ActionSetting") {
+            throw Error("Invalid argument type. Expected ActionSetting")
+        }
+        settingName := ActionSetting.getActionSettingName()
+        settingValue := ActionSetting.getActionSettingValue()
 
         try {
             IniWrite(settingValue, filePathToSettings, actionName, settingName)
             actionGroupSettings := this.actionGroupSettingsRegistry.Get(actionName)
-            actionGroupSettings.setActionSetting(actionSetting)
+            actionGroupSettings.setActionSetting(ActionSetting)
             this.actionGroupSettingsRegistry.set(actionName, actionGroupSettings)
 
         }
