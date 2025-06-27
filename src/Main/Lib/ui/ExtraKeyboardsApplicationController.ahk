@@ -14,13 +14,14 @@
 Class ExtraKeyboardsApplicationController{
 
     view := ""
-    ExtraKeyboards := ExtraKeyboards()
+    ExtraKeyboards := ""
 
     ExitAppOnGuiClose := false
     MainScript := ""
 
     __New(view, MainScript){
         this.view := view
+        this.ExtraKeyboards := ExtraKeyboards(MainScript)
         this.ExitAppOnGuiClose := FilePaths.GetCloseScriptOnGuiClose()
         this.MainScript := MainScript
     }
@@ -72,18 +73,6 @@ Class ExtraKeyboardsApplicationController{
             ; TODO implement
             ; popupForConfiguringHotkey.CreatePopupForKeyboardOverlayInfo()
         }
-
-        WinWaitClose("Hotkey Configuration" , , 1000)
-        ; else if (WinWaitActive("Keyboard Overlay Configuration" , , 1000)){
-        ;     WinWaitClose()
-        ; }
-        try{
-            this.view.UpdateHotkeys()
-        }
-        catch Error as e{
-            ; The main gui was probably closed
-        }
-
     }
 
     ; TODO move to view?
@@ -116,34 +105,30 @@ Class ExtraKeyboardsApplicationController{
             editorForActionSettings.SubscribeToSaveEvent(ObjBindMethod(this, "SettingsEditorDialogSaveButtonEvent", currentFunctionSettings))
     
             editorForActionSettings.show()
-
-            WinWaitClose("Settings Editor Dialog" , , 1000)
-    
-            this.MainScript.runLogicalStartup()
-
-            try{
-                this.view.UpdateSettingsForActions()
-            }
-            catch Error as e{
-                ; The main gui was probably closed
-            }
         }
     }
 
     SettingsEditorDialogSaveButtonEvent(actionName, ActionSetting){
         this.ExtraKeyboards.ChangeFunctionSetting(actionName, ActionSetting)
+        try{
+            this.view.UpdateSettingsForActions()
+            }
+        catch Error as e{
+            ; TODO log error?
+            ; The main gui was probably closed
+        }
     }
 
+    ; TODO change! seperate methods.
     AddOrChangeHotkey(hotkeyInformation, originalHotkeyKey){
         newHotkeyKey := hotkeyInformation.getHotkeyName()
 
         ; If it does not exist, add it
-        ; TODO this is bad, how the heck does EKAPGC know the default values is NONE?
+        ; TODO this is bad.
         ; Add
         if (originalHotkeyKey = ""){
             if (hotkeyInformation.actionIsSet() AND hotkeyInformation.getHotkeyName() != ""){
                 try{
-                    this.MainScript.setHotkeysForAllLayers(false) ;TODO can this be moved to a better location?
                     this.ExtraKeyboards.addHotkey(hotkeyInformation)
                 }
                 catch Error as e{
@@ -156,14 +141,25 @@ Class ExtraKeyboardsApplicationController{
         } ; Change
         else{
             try{
-                this.MainScript.setHotkeysForAllLayers(false) ;TODO can this be moved to a better location?
                 this.ExtraKeyboards.changeHotkey(originalHotkeyKey, newHotkeyKey, hotkeyInformation)
             }
             catch Error as e{
                 msgbox("Could not modify hotkey. " . e.Message)
             }
         }
-        this.MainScript.runLogicalStartup()
+        this.view.UpdateHotkeys()
+    }
+
+    deleteHotkey(hotkeyKey){
+        try{
+            this.ExtraKeyboards.deleteHotkey(hotkeyKey)
+        }
+        catch Error as e{
+            msgbox("Could not delete hotkey. " . e.Message)
+        }
+        this.view.UpdateHotkeys()
+        this.view.ChangeConfigurationButtonsStatus(1)
+        ; this.MainScript.restartProfile()
     }
 
     UpdateGuiSettings(){
@@ -174,21 +170,6 @@ Class ExtraKeyboardsApplicationController{
         if (this.ExitAppOnGuiClose){
             ExitApp
         }
-    }
-
-    deleteHotkey(hotkeyKey){
-        try{
-            this.MainScript.setHotkeysForAllLayers(false)
-            this.ExtraKeyboards.deleteHotkey(hotkeyKey)
-            msgbox("Deleted hotkey")
-        }
-        catch Error as e{
-            this.MainScript.setHotkeysForAllLayers(false)
-            msgbox("Could not delete hotkey. " . e.Message)
-        }
-        this.view.UpdateHotkeys()
-        this.view.ChangeConfigurationButtonsStatus(1)
-        this.MainScript.runLogicalStartup()
     }
 
     getActionSettings(){

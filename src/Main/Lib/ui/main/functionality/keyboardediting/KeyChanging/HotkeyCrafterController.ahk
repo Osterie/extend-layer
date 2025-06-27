@@ -7,8 +7,6 @@
 
 class HotkeyCrafterController{
 
-    ActionGroupsRepository := ActionGroupsRepository.getInstance()
-
     actionCrafterView := ""
 
     isCraftingSpecialAction_ := ""
@@ -30,7 +28,7 @@ class HotkeyCrafterController{
     }
 
     GetSpecialActions(){
-        return this.ActionGroupsRepository.getAllFriendlyActionNames()
+        return ActionGroupsRepository.getInstance().getAllFriendlyActionNames()
     }
 
     GetCurrentObjectName(){
@@ -89,7 +87,7 @@ class HotkeyCrafterController{
     ; TODO change some of these methods! another class should handle this.
     ; Private
     GetActionGroupsInfoByActionName(actionName){
-        return this.ActionGroupsRepository.getActionGroupByFriendlyActionName(actionName)
+        return ActionGroupsRepository.getInstance().getActionGroupByFriendlyActionName(actionName)
     }
 
     ; Private

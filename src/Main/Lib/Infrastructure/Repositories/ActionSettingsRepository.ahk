@@ -30,6 +30,9 @@ class ActionSettingsRepository {
     ChangeActionSetting(actionName, ActionSetting) {
         filePathToSettings := FilePaths.GetPathToCurrentSettings()
         this.getActionGroupSettingsRegistry().ChangeActionSetting(actionName, filePathToSettings, ActionSetting)
+        ActionGroupsRepository.getInstance().reset()
+        ExtendLayerProfileRepository.getInstance().load()
+        ; TODO call Main.setHotkeysForAllLayers(true)
     }
 
     ; TODO rename...

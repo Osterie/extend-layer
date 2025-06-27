@@ -7,12 +7,10 @@
 
 class KeyboardOverlaysInitializer {
 
-    ActionGroupsRepository := ActionGroupsRepository.getInstance()
-
     ; TODO refactor. make ExtendLayerProfileRepository have some helpful methods.
 
     __New() {
-        this.instanceOfOverlayRegistry := this.ActionGroupsRepository.getActionObjectInstance("OverlayRegistry")
+        this.instanceOfOverlayRegistry := ActionGroupsRepository.getInstance().getActionObjectInstance("OverlayRegistry")
         this.readAllKeyboardOverlays()
     }
 

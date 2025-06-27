@@ -8,8 +8,6 @@
 
 class HotkeyInitializer {
 
-    ActionGroupsRepository := ActionGroupsRepository.getInstance()
-
     __New() {
     }
 
@@ -107,7 +105,7 @@ class HotkeyInitializer {
     }
 
     createObjectMethodCall(objectName, actionName, arguments) {
-        objectInstance := this.ActionGroupsRepository.getActionObjectInstance(objectName)
+        objectInstance := ActionGroupsRepository.getInstance().getActionObjectInstance(objectName)
         objectMethodCall := ObjBindMethod(objectInstance, actionName, arguments*)
         return objectMethodCall
     }

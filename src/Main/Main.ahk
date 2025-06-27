@@ -12,44 +12,14 @@
 #Include <Infrastructure\Repositories\ActionGroupsRepository>
 #Include <Infrastructure\Repositories\ExtendLayerProfile\ExtendLayerProfileRepository>
 
-#Include <Shared\Logger>
-#Include <Shared\FilePaths>
-
 #Include <Util\ExtendLayerInProtectedLocationDialog>
 
 #Include <ui\ExtraKeyboardsApplicationLauncher>
 
-testFilePermissions() {
-    testFile := A_ScriptDir . "\testFilePermissions.txt"
+#Include <Shared\Logger>
 
-    ; This function is used to test if the script has the right permissions to read/write files.
-    ; It will throw an error if it does not have the right permissions.
-    try {
-        if (FileExist(testFile)) {
-            FileDelete(testFile)
-        }
-        FileAppend("test", testFile)
-        FileDelete(testFile)
-    }
-    catch Error as e {
-        if (InStr(e.Message, "Access is denied")) {
-            if (!A_IsAdmin) {
-                ExtendLayerInProtectedLocationDialog_ := ExtendLayerInProtectedLocationDialog()
-                ExtendLayerInProtectedLocationDialog_.show()
-                WinWaitClose(ExtendLayerInProtectedLocationDialog_.GetHwnd())
-                ExitApp
-            }
-            else {
-                Logger.getInstance().logError("Error reading/writing file: " e.Message, e.File, e.Line)
-            }
-        }
-        else {
-            Logger.getInstance().logError("Error reading/writing file: " e.Message, e.File, e.Line)
-        }
-    }
-}
-
-testFilePermissions()
+; Test if this project is in a protected location
+testIfInProtectedLocation()
 
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
@@ -84,7 +54,6 @@ SendMode "Event"
 class Main {
 
     StartupConfigurator := MainStartupConfigurator()
-    ActionGroupsRepository := ActionGroupsRepository.getInstance()
 
     scriptRunning := false
 
@@ -94,7 +63,7 @@ class Main {
     ; Main method used to start the script.
     start() {
         try {
-            this.runLogicalStartup()
+            this.setHotkeysForAllLayers(true)
         }
         catch Error as e {
             MsgBox("Error in running startup: " e.Message " " e.Line " " e.File " " e.Extra " " e.Stack " " e.What)
@@ -105,23 +74,18 @@ class Main {
         }
     }
 
-    runLogicalStartup() {
-        if (this.scriptRunning) {
-            ; TODO does this need to be reset? Only if action settings are changed!
-            this.ActionGroupsRepository.reset()
-            this.setHotkeysForAllLayers(false) ;TODO this is done somewhere else, improve.
-            ExtendLayerProfileRepository.getInstance().load()
-            this.StartupConfigurator := MainStartupConfigurator() ; Reinitialize the configurator to reset the state
-            ; TODO probably needs to be destroyed...
-        }
-        this.runMainStartup()
+    restartProfile(){
+        this.StartupConfigurator.reset() ; Reset the state
+        this.setHotkeysForAllLayers(true)
     }
 
-    runMainStartup(enableHotkeys := true) {
-        this.setHotkeysForAllLayers(enableHotkeys)
+    ; TODO not in use.
+    actionSettingsChanged() {
+        ; ActionGroupsRepository.getInstance().reset()
+        this.setHotkeysForAllLayers(true)
     }
 
-    setHotkeysForAllLayers(enableHotkeys := true) {
+    setHotkeysForAllLayers(enableHotkeys) {
         this.StartupConfigurator.createGlobalHotkeysForAllKeyboardOverlays()
 
         ; Reads and initializes all the hotkeys which are active for every keyboard layer.
@@ -149,7 +113,7 @@ class Main {
     }
 
     getActiveLayer() {
-        layerController := this.ActionGroupsRepository.getActionObjectInstance("layers")
+        layerController := ActionGroupsRepository.getInstance().getActionObjectInstance("layers")
         return layerController.getActiveLayer()
     }
 }
@@ -174,3 +138,35 @@ MainScript.start()
 ; Used to show user the script is enabled
 ToolTip "Script enabled!"
 SetTimer () => ToolTip(), -3000
+
+
+
+testIfInProtectedLocation() {
+    testFile := A_ScriptDir . "\testFilePermissions.txt"
+
+    ; This function is used to test if the script has the right permissions to read/write files.
+    ; It will throw an error if it does not have the right permissions.
+    try {
+        if (FileExist(testFile)) {
+            FileDelete(testFile)
+        }
+        FileAppend("test", testFile)
+        FileDelete(testFile)
+    }
+    catch Error as e {
+        if (InStr(e.Message, "Access is denied")) {
+            if (!A_IsAdmin) {
+                ExtendLayerInProtectedLocationDialog_ := ExtendLayerInProtectedLocationDialog()
+                ExtendLayerInProtectedLocationDialog_.show()
+                WinWaitClose(ExtendLayerInProtectedLocationDialog_.GetHwnd())
+                ExitApp
+            }
+            else {
+                Logger.getInstance().logError("Error reading/writing file: " e.Message, e.File, e.Line)
+            }
+        }
+        else {
+            Logger.getInstance().logError("Error reading/writing file: " e.Message, e.File, e.Line)
+        }
+    }
+}

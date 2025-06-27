@@ -12,24 +12,45 @@ class ExtraKeyboards {
     currentLayer := ""
     currentFunction := ""
 
+    MainScript := ""
+
     ActionSettingsRepository := ActionSettingsRepository()
 
-    __New() {
-        
+    __New(MainScript) {
+        if (Type(MainScript) != "Main") {
+            throw TypeError("MainScript must be an instance of Main class")
+        }
+        this.MainScript := MainScript
     }
 
     ; TODO repository should do this!
-
     changeHotkey(originalHotkey, newHotkey, newAction) {
+        ; Disable hotkeys for all layers to prevent conflicts when adding a new hotkey.
+        this.MainScript.setHotkeysForAllLayers(false)
+        ; Change the hotkey in storage.
         ExtendLayerProfileRepository.getInstance().changeHotkey(this.GetCurrentLayer(), originalHotkey, newHotkey, newAction)
+        ; Enable hotkeys for all layers again, now with the new hotkey included.
+        this.MainScript.restartProfile()
     }
 
     addHotkey(hotkeyAction) {
+        ; ; Disable hotkeys for all layers to prevent conflicts when adding a new hotkey.
+        ; this.MainScript.setHotkeysForAllLayers(false)
+        ; Add the new hotkey to storage.
         ExtendLayerProfileRepository.getInstance().addHotkey(this.GetCurrentLayer(), hotkeyAction)
+        ; Enable hotkeys for all layers again, now with the new hotkey included.
+        this.MainScript.restartProfile()
     }
 
     deleteHotkey(hotkeyKey) {
+        ; Disable hotkeys for all layers. Which ensures the old hotkey is disabled.
+        this.MainScript.setHotkeysForAllLayers(false)
+
+        ; Delete the hotkey from storage.
         ExtendLayerProfileRepository.getInstance().deleteHotkey(this.GetCurrentLayer(), hotkeyKey)
+
+        ; Enable hotkeys for all layers again, now without the deleted hotkey.
+        this.MainScript.restartProfile()
     }
 
     getActionGroupNames() {
@@ -74,6 +95,7 @@ class ExtraKeyboards {
 
     ChangeFunctionSetting(actionName, ActionSetting) {
         this.ActionSettingsRepository.ChangeActionSetting(actionName, ActionSetting)
+        this.MainScript.restartProfile()
     }
 
     ; This creates a copy of the HotkeyInfo instead of returning a reference to the original object.
