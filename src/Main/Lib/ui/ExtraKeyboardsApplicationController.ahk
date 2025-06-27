@@ -11,12 +11,14 @@
 
 Class ExtraKeyboardsApplicationController{
 
-    MainScript := ""
-    ExitAppOnGuiClose := false
+    view := ""
+    ExtraKeyboards := ExtraKeyboards()
 
-    __New(ExtraKeyboards, view, MainScript){
+    ExitAppOnGuiClose := false
+    MainScript := ""
+
+    __New(view, MainScript){
         this.view := view
-        this.ExtraKeyboards := ExtraKeyboards
         this.ExitAppOnGuiClose := FilePaths.GetCloseScriptOnGuiClose()
         this.MainScript := MainScript
     }

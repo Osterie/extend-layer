@@ -1,8 +1,8 @@
 #Requires AutoHotkey v2.0
 #Include <ui\ExtraKeyboardsApplication>
 #Include <ui\ExtraKeyboardsApplicationController>
-#Include <ui\ExtraKeyboards>
 
+; TODO why are these here? they are in main.ahk.
 ; |--------------------------------------------------|
 ; |------------------- OPTIMIZATIONS ----------------|
 ; |--------------------------------------------------|
@@ -28,9 +28,8 @@ Class ExtraKeyboardsApplicationLauncher{
     ExtraKeyboardsApplication_ := ""
 
     __New(mainScript){
-        this.ExtraKeyboards_ := ExtraKeyboards()
         this.ExtraKeyboardsApplication_ := ExtraKeyboardsApplication()
-        this.ExtraKeyboardsApplicationController_ := ExtraKeyboardsApplicationController(this.ExtraKeyboards_, this.ExtraKeyboardsApplication_, mainScript)
+        this.ExtraKeyboardsApplicationController_ := ExtraKeyboardsApplicationController(this.ExtraKeyboardsApplication_, mainScript)
     }
 
     start(){

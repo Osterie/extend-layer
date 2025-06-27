@@ -12,7 +12,6 @@ class ExtraKeyboards {
     currentLayer := ""
     currentFunction := ""
 
-    ; TODO make other classes use this repository instead of the ExtraKeyboards class.
     ActionSettingsRepository := ActionSettingsRepository()
 
     __New() {
