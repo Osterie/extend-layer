@@ -18,9 +18,22 @@ class UpdateDialog extends DomainSpecificGui{
     }
 
     createMain(){
+        this.createExperimentalFeatureWarning()
         this.createInfo()
         this.createWarnings()
         this.createUpdateButton()
+    }
+
+    createExperimentalFeatureWarning(){
+        this.SetFont("s14 w700",)
+
+        this.Add("Text", "xm", 
+            "Experimental Feature! `n" .
+            "The updater is still experimental and may not always work as intended! `n" .
+            "It is recommended to backup your Extend Layer profile(s) before proceeding with the update. `n" .
+            "Please open an issue on github for any issues you encounter."
+        )
+        this.SetFont("s10 w400",)
     }
 
     createInfo(){
