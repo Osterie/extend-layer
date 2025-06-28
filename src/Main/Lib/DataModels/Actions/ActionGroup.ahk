@@ -11,8 +11,6 @@ class ActionGroup {
     actionRegistry := ""
     description := ""
 
-    ; TODO check type of given parameters.
-    ; TODO Try to add, if already exists, send a msgbox informing of such...
     __New(actionGroupObjectName, objectInstance, description, actionRegistry) {
         if (Type(actionGroupObjectName) != "String") {
             throw TypeError("actionGroupObjectName must be a String, got: " . Type(actionGroupObjectName))

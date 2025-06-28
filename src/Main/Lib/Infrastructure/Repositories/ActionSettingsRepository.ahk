@@ -29,8 +29,11 @@ class ActionSettingsRepository {
     
     ChangeActionSetting(actionName, ActionSetting) {
         filePathToSettings := FilePaths.GetPathToCurrentSettings()
+        ; Changes the action setting in the ini file and updates the ActionGroupSettingsRegistry.
         this.getActionGroupSettingsRegistry().ChangeActionSetting(actionName, filePathToSettings, ActionSetting)
+        ; Updates the ActionGroupsRepository to reflect the changes made in the ini file. Many ActionGroups use the Action settings from the ini file, therefore they must be updated after changign a setting.
         ActionGroupsRepository.getInstance().reset()
+        ; The Extend Layer Profiles have layers, which have actions. Since each action can have settings, we need to use the update value which ActionGroupsRepository now has.
         ExtendLayerProfileRepository.getInstance().load()
         ; TODO call Main.setHotkeysForAllLayers(true)
     }

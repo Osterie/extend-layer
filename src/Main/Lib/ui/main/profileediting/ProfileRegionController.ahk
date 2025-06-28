@@ -132,11 +132,11 @@ class ProfileRegionController{
     }
 
     doAddProfile(profileToAdd, profileName){
-        ; Guard condition
         if (this.ExistingProfilesManager.hasFolder(profileName)){
             msgbox("Failed to add profile. A profile with the given name already exists")
             return
         }
+        
         try{
             profilePath := this.PresetProfilesManager.getFolderPathByName(profileToAdd)
             this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, FilePaths.GetPathToProfiles() . "\" . profileName, profileName)
@@ -156,12 +156,6 @@ class ProfileRegionController{
 
     doExportProfile(){
         this.ProfileExporter_.exportProfile()
-    }
-
-    UpdateProfileDropDownMenu(){
-        this.view.Delete()
-        this.view.Add(this.ExistingProfilesManager.getFolderNames())
-        this.view.Choose(this.currentProfile)
     }
 
     GetHwnd(){

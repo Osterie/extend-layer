@@ -14,6 +14,9 @@ class ActionGroupRegistry {
             throw TypeError(
                 "ActionGroupRegistry: addActionGroup: actionGroup must be an object instance of ActionGroup class.")
         }
+        if (this.ActionGroups.Has(actionGroup.getObjectName())) {
+            throw Error("ActionGroupRegistry: addActionGroup: Action group with name '" . actionGroup.getObjectName() . "' already exists.")
+        }
         this.ActionGroups[actionGroup.getObjectName()] := actionGroup
     }
 
@@ -55,5 +58,4 @@ class ActionGroupRegistry {
             ActionGroup.destroyObjectInstance()
         }
     }
-
 }

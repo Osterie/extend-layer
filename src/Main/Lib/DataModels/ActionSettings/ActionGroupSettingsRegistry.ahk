@@ -21,6 +21,10 @@ class ActionGroupSettingsRegistry {
         if (Type(ActionSetting) != "ActionSetting") {
             throw Error("Invalid argument type. Expected ActionSetting")
         }
+        if (!FileExist(filePathToSettings)) {
+            throw ValueError("File does not exist: " . filePathToSettings)
+        }
+
         settingName := ActionSetting.getActionSettingName()
         settingValue := ActionSetting.getActionSettingValue()
 

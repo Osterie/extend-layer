@@ -23,7 +23,6 @@ class ExtraKeyboards {
         this.MainScript := MainScript
     }
 
-    ; TODO repository should do this!
     changeHotkey(originalHotkey, newHotkey, newAction) {
         ; Disable hotkeys for all layers to prevent conflicts when adding a new hotkey.
         this.MainScript.setHotkeysForAllLayers(false)
@@ -93,7 +92,7 @@ class ExtraKeyboards {
         return ExtendLayerProfileRepository.getInstance().getLayerByLayerIdentifier(this.currentLayer)
     }
 
-    ChangeFunctionSetting(actionName, ActionSetting) {
+    changeActionSetting(actionName, ActionSetting) {
         this.ActionSettingsRepository.ChangeActionSetting(actionName, ActionSetting)
         this.MainScript.restartProfile()
     }

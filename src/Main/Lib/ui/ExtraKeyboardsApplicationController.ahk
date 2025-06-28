@@ -32,7 +32,8 @@ Class ExtraKeyboardsApplicationController{
         ; this.mainScript.start()
         ; TODO is there a better solution?
         Run(A_ScriptDir "\Main.ahk")
-        this.view.destroy()
+        ; this.view.destroy()
+        ExitApp
     }
 
     HandleupdateAvailableClicked(){
@@ -109,7 +110,7 @@ Class ExtraKeyboardsApplicationController{
     }
 
     SettingsEditorDialogSaveButtonEvent(actionName, ActionSetting){
-        this.ExtraKeyboards.ChangeFunctionSetting(actionName, ActionSetting)
+        this.ExtraKeyboards.changeActionSetting(actionName, ActionSetting)
         try{
             this.view.UpdateSettingsForActions()
             }

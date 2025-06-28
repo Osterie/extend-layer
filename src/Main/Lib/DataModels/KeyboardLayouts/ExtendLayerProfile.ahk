@@ -18,14 +18,23 @@ class ExtendLayerProfile {
     }
 
     AddKeyboardOverlayLayerInfo(KeyboardOverlayLayer) {
+        if (Type(KeyboardOverlayLayer) != "KeyboardOverlayLayer") {
+            throw Error("The KeyboardOverlayLayer must be of type KeyboardOverlayLayer")
+        }
         this.keyboardOverlayLayers[KeyboardOverlayLayer.GetLayerIdentifier()] := KeyboardOverlayLayer
     }
 
     AddHotkeyLayer(Hotkeys) {
+        if (Type(Hotkeys) != "HotkeyLayer") {
+            throw Error("The Hotkeys must be of type HotkeyLayer")
+        }
         this.hotkeysLayer[Hotkeys.GetLayerIdentifier()] := Hotkeys
     }
 
     addHotkey(layerIdentifier, hotkeyAction) {
+        if (Type(hotkeyAction) != "HotkeyInfo") {
+            throw Error("The hotkeyAction must be of type HotkeyInfo")
+        }
         this.hotkeysLayer[layerIdentifier].addHotkey(hotkeyAction)
     }
 

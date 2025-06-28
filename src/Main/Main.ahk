@@ -55,8 +55,6 @@ class Main {
 
     StartupConfigurator := MainStartupConfigurator()
 
-    scriptRunning := false
-
     __New() {
     }
 
@@ -70,18 +68,11 @@ class Main {
         }
         finally {
             this.runAppGui()
-            this.scriptRunning := true
         }
     }
 
     restartProfile(){
         this.StartupConfigurator.reset() ; Reset the state
-        this.setHotkeysForAllLayers(true)
-    }
-
-    ; TODO not in use.
-    actionSettingsChanged() {
-        ; ActionGroupsRepository.getInstance().reset()
         this.setHotkeysForAllLayers(true)
     }
 

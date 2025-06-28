@@ -10,11 +10,12 @@ class KeyboardOverlayLayer {
     __New(ShowKeyboardOverlayKey, KeyboardLayerOverlayIdentifier) {
         this.ShowKeyboardOverlayKey := ShowKeyboardOverlayKey
         this.KeyboardLayerOverlayIdentifier := KeyboardLayerOverlayIdentifier
-        ; this.KeyboardLayerOverlayIdentifier := "SecondaryLayer-KeyboardOverlay1"
-        ; TODO add type checks...
     }
 
     addKeyboardOverlayElement(KeyboardOverlayElement) {
+        if (Type(KeyboardOverlayElement) != "KeyboardOverlayElement") {
+            throw TypeError("KeyboardOverlayElement must be of type KeyboardOverlayElement, got: " . Type(KeyboardOverlayElement))
+        }
         this.OverlayElements.Set(KeyboardOverlayElement.getElementName(), KeyboardOverlayElement)
     }
 
