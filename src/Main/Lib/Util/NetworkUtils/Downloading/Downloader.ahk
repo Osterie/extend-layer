@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\Downloading\UnZipper>
+#Include <Util\NetworkUtils\Downloading\UnZipper>
 
 ; Downloader class to handle downloading and unzipping files.
 class Downloader {

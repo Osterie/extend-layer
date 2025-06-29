@@ -6,7 +6,7 @@
 #Include <Infrastructure\Repositories\VersionRepository>
 #Include <Infrastructure\IO\FileOverwriteManager>
 
-#Include <Util\Downloading\Downloader>
+#Include <Util\NetworkUtils\Downloading\Downloader>
 
 #Include <Shared\Logger>
 #Include <Shared\FilePaths>

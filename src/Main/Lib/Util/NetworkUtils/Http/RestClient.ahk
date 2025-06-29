@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\Http\HttpClient>
+#Include <Util\NetworkUtils\Http\HttpClient>
 #Include <Util\JsonParsing\JXON>
 
 ; RestClient class to handle RESTful API requests
