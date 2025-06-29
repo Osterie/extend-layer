@@ -2,8 +2,11 @@
 
 #Include <Updater\GithubReleaseChecker>
 
-#Include <Shared\Logger>
 #Include <Infrastructure\Repositories\VersionRepository>
+
+#Include <Util\Errors\NetworkError>
+
+#Include <Shared\Logger>
 
 class UpdateChecker {
     ReleaseChecker := ""
@@ -12,7 +15,13 @@ class UpdateChecker {
     Logger := Logger.getInstance()
 
     __New(){
-        this.ReleaseChecker := GithubReleaseChecker("Osterie", "extend-layer", this.getCurrentVersion())
+        try{
+            this.ReleaseChecker := GithubReleaseChecker("Osterie", "extend-layer", this.getCurrentVersion())
+        }
+        catch NetworkError as e{
+            this.Logger.logInfo("Could not check for updates due to network error: " e.message . " UpdateChecker.ahk " . A_LineNumber)
+            throw e  ; Re-throw the error to handle it in the calling code
+        }
     }
 
     updateAvailable() {

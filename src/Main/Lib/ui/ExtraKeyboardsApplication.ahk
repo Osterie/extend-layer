@@ -8,7 +8,9 @@
 #Include <ui\Main\MenuBar\SettingsMenu>
 
 #Include <Updater\UpdateChecker>
+
 #Include <Util\Formaters\HotkeyFormatter>
+#Include <Util\NetworkUtils\NetworkChecker>
 
 #Include <ui\Main\Util\DomainSpecificGui>
 
@@ -42,20 +44,28 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
             
         _SettingsMenu := SettingsMenu((*) => this.UpdateGuiSettings())
         ThemeCategoriesMenu := ThemesMenu((*) => this.UpdateColorTheme())
-
-        UpdateChecker_ := UpdateChecker()
-
         
         MyMenuBar.Add("&Themes", ThemeCategoriesMenu)
         ; TODO can do suspend differently. have custom suspend menu bar class
         MyMenuBar.Add("&Suspend Script", (ItemName, ItemPos, MyMenuBar) => this.HandleSuspendClicked(ItemName, ItemPos, MyMenuBar))
         MyMenuBar.Add("&Settings", _SettingsMenu)
+        this.AddUpdateMenu(MyMenuBar)
+        
+        this.MenuBar := MyMenuBar
+
+    }
+
+    AddUpdateMenu(MyMenuBar){
+        if (!NetworkChecker.isConnectedToInternet()){
+            ; No internet connection, cannot check for updates.
+            return
+        }
+
+        UpdateChecker_ := UpdateChecker()
 
         if (UpdateChecker_.updateAvailable()){
             MyMenuBar.Add("🔄Update available!", (ItemName, ItemPos, MyMenuBar) => this.HandleupdateAvailableClicked(ItemName, ItemPos, MyMenuBar))
         }
-
-        this.MenuBar := MyMenuBar
     }
 
     HandleSuspendClicked(ItemName, ItemPos, MyMenuBar) {

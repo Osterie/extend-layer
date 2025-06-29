@@ -4,8 +4,11 @@
 
 #Include <Util\JsonParsing\JXON>
 #Include <Util\NetworkUtils\Http\RestClient>
-#Include <Shared\Logger>
+#Include <Util\NetworkUtils\NetworkChecker>
+#Include <Util\Errors\NetworkError>
 #Include <Util\Formaters\TimestampConverter>
+
+#Include <Shared\Logger>
 
 class GithubReleaseChecker {
 
@@ -26,7 +29,6 @@ class GithubReleaseChecker {
         if (this.owner = "" || this.repo = "" || this.currentVersion = "") {
             throw Error("Owner, repo, and current version must be provided.")
         }
-
         this.GithubRelease := this.getLatestReleaseInfo()
     }
 
@@ -46,6 +48,11 @@ class GithubReleaseChecker {
     }
 
     getLatestReleaseInfo() {
+
+        if (!NetworkChecker.isConnectedToInternet()){
+            throw NetworkError()
+        }
+
         response := this.RestClient.Get("https://api.github.com/repos/" this.owner "/" this.repo "/releases/latest")
         
         if (response.status != 200) {

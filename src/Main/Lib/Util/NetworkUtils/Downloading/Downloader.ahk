@@ -1,5 +1,6 @@
 #Requires AutoHotkey v2.0
 
+#Include <Util\Errors\NetworkError>
 #Include <Util\NetworkUtils\Downloading\UnZipper>
 
 ; Downloader class to handle downloading and unzipping files.
@@ -19,6 +20,11 @@ class Downloader {
 
     ; Downloads a file from the given URL to the specified location.
     Download(url, downloadLocation, replace := false) {
+
+        if (!NetworkChecker.isConnectedToInternet()){
+            throw NetworkError()
+        }
+
         if (replace && DirExist(downloadLocation)) {
             DirDelete(downloadLocation) ; Remove existing folder if replace is true
         }

@@ -9,7 +9,6 @@
 
 class UpdateDialog extends DomainSpecificGui{
 
-    UpdateChecker := UpdateChecker()
     Logger := Logger.getInstance()
 
     __New(){
@@ -18,10 +17,22 @@ class UpdateDialog extends DomainSpecificGui{
     }
 
     createMain(){
+        if (!NetworkChecker.isConnectedToInternet()){
+            this.createNoInternetWarning()
+            ; No internet connection, cannot check for updates.
+            return
+        }
         this.createExperimentalFeatureWarning()
         this.createInfo()
         this.createWarnings()
         this.createUpdateButton()
+    }
+
+    createNoInternetWarning(){
+        this.SetFont("s14 w700",)
+        this.Add("Text", "xm", "No internet connection detected. `n" .
+            "Please check your internet connection and try again.")
+        this.SetFont("s10 w400",)
     }
 
     createExperimentalFeatureWarning(){
@@ -37,10 +48,11 @@ class UpdateDialog extends DomainSpecificGui{
     }
 
     createInfo(){
+        UpdateChecker_ := UpdateChecker()
         this.Add("Text",, 
             "A new version of Extend Layer is available. `n" .
-            "Current version: " . this.UpdateChecker.getCurrentVersion() . "`n" .
-            "Newest version: " . this.UpdateChecker.getLatestVersionInfo()
+            "Current version: " . UpdateChecker_.getCurrentVersion() . "`n" .
+            "Newest version: " . UpdateChecker_.getLatestVersionInfo()
         )
     }
 
@@ -62,9 +74,18 @@ class UpdateDialog extends DomainSpecificGui{
     }
 
     doUpdate(){
-        autoUpdater_ := AutoUpdater()
+        if (!NetworkChecker.isConnectedToInternet()){
+            MsgBox("No internet connection detected. Please check your internet connection and try again.")
+            return
+        }
         try{
-            autoUpdater_.checkForUpdates()
+            autoUpdater_ := AutoUpdater()
+            autoUpdater_.updateExtendLayer()
+        }
+        catch  NetworkError as e{
+            this.Logger.logError("Network error occurred while updating: " e.message, e.file, e.line)
+            MsgBox("Network error occurred while updating: " e.message)
+            return
         }
         catch Error as e{
             this.Logger.logError("Update failed: " e.message, e.file, e.line)

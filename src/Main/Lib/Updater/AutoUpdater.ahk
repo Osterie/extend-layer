@@ -6,6 +6,8 @@
 #Include <Infrastructure\Repositories\VersionRepository>
 #Include <Infrastructure\IO\FileOverwriteManager>
 
+#Include <Util\Errors\NetworkError>
+#Include <Util\NetworkUtils\NetworkChecker>
 #Include <Util\NetworkUtils\Downloading\Downloader>
 
 #Include <Shared\Logger>
@@ -32,19 +34,8 @@ class AutoUpdater {
         return AutoUpdater.instance
     }
 
-    checkForUpdates() {
-        updateAvailable := this.releaseChecker.updateAvailable()
-        if (!updateAvailable) {
-            return false ; No updates available
-        }
-
-        try{
-            this.updateExtendLayer()
-        }
-        catch Error as e {
-            this.Logger.logError("Failed to update current version: " e.Message, e.File, e.Line)
-            throw Error("Failed to update current version: " e.Message)
-        }
+    updateAvailable() {
+        return this.releaseChecker.updateAvailable()
     }
 
     updateExtendLayer() {
@@ -55,6 +46,9 @@ class AutoUpdater {
     }
 
     downloadLatestRelease() {
+        if (!NetworkChecker.isConnectedToInternet()){
+            throw NetworkError()
+        }
         downloadUrl := this.releaseChecker.getDownloadUrl()
         zipDownloadLocation := this.LATEST_RELEASE_DOWNLOAD_LOCATION . ".zip" ; Ensure the download location has a .zip extension
         unzippedDownloadLocation := this.LATEST_RELEASE_DOWNLOAD_LOCATION ; Location where the ZIP will be unzipped
