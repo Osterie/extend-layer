@@ -13,7 +13,7 @@ class UpdateDialog extends DomainSpecificGui{
     Logger := Logger.getInstance()
 
     __New(){
-        super.__New("+Resize +MinSize300x180", "Update Dialog")
+        super.__New("+Resize +MinSize300x180", "Update")
         this.createMain()
     }
 
