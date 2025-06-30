@@ -2,9 +2,12 @@
 
 #Include <Util\NetworkUtils\Downloading\UnZipper>
 
+#Include <Infrastructure\Repositories\VersionRepository>
 #Include <Shared\FilePaths>
 
 class BackupManager {
+
+    Version := VersionRepository()
 
     UnZipper := UnZipper()
 
@@ -24,14 +27,18 @@ class BackupManager {
             DirDelete(this.TEMPORARY_DIR, true) ; true = recursive delete
         }
         DirCreate(this.TEMPORARY_DIR)
+
+
         ; Copy to temporary location
         DirCopy(this.PROJECT_ROOT, this.TEMPORARY_DIR, true) ; true = overwrite
         ; Delete the backup directory in the temporary location if it exists
         if (DirExist(this.TEMPORARY_DIR . "\backups")){
             DirDelete(this.TEMPORARY_DIR . "\backups", true) ; true = recursive delete
         }
+
+        currentVersion := this.Version.getCurrentVersion()
         ; Copy and zip the temporary location to the backup directory
-        this.UnZipper.zip(this.TEMPORARY_DIR, this.BACKUP_DIR . "\extend-layer-backup" . A_Now . ".zip")
+        this.UnZipper.zip(this.TEMPORARY_DIR, this.BACKUP_DIR . "\" . currentVersion . "_" . A_Now . ".zip")
     }
 
     ; Restores the backup by copying the files from the backup directory to the source directory.
