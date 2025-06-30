@@ -2,9 +2,9 @@
 #SingleInstance Force
 #NoTrayIcon
 
-; Only run in compiled mode, must be at least 2 argument, up to 7 arguments.
+; Must be at least 2 argument, up to 7 arguments.
 if (A_Args.Length < 2 || A_Args.Length > 7) {
-    MsgBox "Update failed. This script should only be run in compiled mode with 2 to 7 arguments."
+    MsgBox "Update failed. This script should only be run with 2 to 7 arguments."
     ExitApp
 }
 
