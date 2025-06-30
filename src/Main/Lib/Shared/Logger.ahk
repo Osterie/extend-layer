@@ -86,17 +86,17 @@ class Logger {
         }
     }
     
-    ; Ensure the log file does not exceed a certain size (5MB)
+    ; Ensure the log file does not exceed a certain size (100KB)
     ; If it does, delete the file
     ensureLogFileSize() {
         this.checkAndCreateLogDir()
         try{
-            currentSize := FileGetSize(this.logFile, "M")
+            currentSize := FileGetSize(this.logFile, "K")
         } catch {
             currentSize := 0
             FileAppend("", this.logFile) ; Create the file if it doesn't exist
         }
-        if (currentSize > 5) { ; 5MB
+        if (currentSize > 100) { ; 100KB
             FileDelete(this.logFile)
         }
     }
