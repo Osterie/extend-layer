@@ -1,13 +1,21 @@
 #Requires AutoHotkey v2.0
 
+#Include <Infrastructure\Repositories\VersionRepository>
+
 #Include <Util\NetworkUtils\Downloading\UnZipper>
 
-#Include <Infrastructure\Repositories\VersionRepository>
-#Include <Shared\FilePaths>
+#Include <Updater\UpdaterRunner>
 
+#Include <Shared\FilePaths>
+#Include <Shared\Logger>
+
+; TODO refactor
 class BackupManager {
 
     Version := VersionRepository()
+    Logger := Logger.getInstance()
+
+    UpdaterRunner := UpdaterRunner()
 
     UnZipper := UnZipper()
 
@@ -15,75 +23,102 @@ class BackupManager {
 
     BACKUP_DIR := FilePaths.getPathToBackups()
 
-    TEMPORARY_DIR := FilePaths.getPathToTemporaryLocation() . "\extend-layer-backup-creation" 
+    TEMPORARY_DIR_CREATION := FilePaths.getPathToTemporaryLocation() . "\extend-layer-backup-creation" 
+    TEMPORARY_DIR_RESTORATION := FilePaths.getPathToTemporaryLocation() . "\extend-layer-backup-restoration" 
 
     __New(){
-
+        ; Empty
     }
 
     ; Creates a backup of the current version of Extend Layer by copying the files to the backup directory.
     createBackup() {
-        if (DirExist(this.TEMPORARY_DIR)) {
-            DirDelete(this.TEMPORARY_DIR, true) ; true = recursive delete
+        if (DirExist(this.TEMPORARY_DIR_CREATION)) {
+            DirDelete(this.TEMPORARY_DIR_CREATION, true) ; true = recursive delete
         }
-        DirCreate(this.TEMPORARY_DIR)
+        DirCreate(this.TEMPORARY_DIR_CREATION)
 
 
         ; Copy to temporary location
-        DirCopy(this.PROJECT_ROOT, this.TEMPORARY_DIR, true) ; true = overwrite
+        DirCopy(this.PROJECT_ROOT, this.TEMPORARY_DIR_CREATION, true) ; true = overwrite
         ; Delete the backup directory in the temporary location if it exists
-        if (DirExist(this.TEMPORARY_DIR . "\backups")){
-            DirDelete(this.TEMPORARY_DIR . "\backups", true) ; true = recursive delete
+        if (DirExist(this.TEMPORARY_DIR_CREATION . "\backups")){
+            DirDelete(this.TEMPORARY_DIR_CREATION . "\backups", true) ; true = recursive delete
         }
 
         currentVersion := this.Version.getCurrentVersion()
         ; Copy and zip the temporary location to the backup directory
-        this.UnZipper.zip(this.TEMPORARY_DIR, this.BACKUP_DIR . "\" . currentVersion . "_" . A_Now . ".zip")
+        this.UnZipper.zip(this.TEMPORARY_DIR_CREATION, this.BACKUP_DIR . "\" . currentVersion . "_" . A_Now . ".zip")
     }
 
-    ; Restores the backup by copying the files from the backup directory to the source directory.
-    restoreBackup(backupDir) {
+    ; Restores everything except user profiles
+    restoreBackupWithoutOldProfiles(backupDir) {
 
-        ; FileOverwriteManager_ := FileOverwriteManager()
-        ; pathToBackup := this.getPathToBackup(backupDir)
+        if (!FileExist(backupDir)) {
+            this.Logger.logError("Backup directory does not exist: " backupDir)
+            throw Error("Backup directory does not exist: " backupDir)
+        }
 
-        ; try {
-        ;     FileOverwriteManager_.copyIntoNewLocation(pathToBackup, this.PROJECT_ROOT, FilePaths.getPathToUpdateManifest(), true)
-        ; }
-        ; catch Error as e{
-        ;     errorMessage := "Failed to restore backup from: " backupDir " to project root: " this.PROJECT_ROOT
-        ;     this.Logger.logError(
-        ;         errorMessage 
-        ;         . e.Message
-        ;         , "AutoUpdater.ahk"
-        ;         , e.Line
-        ;     )
-        ;     throw Error(errorMessage . " " . e.Message . " at line: " . e.Line)
-        ; }
+        ; unzip the backup directory to a temporary location
+        if (DirExist(this.TEMPORARY_DIR_RESTORATION)) {
+            DirDelete(this.TEMPORARY_DIR_RESTORATION, true)
+        }
+        DirCreate(this.TEMPORARY_DIR_RESTORATION)
+        this.UnZipper.unzip(backupDir, this.TEMPORARY_DIR_RESTORATION)
+        ; Wait for the unzipping to complete
+        waitTime := 0
+        while (!DirExist(this.TEMPORARY_DIR_RESTORATION) && waitTime < 10000) {
+            Sleep 100
+            waitTime += 100
+        }
+
+        if (waitTime >= 10000) {
+            this.Logger.logError("Failed to unzip the backup directory: " backupDir)
+            throw Error("Failed to unzip the backup directory: " backupDir)
+        }
+
+        profiles := FilePaths.GetPathToProfiles()
+
+        oldProfiles := this.TEMPORARY_DIR_RESTORATION . "\config\UserProfiles"
+
+        if (DirExist(oldProfiles)) {
+            ; Delete the old profiles directory
+            DirDelete(oldProfiles, true) ; true = recursive delete
+        }
+
+        DirCopy(profiles, this.TEMPORARY_DIR_RESTORATION . "\config\UserProfiles", true) ; true = overwrite
+
+        
+        this.UpdaterRunner.runUpdater(this.TEMPORARY_DIR_RESTORATION, this.PROJECT_ROOT, true)
+
     }
 
-    restore(){
-        ; this.copyCurrentVersionToTemporaryLocation()
-        ; this.updateVersionInTemporaryLocation()
-        ; this.updateCurrentVersion()
+    
+    ; TODO refactor
+    ; Restores everything including user profiles
+    restoreBackupIncludingProfiles(backupDir) {
+        if (!FileExist(backupDir)) {
+            this.Logger.logError("Backup directory does not exist: " backupDir)
+            throw Error("Backup directory does not exist: " backupDir)
+        }
+
+        ; unzip the backup directory to a temporary location
+        if (DirExist(this.TEMPORARY_DIR_RESTORATION)) {
+            DirDelete(this.TEMPORARY_DIR_RESTORATION, true)
+        }
+        DirCreate(this.TEMPORARY_DIR_RESTORATION)
+        this.UnZipper.unzip(backupDir, this.TEMPORARY_DIR_RESTORATION)
+        ; Wait for the unzipping to complete
+        waitTime := 0
+        while (!DirExist(this.TEMPORARY_DIR_RESTORATION) && waitTime < 10000) {
+            Sleep 100
+            waitTime += 100
+        }
+
+        if (waitTime >= 10000) {
+            this.Logger.logError("Failed to unzip the backup directory: " backupDir)
+            throw Error("Failed to unzip the backup directory: " backupDir)
+        }
+
+        this.UpdaterRunner.runUpdater(this.TEMPORARY_DIR_RESTORATION, this.PROJECT_ROOT, true)
     }
-
-    ; updateVersionInTemporaryLocation() {
-    ;     FileOverwriteManager_ := FileOverwriteManager()
-    ;     pathToUnzippedFiles := this.getPathToUnzippedFiles(this.LATEST_RELEASE_DOWNLOAD_LOCATION)
-
-    ;     try {
-    ;         FileOverwriteManager_.copyIntoNewLocation(pathToUnzippedFiles, this.CURRENT_VERSION_TEMPORARY_LOCATION, FilePaths.getPathToUpdateManifest(), true)
-    ;     }
-    ;     catch Error as e{
-    ;         errorMessage := "Failed to overwrite files from unzipped location: " this.LATEST_RELEASE_DOWNLOAD_LOCATION " to temporary location: " this.CURRENT_VERSION_TEMPORARY_LOCATION
-    ;         this.Logger.logError(
-    ;             errorMessage 
-    ;             . e.Message
-    ;             , "AutoUpdater.ahk"
-    ;             , e.Line
-    ;         )
-    ;         throw Error(errorMessage . " " . e.Message . " at line: " . e.Line)
-    ;     }
-    ; }
 }

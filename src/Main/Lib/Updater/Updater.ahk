@@ -113,7 +113,8 @@ updateCurrentVersion(){
 
         hwnd := WinExist("ControlScript ahk_class AutoHotkey")
 
-        if (hwnd){
+        controlScriptWasRunning := false
+        if (hwnd != 0){
             controlScriptPid := WinGetPID("ahk_id " hwnd)
             controlScriptWasRunning := ProcessExist(controlScriptPid) ? true : false
             if (!closeProcess(controlScriptPid)) {
@@ -133,6 +134,8 @@ updateCurrentVersion(){
     catch Error as err {
         MsgBox("❌ Update failed:`n" 
             . err.Message
+            . "`nLine: " err.Line
+            . "`nFile: " err.File
             . "`nAttempting to restore backup..."
         )
         restoreBackup() ; Restore the backup if update fails
