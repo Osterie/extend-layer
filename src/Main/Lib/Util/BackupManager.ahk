@@ -47,7 +47,9 @@ class BackupManager {
 
         currentVersion := this.Version.getCurrentVersion()
         ; Copy and zip the temporary location to the backup directory
-        this.UnZipper.zip(this.TEMPORARY_DIR_CREATION, this.BACKUP_DIR . "\" . currentVersion . "_" . A_Now . ".zip")
+        backupLocation := this.BACKUP_DIR . "\" . currentVersion . "_" . A_Now . ".zip"
+        this.UnZipper.zip(this.TEMPORARY_DIR_CREATION, backupLocation)
+        Sleep(1000)
     }
 
     ; Restores everything except user profiles
