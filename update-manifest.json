@@ -13,6 +13,7 @@
     "assets\\imageSearchImages",
     "config\\UserProfiles",
     "config\\meta.ini",
+    "backups",
     "logs"
   ]
 }

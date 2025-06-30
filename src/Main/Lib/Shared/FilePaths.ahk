@@ -2,7 +2,10 @@
 
 class FilePaths {
 
+    ; TODO convert some relative paths to absolute paths. using utlitiy method in UnZipper.ahk
     static PATH_TO_THEMES := "..\..\config\Themes.json"
+    
+    static PATH_TO_BACKUPS := "..\..\backups"
 
     static PATH_TO_LOGS := "..\..\logs"
 
@@ -32,6 +35,13 @@ class FilePaths {
 
     static GetPathToLogs() {
         return this.PATH_TO_LOGS
+    }
+
+    static getPathToBackups() {
+        if (!DirExist(this.PATH_TO_BACKUPS)) {
+            DirCreate(this.PATH_TO_BACKUPS)
+        }
+        return this.PATH_TO_BACKUPS
     }
 
     static getPathToTemporaryLocation() {

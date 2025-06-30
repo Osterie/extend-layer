@@ -1,7 +1,8 @@
 config/UserProfiles/*
 !config/UserProfiles/Default
-tests/*
 
+backups
+tests
 logs
 TODO.ahk
 READMETODO.md
