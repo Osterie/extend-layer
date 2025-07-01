@@ -142,6 +142,7 @@ class FileOverwriteManager {
             return ; The directory already exists, or the given directory path is an existin file.
         }
 
+        ; TODO create helper class.
         SplitPath(directoryPath, &OutFileName, &OutDir, &OutExtension, &OutNameNoExt, &OutDrive)
         if (OutExtension != "") {
             return ; The given path is a file, not a directory.

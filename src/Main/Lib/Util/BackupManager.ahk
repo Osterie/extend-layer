@@ -21,12 +21,14 @@ class BackupManager {
 
     PROJECT_ROOT := FilePaths.GetAbsolutePathToRoot()
 
+    DELIMITER := "_"
+
     BACKUP_DIR := FilePaths.getPathToBackups()
 
-    TEMPORARY_DIR_CREATION := FilePaths.getPathToTemporaryLocation() . "\extend-layer-backup-creation" 
-    TEMPORARY_DIR_RESTORATION := FilePaths.getPathToTemporaryLocation() . "\extend-layer-backup-restoration" 
+    TEMPORARY_DIR_CREATION := FilePaths.getPathToTemporaryLocation() . "\extend-layer-backup-creation"
+    TEMPORARY_DIR_RESTORATION := FilePaths.getPathToTemporaryLocation() . "\extend-layer-backup-restoration"
 
-    __New(){
+    __New() {
         ; Empty
     }
 
@@ -37,19 +39,34 @@ class BackupManager {
         }
         DirCreate(this.TEMPORARY_DIR_CREATION)
 
-
         ; Copy to temporary location
         DirCopy(this.PROJECT_ROOT, this.TEMPORARY_DIR_CREATION, true) ; true = overwrite
         ; Delete the backup directory in the temporary location if it exists
-        if (DirExist(this.TEMPORARY_DIR_CREATION . "\backups")){
+        if (DirExist(this.TEMPORARY_DIR_CREATION . "\backups")) {
             DirDelete(this.TEMPORARY_DIR_CREATION . "\backups", true) ; true = recursive delete
         }
 
         currentVersion := this.Version.getCurrentVersion()
         ; Copy and zip the temporary location to the backup directory
-        backupLocation := this.BACKUP_DIR . "\" . currentVersion . "_" . A_Now . ".zip"
+        backupLocation := this.BACKUP_DIR . "\" . currentVersion . this.DELIMITER . A_Now . ".zip"
         this.UnZipper.zip(this.TEMPORARY_DIR_CREATION, backupLocation)
         Sleep(1000)
+    }
+
+    currentVersionIsBackedUp() {
+        currentVersion := this.Version.getCurrentVersion()
+
+        loop files, this.BACKUP_DIR "\*.zip", "FD" {
+            path := A_LoopFileFullPath
+            
+            versionOfBackup := this.getVersionFromBackup(path)
+            MsgBox("Version of backup: " versionOfBackup " | Current version: " currentVersion)
+            if (versionOfBackup = currentVersion) {
+                return true
+            }
+        }
+
+        return false
     }
 
     ; Restores everything except user profiles
@@ -89,12 +106,10 @@ class BackupManager {
 
         DirCopy(profiles, this.TEMPORARY_DIR_RESTORATION . "\config\UserProfiles", true) ; true = overwrite
 
-        
         this.UpdaterRunner.runUpdater(this.TEMPORARY_DIR_RESTORATION, this.PROJECT_ROOT, true)
 
     }
 
-    
     ; TODO refactor
     ; Restores everything including user profiles
     restoreBackupIncludingProfiles(backupDir) {
@@ -122,5 +137,24 @@ class BackupManager {
         }
 
         this.UpdaterRunner.runUpdater(this.TEMPORARY_DIR_RESTORATION, this.PROJECT_ROOT, true)
+    }
+
+    getVersionFromBackup(backupDir) {
+        if (!FileExist(backupDir)) {
+            this.Logger.logError("Backup directory does not exist: " backupDir)
+            throw Error("Backup directory does not exist: " backupDir)
+        }
+        
+        ; TODO create helper class.
+        SplitPath(backupDir , &OutFileName, &OutDir, &OutExtension, &OutNameNoExt, &OutDrive)
+
+        parts := StrSplit(OutFileName, this.DELIMITER)
+        if (parts.Length < 2 || parts.Length > 3) {
+            this.Logger.logError("Backup directory name is not in the expected format: " backupDir)
+            throw Error("Backup directory name is not in the expected format: " backupDir)
+        }
+
+        version := parts[1]  ; The version is the second part of the name
+        return version
     }
 }

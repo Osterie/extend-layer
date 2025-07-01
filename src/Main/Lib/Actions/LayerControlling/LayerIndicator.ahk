@@ -33,6 +33,7 @@ class LayerIndicator extends HotkeyAction {
     }
     
     addImageControl() {
+        ; TODO create helper class.
         SplitPath(this.image, &OutFileName, &OutDir, &OutExtension, &OutNameNoExt, &OutDrive)
 
         if (OutExtension = "") {
