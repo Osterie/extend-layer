@@ -14,7 +14,7 @@ class UpdatesAndBackupsTab {
     createTab() {
         ; Add heading
         this.guiToAddTo.SetFont("w700")
-        this.guiToAddTo.Add("Text", "Section", "🔧 Updates & Backups")
+        this.guiToAddTo.Add("Text", "Section", "🔧 Updates && Backups")
         this.guiToAddTo.SetFont("w400")
         
         VersionRepository_ := VersionRepository()

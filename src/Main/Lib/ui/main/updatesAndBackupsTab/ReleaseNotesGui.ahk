@@ -25,13 +25,20 @@ class ReleaseNotesGui extends DomainSpecificGui {
     }
 
     create() {
-        this.SetFont("w700",)
-        this.Add("Text", "Section", "🔧 Release Notes")
-        
-        this.SetFont("w400",)
-        this.Add("Text", "xs y+10", "Select a version to view release notes:")
 
-        releases := this.GithubApiInterface.getReleases()
+        try{
+            releases := this.GithubApiInterface.getReleases()
+        }
+        catch NetworkError as e {
+            this.SetFont("s16 w700")
+            this.Add("Text", "", "Failed to fetch release notes. " e.message)
+            return
+        }
+        catch Error as e {
+            this.SetFont("s16 w700")
+            this.Add("Text", "", "An error occurred while fetching release notes: " e.message)
+            return
+        }
         versions := []
         for release in releases {
             versions.Push(release.getVersion())
@@ -43,6 +50,12 @@ class ReleaseNotesGui extends DomainSpecificGui {
         for version in versions {
             versionList .= version "`n"
         }
+
+        this.SetFont("w700",)
+        this.Add("Text", "Section", "🔧 Release Notes")
+        
+        this.SetFont("w400",)
+        this.Add("Text", "xs y+10", "Select a version to view release notes:")
 
         ; Add ListBox with versions
         this.versionListBox := this.Add("ListBox", "xs y+5 w600 r10", versions)

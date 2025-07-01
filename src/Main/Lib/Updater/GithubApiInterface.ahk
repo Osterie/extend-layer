@@ -54,8 +54,12 @@ class GithubApiInterface {
         response := this.RestClient.Get("https://api.github.com/repos/" this.owner "/" this.repo "/releases")
         
         if (response.status != 200) {
+            if (response.status = 403) {
+                this.Logger.logError("Rate limit exceeded. Please try again later.")
+                throw NetworkError("Rate limit exceeded. Please try again later.")
+            }
             this.Logger.logError("Failed to fetch release information. Status: " response.status)
-            throw Error("Failed to fetch release information. Status: " response.status)
+            throw NetworkError("Failed to fetch release information. Status: " response.status)
         }
         
         releases := response.objectAsMap
