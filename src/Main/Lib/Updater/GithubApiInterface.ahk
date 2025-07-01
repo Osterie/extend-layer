@@ -10,12 +10,12 @@
 
 #Include <Shared\Logger>
 
-class GithubReleaseChecker {
-
+; TODO use in GithubReleaseChecker.ahk
+class GithubApiInterface {
+    
     RestClient := RestClient()  ; Handles HTTP requests
     Logger := Logger.getInstance()
     TimestampConverter := TimestampConverter()  ; Handles timestamp formatting
-    GithubRelease := ""  ; Instance of GithubRelease to handle release information
 
     owner := ""
     repo := ""  ; The GitHub repository owner and name
@@ -27,22 +27,6 @@ class GithubReleaseChecker {
         if (this.owner = "" || this.repo = "") {
             throw Error("Owner, repo, and current version must be provided.")
         }
-        this.GithubRelease := this.getLatestReleaseInfo()
-    }
-
-    ; If the current version is not the same as the latest version, we assume an update is available.
-    ; Although it would be possible that the latest release is an update of an older version, although this is unlikely.
-    updateAvailable(currentVersion) {
-        latestVersion := this.getLatestVersionInfo()
-        return (currentVersion != latestVersion)
-    }
-
-    getDownloadUrl(){
-        return this.GithubRelease.getZipDownloadUrl()
-    }
-
-    getLatestVersionInfo() {
-        return this.GithubRelease.getVersion()
     }
 
     getLatestReleaseInfo() {
@@ -61,4 +45,27 @@ class GithubReleaseChecker {
         releaseInfo := response.objectAsMap
         return GithubRelease(releaseInfo)
     }
+
+    getReleases() {
+        if (!NetworkChecker.isConnectedToInternet()){
+            throw NetworkError()
+        }
+
+        response := this.RestClient.Get("https://api.github.com/repos/" this.owner "/" this.repo "/releases")
+        
+        if (response.status != 200) {
+            this.Logger.logError("Failed to fetch release information. Status: " response.status)
+            throw Error("Failed to fetch release information. Status: " response.status)
+        }
+        
+        releases := response.objectAsMap
+
+        githubReleases := []
+        for release in releases {
+            githubReleases.push(GithubRelease(release))
+        }
+
+        return githubReleases
+    }
+
 }

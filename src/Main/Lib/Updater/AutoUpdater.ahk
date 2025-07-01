@@ -26,8 +26,8 @@ class AutoUpdater {
     CURRENT_VERSION_TEMPORARY_LOCATION := FilePaths.getPathToTemporaryLocation() . "\extend-layer-temporary"  ; Temporary location for the current version
 
     __New() {
-        currentVersion := this.Version.getCurrentVersion()
-        this.releaseChecker := GithubReleaseChecker("Osterie", "extend-layer", currentVersion)
+        currentVersion := 
+        this.releaseChecker := GithubReleaseChecker("Osterie", "extend-layer")
     }
 
     static getInstance() {
@@ -38,7 +38,7 @@ class AutoUpdater {
     }
 
     updateAvailable() {
-        return this.releaseChecker.updateAvailable()
+        return this.releaseChecker.updateAvailable(this.Version.getCurrentVersion())
     }
 
     updateExtendLayer() {

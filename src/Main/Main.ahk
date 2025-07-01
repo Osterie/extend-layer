@@ -18,11 +18,7 @@
 
 #Include <Shared\Logger>
 
-#Include <Util\BackupManager>
 
-BackupManager_ := BackupManager()
-
-MsgBox(BackupManager_.currentVersionIsBackedUp())
 
 ; Test if this project is in a protected location
 testIfInProtectedLocation()

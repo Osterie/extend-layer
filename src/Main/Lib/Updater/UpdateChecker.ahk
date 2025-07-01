@@ -16,7 +16,7 @@ class UpdateChecker {
 
     __New(){
         try{
-            this.ReleaseChecker := GithubReleaseChecker("Osterie", "extend-layer", this.getCurrentVersion())
+            this.ReleaseChecker := GithubReleaseChecker("Osterie", "extend-layer")
         }
         catch NetworkError as e{
             this.Logger.logInfo("Could not check for updates due to network error: " e.message . " UpdateChecker.ahk " . A_LineNumber)
@@ -25,7 +25,7 @@ class UpdateChecker {
     }
 
     updateAvailable() {
-        return this.ReleaseChecker.updateAvailable()
+        return this.ReleaseChecker.updateAvailable(this.getCurrentVersion())
     }
 
     getCurrentVersion() {

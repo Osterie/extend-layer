@@ -8,6 +8,7 @@ class GithubRelease {
     Logger := Logger.getInstance()
     TimestampConverter := TimestampConverter()  ; Handles timestamp formatting
 
+    ; TODO dont need to store these as variables.
     releaseInfo := ""  ; The release information from GitHub api
     version := ""  ; The version string, e.g., "v0.4.3-alpha"
     releaseDate := ""  ; The release date in YYYYMMDDhhmmss format
@@ -54,6 +55,15 @@ class GithubRelease {
         } catch Error as e {
             this.Logger.logError("Error retrieving zip download URL: " e.message, e.file, e.line)
             throw ValueError("Error retrieving zip download URL: " e.message)
+        }
+    }
+
+    getBody() {
+        try {
+            return this.releaseInfo["body"]
+        } catch Error as e {
+            this.Logger.logError("Error retrieving release body: " e.message, e.file, e.line)
+            throw ValueError("Error retrieving release body: " e.message)
         }
     }
 }

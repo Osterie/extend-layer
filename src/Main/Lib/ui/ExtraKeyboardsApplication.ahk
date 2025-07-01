@@ -12,6 +12,8 @@
 #Include <Util\Formaters\HotkeyFormatter>
 #Include <Util\NetworkUtils\NetworkChecker>
 
+#Include <ui\Main\updatesAndBackupsTab\UpdatesAndBackupsTab>
+
 #Include <ui\Main\Util\DomainSpecificGui>
 
 ; TODO fix issue with multiple dialogs being possible to open at the same time
@@ -93,7 +95,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     ; Creates the tabs for the application
     CreateTabs(){
-        Tab := this.Add("Tab3", "yp+40 xm", ["&Keyboards","&Change Action Settings","Documentation"])
+        Tab := this.Add("Tab3", "yp+40 xm", ["&Keyboards","&Change Action Settings","Documentation", "&Updates and Backups"])
         Tab.UseTab(1)
         this.CreateKeyboardsTab()
 
@@ -102,6 +104,9 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
         Tab.UseTab(3)
         this.CreateDocumentationTab()
+
+        Tab.UseTab(4)
+        this.createUpdatesAndBackupsTab()
 
         Tab.UseTab(0) ; subsequently-added controls will not belong to the tab control.
     }
@@ -233,7 +238,12 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     ; Creates the tab for the documentation
     CreateDocumentationTab(){
-        this.Add("Edit", "r20")  ; r20 means 20 rows tall.
+        ; this.Add("Edit", "r20")
+    }
+
+    createUpdatesAndBackupsTab(){
+        UpdatesAndBackupsTab_ := UpdatesAndBackupsTab(this)
+        UpdatesAndBackupsTab_.createTab()
     }
 
     destroy(){
