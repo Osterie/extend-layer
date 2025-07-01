@@ -9,9 +9,12 @@
 
 #Include <ui\ExtraKeyboards>
 
+#Include <Shared\Logger>
 #Include <Updater\UpdateDialog>
 
 Class ExtraKeyboardsApplicationController{
+
+    Logger := Logger.getInstance()
 
     view := ""
     ExtraKeyboards := ""
@@ -37,8 +40,18 @@ Class ExtraKeyboardsApplicationController{
     }
 
     HandleupdateAvailableClicked(){
-        UpdateDialog_ := UpdateDialog()
-        UpdateDialog_.show()
+        try{
+            UpdateDialog_ := UpdateDialog()
+            UpdateDialog_.show()
+        }
+        catch NetworkError as e{
+            this.Logger.logError("Network error occurred while checking for updates: " e.message, e.file, e.line)
+            MsgBox("Network error occurred while checking for updates: " e.message)
+        }
+        catch Error as e{
+            this.Logger.logError("An error occurred while checking for updates: " e.message, e.file, e.line)
+            MsgBox("An error occurred while checking for updates: " e.message)
+        }
     }
 
     DoLayerSelected(currentLayer){

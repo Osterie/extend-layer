@@ -55,7 +55,7 @@ class GithubReleaseChecker {
         
         if (response.status != 200) {
             this.Logger.logError("Failed to fetch release information. Status: " response.status)
-            throw Error("Failed to fetch release information. Status: " response.status)
+            throw NetworkError("Failed to fetch release information. Status: " response.status)
         }
         
         releaseInfo := response.objectAsMap

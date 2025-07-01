@@ -16,9 +16,13 @@
 
 #Include <ui\Main\Util\DomainSpecificGui>
 
+#Include <Shared\Logger>
+
 ; TODO fix issue with multiple dialogs being possible to open at the same time
 
 Class ExtraKeyboardsApplication extends DomainSpecificGui{
+
+    Logger := Logger.getInstance()
 
     settingsValuesListView := ""
     hotkeysListView := ""
@@ -62,12 +66,18 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
             ; No internet connection, cannot check for updates.
             return
         }
-
-        UpdateChecker_ := UpdateChecker()
-
-        if (UpdateChecker_.updateAvailable()){
-            MyMenuBar.Add("🔄Update available!", (ItemName, ItemPos, MyMenuBar) => this.HandleupdateAvailableClicked(ItemName, ItemPos, MyMenuBar))
+        try{
+            UpdateChecker_ := UpdateChecker()
+            if (UpdateChecker_.updateAvailable()){
+                MyMenuBar.Add("🔄Update available!", (ItemName, ItemPos, MyMenuBar) => this.HandleupdateAvailableClicked(ItemName, ItemPos, MyMenuBar))
+            }
         }
+        catch Error as e{
+            ; Failed to check for updates, do not add update menu item.
+            this.Logger.logError("Failed to check for updates: " A_LastError, "ExtraKeyboardsApplication.ahk", A_LineNumber)
+            return
+        }
+
     }
 
     HandleSuspendClicked(ItemName, ItemPos, MyMenuBar) {

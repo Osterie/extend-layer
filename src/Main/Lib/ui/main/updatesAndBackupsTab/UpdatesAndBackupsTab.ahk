@@ -2,6 +2,8 @@
 
 #Include <ui\main\UpdatesAndBackupsTab\ReleaseNotesGui>
 
+#Include <Infrastructure\Repositories\VersionRepository>
+
 class UpdatesAndBackupsTab {
     guiToAddTo := ""
 
@@ -15,13 +17,14 @@ class UpdatesAndBackupsTab {
         this.guiToAddTo.Add("Text", "Section", "🔧 Updates & Backups")
         this.guiToAddTo.SetFont("w400")
         
+        VersionRepository_ := VersionRepository()
         ; Current Version
         this.guiToAddTo.Add("Text", "xs y+10", "Current Version:")
-        this.guiToAddTo.Add("Text", "x+5 yp", "v0.4.3.0-alpha")
+        this.guiToAddTo.Add("Text", "x+5 yp", VersionRepository_.getCurrentVersion())
 
-        ; Latest Version
-        this.guiToAddTo.Add("Text", "xs y+10", "Latest Available Version:")
-        this.guiToAddTo.Add("Text", "x+5 yp", "v0.5.0")
+        ; ; Latest Version
+        ; this.guiToAddTo.Add("Text", "xs y+10", "Latest Available Version:")
+        ; this.guiToAddTo.Add("Text", "x+5 yp", "v0.5.0")
 
         ; Release Notes Button
         this.createReleaseNotesButton()

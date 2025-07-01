@@ -82,7 +82,7 @@ class UpdateDialog extends DomainSpecificGui{
             autoUpdater_ := AutoUpdater()
             autoUpdater_.updateExtendLayer()
         }
-        catch  NetworkError as e{
+        catch NetworkError as e{
             this.Logger.logError("Network error occurred while updating: " e.message, e.file, e.line)
             MsgBox("Network error occurred while updating: " e.message)
             return
