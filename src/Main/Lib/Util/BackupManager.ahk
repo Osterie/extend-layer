@@ -123,7 +123,16 @@ class BackupManager {
         DirCopy(profiles, this.TEMPORARY_DIR_RESTORATION . "\config\UserProfiles", true) ; true = overwrite
 
         this.UpdaterRunner.runUpdater(this.TEMPORARY_DIR_RESTORATION, this.PROJECT_ROOT, true)
+    }
 
+    deleteBackup(backupDir) {
+        if (!FileExist(backupDir)) {
+            this.Logger.logError("Backup directory does not exist: " backupDir)
+            throw Error("Backup directory does not exist: " backupDir)
+        }
+
+        ; Delete the backup directory
+        FileDelete(backupDir)
     }
 
     ; TODO refactor
