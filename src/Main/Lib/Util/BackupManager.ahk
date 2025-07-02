@@ -3,6 +3,7 @@
 #Include <Infrastructure\Repositories\VersionRepository>
 
 #Include <Util\NetworkUtils\Downloading\UnZipper>
+#Include <Util\Backup>
 
 #Include <Updater\UpdaterRunner>
 
@@ -30,6 +31,22 @@ class BackupManager {
 
     __New() {
         ; Empty
+    }
+
+    getBackups() {
+        backups := []
+
+        loop files, this.BACKUP_DIR "\*.zip", "FD" {
+            path := A_LoopFileFullPath
+            
+            if (FileExist(path)) {
+                versionOfBackup := this.getVersionFromBackup(path)
+                timestamp := this.getTimestampFromBackup(path)
+                backups.Push(Backup(versionOfBackup, path, timestamp))
+            }
+        }
+
+        return backups
     }
 
     ; Creates a backup of the current version of Extend Layer by copying the files to the backup directory.
@@ -60,7 +77,6 @@ class BackupManager {
             path := A_LoopFileFullPath
             
             versionOfBackup := this.getVersionFromBackup(path)
-            MsgBox("Version of backup: " versionOfBackup " | Current version: " currentVersion)
             if (versionOfBackup = currentVersion) {
                 return true
             }
@@ -139,6 +155,7 @@ class BackupManager {
         this.UpdaterRunner.runUpdater(this.TEMPORARY_DIR_RESTORATION, this.PROJECT_ROOT, true)
     }
 
+    ; TODO refactor
     getVersionFromBackup(backupDir) {
         if (!FileExist(backupDir)) {
             this.Logger.logError("Backup directory does not exist: " backupDir)
@@ -148,13 +165,36 @@ class BackupManager {
         ; TODO create helper class.
         SplitPath(backupDir , &OutFileName, &OutDir, &OutExtension, &OutNameNoExt, &OutDrive)
 
+        OutFileName := StrReplace(OutFileName, OutExtension, "")  ; Remove the extension from the file nameq
+
         parts := StrSplit(OutFileName, this.DELIMITER)
-        if (parts.Length < 2 || parts.Length > 3) {
+        if (parts.Length != 2) {
             this.Logger.logError("Backup directory name is not in the expected format: " backupDir)
             throw Error("Backup directory name is not in the expected format: " backupDir)
         }
 
         version := parts[1]  ; The version is the second part of the name
         return version
+    }
+
+    getTimestampFromBackup(backupDir) {
+        if (!FileExist(backupDir)) {
+            this.Logger.logError("Backup directory does not exist: " backupDir)
+            throw Error("Backup directory does not exist: " backupDir)
+        }
+        
+        ; TODO create helper class.
+        SplitPath(backupDir , &OutFileName, &OutDir, &OutExtension, &OutNameNoExt, &OutDrive)
+
+        OutFileName := StrReplace(OutFileName, "." . OutExtension, "")  ; Remove the extension from the file name
+
+        parts := StrSplit(OutFileName, this.DELIMITER)
+        if (parts.Length != 2) {
+            this.Logger.logError("Backup directory name is not in the expected format: " backupDir)
+            throw Error("Backup directory name is not in the expected format: " backupDir)
+        }
+
+        timestamp := parts[2]  ; The timestamp is the third part of the name
+        return timestamp
     }
 }

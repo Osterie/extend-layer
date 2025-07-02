@@ -1,5 +1,6 @@
 #Requires AutoHotkey v2.0
 
+; TODO FormatTime exists in ahk, use that instead.
 ; Converts timestamps to different formats.
 class TimestampConverter{
 

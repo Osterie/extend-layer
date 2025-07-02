@@ -1,6 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include <ui\main\UpdatesAndBackupsTab\ReleaseNotesGui>
+#Include <ui\main\UpdatesAndBackupsTab\BackupsGui>
 
 #Include <Infrastructure\Repositories\VersionRepository>
 
@@ -29,7 +30,10 @@ class UpdatesAndBackupsTab {
         ; Release Notes Button
         this.createReleaseNotesButton()
 
+        ; Backups Button
+        this.createBackupsButton()
 
+        
         ; Backup Now
         this.guiToAddTo.Add("Button", "xs y+20 w200", "💾 Backup Now").OnEvent("Click", (*) => MsgBox("Backup created at: C:\Backups\extend-layer-backup.zip"))
 
@@ -49,5 +53,15 @@ class UpdatesAndBackupsTab {
     showReleaseNotes() {
         ReleaseNotesGui_ := ReleaseNotesGui()
         ReleaseNotesGui_.show()
+    }
+
+    createBackupsButton() {
+        button := this.guiToAddTo.Add("Button", "xs y+10 w200", "📂 View Backups")
+        button.OnEvent("Click", (*) => this.showBackups())
+    }
+
+    showBackups() {
+        BackupsGui_ := BackupsGui()
+        BackupsGui_.show()
     }
 }
