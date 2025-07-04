@@ -6,7 +6,6 @@
 #Include <Util\NetworkUtils\Http\RestClient>
 #Include <Util\NetworkUtils\NetworkChecker>
 #Include <Util\Errors\NetworkError>
-#Include <Util\Formaters\TimestampConverter>
 
 #Include <Shared\Logger>
 
@@ -15,7 +14,6 @@ class GithubApiInterface {
     
     RestClient := RestClient()  ; Handles HTTP requests
     Logger := Logger.getInstance()
-    TimestampConverter := TimestampConverter()  ; Handles timestamp formatting
 
     owner := ""
     repo := ""  ; The GitHub repository owner and name

@@ -6,7 +6,6 @@
 #Include <Util\NetworkUtils\Http\RestClient>
 #Include <Util\NetworkUtils\NetworkChecker>
 #Include <Util\Errors\NetworkError>
-#Include <Util\Formaters\TimestampConverter>
 
 #Include <Shared\Logger>
 
@@ -14,7 +13,6 @@ class GithubReleaseChecker {
 
     RestClient := RestClient()  ; Handles HTTP requests
     Logger := Logger.getInstance()
-    TimestampConverter := TimestampConverter()  ; Handles timestamp formatting
     GithubRelease := ""  ; Instance of GithubRelease to handle release information
 
     owner := ""

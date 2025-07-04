@@ -4,7 +4,6 @@
 
 #Include <Util\BackupManager>
 #Include <Util\RestoreBackupDialog>
-#Include <Util\Formaters\TimestampConverter>
 
 #Include <Shared\FilePaths>
 #Include <Shared\Logger>
@@ -13,7 +12,6 @@
 class BackupsGui extends DomainSpecificGui {
 
     BackupManager := BackupManager()
-    TimestampConverter := TimestampConverter()
 
     backupsListView := ""
     selectedBackupText := ""

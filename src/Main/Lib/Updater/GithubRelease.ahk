@@ -1,12 +1,10 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\Formaters\TimestampConverter>
 #Include <Shared\Logger>
 
 class GithubRelease {
 
     Logger := Logger.getInstance()
-    TimestampConverter := TimestampConverter()  ; Handles timestamp formatting
 
     ; TODO dont need to store these as variables.
     releaseInfo := ""  ; The release information from GitHub api
@@ -43,10 +41,6 @@ class GithubRelease {
 
     getReleaseDate() {
         return this.releaseDate
-    }
-
-    getReleaseDateCompact() {
-        return this.TimestampConverter.ISOToCompact(this.releaseDate)
     }
 
     getZipDownloadUrl() {
