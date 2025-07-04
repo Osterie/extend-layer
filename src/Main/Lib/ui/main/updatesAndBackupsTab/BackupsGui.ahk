@@ -3,11 +3,13 @@
 #Include <ui\main\util\DomainSpecificGui>
 
 #Include <Util\BackupManager>
+#Include <Util\RestoreBackupDialog>
 #Include <Util\Formaters\TimestampConverter>
 
 #Include <Shared\FilePaths>
 #Include <Shared\Logger>
 
+; TODO refactor
 class BackupsGui extends DomainSpecificGui {
 
     BackupManager := BackupManager()
@@ -41,21 +43,15 @@ class BackupsGui extends DomainSpecificGui {
         this.selectedBackupText := this.Add("Text", "xs y+10 w500", "Selected Backup: None")
 
         ; --- Buttons below the label
-        this.Add("Button", "xs y+5 w150", "🔁 Restore Backup").OnEvent("Click", this.RestoreBackup.Bind(this))
-        this.Add("Button", "x+10 w150", "➕ Create Backup").OnEvent("Click", this.CreateBackup.Bind(this))
-        this.Add("Button", "x+10 w150", "❌ Delete Backup").OnEvent("Click", this.DeleteBackup.Bind(this))
+        this.Add("Button", "xs y+5 w150", "🔁 Restore Backup").OnEvent("Click", (*) => this.restoreBackup())
+        this.Add("Button", "x+10 w150", "➕ Create Backup").OnEvent("Click", (*) => this.createBackup())
+        this.Add("Button", "x+10 w150", "❌ Delete Backup").OnEvent("Click", (*) => this.deleteBackup())
     }
 
     populateListView() {
         this.backupsListView.Delete()  ; Clear the list view before populating it
 
         backups := this.BackupManager.getBackups()
-
-        ; TODO remove
-        ; Test backups 
-        backups.push(Backup("v10.0.1", "asdf", 20240106154326))
-        backups.push(Backup("v0.0.1", "asdf", 20230101154326))
-        backups.push(Backup("v1.3.4", "asdf", 20240630154326))
 
         Loop backups.Length {
             Backup_ := backups[A_Index]
@@ -83,22 +79,24 @@ class BackupsGui extends DomainSpecificGui {
         ToolTip("You double-clicked: " RowText)
     }
 
-    RestoreBackup(*) {
+    restoreBackup() {
         selected := this.backupsListView.GetNext( , "Focused")
-        MsgBox(selected)
 
         if !selected {
             MsgBox("Please select a backup to restore.")
             return
         }
+        path := this.backupsListView.GetText(selected, 1)
         version := this.backupsListView.GetText(selected, 2)
         timestamp := this.backupsListView.GetText(selected, 3)
-        formattedTimestamp := FormatTime(timestamp, "'Date:' yyyy/MM/dd 'Time:' HH:mm:ss")
-        MsgBox("Restore logic for version: " version ", created at " . formattedTimestamp)
-        ; this.BackupManager.restoreBackup(version)
+
+        Backup_ := this.BackupManager.getBackupFromPath(path)
+
+        RestoreBackupDialog_ := RestoreBackupDialog(Backup_)
+        RestoreBackupDialog_.show()
     }
 
-    CreateBackup(*) {
+    createBackup() {
         ; Create Backup
         this.BackupManager.createBackup()
 
@@ -109,7 +107,7 @@ class BackupsGui extends DomainSpecificGui {
         ; this.backupsListView.Add("", Backup_.getName(), FormatTime(Backup_.getTimestamp(), "'Date:' yyyy/MM/dd 'Time:' HH:mm:ss"))
     }
 
-    DeleteBackup(*) {
+    deleteBackup() {
         selected := this.backupsListView.GetNext( , "Focused")
         if !selected {
             MsgBox("Please select a backup to delete.")

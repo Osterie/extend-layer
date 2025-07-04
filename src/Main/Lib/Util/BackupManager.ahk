@@ -86,7 +86,7 @@ class BackupManager {
     }
 
     ; Restores everything except user profiles
-    restoreBackupWithoutOldProfiles(backupDir) {
+    restoreBackupKeepCurrentProfiles(backupDir) {
 
         if (!FileExist(backupDir)) {
             this.Logger.logError("Backup directory does not exist: " backupDir)
@@ -121,6 +121,7 @@ class BackupManager {
         }
 
         DirCopy(profiles, this.TEMPORARY_DIR_RESTORATION . "\config\UserProfiles", true) ; true = overwrite
+        DirCopy(this.BACKUP_DIR, this.TEMPORARY_DIR_RESTORATION . "\backups", true) ; true = overwrite
 
         this.UpdaterRunner.runUpdater(this.TEMPORARY_DIR_RESTORATION, this.PROJECT_ROOT, true)
     }
@@ -160,6 +161,8 @@ class BackupManager {
             this.Logger.logError("Failed to unzip the backup directory: " backupDir)
             throw Error("Failed to unzip the backup directory: " backupDir)
         }
+
+        DirCopy(this.BACKUP_DIR, this.TEMPORARY_DIR_RESTORATION . "\backups", true) ; true = overwrite
 
         this.UpdaterRunner.runUpdater(this.TEMPORARY_DIR_RESTORATION, this.PROJECT_ROOT, true)
     }
@@ -205,5 +208,32 @@ class BackupManager {
 
         timestamp := parts[2]  ; The timestamp is the third part of the name
         return timestamp
+    }
+
+    getBackup(version, timestamp) {
+        if (version = "" || timestamp = "") {
+            this.Logger.logError("Version or timestamp is empty")
+            throw Error("Version or timestamp is empty")
+        }
+
+        backupPath := this.BACKUP_DIR . "\" . version . this.DELIMITER . timestamp . ".zip"
+        if (!FileExist(backupPath)) {
+            this.Logger.logError("Backup does not exist: " backupPath)
+            throw Error("Backup does not exist: " backupPath)
+        }
+
+        return Backup(version, backupPath, timestamp)
+    }
+
+    getBackupFromPath(backupPath) {
+        if (!FileExist(backupPath)) {
+            this.Logger.logError("Backup does not exist: " backupPath)
+            throw Error("Backup does not exist: " backupPath)
+        }
+
+        version := this.getVersionFromBackup(backupPath)
+        timestamp := this.getTimestampFromBackup(backupPath)
+
+        return Backup(version, backupPath, timestamp)
     }
 }
