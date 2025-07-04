@@ -179,7 +179,7 @@ class BackupManager {
 
         ; TODO create helper class.
         SplitPath(backupZipPath, &OutFileName, &OutDir, &OutExtension, &OutNameNoExt, &OutDrive)
-        OutFileName := StrReplace(OutFileName, OutExtension, "")  ; Remove the extension from the file nameq
+        OutFileName := StrReplace(OutFileName, "." . OutExtension, "")  ; Remove the extension from the file name
 
         parts := StrSplit(OutFileName, this.DELIMITER)
         if (parts.Length != 2) {
