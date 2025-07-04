@@ -31,8 +31,6 @@ class BackupsGui extends DomainSpecificGui {
 
         this.backupsListView := this.Add("ListView", "r20 w500", ["Path", "Version", "Timestamp"])
         this.backupsListView.OnEvent("ItemFocus", this.LV_Click.Bind(this))
-        ; this.backupsListView.OnEvent("Click", this.LV_Click.Bind(this))
-        this.backupsListView.OnEvent("DoubleClick", this.LV_DoubleClick.Bind(this))
 
         this.populateListView()  ; Populate the ListView with backups
 
@@ -53,9 +51,10 @@ class BackupsGui extends DomainSpecificGui {
 
         backups := this.BackupManager.getBackups()
 
-        Loop backups.Length {
+        loop backups.Length {
             Backup_ := backups[A_Index]
-            this.backupsListView.Add("", Backup_.getPath(), Backup_.getName(), FormatTime(Backup_.getTimestamp(), "'Date:' yyyy/MM/dd 'Time:' HH:mm:ss"))
+            this.backupsListView.Add("", Backup_.getPath(), Backup_.getName(), FormatTime(Backup_.getTimestamp(),
+            "'Date:' yyyy/MM/dd 'Time:' HH:mm:ss"))
         }
 
         this.backupsListView.ModifyCol(1, "0") ; Hides the first column (Path), can be used when a column is selected.
@@ -74,13 +73,8 @@ class BackupsGui extends DomainSpecificGui {
         }
     }
 
-    LV_DoubleClick(GuiCtrlObj, selected) {
-        RowText := GuiCtrlObj.GetText(selected)
-        ToolTip("You double-clicked: " RowText)
-    }
-
     restoreBackup() {
-        selected := this.backupsListView.GetNext( , "Focused")
+        selected := this.backupsListView.GetNext(, "Focused")
 
         if !selected {
             MsgBox("Please select a backup to restore.")
@@ -97,6 +91,12 @@ class BackupsGui extends DomainSpecificGui {
     }
 
     createBackup() {
+        result := MsgBox("Are you sure you want to create a backup?", , "YesNo")
+
+        if (result = "No") {
+            return
+        }
+
         ; Create Backup
         this.BackupManager.createBackup()
 
@@ -108,8 +108,9 @@ class BackupsGui extends DomainSpecificGui {
     }
 
     deleteBackup() {
-        selected := this.backupsListView.GetNext( , "Focused")
-        if !selected {
+
+        selected := this.backupsListView.GetNext(, "Focused")
+        if (!selected) {
             MsgBox("Please select a backup to delete.")
             return
         }
@@ -118,8 +119,10 @@ class BackupsGui extends DomainSpecificGui {
         version := this.backupsListView.GetText(selected, 2)
         timestamp := this.backupsListView.GetText(selected, 3)
 
-        confirm := MsgBox("Are you sure you want to delete backup: " version ", created at " . timestamp .  "?", "Confirm", "YesNo")
-        if confirm = "Yes" {
+        confirm := MsgBox("Are you sure you want to delete backup: " version ", created at " . timestamp . "?",
+            "Confirm", "YesNo")
+
+        if (confirm = "Yes") {
             this.BackupManager.deleteBackup(path)
             ; Refresh list
             this.populateListView()

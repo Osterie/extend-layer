@@ -32,16 +32,6 @@ class UpdatesAndBackupsTab {
 
         ; Backups Button
         this.createBackupsButton()
-
-        
-        ; Backup Now
-        this.guiToAddTo.Add("Button", "xs y+20 w200", "💾 Backup Now").OnEvent("Click", (*) => MsgBox("Backup created at: C:\Backups\extend-layer-backup.zip"))
-
-        ; Restore Previous Backup
-        this.guiToAddTo.Add("Button", "xs y+10 w200", "♻️ Restore Backup").OnEvent("Click", (*) => MsgBox("Restore from: C:\Backups\extend-layer-backup.zip"))
-
-        ; Open Backup Folder
-        this.guiToAddTo.Add("Button", "xs y+10 w200", "📂 Open Backup Folder").OnEvent("Click", (*) => MsgBox("explorer.exe C:\Backups"))
     }
 
     ; Release Notes Button
