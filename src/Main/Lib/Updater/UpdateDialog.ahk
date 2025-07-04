@@ -79,7 +79,7 @@ class UpdateDialog extends DomainSpecificGui{
             return
         }
         try{
-            autoUpdater_ := AutoUpdater()
+            autoUpdater_ := AutoUpdater.getInstance()
             autoUpdater_.updateExtendLayer()
         }
         catch NetworkError as e{

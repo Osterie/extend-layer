@@ -25,6 +25,7 @@ class AutoUpdater {
     LATEST_RELEASE_DOWNLOAD_LOCATION := FilePaths.getPathToTemporaryLocation() . "\extend-layer-update"  ; Default download location for the latest release
     CURRENT_VERSION_TEMPORARY_LOCATION := FilePaths.getPathToTemporaryLocation() . "\extend-layer-temporary"  ; Temporary location for the current version
 
+    ; Throws NetworkError if no internet connection is available
     __New() {
         this.releaseChecker := GithubReleaseChecker("Osterie", "extend-layer")
     }
