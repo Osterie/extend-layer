@@ -26,6 +26,7 @@ class UpdateDialog extends DomainSpecificGui{
         this.createInfo()
         this.createWarnings()
         this.createUpdateButton()
+        this.createCancelButton()
     }
 
     createNoInternetWarning(){
@@ -71,6 +72,11 @@ class UpdateDialog extends DomainSpecificGui{
         )
         buttonToChangeOriginalHotkey := this.Add("Button", "Default w150 xm", "Update Extend Layer")
         buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.doUpdate())
+    }
+
+    createCancelButton(){
+        buttonToClose := this.Add("Button", "w150 xs+160 yp", "Cancel")
+        buttonToClose.onEvent("Click", (*) => this.destroy())
     }
 
     doUpdate(){
