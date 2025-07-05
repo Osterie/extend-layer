@@ -39,6 +39,7 @@ Class ExtraKeyboardsApplicationController{
         ExitApp
     }
 
+    ; TODO rename.
     HandleupdateAvailableClicked(){
         try{
             UpdateDialog_ := UpdateDialog()

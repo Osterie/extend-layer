@@ -42,11 +42,32 @@ class AutoUpdater {
     }
 
     updateExtendLayer() {
+        progressBarGui := Gui("-SysMenu", "Preparing Extend Layer update...")
+        progressBarGui.Show("w300 h80")
+
+        progressText := progressBarGui.Add("Text", "w280 h20", "")
+        progressBar := progressBarGui.Add("Progress", "w280 h40 cBlue")
+
+        progressText.Value := "Downloading latest release..."
+        progressBar.Value += 20
         this.downloadLatestRelease()
+        
+        progressText.Value := "Creating backup..."
+        progressBar.Value += 20
         this.BackupManager.createBackup()
+
+        progressText.Value := "Copying current version to temporary location..."
+        progressBar.Value += 20
         this.copyCurrentVersionToTemporaryLocation()
+
+        progressText.Value := "Updating version in temporary location..."
+        progressBar.Value += 20
         this.updateVersionInTemporaryLocation()
+
+        progressText.Value := "Updating current version..."
+        progressBar.Value += 20
         this.updateCurrentVersion()
+        progressBarGui.Destroy()
     }
     
     downloadLatestRelease() {
