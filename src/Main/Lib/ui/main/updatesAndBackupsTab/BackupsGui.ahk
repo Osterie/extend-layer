@@ -16,32 +16,20 @@ class BackupsGui extends DomainSpecificGui {
     backupsListView := ""
     selectedBackupText := ""
 
-    backups := [] ; Array to hold Backup objects
-
     __New() {
         super.__New("", "Backups")
-        ; super.__New("+Resize +MinSize300x280", "Backups")
-
         this.create()
     }
 
     create() {
+        this.createBackupListView()
+        this.createBackupControls()
+    }
 
+    createBackupListView() {
         this.backupsListView := this.Add("ListView", "r20 w500", ["Path", "Version", "Timestamp"])
-        this.backupsListView.OnEvent("ItemFocus", this.LV_Click.Bind(this))
-
+        this.backupsListView.OnEvent("ItemFocus", this.handleBackupSelected.Bind(this))
         this.populateListView()  ; Populate the ListView with backups
-
-        this.backupsListView.ModifyCol(2, "80 Center")
-        this.backupsListView.ModifyCol(3, "Auto Text Center SortDesc")
-
-        ; --- New: Selected backup display
-        this.selectedBackupText := this.Add("Text", "xs y+10 w500", "Selected Backup: None")
-
-        ; --- Buttons below the label
-        this.Add("Button", "xs y+5 w150", "🔁 Restore Backup").OnEvent("Click", (*) => this.restoreBackup())
-        this.Add("Button", "x+10 w150", "➕ Create Backup").OnEvent("Click", (*) => this.createBackup())
-        this.Add("Button", "x+10 w150", "❌ Delete Backup").OnEvent("Click", (*) => this.deleteBackup())
     }
 
     populateListView() {
@@ -49,18 +37,21 @@ class BackupsGui extends DomainSpecificGui {
 
         backups := this.BackupManager.getBackups()
 
-        loop backups.Length {
-            Backup_ := backups[A_Index]
-            this.backupsListView.Add("", Backup_.getPath(), Backup_.getName(), FormatTime(Backup_.getTimestamp(),
-            "'Date:' yyyy/MM/dd 'Time:' HH:mm:ss"))
+        for Backup_ in backups {
+            formattedTime := FormatTime(Backup_.getTimestamp(), "'Date:' yyyy/MM/dd 'Time:' HH:mm:ss")
+            this.backupsListView.Add("", Backup_.getPath(), Backup_.getName(), formattedTime)
         }
 
         this.backupsListView.ModifyCol(1, "0") ; Hides the first column (Path), can be used when a column is selected.
         this.backupsListView.ModifyCol(2, "80 Center")
         this.backupsListView.ModifyCol(3, "Auto Text Center SortDesc")
+
+        if (backups.Length = 0) {
+            this.backupsListView.ModifyCol(3, "80")
+        }
     }
 
-    LV_Click(GuiCtrlObj, selected) {
+    handleBackupSelected(GuiCtrlObj, selected) {
         if selected {
             path := this.backupsListView.GetText(selected, 1)
             version := this.backupsListView.GetText(selected, 2)
@@ -69,6 +60,14 @@ class BackupsGui extends DomainSpecificGui {
         } else {
             this.selectedBackupText.Value := "Selected Backup: None"
         }
+    }
+
+    createBackupControls() {
+        this.selectedBackupText := this.Add("Text", "xs y+10 w500", "Selected Backup: None")
+
+        this.Add("Button", "xs y+5 w150", "🔁 Restore Backup").OnEvent("Click", (*) => this.restoreBackup())
+        this.Add("Button", "x+10 w150", "➕ Create Backup").OnEvent("Click", (*) => this.createBackup())
+        this.Add("Button", "x+10 w150", "❌ Delete Backup").OnEvent("Click", (*) => this.deleteBackup())
     }
 
     restoreBackup() {
