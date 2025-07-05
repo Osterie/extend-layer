@@ -4,11 +4,7 @@
 
 #Include <Updater\UpdaterRunner>
 
-#Include <Shared\Logger>
-
 class ExtendLayerInProtectedLocationDialog extends DomainSpecificGui {
-
-    Logger := Logger.getInstance()
 
     __New() {
         super.__New("+Resize +MinSize300x280", "Extend Layer in Protected Location Dialog")
@@ -71,7 +67,6 @@ class ExtendLayerInProtectedLocationDialog extends DomainSpecificGui {
             ExitApp
         }
         catch Error as e {
-            this.Logger.logError("Failed to run Extend Layer as admin: " e.Message, e.File, e.Line)
             MsgBox("Failed to run Extend Layer as administrator.")
         }
     }
@@ -95,8 +90,7 @@ class ExtendLayerInProtectedLocationDialog extends DomainSpecificGui {
             ExitApp
         }
         catch Error as e {
-            this.Logger.logError("Failed to copy Extend Layer: " e.Message, e.File, e.Line)
-            MsgBox("Failed to copy Extend Layer to the selected location.")
+            MsgBox("Failed to copy Extend Layer to the selected location." . e.Message . " " . e.Line . " " . e.File)
         }
     }
 
@@ -129,7 +123,6 @@ class ExtendLayerInProtectedLocationDialog extends DomainSpecificGui {
             newFolderLocationExists := true
         }
         catch Error as e {
-            this.Logger.logError("Failed to create directory: " e.Message, e.File, e.Line)
             if (InStr(e.Message, "Access is denied")) {
                 MsgBox("You do not have permission to create a directory in the selected location. Please choose a different location.")
             } 
@@ -145,6 +138,6 @@ class ExtendLayerInProtectedLocationDialog extends DomainSpecificGui {
         pathToCurrentLocation := FilePaths.GetAbsolutePathToRoot()
 
         UpdaterRunner_ := UpdaterRunner()
-        UpdaterRunner_.execute(pathToCurrentLocation, pathToNewLocation)
+        UpdaterRunner_.runUpdater(pathToCurrentLocation, pathToNewLocation)
     }
 }
