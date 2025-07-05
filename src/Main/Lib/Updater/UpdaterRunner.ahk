@@ -3,6 +3,7 @@
 #Include <Shared\Logger>
 #Include <Shared\FilePaths>
 
+; TODO refactor.
 class UpdaterRunner {
 
     Logger := Logger.getInstance()
@@ -68,7 +69,7 @@ class UpdaterRunner {
         pathToVersionFile := FilePaths.GetAbsolutePathToRoot() . "config\Version.json" ; Path to the version file to update with the latest version information.
         pathToControlScript := FilePaths.GetAbsolutePathToRoot() . "src\controlScript.ahk" ; Path to the control script to restart after the update (only restarts if it is running).
         
-        emptyArgument := ""
+        emptyArgument := "NONE" ; Placeholder for empty arguments, used to indicate that the argument is not provided.
         if (newVersion = "") {
             version := emptyArgument
             pathToVersionFile := emptyArgument
