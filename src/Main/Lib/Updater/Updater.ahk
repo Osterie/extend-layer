@@ -38,6 +38,14 @@ if (!DirExist(A_Temp . "\EL\B")) {
     DirCreate(A_Temp . "\EL\B") ; Create the backups directory in the temp directory if it does not exist.
 }
 
+; Delete backups older than 30 days.
+loop Files A_Temp . "\EL\B\*", "D" ; "D" = directories only
+{
+    if (A_LoopFileTimeCreated < A_Now - 30 * 24 * 60 * 60) { ; If the backup is older than 30 days
+        DirDelete(A_LoopFileFullPath, true) ; true = recursive delete
+    }
+}
+
 progressBarGui := Gui("-SysMenu", "Updating Extend Layer...")
 progressBarGui.Show("w300 h80")
 
