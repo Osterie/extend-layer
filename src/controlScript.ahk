@@ -13,7 +13,7 @@ WinSetTitle("ControlScript", "ahk_id " A_ScriptHwnd)
 
 ; Extra layers script
 ; Ctrl + Alt + L to run the Main script.
-^!l::Run(A_ScriptDir "\Main\Main.ahk")
+^!l::Run(A_ScriptDir "\Main.ahk")
 
 ; Ctrl + Alt + | to reload the control script
 ^!|::Reload()

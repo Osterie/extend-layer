@@ -79,8 +79,8 @@ class FileOverwriteManager {
         copyDestination := this.constructPath(destinationBaseLocation, relativeOverwritePath)
         
         ; Skip, but we need to ensure the directory structure exists in the destination location.
-        ; For example "...\src\Main\Lib\Directory" might not exist, so we need to create it if it does not exist.
-        ; If not, we would get an error when trying to write to the file "...\src\Main\Lib\Directory\file.txt" because the directory does not exist.
+        ; For example "...\src\Lib\Directory" might not exist, so we need to create it if it does not exist.
+        ; If not, we would get an error when trying to write to the file "...\src\Lib\Directory\file.txt" because the directory does not exist.
         this.createMissingDirectory(copyDestination)
 
 
@@ -92,9 +92,9 @@ class FileOverwriteManager {
         }
         else { ; Go deeper 
             ; Some files or directories in the current overwrite path are skipped, so we need to go deeper.
-            ; For example: overwritePath = "src\Main\Lib\Directory"
-            ; skipPaths = ["src\Main\Lib\Directory\file.txt", "src\Main\Lib\Directory\subdirectory"]
-            ; We need to go deeper into the "src\Main\Lib\Directory" directory and overwrite the files in it, but skip the files and directories that are in the skipPaths.
+            ; For example: overwritePath = "src\Lib\Directory"
+            ; skipPaths = ["src\Lib\Directory\file.txt", "src\Lib\Directory\subdirectory"]
+            ; We need to go deeper into the "src\Lib\Directory" directory and overwrite the files in it, but skip the files and directories that are in the skipPaths.
             deeperOverwritePaths := this.getFilesInDirectory(fullOverwritePath, relativeOverwritePath)
             this.overwriteFiles(sourceBaseLocation, destinationBaseLocation, deeperOverwritePaths, fullSkipPaths, removeOldFiles)
         }

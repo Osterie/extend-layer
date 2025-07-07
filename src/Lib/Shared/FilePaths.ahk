@@ -3,35 +3,35 @@
 class FilePaths {
 
     ; TODO convert some relative paths to absolute paths. using utlitiy method in UnZipper.ahk
-    static PATH_TO_THEMES := "..\..\config\Themes.json"
+    static PATH_TO_THEMES := "..\config\Themes.json"
     
-    static PATH_TO_BACKUPS := "..\..\backups"
+    static PATH_TO_BACKUPS := "..\backups"
 
-    static PATH_TO_LOGS := "..\..\logs"
+    static PATH_TO_LOGS := "..\logs"
 
-    static PATH_TO_UPDATE_MANIFEST := "..\..\update-manifest.json"
+    static PATH_TO_UPDATE_MANIFEST := "..\update-manifest.json"
 
-    static PATH_TO_VERSION := "..\..\config\Version.json"
+    static PATH_TO_VERSION := "..\config\Version.json"
 
-    static PATH_TO_META_INI_FILE := "..\..\config\meta.ini"
+    static PATH_TO_META_INI_FILE := "..\config\meta.ini"
 
     static DEFAULT_PROFILE := "Default"
     
     static PATH_TO_TEMPORARY_LOCATION := A_Temp . "\EL"
 
-    static ABSOLUTE_PATH_TO_ROOT := A_ScriptDir . "\..\..\"
+    static ABSOLUTE_PATH_TO_ROOT := A_ScriptDir . "\..\"
 
     
-    static ACTION_GROUPS_INFO := "..\..\config\ActionGroupsInfo.json"
+    static ACTION_GROUPS_INFO := "..\config\ActionGroupsInfo.json"
     
-    static KEY_NAMES := "..\..\resources\keyNames.txt"
+    static KEY_NAMES := "..\resources\keyNames.txt"
 
-    static PATH_TO_PRESET_PROFILES := "..\..\config\PresetProfiles"
-    static PATH_TO_PROFILES := "..\..\config\UserProfiles"
+    static PATH_TO_PRESET_PROFILES := "..\config\PresetProfiles"
+    static PATH_TO_PROFILES := "..\config\UserProfiles"
 
-    static PATH_TO_EMPTY_PROFILE := "..\..\config\PresetProfiles\EmptyProfile"
-    static PATH_TO_EMPTY_KEYBOARD_PROFILE := "..\..\config\PresetProfiles\EmptyProfile\Keyboards.json"
-    static PATH_TO_EMPTY_SETTINGS_PROFILE := "..\..\config\PresetProfiles\EmptyProfile\ClassObjects.ini"
+    static PATH_TO_EMPTY_PROFILE := "..\config\PresetProfiles\EmptyProfile"
+    static PATH_TO_EMPTY_KEYBOARD_PROFILE := "..\config\PresetProfiles\EmptyProfile\Keyboards.json"
+    static PATH_TO_EMPTY_SETTINGS_PROFILE := "..\config\PresetProfiles\EmptyProfile\ClassObjects.ini"
 
     static GetPathToLogs() {
         return this.PATH_TO_LOGS

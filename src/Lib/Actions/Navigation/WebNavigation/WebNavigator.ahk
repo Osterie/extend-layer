@@ -9,7 +9,7 @@ class WebNavigator extends HotkeyAction {
 
     chatGptLoadTime := 3000
 
-    PATH_TO_IMAGE_ASSETS := A_ScriptDir . "\..\..\assets\imageSearchImages\"
+    PATH_TO_IMAGE_ASSETS := A_ScriptDir . "\..\assets\imageSearchImages\"
     PATH_TO_TEST_IMAGE := this.PATH_TO_IMAGE_ASSETS . "testImage.png"
 
     __New() {
