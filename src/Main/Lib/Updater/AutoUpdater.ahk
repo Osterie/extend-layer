@@ -22,8 +22,8 @@ class AutoUpdater {
 
     BackupManager := BackupManager()  ; Instance of BackupManager to handle backups
 
-    LATEST_RELEASE_DOWNLOAD_LOCATION := FilePaths.getPathToTemporaryLocation() . "\extend-layer-update"  ; Default download location for the latest release
-    CURRENT_VERSION_TEMPORARY_LOCATION := FilePaths.getPathToTemporaryLocation() . "\extend-layer-temporary"  ; Temporary location for the current version
+    LATEST_RELEASE_DOWNLOAD_LOCATION := FilePaths.getPathToTemporaryLocation() . "\ELU"  ; Default download location for the latest release. Shortened from "\extend-layer-update" to "\ELU"
+    CURRENT_VERSION_TEMPORARY_LOCATION := FilePaths.getPathToTemporaryLocation() . "\ELT"  ; Temporary location for the current version. Shortened from "\extend-layer-temporary" to "\ELT"
 
     ; Throws NetworkError if no internet connection is available
     __New() {

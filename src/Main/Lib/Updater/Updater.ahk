@@ -26,13 +26,16 @@ pathToVersionFile := A_Args.Length >= 6 ? A_Args[6] : "NONE" ; The path to the v
 pathToControlScript := A_Args.Length >= 7 ? A_Args[7] : "NONE" ; The path to the control script to restart after the update. Optional.
 
 ; Backup directory for the current version, which is created in the temp directory with a timestamp.
-backupDir := A_Temp . "\extend-layer\backups\extend-layer-backup" . A_Now
 
-if (!DirExist(A_Temp . "\extend-layer")) {
-    DirCreate(A_Temp . "\extend-layer") ; Create the extend-layer directory in the temp directory if it does not exist.
+; Paths shortened to avoid too long file paths. 
+; Full file path would be Temp\extend-layer\Backups\extend-layer-backup[TIMESTAMP].
+backupDir := A_Temp . "\EL\B\ELB" . A_Now
+
+if (!DirExist(A_Temp . "\EL")) {
+    DirCreate(A_Temp . "\EL") ; Create the extend-layer directory in the temp directory if it does not exist.
 }
-if (!DirExist(A_Temp . "\extend-layer\backups")) {
-    DirCreate(A_Temp . "\extend-layer\backups") ; Create the backups directory in the temp directory if it does not exist.
+if (!DirExist(A_Temp . "\EL\B")) {
+    DirCreate(A_Temp . "\EL\B") ; Create the backups directory in the temp directory if it does not exist.
 }
 
 progressBarGui := Gui("-SysMenu", "Updating Extend Layer...")

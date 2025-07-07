@@ -17,7 +17,7 @@ class FilePaths {
 
     static DEFAULT_PROFILE := "Default"
     
-    static PATH_TO_TEMPORARY_LOCATION := A_Temp . "\extend-layer"
+    static PATH_TO_TEMPORARY_LOCATION := A_Temp . "\EL"
 
     static ABSOLUTE_PATH_TO_ROOT := A_ScriptDir . "\..\..\"
 

@@ -26,8 +26,8 @@ class BackupManager {
 
     BACKUP_DIR := FilePaths.getPathToBackups()
 
-    TEMPORARY_DIR_CREATION := FilePaths.getPathToTemporaryLocation() . "\extend-layer-backup-creation"
-    TEMPORARY_DIR_RESTORATION := FilePaths.getPathToTemporaryLocation() . "\extend-layer-backup-restoration"
+    TEMPORARY_DIR_CREATION := FilePaths.getPathToTemporaryLocation() . "\ELBC" ; Temporary location for the backup creation. Shortened from "\extend-layer-backup-creation" to "\ELBC"
+    TEMPORARY_DIR_RESTORATION := FilePaths.getPathToTemporaryLocation() . "\ELBR" ; Temporary location for the backup restoration. Shortened from "\extend-layer-backup-restoration" to "\ELBR"
 
     __New() {
         ; Empty
