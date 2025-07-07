@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include <Shared\FilePaths>
-#Include <ui\functionality\ActionSettings\SettingsEditorDialog>
+#Include <ui\functionality\ActionSettingsDialog>
 #Include <ui\functionality\KeyboardEditing\HotKeyConfiguration>
 #Include <ui\functionality\KeyboardEditing\HotKeyConfigurationController>
 #Include <ui\functionality\KeyboardEditing\HotkeyConfigurator>
@@ -114,16 +114,16 @@ Class ExtraKeyboardsApplicationController{
             currentFunctionSettings := this.ExtraKeyboards.GetCurrentFunction()
             selectedSetting := this.ExtraKeyboards.getActionSettingsForCurrentAction().getActionSetting(settingName)
     
-            editorForActionSettings := SettingsEditorDialog(this.getHwnd())
+            editorForActionSettings := ActionSettingsDialog(this.getHwnd())
             editorForActionSettings.CreateControls(selectedSetting)
             editorForActionSettings.DisableSettingNameEdit()
-            editorForActionSettings.SubscribeToSaveEvent(ObjBindMethod(this, "SettingsEditorDialogSaveButtonEvent", currentFunctionSettings))
+            editorForActionSettings.SubscribeToSaveEvent(ObjBindMethod(this, "ActionSettingsDialogSaveButtonEvent", currentFunctionSettings))
     
             editorForActionSettings.show()
         }
     }
 
-    SettingsEditorDialogSaveButtonEvent(actionName, ActionSetting){
+    ActionSettingsDialogSaveButtonEvent(actionName, ActionSetting){
         this.ExtraKeyboards.changeActionSetting(actionName, ActionSetting)
         try{
             this.view.UpdateSettingsForActions()
