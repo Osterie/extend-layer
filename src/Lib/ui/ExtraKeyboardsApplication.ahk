@@ -1,20 +1,20 @@
 #Requires AutoHotkey v2.0
 
-#Include <ui\Main\profileediting\ProfileRegion>
-#Include <ui\Main\profileediting\ProfileRegionController>
-#Include <ui\Main\util\TreeViewMaker>
-#Include <ui\Main\util\ListViewMaker>
-#Include <ui\Main\MenuBar\ThemesMenu>
-#Include <ui\Main\MenuBar\SettingsMenu>
+#Include <ui\profileediting\ProfileRegion>
+#Include <ui\profileediting\ProfileRegionController>
+#Include <ui\util\TreeViewMaker>
+#Include <ui\util\ListViewMaker>
+#Include <ui\MenuBar\ThemesMenu>
+#Include <ui\MenuBar\SettingsMenu>
 
 #Include <Updater\UpdateChecker>
 
 #Include <Util\Formaters\HotkeyFormatter>
 #Include <Util\NetworkUtils\NetworkChecker>
 
-#Include <ui\Main\updatesAndBackupsTab\UpdatesAndBackupsTab>
+#Include <ui\updatesAndBackupsTab\UpdatesAndBackupsTab>
 
-#Include <ui\Main\Util\DomainSpecificGui>
+#Include <ui\Util\DomainSpecificGui>
 
 #Include <Shared\Logger>
 

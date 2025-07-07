@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#Include <ui\Main\util\GuiSizeChanger>
-#Include <ui\Main\Util\DomainSpecificGui>
+#Include <ui\util\GuiSizeChanger>
+#Include <ui\Util\DomainSpecificGui>
 
 class HotKeyConfiguration extends DomainSpecificGui{
 

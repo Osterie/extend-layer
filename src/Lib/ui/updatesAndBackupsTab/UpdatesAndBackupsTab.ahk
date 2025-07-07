@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#Include <ui\main\UpdatesAndBackupsTab\ReleaseNotesGui>
-#Include <ui\main\UpdatesAndBackupsTab\BackupsGui>
+#Include <ui\UpdatesAndBackupsTab\ReleaseNotesGui>
+#Include <ui\UpdatesAndBackupsTab\BackupsGui>
 
 #Include <Updater\AutoUpdater>
 #Include <Updater\UpdateDialog>

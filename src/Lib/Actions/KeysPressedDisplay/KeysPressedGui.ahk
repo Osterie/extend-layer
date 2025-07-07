@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <ui\Main\util\GuiSizeChanger>
+#Include <ui\util\GuiSizeChanger>
 
 #Include <Util\InputReader>
 

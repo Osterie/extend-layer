@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <ui\Main\util\GuiControlsRegistry>
+#Include <ui\util\GuiControlsRegistry>
 
 ; TODO Simple and advanced should inherit from someone.
 class SimpleHotkeyCraftingControl{

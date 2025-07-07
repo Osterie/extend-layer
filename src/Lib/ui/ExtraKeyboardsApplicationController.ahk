@@ -1,10 +1,10 @@
 #Requires AutoHotkey v2.0
 
 #Include <Shared\FilePaths>
-#Include "Main\Functionality\ActionSettings\SettingsEditorDialog.ahk"
-#Include "Main\Functionality\KeyboardEditing\HotKeyConfiguration.ahk"
-#Include "Main\Functionality\KeyboardEditing\HotKeyConfigurationController.ahk"
-#Include "Main\Functionality\KeyboardEditing\HotkeyConfigurator.ahk"
+#Include <ui\functionality\ActionSettings\SettingsEditorDialog>
+#Include <ui\functionality\KeyboardEditing\HotKeyConfiguration>
+#Include <ui\functionality\KeyboardEditing\HotKeyConfigurationController>
+#Include <ui\functionality\KeyboardEditing\HotkeyConfigurator>
 #Include <DataModels\KeyboardLayouts\HotkeyLayer\HotKeyInfo>
 
 #Include <ui\ExtraKeyboards>

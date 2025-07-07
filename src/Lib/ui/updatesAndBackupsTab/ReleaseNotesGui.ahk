@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <ui\main\util\DomainSpecificGui>
+#Include <ui\util\DomainSpecificGui>
 
 #Include <Updater\GithubApiInterface>
 

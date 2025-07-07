@@ -2,7 +2,7 @@
 
 #Include <Util\BackupManager>
 
-#Include <ui\Main\util\DomainSpecificGui>
+#Include <ui\util\DomainSpecificGui>
 
 ; TODO refactor
 class RestoreBackupDialog extends DomainSpecificGui {

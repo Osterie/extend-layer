@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <ui\Main\util\Menus\ImprovedMenu>
+#Include <ui\util\Menus\ImprovedMenu>
 
 #Include <Infrastructure\Repositories\ThemesRepository>
 

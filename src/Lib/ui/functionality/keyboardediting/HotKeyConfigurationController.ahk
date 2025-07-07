@@ -3,7 +3,7 @@
 #Include ".\KeyChanging\HotkeyChanging\HotkeyCrafter.ahk"
 #Include ".\KeyChanging\ActionChanging\ActionCrafter.ahk"
 #Include ".\KeyChanging\HotkeyCrafterController.ahk"
-#Include <ui\Main\util\GuiSizeChanger>
+#Include <ui\util\GuiSizeChanger>
 
 #Include <Util\Formaters\HotkeyFormatter>
 
