@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#Include ".\HotkeyChanging\HotkeyCrafter.ahk"
-#Include ".\ActionChanging\ActionCrafter.ahk"
+#Include ".\Hotkeys\HotkeyCrafter.ahk"
+#Include ".\Actions\ActionCrafter.ahk"
 #Include ".\HotkeyCrafterController.ahk"
 #Include <ui\util\GuiSizeChanger>
 

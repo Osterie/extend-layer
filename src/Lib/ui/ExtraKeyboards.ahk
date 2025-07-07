@@ -5,7 +5,7 @@
 #Include <DataModels\KeyboardLayouts\HotkeyLayer\HotKeyInfo>
 
 #Include <Infrastructure\Repositories\ActionSettingsRepository>
-#Include <Infrastructure\Repositories\ExtendLayerProfile\ExtendLayerProfileRepository>
+#Include <Infrastructure\Repositories\ExtendLayerProfileRepository>
 
 class ExtraKeyboards {
 

@@ -3,7 +3,7 @@
 #Include <Actions\KeyboardOverlay\KeyboardOverlay>
 
 #Include <Infrastructure\Repositories\ActionGroupsRepository>
-#Include <Infrastructure\Repositories\ExtendLayerProfile\ExtendLayerProfileRepository>
+#Include <Infrastructure\Repositories\ExtendLayerProfileRepository>
 
 class KeyboardOverlaysInitializer {
 

@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include <ui\util\GuiControlsRegistry>
-#Include "..\HotkeyChanging\HotkeyCrafter.ahk"
+#Include "..\Hotkeys\HotkeyCrafter.ahk"
 
 #Include ".\ParameterControlsGroup.ahk"
 #Include ".\ParameterControl.ahk"

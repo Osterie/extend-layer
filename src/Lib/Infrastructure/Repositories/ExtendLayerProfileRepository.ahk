@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <Infrastructure\Repositories\ExtendLayerProfile\ExtendLayerProfileFileReader>
+#Include <Infrastructure\IO\ExtendLayerProfileFileReader>
 
 #Include <DataModels\KeyboardLayouts\ExtendLayerProfile>
 

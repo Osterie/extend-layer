@@ -4,7 +4,7 @@
 
 #Include <Util\Formaters\HotkeyFormatter>
 
-#Include <Infrastructure\Repositories\ExtendLayerProfile\ExtendLayerProfileRepository>
+#Include <Infrastructure\Repositories\ExtendLayerProfileRepository>
 
 class HotkeyInitializer {
 
