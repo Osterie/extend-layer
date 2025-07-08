@@ -1,113 +1,143 @@
 {
     "ColorFul": [
-        {"RedIsh": {
-            "BackgroundColor": "d32f2f",
-            "TextColor": "ffffff",
-            "ControlColor": "a00000",
-            "CaptionColor": "ff0000",
-            "CaptionFontColor": "ffffff"
-        }},
-        {"GreenIsh" : {
-            "BackgroundColor" : "356b35",
-            "TextColor" :  "27f127",
-            "ControlColor" :  "142b14",
-            "CaptionColor" : "077a07",
-            "CaptionFontColor" : "00ff00"
-        }},
-        {"BlueIsh": {
-            "BackgroundColor" : "35356b",
-            "TextColor" :  "27eaf1",
-            "ControlColor" :  "14142b",
-            "CaptionColor" : "7800ff",
-            "CaptionFontColor" : "00ff00"
-        }},
-        {"PurpleDream": {
-            "BackgroundColor": "4b2b5f",
-            "TextColor": "e6c8ff",
-            "ControlColor": "2a1a38",
-            "CaptionColor": "8000ff",
-            "CaptionFontColor": "00ff00"
-        }},
-        {"SunsetGlow": {
-            "BackgroundColor": "ff6f61",
-            "TextColor": "000000",
-            "ControlColor": "ffbf51",
-            "CaptionColor": "ff6663",
-            "CaptionFontColor": "ffffff"
-        }},
-        {"OceanBreeze": {
-            "BackgroundColor": "48cae4",
-            "TextColor": "000000",
-            "ControlColor": "aad8d3",
-            "CaptionColor": "2b7a78",
-            "CaptionFontColor": "ffffff"
-        }},
-        {"GoldenFields": {
-            "BackgroundColor": "f9c74f",
-            "TextColor": "2a2a2a",
-            "ControlColor": "f9844a",
-            "CaptionColor": "90be6d",
-            "CaptionFontColor": "ffffff"
-        }},
-        {"MysticForest": {
-            "BackgroundColor": "2b9348",
-            "TextColor": "ffffff",
-            "ControlColor": "264653",
-            "CaptionColor": "6b4226",
-            "CaptionFontColor": "ffffff"
-        }},
-        {"TechBlue": {
-            "BackgroundColor": "3a7bd5",
-            "TextColor": "ffffff",
-            "ControlColor": "5596e6",
-            "CaptionColor": "1e467e",
-            "CaptionFontColor": "ffffff"
-        }},
-        {"Ugly" : {
-            "BackgroundColor" : "ff0000",
-            "TextColor" :  "00ff00",
-            "ControlColor" :  "0000ff",
-            "CaptionColor" : "ffff00",
-            "CaptionFontColor" : "000000"
-        }}
+        {
+            "RedIsh": {
+                "BackgroundColor": "d32f2f",
+                "TextColor": "ffffff",
+                "ControlColor": "a00000",
+                "CaptionColor": "ff0000",
+                "CaptionFontColor": "ffffff"
+            }
+        },
+        {
+            "GreenIsh": {
+                "BackgroundColor": "356b35",
+                "TextColor": "27f127",
+                "ControlColor": "142b14",
+                "CaptionColor": "077a07",
+                "CaptionFontColor": "00ff00"
+            }
+        },
+        {
+            "BlueIsh": {
+                "BackgroundColor": "35356b",
+                "TextColor": "27eaf1",
+                "ControlColor": "14142b",
+                "CaptionColor": "7800ff",
+                "CaptionFontColor": "00ff00"
+            }
+        },
+        {
+            "PurpleDream": {
+                "BackgroundColor": "4b2b5f",
+                "TextColor": "e6c8ff",
+                "ControlColor": "2a1a38",
+                "CaptionColor": "8000ff",
+                "CaptionFontColor": "00ff00"
+            }
+        },
+        {
+            "SunsetGlow": {
+                "BackgroundColor": "ff6f61",
+                "TextColor": "000000",
+                "ControlColor": "ffbf51",
+                "CaptionColor": "ff6663",
+                "CaptionFontColor": "ffffff"
+            }
+        },
+        {
+            "OceanBreeze": {
+                "BackgroundColor": "48cae4",
+                "TextColor": "000000",
+                "ControlColor": "aad8d3",
+                "CaptionColor": "2b7a78",
+                "CaptionFontColor": "ffffff"
+            }
+        },
+        {
+            "GoldenFields": {
+                "BackgroundColor": "f9c74f",
+                "TextColor": "2a2a2a",
+                "ControlColor": "f9844a",
+                "CaptionColor": "90be6d",
+                "CaptionFontColor": "ffffff"
+            }
+        },
+        {
+            "MysticForest": {
+                "BackgroundColor": "2b9348",
+                "TextColor": "ffffff",
+                "ControlColor": "264653",
+                "CaptionColor": "6b4226",
+                "CaptionFontColor": "ffffff"
+            }
+        },
+        {
+            "TechBlue": {
+                "BackgroundColor": "3a7bd5",
+                "TextColor": "ffffff",
+                "ControlColor": "5596e6",
+                "CaptionColor": "1e467e",
+                "CaptionFontColor": "ffffff"
+            }
+        },
+        {
+            "Ugly": {
+                "BackgroundColor": "ff0000",
+                "TextColor": "00ff00",
+                "ControlColor": "0000ff",
+                "CaptionColor": "ffff00",
+                "CaptionFontColor": "000000"
+            }
+        }
     ],
     "Dark": [
-        {"DarkIsh" : {
-            "BackgroundColor" : "000000",
-            "TextColor" :  "ffffff",
-            "ControlColor" :  "333333",
-            "CaptionColor" : "666666",
-            "CaptionFontColor" : "ffffff"
-        }}
+        {
+            "DarkIsh": {
+                "BackgroundColor": "000000",
+                "TextColor": "ffffff",
+                "ControlColor": "333333",
+                "CaptionColor": "666666",
+                "CaptionFontColor": "ffffff"
+            }
+        }
     ],
     "Light": [
-        {"LightIsh" : {
-            "BackgroundColor" : "ffffff",
-            "TextColor" :  "000000",
-            "ControlColor" :  "cccccc",
-            "CaptionColor" : "ffffff",
-            "CaptionFontColor" : "000000"
-        }},
-        {"NeutralWhite": {
-            "BackgroundColor": "ffffff",
-            "TextColor": "333333",
-            "ControlColor": "e0e0e0",
-            "CaptionColor": "333333",
-            "CaptionFontColor": "ffffff"
-        }},
-        {"ModernGrey": {
-            "BackgroundColor": "f5f5f5",
-            "TextColor": "333333",
-            "ControlColor": "cccccc",
-            "CaptionColor": "666666",
-            "CaptionFontColor": "ffffff"
-        }},
-        {"SlateGrey": {
-            "BackgroundColor": "596275",
-            "TextColor": "ffffff",
-            "ControlColor": "8995a0",
-            "CaptionColor": "34495e",
-            "CaptionFontColor": "ffffff"
-        }}
+        {
+            "LightIsh": {
+                "BackgroundColor": "ffffff",
+                "TextColor": "000000",
+                "ControlColor": "cccccc",
+                "CaptionColor": "ffffff",
+                "CaptionFontColor": "000000"
+            }
+        },
+        {
+            "NeutralWhite": {
+                "BackgroundColor": "ffffff",
+                "TextColor": "333333",
+                "ControlColor": "e0e0e0",
+                "CaptionColor": "333333",
+                "CaptionFontColor": "ffffff"
+            }
+        },
+        {
+            "ModernGrey": {
+                "BackgroundColor": "f5f5f5",
+                "TextColor": "333333",
+                "ControlColor": "cccccc",
+                "CaptionColor": "666666",
+                "CaptionFontColor": "ffffff"
+            }
+        },
+        {
+            "SlateGrey": {
+                "BackgroundColor": "596275",
+                "TextColor": "ffffff",
+                "ControlColor": "8995a0",
+                "CaptionColor": "34495e",
+                "CaptionFontColor": "ffffff"
+            }
+        }
     ]
 }

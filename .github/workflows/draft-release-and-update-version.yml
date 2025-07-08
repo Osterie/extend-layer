@@ -1,0 +1,46 @@
+name: Draft Release With Version Update
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Tag version (e.g. v0.5.3)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if version has illegal characters
+        run: |
+          if [[ "${{ github.event.inputs.version }}" == *"#"* ]]; then
+            echo "❌ Error: Version contains illegal character '#'"
+            exit 1
+          fi
+      
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update version.json
+        run: |
+          echo "{\"version\":\"${{ github.event.inputs.version }}\"}" > config/Version.json
+
+      - name: Commit version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add config/Version.json
+          git commit -m "chore: bump version to ${{ github.event.inputs.version }}"
+          git tag ${{ github.event.inputs.version }}
+          git push origin HEAD --tags
+
+      - name: Draft GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          name: ${{ github.event.inputs.version }}
+          draft: true
