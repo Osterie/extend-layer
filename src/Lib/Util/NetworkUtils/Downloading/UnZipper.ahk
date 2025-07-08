@@ -114,7 +114,7 @@ class UnZipper {
         return StrGet(buf)
     }
 
-    waitForCopyCompletion(destination, timeoutMs := 10000, pollInterval := 200) {
+    waitForCopyCompletion(destination, timeoutMs := 10000, pollInterval := 1000) {
         startTime := A_TickCount
         prevCount := -1
 

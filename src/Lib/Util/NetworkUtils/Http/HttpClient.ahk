@@ -56,7 +56,6 @@ class HttpClient {
 
         responseStatus := response.Status
         responseText := response.ResponseText
-        MsgBox(response.Status)
 
         try {
             parsedObject := Jxon_Load(&responseText)
