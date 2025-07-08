@@ -4,7 +4,7 @@
 
 ; Class to handle HTTP requests using WinHttp
 class HttpClient {
-    
+
     ; method is the HTTP method (GET, POST, etc.)
     ; url is the endpoint to which the request is made.
     ; headers is an associative array of headers to include in the request.
@@ -17,23 +17,28 @@ class HttpClient {
         this.SetHeaders(httpRequest, headers)
 
         response := this.SendRequest(httpRequest, body)
-        
+
         return this.CreateResponseObject(response)
     }
-    
-    ; --------------- 
+
+    ; ---------------
     ; Private methods
-    ; ---------------  
+    ; ---------------
 
     ; Creates a new WinHttp request object with the specified method and URL.
-    CreateHttpRequest(method, url){
+    CreateHttpRequest(method, url) {
         httpRequest := ComObject("WinHttp.WinHttpRequest.5.1")
         httpRequest.Open(method, url, true)
+        httpRequest.Option[6] := true ; follow redirects
         return httpRequest
     }
 
     ; Sets the headers for the HTTP request.
     SetHeaders(httpRequest, headers) {
+        if (!headers.Has("User-Agent")) {
+            httpRequest.SetRequestHeader("User-Agent", "AHK-RestClient/1.0")
+        }
+
         for key, value in headers {
             httpRequest.SetRequestHeader(key, value)
         }
@@ -51,12 +56,18 @@ class HttpClient {
 
         responseStatus := response.Status
         responseText := response.ResponseText
+        MsgBox(response.Status)
 
-        responseTextAsObject := Jxon_Load(&responseText)
-        return { 
-            status: responseStatus, 
+        try {
+            parsedObject := Jxon_Load(&responseText)
+        } catch {
+            parsedObject := ""  ; Response is not json.
+        }
+
+        return {
+            status: responseStatus,
             text: responseText,
-            objectAsMap: responseTextAsObject  ; This is a Map
+            objectAsMap: parsedObject
         }
     }
 

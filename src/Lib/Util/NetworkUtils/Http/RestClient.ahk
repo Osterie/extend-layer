@@ -18,6 +18,9 @@ class RestClient {
     ; Sends a GET request to the specified endpoint with optional headers.
     ; returns the response as an object containing status, text, and parsed JSON.
     Get(endpoint, headers := Map()) {
+        if (!headers.Has("User-Agent")) {
+            headers["User-Agent"] := "AHK-RestClient/1.0"
+        }
         return this.http.Request("GET", this.baseUrl . endpoint, headers)
     }
 
