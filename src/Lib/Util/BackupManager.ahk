@@ -95,18 +95,28 @@ class BackupManager {
 
     ; Restores everything except user profiles
     restoreBackupKeepCurrentProfiles(backupZipPath) {
+
+        if (!this.currentVersionIsBackedUp()) {
+            this.createBackup()
+        }
+
         ; Unzips the backup to a temporary location
         this.unZipBackup(backupZipPath)
-
+        
         ; Adds the current profiles to the backup
         this.addCurrentProfilesToBackup(backupZipPath)
-
+        
         ; Updates the current version to the version in the backup
         this.UpdaterRunner.runUpdater(this.TEMPORARY_DIR_RESTORATION, this.PROJECT_ROOT, true)
     }
-
+    
     ; Restores everything including user profiles
     restoreBackupIncludingProfiles(backupZipPath) {
+
+        if (!this.currentVersionIsBackedUp()) {
+            this.createBackup()
+        }
+
         ; Unzips the backup to a temporary location
         this.unZipBackup(backupZipPath)
 
