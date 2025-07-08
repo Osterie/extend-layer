@@ -22,7 +22,7 @@ class BackupManager {
 
     PROJECT_ROOT := FilePaths.GetAbsolutePathToRoot()
 
-    DELIMITER := "_"
+    DELIMITER := "__"
 
     BACKUP_DIR := FilePaths.getPathToBackups()
 
