@@ -15,6 +15,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check if version has illegal characters
+        run: |
+          if [[ "${{ github.event.inputs.version }}" == *"#"* ]]; then
+            echo "❌ Error: Version contains illegal character '#'"
+            exit 1
+          fi
+      
       - name: Checkout
         uses: actions/checkout@v4
 
