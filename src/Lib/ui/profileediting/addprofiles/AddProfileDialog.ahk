@@ -2,6 +2,7 @@
 
 #Include <ui\Util\DomainSpecificGui>
 
+; TODO refactor
 class AddProfileDialog extends DomainSpecificGui{
 
     addProfileButton := ""
