@@ -44,7 +44,7 @@ class ThemesMenu extends ImprovedMenu{
     }
 
     CheckCurrentThemeMenu(){
-        currentTheme := FilePaths.GetCurrentTheme()
+        currentTheme := this.ThemesRepository.getCurrentTheme()
         currentThemeCategory := this.ThemesRepository.GetCategoryForTheme(currentTheme)
 
         this.Check(currentThemeCategory)
@@ -52,7 +52,7 @@ class ThemesMenu extends ImprovedMenu{
     }
 
     HandleThemeClicked(themeClicked){
-        FilePaths.SetCurrentTheme(themeClicked)
+        this.ThemesRepository.setCurrentTheme(themeClicked)
         this.CheckCurrentThemeMenu()
         this.callBack()
     }

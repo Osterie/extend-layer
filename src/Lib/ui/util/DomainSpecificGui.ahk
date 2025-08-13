@@ -17,10 +17,10 @@ class DomainSpecificGui extends Gui{
         this.UpdateColorTheme()
     }
 
-    GetCurrentTheme(){
-        theme := this.ThemesRepository.GetTheme(FilePaths.GetCurrentTheme())
+    getCurrentTheme(){
+        theme := this.ThemesRepository.GetTheme(this.ThemesRepository.getCurrentTheme())
         if (theme = ""){
-            theme := this.ThemesRepository.GetTheme(FilePaths.GetDefaultTheme())
+            theme := this.ThemesRepository.GetTheme(this.ThemesRepository.GetDefaultTheme())
             if (theme =     ""){
                 Throw Error("Failed to load any theme")
             }
@@ -29,7 +29,7 @@ class DomainSpecificGui extends Gui{
     }
 
     UpdateColorTheme(){
-        this.theme := this.GetCurrentTheme()
+        this.theme := this.getCurrentTheme()
         this.BackColor := this.theme.BackgroundColor()
         this.SetCaptionColor()
         this.SetCurrentThemeFontColor()

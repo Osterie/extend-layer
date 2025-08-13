@@ -14,12 +14,12 @@ class ThemesRepository {
     pathToThemes := ""
     Themes := Themes()
 
-    __New(pathToThemes := FilePaths.GetThemes()) {
+    __New(pathToThemes := FilePaths.getPathToThemes()) {
         this.pathToThemes := pathToThemes
         this.ReadThemes()
     }
 
-    static getInstance(pathToThemes := FilePaths.GetThemes()) {
+    static getInstance(pathToThemes := FilePaths.getPathToThemes()) {
         if ( IsObject( ThemesRepository.instance ) = false ) {
             ThemesRepository.instance := ThemesRepository(pathToThemes)
         }
@@ -48,6 +48,28 @@ class ThemesRepository {
 
     GetThemeNamesForCategory(category){
         return this.Themes.GetThemeNamesForCategory(category)
+    }
+
+    setCurrentTheme(currentTheme) {
+        iniWrite(currentTheme, FilePaths.GetPathToMetaFile(), "Themes", "activeTheme")
+    }
+
+    getCurrentTheme() {
+        try {
+            CURRENT_THEME := iniRead(FilePaths.GetPathToMetaFile(), "Themes", "activeTheme")
+        }
+        catch OSError {
+            this.SetCurrentTheme(this.getDefaultTheme())
+            CURRENT_THEME := this.getDefaultTheme()
+        }
+
+        return CURRENT_THEME
+    }
+
+    ; TODO create seperate class for reading from the meta.inif file?
+    getDefaultTheme() {
+        DEFAULT_THEME := iniRead(FilePaths.GetPathToMetaFile(), "Themes", "defaultTheme")
+        return DEFAULT_THEME
     }
 
     ReadThemes(){

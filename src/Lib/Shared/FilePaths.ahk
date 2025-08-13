@@ -63,30 +63,8 @@ class FilePaths {
         return this.PATH_TO_UPDATE_MANIFEST
     }
 
-    static GetThemes() {
+    static getPathToThemes() {
         return this.PATH_TO_THEMES
-    }
-
-    static GetDefaultTheme() {
-        DEFAULT_THEME := iniRead(this.GetPathToMetaFile(), "Themes", "defaultTheme")
-        return DEFAULT_THEME
-    }
-
-    static SetCurrentTheme(currentTheme) {
-        iniWrite(currentTheme, this.PATH_TO_META_INI_FILE, "Themes", "activeTheme")
-    }
-
-    ; TODO this should not be like this! move to repository for themes or something.
-    static GetCurrentTheme() {
-        try {
-            CURRENT_THEME := iniRead(this.GetPathToMetaFile(), "Themes", "activeTheme")
-        }
-        catch OSError {
-            this.SetCurrentTheme(this.GetDefaultTheme())
-            CURRENT_THEME := this.GetDefaultTheme()
-        }
-
-        return CURRENT_THEME
     }
 
     static SetCloseScriptOnGuiClose(closeScript) {
