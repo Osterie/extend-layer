@@ -63,7 +63,7 @@ class UnZipper {
 
     getZipFolder(shell, zipFilePath) {
         ; Get the folder object for the ZIP file
-        zipFilePath := this.FilePathUtils.getFullPathName(zipFilePath) ; Ensure the path is fully qualified
+        zipFilePath := this.FilePathUtils.convertToAbsolutePath(zipFilePath) ; Ensure the path is fully qualified
         zipFolder := shell.NameSpace(zipFilePath)
         if (!zipFolder) {
             throw Error("Failed to get folder object for ZIP file: " zipFilePath . "`n")
@@ -72,7 +72,7 @@ class UnZipper {
     }
 
     getUnZipFolder(shell, unZipLocation) {
-        unZipLocation := this.FilePathUtils.getFullPathName(unZipLocation) ; Ensure the path is fully qualified
+        unZipLocation := this.FilePathUtils.convertToAbsolutePath(unZipLocation) ; Ensure the path is fully qualified
 
         if (!DirExist(unZipLocation)) {
             DirCreate(unZipLocation) ; Ensure the destination directory exists
