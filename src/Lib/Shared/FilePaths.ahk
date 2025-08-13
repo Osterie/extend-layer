@@ -67,6 +67,7 @@ class FilePaths {
         return this.PATH_TO_THEMES
     }
 
+    ; TODO move out of FilePaths.ahk
     static SetCloseScriptOnGuiClose(closeScript) {
         if (closeScript != 1 && closeScript != 0) {
             MsgBox("Invalid value for exitAppOnGuiClose. Must be either true or false")
@@ -75,6 +76,7 @@ class FilePaths {
         iniWrite(closeScript, this.PATH_TO_META_INI_FILE, "Gui Settings", "closeScriptOnGuiClose")
     }
 
+    ; TODO move out of FilePaths.ahk
     static GetCloseScriptOnGuiClose() {
         try {
             closeScript := iniRead(this.GetPathToMetaFile(), "Gui Settings", "closeScriptOnGuiClose")

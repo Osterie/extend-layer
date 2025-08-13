@@ -3,7 +3,7 @@
 #Include "..\..\IODevices\ComputerInputController.ahk"
 
 #Include <Actions\HotkeyAction>
-#Include <Util\Sanitizers\KeyboardKeySanitizer>
+#Include <Util\Sanitizers\UrlSanitizer>
 
 class WebNavigator extends HotkeyAction {
 
@@ -64,7 +64,7 @@ class WebNavigator extends HotkeyAction {
 
         loginButtonClicked := false
         timesTriedToClickLoginButton := 1
-        targetSiteUrl := KeyboardKeySanitizer.sanitizeUrl(url)
+        targetSiteUrl := UrlSanitizer.sanitizeUrl(url)
 
         while ((timesTriedToClickLoginButton <= images.Length) && !loginButtonClicked) {
             try {
@@ -72,7 +72,7 @@ class WebNavigator extends HotkeyAction {
                 ; if it reaches here, the login button is clicked
                 loginButtonClicked := true
 
-                currentSiteUrl := KeyboardKeySanitizer.sanitizeUrl(this.GetCurrentUrl())
+                currentSiteUrl := UrlSanitizer.sanitizeUrl(this.GetCurrentUrl())
 
                 ; this checks if the clipboard content (which is the new site url, after logging in) is the same as the given url.
                 if (!InStr(currentSiteUrl, targetSiteUrl)) {
