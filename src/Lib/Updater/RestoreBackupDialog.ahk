@@ -4,7 +4,6 @@
 
 #Include <ui\util\DomainSpecificGui>
 
-; TODO refactor
 class RestoreBackupDialog extends DomainSpecificGui {
 
     BackupManager := BackupManager()
