@@ -16,6 +16,7 @@ class FilePath {
     directory := ""  ; The directory of the file
     extension := ""  ; The file extension
     baseName := ""  ; The file name without extension
+    drive := ""  ; The drive of the file
 
     __New(path) {
         if (Type(path) != "String") {
@@ -35,6 +36,7 @@ class FilePath {
         this.directory := OutDir
         this.extension := OutExtension
         this.baseName := OutFileName
+        this.drive := OutDrive
     }
 
     getPath() {
@@ -55,5 +57,9 @@ class FilePath {
 
     getBaseName() {
         return this.baseName
+    }
+
+    getDrive() {
+        return this.drive
     }
 }
