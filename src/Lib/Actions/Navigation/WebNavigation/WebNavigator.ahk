@@ -39,6 +39,9 @@ class WebNavigator extends HotkeyAction {
         else if (WinActive("ahk_exe firefox.exe")) {
             this.closeTabsToTheRightFirefox()
         }
+        else if (WinActive("ahk_exe msedge.exe")) {
+            this.closeTabsToTheRightEdge()
+        }
 
         ComputerInput.UnBlockKeyboard()
     }
@@ -111,6 +114,43 @@ class WebNavigator extends HotkeyAction {
         Send("{Enter}")
         Sleep(80)
         ; Goes back to the body of the page
+        Send("{F6}")
+    }
+
+    closeTabsToTheRightEdge() {
+        ; These sends could be compressed to just one, but for readability they are all seperated to each their line
+        
+        ; Focuses search bar
+        Send("^l")
+        Sleep(80)
+        
+        ; Focuses active tab
+        Send("{F6}")
+        Sleep(80)
+        Send("{F6}")
+        Sleep(80)
+
+        ; Right clicks active tab, opening a dropdown meny with actions
+        Send("{AppsKey}")
+        Sleep(80)
+        
+        ; Focuses the option to close tabs to the right
+        Send("{Up}")
+        Sleep(80)
+        Send("{Up}")
+        Sleep(80)
+        Send("{Up}")
+        Sleep(80)
+        Send("{Up}")
+        Sleep(80)
+        
+        ; Performs said action
+        Send("{Enter}")
+        Sleep(80)
+        
+        ; Goes back to the body of the page
+        Send("{F6}")
+        Sleep(80)
         Send("{F6}")
     }
 
