@@ -239,6 +239,11 @@
                         "Name": "Load time",
                         "Type": "int",
                         "Description": "the time the site uses to show a login button which can be clicked"
+                    },
+                    {
+                        "Name": "Prefered browser",
+                        "Type": "string",
+                        "Description": "The browser to use for the login. Example: chrome, firefox, msedge (must be written like exactly like the examples, and must be installed on the computer)"
                     }
                 ]
             }
