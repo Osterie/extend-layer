@@ -67,7 +67,7 @@ class HotkeyFormatter{
 
     static convertFromFriendlyName(friendlyHotkeyNameWithModifiers, delimiter := " + "){
 
-        friendlyName := ""
+        internalName := ""
 
         mapModifiersFromFriendly := Map()
         mapModifiersFromFriendly.Default := ""
@@ -76,26 +76,26 @@ class HotkeyFormatter{
         mapModifiersFromFriendly["Win"] := "#"
         mapModifiersFromFriendly["Alt"] := "!"
         mapModifiersFromFriendly["Shift"] := "+"
-        mapModifiersFromFriendly["Left "] :=  "<"
-        mapModifiersFromFriendly["Right "] :=  ">"
-        mapModifiersFromFriendly["And "] :=  "&"
+        mapModifiersFromFriendly["Left "] := "<"
+        mapModifiersFromFriendly["Right "] := ">"
+        mapModifiersFromFriendly["And "] := "&"
         mapModifiersFromFriendly["Any"] := "*"
 
-        
         parsedHotkey := StrSplit(friendlyHotkeyNameWithModifiers, delimiter)
         stringLength := parsedHotkey.Length
-        
+
         For index, modifierOrKey in parsedHotkey{
 
             if ( (mapModifiersFromFriendly[modifierOrKey] == "") or index == stringLength) {
-                friendlyName .= modifierOrKey
+                internalName .= modifierOrKey
             }
             else{
-                friendlyName .= mapModifiersFromFriendly[modifierOrKey]
+                internalName .= mapModifiersFromFriendly[modifierOrKey]
             }
         }
-        return friendlyName
 
+        internalName := StrReplace(internalName, "And ", "&") ; Logic for And is a bit different since it does not use delimiter, therefore manually replace it like this.
+        return internalName
     }
 
     ; Converts a key (or keys depending if ||) to a string which the Hotkey function can use to simulate a key press
