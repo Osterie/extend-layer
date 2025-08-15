@@ -3,7 +3,7 @@
 #Include <ui\util\DomainSpecificGui>
 
 #Include <Util\BackupManager>
-#Include <Util\RestoreBackupDialog>
+#Include <Updater\RestoreBackupDialog>
 
 #Include <Shared\FilePaths>
 #Include <Shared\Logger>

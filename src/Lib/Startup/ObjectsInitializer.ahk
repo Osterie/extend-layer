@@ -12,7 +12,7 @@
 #Include <Actions\IODevices\Monitor>
 #Include <Actions\IODevices\DeviceManager>
 #Include <Actions\IODevices\ComputerInputController>
-#Include <Actions\AppControllers\SoundController>
+#Include <Actions\IODevices\SoundController>
 #Include <Actions\Privacy\ScreenPrivacyController>
 #Include <Actions\Privacy\UnauthorizedUseDetector>
 #Include <Actions\BatteryAndPower\BatteryController>

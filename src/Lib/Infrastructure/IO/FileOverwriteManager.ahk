@@ -3,6 +3,8 @@
 #Include <Infrastructure\Repositories\UpdateManifestRepository>
 #Include <Shared\Logger>
 
+#Include <Util\FilePath>
+
 class FileOverwriteManager {
 
     Logger := Logger.getInstance()
@@ -142,7 +144,9 @@ class FileOverwriteManager {
             return ; The directory already exists, or the given directory path is an existin file.
         }
 
-        ; TODO create helper class.
+        ; TODO create helper class. Test that updater still works.
+        ; File := FilePath(directoryPath)
+        ; fileExtension := File.getExtension()
         SplitPath(directoryPath, &OutFileName, &OutDir, &OutExtension, &OutNameNoExt, &OutDrive)
         if (OutExtension != "") {
             return ; The given path is a file, not a directory.

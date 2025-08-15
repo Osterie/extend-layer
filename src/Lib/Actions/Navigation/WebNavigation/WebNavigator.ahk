@@ -3,7 +3,7 @@
 #Include "..\..\IODevices\ComputerInputController.ahk"
 
 #Include <Actions\HotkeyAction>
-#Include <Util\Sanitizers\KeyboardKeySanitizer>
+#Include <Util\Sanitizers\UrlSanitizer>
 
 class WebNavigator extends HotkeyAction {
 
@@ -27,8 +27,30 @@ class WebNavigator extends HotkeyAction {
     CloseTabsToTheRight() {
 
         ComputerInput := ComputerInputController()
-        Sleep(500)
+        Sleep(100)
         ComputerInput.BlockKeyboard()
+
+        ; Schedule an unblock fail-safe in 5 seconds
+        SetTimer(this.UnblockFailSafe.Bind(this, ComputerInput), -5000)  ; negative = run once after delay
+
+        if (WinActive("ahk_exe chrome.exe")) {
+            this.closeTabsToTheRightChrome()
+        }
+        else if (WinActive("ahk_exe firefox.exe")) {
+            this.closeTabsToTheRightFirefox()
+        }
+        else if (WinActive("ahk_exe msedge.exe")) {
+            this.closeTabsToTheRightEdge()
+        }
+
+        ComputerInput.UnBlockKeyboard()
+    }
+
+    UnblockFailSafe(ComputerInput) {
+        ComputerInput.UnBlockKeyboard()
+    }
+
+    closeTabsToTheRightChrome() {
         ; These sends could be compressed to just one, but for readability they are all seperated to each their line
         ; Focuses search bar
         Send("^l")
@@ -47,8 +69,89 @@ class WebNavigator extends HotkeyAction {
         Sleep(80)
         ; Goes back to the body of the page
         Send("{F6}")
+    }
 
-        ComputerInput.UnBlockKeyboard()
+    closeTabsToTheRightFireFox() {
+        ; These sends could be compressed to just one, but for readability they are all seperated to each their line
+        
+        ; Focuses search bar, but it might not be possible to change focus to the active tab yet
+        Send("^l")
+        Sleep(80)
+        
+        ; Focuses main body of the browser
+        Send("{F6}")
+        Sleep(80)
+        
+        ; Focuses the search bar again, now it is possible to change focus to the active tab
+        Send("{F6}")
+        Sleep(80)
+        
+        ; Focuses active tab
+        Send("+{Tab}")
+        Sleep(80)
+        Send("+{Tab}")
+        Sleep(80)
+        Send("+{Tab}")
+        Sleep(80)
+        Send("+{Tab}")
+        Sleep(80)
+        
+        ; Right clicks active tab, opening a dropdown meny with actions
+        Send("{AppsKey}")
+        Sleep(80)
+        
+        ; Focuses the option to close tabs to the right
+        Send("{Up}")
+        Sleep(80)
+        Send("{Up}")
+        Sleep(80)
+        Send("{Right}")
+        Sleep(80)
+        Send("{Down}")
+        Sleep(80)
+        
+        ; Performs said action
+        Send("{Enter}")
+        Sleep(80)
+        ; Goes back to the body of the page
+        Send("{F6}")
+    }
+
+    closeTabsToTheRightEdge() {
+        ; These sends could be compressed to just one, but for readability they are all seperated to each their line
+        
+        ; Focuses search bar
+        Send("^l")
+        Sleep(80)
+        
+        ; Focuses active tab
+        Send("{F6}")
+        Sleep(80)
+        Send("{F6}")
+        Sleep(80)
+
+        ; Right clicks active tab, opening a dropdown meny with actions
+        Send("{AppsKey}")
+        Sleep(80)
+        
+        ; Focuses the option to close tabs to the right
+        Send("{Up}")
+        Sleep(80)
+        Send("{Up}")
+        Sleep(80)
+        Send("{Up}")
+        Sleep(80)
+        Send("{Up}")
+        Sleep(80)
+        
+        ; Performs said action
+        Send("{Enter}")
+        Sleep(80)
+        
+        ; Goes back to the body of the page
+        Send("{F6}")
+        Sleep(80)
+        Send("{F6}")
     }
 
     ; Public method
@@ -64,7 +167,7 @@ class WebNavigator extends HotkeyAction {
 
         loginButtonClicked := false
         timesTriedToClickLoginButton := 1
-        targetSiteUrl := KeyboardKeySanitizer.sanitizeUrl(url)
+        targetSiteUrl := UrlSanitizer.sanitizeUrl(url)
 
         while ((timesTriedToClickLoginButton <= images.Length) && !loginButtonClicked) {
             try {
@@ -72,7 +175,7 @@ class WebNavigator extends HotkeyAction {
                 ; if it reaches here, the login button is clicked
                 loginButtonClicked := true
 
-                currentSiteUrl := KeyboardKeySanitizer.sanitizeUrl(this.GetCurrentUrl())
+                currentSiteUrl := UrlSanitizer.sanitizeUrl(this.GetCurrentUrl())
 
                 ; this checks if the clipboard content (which is the new site url, after logging in) is the same as the given url.
                 if (!InStr(currentSiteUrl, targetSiteUrl)) {

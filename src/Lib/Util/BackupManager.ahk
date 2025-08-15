@@ -4,13 +4,13 @@
 
 #Include <Util\NetworkUtils\Downloading\UnZipper>
 #Include <Util\Backup>
+#Include <Util\FilePath>
 
 #Include <Updater\UpdaterRunner>
 
 #Include <Shared\FilePaths>
 #Include <Shared\Logger>
 
-; TODO refactor
 class BackupManager {
 
     Version := VersionRepository()
@@ -33,6 +33,7 @@ class BackupManager {
         ; Empty
     }
 
+    ; Returns a Backup object from the given backup path.
     getBackupFromPath(backupPath) {
         if (!FileExist(backupPath)) {
             this.Logger.logError("Backup does not exist: " backupPath)
@@ -42,6 +43,7 @@ class BackupManager {
         return this.createBackupDataModel(backupPath)
     }
 
+    ; Returns a list of all backups in the backups directory. Returned as a list of Backup objects.
     getBackups() {
         backups := []
 
@@ -56,6 +58,8 @@ class BackupManager {
         return backups
     }
 
+    ; Checks if the current version of Extend Layer is backed up.
+    ; Returns true if the current version is backed up, false otherwise.
     currentVersionIsBackedUp() {
         currentVersion := this.Version.getCurrentVersion()
 
@@ -69,7 +73,7 @@ class BackupManager {
         return false
     }
 
-    ; Creates a backup of the current version of Extend Layer by copying the files to the backup directory.
+    ; Creates a backup of the current version of Extend Layer by copying the files to the backup directory. Zip file is saved in the backups directory.
     createBackup() {
         ; Delete the backup in the temporary location if it exists
         if (DirExist(this.TEMPORARY_DIR_CREATION)) {
@@ -146,6 +150,13 @@ class BackupManager {
         }
         DirCreate(this.TEMPORARY_DIR_RESTORATION)
         this.UnZipper.unzip(backupZipPath, this.TEMPORARY_DIR_RESTORATION)
+
+        this.waitForUnzipCompletion(backupZipPath)
+
+        DirCopy(this.BACKUP_DIR, this.TEMPORARY_DIR_RESTORATION . "\backups", true) ; true = overwrite
+    }
+
+    waitForUnzipCompletion(backupZipPath) {
         ; Wait for the unzipping to complete
         waitTime := 0
         while (!DirExist(this.TEMPORARY_DIR_RESTORATION) && waitTime < 10000) {
@@ -157,8 +168,6 @@ class BackupManager {
             this.Logger.logError("Failed to unzip the backup directory: " backupZipPath)
             throw Error("Failed to unzip the backup directory: " backupZipPath)
         }
-
-        DirCopy(this.BACKUP_DIR, this.TEMPORARY_DIR_RESTORATION . "\backups", true) ; true = overwrite
     }
 
     addCurrentProfilesToBackup(backupZipPath) {
@@ -181,17 +190,9 @@ class BackupManager {
     }
 
     createBackupDataModel(backupZipPath){
+        fileName := this.getBackupFileName(backupZipPath)
+        parts := StrSplit(fileName, this.DELIMITER)
 
-        if (!FileExist(backupZipPath)) {
-            this.Logger.logError("Backup directory does not exist: " backupZipPath)
-            throw Error("Backup directory does not exist: " backupZipPath)
-        }
-
-        ; TODO create helper class.
-        SplitPath(backupZipPath, &OutFileName, &OutDir, &OutExtension, &OutNameNoExt, &OutDrive)
-        OutFileName := StrReplace(OutFileName, "." . OutExtension, "")  ; Remove the extension from the file name
-
-        parts := StrSplit(OutFileName, this.DELIMITER)
         if (parts.Length != 2) {
             this.Logger.logError("Backup directory name is not in the expected format: " backupZipPath)
             throw Error("Backup directory name is not in the expected format: " backupZipPath)
@@ -206,5 +207,17 @@ class BackupManager {
         }
 
         return Backup(version, backupZipPath, timestamp)
+    }
+
+    getBackupFileName(backupZipPath) {
+        file := ""
+        try {
+            file := FilePath(backupZipPath)
+        } catch Error as e {
+            this.Logger.logError(e.Message)
+            throw e
+        }
+
+        return file.getFileName()
     }
 }

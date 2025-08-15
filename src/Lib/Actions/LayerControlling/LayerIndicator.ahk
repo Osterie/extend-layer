@@ -2,8 +2,9 @@
 
 #Include <Actions\HotkeyAction>
 #Include <Util\ImageSizeFinder>
+#Include <Util\FilePath>
 
-
+; TODO do not use "NONE" in the ini files for layer image, use "" instead if possible.
 class LayerIndicator extends HotkeyAction {
 
     indicatorColor := ""
@@ -24,7 +25,10 @@ class LayerIndicator extends HotkeyAction {
         this.monitor := monitor
     }
 
-    ; TODO create settings for changing the location, color, size, and such of the layer indicator...
+    destroy() {
+        this.layerIndicatorGui.destroy()
+    }
+
     createLayerIndicator() {
         this.layerIndicatorGui := Gui()
         this.layerIndicatorGui.Opt("+E0x20 -Caption +AlwaysOnTop -MaximizeBox +ToolWindow")
@@ -33,13 +37,27 @@ class LayerIndicator extends HotkeyAction {
     }
     
     addImageControl() {
-        ; TODO create helper class.
-        SplitPath(this.image, &OutFileName, &OutDir, &OutExtension, &OutNameNoExt, &OutDrive)
 
-        if (OutExtension = "") {
-            this.useDefaultIndicatorSize() ; Fallback to default size if image loading fails
+        if (this.image == "NONE" || this.image == "") {
+            this.useDefaultIndicatorSize()
+            return
         }
-        else if (OutExtension = "gif" || OutExtension = "svg") {
+
+        try{
+            File := FilePath(this.image)
+        }
+        catch Error as e {
+            MsgBox("Invalid image path, using default settings: " this.image)
+            this.useDefaultIndicatorSize() ; Fallback to default size if image path is invalid
+            return
+        }
+
+        imageFileExtension := File.getExtension()
+
+        if (imageFileExtension = "") {
+            this.useDefaultIndicatorSize()
+        }
+        else if (imageFileExtension = "gif" || imageFileExtension = "svg") {
             try{
                 imageSize := ImageSizeFinder.ImageSize(this.image)
                 width := imageSize[1]
@@ -65,10 +83,6 @@ class LayerIndicator extends HotkeyAction {
     useDefaultIndicatorSize(){
         this.setIndicatorWidth(50) ; Default width if no image is provided
         this.setIndicatorHeight(140) ; Default height if no image is provided
-    }
-
-    destroy() {
-        this.layerIndicatorGui.destroy()
     }
 
     Show(x := 0, y := A_ScreenHeight - this.getIndicatorHeight(), w := this.getIndicatorWidth(), h := this.getIndicatorHeight()) {
@@ -118,7 +132,7 @@ class LayerIndicator extends HotkeyAction {
 
     calculateGuiDimensions() {
         if (this.storedWidth != 0 && this.storedHeight != 0) {
-            return [this.storedWidth, this.storedHeight]
+            return
         }
         WinSetTransparent(0, this.layerIndicatorGui)
         this.layerIndicatorGui.show("NoActivate")
@@ -127,6 +141,5 @@ class LayerIndicator extends HotkeyAction {
         this.storedHeight := h
         this.layerIndicatorGui.hide()
         WinSetTransparent(255, this.layerIndicatorGui)
-        return [this.storedWidth, this.storedHeight]
     }
 }

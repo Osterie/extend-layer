@@ -3,7 +3,6 @@
 #Include <Shared\FilePaths>
 #Include <Infrastructure\IO\IniFileReader>
 
-
 #Include <Actions\HotkeyAction>
 
 Class Mouse extends HotkeyAction{

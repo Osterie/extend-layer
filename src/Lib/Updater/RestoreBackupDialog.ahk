@@ -4,7 +4,6 @@
 
 #Include <ui\util\DomainSpecificGui>
 
-; TODO refactor
 class RestoreBackupDialog extends DomainSpecificGui {
 
     BackupManager := BackupManager()
@@ -18,6 +17,12 @@ class RestoreBackupDialog extends DomainSpecificGui {
     }
 
     create(Backup) {
+        this.createInfoSection(Backup)
+        this.createRestoreOptions(Backup)
+        this.createCancelButton()
+    }
+
+    createInfoSection(Backup) {
         formattedTimestamp := FormatTime(Backup.getTimestamp(), "'Date:' yyyy/MM/dd 'Time:' HH:mm:ss")
 
         this.Add("Text", "xm", 
@@ -25,20 +30,25 @@ class RestoreBackupDialog extends DomainSpecificGui {
             "Version: " . Backup.getName() . "`n" .
             "Timestamp: " . formattedTimestamp)
         this.Add("Text", "", "Note! Newer profiles might have functionality which is not supported by the backup version.")
+    }
 
-
+    createRestoreOptions(Backup) {
         this.Add("Button", "xs w100", "Restore backup, but keep current profiles").OnEvent("Click", (*) => this.restoreBackupKeepCurrentProfiles(Backup))
         this.Add("Text", "xp+100 yp w300", "Restores the backup, but keeps your current profiles. This means that your current profiles will not be replaced by the profiles in the backup, if you have edited any or have created your own. An example of a profile is the 'Default' profile")
+
         this.Add("Button", "xs w100", "Restore backup, including backup's profiles").OnEvent("Click", (*) => this.restoreBackupWithOldProfiles(Backup))
         this.Add("Text", "xp+100 yp w300", "Restores the backup and replaces your current profiles with the as they were in this backup. This means that any changes you made to your current profiles after this backup will be lost. (or you can restore them from another backup)")
-        this.Add("Button", "xs w100", "Cancel").OnEvent("Click", (*) => this.close())
+    }
+
+    createCancelButton() {
+        Button := this.Add("Button", "xs w100", "Cancel")
+        Button.OnEvent("Click", (*) => this.close())
     }
 
     restoreBackupKeepCurrentProfiles(Backup) {
         this.BackupManager.restoreBackupKeepCurrentProfiles(Backup.getPath())
         this.close()
     }
-
 
     restoreBackupWithOldProfiles(Backup) {
         this.BackupManager.restoreBackupIncludingProfiles(Backup.getPath())

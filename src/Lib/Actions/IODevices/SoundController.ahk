@@ -1,6 +1,7 @@
 #Requires AutoHotkey v2.0
 
-; TODO move out of AppControllers folder
+#Include <Actions\HotkeyAction>
+
 class SoundController extends HotkeyAction {
 
     destroy() {
