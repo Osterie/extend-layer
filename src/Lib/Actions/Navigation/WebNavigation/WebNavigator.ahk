@@ -30,6 +30,9 @@ class WebNavigator extends HotkeyAction {
         Sleep(100)
         ComputerInput.BlockKeyboard()
 
+        ; Schedule an unblock fail-safe in 5 seconds
+        SetTimer(this.UnblockFailSafe.Bind(this, ComputerInput), -5000)  ; negative = run once after delay
+
         if (WinActive("ahk_exe chrome.exe")) {
             this.closeTabsToTheRightChrome()
         }
@@ -38,7 +41,10 @@ class WebNavigator extends HotkeyAction {
         }
 
         ComputerInput.UnBlockKeyboard()
-        ; TODO use ControlSend Keys , Control, WinTitle, WinText, ExcludeTitle, ExcludeText
+    }
+
+    UnblockFailSafe(ComputerInput) {
+        ComputerInput.UnBlockKeyboard()
     }
 
     closeTabsToTheRightChrome() {
@@ -68,31 +74,39 @@ class WebNavigator extends HotkeyAction {
         ; Focuses search bar, but it might not be possible to change focus to the active tab yet
         Send("^l")
         Sleep(80)
-
+        
         ; Focuses main body of the browser
         Send("{F6}")
         Sleep(80)
-
+        
         ; Focuses the search bar again, now it is possible to change focus to the active tab
         Send("{F6}")
         Sleep(80)
-
+        
         ; Focuses active tab
         Send("+{Tab}")
+        Sleep(80)
         Send("+{Tab}")
+        Sleep(80)
         Send("+{Tab}")
+        Sleep(80)
         Send("+{Tab}")
-
+        Sleep(80)
+        
         ; Right clicks active tab, opening a dropdown meny with actions
         Send("{AppsKey}")
         Sleep(80)
-
+        
         ; Focuses the option to close tabs to the right
         Send("{Up}")
+        Sleep(80)
         Send("{Up}")
+        Sleep(80)
         Send("{Right}")
+        Sleep(80)
         Send("{Down}")
-
+        Sleep(80)
+        
         ; Performs said action
         Send("{Enter}")
         Sleep(80)
