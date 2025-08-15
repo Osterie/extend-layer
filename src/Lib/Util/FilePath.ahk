@@ -3,7 +3,6 @@
 #Include <Util\Formaters\PathFormatter>
 #Include <Util\FilePathUtils>
 
-; TODO see if this class can be used more places, where SplitPath is used.
 ; Model for a file path, which helps with the SplitPath functionality, using get methods for getting the different
 ; parts/attributes of a file path instead of using variable references.
 class FilePath {

@@ -27,8 +27,21 @@ class WebNavigator extends HotkeyAction {
     CloseTabsToTheRight() {
 
         ComputerInput := ComputerInputController()
-        Sleep(500)
+        Sleep(100)
         ComputerInput.BlockKeyboard()
+
+        if (WinActive("ahk_exe chrome.exe")) {
+            this.closeTabsToTheRightChrome()
+        }
+        else if (WinActive("ahk_exe firefox.exe")) {
+            this.closeTabsToTheRightFirefox()
+        }
+
+        ComputerInput.UnBlockKeyboard()
+        ; TODO use ControlSend Keys , Control, WinTitle, WinText, ExcludeTitle, ExcludeText
+    }
+
+    closeTabsToTheRightChrome() {
         ; These sends could be compressed to just one, but for readability they are all seperated to each their line
         ; Focuses search bar
         Send("^l")
@@ -47,8 +60,44 @@ class WebNavigator extends HotkeyAction {
         Sleep(80)
         ; Goes back to the body of the page
         Send("{F6}")
+    }
 
-        ComputerInput.UnBlockKeyboard()
+    closeTabsToTheRightFireFox() {
+        ; These sends could be compressed to just one, but for readability they are all seperated to each their line
+        
+        ; Focuses search bar, but it might not be possible to change focus to the active tab yet
+        Send("^l")
+        Sleep(80)
+
+        ; Focuses main body of the browser
+        Send("{F6}")
+        Sleep(80)
+
+        ; Focuses the search bar again, now it is possible to change focus to the active tab
+        Send("{F6}")
+        Sleep(80)
+
+        ; Focuses active tab
+        Send("+{Tab}")
+        Send("+{Tab}")
+        Send("+{Tab}")
+        Send("+{Tab}")
+
+        ; Right clicks active tab, opening a dropdown meny with actions
+        Send("{AppsKey}")
+        Sleep(80)
+
+        ; Focuses the option to close tabs to the right
+        Send("{Up}")
+        Send("{Up}")
+        Send("{Right}")
+        Send("{Down}")
+
+        ; Performs said action
+        Send("{Enter}")
+        Sleep(80)
+        ; Goes back to the body of the page
+        Send("{F6}")
     }
 
     ; Public method
