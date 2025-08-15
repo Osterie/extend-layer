@@ -4,6 +4,7 @@
 
 #Include <Actions\HotkeyAction>
 #Include <Util\Sanitizers\UrlSanitizer>
+#Include <Util\UrlUtils>
 
 class WebNavigator extends HotkeyAction {
 
@@ -23,7 +24,9 @@ class WebNavigator extends HotkeyAction {
     }
 
     ; Public method
-    ; Closes tabs to the right of the current tab, only works in chrome ATM TODO make it work for more browsers
+    ; Closes tabs to the right of the current tab, works for chrome, firefox and edge.
+    ; Uses the computer input controller to block keyboard input while the tabs are being closed.
+    ; This is to prevent the user from interfering with the process.
     CloseTabsToTheRight() {
 
         ComputerInput := ComputerInputController()
@@ -156,8 +159,8 @@ class WebNavigator extends HotkeyAction {
 
     ; Public method
     ; Images should be for example "loginButton.png"
-    LoginToSite(url, images, loadTime) {
-        this.OpenUrl(url)
+    LoginToSite(url, images, loadTime, preferedBrowser := "") {
+        this.OpenUrl(url, preferedBrowser)
 
         if (images = "") {
             return
@@ -244,10 +247,9 @@ class WebNavigator extends HotkeyAction {
     ; Private method
     SearchInBrowser(searchTerm) {
         googleSearchUrl := "https://www.google.com/search?q="
-        isUrl := this.isUrl(searchTerm)
 
         ; if the highlighted text/the text in the clipboard is a url, then the url is opened
-        if (isUrl) {
+        if (UrlUtils.isUrl(searchTerm)) {
             Run(searchTerm)
         }
         else { ;if not an url, search using google search
@@ -288,9 +290,40 @@ class WebNavigator extends HotkeyAction {
         MsgBox(translatedText)
     }
 
-    OpenUrl(url) {
-        ; TODO what if user does not have chrome, check and use other browser.
-        Run("chrome.exe " url)
+    OpenUrl(url, preferedBrowser := "") {
+
+        if (preferedBrowser != "") {
+            try {
+                if (!InStr(preferedBrowser, ".exe")) {
+                    preferedBrowser := preferedBrowser . ".exe"
+                }
+                Run(preferedBrowser . " " . url)
+            }
+            catch Error as e {
+                if (InStr(e.Message, "Failed attempt to launch program or document")) {
+                    MsgBox("Failed to open the url: " url ". Please check if you have the chosen prefered browser: " preferedBrowser ", installed.")
+                }
+                else {
+                    MsgBox("An error occurred while trying to open the url: " url ". Error: " e.Message)
+                }
+            }
+            return
+        }
+
+        try{
+            Run("chrome.exe " . url)
+            return
+        }
+        try{
+            Run("firefox.exe " . url)
+            return
+        }
+        try{
+            Run("msedge.exe " . url)
+            return
+        }
+
+        MsgBox("Failed to open the url: " url ". Please check if you have any of the following browsers installed: Chrome, Edge, Firefox.")
     }
 
     ; Translates highligted text or the text in the clipboard
@@ -322,21 +355,6 @@ class WebNavigator extends HotkeyAction {
         ; Takes a text to translate, the language to translate from, the language to translate to, and the variants of the text(optional)
         translatedText := TextTranslator.Translate(textToTranslate, fromLanguage, toLanguage, &variants)
         return translatedText
-    }
-
-    ; meant to be a private method, checks if a text is a url
-    ; returns a boolean
-    IsUrl(text) {
-        isUrl := ""
-        ; if it starts with "https://", then the text is considered a url
-        startOfText := SubStr(text, 1, 8)
-        if (startOfText = "https://") {
-            isUrl := true
-        }
-        else {
-            isUrl := false
-        }
-        return isUrl
     }
 
     SetChatGptLoadTime(loadTime) {

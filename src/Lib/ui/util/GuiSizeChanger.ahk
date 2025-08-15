@@ -3,7 +3,11 @@
 class GuiSizeChanger{
 
     static SetTextAndResize(textCtrl, text) {
-        textCtrl.Move(,, GetTextSize(textCtrl, text)*)
+        sizes := GetTextSize(textCtrl, text)
+        width := sizes[1]
+        height := sizes[2]
+
+        textCtrl.Move(,, width, height)
         textCtrl.Value := text
         textCtrl.Gui.Show('AutoSize')
     

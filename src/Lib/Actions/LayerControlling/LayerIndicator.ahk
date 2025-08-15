@@ -2,7 +2,9 @@
 
 #Include <Actions\HotkeyAction>
 #Include <Util\ImageSizeFinder>
+#Include <Util\GuiSizeFinder>
 #Include <Util\FilePath>
+#Include <Util\UrlUtils>
 
 ; TODO do not use "NONE" in the ini files for layer image, use "" instead if possible.
 class LayerIndicator extends HotkeyAction {
@@ -34,20 +36,34 @@ class LayerIndicator extends HotkeyAction {
         this.layerIndicatorGui.Opt("+E0x20 -Caption +AlwaysOnTop -MaximizeBox +ToolWindow")
         this.layerIndicatorGui.BackColor := this.indicatorColor
         this.addImageControl()
+        this.calculateGuiDimensions()
     }
     
     addImageControl() {
-
         if (this.image == "NONE" || this.image == "") {
             this.useDefaultIndicatorSize()
             return
         }
 
+        if (UrlUtils.isUrl(this.image)) {
+            this.addImageFromUrl()
+        }
+        else{
+            this.addImageFromFile()
+        }
+    }
+
+    addImageFromUrl() {
+        html := "<body style='margin:0'><img src='" this.image "' style='width:100%; height:100%; object-fit:contain;' /></body>"
+        activeXControl := this.layerIndicatorGui.Add("ActiveX", "w100 h100", "mshtml:" . html)
+    }
+
+    addImageFromFile() {
         try{
             File := FilePath(this.image)
         }
         catch Error as e {
-            MsgBox("Invalid image path, using default settings: " this.image)
+            MsgBox("Invalid image path, using default settings: " . e.Message . this.image)
             this.useDefaultIndicatorSize() ; Fallback to default size if image path is invalid
             return
         }
@@ -55,9 +71,10 @@ class LayerIndicator extends HotkeyAction {
         imageFileExtension := File.getExtension()
 
         if (imageFileExtension = "") {
+            MsgBox("Image file extension is missing, using default settings: " . this.image)
             this.useDefaultIndicatorSize()
         }
-        else if (imageFileExtension = "gif" || imageFileExtension = "svg") {
+        else  {
             try{
                 imageSize := ImageSizeFinder.ImageSize(this.image)
                 width := imageSize[1]
@@ -66,15 +83,7 @@ class LayerIndicator extends HotkeyAction {
                 this.layerIndicatorGui.Add("ActiveX", "w" . width . " h" . height, "mshtml:" . html)
             }
             catch Error as e{
-                this.useDefaultIndicatorSize() ; Fallback to default size if image loading fails
-            }
-        }
-        else{
-            try {
-                this.layerIndicatorGui.Add("Picture", "AltSubmit", this.image)
-            }
-            catch Error as e {
-                ; If no image is proviced, this will be used.
+                MsgBox("Failed to load image, using default settings: " . e.Message . this.image)
                 this.useDefaultIndicatorSize() ; Fallback to default size if image loading fails
             }
         }
@@ -110,19 +119,19 @@ class LayerIndicator extends HotkeyAction {
         if (this.storedWidth != 0) {
             return this.storedWidth
         }
-        this.calculateGuiDimensions()
+        this.storedWidth := GuiSizeFinder.calculateGuiDimensions(this.layerIndicatorGui)[1]
         return this.storedWidth
     }
-
+    
     setIndicatorWidth(width) {
         this.storedWidth := width
     }
-
+    
     getIndicatorHeight() {
         if (this.storedHeight != 0) {
             return this.storedHeight
         }
-        this.calculateGuiDimensions()
+        this.storedHeight := GuiSizeFinder.calculateGuiDimensions(this.layerIndicatorGui)[2]
         return this.storedHeight
     }
 
@@ -134,12 +143,9 @@ class LayerIndicator extends HotkeyAction {
         if (this.storedWidth != 0 && this.storedHeight != 0) {
             return
         }
-        WinSetTransparent(0, this.layerIndicatorGui)
-        this.layerIndicatorGui.show("NoActivate")
-        this.layerIndicatorGui.GetPos(&x, &y, &w, &h)
-        this.storedWidth := w
-        this.storedHeight := h
-        this.layerIndicatorGui.hide()
-        WinSetTransparent(255, this.layerIndicatorGui)
+
+        guiSizes := GuiSizeFinder.calculateGuiDimensions(this.layerIndicatorGui)
+        this.setIndicatorWidth(guiSizes[1])
+        this.setIndicatorHeight(guiSizes[2])
     }
 }
