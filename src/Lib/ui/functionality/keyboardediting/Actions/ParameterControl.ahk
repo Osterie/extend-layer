@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
 
+#Include <ui\util\GuiSizeChanger>
+
 class ParameterControl {
 
     parameterNameControl := ""
@@ -85,6 +87,14 @@ class ParameterControl {
 
     SetParameterDescription(parameterDescription) {
         this.parameterDescriptionControl.Value := parameterDescription
+
+        sizes := GuiSizeChanger.GetTextSize(this.parameterDescriptionControl, parameterDescription)
+        width := sizes[1]
+        height := 13
+        heightMultiplier := Ceil(width / 335)
+        if (heightMultiplier > 1 ) {
+            this.parameterDescriptionControl.Move(,,, height * heightMultiplier)
+        }
     }
 
     GetValue() {
