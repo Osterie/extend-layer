@@ -1,8 +1,9 @@
 ﻿#Requires Autohotkey v2.0
 
+#Include <ui\util\GuiSizeFinder>
+
 #Include <Actions\HotkeyAction>
 #Include <Util\ImageSizeFinder>
-#Include <Util\GuiSizeFinder>
 #Include <Util\FilePath>
 #Include <Util\UrlUtils>
 
