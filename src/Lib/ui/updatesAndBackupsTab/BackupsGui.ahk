@@ -27,7 +27,7 @@ class BackupsGui extends DomainSpecificGui {
     }
 
     createBackupListView() {
-        this.backupsListView := this.Add("ListView", "r20 w500", ["Path", "Version", "Timestamp"])
+        this.backupsListView := this.Add("ListView", "r20 w500", ["Path", "Version", "Timestamp", "Size"])
         this.backupsListView.OnEvent("ItemFocus", this.handleBackupSelected.Bind(this))
         this.populateListView()  ; Populate the ListView with backups
     }
@@ -39,7 +39,7 @@ class BackupsGui extends DomainSpecificGui {
 
         for Backup_ in backups {
             formattedTime := FormatTime(Backup_.getTimestamp(), "'Date:' yyyy/MM/dd 'Time:' HH:mm:ss")
-            this.backupsListView.Add("", Backup_.getPath(), Backup_.getName(), formattedTime)
+            this.backupsListView.Add("", Backup_.getPath(), Backup_.getName(), formattedTime, Backup_.getSize("K") " KB")
         }
 
         this.backupsListView.ModifyCol(1, "0") ; Hides the first column (Path), can be used when a column is selected.
@@ -56,7 +56,8 @@ class BackupsGui extends DomainSpecificGui {
             path := this.backupsListView.GetText(selected, 1)
             version := this.backupsListView.GetText(selected, 2)
             timestamp := this.backupsListView.GetText(selected, 3)
-            this.selectedBackupText.Value := "Selected Backup: " version " - " timestamp
+            size := this.backupsListView.GetText(selected, 4)
+            this.selectedBackupText.Value := "Selected Backup: " version " - " timestamp . " - Size: " size " KB"
         } else {
             this.selectedBackupText.Value := "Selected Backup: None"
         }
@@ -78,8 +79,6 @@ class BackupsGui extends DomainSpecificGui {
             return
         }
         path := this.backupsListView.GetText(selected, 1)
-        version := this.backupsListView.GetText(selected, 2)
-        timestamp := this.backupsListView.GetText(selected, 3)
 
         Backup_ := this.BackupManager.getBackupFromPath(path)
 

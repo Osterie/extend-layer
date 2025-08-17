@@ -240,7 +240,9 @@ class BackupManager {
             throw Error("Version or timestamp is empty in backup directory: " backupZipPath)
         }
 
-        return Backup(version, backupZipPath, timestamp)
+        size := FileGetSize(backupZipPath, "B")
+
+        return Backup(version, backupZipPath, timestamp, size)
     }
 
     getBackupFileName(backupZipPath) {
