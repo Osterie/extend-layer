@@ -117,31 +117,48 @@ class BackupManager {
     ; Restores everything except user profiles
     restoreBackupKeepCurrentProfiles(backupZipPath) {
 
+        ProgressBar_ := ProgressBar("Restoring Extend Layer backup...")
+
+        steps := 3
+        stepSize := 100 / steps
+
         if (!this.currentVersionIsBackedUp()) {
+            ProgressBar_.updateProgress("Backing up current version...", 0)
             this.createBackup()
         }
 
         ; Unzips the backup to a temporary location
+        ProgressBar_.updateProgress("Unzipping backup to temporary location...", 1 * stepSize)
         this.unZipBackup(backupZipPath)
         
         ; Adds the current profiles to the backup
+        ProgressBar_.updateProgress("Adding current profiles to the backup...", 2 * stepSize)
         this.addCurrentProfilesToBackup(backupZipPath)
         
         ; Updates the current version to the version in the backup
+        ProgressBar_.updateProgress("Replacing current version with backup...", 3 * stepSize)
         this.UpdaterRunner.runUpdater(this.TEMPORARY_DIR_RESTORATION, this.PROJECT_ROOT, true)
     }
     
     ; Restores everything including user profiles
     restoreBackupIncludingProfiles(backupZipPath) {
 
+        ProgressBar_ := ProgressBar("Restoring Extend Layer backup...")
+
+        steps := 2
+        stepSize := 100 / steps
+
         if (!this.currentVersionIsBackedUp()) {
+            ProgressBar_.updateProgress("Backing up current version...", 0)
             this.createBackup()
         }
 
         ; Unzips the backup to a temporary location
+        ProgressBar_.updateProgress("Unzipping backup to temporary location...", 1 * stepSize)
         this.unZipBackup(backupZipPath)
 
         ; Updates the current version to the version in the backup
+        ProgressBar_.updateProgress("Replacing current version with backup...", 2 * stepSize)
         this.UpdaterRunner.runUpdater(this.TEMPORARY_DIR_RESTORATION, this.PROJECT_ROOT, true)
     }
 
