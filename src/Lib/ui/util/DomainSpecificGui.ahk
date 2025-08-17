@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
 
+#Include <Shared\Logger>
+
 #Include <ui\util\GuiColorsChanger>
 
 #Include <Infrastructure\Repositories\ThemesRepository>
@@ -10,7 +12,10 @@ class DomainSpecificGui extends Gui{
     ThemesRepository := ThemesRepository.getInstance()
     theme := ""
 
+    Logger := Logger.getInstance()
+
     ; TODO fetch color profile from meta file.
+    ; TODO remove eventObj, or implement.
     __New(options := "", title := "", eventObj := ""){
         super.__New(options, title, this)
         this.OnEvent('Escape', (*) => this.destroy())
@@ -53,7 +58,16 @@ class DomainSpecificGui extends Gui{
 
     SetControlColor(control){
         GuiColorsChanger.setControlColor(control, this.theme.ControlColor())
-        GuiColorsChanger.setControlTextColor(control, this.theme.TextColor())
+        try{
+            GuiColorsChanger.setControlTextColor(control, this.theme.TextColor())
+        }
+        catch ValueError as e{
+            ; the control does not support setting text color
+        }
+        catch Error as e{
+            this.Logger.logError("Failed to set control color: " e.Message)
+            throw e
+        }
     }
 
     Add(ControlType , Options := "", Text := ""){

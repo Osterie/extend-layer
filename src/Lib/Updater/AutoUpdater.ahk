@@ -11,8 +11,11 @@
 #Include <Util\NetworkUtils\Downloading\Downloader>
 #Include <Util\BackupManager>
 
+#Include <ui\util\ProgressBar>
+
 #Include <Shared\Logger>
 #Include <Shared\FilePaths>
+
 
 class AutoUpdater {
     static instance := false
@@ -42,32 +45,23 @@ class AutoUpdater {
     }
 
     updateExtendLayer() {
-        progressBarGui := Gui("-SysMenu", "Preparing Extend Layer update...")
-        progressBarGui.Show("w300 h80")
+        ProgressBar_ := ProgressBar("Preparing Extend Layer update...")
 
-        progressText := progressBarGui.Add("Text", "w280 h20", "")
-        progressBar := progressBarGui.Add("Progress", "w280 h40 cBlue")
-
-        progressText.Value := "Downloading latest release..."
-        progressBar.Value += 20
+        ProgressBar_.updateProgress("Downloading latest release...", 20)
         this.downloadLatestRelease()
         
-        progressText.Value := "Creating backup..."
-        progressBar.Value += 20
+        ProgressBar_.updateProgress("Creating backup...", 40)
         this.BackupManager.createBackup()
 
-        progressText.Value := "Copying current version to temporary location..."
-        progressBar.Value += 20
+        ProgressBar_.updateProgress("Copying current version to temporary location...", 60)
         this.copyCurrentVersionToTemporaryLocation()
 
-        progressText.Value := "Updating version in temporary location..."
-        progressBar.Value += 20
+        ProgressBar_.updateProgress("Updating version in temporary location...", 80)
         this.updateVersionInTemporaryLocation()
 
-        progressText.Value := "Updating current version..."
-        progressBar.Value += 20
+        ProgressBar_.updateProgress("Updating current version...", 100)
         this.updateCurrentVersion()
-        progressBarGui.Destroy()
+        ProgressBar_.destroy()
     }
     
     downloadLatestRelease() {

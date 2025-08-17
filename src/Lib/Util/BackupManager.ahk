@@ -6,6 +6,8 @@
 #Include <Util\Backup>
 #Include <Util\FilePath>
 
+#Include <ui\util\ProgressBar>
+
 #Include <Updater\UpdaterRunner>
 
 #Include <Shared\FilePaths>
@@ -75,49 +77,41 @@ class BackupManager {
 
     ; Creates a backup of the current version of Extend Layer by copying the files to the backup directory. Zip file is saved in the backups directory.
     createBackup() {
-        progressBarGui := Gui("-SysMenu", "Creating Extend Layer backup...")
-        progressBarGui.Show("w300 h80")
 
-        progressText := progressBarGui.Add("Text", "w280 h20", "")
-        progressBar := progressBarGui.Add("Progress", "w280 h40 cBlue")
+        ProgressBar_ := ProgressBar("Creating Extend Layer backup...")
 
         steps := 4
         stepSize := 100 / steps
-
-        progressText.Value := "Deleting existing temporary backup ..."
-        progressBar.Value += stepSize
         
         ; Delete the backup in the temporary location if it exists
+        ProgressBar_.updateProgress("Deleting existing temporary backup ...", 1 * stepSize)
         if (DirExist(this.TEMPORARY_DIR_CREATION)) {
             DirDelete(this.TEMPORARY_DIR_CREATION, true) ; true = recursive delete
         }
         ; Create a temporary directory for the backup
         DirCreate(this.TEMPORARY_DIR_CREATION)
         
-        progressText.Value := "Creating backup in temporary location ..."
-        progressBar.Value += stepSize
-
+        
         ; Copy to temporary location
+        ProgressBar_.updateProgress("Creating backup in temporary location...", 2 * stepSize)
         DirCopy(this.PROJECT_ROOT, this.TEMPORARY_DIR_CREATION, true) ; true = overwrite
 
-        progressText.Value := "Readying backup in temporary location..."
-        progressBar.Value += stepSize
         
         ; Delete the backups directory in the temporary location if it exists, avoids storing backups in backups, which would use double the space each time a backup is created.
+        ProgressBar_.updateProgress("Readying backup in temporary location", 3 * stepSize)
         if (DirExist(this.TEMPORARY_DIR_CREATION . "\backups")) {
             DirDelete(this.TEMPORARY_DIR_CREATION . "\backups", true) ; true = recursive delete
         }
 
-        progressText.Value := "Copying and zipping backup from temporary location..."
-        progressBar.Value += stepSize
-
+        
         ; Copy and zip the temporary location to the backups directory in the root of the project
+        ProgressBar_.updateProgress("Copying and zipping backup from temporary location...", 4 * stepSize)
         currentVersion := this.Version.getCurrentVersion()
         backupLocation := this.BACKUP_DIR . "\" . currentVersion . this.DELIMITER . A_Now . ".zip"
         this.UnZipper.zip(this.TEMPORARY_DIR_CREATION, backupLocation)
         Sleep(1000)
 
-        progressBarGui.Destroy()
+        ProgressBar_.destroy()
     }
 
     ; Restores everything except user profiles
