@@ -77,12 +77,14 @@ class VersionRepository {
         jsonVersionObject := this.createJsonVersionObject(version)
 
         try {
-            FileDelete(this.versionFilePath)
+            if (FileExist(this.versionFilePath)) {
+                FileDelete(this.versionFilePath)
+            }
             FileAppend(jxon_dump(jsonVersionObject), this.versionFilePath, "UTF-8")
         }
-        catch {
-            this.Logger.logError("Could not write the version to the file: " . this.versionFilePath)
-            throw Error("Could not write the version to the file: " . this.versionFilePath)
+        catch Error as e {
+            this.Logger.logError("Could not write the version to the file: " . this.versionFilePath . " Error: " . e.Message)
+            throw Error("Could not write the version to the file: " . this.versionFilePath . " Error: " . e.Message)
         }
     }
 

@@ -2,7 +2,6 @@
 
 #Include <DataModels\AppData\Themes\Theme>
 
-; TODO set current theme here?
 class Themes{
     
     themes := Array()

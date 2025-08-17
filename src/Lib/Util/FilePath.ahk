@@ -22,11 +22,6 @@ class FilePath {
             throw TypeError("Invalid argument: Expected String for path.")
         }
         path := this.PathFormatter.normalizePath(path)  ; Ensure the path is formatted correctly
-        
-        if (!FileExist(path)) {
-            throw Error("File does not exist: " path)
-        }
-
         this.path := this.FilePathUtils.convertToAbsolutePath(path)
 
         SplitPath(path, &OutFileName, &OutDir, &OutExtension, &OutNameNoExt, &OutDrive)

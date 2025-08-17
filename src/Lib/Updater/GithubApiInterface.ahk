@@ -16,7 +16,7 @@ class GithubApiInterface {
     Logger := Logger.getInstance()
 
     owner := ""
-    repo := ""  ; The GitHub repository owner and name
+    repo := ""
 
     __New(owner, repo) {
         this.owner := owner

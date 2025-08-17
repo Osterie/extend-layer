@@ -25,7 +25,16 @@ class GuiColorsChanger {
     }
 
     static setControlTextColor(control, colorHex) {
-        control.SetFont("c" . colorHex)
+        try{
+            control.SetFont("c" . colorHex)
+        } catch Error as e{
+            if (InStr(e.Message, "Not supported for this control type")){
+                throw ValueError("Control type does not support setting text color")
+            }
+            else {
+                throw e
+            }
+        }
     }
 
     static SetDarkWindowFrame(guiObject, boolEnable := 1) {
