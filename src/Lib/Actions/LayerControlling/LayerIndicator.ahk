@@ -59,14 +59,12 @@ class LayerIndicator extends HotkeyAction {
     }
 
     addImageFromFile() {
-        try{
-            File := FilePath(this.image)
-        }
-        catch Error as e {
-            MsgBox("Invalid image path, using default settings: " . e.Message . this.image)
-            this.useDefaultIndicatorSize() ; Fallback to default size if image path is invalid
+        if (!FileExist(this.image)) {
+            MsgBox("Image file does not exist: " . this.image)
+            this.useDefaultIndicatorSize() ; Fallback to default size if image file does not exist
             return
         }
+        File := FilePath(this.image)
 
         imageFileExtension := File.getExtension()
 

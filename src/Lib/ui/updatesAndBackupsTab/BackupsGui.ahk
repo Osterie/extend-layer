@@ -87,7 +87,7 @@ class BackupsGui extends DomainSpecificGui {
         }
 
         path := this.backupsListView.GetText(selected, 1)
-        Backup_ := this.BackupManager.getBackupFromPath(path)
+        Backup_ := Backup(path)
 
         RestoreBackupDialog_ := RestoreBackupDialog(Backup_)
         RestoreBackupDialog_.show()
