@@ -3,8 +3,9 @@
 #Include <Infrastructure\Repositories\VersionRepository>
 
 #Include <Util\NetworkUtils\Downloading\UnZipper>
-#Include <Util\Backup>
-#Include <Util\BackupFilePathCreator>
+
+#Include <Backups\Backup>
+#Include <Backups\BackupFilePathCreator>
 
 #Include <ui\util\ProgressBar>
 

@@ -9,7 +9,7 @@
 #Include <Util\Errors\NetworkError>
 #Include <Util\NetworkUtils\NetworkChecker>
 #Include <Util\NetworkUtils\Downloading\Downloader>
-#Include <Util\BackupManager>
+#Include <Backups\BackupManager>
 
 #Include <ui\util\ProgressBar>
 

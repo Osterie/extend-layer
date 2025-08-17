@@ -2,8 +2,9 @@
 
 #Include <ui\util\DomainSpecificGui>
 
-#Include <Util\BackupManager>
-#Include <Updater\RestoreBackupDialog>
+#Include <Backups\BackupManager>
+#Include <Backups\RestoreBackupDialog>
+#Include <Backups\Backup>
 
 #Include <Shared\Logger>
 

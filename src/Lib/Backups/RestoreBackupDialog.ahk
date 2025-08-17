@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <Util\BackupManager>
+#Include <Backups\BackupManager>
 
 #Include <ui\util\DomainSpecificGui>
 
