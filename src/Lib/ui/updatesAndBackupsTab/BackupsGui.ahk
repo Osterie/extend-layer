@@ -5,11 +5,11 @@
 #Include <Util\BackupManager>
 #Include <Updater\RestoreBackupDialog>
 
-#Include <Shared\FilePaths>
 #Include <Shared\Logger>
 
-; TODO refactor
 class BackupsGui extends DomainSpecificGui {
+
+    Logger := Logger.getInstance()
 
     BackupManager := BackupManager()
 
@@ -22,6 +22,7 @@ class BackupsGui extends DomainSpecificGui {
     }
 
     create() {
+        this.selectedBackupText := this.Add("Text", "xs y+10 w500", "Selected Backup: None")
         this.createBackupListView()
         this.createBackupControls()
     }
@@ -29,22 +30,31 @@ class BackupsGui extends DomainSpecificGui {
     createBackupListView() {
         this.backupsListView := this.Add("ListView", "r20 w500", ["Path", "Version", "Timestamp", "Size"])
         this.backupsListView.OnEvent("ItemFocus", this.handleBackupSelected.Bind(this))
-        this.populateListView()  ; Populate the ListView with backups
+        this.populateListView()
     }
 
     populateListView() {
-        this.backupsListView.Delete()  ; Clear the list view before populating it
+        this.backupsListView.Delete()
 
         backups := this.BackupManager.getBackups()
-
         for Backup_ in backups {
-            formattedTime := FormatTime(Backup_.getTimestamp(), "'Date:' yyyy/MM/dd 'Time:' HH:mm:ss")
-            this.backupsListView.Add("", Backup_.getPath(), Backup_.getName(), formattedTime, Backup_.getSize("K") " KB")
+            this.addBackupToListView(Backup_)
         }
+
+        this.modifyListViewColumns(backups)
+    }
+
+    addBackupToListView(Backup_) {
+        formattedTime := FormatTime(Backup_.getTimestamp(), "'Date:' yyyy/MM/dd 'Time:' HH:mm:ss")
+        this.backupsListView.Add("", Backup_.getPath(), Backup_.getName(), formattedTime, Backup_.getSize("K") " KB")
+    }
+
+    modifyListViewColumns(backups) {
 
         this.backupsListView.ModifyCol(1, "0") ; Hides the first column (Path), can be used when a column is selected.
         this.backupsListView.ModifyCol(2, "80 Center")
         this.backupsListView.ModifyCol(3, "Auto Text Center SortDesc")
+        this.backupsListView.ModifyCol(4, "Auto Text Center")
 
         if (backups.Length = 0) {
             this.backupsListView.ModifyCol(3, "80")
@@ -53,7 +63,6 @@ class BackupsGui extends DomainSpecificGui {
 
     handleBackupSelected(GuiCtrlObj, selected) {
         if selected {
-            path := this.backupsListView.GetText(selected, 1)
             version := this.backupsListView.GetText(selected, 2)
             timestamp := this.backupsListView.GetText(selected, 3)
             size := this.backupsListView.GetText(selected, 4)
@@ -64,8 +73,6 @@ class BackupsGui extends DomainSpecificGui {
     }
 
     createBackupControls() {
-        this.selectedBackupText := this.Add("Text", "xs y+10 w500", "Selected Backup: None")
-
         this.Add("Button", "xs y+5 w150", "🔁 Restore Backup").OnEvent("Click", (*) => this.restoreBackup())
         this.Add("Button", "x+10 w150", "➕ Create Backup").OnEvent("Click", (*) => this.createBackup())
         this.Add("Button", "x+10 w150", "❌ Delete Backup").OnEvent("Click", (*) => this.deleteBackup())
@@ -78,8 +85,8 @@ class BackupsGui extends DomainSpecificGui {
             MsgBox("Please select a backup to restore.")
             return
         }
-        path := this.backupsListView.GetText(selected, 1)
 
+        path := this.backupsListView.GetText(selected, 1)
         Backup_ := this.BackupManager.getBackupFromPath(path)
 
         RestoreBackupDialog_ := RestoreBackupDialog(Backup_)
@@ -99,8 +106,7 @@ class BackupsGui extends DomainSpecificGui {
         ; Refresh the list of backups
         this.populateListView()
 
-        ; TODO instead of refreshing the list, add the new backup directly to the ListView
-        ; this.backupsListView.Add("", Backup_.getName(), FormatTime(Backup_.getTimestamp(), "'Date:' yyyy/MM/dd 'Time:' HH:mm:ss"))
+        this.Logger.logInfo("Backup created successfully.")
     }
 
     deleteBackup() {
@@ -114,14 +120,16 @@ class BackupsGui extends DomainSpecificGui {
         path := this.backupsListView.GetText(selected, 1)
         version := this.backupsListView.GetText(selected, 2)
         timestamp := this.backupsListView.GetText(selected, 3)
+        size := this.backupsListView.GetText(selected, 4)
 
-        confirm := MsgBox("Are you sure you want to delete backup: " version ", created at " . timestamp . "?",
+        confirm := MsgBox("Are you sure you want to delete backup: " version ", created at " . timestamp . "? Backup size: " . size . " KB",
             "Confirm", "YesNo")
 
         if (confirm = "Yes") {
             this.BackupManager.deleteBackup(path)
             ; Refresh list
             this.populateListView()
+            this.Logger.logInfo("Backup deleted successfully: " version . " - " . path . " - Size " . size . " KB")
         }
     }
 }
