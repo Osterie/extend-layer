@@ -2,7 +2,6 @@
 
 #Include <Shared\Logger>
 
-; TODO use more.
 class PathFormatter {
 
     Logger := Logger.getInstance()
@@ -32,6 +31,8 @@ class PathFormatter {
         return path
     }
 
+    ; Replaces forward slashes with backslashes and removes trailing backslashes.
+    ; Replaces double backslashes with single backslash.
     normalize(path) {
         if (InStr(path, "/")) {
             this.Logger.logInfo("Path contains forward slashes, normalizing: " . path)
