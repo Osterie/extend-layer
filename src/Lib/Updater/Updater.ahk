@@ -41,7 +41,7 @@ if (!DirExist(A_Temp . "\EL\B")) {
 ; Delete backups older than 30 days.
 loop Files A_Temp . "\EL\B\*", "D" ; "D" = directories only
 {
-    if (A_LoopFileTimeCreated < A_Now - 30 * 24 * 60 * 60) { ; If the backup is older than 30 days
+    if (A_LoopFileTimeCreated < A_Now - 6 * 31 * 24 * 60 * 60) { ; If the backup is older than about 6 months
         DirDelete(A_LoopFileFullPath, true) ; true = recursive delete
     }
 }
