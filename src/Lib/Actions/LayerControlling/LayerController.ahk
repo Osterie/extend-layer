@@ -195,6 +195,18 @@ Class LayerController extends HotkeyAction{
         }
     }
 
+    ; Public, can be used as hotkey
+    setActiveLayer(activeLayer){
+        this.activeLayer := activeLayer
+        if (activeLayer != 0){
+            this.showLayerIndicator(activeLayer)
+        }
+        else{
+            this.hideInactiveLayers()
+        }
+    }
+
+    ; Public, can be used as hotkey
     ; sets the layer to toggleValue if layer is 0, or to 0 if active laye is not zero
     toggleLayer(toggleValue){
         if (this.activeLayer == 0){
@@ -207,6 +219,7 @@ Class LayerController extends HotkeyAction{
         }
     }
 
+    ; Public, can be used as hotkey
     ; increases activeLayer by 1, if upperLimit is reached, it is set back to 1 (Note, not does not go back to 0)
     cycleLayers(defaultSetLayer){
         layersAmount := this.layers.Count
@@ -234,16 +247,6 @@ Class LayerController extends HotkeyAction{
 
     getActiveLayer(){
         return this.activeLayer
-    }
-
-    setActiveLayer(activeLayer){
-        this.activeLayer := activeLayer
-        if (activeLayer != 0){
-            this.showLayerIndicator(activeLayer)
-        }
-        else{
-            this.hideInactiveLayers()
-        }
     }
 
     destroy(){

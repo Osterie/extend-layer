@@ -2,13 +2,13 @@
     "GlobalLayer-Hotkeys":{
 
         "CapsLock": {
-            "isObject": true,
+            "isObject": 1,
             "ObjectName": "layers",
             "MethodName": "toggleLayer",
             "Parameters": [1]
         },
         "+CapsLock": {
-            "isObject": true,
+            "isObject": 1,
             "ObjectName": "layers",
             "MethodName": "cycleLayers",
             "Parameters": [2]
@@ -16,13 +16,13 @@
     },
     "NormalLayer-Hotkeys": {
         "^!w": {
-            "isObject": true,
+            "isObject": 1,
             "ObjectName": "WebSearcher",
             "MethodName": "CloseTabsToTheRight",
             "Parameters": []
         },
         "^!s": {
-            "isObject": true,
+            "isObject": 1,
             "ObjectName": "ProcessManagerInstance",
             "MethodName": "SuspendActiveAutohotkeyScript",
             "Parameters": []
@@ -30,182 +30,182 @@
     },
     "SecondaryLayer-Hotkeys": {
         "*q": {
-            "isObject": false,
+            "isObject": 0,
             "key": "Esc",
             "modifiers": ""
         },
         "*[":{
-            "isObject": false,
+            "isObject": 0,
             "key": "Esc",
             "modifiers": ""
         } ,
         "*a":{
-            "isObject": false,
+            "isObject": 0,
             "key": "Alt",
             "modifiers": ""
         },
         "*d":{
-            "isObject": false,
+            "isObject": 0,
             "key": "Shift",
             "modifiers": ""
         },
         "*f": {
-            "isObject": false,
+            "isObject": 0,
             "key": "Ctrl",
             "modifiers": ""
         },
         "*n": {
-            "isObject": false,
+            "isObject": 0,
             "key": "Tab",
             "modifiers": ""
         },
         "*w": {
-            "isObject": false,
+            "isObject": 0,
             "key": "WheelUp",
             "modifiers": ""
         },
         "*s": {
-            "isObject": false,
+            "isObject": 0,
             "key": "WheelDown",
             "modifiers": ""
         },
         "*e": {
-            "isObject": false,
+            "isObject": 0,
             "key": "Browser_Back",
             "modifiers": ""
         },
         "*r": {
-            "isObject": false,
+            "isObject": 0,
             "key": "Browser_Forward",
             "modifiers": ""
         },
         "*y": {
-            "isObject": false,
+            "isObject": 0,
             "key": "PgUp",
             "modifiers": ""
         },
         "*h": {
-            "isObject": false,
+            "isObject": 0,
             "key": "PgDn",
             "modifiers": ""
         },
         "*u": {
-            "isObject": false,
+            "isObject": 0,
             "key": "Home",
             "modifiers": ""
         },
         "*o": {
-            "isObject": false,
+            "isObject": 0,
             "key": "End",
             "modifiers": ""
         },
         "*p": {
-            "isObject": false,
+            "isObject": 0,
             "key": "Del",
             "modifiers": ""
         },
         "*;": {
-            "isObject": false,
+            "isObject": 0,
             "key": "BackSpace",
             "modifiers": ""
         },
         "^s": {
-            "isObject": false,
+            "isObject": 0,
             "key": "s",
             "modifiers": "^"
         },
         "^a": {
-            "isObject": false,
+            "isObject": 0,
             "key": "a",
             "modifiers": "^"
         },
         "*z": {
-            "isObject": false,
+            "isObject": 0,
             "key": "z",
             "modifiers": "^"
         },
         "*x": {
-            "isObject": false,
+            "isObject": 0,
             "key": "x",
             "modifiers": "^"
         },
         "*c": {
-            "isObject": false,
+            "isObject": 0,
             "key": "c",
             "modifiers": "^"
         },
         "*v": {
-            "isObject": false,
+            "isObject": 0,
             "key": "v",
             "modifiers": "^"
         },
         "*m": {
-            "isObject": false,
+            "isObject": 0,
             "key": "Click",
             "modifiers": ""
         },
         "*g": {
-            "isObject": false,
+            "isObject": 0,
             "key": "AppsKey",
             "modifiers": ""
         },
         "*,": {
-            "isObject": false,
+            "isObject": 0,
             "key": "F6",
             "modifiers": ""
         },
         "*i": {
-            "isObject": false,
+            "isObject": 0,
             "key": "Up",
             "modifiers": ""
         },
         "*j": {
-            "isObject": false,
+            "isObject": 0,
             "key": "Left",
             "modifiers": ""
         },
         "*k": {
-            "isObject": false,
+            "isObject": 0,
             "key": "Down",
             "modifiers": ""
         },
         "*l": {
-            "isObject": false,
+            "isObject": 0,
             "key": "Right",
             "modifiers": ""
         },
         "t":{
-            "isObject": true,
+            "isObject": 1,
             "ObjectName": "WebSearcher",
             "MethodName": "LookUpHighlitedTextOrClipboardContent",
             "Parameters": []
         },  
         "+t": {
-            "isObject": true,
+            "isObject": 1,
             "ObjectName": "WebSearcher",
             "MethodName": "QuestionChatGpt",
             "Parameters": []
         },
         "^t": {
-            "isObject": true,
+            "isObject": 1,
             "ObjectName": "WebSearcher",
             "MethodName": "ShowTranslatedText",
             "Parameters": ["auto", "en"]
         },
         "^+t": {
-            "isObject": true,
+            "isObject": 1,
             "ObjectName": "WebSearcher",
             "MethodName": "ShowTranslatedText",
             "Parameters": ["auto", "no"]
         },
         "b": {
-            "isObject": true,
+            "isObject": 1,
             "ObjectName": "WebSearcher",
             "MethodName": "SearchFromInputBox",
             "Parameters": []
         },
         "<": {
-            "isObject": true,
+            "isObject": 1,
             "ObjectName": "MouseInstance",
             "MethodName": "MoveMouseToCenterOfScreen",
             "Parameters": []
