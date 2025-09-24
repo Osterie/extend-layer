@@ -99,14 +99,9 @@ class ObjectsInitializer{
         UnautorizedUserDetector := UnauthorizedUseDetector()
         this.Objects["UnautorizedUserDetector"] := UnautorizedUserDetector
 
-        lockComputerOnTaskBarClick := this.IniFileReader.readOrCreateLine(FilePaths.GetPathToCurrentSettings(), "UnauthorizedUseDetector", "lockComputerOnTaskBarClick", "false")
+        lockComputerOnTaskBarClick := this.IniFileReader.readOrCreateLine(FilePaths.GetPathToCurrentSettings(), "UnauthorizedUseDetector", "lockComputerOnTaskBarClick", "0")
 
-        if (lockComputerOnTaskBarClick = "true"){
-            UnautorizedUserDetector.ActivateLockComputerOnTaskBarClick()
-        }
-        else{
-            UnautorizedUserDetector.DisableLockComputerOnTaskBarClick()
-        }
+        UnautorizedUserDetector.setLockComputerOnTaskBarClick(lockComputerOnTaskBarClick)
 
         SoundController_ := SoundController()
         this.Objects["SoundController_"] := SoundController_
