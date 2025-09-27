@@ -141,6 +141,11 @@ class ExtendLayerProfileRepository {
         return HotkeyInfo
     }
 
+    hasLayer(layerIdentifier) {
+        ExtendLayerProfile := this.getExtendLayerProfile()
+        return ExtendLayerProfile.hasHotkeyLayer(layerIdentifier)
+    }
+
     ; ---------------------------------------------
     ; ----- Read from file / write to file --------
     ; ---------------------------------------------

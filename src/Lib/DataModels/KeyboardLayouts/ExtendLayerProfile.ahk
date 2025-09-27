@@ -31,6 +31,10 @@ class ExtendLayerProfile {
         this.hotkeysLayer[Hotkeys.GetLayerIdentifier()] := Hotkeys
     }
 
+    hasHotkeyLayer(layerIdentifier) {
+        return this.hotkeysLayer.Has(layerIdentifier)
+    }
+
     addHotkey(layerIdentifier, hotkeyAction) {
         if (Type(hotkeyAction) != "HotkeyInfo") {
             throw Error("The hotkeyAction must be of type HotkeyInfo")

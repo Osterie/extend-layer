@@ -197,6 +197,9 @@ Class LayerController extends HotkeyAction{
 
     ; Public, can be used as hotkey
     setActiveLayer(activeLayer){
+        if (this.activeLayer == activeLayer){
+            return
+        }
         this.activeLayer := activeLayer
         if (activeLayer != 0){
             this.showLayerIndicator(activeLayer)

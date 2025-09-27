@@ -96,7 +96,9 @@ class Main {
 
         HotIf "MainScript.getActiveLayer() == 2"
         ; Reads and initializes all the hotkeys for the third keyboard layer.
-        this.StartupConfigurator.initializeLayer("TertiaryLayer", enableHotkeys)
+        if (ExtendLayerProfileRepository.getInstance().hasLayer("TertiaryLayer-Hotkeys")){
+            this.StartupConfigurator.initializeLayer("TertiaryLayer", enableHotkeys)
+        }
         HotIf
     }
 
