@@ -28,12 +28,11 @@ class AddProfileDialog extends DomainSpecificGui{
         this.profileNameField := this.Add("Edit", "r1 xp yp+25", "")
         this.profileNameField.OnEvent("Change", (*) => this.HandleInputFieldChange(this.profileNameField.Text))
 
-
         this.addProfileButton := this.Add("Button", "Default w80 xp yp+50", "Add profile")
         this.addProfileButton.OnEvent("Click", (*) => this.NotifyListenersProfileAdded())
         this.DisableAddProfileButton()
 
-        cancelButton := this.Add("Button", "Default w80 yp ", "Cancel")
+        cancelButton := this.Add("Button", "w80 yp ", "Cancel")
         cancelButton.OnEvent("Click", (*) => this.destroy())
     }
 
@@ -47,25 +46,6 @@ class AddProfileDialog extends DomainSpecificGui{
         }
         this.destroy()
     }
-
-    ; CreateView(controller, profiles){
-
-    ;     this.Add("Text", "w150" , "Selected Profile:         ")
-
-    ;     customProfilesDropDownMenu := this.Add("DropDownList", "yp Choose1", profiles)
-
-    ;     this.Add("Text", "w150 xm yp+50", "Name of profile to add:")
-    ;     profileNameField := this.Add("Edit", "r1 yp", "")
-    ;     profileNameField.OnEvent("Change", (*) => this.HandleInputFieldChange(profileNameField.Text))
-
-
-    ;     this.addProfileButton := this.Add("Button", "Default w80 xp yp+50", "Add profile")
-    ;     this.addProfileButton.OnEvent("Click", (*) => controller.HandleAddProfileConfirmedEvent(customProfilesDropDownMenu.Text, profileNameField.Text))
-    ;     this.DisableAddProfileButton()
-
-    ;     cancelButton := this.Add("Button", "Default w80 yp ", "Cancel")
-    ;     cancelButton.OnEvent("Click", (*) => this.destroy())
-    ; }
 
     CreateSelectedProfileRegion(){
         
@@ -86,6 +66,4 @@ class AddProfileDialog extends DomainSpecificGui{
     EnableAddProfileButton(){
         this.addProfileButton.Opt("-Disabled")
     }
-
-
 }
