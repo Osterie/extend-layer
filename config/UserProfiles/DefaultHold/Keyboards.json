@@ -1,0 +1,213 @@
+{
+    "GlobalLayer-Hotkeys":{
+		"CapsLock":{
+			"MethodName":"setActiveLayer",
+			"ObjectName":"layers",
+			"Parameters":[1],
+			"isObject":1
+		},
+		"CapsLock up":{
+			"MethodName":"setActiveLayer",
+			"ObjectName":"layers",
+			"Parameters":[0],
+			"isObject":1
+		}
+    },
+    "NormalLayer-Hotkeys": {
+        "^!w": {
+            "isObject": 1,
+            "ObjectName": "WebSearcher",
+            "MethodName": "CloseTabsToTheRight",
+            "Parameters": []
+        },
+        "^!s": {
+            "isObject": 1,
+            "ObjectName": "ProcessManagerInstance",
+            "MethodName": "SuspendActiveAutohotkeyScript",
+            "Parameters": []
+        }
+    },
+    "SecondaryLayer-Hotkeys": {
+        "*q": {
+            "isObject": 0,
+            "key": "Esc",
+            "modifiers": ""
+        },
+        "*[":{
+            "isObject": 0,
+            "key": "Esc",
+            "modifiers": ""
+        } ,
+        "*a":{
+            "isObject": 0,
+            "key": "Alt",
+            "modifiers": ""
+        },
+        "*d":{
+            "isObject": 0,
+            "key": "Shift",
+            "modifiers": ""
+        },
+        "*f": {
+            "isObject": 0,
+            "key": "Ctrl",
+            "modifiers": ""
+        },
+        "*n": {
+            "isObject": 0,
+            "key": "Tab",
+            "modifiers": ""
+        },
+        "*w": {
+            "isObject": 0,
+            "key": "WheelUp",
+            "modifiers": ""
+        },
+        "*s": {
+            "isObject": 0,
+            "key": "WheelDown",
+            "modifiers": ""
+        },
+        "*e": {
+            "isObject": 0,
+            "key": "Browser_Back",
+            "modifiers": ""
+        },
+        "*r": {
+            "isObject": 0,
+            "key": "Browser_Forward",
+            "modifiers": ""
+        },
+        "*y": {
+            "isObject": 0,
+            "key": "PgUp",
+            "modifiers": ""
+        },
+        "*h": {
+            "isObject": 0,
+            "key": "PgDn",
+            "modifiers": ""
+        },
+        "*u": {
+            "isObject": 0,
+            "key": "Home",
+            "modifiers": ""
+        },
+        "*o": {
+            "isObject": 0,
+            "key": "End",
+            "modifiers": ""
+        },
+        "*p": {
+            "isObject": 0,
+            "key": "Del",
+            "modifiers": ""
+        },
+        "*;": {
+            "isObject": 0,
+            "key": "BackSpace",
+            "modifiers": ""
+        },
+        "^s": {
+            "isObject": 0,
+            "key": "s",
+            "modifiers": "^"
+        },
+        "^a": {
+            "isObject": 0,
+            "key": "a",
+            "modifiers": "^"
+        },
+        "*z": {
+            "isObject": 0,
+            "key": "z",
+            "modifiers": "^"
+        },
+        "*x": {
+            "isObject": 0,
+            "key": "x",
+            "modifiers": "^"
+        },
+        "*c": {
+            "isObject": 0,
+            "key": "c",
+            "modifiers": "^"
+        },
+        "*v": {
+            "isObject": 0,
+            "key": "v",
+            "modifiers": "^"
+        },
+        "*m": {
+            "isObject": 0,
+            "key": "Click",
+            "modifiers": ""
+        },
+        "*g": {
+            "isObject": 0,
+            "key": "AppsKey",
+            "modifiers": ""
+        },
+        "*,": {
+            "isObject": 0,
+            "key": "F6",
+            "modifiers": ""
+        },
+        "*i": {
+            "isObject": 0,
+            "key": "Up",
+            "modifiers": ""
+        },
+        "*j": {
+            "isObject": 0,
+            "key": "Left",
+            "modifiers": ""
+        },
+        "*k": {
+            "isObject": 0,
+            "key": "Down",
+            "modifiers": ""
+        },
+        "*l": {
+            "isObject": 0,
+            "key": "Right",
+            "modifiers": ""
+        },
+        "t":{
+            "isObject": 1,
+            "ObjectName": "WebSearcher",
+            "MethodName": "LookUpHighlitedTextOrClipboardContent",
+            "Parameters": []
+        },  
+        "+t": {
+            "isObject": 1,
+            "ObjectName": "WebSearcher",
+            "MethodName": "QuestionChatGpt",
+            "Parameters": []
+        },
+        "^t": {
+            "isObject": 1,
+            "ObjectName": "WebSearcher",
+            "MethodName": "ShowTranslatedText",
+            "Parameters": ["auto", "en"]
+        },
+        "^+t": {
+            "isObject": 1,
+            "ObjectName": "WebSearcher",
+            "MethodName": "ShowTranslatedText",
+            "Parameters": ["auto", "no"]
+        },
+        "b": {
+            "isObject": 1,
+            "ObjectName": "WebSearcher",
+            "MethodName": "SearchFromInputBox",
+            "Parameters": []
+        },
+        "<": {
+            "isObject": 1,
+            "ObjectName": "MouseInstance",
+            "MethodName": "MoveMouseToCenterOfScreen",
+            "Parameters": []
+        }
+    }
+}
