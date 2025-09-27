@@ -144,8 +144,13 @@ class ProfileRegionController{
             this.addprofileView.destroy()
             msgbox("Successfully added profile " . profileName)
         }
-        catch{
-            msgbox("Failed to add profile, perhaps a profile with the given name already exists")
+        catch Error as e{
+            if (e.message == "Failed"){
+                MsgBox("Failed to add profile, profile name probably contains illegal characters: '" . profileName . "'")
+            }
+            else{
+                msgbox("Failed to add profile: " . e.message)
+            }
         }
     }
 
