@@ -41,7 +41,7 @@ class ExtendLayerInProtectedLocationDialog extends DomainSpecificGui {
     }
 
     createCloseButton() {
-        buttonToClose := this.Add("Button", "Default w160 xm", "I Will Move Extend Layer Myself")
+        buttonToClose := this.Add("Button", "w160 xm", "I Will Move Extend Layer Myself")
         buttonToClose.onEvent("Click", (*) => this.doLetUserMoveExtendLayer())
     }
 
@@ -53,7 +53,7 @@ class ExtendLayerInProtectedLocationDialog extends DomainSpecificGui {
     }
 
     createRunAsAdminButton() {
-        buttonToRunAsAdmin := this.Add("Button", "Default w160 xm", "Run Extend Layer as Admin")
+        buttonToRunAsAdmin := this.Add("Button", "w160 xm", "Run Extend Layer as Admin")
         buttonToRunAsAdmin.onEvent("Click", (*) => this.doRunAsAdmin())
     }
 

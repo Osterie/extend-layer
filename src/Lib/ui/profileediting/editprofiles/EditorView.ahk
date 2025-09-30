@@ -23,7 +23,7 @@ class EditorView extends DomainSpecificGui{
         renameProfileButton := this.Add("Button", "Default w80 xm+1", "Change profile name")
         renameProfileButton.OnEvent("Click", (*) => this.CreateRenameProfileInputBox())
     
-        deleteProfileButton := this.Add("Button", "Default w80 xm+1", "Delete profile")
+        deleteProfileButton := this.Add("Button", "w80 xm+1", "Delete profile")
         deleteProfileButton.OnEvent("Click", (*) => this.CreateDeleteProfileInputBox())
         this.Show()
     }
