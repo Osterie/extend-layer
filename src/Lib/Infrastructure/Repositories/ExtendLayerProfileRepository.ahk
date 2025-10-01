@@ -40,6 +40,15 @@ class ExtendLayerProfileRepository {
     ; ----- Changing Hotkeys --------
     ; -------------------------------
 
+    getDescription() {
+        return this.getExtendLayerProfile().getDescription()
+    }
+
+    setDescription(description) {
+        ExtendLayerProfile := this.getExtendLayerProfile()
+        ExtendLayerProfile.setDescription(description)
+        this.save(ExtendLayerProfile)
+    }
 
     changeHotkey(layer, originalHotkey, newHotkey, newAction) {
         ExtendLayerProfile := this.getExtendLayerProfile()

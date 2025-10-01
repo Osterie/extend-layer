@@ -1,4 +1,6 @@
 ﻿{
+	"Description": "Default keyboard layout with 3 layers. Normal layer (no special layer chosen), secondary layer and tertiary layer. By default CapsLock to toggle secondary layer, Shift+CapsLock to toggle tertiary layer or switch between secondary layer and tertiary layer.",
+
 	"GlobalLayer-Hotkeys":{
 		"+CapsLock":{
 			"MethodName":"cycleLayers",

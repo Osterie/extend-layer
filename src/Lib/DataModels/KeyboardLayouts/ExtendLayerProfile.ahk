@@ -11,10 +11,22 @@ class ExtendLayerProfile {
     Logger := Logger.getInstance()
     keyboardOverlayLayers := Map()
     hotkeysLayer := Map()
+    description := ""
 
     __New() {
         this.keyboardOverlayLayers.Default := 0
         this.hotkeysLayer.Default := 0
+    }
+
+    setDescription(description) {
+        if (Type(description) != "String") {
+            throw TypeError("The description must be of type String")
+        }
+        this.description := description
+    }
+
+    getDescription() {
+        return this.description
     }
 
     AddKeyboardOverlayLayerInfo(KeyboardOverlayLayer) {
@@ -129,6 +141,7 @@ class ExtendLayerProfile {
         for keyboardOverlayLayerIdentifier, KeyboardOverlayLayer in this.keyboardOverlayLayers {
             jsonObject[keyboardOverlayLayerIdentifier] := KeyboardOverlayLayer.toJson()
         }
+        jsonObject["Description"] := this.description
 
         return jsonObject
     }
@@ -150,6 +163,9 @@ class ExtendLayerProfile {
                 catch Error as e {
                     Logger.getInstance().logError("Error while reading keyboard overlay information: " . e.message)
                 }
+            }
+            else if (layerIdentifier = "Description") {
+                ExtendLayerProfile_.setDescription(layerInfoContents)
             }
             else {
                 throw ("Unknown layer type: " . layerIdentifier)

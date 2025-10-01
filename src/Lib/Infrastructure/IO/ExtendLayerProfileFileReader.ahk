@@ -31,6 +31,13 @@ class ExtendLayerProfileFileReader {
 
         extendLayerProfileJsonObject := jxon_load(&jsonString)
 
+        if (extendLayerProfileJsonObject.Has("Description")) {
+            description := extendLayerProfileJsonObject["Description"]
+        } else {
+            extendLayerProfileJsonObject["Description"] := ""
+            this.writeExtendLayerProfile(ExtendLayerProfile.fromJson(extendLayerProfileJsonObject), profilePath)
+        }
+
         return ExtendLayerProfile.fromJson(extendLayerProfileJsonObject)
 
     }
