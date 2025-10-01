@@ -3,7 +3,7 @@
 #Include <ui\Util\DomainSpecificGui>
 
 ; TODO rename to EditProfileDialog.
-class EditorView extends DomainSpecificGui{
+class EditProfileDialog extends DomainSpecificGui{
 
     controller := ""
     profilesToEditDropDownMenu := ""

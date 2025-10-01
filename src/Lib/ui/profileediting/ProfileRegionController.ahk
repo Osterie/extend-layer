@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#Include ".\editprofiles\EditorView.ahk"
-#Include ".\addprofiles\AddProfileDialog.ahk"
+#Include ".\EditProfileDialog.ahk"
+#Include ".\AddProfileDialog.ahk"
 #Include ".\ProfileImporter.ahk"
 #Include ".\ProfileExporter.ahk"
 
@@ -70,7 +70,7 @@ class ProfileRegionController{
     }
 
     doOpenEditProfileView(){
-        this.editView := EditorView(this.GetHwnd())
+        this.editView := EditProfileDialog(this.GetHwnd())
         this.editView.CreateView(this)
     }
 
