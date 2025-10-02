@@ -1,4 +1,5 @@
 {
+    "Description":"Empty keyboard layout with 3 layers. Capslock to activate the secondary layer, Shift+Capslock to toggle tertiary layer and secondary layer.",
     "GlobalLayer-Hotkeys":{
         "+CapsLock":{
 			"MethodName":"cycleLayers",

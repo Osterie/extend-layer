@@ -1,4 +1,5 @@
 {
+    "Description":"The DefaultHold keyboard layout has 2 layers. Normal layer (no special layer chosen) and secondary layer. By default hold CapsLock to activate the secondary layer and relase capslock to deactivate the secondary layer.",
     "GlobalLayer-Hotkeys":{
 		"CapsLock":{
 			"MethodName":"setActiveLayer",
