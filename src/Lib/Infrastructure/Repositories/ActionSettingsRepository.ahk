@@ -7,6 +7,7 @@
 #Include <DataModels\ActionSettings\ActionGroupSettingsRegistry>
 
 #Include <Infrastructure\IO\IniFileReader>
+#Include <Infrastructure\CurrentExtendLayerProfileManager>
 
 class ActionSettingsRepository {
 
@@ -34,7 +35,7 @@ class ActionSettingsRepository {
         ; Updates the ActionGroupsRepository to reflect the changes made in the ini file. Many ActionGroups use the Action settings from the ini file, therefore they must be updated after changign a setting.
         ActionGroupsRepository.getInstance().reset()
         ; The Extend Layer Profiles have layers, which have actions. Since each action can have settings, we need to use the update value which ActionGroupsRepository now has.
-        ExtendLayerProfileRepository.getInstance().load()
+        CurrentExtendLayerProfileManager.getInstance().load()
         ; TODO call Main.setHotkeysForAllLayers(true)
     }
 
