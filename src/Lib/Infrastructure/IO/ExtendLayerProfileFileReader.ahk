@@ -12,7 +12,10 @@ class ExtendLayerProfileFileReader {
 
     Logger := Logger.getInstance()
 
-    readExtendLayerProfile(profilePath) {
+    readExtendLayerProfile(profileName) {
+
+        profilePath := FilePaths.GetPathToProfiles() . "\" . profileName . "\Keyboards.json"
+
         if (!FileExist(profilePath)) {
             throw ValueError("The specified profile path does not exist: " . profilePath)
         }
@@ -35,18 +38,20 @@ class ExtendLayerProfileFileReader {
             description := extendLayerProfileJsonObject["Description"]
         } else {
             extendLayerProfileJsonObject["Description"] := ""
-            this.writeExtendLayerProfile(ExtendLayerProfile.fromJson(extendLayerProfileJsonObject), profilePath)
+            this.writeExtendLayerProfile(ExtendLayerProfile.fromJson(extendLayerProfileJsonObject, profileName), profileName)
         }
 
-        return ExtendLayerProfile.fromJson(extendLayerProfileJsonObject)
+        return ExtendLayerProfile.fromJson(extendLayerProfileJsonObject, profileName)
 
     }
 
-    writeExtendLayerProfile(ExtendLayerProfile, profilePath) {
+    writeExtendLayerProfile(ExtendLayerProfile, profileName) {
         if (Type(ExtendLayerProfile) != "ExtendLayerProfile") {
             this.Logger.logError("The provided ExtendLayerProfile must be an instance of ExtendLayerProfile.")
             throw TypeError("The provided ExtendLayerProfile must be an instance of ExtendLayerProfile.")
         }
+        profilePath := FilePaths.GetPathToProfiles() . "\" . profileName . "\Keyboards.json"
+
         if (!FileExist(profilePath)) {
             this.Logger.logError("The specified profile path does not exist: " . profilePath)
             throw ValueError("The specified profile path does not exist: " . profilePath)

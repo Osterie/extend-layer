@@ -8,12 +8,17 @@
 ; KeyboardLayersInfoRegistry
 class ExtendLayerProfile {
 
+    name := ""
     Logger := Logger.getInstance()
     keyboardOverlayLayers := Map()
     hotkeysLayer := Map()
     description := ""
 
-    __New() {
+    __New(name) {
+        if (Type(name) != "String") {
+            throw TypeError("The name must be of type String")
+        }
+        this.name := name
         this.keyboardOverlayLayers.Default := 0
         this.hotkeysLayer.Default := 0
     }
@@ -27,6 +32,10 @@ class ExtendLayerProfile {
 
     getDescription() {
         return this.description
+    }
+
+    getName() {
+        return this.name
     }
 
     AddKeyboardOverlayLayerInfo(KeyboardOverlayLayer) {
@@ -146,9 +155,9 @@ class ExtendLayerProfile {
         return jsonObject
     }
 
-    static fromJson(jsonObject) {
+    static fromJson(jsonObject, profileName) {
 
-        ExtendLayerProfile_ := ExtendLayerProfile()
+        ExtendLayerProfile_ := ExtendLayerProfile(profileName)
 
         for layerIdentifier, layerInfoContents in jsonObject {
             if (InStr(layerIdentifier, "Hotkeys")) {

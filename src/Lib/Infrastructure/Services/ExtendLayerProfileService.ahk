@@ -7,7 +7,7 @@ class ExtendLayerProfileService {
 
     setDescription(profile, description) {
         profile.setDescription(description)
-        this.Repository.save(profile)
+        this.Repository.save(profile, profile.getName())
     }
 
     getDescription(profile) {
@@ -20,19 +20,19 @@ class ExtendLayerProfileService {
     changeHotkey(profile, layer, originalHotkey, newHotkey, newAction) {
         profile.changeHotkey(layer, originalHotkey, newHotkey)
         profile.changeAction(layer, newHotkey, newAction)
-        this.Repository.save(profile)
+        this.Repository.save(profile, profile.getName())
         return profile
     }
 
     addHotkey(profile, layer, hotkeyAction) {
         profile.addHotkey(layer, hotkeyAction)
-        this.Repository.save(profile)
+        this.Repository.save(profile, profile.getName())
         return profile
     }
 
     deleteHotkey(profile, layer, hotkeyKey) {
         profile.deleteHotkey(layer, hotkeyKey)
-        this.Repository.save(profile)
+        this.Repository.save(profile, profile.getName())
         return profile
     }
 

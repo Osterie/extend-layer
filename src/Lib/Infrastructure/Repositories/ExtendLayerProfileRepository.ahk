@@ -22,12 +22,7 @@ class ExtendLayerProfileRepository {
     static instance := false
     
     Logger := Logger.getInstance()
-    ExtendLayerProfile := ExtendLayerProfile()
     ExtendLayerProfileFileReader := ExtendLayerProfileFileReader()
-
-    __New() {
-        this.load()
-    }
 
     static getInstance() {
         if (ExtendLayerProfileRepository.instance = false) {
@@ -38,25 +33,19 @@ class ExtendLayerProfileRepository {
     }
 
     getProfile(profileName) {
-        profilePath := FilePaths.GetPathToProfiles() . "\" . profileName . "\Keyboards.json"
-        return this.ExtendLayerProfileFileReader.readExtendLayerProfile(profilePath)
+        return this.ExtendLayerProfileFileReader.readExtendLayerProfile(profileName)
     }
 
     ; ---------------------------------------------
-    ; ----- Read from file / write to file --------
+    ; --------------- Write to file ---------------
     ; ---------------------------------------------
 
-    load() {
-        currentProfilePath := FilePaths.GetPathToCurrentKeyboardLayout()
-        this.ExtendLayerProfile := this.ExtendLayerProfileFileReader.readExtendLayerProfile(currentProfilePath)
-    }
-
-    save(ExtendLayerProfile) {
+    save(ExtendLayerProfile, profileName) {
         if (Type(ExtendLayerProfile) != "ExtendLayerProfile") {
             this.Logger.logError("The ExtendLayerProfile must be an instance of ExtendLayerProfile.")
             throw TypeError("The ExtendLayerProfile must be an instance of ExtendLayerProfile.")
         }
-        currentProfilePath := FilePaths.GetPathToCurrentKeyboardLayout()
-        this.ExtendLayerProfileFileReader.writeExtendLayerProfile(ExtendLayerProfile, currentProfilePath)
+
+        this.ExtendLayerProfileFileReader.writeExtendLayerProfile(ExtendLayerProfile, profileName)
     }
 }
