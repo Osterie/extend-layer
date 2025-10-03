@@ -84,5 +84,9 @@ class EditProfileDialog extends DomainSpecificGui{
     updateProfileDescription(){
         profile := this.getCurrentProfile()
         this.ExtendLayerProfileService.setDescription(profile, this.getDescription())
+
+        ToolTip "Description updated!"
+        SetTimer () => ToolTip(), -3000
+
     }
 }
