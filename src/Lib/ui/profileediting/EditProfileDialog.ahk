@@ -27,7 +27,7 @@ class EditProfileDialog extends DomainSpecificGui{
         this.profilesToEditDropDownMenu.OnEvent("Change", (*) => this.updateDescriptionInput())
         
         profileDescriptionInputLabel := this.Add("Text", "xp", "Profile Description:")
-        this.profileDescriptionInput := this.Add("Edit", "xp w300 h100", ExtendLayerProfileRepository.getInstance().getProfile(this.getProfileName()).getDescription())
+        this.profileDescriptionInput := this.Add("Edit", "xp w300 h100", this.ExtendLayerProfileRepository.getProfile(this.getProfileName()).getDescription())
         
         renameProfileButton := this.Add("Button", "Default w80 xs ys+25", "Change profile name")
         renameProfileButton.OnEvent("Click", (*) => this.CreateRenameProfileInputBox())

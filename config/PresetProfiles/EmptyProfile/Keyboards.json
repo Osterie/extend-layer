@@ -1,7 +1,7 @@
-{
-    "Description":"Empty keyboard layout with 3 layers. Capslock to activate the secondary layer, Shift+Capslock to toggle tertiary layer and secondary layer.",
-    "GlobalLayer-Hotkeys":{
-        "+CapsLock":{
+﻿{
+	"Description":"Empty keyboard layout with 3 layers. Capslock to activate the secondary layer, Shift+Capslock to toggle tertiary layer and secondary layer.",
+	"GlobalLayer-Hotkeys":{
+		"+CapsLock":{
 			"MethodName":"cycleLayers",
 			"ObjectName":"layers",
 			"Parameters":[2],
@@ -13,15 +13,19 @@
 			"Parameters":[1],
 			"isObject":1
 		}
-    },
-    "NormalLayer-Hotkeys": {},
-    "SecondaryLayer-Hotkeys": {},
-    "TertiaryLayer-Hotkeys": {
-        "Esc":{
+	},
+	"NormalLayer-Hotkeys":{
+		
+	},
+	"SecondaryLayer-Hotkeys":{
+		
+	},
+	"TertiaryLayer-Hotkeys":{
+		"Esc":{
 			"MethodName":"CloseActiveAutohotkeyScript",
 			"ObjectName":"ProcessManagerInstance",
 			"Parameters":[],
 			"isObject":1
 		}
-    }
+	}
 }

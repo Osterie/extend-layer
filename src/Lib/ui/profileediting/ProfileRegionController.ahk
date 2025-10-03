@@ -6,6 +6,7 @@
 #Include ".\ProfileExporter.ahk"
 
 #Include <Infrastructure\IO\FoldersAndFiles\FolderManager>
+#Include <Infrastructure\Repositories\ExtendLayerProfileRepository>
 
 #Include <Shared\FilePaths>
 
@@ -24,6 +25,9 @@ class ProfileRegionController{
     ProfileImporter_ := ""
     ; Used to export profiles
     ProfileExporter_ := ""
+
+    ExtendLayerProfileRepository := ExtendLayerProfileRepository(true)
+
 
 
     __New(view){
@@ -138,8 +142,11 @@ class ProfileRegionController{
         }
         
         try{
-            profilePath := this.PresetProfilesManager.getFolderPathByName(profileToAdd)
+            profilePath := this.PresetProfilesManager.getFolderPathByName(profileToAdd.getName())
             this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, FilePaths.GetPathToProfiles() . "\" . profileName, profileName)
+
+            this.ExtendLayerProfileRepository.save(profileToAdd, profileName)
+            
             this.view.UpdateProfilesDropDownMenu()
             this.addprofileView.destroy()
             msgbox("Successfully added profile " . profileName)

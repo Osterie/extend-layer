@@ -1,4 +1,4 @@
-{
+﻿{
 	"Description":"All purpose keyboard layout with 3 layers, for english keyboard layout. Normal layer (no special layer chosen), secondary layer and tertiary layer. By default CapsLock to toggle secondary layer, Shift+CapsLock to toggle tertiary layer or switch between secondary layer and tertiary layer.",
 	"GlobalLayer-Hotkeys":{
 		"+CapsLock":{
@@ -56,6 +56,16 @@
 		"*,":{
 			"isObject":0,
 			"key":"F6",
+			"modifiers":""
+		},
+		"*;":{
+			"isObject":0,
+			"key":"BackSpace",
+			"modifiers":""
+		},
+		"*[":{
+			"isObject":0,
+			"key":"Esc",
 			"modifiers":""
 		},
 		"*a":{
@@ -178,16 +188,6 @@
 			"key":"z",
 			"modifiers":"^"
 		},
-		"*[":{
-			"isObject":0,
-			"key":"Esc",
-			"modifiers":""
-		},
-		"*;":{
-			"isObject":0,
-			"key":"BackSpace",
-			"modifiers":""
-		},
 		"+t":{
 			"MethodName":"QuestionChatGpt",
 			"ObjectName":"WebSearcher",
@@ -242,6 +242,13 @@
 			"MethodName":"ToggleAutoClicker",
 			"ObjectName":"MouseInstance",
 			"Parameters":[],
+			"isObject":1
+		},
+		";":{
+			"MethodName":"CycleBlue",
+			"ObjectName":"MonitorInstance",
+			"Parameters":[63,
+			255],
 			"isObject":1
 		},
 		"Esc":{
@@ -328,13 +335,6 @@
 			"MethodName":"ToggleHighestBrightness",
 			"ObjectName":"MonitorInstance",
 			"Parameters":[],
-			"isObject":1
-		},
-		";":{
-			"MethodName":"CycleBlue",
-			"ObjectName":"MonitorInstance",
-			"Parameters":[63,
-			255],
 			"isObject":1
 		}
 	}
