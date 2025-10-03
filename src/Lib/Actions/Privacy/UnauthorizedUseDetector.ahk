@@ -1,7 +1,14 @@
 #Requires AutoHotkey v2.0
 
 class UnauthorizedUseDetector {
-    ; TODO when unaturorized use is detected, store the time of the last detection, gps position, and a screenshot of the screen. Store to a file in onedrive and perhaps github, but only on github if password and such not available?
+
+    setLockComputerOnTaskBarClick(state) {
+        if (state == true) {
+            this.ActivateLockComputerOnTaskBarClick()
+        } else {
+            this.DisableLockComputerOnTaskBarClick()
+        }
+    }
 
     ActivateLockComputerOnTaskBarClick() {
         Hotkey("~LButton", this.LockComputerOnTaskBarClickDown.Bind(this), "on")

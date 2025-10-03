@@ -14,10 +14,8 @@ class DomainSpecificGui extends Gui{
 
     Logger := Logger.getInstance()
 
-    ; TODO fetch color profile from meta file.
-    ; TODO remove eventObj, or implement.
-    __New(options := "", title := "", eventObj := ""){
-        super.__New(options, title, this)
+    __New(options := "", title := "", eventObj := this){
+        super.__New(options, title, eventObj)
         this.OnEvent('Escape', (*) => this.destroy())
         this.UpdateColorTheme()
     }
@@ -26,7 +24,7 @@ class DomainSpecificGui extends Gui{
         theme := this.ThemesRepository.GetTheme(this.ThemesRepository.getCurrentTheme())
         if (theme = ""){
             theme := this.ThemesRepository.GetTheme(this.ThemesRepository.GetDefaultTheme())
-            if (theme =     ""){
+            if (theme = ""){
                 Throw Error("Failed to load any theme")
             }
         }
@@ -85,28 +83,4 @@ class DomainSpecificGui extends Gui{
             this.opt("+Owner" . ownerHwnd)
         }
     }
-
-    
-    ; OnEvent(eventType, param1?, param2?, param3?) {
-    ;     ; Check if a control is being added
-    ;     msgbox(eventType)
-    ;     if (eventType == "ControlAdded") {
-    ;         ; Handle the control addition here
-    ;         MsgBox "A control was added!"
-    ;         ; You can access the control details via param1, param2, param3
-    ;         ; For example, param1 contains the control's HWND
-    ;     }
-    ;     ; Call the base class's OnEvent method
-    ;     parameters := Array()
-    ;     if IsSet(param1){
-    ;         parameters.push(param1)
-    ;     }
-    ;     if IsSet(param2){
-    ;         parameters.push(param2)
-    ;     }
-    ;     if IsSet(param3){
-    ;         parameters.push(param3)
-    ;     }
-    ;     super.OnEvent(eventType, parameters*)
-    ; } 
 }

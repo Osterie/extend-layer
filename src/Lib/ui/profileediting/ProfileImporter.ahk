@@ -2,6 +2,8 @@
 
 #Include <Shared\FilePaths>
 
+; TODO move out of ui folder.
+
 class ProfileImporter{
 
     __New(ExistingProfilesManager){

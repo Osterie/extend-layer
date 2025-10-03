@@ -10,7 +10,7 @@
 #Include <Startup\MainStartupConfigurator>
 
 #Include <Infrastructure\Repositories\ActionGroupsRepository>
-#Include <Infrastructure\Repositories\ExtendLayerProfileRepository>
+#Include <Infrastructure\CurrentExtendLayerProfileManager>
 
 #Include <Util\ExtendLayerInProtectedLocationDialog>
 
@@ -96,7 +96,9 @@ class Main {
 
         HotIf "MainScript.getActiveLayer() == 2"
         ; Reads and initializes all the hotkeys for the third keyboard layer.
-        this.StartupConfigurator.initializeLayer("TertiaryLayer", enableHotkeys)
+        if (CurrentExtendLayerProfileManager.getInstance().hasLayer("TertiaryLayer-Hotkeys")){
+            this.StartupConfigurator.initializeLayer("TertiaryLayer", enableHotkeys)
+        }
         HotIf
     }
 

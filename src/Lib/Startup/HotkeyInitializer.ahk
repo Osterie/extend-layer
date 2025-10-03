@@ -1,10 +1,9 @@
 #Requires AutoHotkey v2.0
 
+#Include <Infrastructure\CurrentExtendLayerProfileManager>
 #Include <Infrastructure\Repositories\ActionGroupsRepository>
 
 #Include <Util\Formaters\HotkeyFormatter>
-
-#Include <Infrastructure\Repositories\ExtendLayerProfileRepository>
 
 class HotkeyInitializer {
 
@@ -13,7 +12,7 @@ class HotkeyInitializer {
 
     ; TODO should objects be recycled here?
     initializeHotkeys(keyboardLayerName, enableHotkeys := true) {
-        currentKeyboardLayerHotkeys := ExtendLayerProfileRepository.getInstance().getHotkeysForLayer(keyboardLayerName)
+        currentKeyboardLayerHotkeys := CurrentExtendLayerProfileManager.getInstance().getHotkeysForLayer(keyboardLayerName)
 
         Loop currentKeyboardLayerHotkeys.Length {
             hotkeyInformation := currentKeyboardLayerHotkeys[A_Index]

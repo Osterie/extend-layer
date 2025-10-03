@@ -12,7 +12,23 @@ class ExtendLayerProfileFileReader {
 
     Logger := Logger.getInstance()
 
-    readExtendLayerProfile(profilePath) {
+    PATH_TO_PROFILES := ""
+
+    __New(userProfilesMode := true){
+
+        if (userProfilesMode){
+            this.PATH_TO_PROFILES := FilePaths.GetPathToProfiles() . "\"
+        } 
+        else {
+            this.PATH_TO_PROFILES := FilePaths.GetPathToPresetProfiles() . "\"
+        }
+    }
+
+
+    readExtendLayerProfile(profileName) {
+
+        profilePath := this.constructProfilePath(profileName)
+
         if (!FileExist(profilePath)) {
             throw ValueError("The specified profile path does not exist: " . profilePath)
         }
@@ -31,23 +47,34 @@ class ExtendLayerProfileFileReader {
 
         extendLayerProfileJsonObject := jxon_load(&jsonString)
 
-        return ExtendLayerProfile.fromJson(extendLayerProfileJsonObject)
+        if (extendLayerProfileJsonObject.Has("Description")) {
+            description := extendLayerProfileJsonObject["Description"]
+        } else {
+            extendLayerProfileJsonObject["Description"] := ""
+            this.writeExtendLayerProfile(ExtendLayerProfile.fromJson(extendLayerProfileJsonObject, profileName), profileName)
+        }
+
+        return ExtendLayerProfile.fromJson(extendLayerProfileJsonObject, profileName)
 
     }
 
-    writeExtendLayerProfile(ExtendLayerProfile, profilePath) {
+    writeExtendLayerProfile(ExtendLayerProfile, profileName) {
         if (Type(ExtendLayerProfile) != "ExtendLayerProfile") {
             this.Logger.logError("The provided ExtendLayerProfile must be an instance of ExtendLayerProfile.")
             throw TypeError("The provided ExtendLayerProfile must be an instance of ExtendLayerProfile.")
         }
-        if (!FileExist(profilePath)) {
-            this.Logger.logError("The specified profile path does not exist: " . profilePath)
-            throw ValueError("The specified profile path does not exist: " . profilePath)
-        }
+        profilePath := this.constructProfilePath(profileName)
+
         formatterForJson := JsonFormatter()
         jsonString := formatterForJson.FormatJsonObject(ExtendLayerProfile.toJson())
 
-        FileRecycle(profilePath)
+        if (FileExist(profilePath)) {
+            FileRecycle(profilePath)
+        }
         FileAppend(jsonString, profilePath, "UTF-8")
+    }
+
+    constructProfilePath(profileName) {
+        return this.PATH_TO_PROFILES . profileName . "\Keyboards.json"
     }
 }

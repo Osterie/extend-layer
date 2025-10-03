@@ -1,5 +1,5 @@
-{
-	"Description":"All purpose keyboard layout with 3 layers, for norwegian keyboard layout. Normal layer (no special layer chosen), secondary layer and tertiary layer. By default CapsLock to toggle secondary layer, Shift+CapsLock to toggle tertiary layer or switch between secondary layer and tertiary layer.",
+﻿{
+	"Description": "Default keyboard layout with 3 layers. Normal layer (no special layer chosen), secondary layer and tertiary layer. By default CapsLock to toggle secondary layer, Shift+CapsLock to toggle tertiary layer or switch between secondary layer and tertiary layer.",
 	"GlobalLayer-Hotkeys":{
 		"+CapsLock":{
 			"MethodName":"cycleLayers",
@@ -15,24 +15,6 @@
 		}
 	},
 	"NormalLayer-Hotkeys":{
-		"#0":{
-			"MethodName":"ToggleShowKeysPressed",
-			"ObjectName":"OnScreenWriter",
-			"Parameters":[],
-			"isObject":1
-		},
-		"#c":{
-			"MethodName":"OpenCmdPathedToCurrentLocation",
-			"ObjectName":"CommandPrompt",
-			"Parameters":[],
-			"isObject":1
-		},
-		"*f1":{
-			"MethodName":"CloseActiveAutohotkeyScript",
-			"ObjectName":"ProcessManagerInstance",
-			"Parameters":[],
-			"isObject":1
-		},
 		"^!s":{
 			"MethodName":"SuspendActiveAutohotkeyScript",
 			"ObjectName":"ProcessManagerInstance",
@@ -44,18 +26,22 @@
 			"ObjectName":"WebSearcher",
 			"Parameters":[],
 			"isObject":1
-		},
-		"^q":{
-			"MethodName":"CloseFocusedProcess",
-			"ObjectName":"ProcessManagerInstance",
-			"Parameters":[],
-			"isObject":1
 		}
 	},
 	"SecondaryLayer-Hotkeys":{
 		"*,":{
 			"isObject":0,
 			"key":"F6",
+			"modifiers":""
+		},
+		"*;":{
+			"isObject":0,
+			"key":"BackSpace",
+			"modifiers":""
+		},
+		"*[":{
+			"isObject":0,
+			"key":"Esc",
 			"modifiers":""
 		},
 		"*a":{
@@ -178,24 +164,8 @@
 			"key":"z",
 			"modifiers":"^"
 		},
-		"*å":{
-			"isObject":0,
-			"key":"Esc",
-			"modifiers":""
-		},
-		"*ø":{
-			"isObject":0,
-			"key":"BackSpace",
-			"modifiers":""
-		},
 		"+t":{
 			"MethodName":"QuestionChatGpt",
-			"ObjectName":"WebSearcher",
-			"Parameters":[],
-			"isObject":1
-		},
-		"1":{
-			"MethodName":"SearchFromInputBox",
 			"ObjectName":"WebSearcher",
 			"Parameters":[],
 			"isObject":1
@@ -230,6 +200,12 @@
 			"en"],
 			"isObject":1
 		},
+		"b":{
+			"MethodName":"SearchFromInputBox",
+			"ObjectName":"WebSearcher",
+			"Parameters":[],
+			"isObject":1
+		},
 		"t":{
 			"MethodName":"LookUpHighlitedTextOrClipboardContent",
 			"ObjectName":"WebSearcher",
@@ -238,103 +214,10 @@
 		}
 	},
 	"TertiaryLayer-Hotkeys":{
-		"0":{
-			"MethodName":"ToggleAutoClicker",
-			"ObjectName":"MouseInstance",
-			"Parameters":[],
-			"isObject":1
-		},
 		"Esc":{
 			"MethodName":"CloseActiveAutohotkeyScript",
 			"ObjectName":"ProcessManagerInstance",
 			"Parameters":[],
-			"isObject":1
-		},
-		"Home":{
-			"MethodName":"BlockAllInput",
-			"ObjectName":"ComputerInput",
-			"Parameters":[],
-			"isObject":1
-		},
-		"Home & End":{
-			"MethodName":"UnBlockAllInput",
-			"ObjectName":"ComputerInput",
-			"Parameters":[],
-			"isObject":1
-		},
-		"a":{
-			"MethodName":"HideScreen",
-			"ObjectName":"PrivacyController",
-			"Parameters":[],
-			"isObject":1
-		},
-		"d":{
-			"MethodName":"HideTabs",
-			"ObjectName":"PrivacyController",
-			"Parameters":[],
-			"isObject":1
-		},
-		"f":{
-			"MethodName":"Hide",
-			"ObjectName":"PrivacyController",
-			"Parameters":[],
-			"isObject":1
-		},
-		"i":{
-			"MethodName":"ToggleLowestGamma",
-			"ObjectName":"MonitorInstance",
-			"Parameters":[],
-			"isObject":1
-		},
-		"j":{
-			"MethodName":"ToggleLowestBrightness",
-			"ObjectName":"MonitorInstance",
-			"Parameters":[],
-			"isObject":1
-		},
-		"k":{
-			"MethodName":"CycleRed",
-			"ObjectName":"MonitorInstance",
-			"Parameters":[63,
-			255],
-			"isObject":1
-		},
-		"l":{
-			"MethodName":"CycleGreen",
-			"ObjectName":"MonitorInstance",
-			"Parameters":[63,
-			255],
-			"isObject":1
-		},
-		"o":{
-			"MethodName":"ToggleHighestGamma",
-			"ObjectName":"MonitorInstance",
-			"Parameters":[],
-			"isObject":1
-		},
-		"p":{
-			"MethodName":"TogglePowerSaverMode",
-			"ObjectName":"Battery",
-			"Parameters":[],
-			"isObject":1
-		},
-		"s":{
-			"MethodName":"HideWindow",
-			"ObjectName":"PrivacyController",
-			"Parameters":[],
-			"isObject":1
-		},
-		"u":{
-			"MethodName":"ToggleHighestBrightness",
-			"ObjectName":"MonitorInstance",
-			"Parameters":[],
-			"isObject":1
-		},
-		"ø":{
-			"MethodName":"CycleBlue",
-			"ObjectName":"MonitorInstance",
-			"Parameters":[63,
-			255],
 			"isObject":1
 		}
 	}

@@ -2,11 +2,16 @@
 
 #Include <ui\Util\DomainSpecificGui>
 
+#Include <Infrastructure\Repositories\ExtendLayerProfileRepository>
+
 ; TODO refactor
 class AddProfileDialog extends DomainSpecificGui{
 
     addProfileButton := ""
     profileAddedSubscribers := ""
+
+    profileDescriptionInput := ""
+    ExtendLayerProfileRepository := ExtendLayerProfileRepository(false)
 
     customProfilesDropDownMenu := ""
     profileNameField := ""
@@ -21,19 +26,22 @@ class AddProfileDialog extends DomainSpecificGui{
     CreateView(profiles){
 
         this.Add("Text", "w150" , "Selected Profile:         ")
-
         this.customProfilesDropDownMenu := this.Add("DropDownList", "xp yp+25 Choose1", profiles)
+        this.customProfilesDropDownMenu.OnEvent("Change", (*) => this.updateDescriptionInput())
+
+        profileDescriptionInputLabel := this.Add("Text", "xp", "Profile Description:")
+        this.profileDescriptionInput := this.Add("Edit", "xp w300 h100", this.ExtendLayerProfileRepository.getProfile(this.getProfileName()).getDescription())
+
 
         this.Add("Text", "w150 ym", "Name of profile to add:")
         this.profileNameField := this.Add("Edit", "r1 xp yp+25", "")
         this.profileNameField.OnEvent("Change", (*) => this.HandleInputFieldChange(this.profileNameField.Text))
 
-
         this.addProfileButton := this.Add("Button", "Default w80 xp yp+50", "Add profile")
-        this.addProfileButton.OnEvent("Click", (*) => this.NotifyListenersProfileAdded())
+        this.addProfileButton.OnEvent("Click", (*) => this.addProfile())
         this.DisableAddProfileButton()
 
-        cancelButton := this.Add("Button", "Default w80 yp ", "Cancel")
+        cancelButton := this.Add("Button", "w80 yp ", "Cancel")
         cancelButton.OnEvent("Click", (*) => this.destroy())
     }
 
@@ -41,31 +49,14 @@ class AddProfileDialog extends DomainSpecificGui{
         this.profileAddedSubscribers.Push(event)
     }
 
-    NotifyListenersProfileAdded(){
+    addProfile(){
+        profile := this.getCurrentProfile()
+        profile.setDescription(this.getDescription())
         Loop this.profileAddedSubscribers.Length{
-            this.profileAddedSubscribers[A_Index](this.customProfilesDropDownMenu.Text, this.profileNameField.Text)
+            this.profileAddedSubscribers[A_Index](profile, this.getUserChosenProfileName())
         }
         this.destroy()
     }
-
-    ; CreateView(controller, profiles){
-
-    ;     this.Add("Text", "w150" , "Selected Profile:         ")
-
-    ;     customProfilesDropDownMenu := this.Add("DropDownList", "yp Choose1", profiles)
-
-    ;     this.Add("Text", "w150 xm yp+50", "Name of profile to add:")
-    ;     profileNameField := this.Add("Edit", "r1 yp", "")
-    ;     profileNameField.OnEvent("Change", (*) => this.HandleInputFieldChange(profileNameField.Text))
-
-
-    ;     this.addProfileButton := this.Add("Button", "Default w80 xp yp+50", "Add profile")
-    ;     this.addProfileButton.OnEvent("Click", (*) => controller.HandleAddProfileConfirmedEvent(customProfilesDropDownMenu.Text, profileNameField.Text))
-    ;     this.DisableAddProfileButton()
-
-    ;     cancelButton := this.Add("Button", "Default w80 yp ", "Cancel")
-    ;     cancelButton.OnEvent("Click", (*) => this.destroy())
-    ; }
 
     CreateSelectedProfileRegion(){
         
@@ -86,6 +77,25 @@ class AddProfileDialog extends DomainSpecificGui{
     EnableAddProfileButton(){
         this.addProfileButton.Opt("-Disabled")
     }
+    
+    getProfileName(){
+        return this.customProfilesDropDownMenu.Text
+    }
 
+    getUserChosenProfileName(){
+        return this.profileNameField.Text
+    }
 
+    getDescription(){
+        return this.profileDescriptionInput.Text
+    }
+
+    getCurrentProfile(){
+        return this.ExtendLayerProfileRepository.getProfile(this.getProfileName())
+    }
+
+    updateDescriptionInput() {
+        profile := this.getCurrentProfile()
+        this.profileDescriptionInput.Text := profile.getDescription()
+    }
 }

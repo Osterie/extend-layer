@@ -1,0 +1,19 @@
+{
+	"Description":"Empty keyboard layout with 2 layers. HOLD Capslock to activate the secondary layer.",
+    "GlobalLayer-Hotkeys":{
+		"CapsLock":{
+			"MethodName":"setActiveLayer",
+			"ObjectName":"layers",
+			"Parameters":[1],
+			"isObject":1
+		},
+		"CapsLock up":{
+			"MethodName":"setActiveLayer",
+			"ObjectName":"layers",
+			"Parameters":[0],
+			"isObject":1
+		}
+    },
+    "NormalLayer-Hotkeys": {},
+    "SecondaryLayer-Hotkeys": {}
+}

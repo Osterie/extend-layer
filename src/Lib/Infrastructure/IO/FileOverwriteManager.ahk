@@ -5,6 +5,7 @@
 
 #Include <Util\FilePath>
 
+; TODO refactor, add commments
 class FileOverwriteManager {
 
     Logger := Logger.getInstance()

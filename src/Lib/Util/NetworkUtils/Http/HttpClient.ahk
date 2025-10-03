@@ -1,6 +1,8 @@
 #Requires AutoHotkey v2.0
 
 #Include <Util\JsonParsing\JXON>
+#Include <Util\NetworkUtils\NetworkChecker>
+#Include <Util\Errors\NetworkError>
 
 ; Class to handle HTTP requests using WinHttp
 class HttpClient {
@@ -45,7 +47,12 @@ class HttpClient {
     }
 
     ; Sends the HTTP request and waits for the response, then returns the response object.
+    ; Throws NetworkError if there is no internet connection.
     SendRequest(httpRequest, body) {
+        if (!NetworkChecker.isConnectedToInternet()){
+            throw NetworkError()
+        }
+
         httpRequest.Send(body)
         httpRequest.WaitForResponse()
         return httpRequest

@@ -1,5 +1,6 @@
 config/UserProfiles/*
 !config/UserProfiles/Default
+!config/UserProfiles/DefaultHold
 
 /backups
 tests

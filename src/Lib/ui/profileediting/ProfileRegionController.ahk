@@ -1,11 +1,12 @@
 #Requires AutoHotkey v2.0
 
-#Include ".\editprofiles\EditorView.ahk"
-#Include ".\addprofiles\AddProfileDialog.ahk"
+#Include ".\EditProfileDialog.ahk"
+#Include ".\AddProfileDialog.ahk"
 #Include ".\ProfileImporter.ahk"
 #Include ".\ProfileExporter.ahk"
 
 #Include <Infrastructure\IO\FoldersAndFiles\FolderManager>
+#Include <Infrastructure\Repositories\ExtendLayerProfileRepository>
 
 #Include <Shared\FilePaths>
 
@@ -24,6 +25,9 @@ class ProfileRegionController{
     ProfileImporter_ := ""
     ; Used to export profiles
     ProfileExporter_ := ""
+
+    ExtendLayerProfileRepository := ExtendLayerProfileRepository(true)
+
 
 
     __New(view){
@@ -70,7 +74,7 @@ class ProfileRegionController{
     }
 
     doOpenEditProfileView(){
-        this.editView := EditorView(this.GetHwnd())
+        this.editView := EditProfileDialog(this.GetHwnd())
         this.editView.CreateView(this)
     }
 
@@ -138,14 +142,22 @@ class ProfileRegionController{
         }
         
         try{
-            profilePath := this.PresetProfilesManager.getFolderPathByName(profileToAdd)
+            profilePath := this.PresetProfilesManager.getFolderPathByName(profileToAdd.getName())
             this.ExistingProfilesManager.CopyFolderToNewLocation(profilePath, FilePaths.GetPathToProfiles() . "\" . profileName, profileName)
+
+            this.ExtendLayerProfileRepository.save(profileToAdd, profileName)
+            
             this.view.UpdateProfilesDropDownMenu()
             this.addprofileView.destroy()
             msgbox("Successfully added profile " . profileName)
         }
-        catch{
-            msgbox("Failed to add profile, perhaps a profile with the given name already exists")
+        catch Error as e{
+            if (e.message == "Failed"){
+                MsgBox("Failed to add profile, profile name probably contains illegal characters: '" . profileName . "'")
+            }
+            else{
+                msgbox("Failed to add profile: " . e.message)
+            }
         }
     }
 

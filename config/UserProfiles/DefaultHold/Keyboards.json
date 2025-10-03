@@ -1,16 +1,16 @@
 ﻿{
-	"Description":"Default keyboard layout with 3 layers. Normal layer (no special layer chosen), secondary layer and tertiary layer. By default CapsLock to toggle secondary layer, Shift+CapsLock to toggle tertiary layer or switch between secondary layer and tertiary layer.",
+	"Description":"The DefaultHold keyboard layout has 2 layers. Normal layer (no special layer chosen) and secondary layer. By default hold CapsLock to activate the secondary layer and relase capslock to deactivate the secondary layer.",
 	"GlobalLayer-Hotkeys":{
-		"+CapsLock":{
-			"MethodName":"cycleLayers",
-			"ObjectName":"layers",
-			"Parameters":[2],
-			"isObject":1
-		},
 		"CapsLock":{
-			"MethodName":"toggleLayer",
+			"MethodName":"setActiveLayer",
 			"ObjectName":"layers",
 			"Parameters":[1],
+			"isObject":1
+		},
+		"CapsLock up":{
+			"MethodName":"setActiveLayer",
+			"ObjectName":"layers",
+			"Parameters":[0],
 			"isObject":1
 		}
 	},
@@ -209,14 +209,6 @@
 		"t":{
 			"MethodName":"LookUpHighlitedTextOrClipboardContent",
 			"ObjectName":"WebSearcher",
-			"Parameters":[],
-			"isObject":1
-		}
-	},
-	"TertiaryLayer-Hotkeys":{
-		"Esc":{
-			"MethodName":"CloseActiveAutohotkeyScript",
-			"ObjectName":"ProcessManagerInstance",
 			"Parameters":[],
 			"isObject":1
 		}

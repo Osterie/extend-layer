@@ -8,13 +8,34 @@
 ; KeyboardLayersInfoRegistry
 class ExtendLayerProfile {
 
+    name := ""
     Logger := Logger.getInstance()
     keyboardOverlayLayers := Map()
     hotkeysLayer := Map()
+    description := ""
 
-    __New() {
+    __New(name) {
+        if (Type(name) != "String") {
+            throw TypeError("The name must be of type String")
+        }
+        this.name := name
         this.keyboardOverlayLayers.Default := 0
         this.hotkeysLayer.Default := 0
+    }
+
+    setDescription(description) {
+        if (Type(description) != "String") {
+            throw TypeError("The description must be of type String")
+        }
+        this.description := description
+    }
+
+    getDescription() {
+        return this.description
+    }
+
+    getName() {
+        return this.name
     }
 
     AddKeyboardOverlayLayerInfo(KeyboardOverlayLayer) {
@@ -29,6 +50,10 @@ class ExtendLayerProfile {
             throw Error("The Hotkeys must be of type HotkeyLayer")
         }
         this.hotkeysLayer[Hotkeys.GetLayerIdentifier()] := Hotkeys
+    }
+
+    hasHotkeyLayer(layerIdentifier) {
+        return this.hotkeysLayer.Has(layerIdentifier)
     }
 
     addHotkey(layerIdentifier, hotkeyAction) {
@@ -125,13 +150,14 @@ class ExtendLayerProfile {
         for keyboardOverlayLayerIdentifier, KeyboardOverlayLayer in this.keyboardOverlayLayers {
             jsonObject[keyboardOverlayLayerIdentifier] := KeyboardOverlayLayer.toJson()
         }
+        jsonObject["Description"] := this.description
 
         return jsonObject
     }
 
-    static fromJson(jsonObject) {
+    static fromJson(jsonObject, profileName) {
 
-        ExtendLayerProfile_ := ExtendLayerProfile()
+        ExtendLayerProfile_ := ExtendLayerProfile(profileName)
 
         for layerIdentifier, layerInfoContents in jsonObject {
             if (InStr(layerIdentifier, "Hotkeys")) {
@@ -146,6 +172,9 @@ class ExtendLayerProfile {
                 catch Error as e {
                     Logger.getInstance().logError("Error while reading keyboard overlay information: " . e.message)
                 }
+            }
+            else if (layerIdentifier = "Description") {
+                ExtendLayerProfile_.setDescription(layerInfoContents)
             }
             else {
                 throw ("Unknown layer type: " . layerIdentifier)
