@@ -23,7 +23,7 @@ class EditProfileDialog extends DomainSpecificGui{
         this.controller := controller
         
         this.Add("Text", "Section", "Selected Profile:")
-        this.profilesToEditDropDownMenu := this.Add("DropDownList", "ym Choose" . controller.GetCurrentProfileIndex(), controller.GetProfiles())
+        this.profilesToEditDropDownMenu := this.Add("DropDownList", "ym Choose" . controller.getCurrentProfileIndex(), controller.getProfiles())
         this.profilesToEditDropDownMenu.OnEvent("Change", (*) => this.updateDescriptionInput())
         
         profileDescriptionInputLabel := this.Add("Text", "xp", "Profile Description:")

@@ -1,6 +1,5 @@
 #Requires AutoHotkey v2.0
 
-#Include <Shared\FilePaths>
 #Include <ui\functionality\ActionSettingsDialog>
 #Include <ui\functionality\KeyboardEditing\HotKeyConfiguration>
 #Include <ui\functionality\KeyboardEditing\HotKeyConfigurationController>
@@ -9,7 +8,10 @@
 
 #Include <ui\ExtraKeyboards>
 
+#Include <Shared\FilePaths>
 #Include <Shared\Logger>
+#Include <Shared\MetaInfo>
+
 #Include <Updater\UpdateDialog>
 
 Class ExtraKeyboardsApplicationController{
@@ -25,13 +27,13 @@ Class ExtraKeyboardsApplicationController{
     __New(view, MainScript){
         this.view := view
         this.ExtraKeyboards := ExtraKeyboards(MainScript)
-        this.ExitAppOnGuiClose := FilePaths.GetCloseScriptOnGuiClose()
+        this.ExitAppOnGuiClose := MetaInfo.getCloseScriptOnGuiClose()
         this.MainScript := MainScript
     }
 
     HandleProfileChangedEvent(newProfileName){
         ; TODO this should probably be changed? it is sort of heavy to basically restart the entire program when changing profiles.
-        FilePaths.SetCurrentProfile(newProfileName)
+        MetaInfo.setCurrentProfile(newProfileName)
         ; this.mainScript.start()
         ; TODO is there a better solution?
         Run(A_ScriptDir "\Main.ahk")
@@ -178,7 +180,7 @@ Class ExtraKeyboardsApplicationController{
     }
 
     UpdateGuiSettings(){
-        this.ExitAppOnGuiClose := FilePaths.GetCloseScriptOnGuiClose()
+        this.ExitAppOnGuiClose := MetaInfo.getCloseScriptOnGuiClose()
     }
 
     DoDestroy(){

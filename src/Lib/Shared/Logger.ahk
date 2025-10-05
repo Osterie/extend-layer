@@ -39,9 +39,9 @@ class Logger {
         this.writeToLog(errorMessage)
     }
 
-    ; --------------
-    ; PRIATE METHODS
-    ; --------------
+    ; ---------------
+    ; PRIVATE METHODS
+    ; ---------------
 
     ; Constructs a timestamped message with the given type (default is "ERROR")
     constructTimestampedMessage(msg, type := "ERROR") {

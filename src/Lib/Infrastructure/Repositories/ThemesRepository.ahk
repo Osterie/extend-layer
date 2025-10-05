@@ -51,25 +51,15 @@ class ThemesRepository {
     }
 
     setCurrentTheme(currentTheme) {
-        iniWrite(currentTheme, FilePaths.GetPathToMetaFile(), "Themes", "activeTheme")
+        MetaInfo.setCurrentTheme(currentTheme)
     }
 
     getCurrentTheme() {
-        try {
-            CURRENT_THEME := iniRead(FilePaths.GetPathToMetaFile(), "Themes", "activeTheme")
-        }
-        catch OSError {
-            this.SetCurrentTheme(this.getDefaultTheme())
-            CURRENT_THEME := this.getDefaultTheme()
-        }
-
-        return CURRENT_THEME
+        return MetaInfo.getCurrentTheme()
     }
 
-    ; TODO create seperate class for reading from the meta.inif file?
     getDefaultTheme() {
-        DEFAULT_THEME := iniRead(FilePaths.GetPathToMetaFile(), "Themes", "defaultTheme")
-        return DEFAULT_THEME
+        return MetaInfo.getDefaultTheme()
     }
 
     ReadThemes(){

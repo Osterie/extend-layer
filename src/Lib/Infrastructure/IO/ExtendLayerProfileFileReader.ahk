@@ -6,6 +6,7 @@
 #Include <Util\Formaters\JsonFormatter>
 
 #Include <Shared\FilePaths>
+#Include <Shared\MetaInfo>
 #Include <Shared\Logger>
 
 class ExtendLayerProfileFileReader {
@@ -39,7 +40,7 @@ class ExtendLayerProfileFileReader {
         try {
             jsonString := FileRead(profilePath, "UTF-8")
         } catch {
-            FilePaths.SetCurrentProfile("Empty")
+            MetaInfo.setCurrentProfile("Empty")
             emptyProfilePath := FilePaths.GetPathToCurrentKeyboardLayout()
             jsonString := FileRead(emptyProfilePath, "UTF-8")
             msgbox("Unable to read information for the current profile. Defaulting to an empty profile.")
