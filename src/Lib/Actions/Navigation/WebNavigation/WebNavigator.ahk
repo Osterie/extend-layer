@@ -11,13 +11,6 @@ class WebNavigator extends HotkeyAction {
     chatGptLoadTime := 3000
 
     PATH_TO_IMAGE_ASSETS := A_ScriptDir . "\..\assets\imageSearchImages\"
-    PATH_TO_TEST_IMAGE := this.PATH_TO_IMAGE_ASSETS . "testImage.png"
-
-    __New() {
-        if (!FileExist(this.PATH_TO_TEST_IMAGE)) {
-            msgbox("WebNavigator could not find the test image at " this.PATH_TO_TEST_IMAGE)
-        }
-    }
 
     destroy() {
         ; Empty
