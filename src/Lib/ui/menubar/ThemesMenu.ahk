@@ -4,56 +4,63 @@
 
 #Include <Infrastructure\Repositories\ThemesRepository>
 
+#Include <Shared\MetaInfo>
+
 class ThemesMenu extends ImprovedMenu{
 
     ThemesRepository := ThemesRepository.getInstance()
 
     __New(callback){
         this.callback := callback
-        this.SetMenuItemsRadioLikeOption(true)
-        this.CreateMenuBar()
-        this.CheckCurrentThemeMenu()
+        this.setMenuItemsRadioLikeOption(true)
+        this.createMenuBar()
+        this.checkCurrentThemeMenu()
     }
 
-    CreateMenuBar(){
-        themeCategories := this.ThemesRepository.GetThemeCategories()
+    createMenuBar(){
+        themeCategories := this.ThemesRepository.getThemeCategories()
         
         Loop themeCategories.Length{
             themeCategoryName := themeCategories[A_index] 
-            themeCategoriesSubMenu := this.CreateThemeCategoriesSubMenu(themeCategoryName)
-            this.Add(themeCategoryName, themeCategoriesSubMenu)
+            themeCategoriesSubMenu := this.createThemeCategoriesSubMenu(themeCategoryName)
+            this.add(themeCategoryName, themeCategoriesSubMenu)
         }
     }
 
-    CreateThemeCategoriesSubMenu(themeCategoryName){
+    createThemeCategoriesSubMenu(themeCategoryName){
         themeCategoriesSubMenu := ImprovedMenu()
-        themeCategoriesSubMenu.SetMenuItemsRadioLikeOption(true)
+        themeCategoriesSubMenu.setMenuItemsRadioLikeOption(true)
         
-        this.SetThemeCategoriesSubMenuItems(themeCategoriesSubMenu, themeCategoryName)
+        this.setThemeCategoriesSubMenuItems(themeCategoriesSubMenu, themeCategoryName)
         
         return themeCategoriesSubMenu
     }
 
-    SetThemeCategoriesSubMenuItems(themeCategoriesSubMenu, themeCategoryName){
-        themesForCategory := this.ThemesRepository.GetThemeNamesForCategory(themeCategoryName)
+    setThemeCategoriesSubMenuItems(themeCategoriesSubMenu, themeCategoryName){
+        themesForCategory := this.ThemesRepository.getThemeNamesForCategory(themeCategoryName)
 
         Loop themesForCategory.Length{
             subMenuItem := themesForCategory[A_index]
-            themeCategoriesSubMenu.Add(subMenuItem, (themeClicked, *) => this.HandleThemeClicked(themeClicked))
+            themeCategoriesSubMenu.add(subMenuItem, (themeClicked, *) => this.handleThemeClicked(themeClicked))
         }
     }
 
-    CheckCurrentThemeMenu(){
-        currentTheme := this.ThemesRepository.getCurrentTheme()
-        currentThemeCategory := this.ThemesRepository.GetCategoryForTheme(currentTheme)
+    checkCurrentThemeMenu(){
+        currentTheme := MetaInfo.getCurrentTheme()
+        currentThemeCategory := this.ThemesRepository.getCategoryForTheme(currentTheme)
 
-        this.Check(currentThemeCategory)
-        this.CheckChildren(currentTheme)
+        try{
+            this.check(currentThemeCategory)
+        }
+        catch Error as e{
+            MsgBox("Error checking current theme category in menu. The current theme, found in meta.ini (" . currentTheme . "), might not exist anymore. Error details: " . e.Message)
+        }
+        this.checkChildren(currentTheme)
     }
 
-    HandleThemeClicked(themeClicked){
-        this.ThemesRepository.setCurrentTheme(themeClicked)
-        this.CheckCurrentThemeMenu()
+    handleThemeClicked(themeClicked){
+        MetaInfo.setCurrentTheme(themeClicked)
+        this.checkCurrentThemeMenu()
         this.callBack()
     }
 }

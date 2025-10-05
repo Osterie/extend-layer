@@ -20,19 +20,8 @@ class DomainSpecificGui extends Gui{
         this.UpdateColorTheme()
     }
 
-    getCurrentTheme(){
-        theme := this.ThemesRepository.GetTheme(this.ThemesRepository.getCurrentTheme())
-        if (theme = ""){
-            theme := this.ThemesRepository.GetTheme(this.ThemesRepository.GetDefaultTheme())
-            if (theme = ""){
-                Throw Error("Failed to load any theme")
-            }
-        }
-        return theme
-    }
-
     UpdateColorTheme(){
-        this.theme := this.getCurrentTheme()
+        this.theme := this.ThemesRepository.getCurrentTheme()
         this.BackColor := this.theme.BackgroundColor()
         this.SetCaptionColor()
         this.SetCurrentThemeFontColor()

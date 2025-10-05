@@ -6,17 +6,18 @@
 
 #Include <DataModels\AppData\Themes\Theme>
 #Include <DataModels\AppData\Themes\Themes>
+#Include <Shared\Logger>
 
-; TODO set current theme here?
 class ThemesRepository {
     
     static instance := false
     pathToThemes := ""
     Themes := Themes()
+    Logger := Logger.getInstance()
 
     __New(pathToThemes := FilePaths.getPathToThemes()) {
         this.pathToThemes := pathToThemes
-        this.ReadThemes()
+        this.readThemes()
     }
 
     static getInstance(pathToThemes := FilePaths.getPathToThemes()) {
@@ -26,43 +27,52 @@ class ThemesRepository {
         return ThemesRepository.instance
     }
 
-    GetCategoryForTheme(name){
-        return this.Themes.GetCategoryForTheme(name)
+    getTheme(name){
+        return this.Themes.getTheme(name)
     }
 
-    GetThemeCategories(){
-        return this.Themes.GetThemeCategories()
-    }
-
-    GetTheme(name){
-        return this.Themes.GetTheme(name)
-    }
-
-    GetThemesForCategory(category){
-        return this.Themes.GetThemesForCategory(category)
-    }
-
-    GetThemeNames(){
-        return this.Themes.GetThemeNames()
-    }
-
-    GetThemeNamesForCategory(category){
-        return this.Themes.GetThemeNamesForCategory(category)
-    }
-
-    setCurrentTheme(currentTheme) {
-        MetaInfo.setCurrentTheme(currentTheme)
-    }
-
-    getCurrentTheme() {
-        return MetaInfo.getCurrentTheme()
+    getCurrentTheme(){
+        theme := this.getTheme(MetaInfo.getCurrentTheme())
+        if (theme = ""){
+            this.Logger.logError("Current theme set in meta.ini does not exist. Setting to default theme.")
+            MsgBox("Current theme set in meta.ini (" . MetaInfo.getCurrentTheme() . ") does not exist. Setting to default theme (" . MetaInfo.getDefaultTheme() . ").")
+            theme := this.getDefaultTheme()
+        }
+        return theme
     }
 
     getDefaultTheme() {
-        return MetaInfo.getDefaultTheme()
+        theme := this.getTheme(MetaInfo.getDefaultTheme())
+        if (theme = ""){
+            this.Logger.logError("Failed to load any theme")
+            Throw Error("Failed to load any theme")
+        }
+
+        return theme
     }
 
-    ReadThemes(){
+    getCategoryForTheme(name){
+        return this.Themes.getCategoryForTheme(name)
+    }
+
+    getThemeCategories(){
+        return this.Themes.getThemeCategories()
+    }
+
+    getThemesForCategory(category){
+        return this.Themes.getThemesForCategory(category)
+    }
+
+    getThemeNames(){
+        return this.Themes.getThemeNames()
+    }
+
+    getThemeNamesForCategory(category){
+        return this.Themes.getThemeNamesForCategory(category)
+    }
+
+    ; TODO create ThemesParser class.
+    readThemes(){
 
         if (!FileExist(this.pathToThemes)) {
             throw Error("Themes file does not exist at: " . this.pathToThemes)

@@ -24,7 +24,7 @@ class Themes{
         }
     }
 
-    GetCategoryForTheme(name){
+    getCategoryForTheme(name){
         category := ""
         Loop this.themes.Length{
             if (this.themes[A_Index].ThemeName() = name){
@@ -35,7 +35,7 @@ class Themes{
         return category
     }
 
-    GetThemeCategories(){
+    getThemeCategories(){
         themeCategories := Array()
         Loop this.themes.Length{
             if (!themeCategories.Contains(this.themes[A_Index].Category())){
@@ -45,7 +45,7 @@ class Themes{
         return themeCategories
     }
 
-    GetTheme(name){
+    getTheme(name){
         themeToReturn := ""
         Loop this.themes.Length{
             if (this.themes[A_Index].ThemeName() = name){
@@ -56,7 +56,7 @@ class Themes{
         return themeToReturn
     }
 
-    GetThemesForCategory(category){
+    getThemesForCategory(category){
         themesForCategory := Array()
         Loop this.themes.Length{
             if (this.themes[A_Index].Category() = category){
@@ -66,7 +66,7 @@ class Themes{
         return themesForCategory
     }
 
-    GetThemeNames(){
+    getThemeNames(){
         themeNames := Array()
         Loop this.themes.Length{
             themeNames.Push(this.themes[A_Index].ThemeName())
@@ -74,7 +74,7 @@ class Themes{
         return themeNames
     }
 
-    GetThemeNamesForCategory(category){
+    getThemeNamesForCategory(category){
         themeNames := Array()
         Loop this.themes.Length{
             if (this.themes[A_Index].Category() = category){
