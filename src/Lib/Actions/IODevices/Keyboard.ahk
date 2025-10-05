@@ -76,4 +76,44 @@ class Keyboard extends HotkeyAction {
     SendKey(key) {
         SendInput(key)
     }
-}
+
+    Paste() {
+        SendInput("^v")
+    }
+
+    ReversePaste() {
+        originalClipboardValue := A_Clipboard
+        
+        A_Clipboard := this.reverseString(originalClipboardValue)
+        this.Paste()
+        Sleep(100) ; Some applications have custom paste handlers, not using sleep(100) would result in the pasted string not being reversed.
+
+        A_Clipboard := originalClipboardValue
+    }
+
+    ReverseWordOrderPaste() {
+        originalClipboardValue := A_Clipboard
+        
+        A_Clipboard := this.reverseOrder(originalClipboardValue)
+        this.Paste()
+        Sleep(100) ; Some applications have custom paste handlers, not using sleep(100) would result in the pasted string not being reversed.
+
+        A_Clipboard := originalClipboardValue
+    }
+
+    reverseString(text) {
+        reversed := ""
+        Loop Parse text
+            reversed := A_LoopField . reversed
+        return reversed
+    } 
+
+    reverseOrder(text){
+        reversed := ""
+        Loop Parse text, " "
+            reversed := A_LoopField . " " . reversed
+        reversed := SubStr(reversed, 1, -1) ; Remove trailing space
+        return reversed
+    }
+    
+ }
