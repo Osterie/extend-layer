@@ -5,20 +5,21 @@
 
 #Include <Infrastructure\IO\IniFileReader>
 
-; TODO use MetaInfo class ofr activeTheme, defaultTheme, activeUserProfile, defaultUserProfile and closeScriptOnGuiClose
 class MetaInfo {
-
-    static DEFAULT_PROFILE := "Default"
-    static FALLBACK_PROFILE := "EmptyProfile"
-    
-    static GUI_SETTINGS_SECTION := "Gui Settings"
-    static CLOSE_SCRIPT_ON_GUI_CLOSE_KEY := "closeScriptOnGuiClose"
 
     static PROFILES_SECTION := "Profiles"
     static ACTIVE_USER_PROFILE_KEY := "activeUserProfile"
+    static DEFAULT_PROFILE := "Default"
+    static FALLBACK_PROFILE := "EmptyProfile"
 
+    static THEMES_SECTION := "Themes"
+    static ACTIVE_THEME_KEY := "activeTheme"
     static DEFAULT_THEME := "GreenIsh"
+        
+    static GUI_SETTINGS_SECTION := "Gui Settings"
+    static CLOSE_SCRIPT_ON_GUI_CLOSE_KEY := "closeScriptOnGuiClose"
 
+    
     static setCurrentProfile(currentProfileName) {
         iniWrite(currentProfileName, FilePaths.getPathToMetaFile(), this.PROFILES_SECTION, this.ACTIVE_USER_PROFILE_KEY)
     }
@@ -70,12 +71,12 @@ class MetaInfo {
             MsgBox("Invalid value for currentTheme. Must be a non-empty string")
             return
         }
-        iniWrite(currentTheme, FilePaths.getPathToMetaFile(), "Themes", "activeTheme")
+        iniWrite(currentTheme, FilePaths.getPathToMetaFile(), this.THEMES_SECTION, this.ACTIVE_THEME_KEY)
     }
 
     static getCurrentTheme() {
         reader := IniFileReader()
-        return reader.readOrCreateLine(FilePaths.getPathToMetaFile(), "Themes", "activeTheme", this.DEFAULT_THEME)
+        return reader.readOrCreateLine(FilePaths.getPathToMetaFile(), this.THEMES_SECTION, this.ACTIVE_THEME_KEY, this.DEFAULT_THEME)
     }
 
     static getDefaultTheme() {
