@@ -43,7 +43,7 @@ class RestoreBackupDialog extends DomainSpecificGui {
     }
 
     createCancelButton() {
-        Button := this.Add("Button", "xs w100", "Cancel")
+        Button := this.Add("Button", "Default xs w100", "Cancel")
         Button.OnEvent("Click", (*) => this.close())
     }
 
