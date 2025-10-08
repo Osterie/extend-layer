@@ -23,13 +23,13 @@ class BackupsGui extends DomainSpecificGui {
     }
 
     create() {
-        this.selectedBackupText := this.Add("Text", "xs y+10 w500", "Selected Backup: None")
+        this.selectedBackupText := this.Add("Text", "xs y+10 w600", "Selected Backup: None")
         this.createBackupListView()
         this.createBackupControls()
     }
 
     createBackupListView() {
-        this.backupsListView := this.Add("ListView", "r20 w500", ["Path", "Version", "Timestamp", "Size"])
+        this.backupsListView := this.Add("ListView", "r20 w600", ["Path", "Version", "Timestamp", "Size"])
         this.backupsListView.OnEvent("ItemFocus", this.handleBackupSelected.Bind(this))
         this.populateListView()
     }
@@ -77,6 +77,7 @@ class BackupsGui extends DomainSpecificGui {
         this.Add("Button", "xs y+5 w150", "🔁 Restore Backup").OnEvent("Click", (*) => this.restoreBackup())
         this.Add("Button", "x+10 w150", "➕ Create Backup").OnEvent("Click", (*) => this.createBackup())
         this.Add("Button", "x+10 w150", "❌ Delete Backup").OnEvent("Click", (*) => this.deleteBackup())
+        this.Add("Button", "Default x+10 w120", "Cancel").OnEvent("Click", (*) => this.destroy())
     }
 
     restoreBackup() {
