@@ -13,6 +13,7 @@
 #Include <Util\NetworkUtils\NetworkChecker>
 
 #Include <ui\updatesAndBackupsTab\UpdatesAndBackupsTab>
+#Include <ui\documentationTab\DocumentationTab>
 
 #Include <ui\Util\DomainSpecificGui>
 
@@ -26,6 +27,8 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     settingsValuesListView := ""
     hotkeysListView := ""
+
+    DocumentationTab := ""
 
     ; Constructor for the ExtraKeyboardsApplication class
     __New(){
@@ -106,6 +109,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
     ; Creates the tabs for the application
     CreateTabs(){
         Tab := this.Add("Tab3", "yp+40 xm", ["&Keyboards","&Change Action Settings","Documentation", "&Updates and Backups"])
+        Tab.OnEvent("Change", (tabControl, newTabIndex) => this.handleTabClicked(tabControl, tabControl.Text))
         Tab.UseTab(1)
         this.CreateKeyboardsTab()
 
@@ -121,10 +125,22 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
         Tab.UseTab(0) ; subsequently-added controls will not belong to the tab control.
     }
 
+    handleTabClicked(tabControl, tabName){
+        Switch tabName {
+            Case "Documentation":
+                ; Show documentation tab.
+                this.DocumentationTab.showContents()
+
+            Default: 
+                ; Hide documentation tab.
+                this.DocumentationTab.hideContents()
+        }
+    }
+
     ; Creates the tab for the keyboard settings
     CreateKeyboardsTab(){
         keyboardLayoutChanger := TreeViewMaker()
-        keyboardLayoutChanger.createElementsForGui(this, this.controller.GetKeyboardLayerIdentifiers())
+        keyboardLayoutChanger.createElementsForGuiOld(this, this.controller.GetKeyboardLayerIdentifiers())
         
         this.hotkeysListView := ListViewMaker()
         this.hotkeysListView.CreateListView(this, "r20 w600 x+10 -multi" , ["KeyCombo","Action"])
@@ -221,7 +237,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
     ; Creates the tab for the action settings
     CreateFunctionSettingsTab(){
         functionsNamesTreeView := TreeViewMaker()
-        functionsNamesTreeView.createElementsForGui(this, this.controller.getActionGroupNames())
+        functionsNamesTreeView.createElementsForGuiOld(this, this.controller.getActionGroupNames())
         
         this.settingsValuesListView := ListViewMaker()
         this.settingsValuesListView.CreateListView(this, "r20 w600 x+10 -multi",  ["ActionSetting","Value"])
@@ -237,7 +253,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     ; CreateTabGeneral(){
     ;     treeViewControl := TreeViewMaker()
-    ;     treeViewControl.createElementsForGui(this, treeViewItems)
+    ;     treeViewControl.createElementsForGuiOld(this, treeViewItems)
         
     ;     listViewMadeFromTreeView := ListViewMaker()
     ;     listViewMadeFromTreeView.CreateListView(this, listViewHeaders)
@@ -248,7 +264,8 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     ; Creates the tab for the documentation
     CreateDocumentationTab(){
-        ; this.Add("Edit", "r20")
+        this.DocumentationTab := DocumentationTab(this)
+        this.DocumentationTab.createTab()
     }
 
     createUpdatesAndBackupsTab(){
