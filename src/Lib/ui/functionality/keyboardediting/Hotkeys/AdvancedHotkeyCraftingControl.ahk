@@ -33,17 +33,17 @@ class AdvancedHotkeyCraftingControl{
         groupBoxForModifiers := this.guiToAddTo.Add("GroupBox", "Section w300 h50 xp+30 yp+20", "Modifiers:")
         
         if (this.destinationKeyMode = false){
-            anyModifierCheckbox := this.guiToAddTo.Add("CheckBox","xs+25 ys+20", "Any")
+            anyModifierCheckbox := this.guiToAddTo.Add("CheckBox","xs+10 ys+20", "Any")
             anyModifierCheckbox.OnEvent("Click", (*) => this.AnyModifierCheckboxClickEvent())
             this.controlsForModifiers.addControl("anyModifierCheckbox", anyModifierCheckbox)
             this.controlsForAdvancedHotkeys.addControl("AnyModifierCheckbox", anyModifierCheckbox)
         }
         
         
-        controlCheckbox := this.guiToAddTo.Add("CheckBox","xp+40 ys+20", "Control")
-        shiftCheckbox := this.guiToAddTo.Add("CheckBox","xp+60 ys+20", "Shift")
-        altCheckbox := this.guiToAddTo.Add("CheckBox","xp+55 ys+20", "Alt")
-        winCheckbox := this.guiToAddTo.Add("CheckBox","xp+40 ys+20", "Win")
+        controlCheckbox := this.guiToAddTo.Add("CheckBox","xp+50 ys+20", "Control")
+        shiftCheckbox := this.guiToAddTo.Add("CheckBox","xp+70 ys+20", "Shift")
+        altCheckbox := this.guiToAddTo.Add("CheckBox","xp+65 ys+20", "Alt")
+        winCheckbox := this.guiToAddTo.Add("CheckBox","xp+50 ys+20", "Win")
 
         this.controlsForModifiers.addControl("ControlCheckbox", controlCheckbox)
         this.controlsForModifiers.addControl("ShiftCheckbox", shiftCheckbox)

@@ -21,6 +21,7 @@ class TreeViewMaker {
         }
         
         ImageListID := this.GetCustomImages()
+        ; TODO should be able to pass options for treeview
         this.treeView := guiObject.Add("TreeView", "r20 ImageList" . ImageListID)
         this.treeView.Opt("-Redraw")
         

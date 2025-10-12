@@ -53,9 +53,9 @@ class BackupsGui extends DomainSpecificGui {
     modifyListViewColumns(backups) {
 
         this.backupsListView.ModifyCol(1, "0") ; Hides the first column (Path), can be used when a column is selected.
-        this.backupsListView.ModifyCol(2, "80 Center")
-        this.backupsListView.ModifyCol(3, "Auto Text Center SortDesc")
-        this.backupsListView.ModifyCol(4, "Auto Text Center")
+        this.backupsListView.ModifyCol(2, "80 Center") ; Version
+        this.backupsListView.ModifyCol(3, "400 Text Center SortDesc") ; Timestamp
+        this.backupsListView.ModifyCol(4, "Auto Text Center") ; Size
 
         if (backups.Length = 0) {
             this.backupsListView.ModifyCol(3, "80")

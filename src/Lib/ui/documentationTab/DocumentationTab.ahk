@@ -31,7 +31,7 @@ class DocumentationTab{
         root.Push(this.createKeyboardsNode())
         root.Push(this.createHotkeyNode())
 
-        treeView := treeViewMaker_.createElementsForGui(this.guiToAddTo, root, "Section w200 h370 w" . this.TREE_VIEW_WIDTH)
+        treeView := treeViewMaker_.createElementsForGui(this.guiToAddTo, root, "Section w200 r20 w" . this.TREE_VIEW_WIDTH)
 
         showDocumentationButton := this.guiToAddTo.Add("Button", "ys+" 25 . " xs+" . this.TREE_VIEW_WIDTH + 5, "This is a button")
         showDocumentationButton.OnEvent("Click", (*) => this.handleDocumentationItemSelected(treeViewMaker_.GetSelectionText()))

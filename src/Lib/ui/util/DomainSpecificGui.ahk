@@ -18,6 +18,7 @@ class DomainSpecificGui extends Gui{
         super.__New(options, title, eventObj)
         this.OnEvent('Escape', (*) => this.destroy())
         this.UpdateColorTheme()
+        this.SetFont("s8", "Verdana")
     }
 
     UpdateColorTheme(){
