@@ -101,7 +101,7 @@
             },
             {
                 "MethodName": "ReverseWordOrderPaste",
-                "FriendlyName": "Paste clipboard content reversed word order",
+                "FriendlyName": "Paste reversed word order",
                 "Description": "Sends the contents of the clipboard in reverse word order",
                 "Parameters": []
             }
