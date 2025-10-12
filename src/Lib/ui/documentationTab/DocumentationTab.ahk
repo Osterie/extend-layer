@@ -2,14 +2,12 @@
 
 #Include <ui\util\TreeViewMaker>
 #Include <ui\util\TreeViewStructureNode>
-#Include <ui\documentationTab\backups\BackupPage>
+#Include <ui\documentationTab\backups\BackupPopup>
 
 class DocumentationTab{
 
     currentPage := ""
     guiToAddTo := ""
-
-    invisibleTabs := ""
 
     BACKUPS := "Backups"
 
@@ -33,23 +31,14 @@ class DocumentationTab{
         root.Push(this.createKeyboardsNode())
         root.Push(this.createHotkeyNode())
 
-        treeView := treeViewMaker_.createElementsForGui(this.guiToAddTo, root, "Section h370 w" . this.TREE_VIEW_WIDTH, true)
-        this.invisibleTabs := treeViewMaker_.getInvisibleTabs()
+        treeView := treeViewMaker_.createElementsForGui(this.guiToAddTo, root, "Section w200 h370 w" . this.TREE_VIEW_WIDTH)
 
-        ControlHide(this.invisibleTabs)
-
-        ; MsgBox(this.invisibleTabs)
-        this.invisibleTabs.UseTab(this.BACKUPS)
-        currentPage := BackupPage(this.guiToAddTo, "h380 w650 ys-" 25 . " xs+" . this.TREE_VIEW_WIDTH + 5)
+        showDocumentationButton := this.guiToAddTo.Add("Button", "ys+" 25 . " xs+" . this.TREE_VIEW_WIDTH + 5, "This is a button")
+        showDocumentationButton.OnEvent("Click", (*) => this.handleDocumentationItemSelected(treeViewMaker_.GetSelectionText()))
 
 
-        this.invisibleTabs.UseTab("Updates")
-        currentPage2 := BackupPage(this.guiToAddTo, "h380 w650 ys-" 25 . " xs+" . this.TREE_VIEW_WIDTH + 5)
-
-        ; invisibleTabs := this.guiToAddTo.Add("Tab2", "w0 h0 -Wrap", ["t" P1, "t" P1C1, "t" P1C1C1, "t" P1C2])
         
-        
-        treeViewMaker_.AddEventAction("ItemSelect", (guiControlObject, selectedItemId) => this.handleDocumentationItemSelected(treeViewMaker_.GetSelectionText(), selectedItemId))
+        ; treeViewMaker_.AddEventAction("ItemSelect", (guiControlObject, selectedItemId) => this.handleDocumentationItemSelected(treeViewMaker_.GetSelectionText(), selectedItemId))
         ; treeViewMaker_.AddEventAction("ItemSelect", (guiControlObject, selectedItemId) => guiControlObject.Modify(selectedItemId, "+Expand"))
         treeViewMaker_.AddEventAction("Click", (guiControlObject, selectedItemId) => guiControlObject.Modify(selectedItemId, "+Expand"))
         ; treeViewMaker_.AddEventAction("LoseFocus", (guiControlObject, selectedItemId) => guiControlObject.Modify(selectedItemId, "+Expand"))
@@ -194,31 +183,21 @@ class DocumentationTab{
         return hotkeys
     }
 
-    handleDocumentationItemSelected(selectedItemText, selectedItemId){
+    handleDocumentationItemSelected(selectedItemText){
         ; Here you would load and display the documentation related to selectedItemText
         ; MsgBox("Selected documentation item: " . selectedItemText)
         
-        this.invisibleTabs.Choose(selectedItemText)
-        ControlShow(this.invisibleTabs)
-        
-        ; switch selectedItemText {
-        ;     case this.BACKUPS:
-        ;         this.invisibleTabs.Choose(selectedItemText)
-                ; this.invisibleTabs.Text := selectedItemText
-                ; currentPage := BackupPage(this.guiToAddTo, "r20 w600 ys")
-                
-            ; default:
-            ;     currentPage := ""
-                
-        ; }
-    }
+        ; this.guiToAddTo.Opt("+LastFound")
+        ; WinRedraw(this.guiToAddTo)
+        switch selectedItemText {
+            case this.BACKUPS:
+                currentPage := BackupPopup()
 
-    hideContents(){
-        this.invisibleTabs.Choose("EMPTY")
-        ControlHide(this.invisibleTabs)
-    }
-    showContents(){
-        ControlShow(this.invisibleTabs)
+                
+            default:
+                currentPage := ""
+                
+        }
     }
 }
 
