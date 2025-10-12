@@ -93,12 +93,27 @@
     ],
     "Dark": [
         {
+            "Default": {
+                "BackgroundColor": "1e1e1e",
+                "TextColor": "d4d4d4",
+                "ControlColor": "3c3c3c",
+                "CaptionColor": "007acc",
+                "CaptionFontColor": "ffffff"
+            },
             "DarkIsh": {
                 "BackgroundColor": "000000",
                 "TextColor": "ffffff",
                 "ControlColor": "333333",
                 "CaptionColor": "666666",
                 "CaptionFontColor": "ffffff"
+            },
+            "Dark": {
+                "BackgroundColor": "1e1e1e",
+                "TextColor": "E0E0E0",
+                "TitleColor": "4CAF50",
+                "ControlColor": "2C2C2C",
+                "CaptionColor": "1e1e1e",
+                "CaptionFontColor": "E0E0E0"
             }
         }
     ],
