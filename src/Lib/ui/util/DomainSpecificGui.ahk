@@ -23,7 +23,8 @@ class DomainSpecificGui extends Gui{
 
     UpdateColorTheme(){
         this.theme := this.ThemesRepository.getCurrentTheme()
-        this.BackColor := this.theme.BackgroundColor()
+        ; this.BackColor := this.theme.BackgroundColor()
+        this.BackColor := this.theme.ControlColor()
         this.SetCaptionColor()
         this.SetCurrentThemeFontColor()
         this.UpdateControlsColors()
