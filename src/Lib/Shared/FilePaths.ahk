@@ -38,6 +38,13 @@ class FilePaths {
     static PATH_TO_EMPTY_KEYBOARD_PROFILE := "..\config\PresetProfiles\EmptyProfile\Keyboards.json"
     static PATH_TO_EMPTY_SETTINGS_PROFILE := "..\config\PresetProfiles\EmptyProfile\ClassObjects.ini"
 
+
+    static ASSETS := "..\assets"
+    static ASSETS_IMAGES := "..\assets\img"
+    static ASSETS_DOCUMENTATION_IMAGES := "..\assets\img\documentation"
+    
+    static IMG_NOT_FOUND := "..\assets\img\NotFound.jpg"
+
     static GetPathToLogs() {
         return this.PATH_TO_LOGS
     }

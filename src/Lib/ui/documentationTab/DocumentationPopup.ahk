@@ -5,13 +5,15 @@
 
 class DocumentationPopup extends DomainSpecificGuiScrollable {
 
+    NEW_LINE := "`n"
+    GUI_WIDTH := 640
+    GUI_HEIGHT := 480
 
     __New(title := "") {
         super.__New("", title)
     }
 
     show(){
-        ; super.show("w640 h360")
-        super.show("w640 h480")
+        super.show("w" . this.GUI_WIDTH . " h" . this.GUI_HEIGHT)
     }
 }
