@@ -2,7 +2,8 @@
 
 #Include <ui\util\TreeViewMaker>
 #Include <ui\util\TreeViewStructureNode>
-#Include <ui\documentationTab\backups\BackupPopup>
+#Include <ui\documentationTab\popups\BackupPopup>
+#Include <ui\documentationTab\popups\UpdatePopup>
 
 class DocumentationTab{
 
@@ -10,6 +11,7 @@ class DocumentationTab{
     guiToAddTo := ""
 
     BACKUPS := "Backups"
+    UPDATES := "Updates"
 
     TREE_VIEW_WIDTH := 200
 
@@ -25,11 +27,11 @@ class DocumentationTab{
         root := []
         root.Push(this.createBackupNode())
         root.Push(this.createUpdatesNode())
-        root.Push(this.createProfilesNode())
-        root.Push(this.createMenuBarNode())
-        root.Push(this.createActionSettingsNode())
-        root.Push(this.createKeyboardsNode())
-        root.Push(this.createHotkeyNode())
+        ; root.Push(this.createProfilesNode())
+        ; root.Push(this.createMenuBarNode())
+        ; root.Push(this.createActionSettingsNode())
+        ; root.Push(this.createKeyboardsNode())
+        ; root.Push(this.createHotkeyNode())
 
         treeView := treeViewMaker_.createElementsForGui(this.guiToAddTo, root, "Section w200 r20 w" . this.TREE_VIEW_WIDTH)
 
@@ -69,22 +71,22 @@ class DocumentationTab{
     }
 
     createUpdatesNode(){
-        updates := TreeViewStructureNode("Updates")
+        updates := TreeViewStructureNode(this.UPDATES)
 
-        checkingForUpdates := TreeViewStructureNode("Checking for Updates")
-        checkingForUpdates.addChild(TreeViewStructureNode("Manual Check"))
-        checkingForUpdates.addChild(TreeViewStructureNode("Automatic Check"))
-        updates.addChild(checkingForUpdates)
+        ; checkingForUpdates := TreeViewStructureNode("Checking for Updates")
+        ; checkingForUpdates.addChild(TreeViewStructureNode("Manual Check"))
+        ; checkingForUpdates.addChild(TreeViewStructureNode("Automatic Check"))
+        ; updates.addChild(checkingForUpdates)
 
-        installingUpdates := TreeViewStructureNode("Installing Updates")
-        installingUpdates.addChild(TreeViewStructureNode("From File"))
-        installingUpdates.addChild(TreeViewStructureNode("From Internet"))
-        updates.addChild(installingUpdates)
+        ; installingUpdates := TreeViewStructureNode("Installing Updates")
+        ; installingUpdates.addChild(TreeViewStructureNode("From File"))
+        ; installingUpdates.addChild(TreeViewStructureNode("From Internet"))
+        ; updates.addChild(installingUpdates)
 
-        managingUpdates := TreeViewStructureNode("Managing Updates")
-        managingUpdates.addChild(TreeViewStructureNode("Update Settings"))
-        managingUpdates.addChild(TreeViewStructureNode("Update History"))
-        updates.addChild(managingUpdates)
+        ; managingUpdates := TreeViewStructureNode("Managing Updates")
+        ; managingUpdates.addChild(TreeViewStructureNode("Update Settings"))
+        ; managingUpdates.addChild(TreeViewStructureNode("Update History"))
+        ; updates.addChild(managingUpdates)
 
         return updates
     }
@@ -191,28 +193,17 @@ class DocumentationTab{
         ; WinRedraw(this.guiToAddTo)
         switch selectedItemText {
             case this.BACKUPS:
-                currentPage := BackupPopup()
+                BackupPopup()
 
+            case this.UPDATES:
+                UpdatePopup()
                 
             default:
-                currentPage := ""
-                
+                MsgBox("No documentation.")
         }
     }
 }
 
-
-
-; TODO edit profiles and add profiles gui sizes are pretty different, i think they use different font sizes.
-; TODO change height of edit profiels dialog.
-
-; TODO can create profiles which are just another keyboard layout, colemak, dvorak and such.
-
-; TODO image for tray icon, custom right click options for tray icon? 
-
-; TODO create icon for Extend Layer, can use one of the cool graphical images. or create new from graphical images creator.
-; those images are on the dell school computer...
- 
 ; TODO documentation tab
 ; 	- Popups?
 ; 	- Use tree structure? (TreeViewMaker/ListViewMaker class)

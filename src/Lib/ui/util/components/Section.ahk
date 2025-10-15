@@ -24,8 +24,6 @@ class Section {
         guiToAddTo.SetFont("s12 Norm")
         paragraph := guiToAddTo.Add("Text", "w" . width, content)
 
-        ; Reset to default font
-        guiToAddTo.SetFont("")
         guiToAddTo.MarginY := yMarginOfGui
     }
 }
