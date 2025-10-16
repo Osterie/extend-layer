@@ -2,8 +2,10 @@
 
 #Include <ui\util\TreeViewMaker>
 #Include <ui\util\TreeViewStructureNode>
+
 #Include <ui\documentationTab\popups\BackupPopup>
 #Include <ui\documentationTab\popups\UpdatePopup>
+#Include <ui\documentationTab\popups\ProfilePopup>
 
 class DocumentationTab{
 
@@ -12,6 +14,7 @@ class DocumentationTab{
 
     BACKUPS := "Backups"
     UPDATES := "Updates"
+    PROFILES := "Profiles"
 
     TREE_VIEW_WIDTH := 200
 
@@ -27,7 +30,7 @@ class DocumentationTab{
         root := []
         root.Push(this.createBackupNode())
         root.Push(this.createUpdatesNode())
-        ; root.Push(this.createProfilesNode())
+        root.Push(this.createProfilesNode())
         ; root.Push(this.createMenuBarNode())
         ; root.Push(this.createActionSettingsNode())
         ; root.Push(this.createKeyboardsNode())
@@ -92,23 +95,23 @@ class DocumentationTab{
     }
 
     createProfilesNode(){
-        profiles := TreeViewStructureNode("Profiles")
+        profiles := TreeViewStructureNode(this.PROFILES)
 
-        editing := TreeViewStructureNode("Editing")
-        editing.addChild(TreeViewStructureNode("Changing Key Mappings"))
-        editing.addChild(TreeViewStructureNode("Modifying Action Settings"))
-        profiles.addChild(editing)
+        ; editing := TreeViewStructureNode("Editing")
+        ; editing.addChild(TreeViewStructureNode("Changing Key Mappings"))
+        ; editing.addChild(TreeViewStructureNode("Modifying Action Settings"))
+        ; profiles.addChild(editing)
 
-        adding := TreeViewStructureNode("Adding")
-        adding.addChild(TreeViewStructureNode("New Profile"))
-        adding.addChild(TreeViewStructureNode("Importing Profile"))
-        profiles.addChild(adding)
+        ; adding := TreeViewStructureNode("Adding")
+        ; adding.addChild(TreeViewStructureNode("New Profile"))
+        ; adding.addChild(TreeViewStructureNode("Importing Profile"))
+        ; profiles.addChild(adding)
 
-        managing := TreeViewStructureNode("Managing")
-        managing.addChild(TreeViewStructureNode("Deleting Profile"))
-        managing.addChild(TreeViewStructureNode("Renaming Profile"))
-        managing.addChild(TreeViewStructureNode("Profile Settings"))
-        profiles.addChild(managing)
+        ; managing := TreeViewStructureNode("Managing")
+        ; managing.addChild(TreeViewStructureNode("Deleting Profile"))
+        ; managing.addChild(TreeViewStructureNode("Renaming Profile"))
+        ; managing.addChild(TreeViewStructureNode("Profile Settings"))
+        ; profiles.addChild(managing)
 
         return profiles
     }
@@ -197,6 +200,9 @@ class DocumentationTab{
 
             case this.UPDATES:
                 UpdatePopup()
+                
+            case this.PROFILES:
+                ProfilePopup()
                 
             default:
                 MsgBox("No documentation.")
