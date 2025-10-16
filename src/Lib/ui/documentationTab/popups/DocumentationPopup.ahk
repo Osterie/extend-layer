@@ -23,6 +23,14 @@ class DocumentationPopup extends DomainSpecificGuiScrollable {
         this.SetFont("s10")
     }
 
+    section(title, paragraph, width := this.getSectionWidth()){
+        Section(this, width, title, paragraph)
+    }
+
+    image(imageName, options := ""){
+        DocumentationImage(this, imageName, options)
+    }
+
     show(){
         super.show("w" . this.GUI_WIDTH . " h" . this.GUI_HEIGHT)
     }

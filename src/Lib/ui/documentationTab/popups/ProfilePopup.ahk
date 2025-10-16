@@ -47,21 +47,21 @@ class ProfilePopup extends DocumentationPopup {
         exportingProfilesTitle := "Exporting a Profile"
         exportingProfilesParagraph := "Clicking 'Export profile' will open a file dialog. You must choose the location where you want the profile to be exported. The name of the exported profile will automatically be the same as the name of the exported profile, for example 'Default'. Only one profile can be exported at a time (or you could go to the file location of Extend Layer and copy the user profiles from there). The exported profile can now be imported."
 
-        Section(this, sectionWidth, findingFeaturesTitle, findingFeaturesParagraph)
+        this.section(findingFeaturesTitle, findingFeaturesParagraph)
 
-        Section(this, sectionWidth, userProfilesTitle, userProfilesParagraph)
-        DocumentationImage(this, DocumentationImages.USER_PROFILES)
+        this.section(userProfilesTitle, userProfilesParagraph)
+        this.image(DocumentationImages.USER_PROFILES)
 
-        Section(this, sectionWidth, presetProfilesTitle, presetProfilesParagraph)
-        DocumentationImage(this, DocumentationImages.PRESET_PROFILES)
+        this.section(presetProfilesTitle, presetProfilesParagraph)
+        this.image(DocumentationImages.PRESET_PROFILES)
         
-        Section(this, sectionWidth, editingProfilesTitle, editingProfilesParagraph)
-        DocumentationImage(this, DocumentationImages.EDITING_PROFILES)
+        this.section(editingProfilesTitle, editingProfilesParagraph)
+        this.image(DocumentationImages.EDITING_PROFILES)
         
-        Section(this, sectionWidth, addingProfilesTitle, addingProfilesParagraph)
-        DocumentationImage(this, DocumentationImages.ADDING_PROFILES)
+        this.section(addingProfilesTitle, addingProfilesParagraph)
+        this.image(DocumentationImages.ADDING_PROFILES)
         
-        Section(this, sectionWidth, importingProfilesTitle, importingProfilesParagraph)
-        Section(this, sectionWidth, exportingProfilesTitle, exportingProfilesParagraph)
+        this.section(importingProfilesTitle, importingProfilesParagraph)
+        this.section(exportingProfilesTitle, exportingProfilesParagraph)
     }
 }

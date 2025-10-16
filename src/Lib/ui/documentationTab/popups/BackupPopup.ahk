@@ -38,10 +38,10 @@ class BackupPopup extends DocumentationPopup {
         ; restoringBackupParagraph .= "NOTE! When restoring a backup, make sure the backup size seems to be a reasonable number, if you have multiple backups, you can compare with another backup if the sizes are similiar. "
         ; restoringBackupParagraph .= this.NEW_LINE . this.NEW_LINE
 
-        Section(this, sectionWidth, findingFeaturesTitle, findingFeaturesParagraph)
-        DocumentationImage(this, DocumentationImages.MANAGING_BACKUPS, "w" . sectionWidth)
+        this.section(findingFeaturesTitle, findingFeaturesParagraph)
+        this.image(DocumentationImages.MANAGING_BACKUPS, "w" . sectionWidth)
 
-        Section(this, sectionWidth, managingTitle, managingParagraph)
-        Section(this, sectionWidth, restoringBackupTitle, restoringBackupParagraph)
+        this.section(managingTitle, managingParagraph)
+        this.section(restoringBackupTitle, restoringBackupParagraph)
     }
 }
