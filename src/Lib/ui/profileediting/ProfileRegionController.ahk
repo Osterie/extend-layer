@@ -8,6 +8,7 @@
 #Include <Infrastructure\IO\FoldersAndFiles\FolderManager>
 #Include <Infrastructure\Repositories\ExtendLayerProfileRepository>
 
+#Include <Shared\MetaInfo>
 #Include <Shared\FilePaths>
 
 class ProfileRegionController{
@@ -61,16 +62,12 @@ class ProfileRegionController{
         currentProfileIndex := -1
         profiles := this.getProfiles()
         Loop profiles.Length{
-            
-            if (profiles[A_Index] = FilePaths.GetCurrentProfile()){
+
+            if (profiles[A_Index] = MetaInfo.getCurrentProfile()){
                 currentProfileIndex := A_Index
             }
         }
         return currentProfileIndex
-    }
-
-    GetCurrentProfile(){
-        return FilePaths.GetCurrentProfile()
     }
 
     doOpenEditProfileView(){
@@ -93,7 +90,7 @@ class ProfileRegionController{
         else{
             
             if(this.ExistingProfilesManager.RenameFolder(profileToRename, newProfileName )){
-                FilePaths.SetCurrentProfile(newProfileName)
+                MetaInfo.setCurrentProfile(newProfileName)
                 this.view.UpdateProfilesDropDownMenu()
                 this.editView.UpdateProfilesDropDownMenu()
                 msgbox("Successfully renamed profile to " . newProfileName)

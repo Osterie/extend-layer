@@ -86,6 +86,24 @@
                         "Description": "The amount of times to send the key per second"
                     }
                 ]
+            },
+            {
+                "MethodName": "Paste",
+                "FriendlyName": "Paste clipboard content",
+                "Description": "Sends the paste command",
+                "Parameters": []
+            },
+            {
+                "MethodName": "ReversePaste",
+                "FriendlyName": "Paste clipboard content reversed",
+                "Description": "Sends the contents of the clipboard in reverse order",
+                "Parameters": []
+            },
+            {
+                "MethodName": "ReverseWordOrderPaste",
+                "FriendlyName": "Paste reversed word order",
+                "Description": "Sends the contents of the clipboard in reverse word order",
+                "Parameters": []
             }
         ]
     },

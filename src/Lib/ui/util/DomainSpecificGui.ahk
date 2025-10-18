@@ -18,22 +18,13 @@ class DomainSpecificGui extends Gui{
         super.__New(options, title, eventObj)
         this.OnEvent('Escape', (*) => this.destroy())
         this.UpdateColorTheme()
-    }
-
-    getCurrentTheme(){
-        theme := this.ThemesRepository.GetTheme(this.ThemesRepository.getCurrentTheme())
-        if (theme = ""){
-            theme := this.ThemesRepository.GetTheme(this.ThemesRepository.GetDefaultTheme())
-            if (theme = ""){
-                Throw Error("Failed to load any theme")
-            }
-        }
-        return theme
+        this.SetFont("s8", "Verdana")
     }
 
     UpdateColorTheme(){
-        this.theme := this.getCurrentTheme()
-        this.BackColor := this.theme.BackgroundColor()
+        this.theme := this.ThemesRepository.getCurrentTheme()
+        ; this.BackColor := this.theme.BackgroundColor()
+        this.BackColor := this.theme.ControlColor()
         this.SetCaptionColor()
         this.SetCurrentThemeFontColor()
         this.UpdateControlsColors()

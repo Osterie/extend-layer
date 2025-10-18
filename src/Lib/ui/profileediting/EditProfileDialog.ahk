@@ -14,7 +14,8 @@ class EditProfileDialog extends DomainSpecificGui{
     ExtendLayerProfileService := ExtendLayerProfileService()
 
     __New(ownerHwnd := ""){
-        Super.__New("+Resize +MinSize320x240", "Profiles Editor")
+        Super.__New("+Resize", "Profiles Editor")
+        this.SetFont("s10")
         this.SetOwner(ownerHwnd)
     }
 
@@ -23,19 +24,19 @@ class EditProfileDialog extends DomainSpecificGui{
         this.controller := controller
         
         this.Add("Text", "Section", "Selected Profile:")
-        this.profilesToEditDropDownMenu := this.Add("DropDownList", "ym Choose" . controller.GetCurrentProfileIndex(), controller.GetProfiles())
+        this.profilesToEditDropDownMenu := this.Add("DropDownList", "ym Choose" . controller.getCurrentProfileIndex(), controller.getProfiles())
         this.profilesToEditDropDownMenu.OnEvent("Change", (*) => this.updateDescriptionInput())
         
-        profileDescriptionInputLabel := this.Add("Text", "xp", "Profile Description:")
-        this.profileDescriptionInput := this.Add("Edit", "xp w300 h100", this.ExtendLayerProfileRepository.getProfile(this.getProfileName()).getDescription())
+        profileDescriptionInputLabel := this.Add("Text", "xp yp+50", "Profile Description:")
+        this.profileDescriptionInput := this.Add("Edit", "xp w300 h200", this.ExtendLayerProfileRepository.getProfile(this.getProfileName()).getDescription())
         
-        renameProfileButton := this.Add("Button", "Default w80 xs ys+25", "Change profile name")
+        renameProfileButton := this.Add("Button", "Default w100 xs ys+50", "Change profile name")
         renameProfileButton.OnEvent("Click", (*) => this.CreateRenameProfileInputBox())
         
-        deleteProfileButton := this.Add("Button", "w80 xs yp+40", "Delete profile")
+        deleteProfileButton := this.Add("Button", "w100 xs yp+50", "Delete profile")
         deleteProfileButton.OnEvent("Click", (*) => this.CreateDeleteProfileInputBox())
         
-        updateProfileDescriptionButton := this.Add("Button", "w80 xs yp+25", "Update description")
+        updateProfileDescriptionButton := this.Add("Button", "w100 xs yp+50", "Update description")
         updateProfileDescriptionButton.OnEvent("Click", (*) => this.updateProfileDescription())
 
         this.Show()

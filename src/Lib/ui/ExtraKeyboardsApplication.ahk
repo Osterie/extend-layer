@@ -13,6 +13,7 @@
 #Include <Util\NetworkUtils\NetworkChecker>
 
 #Include <ui\updatesAndBackupsTab\UpdatesAndBackupsTab>
+#Include <ui\documentationTab\DocumentationTab>
 
 #Include <ui\Util\DomainSpecificGui>
 
@@ -27,6 +28,12 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
     settingsValuesListView := ""
     hotkeysListView := ""
 
+    DocumentationTab := ""
+
+    THEMES_MENU_NAME := "&Themes"
+    SUSPEND_SCRIPT_MENU_NAME := "Suspend S&cript"
+    START_SCRIPT_MENU_NAME := "Start S&cript      " ; Spaces added so when Suspend script is clicked, it does not change size so much when the name changes.
+    SETTINGS_MENU_NAME := "&Settings"
     ; Constructor for the ExtraKeyboardsApplication class
     __New(){
         super.__New("+MinSize920x480", "Extend Layer")
@@ -51,10 +58,10 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
         _SettingsMenu := SettingsMenu((*) => this.UpdateGuiSettings())
         ThemeCategoriesMenu := ThemesMenu((*) => this.UpdateColorTheme())
         
-        MyMenuBar.Add("&Themes", ThemeCategoriesMenu)
+        MyMenuBar.Add(this.THEMES_MENU_NAME, ThemeCategoriesMenu)
         ; TODO can do suspend differently. have custom suspend menu bar class
-        MyMenuBar.Add("&Suspend Script", (ItemName, ItemPos, MyMenuBar) => this.HandleSuspendClicked(ItemName, ItemPos, MyMenuBar))
-        MyMenuBar.Add("&Settings", _SettingsMenu)
+        MyMenuBar.Add(this.SETTINGS_MENU_NAME, _SettingsMenu)
+        MyMenuBar.Add(this.SUSPEND_SCRIPT_MENU_NAME, (ItemName, ItemPos, MyMenuBar) => this.HandleSuspendClicked(ItemName, ItemPos, MyMenuBar))
         this.AddUpdateMenu(MyMenuBar)
         
         this.MenuBar := MyMenuBar
@@ -81,12 +88,12 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
     }
 
     HandleSuspendClicked(ItemName, ItemPos, MyMenuBar) {
-        if (ItemName = "&Suspend Script"){
-            MyMenuBar.Rename(ItemName, "&Start Script")
+        if (ItemName = this.SUSPEND_SCRIPT_MENU_NAME){
+            MyMenuBar.Rename(ItemName, this.START_SCRIPT_MENU_NAME)
             Suspend(1)
         }
         else{
-            MyMenuBar.Rename(ItemName, "&Suspend Script")
+            MyMenuBar.Rename(ItemName, this.SUSPEND_SCRIPT_MENU_NAME)
             Suspend(0)
         }
     }
@@ -124,7 +131,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
     ; Creates the tab for the keyboard settings
     CreateKeyboardsTab(){
         keyboardLayoutChanger := TreeViewMaker()
-        keyboardLayoutChanger.createElementsForGui(this, this.controller.GetKeyboardLayerIdentifiers())
+        keyboardLayoutChanger.createElementsForGuiOld(this, this.controller.GetKeyboardLayerIdentifiers())
         
         this.hotkeysListView := ListViewMaker()
         this.hotkeysListView.CreateListView(this, "r20 w600 x+10 -multi" , ["KeyCombo","Action"])
@@ -221,7 +228,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
     ; Creates the tab for the action settings
     CreateFunctionSettingsTab(){
         functionsNamesTreeView := TreeViewMaker()
-        functionsNamesTreeView.createElementsForGui(this, this.controller.getActionGroupNames())
+        functionsNamesTreeView.createElementsForGuiOld(this, this.controller.getActionGroupNames())
         
         this.settingsValuesListView := ListViewMaker()
         this.settingsValuesListView.CreateListView(this, "r20 w600 x+10 -multi",  ["ActionSetting","Value"])
@@ -237,7 +244,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     ; CreateTabGeneral(){
     ;     treeViewControl := TreeViewMaker()
-    ;     treeViewControl.createElementsForGui(this, treeViewItems)
+    ;     treeViewControl.createElementsForGuiOld(this, treeViewItems)
         
     ;     listViewMadeFromTreeView := ListViewMaker()
     ;     listViewMadeFromTreeView.CreateListView(this, listViewHeaders)
@@ -248,7 +255,8 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     ; Creates the tab for the documentation
     CreateDocumentationTab(){
-        ; this.Add("Edit", "r20")
+        this.DocumentationTab := DocumentationTab(this)
+        this.DocumentationTab.createTab()
     }
 
     createUpdatesAndBackupsTab(){

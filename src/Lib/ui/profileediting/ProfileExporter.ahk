@@ -1,6 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include <Shared\FilePaths>
+#Include <Shared\MetaInfo>
 
 ; TODO inheritance importer and exporter?
 ; TODO move out of ui folder.
@@ -19,7 +20,7 @@ class ProfileExporter{
             return
         }
         try{
-            profileName := FilePaths.GetCurrentProfile()
+            profileName := MetaInfo.getCurrentProfile()
             profilePath := this.ExistingProfilesManager.getFolderPathByName(profileName)
             DirCopy(profilePath, selectedFilePath . "\" . profileName)
         }

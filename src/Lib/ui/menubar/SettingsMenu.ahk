@@ -1,6 +1,8 @@
 #Requires AutoHotkey v2.0
 
 #Include <ui\util\Menus\ImprovedMenu>
+
+#Include <Shared\MetaInfo>
 #Include <Shared\FilePaths>
 
 class SettingsMenu extends ImprovedMenu{
@@ -18,7 +20,7 @@ class SettingsMenu extends ImprovedMenu{
     }
 
     CheckCurrentCloseScriptOnGuiCloseValue(){
-        closeScriptOnGuiCloseValue := FilePaths.GetCloseScriptOnGuiClose()
+        closeScriptOnGuiCloseValue := MetaInfo.getCloseScriptOnGuiClose()
         if (closeScriptOnGuiCloseValue){
             this.Check(this.closeScriptOnGuiCloseText)
         }
@@ -28,8 +30,8 @@ class SettingsMenu extends ImprovedMenu{
     }
 
     HandleCloseScriptOnGuiCloseClicked(clicked){
-        closeScript := !FilePaths.GetCloseScriptOnGuiClose()
-        FilePaths.SetCloseScriptOnGuiClose(closeScript)
+        closeScript := !MetaInfo.getCloseScriptOnGuiClose()
+        MetaInfo.setCloseScriptOnGuiClose(closeScript)
         this.CheckCurrentCloseScriptOnGuiCloseValue()
 
         if (closeScript){

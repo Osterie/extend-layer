@@ -104,6 +104,7 @@ class IniFileReader {
         return [keyboardKey, modifiers]
     }
 
+    ; TODO is this needed?
     validateText(text) {
         text := StrReplace(text, "Ã¦", "æ")
         text := StrReplace(text, "Ã¸", "ø")

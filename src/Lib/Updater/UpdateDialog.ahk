@@ -39,7 +39,7 @@ class UpdateDialog extends DomainSpecificGui{
     createExperimentalFeatureWarning(){
         this.SetFont("s14 w700",)
 
-        this.Add("Text", "xm", 
+        this.Add("Text", "xm w400", 
             "Experimental Feature! `n" .
             "The updater is still experimental and may not always work as intended! `n" .
             "It is recommended to backup your Extend Layer profile(s) before proceeding with the update. `n" .

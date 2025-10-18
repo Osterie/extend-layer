@@ -6,6 +6,7 @@
 #Include <Infrastructure\Services\ExtendLayerProfileService>
 
 #Include <Shared\FilePaths>
+#Include <Shared\MetaInfo>
 #Include <Shared\Logger>
 
 class CurrentExtendLayerProfileManager {
@@ -71,7 +72,7 @@ class CurrentExtendLayerProfileManager {
     }
 
     load() {
-        currentProfileName := FilePaths.GetCurrentProfile()
+        currentProfileName := MetaInfo.getCurrentProfile()
         this.Profile := this.Repository.getProfile(currentProfileName)
     }
 }

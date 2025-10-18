@@ -26,6 +26,8 @@ class UpdaterRunner {
         hwnd := WinExist("Updater ahk_class AutoHotkey")
 
         processSuccessfullyClosed := true
+
+        ; Close any running instance of Updater.ahk to avoid file access conflicts when copying.
         if hwnd {
             updaterPid := WinGetPID("ahk_id " hwnd)
             if (!closeProcess(updaterPid)) {
