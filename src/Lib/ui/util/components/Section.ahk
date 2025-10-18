@@ -1,6 +1,10 @@
 #Requires AutoHotkey v2.0
 
+#Include <Shared\Logger>
+
 class Section {
+
+    Logger := Logger.getInstance()
 
     __New(guiToAddTo, width, title, content) {
         this.addTitle(guiToAddTo, width, title)
@@ -25,5 +29,10 @@ class Section {
         paragraph := guiToAddTo.Add("Text", "w" . width, content)
 
         guiToAddTo.MarginY := yMarginOfGui
+
+        lastCharacter := SubStr(content, -1, 1)
+        if (lastCharacter != "." && lastCharacter != '`n'){
+            this.Logger.logWarning("Section paragraph has missing period:" . SubStr(content, 1, 30) . "..." . " Last character was: " . lastCharacter )
+        }
     }
 }
