@@ -10,8 +10,6 @@
 ;https://autohotkey.com/board/topic/26033-scrollable-gui-proof-of-concept/#entry168174
 ; MK_SHIFT = 0x0004, WM_MOUSEWHEEL = 0x020A, WM_MOUSEHWHEEL = 0x020E, WM_NCHITTEST = 0x0084
 
-; TODO refactor
-; TODO if alt is held down, scroll 5x faster or similiar
 class DomainSpecificGuiScrollable extends DomainSpecificGui {
 
     ; How far to scroll for each scroll command, increase for faster scrolling, decrease for slower.

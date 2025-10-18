@@ -12,4 +12,6 @@ class DocumentationImages {
     static PRESET_PROFILES := "PresetProfiles.png"
     static ADDING_PROFILES := "AddProfile.png"
     static EDITING_PROFILES := "EditProfile.png"
+
+    static MENU_BAR_LOCATION := "MenuBar.png"
 }

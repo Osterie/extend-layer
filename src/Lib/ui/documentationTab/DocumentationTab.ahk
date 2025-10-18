@@ -6,6 +6,10 @@
 #Include <ui\documentationTab\popups\BackupPopup>
 #Include <ui\documentationTab\popups\UpdatePopup>
 #Include <ui\documentationTab\popups\ProfilePopup>
+#Include <ui\documentationTab\popups\menubar\MenuBarPopup>
+#Include <ui\documentationTab\popups\menubar\MenuBarSettingsPopup>
+#Include <ui\documentationTab\popups\menubar\MenuBarSuspendingPopup>
+#Include <ui\documentationTab\popups\menubar\MenuBarThemesPopup>
 
 class DocumentationTab{
 
@@ -15,6 +19,10 @@ class DocumentationTab{
     BACKUPS := "Backups"
     UPDATES := "Updates"
     PROFILES := "Profiles"
+    MENU_BAR := "Menubar"
+    MENU_BAR_THEMES := "Themes"
+        MENU_BAR_SETTINGS := "Settings"
+        MENU_BAR_SUSPENDING_SCRIPT := "Suspending Script"
 
     TREE_VIEW_WIDTH := 200
 
@@ -31,7 +39,7 @@ class DocumentationTab{
         root.Push(this.createBackupNode())
         root.Push(this.createUpdatesNode())
         root.Push(this.createProfilesNode())
-        ; root.Push(this.createMenuBarNode())
+        root.Push(this.createMenuBarNode())
         ; root.Push(this.createActionSettingsNode())
         ; root.Push(this.createKeyboardsNode())
         ; root.Push(this.createHotkeyNode())
@@ -117,22 +125,16 @@ class DocumentationTab{
     }
 
     createMenuBarNode(){
-        menubar := TreeViewStructureNode("Menubar")
+        menubar := TreeViewStructureNode(this.MENU_BAR)
 
-        settings := TreeViewStructureNode("Settings")
-        settings.addChild(TreeViewStructureNode("General Settings"))
-        settings.addChild(TreeViewStructureNode("Profile Settings"))
-        settings.addChild(TreeViewStructureNode("Backup Settings"))
-        menubar.addChild(settings)
+        themes := TreeViewStructureNode(this.MENU_BAR_THEMES)
 
-        suspending := TreeViewStructureNode("Suspending Script")
-        suspending.addChild(TreeViewStructureNode("When to Suspend"))
-        suspending.addChild(TreeViewStructureNode("Resuming from Suspend"))
+        suspending := TreeViewStructureNode(this.MENU_BAR_SUSPENDING_SCRIPT)
         menubar.addChild(suspending)
 
-        themes := TreeViewStructureNode("Themes")
-        themes.addChild(TreeViewStructureNode("Changing Theme"))
-        themes.addChild(TreeViewStructureNode("Custom Themes"))
+        settings := TreeViewStructureNode(this.MENU_BAR_SETTINGS)
+        menubar.addChild(settings)
+
         menubar.addChild(themes)
 
         return menubar
@@ -203,7 +205,22 @@ class DocumentationTab{
                 
             case this.PROFILES:
                 ProfilePopup()
-                
+
+            case this.MENU_BAR:
+                MenuBarPopup()
+
+            ; MENU BAR SUB MENU
+            case this.MENU_BAR_SETTINGS:
+                MenuBarSettingsPopup()
+
+            ; MENU BAR SUB MENU
+            case this.MENU_BAR_SUSPENDING_SCRIPT:
+                MenuBarSuspendingPopup()
+
+            ; MENU BAR SUB MENU
+            case this.MENU_BAR_THEMES:
+                MenuBarThemesPopup()
+
             default:
                 MsgBox("No documentation.")
         }
