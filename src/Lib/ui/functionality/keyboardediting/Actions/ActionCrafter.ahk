@@ -33,10 +33,10 @@ class ActionCrafter extends HotkeyCrafter{
     CreateSpecialActionsListView(){
         specialActions := this.Add("ListView", "x20 y65 r20 w400", ["Special Action"])
         specialActions.SetFont("s12")
-        specialActions.ModifyCol(1, "Center", )
 
         this.AddItemsToListView(specialActions, this.controller.GetSpecialActions())
         specialActions.OnEvent("ItemFocus", (*) => this.controller.handleActionSelected(specialActions.GetText(specialActions.GetNext( , "Focused"))))
+        specialActions.ModifyCol(1, "AutoHdr", )
 
         this.controlsForAllSpecialActionCrafting.AddControl("specialActions", specialActions)
     }
