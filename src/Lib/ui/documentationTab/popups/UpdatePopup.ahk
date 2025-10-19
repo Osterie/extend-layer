@@ -45,11 +45,11 @@ class UpdatePopup extends DocumentationPopup {
         this.section(userProfilesTitle, userProfilesParagraph)
         
         this.section(whereToFindTitle, whereToFindParagraph)
-        this.image(DocumentationImages.UPDATE_AVAILABLE, "w" . sectionWidth)
-        this.image(DocumentationImages.UPDATE_POPUP, "w" . sectionWidth)
+        this.image(DocumentationImages.UPDATE_AVAILABLE, "h-1 w" . sectionWidth)
+        this.image(DocumentationImages.UPDATE_POPUP, "h-1 w" . sectionWidth)
         
         this.section(releaseNotesTitle, releaseNotesParagraph)
-        this.image(DocumentationImages.RELEASE_NOTES, "w" . sectionWidth)
+        this.image(DocumentationImages.RELEASE_NOTES, "h-1 w" . sectionWidth)
         
         this.section(backupsTitle, backupsParagraph)
     }

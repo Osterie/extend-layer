@@ -39,7 +39,7 @@ class BackupPopup extends DocumentationPopup {
         ; restoringBackupParagraph .= this.NEW_LINE . this.NEW_LINE
 
         this.section(findingFeaturesTitle, findingFeaturesParagraph)
-        this.image(DocumentationImages.MANAGING_BACKUPS, "w" . sectionWidth)
+        this.image(DocumentationImages.MANAGING_BACKUPS, "h-1 w" . sectionWidth)
 
         this.section(managingTitle, managingParagraph)
         this.section(restoringBackupTitle, restoringBackupParagraph)
