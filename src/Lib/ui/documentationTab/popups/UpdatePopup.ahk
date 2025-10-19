@@ -30,7 +30,7 @@ class UpdatePopup extends DocumentationPopup {
 
         whereToFindTitle := "Where to Find Update Related Features"
         whereToFindParagraph := "When a new version of Extend Layer is released, you will be able to update. On the menu bar, to the right of 'Settings', there will appear a new menu option, '🔄Update available!'. This will only appear if the script is run after the update is released. If the script has been running a long while with no restarts, then you might not notice that a new update has been released, since it will not appear on the menu bar. There are however other ways to update. "
-        whereToFindParagraph .= this.NEW_LINE . this.NEW_LINE
+        whereToFindParagraph .= this.SPACING
         whereToFindParagraph .= "By going to the 'Updates and Backups' tab you can click the '🔄 Check for Updates'. If a new update is available, this will open the update dialog. Clicking 'Update Extend Layer' will run the updater and you will update to the latest released version. When the update is finished, the script will start on its own again. If you were running the control script, this will also run again."
 
         releaseNotesTitle := "Release notes"

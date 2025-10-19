@@ -14,4 +14,6 @@ class DocumentationImages {
     static EDITING_PROFILES := "EditProfile.png"
 
     static MENU_BAR_LOCATION := "MenuBar.png"
+
+    static KEYBOARD_LAYERS := "KeyboardLayers.png"
 }

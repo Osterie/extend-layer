@@ -6,6 +6,9 @@
 class DocumentationPopup extends DomainSpecificGuiScrollable {
 
     NEW_LINE := "`n"
+    SPACING := "`n`n"
+    TAB := "`t"
+    
     GUI_WIDTH := 640
     GUI_HEIGHT := 480
 

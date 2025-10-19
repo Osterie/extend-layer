@@ -10,6 +10,7 @@
 #Include <ui\documentationTab\popups\menubar\MenuBarSettingsPopup>
 #Include <ui\documentationTab\popups\menubar\MenuBarSuspendingPopup>
 #Include <ui\documentationTab\popups\menubar\MenuBarThemesPopup>
+#Include <ui\documentationTab\popups\KeyboardLayersPopup>
 
 class DocumentationTab{
 
@@ -23,6 +24,7 @@ class DocumentationTab{
     MENU_BAR_THEMES := "Themes"
         MENU_BAR_SETTINGS := "Settings"
         MENU_BAR_SUSPENDING_SCRIPT := "Suspending Script"
+    KEYBOARD_LAYERS := "Keyboard Layers"
 
     TREE_VIEW_WIDTH := 200
 
@@ -41,7 +43,7 @@ class DocumentationTab{
         root.Push(this.createProfilesNode())
         root.Push(this.createMenuBarNode())
         ; root.Push(this.createActionSettingsNode())
-        ; root.Push(this.createKeyboardsNode())
+        root.Push(this.createKeyboardsNode())
         ; root.Push(this.createHotkeyNode())
 
         treeView := treeViewMaker_.createElementsForGui(this.guiToAddTo, root, "Section w200 r20 w" . this.TREE_VIEW_WIDTH)
@@ -147,28 +149,7 @@ class DocumentationTab{
     }
 
     createKeyboardsNode(){
-        keyboards := TreeViewStructureNode("Keyboards")
-
-        globalLayer := TreeViewStructureNode("Global Layer")
-        globalLayer.addChild(TreeViewStructureNode("What is Global Layer?"))
-        globalLayer.addChild(TreeViewStructureNode("Setting Global Layer Hotkeys"))
-        keyboards.addChild(globalLayer)
-
-        normalLayer := TreeViewStructureNode("Normal Layer")
-        normalLayer.addChild(TreeViewStructureNode("What is Normal Layer?"))
-        normalLayer.addChild(TreeViewStructureNode("Setting Normal Layer Hotkeys"))
-        keyboards.addChild(normalLayer)
-
-        secondaryLayer := TreeViewStructureNode("Secondary Layer")
-        secondaryLayer.addChild(TreeViewStructureNode("What is Secondary Layer?"))
-        secondaryLayer.addChild(TreeViewStructureNode("Setting Secondary Layer Hotkeys"))
-        keyboards.addChild(secondaryLayer)
-
-        tertiaryLayer := TreeViewStructureNode("Tertiary Layer")
-        tertiaryLayer.addChild(TreeViewStructureNode("What is Tertiary Layer?"))
-        tertiaryLayer.addChild(TreeViewStructureNode("Setting Tertiary Layer Hotkeys"))
-        keyboards.addChild(tertiaryLayer)
-
+        keyboards := TreeViewStructureNode(this.KEYBOARD_LAYERS)
         return keyboards
     }
 
@@ -220,6 +201,9 @@ class DocumentationTab{
             ; MENU BAR SUB MENU
             case this.MENU_BAR_THEMES:
                 MenuBarThemesPopup()
+
+            case this.KEYBOARD_LAYERS:
+                KeyboardLayersPopup()
 
             default:
                 MsgBox("No documentation.")

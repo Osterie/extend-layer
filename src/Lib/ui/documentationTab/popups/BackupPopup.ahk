@@ -34,9 +34,9 @@ class BackupPopup extends DocumentationPopup {
         restoringBackupParagraph .= "The 'Restore backup, but keep current profiles' will revert to the previous version of Extend Layer, but will keep your profiles as they are now (before you revert). This may cause issues."
         restoringBackupParagraph .= this.NEW_LINE
         restoringBackupParagraph .= "The 'Restore backup, including backup's profiles' button will revert to the previous version of Extend Layer and replace your current user profiles with the user profiles of the backup. If you want to keep these user profiles you should export them."
-        restoringBackupParagraph .= this.NEW_LINE . this.NEW_LINE
+        restoringBackupParagraph .= this.SPACING
         ; restoringBackupParagraph .= "NOTE! When restoring a backup, make sure the backup size seems to be a reasonable number, if you have multiple backups, you can compare with another backup if the sizes are similiar. "
-        ; restoringBackupParagraph .= this.NEW_LINE . this.NEW_LINE
+        ; restoringBackupParagraph .= this.SPACING
 
         this.section(findingFeaturesTitle, findingFeaturesParagraph)
         this.image(DocumentationImages.MANAGING_BACKUPS, "h-1 w" . sectionWidth)
