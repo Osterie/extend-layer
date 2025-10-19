@@ -21,13 +21,13 @@ class MenuBarThemesPopup extends DocumentationPopup {
         sectionWidth := this.getSectionWidth()
 
         keyboardShortcutTitle := "Keyboard Navigation"
-        keyboardShortcutParagraph := "You can select this menu item by pressing 'Alt' and then pressing 'T' (the underlined character). Then navigate with the arrow keys to the theme you want to select and hit enter."
+        keyboardShortcutParagraph := "You can select this menu item by pressing 'Alt' and then pressing 'T' (the underlined character). Use the arrow keys to navigate to the theme you want, and press Enter to select it."
 
         aboutTitle := "About Themes"
-        aboutParagraph := "There are three theme categories. Colorful, which contains themes with a lot of color. Dark, which has dark themes, and Light which has light themes."
+        aboutParagraph := "There are three theme categories. Colorful, which contains vibrant themes. Dark, which has dark themes, and Light which has light themes. Choosing a theme applies it to the main GUI, popups and dialogs. Theme changes are not bound to the current profile, the theme will be used for all profiles."
         
         recommendedThemeTitle := "Recommended Theme"
-        recommendedThemeParagraph := "Text will probably be easiest to read if you use the Dark->Defaul theme, but use whatever theme you want. I just made them cause it was fun."
+        recommendedThemeParagraph := "For best readability use the Dark->Defaul theme, but use whatever theme you want. I just made them cause it was fun."
 
 
         Section(this, sectionWidth, keyboardShortcutTitle, keyboardShortcutParagraph)
