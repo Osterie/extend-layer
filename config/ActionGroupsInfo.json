@@ -234,8 +234,8 @@
         "Methods": [
             {
                 "MethodName": "CloseTabsToTheRight",
-                "FriendlyName": "Close tabs to the right in a browser",
-                "Description": "Closes all tabs to the right of the active tab in google chrome",
+                "FriendlyName": "Close tabs to the right in browser",
+                "Description": "Closes all tabs to the right of the active tab in chrome, firefox and edge browser",
                 "Parameters": []
             },
             {
@@ -342,8 +342,8 @@
             },
             {
                 "MethodName": "Hide",
-                "FriendlyName": "Hide the screen hider itself (turn it off)",
-                "Description": "Hides the screen hider itself",
+                "FriendlyName": "Hide the screen hider",
+                "Description": "Hides the screen hider itself for the hide screen/window/tabs actions.",
                 "Parameters": []
             },
             {
