@@ -13,22 +13,27 @@
 #Include <ui\documentationTab\popups\KeyboardLayersPopup>
 #Include <ui\documentationTab\popups\HotkeysPopup>
 #Include <ui\documentationTab\popups\AddEditHotkeyPopup>
+; #Include <ui\documentationTab\popups\ActionSettingsPopup>
 
 class DocumentationTab{
 
     currentPage := ""
     guiToAddTo := ""
 
-    BACKUPS := "Backups"
-    UPDATES := "Updates"
     PROFILES := "Profiles"
-    MENU_BAR := "Menubar"
-    MENU_BAR_THEMES := "Themes"
-        MENU_BAR_SETTINGS := "Settings"
-        MENU_BAR_SUSPENDING_SCRIPT := "Suspending Script"
     KEYBOARD_LAYERS := "Keyboard Layers"
     HOTKEYS := "Hotkeys"
-    ADD_EDIT_HOTKEY := "Add/Edit Hotkey"
+        ADD_EDIT_HOTKEY := "Add/Edit Hotkey"
+    ACTION_SETTINGS := "Action Settings"
+
+    MENU_BAR := "Menubar"
+        MENU_BAR_THEMES := "Themes"
+        MENU_BAR_SETTINGS := "Settings"
+        MENU_BAR_SUSPENDING_SCRIPT := "Suspending Script"
+    
+    BACKUPS := "Backups"
+    UPDATES := "Updates"
+    
 
     TREE_VIEW_WIDTH := 200
 
@@ -42,13 +47,15 @@ class DocumentationTab{
 
 
         root := []
-        root.Push(this.createBackupNode())
-        root.Push(this.createUpdatesNode())
         root.Push(this.createProfilesNode())
-        root.Push(this.createMenuBarNode())
-        ; root.Push(this.createActionSettingsNode())
         root.Push(this.createKeyboardsNode())
         root.Push(this.createHotkeyNode())
+        root.Push(this.createActionSettingsNode())
+        
+        root.Push(this.createMenuBarNode())
+        
+        root.Push(this.createBackupNode())
+        root.Push(this.createUpdatesNode())
 
         treeView := treeViewMaker_.createElementsForGui(this.guiToAddTo, root, "Section w200 r20 w" . this.TREE_VIEW_WIDTH)
 
@@ -134,21 +141,19 @@ class DocumentationTab{
         menubar := TreeViewStructureNode(this.MENU_BAR)
 
         themes := TreeViewStructureNode(this.MENU_BAR_THEMES)
-
-        suspending := TreeViewStructureNode(this.MENU_BAR_SUSPENDING_SCRIPT)
-        menubar.addChild(suspending)
-
+        menubar.addChild(themes)
+        
         settings := TreeViewStructureNode(this.MENU_BAR_SETTINGS)
         menubar.addChild(settings)
-
-        menubar.addChild(themes)
+        
+        suspending := TreeViewStructureNode(this.MENU_BAR_SUSPENDING_SCRIPT)
+        menubar.addChild(suspending)
 
         return menubar
     }
 
     createActionSettingsNode(){
-        actionSettings := TreeViewStructureNode("Action Settings")
-
+        actionSettings := TreeViewStructureNode(this.ACTION_SETTINGS)
         return actionSettings
     }
 
@@ -167,20 +172,22 @@ class DocumentationTab{
     }
 
     handleDocumentationItemSelected(selectedItemText){
-        ; Here you would load and display the documentation related to selectedItemText
-        ; MsgBox("Selected documentation item: " . selectedItemText)
-        
-        ; this.guiToAddTo.Opt("+LastFound")
-        ; WinRedraw(this.guiToAddTo)
         switch selectedItemText {
-            case this.BACKUPS:
-                BackupPopup()
-
-            case this.UPDATES:
-                UpdatePopup()
-                
             case this.PROFILES:
                 ProfilePopup()
+
+            case this.KEYBOARD_LAYERS:
+                KeyboardLayersPopup()
+
+            case this.HOTKEYS:
+                HotkeysPopup()
+
+            ; HOTKEYS SUB MENU 
+            case this.ADD_EDIT_HOTKEY:
+                AddEditHotkeyPopup()
+
+            ; case this.ACTION_SETTINGS:
+            ;     ActionSettingsPopup()
 
             case this.MENU_BAR:
                 MenuBarPopup()
@@ -197,14 +204,11 @@ class DocumentationTab{
             case this.MENU_BAR_THEMES:
                 MenuBarThemesPopup()
 
-            case this.KEYBOARD_LAYERS:
-                KeyboardLayersPopup()
+            case this.BACKUPS:
+                BackupPopup()
 
-            case this.HOTKEYS:
-                HotkeysPopup()
-
-            case this.ADD_EDIT_HOTKEY:
-                AddEditHotkeyPopup()
+            case this.UPDATES:
+                UpdatePopup()
 
             default:
                 MsgBox("No documentation.")
