@@ -11,6 +11,8 @@
 #Include <ui\documentationTab\popups\menubar\MenuBarSuspendingPopup>
 #Include <ui\documentationTab\popups\menubar\MenuBarThemesPopup>
 #Include <ui\documentationTab\popups\KeyboardLayersPopup>
+#Include <ui\documentationTab\popups\HotkeysPopup>
+#Include <ui\documentationTab\popups\AddEditHotkeyPopup>
 
 class DocumentationTab{
 
@@ -25,6 +27,8 @@ class DocumentationTab{
         MENU_BAR_SETTINGS := "Settings"
         MENU_BAR_SUSPENDING_SCRIPT := "Suspending Script"
     KEYBOARD_LAYERS := "Keyboard Layers"
+    HOTKEYS := "Hotkeys"
+    ADD_EDIT_HOTKEY := "Add/Edit Hotkey"
 
     TREE_VIEW_WIDTH := 200
 
@@ -44,7 +48,7 @@ class DocumentationTab{
         root.Push(this.createMenuBarNode())
         ; root.Push(this.createActionSettingsNode())
         root.Push(this.createKeyboardsNode())
-        ; root.Push(this.createHotkeyNode())
+        root.Push(this.createHotkeyNode())
 
         treeView := treeViewMaker_.createElementsForGui(this.guiToAddTo, root, "Section w200 r20 w" . this.TREE_VIEW_WIDTH)
 
@@ -154,19 +158,10 @@ class DocumentationTab{
     }
 
     createHotkeyNode(){
-        hotkeys := TreeViewStructureNode("Hotkeys")
+        hotkeys := TreeViewStructureNode(this.HOTKEYS)
 
-        addingEditing := TreeViewStructureNode("Adding/Editing a Hotkey")
-        addingEditing.addChild(TreeViewStructureNode("Set Hotkey"))
-        addingEditing.addChild(TreeViewStructureNode("Advanced/Simple Mode"))
-        addingEditing.addChild(TreeViewStructureNode("Set Action"))
-        addingEditing.addChild(TreeViewStructureNode("Setting Action or New Key"))
-        hotkeys.addChild(addingEditing)
-
-        managingHotkeys := TreeViewStructureNode("Managing Hotkeys")
-        managingHotkeys.addChild(TreeViewStructureNode("Deleting Hotkey"))
-        managingHotkeys.addChild(TreeViewStructureNode("Hotkey Settings"))
-        hotkeys.addChild(managingHotkeys)
+        addingEditingHotkey := TreeViewStructureNode(this.ADD_EDIT_HOTKEY)
+        hotkeys.addChild(addingEditingHotkey)
 
         return hotkeys
     }
@@ -204,6 +199,12 @@ class DocumentationTab{
 
             case this.KEYBOARD_LAYERS:
                 KeyboardLayersPopup()
+
+            case this.HOTKEYS:
+                HotkeysPopup()
+
+            case this.ADD_EDIT_HOTKEY:
+                AddEditHotkeyPopup()
 
             default:
                 MsgBox("No documentation.")
