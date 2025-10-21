@@ -18,8 +18,6 @@ class ActionSettingsPopup extends DocumentationPopup {
     }
 
     createActionSettingsPopup() {
-        sectionWidth := this.getSectionWidth()
-
         aboutTitle := "About Action Settings"
 
         aboutParagraph := "Action settings are some settings which will change the behaviour of multiple actions. For example the action setting 'AutoClickerCps' for the 'Mouse' actions. This will changed the clicks per second of the 'Toggle auto clicker', 'Start auto clicker' and 'Stop auto clicker' actions."

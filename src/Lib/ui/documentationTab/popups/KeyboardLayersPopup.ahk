@@ -18,8 +18,6 @@ class KeyboardLayersPopup extends DocumentationPopup {
     }
 
     createKeyboardLayersPopup() {
-        sectionWidth := this.getSectionWidth()
-
         whereToFindTitle := "Where to Find"
         whereToFindParagraph := "Going to the 'Keyboards' tab will show you the keyboard layers for the current Extend Layer profile."
 

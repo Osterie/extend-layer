@@ -18,8 +18,6 @@ class ProfilePopup extends DocumentationPopup {
     }
 
     createProfilePopup() {
-        sectionWidth := this.getSectionWidth()
-
         findingFeaturesTitle := "Where to Find Profile Related Features"
         findingFeaturesParagraph := "The profle related features are located beneath the menu bar. You can change the current profile with the current profile dropdown. Edit your user profiles with the 'Edit profile' button. Add preset profiles with the 'Add profile' button. Import/Export profiles with the 'Import profile' and 'Export profile' button."
 

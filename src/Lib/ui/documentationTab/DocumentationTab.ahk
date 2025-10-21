@@ -14,6 +14,7 @@
 #Include <ui\documentationTab\popups\HotkeysPopup>
 #Include <ui\documentationTab\popups\AddEditHotkeyPopup>
 #Include <ui\documentationTab\popups\ActionSettingsPopup>
+#Include <ui\documentationTab\popups\KeyboardNavigationPopup>
 
 class DocumentationTab{
 
@@ -25,6 +26,8 @@ class DocumentationTab{
     HOTKEYS := "Hotkeys"
         ADD_EDIT_HOTKEY := "Add/Edit Hotkey"
     ACTION_SETTINGS := "Action Settings"
+
+    KEYBOARD_NAVIGATION := "Keyboard Navigation"
 
     MENU_BAR := "Menubar"
         MENU_BAR_THEMES := "Themes"
@@ -51,6 +54,8 @@ class DocumentationTab{
         root.Push(this.createKeyboardsNode())
         root.Push(this.createHotkeyNode())
         root.Push(this.createActionSettingsNode())
+        
+        root.Push(this.createKeyboardNavigationNode())
         
         root.Push(this.createMenuBarNode())
         
@@ -157,6 +162,11 @@ class DocumentationTab{
         return actionSettings
     }
 
+    createKeyboardNavigationNode(){
+        keyboardNavigation := TreeViewStructureNode(this.KEYBOARD_NAVIGATION)
+        return keyboardNavigation
+    }
+
     createKeyboardsNode(){
         keyboards := TreeViewStructureNode(this.KEYBOARD_LAYERS)
         return keyboards
@@ -188,6 +198,9 @@ class DocumentationTab{
 
             case this.ACTION_SETTINGS:
                 ActionSettingsPopup()
+
+            case this.KEYBOARD_NAVIGATION:
+                KeyboardNavigationPopup()
 
             case this.MENU_BAR:
                 MenuBarPopup()
