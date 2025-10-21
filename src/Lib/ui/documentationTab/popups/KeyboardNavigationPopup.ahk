@@ -1,9 +1,5 @@
 #Requires AutoHotkey v2.0
 
-
-
-#Requires AutoHotkey v2.0
-
 #Include <ui\util\components\Section>
 #Include <ui\util\components\DocumentationImage>
 #Include <Shared\DocumentationImages>
@@ -17,11 +13,11 @@ class KeyboardNavigationPopup extends DocumentationPopup {
         header := "Keyboard Navigation Documentation"
         super.__New(title, header)
 
-        this.keyboardNavigationPopupPopup()
+        this.createKeyboardNavigationPopupPopup()
         this.show()
     }
 
-    keyboardNavigationPopupPopup() {
+    createKeyboardNavigationPopupPopup() {
         menuBarNavigationTitle := "Menu Bar"
         menuBarNavigationParagraph := "By pressing alt, the menus in the menu bar will each have one underlined character. For example the 'T' in 'Themes' gets underlined. By pressing that underlined character on the keyboard, you can select that item using only the keyboard."
         menuBarNavigationParagraph .= this.NEW_LINE

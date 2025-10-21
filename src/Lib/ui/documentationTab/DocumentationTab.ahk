@@ -15,6 +15,7 @@
 #Include <ui\documentationTab\popups\AddEditHotkeyPopup>
 #Include <ui\documentationTab\popups\ActionSettingsPopup>
 #Include <ui\documentationTab\popups\KeyboardNavigationPopup>
+#Include <ui\documentationTab\popups\LaunchingTheScriptPopup>
 
 class DocumentationTab{
 
@@ -36,6 +37,8 @@ class DocumentationTab{
     
     BACKUPS := "Backups"
     UPDATES := "Updates"
+
+    LAUNCHING_THE_SCRIPT := "Launching the Script"
     
 
     TREE_VIEW_WIDTH := 200
@@ -61,6 +64,8 @@ class DocumentationTab{
         
         root.Push(this.createBackupNode())
         root.Push(this.createUpdatesNode())
+        
+        root.Push(this.createLaunchingTheScriptNode())
 
         treeView := treeViewMaker_.createElementsForGui(this.guiToAddTo, root, "Section w200 r20 w" . this.TREE_VIEW_WIDTH)
 
@@ -118,6 +123,10 @@ class DocumentationTab{
         ; updates.addChild(managingUpdates)
 
         return updates
+    }
+
+    createLaunchingTheScriptNode(){
+        return TreeViewStructureNode(this.LAUNCHING_THE_SCRIPT)
     }
 
     createProfilesNode(){
@@ -222,6 +231,9 @@ class DocumentationTab{
 
             case this.UPDATES:
                 UpdatePopup()
+
+            case this.LAUNCHING_THE_SCRIPT:
+                LaunchingTheScriptPopup()
 
             default:
                 MsgBox("No documentation.")
