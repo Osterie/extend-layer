@@ -13,7 +13,7 @@
 #Include <ui\documentationTab\popups\KeyboardLayersPopup>
 #Include <ui\documentationTab\popups\HotkeysPopup>
 #Include <ui\documentationTab\popups\AddEditHotkeyPopup>
-; #Include <ui\documentationTab\popups\ActionSettingsPopup>
+#Include <ui\documentationTab\popups\ActionSettingsPopup>
 
 class DocumentationTab{
 
@@ -186,8 +186,8 @@ class DocumentationTab{
             case this.ADD_EDIT_HOTKEY:
                 AddEditHotkeyPopup()
 
-            ; case this.ACTION_SETTINGS:
-            ;     ActionSettingsPopup()
+            case this.ACTION_SETTINGS:
+                ActionSettingsPopup()
 
             case this.MENU_BAR:
                 MenuBarPopup()

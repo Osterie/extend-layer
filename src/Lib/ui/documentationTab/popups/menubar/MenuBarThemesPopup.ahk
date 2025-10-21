@@ -27,7 +27,7 @@ class MenuBarThemesPopup extends DocumentationPopup {
         aboutParagraph := "There are three theme categories. Colorful, which contains vibrant themes. Dark, which has dark themes, and Light which has light themes. Choosing a theme applies it to the main GUI, popups and dialogs. Theme changes are not bound to the current profile, the theme will be used for all profiles."
         
         recommendedThemeTitle := "Recommended Theme"
-        recommendedThemeParagraph := "For best readability use the Dark->Defaul theme, but use whatever theme you want. I just made them cause it was fun."
+        recommendedThemeParagraph := "For best readability use the Dark->Defaul theme, but use whatever theme you want. They were just made since it was fun."
 
 
         Section(this, sectionWidth, keyboardShortcutTitle, keyboardShortcutParagraph)
