@@ -30,6 +30,10 @@ class DocumentationPopup extends DomainSpecificGuiScrollable {
         Section(this, width, title, paragraph)
     }
 
+    paragraph(content, width := this.getSectionWidth()){
+        Paragraph(this, width, content)
+    }
+
     image(imageName, options := ""){
         DocumentationImage(this, imageName, options)
     }
