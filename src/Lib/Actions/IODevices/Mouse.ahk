@@ -7,7 +7,7 @@
 
 Class Mouse extends HotkeyAction{
 
-    autoClickerCPS := 10
+    autoClickerCps := 30
     autoClickerEnabled := false
     SendClickObjectMethod := ObjBindMethod(this, "SendClick")
     IniFileReader := IniFileReader()
@@ -19,21 +19,21 @@ Class Mouse extends HotkeyAction{
 
     __New(readSettingsFromFile := false){
         if (readSettingsFromFile){
-            this.SetAutoClickerCPSFromFile()
+            this.SetAutoClickerCpsFromFile()
         }
     }
 
-    SetAutoClickerCPSFromFile(){
+    SetAutoClickerCpsFromFile(){
         try{
-            autoClickerCPS := this.IniFileReader.readOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Mouse", "AutoClickerClickCps", 10)
+            autoClickerCps := this.IniFileReader.readOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Mouse", "AutoClickerCps", 30)
         }
         catch{
-            autoClickerCPS := 10
+            autoClickerCps := 30
             MsgBox("failed to read the auto clicker cps", "Notify")
         }
 
         try{
-            this.SetAutoClickerClickCps(autoClickerCPS)
+            this.setAutoClickerCps(autoClickerCps)
         }
         catch ValueError{
             MsgBox("The value for the auto clicker cps is less than 1, setting it to 1", "Notify")
@@ -59,7 +59,7 @@ Class Mouse extends HotkeyAction{
     }
 
     StartAutoClicker(){
-        clickDelay := 1000/this.autoClickerCPS
+        clickDelay := 1000/this.autoClickerCps
         if (clickDelay < 10){
             clickDelay := 0
         }
@@ -70,20 +70,20 @@ Class Mouse extends HotkeyAction{
         SetTimer this.SendClickObjectMethod, 0
     }
 
-    SetAutoClickerClickCps(Cps){
+    setAutoClickerCps(Cps){
         if (isInteger(Cps)){
             if (Cps < 1){
                 Cps := 1
-                this.autoClickerCPS := Cps
+                this.autoClickerCps := Cps
                 throw ValueError("The value for the auto clicker cps is less than 1, setting it to 1")
             }
             else{
-                this.autoClickerCPS := Cps
+                this.autoClickerCps := Cps
             }
         }
         else if (isFloat(Cps)){
             Cps := Integer(Cps)
-            this.autoClickerCPS := Cps
+            this.autoClickerCps := Cps
         }
         else{
             throw TypeError("The value for the auto clicker cps is not an integer")
