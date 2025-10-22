@@ -1,8 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <ui\util\components\Section>
 #Include <ui\util\components\DocumentationImage>
-#Include <Shared\DocumentationImages>
 
 #Include <ui\documentationTab\popups\DocumentationPopup>
 
@@ -26,8 +24,7 @@ class MenuBarSuspendingPopup extends DocumentationPopup {
         suspendScriptTitle := "Suspending the Script"
         suspendScriptParagraph := "By clicking the 'Suspend Script' menu, you will suspend the script. This means all hotkeys will be disabled. When you click 'Suspend Script' it will change into 'Start Script', which when clicked will enable all the disabled hotkeys."
 
-
-        Section(this, sectionWidth, keyboardShortcutTitle, keyboardShortcutParagraph)
-        Section(this, sectionWidth, suspendScriptTitle, suspendScriptParagraph)
+        this.section(keyboardShortcutTitle, keyboardShortcutParagraph)
+        this.section(suspendScriptTitle, suspendScriptParagraph)
     }
 }

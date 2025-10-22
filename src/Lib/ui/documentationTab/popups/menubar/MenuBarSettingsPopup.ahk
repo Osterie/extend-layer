@@ -1,9 +1,5 @@
 #Requires AutoHotkey v2.0
 
-#Include <ui\util\components\Section>
-#Include <ui\util\components\DocumentationImage>
-#Include <Shared\DocumentationImages>
-
 #Include <ui\documentationTab\popups\DocumentationPopup>
 
 class MenuBarSettingsPopup extends DocumentationPopup {
@@ -18,8 +14,6 @@ class MenuBarSettingsPopup extends DocumentationPopup {
     }
 
     createMenuBarSettingsPopup() {
-        sectionWidth := this.getSectionWidth()
-
         keyboardShortcutTitle := "Keyboard Navigation"
         keyboardShortcutParagraph := "You can select this menu item by pressing 'Alt' and then pressing 's' (the underlined character). Then navigate with the arrow keys to the setting you want to change and hit enter."
 
@@ -29,9 +23,8 @@ class MenuBarSettingsPopup extends DocumentationPopup {
         stopScriptOnGuiCloseTitle := "Stop Script on GUI Close"
         stopScriptOnGuiCloseParagraph := "This option will decide if closing the gui will also stop the script from running in the background. By default this is on, meaning the script stops running when the GUI is closed."
 
-
-        Section(this, sectionWidth, keyboardShortcutTitle, keyboardShortcutParagraph)
-        Section(this, sectionWidth, aboutTitle, aboutParagraph)
-        Section(this, sectionWidth, stopScriptOnGuiCloseTitle, stopScriptOnGuiCloseParagraph)
+        this.section(keyboardShortcutTitle, keyboardShortcutParagraph)
+        this.section(aboutTitle, aboutParagraph)
+        this.section(stopScriptOnGuiCloseTitle, stopScriptOnGuiCloseParagraph)
     }
 }

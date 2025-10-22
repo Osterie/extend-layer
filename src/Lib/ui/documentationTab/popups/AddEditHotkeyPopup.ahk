@@ -1,7 +1,5 @@
 #Requires AutoHotkey v2.0
 
-#Include <ui\util\components\Section>
-#Include <ui\util\components\DocumentationImage>
 #Include <Shared\DocumentationImages>
 
 #Include <ui\documentationTab\popups\DocumentationPopup>
@@ -28,7 +26,6 @@ class AddEditHotkeyPopup extends DocumentationPopup {
         addingParagraph .= "To set the action, click the 'Set Action' button and choose an action. Further down you can read more about this in the 'Setting Action' section."
         addingParagraph .= this.NEW_LINE
         addingParagraph .= "After having set the key combo and the action, click the 'Save+Done' button and this hotkey will be added to the layer you chose."
-
 
         editingTitle := "Editing Hotkeys"
         editingParagraph := "To edit a hotkey, go to the 'Keyboards' tab and select the layer you want to edit a hotkey from. Select the hotkey from the hotkeys in list view on the right and click the 'Edit' button (or press enter). This will open the hotkey editor where you can change the key combo and action."
@@ -64,9 +61,6 @@ class AddEditHotkeyPopup extends DocumentationPopup {
         settingHotkeyActionParagraph .= this.NEW_LINE
         settingHotkeyActionParagraph .= "Some actions have parameters you must choose. If the chosen action has any these will appear to the right of the list view."
         settingHotkeyActionNewKeyParagraph .= "If you choose to set a new key instead, it will be like when setting the hotkey key combo. When the action is a new key you cannot use the 'any' keyword, since that does not make sense."
-        
-        
-
 
         this.image(DocumentationImages.HOTKEY_ADD_EDIT, "h-1 w" . sectionWidth)
         
@@ -76,16 +70,14 @@ class AddEditHotkeyPopup extends DocumentationPopup {
         this.section(editingTitle, editingParagraph)
         this.image(DocumentationImages.HOTKEY_EDIT_DIALOG, "h-1 w" . sectionWidth/1.5)
         this.image(DocumentationImages.HOTKEY_EDITED_DIALOG, "h-1 w" . sectionWidth/1.5)
+        
         this.section(deletingTitle, deletingParagraph)
-        
-        
+
         this.section(settingHotkeyKeyComboTitle, settingHotkeyKeyComboParagraph)
         this.image(DocumentationImages.HOTKEY_SIMPLE_CRAFTING_DIALOG, "h-1 w" . sectionWidth/1.5)
         this.paragraph(settingHotkeyKeyComboAdvancedParagraph)
         this.image(DocumentationImages.HOTKEY_ADVANCED_CRAFTING_DIALOG, "h-1 w" . sectionWidth/1.5)
-        
-        
-        
+
         this.section(settingHotkeyActionTitle, settingHotkeyActionParagraph)
         this.image(DocumentationImages.HOTKEY_SET_ACTION, "h-1 w" . sectionWidth)
         this.paragraph(settingHotkeyActionNewKeyParagraph)

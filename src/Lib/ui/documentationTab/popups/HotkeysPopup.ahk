@@ -1,7 +1,5 @@
 #Requires AutoHotkey v2.0
 
-#Include <ui\util\components\Section>
-#Include <ui\util\components\DocumentationImage>
 #Include <Shared\DocumentationImages>
 
 #Include <ui\documentationTab\popups\DocumentationPopup>
@@ -57,10 +55,6 @@ class HotkeysPopup extends DocumentationPopup {
         specialActionsParagraph .=  "Some special actions have action settings. which can be changed under the 'Change Action Settings' tab. For example 'Layer' where you can modify the layer indicator for the Secondary and Tertiary layer."
         specialActionsParagraph .= this.SPACING
 
-        ; addingHotkeyTitle := "Adding Hotkeys"
-        ; editingHotkeyTitle := "Editing Hotkeys"
-        
-        ; Enter to edit
         this.section(aboutTitle, aboutParagraph)
         
         this.section(whereToFindTitle, whereToFindParagraph)

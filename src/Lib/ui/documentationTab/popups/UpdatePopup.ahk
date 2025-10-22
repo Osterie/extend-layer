@@ -1,7 +1,5 @@
 #Requires AutoHotkey v2.0
 
-#Include <ui\util\components\Section>
-#Include <ui\util\components\DocumentationImage>
 #Include <Shared\DocumentationImages>
 
 #Include <ui\documentationTab\popups\DocumentationPopup>
@@ -39,8 +37,6 @@ class UpdatePopup extends DocumentationPopup {
         backupsTitle := "Backups and Temporary Backups"
         backupsParagraph .= "Updating will automatically create a backup. Incase this does not work and you wish to revert to a backup, updating also creates a temporary backup. Temporary backups can be found in 'C:\Users\<USERNAME>\AppData\Local\Temp\EL\B\'."
 
-
-        
         this.section(beforeUpdatingTitle, beforeUpdatingParagraph)
         this.section(userProfilesTitle, userProfilesParagraph)
         

@@ -1,7 +1,10 @@
 #Requires AutoHotkey v2.0
 
-#Include <ui\util\DomainSpecificGuiScrollable>
+#Include <ui\util\components\Paragraph>
+#Include <ui\util\components\Section>
+#Include <ui\util\components\Image>
 
+#Include <ui\util\DomainSpecificGuiScrollable>
 
 class DocumentationPopup extends DomainSpecificGuiScrollable {
 
@@ -26,12 +29,12 @@ class DocumentationPopup extends DomainSpecificGuiScrollable {
         this.SetFont("s10")
     }
 
-    section(title, paragraph, width := this.getSectionWidth()){
-        Section(this, width, title, paragraph)
-    }
-
     paragraph(content, width := this.getSectionWidth()){
         Paragraph(this, width, content)
+    }
+
+    section(title, paragraph, width := this.getSectionWidth()){
+        Section(this, width, title, paragraph)
     }
 
     image(imageName, options := ""){

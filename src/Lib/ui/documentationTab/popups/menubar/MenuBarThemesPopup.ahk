@@ -1,9 +1,5 @@
 #Requires AutoHotkey v2.0
 
-#Include <ui\util\components\Section>
-#Include <ui\util\components\DocumentationImage>
-#Include <Shared\DocumentationImages>
-
 #Include <ui\documentationTab\popups\DocumentationPopup>
 
 class MenuBarThemesPopup extends DocumentationPopup {
@@ -29,9 +25,8 @@ class MenuBarThemesPopup extends DocumentationPopup {
         recommendedThemeTitle := "Recommended Theme"
         recommendedThemeParagraph := "For best readability use the Dark->Defaul theme, but use whatever theme you want. They were just made since it was fun."
 
-
-        Section(this, sectionWidth, keyboardShortcutTitle, keyboardShortcutParagraph)
-        Section(this, sectionWidth, aboutTitle, aboutParagraph)
-        Section(this, sectionWidth, recommendedThemeTitle, recommendedThemeParagraph)
+        this.section(keyboardShortcutTitle, keyboardShortcutParagraph)
+        this.section(aboutTitle, aboutParagraph)
+        this.section(recommendedThemeTitle, recommendedThemeParagraph)
     }
 }
