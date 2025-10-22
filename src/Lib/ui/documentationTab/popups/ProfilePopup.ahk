@@ -1,7 +1,5 @@
 #Requires AutoHotkey v2.0
 
-#Include <ui\util\components\Section>
-#Include <ui\util\components\DocumentationImage>
 #Include <Shared\DocumentationImages>
 
 #Include <ui\documentationTab\popups\DocumentationPopup>
@@ -18,10 +16,11 @@ class ProfilePopup extends DocumentationPopup {
     }
 
     createProfilePopup() {
-        sectionWidth := this.getSectionWidth()
-
         findingFeaturesTitle := "Where to Find Profile Related Features"
         findingFeaturesParagraph := "The profle related features are located beneath the menu bar. You can change the current profile with the current profile dropdown. Edit your user profiles with the 'Edit profile' button. Add preset profiles with the 'Add profile' button. Import/Export profiles with the 'Import profile' and 'Export profile' button."
+
+        profileVariantsTitle := "Profile Variants"
+        profileVariantsParagraph := "There are two profile variants. Normally you press the CapsLock key to activate a layer, but with the Hold profile variant you must hold CapsLock for the layer to be active. When adding a preset profile, the Hold variants will include 'Hold' in theri name."
 
         userProfilesTitle := "User Profiles"
         userProfilesParagraph := "User profiles are the profiles you have created, or which are created for you. You can view the names of these profiles in the current profile dropdown. Selecting one of the profiles will use that profile as the current profile."
@@ -48,6 +47,7 @@ class ProfilePopup extends DocumentationPopup {
         exportingProfilesParagraph := "Clicking 'Export profile' will open a file dialog. You must choose the location where you want the profile to be exported. The name of the exported profile will automatically be the same as the name of the exported profile, for example 'Default'. Only one profile can be exported at a time (or you could go to the file location of Extend Layer and copy the user profiles from there). The exported profile can now be imported."
 
         this.section(findingFeaturesTitle, findingFeaturesParagraph)
+        this.section(profileVariantsTitle, profileVariantsParagraph)
 
         this.section(userProfilesTitle, userProfilesParagraph)
         this.image(DocumentationImages.USER_PROFILES)

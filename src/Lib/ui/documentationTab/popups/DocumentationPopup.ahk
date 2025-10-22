@@ -1,11 +1,17 @@
 #Requires AutoHotkey v2.0
 
-#Include <ui\util\DomainSpecificGuiScrollable>
+#Include <ui\util\components\Paragraph>
+#Include <ui\util\components\Section>
+#Include <ui\util\components\Image>
 
+#Include <ui\util\DomainSpecificGuiScrollable>
 
 class DocumentationPopup extends DomainSpecificGuiScrollable {
 
     NEW_LINE := "`n"
+    SPACING := "`n`n"
+    TAB := "`t"
+    
     GUI_WIDTH := 640
     GUI_HEIGHT := 480
 
@@ -21,6 +27,10 @@ class DocumentationPopup extends DomainSpecificGuiScrollable {
         this.SetFont("s16 Bold")
         this.Add("Text", "", header)
         this.SetFont("s10")
+    }
+
+    paragraph(content, width := this.getSectionWidth()){
+        Paragraph(this, width, content)
     }
 
     section(title, paragraph, width := this.getSectionWidth()){

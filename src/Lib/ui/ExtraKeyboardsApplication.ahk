@@ -255,8 +255,8 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     ; Creates the tab for the documentation
     CreateDocumentationTab(){
-        this.DocumentationTab := DocumentationTab(this)
-        this.DocumentationTab.createTab()
+        this.DocumentationTab := DocumentationTab()
+        this.DocumentationTab.createTab(this)
     }
 
     createUpdatesAndBackupsTab(){

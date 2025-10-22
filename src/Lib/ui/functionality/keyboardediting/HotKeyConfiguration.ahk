@@ -67,7 +67,7 @@ class HotKeyConfiguration extends DomainSpecificGui{
         this.currentHotkeyTextControl.Value := ("Hotkey: `n" . this.model.GetHotkeyFriendly())
 
         if (this.model.getOriginalHotkey() != this.model.GetHotkey()){
-            this.currentHotkeyTextControl.SetFont("s10 cGreen")
+            this.currentHotkeyTextControl.SetFont("cGreen")
         }
         else{
             this.SetCurrentThemeFontColor()
@@ -80,7 +80,7 @@ class HotKeyConfiguration extends DomainSpecificGui{
         this.currentActionTextControl.Value := ("Action: `n" . this.model.GetAction())
 
         if (this.model.getOriginalAction() != this.model.GetAction()){
-            this.currentActionTextControl.SetFont("s10 cGreen")
+            this.currentActionTextControl.SetFont("cGreen")
         }
         else{
             this.SetCurrentThemeFontColor()

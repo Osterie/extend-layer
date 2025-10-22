@@ -14,7 +14,7 @@ class ProfileRegion{
     editProfilesButton := ""
 
     CreateView(guiObject, controller){
-
+        this.guiHwnd := guiObject.GetHwnd()
         this.controller := controller
 
         guiObject.Add("Text", , "Current Profile:")
@@ -36,7 +36,7 @@ class ProfileRegion{
         importProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "doImportProfile")())
         exportProfileButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "doExportProfile")())
 
-        this.guiHwnd := guiObject.GetHwnd()
+        this.unFocusDropDownMenu(this.profilesDropDownMenu)
     }
 
     NotifyListenersProfileChanged(newProfileName){
@@ -49,7 +49,7 @@ class ProfileRegion{
         this.profileChangedEventSubscribers.Push(event)
     }
 
-    UpdateProfilesDropDownMenu(){
+    updateProfilesDropDownMenu(){
         this.profilesDropDownMenu.Delete()
         this.profilesDropDownMenu.Add(this.controller.getProfiles())
         try{
@@ -57,7 +57,7 @@ class ProfileRegion{
         }
     }
 
-    CreateProfilesDropDownMenu(guiObject, profiles, profileIndex){
+    createProfilesDropDownMenu(guiObject, profiles, profileIndex){
         
         ; If for some reason a profile is not selected, then select the first one.
         if (profileIndex == -1)
@@ -76,13 +76,11 @@ class ProfileRegion{
             profilesDropDownMenu := guiObject.Add("DropDownList", "ym+1 Choose" . profileIndex, profiles)
         }
 
-        ; profilesDropDownMenu.OnEvent("Focus", (*) => this.unFocusDropDownMenu(profilesDropDownMenu))
-
         return profilesDropDownMenu
     }
 
+    ; This avoid focusing the dropdown, which is really irritating
     unFocusDropDownMenu(dropDownMenu){
-        ; This avoid focusing the dropdown, which is really irritating
         this.editProfilesButton.Focus()
     }
 

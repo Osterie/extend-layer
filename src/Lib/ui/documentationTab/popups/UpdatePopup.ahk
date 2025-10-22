@@ -1,7 +1,5 @@
 #Requires AutoHotkey v2.0
 
-#Include <ui\util\components\Section>
-#Include <ui\util\components\DocumentationImage>
 #Include <Shared\DocumentationImages>
 
 #Include <ui\documentationTab\popups\DocumentationPopup>
@@ -30,7 +28,7 @@ class UpdatePopup extends DocumentationPopup {
 
         whereToFindTitle := "Where to Find Update Related Features"
         whereToFindParagraph := "When a new version of Extend Layer is released, you will be able to update. On the menu bar, to the right of 'Settings', there will appear a new menu option, '🔄Update available!'. This will only appear if the script is run after the update is released. If the script has been running a long while with no restarts, then you might not notice that a new update has been released, since it will not appear on the menu bar. There are however other ways to update. "
-        whereToFindParagraph .= this.NEW_LINE . this.NEW_LINE
+        whereToFindParagraph .= this.SPACING
         whereToFindParagraph .= "By going to the 'Updates and Backups' tab you can click the '🔄 Check for Updates'. If a new update is available, this will open the update dialog. Clicking 'Update Extend Layer' will run the updater and you will update to the latest released version. When the update is finished, the script will start on its own again. If you were running the control script, this will also run again."
 
         releaseNotesTitle := "Release notes"
@@ -39,17 +37,15 @@ class UpdatePopup extends DocumentationPopup {
         backupsTitle := "Backups and Temporary Backups"
         backupsParagraph .= "Updating will automatically create a backup. Incase this does not work and you wish to revert to a backup, updating also creates a temporary backup. Temporary backups can be found in 'C:\Users\<USERNAME>\AppData\Local\Temp\EL\B\'."
 
-
-        
         this.section(beforeUpdatingTitle, beforeUpdatingParagraph)
         this.section(userProfilesTitle, userProfilesParagraph)
         
         this.section(whereToFindTitle, whereToFindParagraph)
-        this.image(DocumentationImages.UPDATE_AVAILABLE, "w" . sectionWidth)
-        this.image(DocumentationImages.UPDATE_POPUP, "w" . sectionWidth)
+        this.image(DocumentationImages.UPDATE_AVAILABLE, "h-1 w" . sectionWidth)
+        this.image(DocumentationImages.UPDATE_POPUP, "h-1 w" . sectionWidth)
         
         this.section(releaseNotesTitle, releaseNotesParagraph)
-        this.image(DocumentationImages.RELEASE_NOTES, "w" . sectionWidth)
+        this.image(DocumentationImages.RELEASE_NOTES, "h-1 w" . sectionWidth)
         
         this.section(backupsTitle, backupsParagraph)
     }
