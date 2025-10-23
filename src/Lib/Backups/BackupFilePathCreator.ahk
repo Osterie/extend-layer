@@ -28,7 +28,6 @@ class BackupFilePathCreator {
             parts := StrSplit(backupName, this.BACKUP_NAME_DELIMITER)
             newBackupZipPath := this.BACKUP_DIR . "\" . parts[1] . this.BACKUP_NAME_DELIMITER . parts[2] . ".zip"
             DirMove(backupZipFilePath, newBackupZipPath, "R")
-            MsgBox(backupName)
             backupZipFilePath := newBackupZipPath
         }
 
@@ -56,7 +55,6 @@ class BackupFilePathCreator {
         FoundPos := RegExMatch(backupName, "^v5\.0\.0_[^_].*")
 
         if (FoundPos = 1) {
-            MsgBox("converted " . backupName)
             return this.convertFormatFromv050ToCurrentFormat(backupName)
         }
 
