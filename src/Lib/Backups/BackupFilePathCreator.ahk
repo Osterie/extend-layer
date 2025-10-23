@@ -19,14 +19,25 @@ class BackupFilePathCreator {
 
     ; Extracts the version and timestamp from a backup file name.
     ; Expected format: "{path to backup}\{Version}__{Timestamp}.zip"
-    extractVersionAndTimestamp(backupZipFilePath) {
+    extractInfo(backupZipFilePath) {
         backupName := this.getFileName(backupZipFilePath)
+
+        converted := this.convertIfOldFormat(backupName)
+        if (converted != ""){
+            backupName := converted
+            parts := StrSplit(backupName, this.BACKUP_NAME_DELIMITER)
+            newBackupZipPath := this.BACKUP_DIR . "\" . parts[1] . this.BACKUP_NAME_DELIMITER . parts[2] . ".zip"
+            DirMove(backupZipFilePath, newBackupZipPath, "R")
+            MsgBox(backupName)
+            backupZipFilePath := newBackupZipPath
+        }
+
 
         parts := StrSplit(backupName, this.BACKUP_NAME_DELIMITER)
         if (parts.Length != 2) {
             throw Error("Invalid backup file name format: " backupZipFilePath)
         }
-        return { version: parts[1], timestamp: parts[2] }
+        return { version: parts[1], timestamp: parts[2], path: backupZipFilePath}
     }
 
     ; Gets the file name from the backup zip path.
@@ -35,5 +46,27 @@ class BackupFilePathCreator {
     getFileName(backupZipPath) {
         file := FilePath(backupZipPath)
         return file.getFileName()
+    }
+
+    convertIfOldFormat(backupName){
+        checkv050FormatString := SubStr(backupName, 1 , 7)
+
+        ; Checks if format is like v5.0.0_20251023083401 (with a single underscore)
+        ; A valid format could be v5.0.0__20251023083401
+        FoundPos := RegExMatch(backupName, "^v5\.0\.0_[^_].*")
+
+        if (FoundPos = 1) {
+            MsgBox("converted " . backupName)
+            return this.convertFormatFromv050ToCurrentFormat(backupName)
+        }
+
+        return ""
+    }
+
+    convertFormatFromv050ToCurrentFormat(backupName){
+        parts := StrSplit(backupName, "_")
+
+        currentFormat := parts[1] . "__" . parts[2]
+        return currentFormat
     }
 }

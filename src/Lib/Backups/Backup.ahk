@@ -54,20 +54,20 @@ class Backup {
     }
 
     setPropertiesFromBackupPath(backupZipPath) {
-        info := this.extractVersionAndTimestamp(backupZipPath)
+        info := this.extractInfo(backupZipPath)
 
-        this.path := backupZipPath
+        this.path := info.path
         this.name := info.version
         this.timestamp := info.timestamp
-        this.size := FileGetSize(backupZipPath, "B")
+        this.size := FileGetSize(this.path, "B")
     }
 
-    extractVersionAndTimestamp(backupZipPath) {
+    extractInfo(backupZipPath) {
         if (!FileExist(backupZipPath)) {
             throw Error("Backup does not exist: " backupZipPath)
         }
 
-        parts := this.BackupFilePathCreator.extractVersionAndTimestamp(backupZipPath)
+        parts := this.BackupFilePathCreator.extractInfo(backupZipPath)
 
         version := parts.version ; The version is the first part of the name
         timestamp := parts.timestamp ; The timestamp is the second part of the name
