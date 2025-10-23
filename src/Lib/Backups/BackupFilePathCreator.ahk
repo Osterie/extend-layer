@@ -4,7 +4,8 @@
 
 class BackupFilePathCreator {
 
-    BACKUP_NAME_DELIMITER := "__"
+    ; TODO, in 4-5 versions, change this to "__"
+    BACKUP_NAME_DELIMITER := "_"
     BACKUP_DIR := FilePaths.getPathToBackups()
 
     __New() {
@@ -18,18 +19,18 @@ class BackupFilePathCreator {
     }
 
     ; Extracts the version and timestamp from a backup file name.
-    ; Expected format: "{path to backup}\{Version}__{Timestamp}.zip"
+    ; Expected format: "{path to backup}\{Version}_{Timestamp}.zip"
     extractInfo(backupZipFilePath) {
         backupName := this.getFileName(backupZipFilePath)
 
-        converted := this.convertIfOldFormat(backupName)
-        if (converted != ""){
-            backupName := converted
-            parts := StrSplit(backupName, this.BACKUP_NAME_DELIMITER)
-            newBackupZipPath := this.BACKUP_DIR . "\" . parts[1] . this.BACKUP_NAME_DELIMITER . parts[2] . ".zip"
-            DirMove(backupZipFilePath, newBackupZipPath, "R")
-            backupZipFilePath := newBackupZipPath
-        }
+        ; converted := this.convertIfOldFormat(backupName)
+        ; if (converted != ""){
+        ;     backupName := converted
+        ;     parts := StrSplit(backupName, this.BACKUP_NAME_DELIMITER)
+        ;     newBackupZipPath := this.BACKUP_DIR . "\" . parts[1] . this.BACKUP_NAME_DELIMITER . parts[2] . ".zip"
+        ;     DirMove(backupZipFilePath, newBackupZipPath, "R")
+        ;     backupZipFilePath := newBackupZipPath
+        ; }
 
 
         parts := StrSplit(backupName, this.BACKUP_NAME_DELIMITER)
@@ -47,24 +48,24 @@ class BackupFilePathCreator {
         return file.getFileName()
     }
 
-    convertIfOldFormat(backupName){
-        checkv050FormatString := SubStr(backupName, 1 , 7)
+    ; convertIfOldFormat(backupName){
+    ;     checkv050FormatString := SubStr(backupName, 1 , 7)
 
-        ; Checks if format is like v5.0.0_20251023083401 (with a single underscore)
-        ; A valid format could be v5.0.0__20251023083401
-        FoundPos := RegExMatch(backupName, "^v5\.0\.0_[^_].*")
+    ;     ; Checks if format is like v5.0.0_20251023083401 (with a single underscore)
+    ;     ; A valid format could be v5.0.0__20251023083401
+    ;     FoundPos := RegExMatch(backupName, "^v5\.0\.0_[^_].*")
 
-        if (FoundPos = 1) {
-            return this.convertFormatFromv050ToCurrentFormat(backupName)
-        }
+    ;     if (FoundPos = 1) {
+    ;         return this.convertFormatFromv050ToCurrentFormat(backupName)
+    ;     }
 
-        return ""
-    }
+    ;     return ""
+    ; }
 
-    convertFormatFromv050ToCurrentFormat(backupName){
-        parts := StrSplit(backupName, "_")
+    ; convertFormatFromv050ToCurrentFormat(backupName){
+    ;     parts := StrSplit(backupName, "_")
 
-        currentFormat := parts[1] . "__" . parts[2]
-        return currentFormat
-    }
+    ;     currentFormat := parts[1] . "__" . parts[2]
+    ;     return currentFormat
+    ; }
 }
