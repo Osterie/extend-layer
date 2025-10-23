@@ -44,7 +44,12 @@ class BackupManager {
             path := A_LoopFileFullPath
 
             if (FileExist(path)) {
-                backups.Push(Backup(path))
+                try{
+                    backups.Push(Backup(path))
+                }
+                catch{
+                    this.Logger.logError("Backup path is invalid format: " . path)
+                }
             }
         }
 
@@ -57,10 +62,15 @@ class BackupManager {
         currentVersion := this.Version.getCurrentVersion()
 
         loop files, this.BACKUP_DIR "\*.zip", "FD" {
-            backupZipFilePath := A_LoopFileFullPath
-            Backup_ := Backup(backupZipFilePath)
-            if (Backup_.getName() = currentVersion) {
-                return true
+            try{
+                backupZipFilePath := A_LoopFileFullPath
+                Backup_ := Backup(backupZipFilePath)
+                if (Backup_.getName() = currentVersion) {
+                    return true
+                }
+            }
+            catch{
+                this.Logger.logError("Invalid backup path: " . A_LoopFileFullPath)
             }
         }
 

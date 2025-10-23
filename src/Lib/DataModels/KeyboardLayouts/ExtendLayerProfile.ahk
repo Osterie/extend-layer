@@ -177,7 +177,7 @@ class ExtendLayerProfile {
                 ExtendLayerProfile_.setDescription(layerInfoContents)
             }
             else {
-                throw ("Unknown layer type: " . layerIdentifier)
+                Logger.getInstance().logWarning("Unknown layer identifier: " . layerIdentifier)
             }
         }
 
