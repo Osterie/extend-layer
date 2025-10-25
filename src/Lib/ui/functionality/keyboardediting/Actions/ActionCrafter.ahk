@@ -118,7 +118,7 @@ class ActionCrafter extends HotkeyCrafter{
     CreateActionToDoControls(position){
         groupBoxForActionMaker := this.Add("GroupBox", " Section " . position, "Special Action Maker")
         
-        groupBoxForActionToDo := this.Add("GroupBox", " Section xp+20 yp+20 wp-40 h45", "Action to do")
+        groupBoxForActionToDo := this.Add("GroupBox", " Section xp+20 yp+20 wp-40 h45", "Action To Do")
         friendlyNameOfActionControl := this.Add("Text", "xs+15 ys+15 wrap", "")
         friendlyNameOfActionControl.SetFont("s12")
         friendlyNameOfActionControl.Opt("Hidden1")

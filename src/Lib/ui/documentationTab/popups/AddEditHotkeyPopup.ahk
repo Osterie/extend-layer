@@ -40,7 +40,7 @@ class AddEditHotkeyPopup extends DocumentationPopup {
         deletingParagraph := "Only when editing a hotkey will you have the 'Delete+Done' button visible. Clicking this button will delete the chosen hotkey."
 
         settingHotkeyKeyComboTitle := "Setting Hotkey Key Combo"
-        settingHotkeyKeyComboParagraph := "There are two modes when setting the hotkey key combo, 'simple' and 'advanced'. When you click the 'Set Hotkey' button, you will see the simple version and a checkbox saying 'Advanced mode', which when clicked will change to the advanced version."
+        settingHotkeyKeyComboParagraph := "There are two modes when setting the hotkey key combo, 'simple' and 'advanced'. When you click the 'Set Hotkey' button, you will see the simple version and a checkbox saying 'Advanced Mode', which when clicked will change to the advanced version."
         settingHotkeyKeyComboParagraph .= this.NEW_LINE
         settingHotkeyKeyComboParagraph .= "The image below shows the simple version. The simple version just has a hotkey input box. You can focus this input box and create the key combo by pressing the keys on your keyboard. By holding shift, ctrl and alt and then pressing c, you can click save which makes the key combo 'Shift + Ctrl + Alt + C'."
         settingHotkeyKeyComboParagraph .= this.NEW_LINE

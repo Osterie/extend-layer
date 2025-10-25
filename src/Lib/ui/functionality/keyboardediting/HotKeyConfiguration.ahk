@@ -13,7 +13,7 @@ class HotKeyConfiguration extends DomainSpecificGui{
     model := ""
 
     __New(settings, ownerHwnd := ""){
-        super.__New(settings, "Hotkey Configuration")
+        super.__New("+MinSize300x " . settings, "Hotkey Configuration")
         this.setOwner(ownerHwnd)
     }
 
@@ -23,7 +23,7 @@ class HotKeyConfiguration extends DomainSpecificGui{
         this.createCurrentHotkeyControl()
         this.createCurrentActionControl()
         this.createButtons()
-        this.Show("AutoSize")
+        this.show("AutoSize")
     }
 
     createCurrentHotkeyControl(){
@@ -32,7 +32,7 @@ class HotKeyConfiguration extends DomainSpecificGui{
     }
 
     createCurrentActionControl(){
-        this.currentActionTextControl := this.Add("Text", " ", "Action: `n")
+        this.currentActionTextControl := this.Add("Text", "", "Action: `n")
         this.updateActionText()
     }
 

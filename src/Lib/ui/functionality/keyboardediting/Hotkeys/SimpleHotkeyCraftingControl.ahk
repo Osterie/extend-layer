@@ -16,7 +16,7 @@ class SimpleHotkeyCraftingControl{
         this.hotkeySavedEventSubscribers := Array()
         ; msgbox(originalHotkey)
 
-        simpleHotkeyCraftingBox := this.GuiToAddTo.Add("GroupBox", "Section " . position, "Simple hotkey crafting:")
+        simpleHotkeyCraftingBox := this.GuiToAddTo.Add("GroupBox", "Section " . position, "Simple Hotkey Crafting:")
         hotkeyDynamicInput := this.GuiToAddTo.Add("Hotkey", "w250 h20 xs+10 ys+20") ;yp sets the control's position to the left of the previous one...
         hotkeyDynamicInput.Value := originalHotkey
         hotkeyDynamicInput.OnEvent("Change", (*) => this.NotifyListenersHotkeyChanged())

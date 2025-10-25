@@ -21,7 +21,7 @@ class AdvancedHotkeyCraftingControl{
         this.controlsForModifiers := GuiControlsRegistry()
         this.hotkeySavedEventSubscribers := Array()
 
-        groupBoxForAdvancedHotkeyCrafting := this.guiToAddTo.Add("GroupBox", "Section " . position, "Advanced hotkey crafting:")
+        groupBoxForAdvancedHotkeyCrafting := this.guiToAddTo.Add("GroupBox", "Section " . position, "Advanced Hotkey Crafting:")
         this.CreateModifierControls()
         this.CreateHotkeySelectionControls(availableKeyNames)
         ; this.CreateHotkeyStateControls() // Uncommented since adding support for key up/down state would require changes in the hotkey initialization logic
