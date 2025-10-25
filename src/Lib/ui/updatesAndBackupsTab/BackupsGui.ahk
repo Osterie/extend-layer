@@ -42,7 +42,7 @@ class BackupsGui extends DomainSpecificGui {
             this.addBackupToListView(Backup_)
         }
 
-        this.modifyListViewColumns(backups)
+        this.modifyListViewColumns()
     }
 
     addBackupToListView(Backup_) {
@@ -50,16 +50,11 @@ class BackupsGui extends DomainSpecificGui {
         this.backupsListView.Add("", Backup_.getPath(), Backup_.getName(), formattedTime, Backup_.getSize("K") " KB")
     }
 
-    modifyListViewColumns(backups) {
-
-        this.backupsListView.ModifyCol(1, "0") ; Hides the first column (Path), can be used when a column is selected.
+    modifyListViewColumns() {
+        this.backupsListView.ModifyCol(1, "0") ; Path. Hides the Path column. This column exists to easily get the path for the selected backup.
         this.backupsListView.ModifyCol(2, "80 Center") ; Version
         this.backupsListView.ModifyCol(3, "400 Text Center SortDesc") ; Timestamp
-        this.backupsListView.ModifyCol(4, "Auto Text Center") ; Size
-
-        if (backups.Length = 0) {
-            this.backupsListView.ModifyCol(3, "80")
-        }
+        this.backupsListView.ModifyCol(4, "AutoHdr Text Center") ; Size
     }
 
     handleBackupSelected(GuiCtrlObj, selected) {
