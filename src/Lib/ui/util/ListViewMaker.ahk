@@ -34,7 +34,6 @@ class ListViewMaker{
         minWidths := this.GetMinWidthsForItems(items)
         this.TrimList(items.Length)
         this.RenewItems(items)
-        Sleep(20)
         this.SetColumnWidths(minWidths)
     }
 
@@ -48,7 +47,7 @@ class ListViewMaker{
             }
         }
     }
-
+    
     RenewItems(newItems){
         listViewLength := this.listView.GetCount()
 
@@ -64,8 +63,9 @@ class ListViewMaker{
 
     SetColumnWidths(columnWidths){
         Loop columnWidths.Length{
-            this.listView.ModifyCol(A_Index, columnWidths[A_Index]*9)
+            this.listView.ModifyCol(A_Index, "AutoHdr", )
         }
+
     }
 
 
