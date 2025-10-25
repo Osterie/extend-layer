@@ -24,6 +24,14 @@ Class Mouse extends HotkeyAction{
     }
 
     SetAutoClickerCpsFromFile(){
+
+        try{
+            autoClickerCps := this.IniFileReader.deleteLine(FilePaths.GetPathToCurrentSettings(), "Mouse", "AutoClickerClickCps")
+        }
+        catch{
+            ; Do nothing.
+        }
+
         try{
             autoClickerCps := this.IniFileReader.readOrCreateLine(FilePaths.GetPathToCurrentSettings(), "Mouse", "AutoClickerCps", 30)
         }

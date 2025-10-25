@@ -52,6 +52,11 @@ class IniFileReader {
         return readValue
     }
 
+    deleteLine(iniFile, section, key) {
+        key := this.validateText(key)
+        IniDelete(iniFile, section , key)
+    }
+
     readOrCreateLine(iniFile, section, key, defaultValue) {
         if (defaultValue == "") {
             MsgBox("Default value cannot be empty", "Notify")
