@@ -25,10 +25,10 @@ class ProfileRegion{
         
         this.profilesDropDownMenu.OnEvent("Change", (*) => this.NotifyListenersProfileChanged(this.profilesDropDownMenu.Text))
 
-        this.editProfilesButton := guiObject.Add("Button", "w80 ym+1", "&Edit profiles")
-        addProfileButton := guiObject.Add("Button", "w80 ym+1", "&Add profile")
-        importProfileButton := guiObject.Add("Button", "w90 ym+1", "&Import profile")
-        exportProfileButton := guiObject.Add("Button", "w90 ym+1", "E&xport profile")
+        this.editProfilesButton := guiObject.Add("Button", "w80 ym+1", "&Edit Profiles")
+        addProfileButton := guiObject.Add("Button", "w80 ym+1", "&Add Profile")
+        importProfileButton := guiObject.Add("Button", "w90 ym+1", "&Import Profile")
+        exportProfileButton := guiObject.Add("Button", "w90 ym+1", "E&xport Profile")
         
 
         this.editProfilesButton.OnEvent("Click", (*) =>  ObjBindMethod(controller, "doOpenEditProfileView")())
