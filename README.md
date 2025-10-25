@@ -3,10 +3,10 @@
 # Extend layer
 
 Extend layer is an autohotkey program created to improve the functionality of your keyboard. The program allows you to:
-- Create multiple custom virtual keyboards 💻
-- Choose between predefined virtual keyboards 📚
-- Switch between different profiles of virtual keyboards 🔄
-- Rebind keys to other keys or special actions ⚙️
+- Create multiple custom virtual keyboards
+- Choose between predefined virtual keyboards
+- Switch between different profiles of virtual keyboards
+- Rebind keys to other keys or special actions
 
 ## Quick links
 
@@ -47,10 +47,10 @@ To run this script, do the following:
 ## Summary
 
 - Create custom profiles which have different virtual keyboards
-- Switch between different profiles of virtual keyboards 🔄
-- Create multiple custom virtual keyboards 💻
-- Choose between predefined virtual keyboards 📚
-- Rebind keys to other keys or special actions ⚙️
+- Switch between different profiles of virtual keyboards
+- Create multiple custom virtual keyboards
+- Choose between predefined virtual keyboards
+- Rebind keys to other keys or special actions
 
 ### Example of a predefined virtual keyboard
 
