@@ -125,13 +125,13 @@ Class Mouse extends HotkeyAction{
     }
 
     BlockMouseClicks(){
-        Hotkey("LButton", this.DoNothing, "On UseErrorLevel")
-        Hotkey("*LButton", this.DoNothing, "On UseErrorLevel")
+        Hotkey("LButton", this.DoNothing, "On")
+        Hotkey("*LButton", this.DoNothing, "On")
     }
 
     UnBlockMouseClicks(){
-        Hotkey("LButton", this.DoNothing, "Off UseErrorLevel")
-        Hotkey("*LButton", this.DoNothing, "Off UseErrorLevel")
+        Hotkey("LButton", this.DoNothing, "Off")
+        Hotkey("*LButton", this.DoNothing, "Off")
     }
 
     ; Run a powershell exe to disable mouse
