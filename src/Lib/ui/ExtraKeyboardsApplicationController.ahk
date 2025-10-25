@@ -95,7 +95,7 @@ Class ExtraKeyboardsApplicationController{
     ; TODO move to view?
     CreatePopupForHotkeys(hotkeyInformation){
         popupForConfiguringHotkeyModel := HotkeyConfigurator(hotkeyInformation)
-        popupForConfiguringHotkey := HotKeyConfiguration("+Resize +MinSize300x220", this.GetHwnd())
+        popupForConfiguringHotkey := HotKeyConfiguration("+Resize", this.GetHwnd())
         popupForConfiguringHotkeyController := HotKeyConfigurationController(popupForConfiguringHotkeyModel, popupForConfiguringHotkey)
         popupForConfiguringHotkey.createMain(popupForConfiguringHotkeyController)
 

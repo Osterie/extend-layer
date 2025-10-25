@@ -23,7 +23,7 @@ class HotKeyConfiguration extends DomainSpecificGui{
         this.createCurrentHotkeyControl()
         this.createCurrentActionControl()
         this.createButtons()
-        this.Show()
+        this.Show("AutoSize")
     }
 
     createCurrentHotkeyControl(){
