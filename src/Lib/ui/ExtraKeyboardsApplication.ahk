@@ -149,7 +149,6 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
         this.ButtonForAddingInfo := this.Add("Button", "", "&Add")
         this.ButtonForAddingInfo.OnEvent("Click", (*) => this.controller.DoAddOrEditHotkey())
         this.ButtonForAddingInfo.Opt("Hidden1")
-        this.ButtonForAddingInfo.Enabled := false
 
         this.ButtonForEditingInfo := this.Add("Button", " Yp", "&Edit")
         this.ButtonForEditingInfo.OnEvent("Click", (*) => this.controller.DoAddOrEditHotkey(this.hotkeysListView.GetSelectionText()))
