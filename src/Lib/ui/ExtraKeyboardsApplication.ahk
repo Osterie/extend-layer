@@ -146,7 +146,6 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     ; Creates the buttons for adding/editing/deleting a hotkey.
     CreateConfigurationButtons(){
-        
         this.ButtonForAddingInfo := this.Add("Button", "", "&Add")
         this.ButtonForAddingInfo.OnEvent("Click", (*) => this.controller.DoAddOrEditHotkey())
         this.ButtonForAddingInfo.Opt("Hidden1")
@@ -157,9 +156,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
         this.ButtonForDeletingInfo := this.Add("Button", "Yp", "&Delete")
         this.ButtonForDeletingInfo.OnEvent("Click", (*) => this.controller.deleteHotkey(HotkeyFormatter.convertFromFriendlyName(this.hotkeysListView.GetSelectionText())))
-
         this.ButtonForDeletingInfo.Opt("Hidden1")
-
     }
 
     ; Disables the buttons for editing/deleting a hotkey.

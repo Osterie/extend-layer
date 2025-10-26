@@ -71,7 +71,6 @@ Class ExtraKeyboardsApplicationController{
     ; TODO make sure user cant create multiple popups?
     ; TODO change name for this...
     DoAddOrEditHotkey(hotkeyBuild := ""){
-
         try{
             layerInformation := this.GetCurrentLayerInfo()
         }
@@ -173,6 +172,13 @@ Class ExtraKeyboardsApplicationController{
     }
 
     deleteHotkey(hotkeyKey){
+        try{
+            layerInformation := this.GetCurrentLayerInfo()
+        }
+        catch Error as e{
+            return
+        }
+
         try{
             this.ExtraKeyboards.deleteHotkey(hotkeyKey)
         }
