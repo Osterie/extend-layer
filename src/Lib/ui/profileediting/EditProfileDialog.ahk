@@ -30,13 +30,13 @@ class EditProfileDialog extends DomainSpecificGui{
         profileDescriptionInputLabel := this.Add("Text", "xp+20 yp+30", "Profile Description:")
         this.profileDescriptionInput := this.Add("Edit", "xp w300 h200", this.ExtendLayerProfileRepository.getProfile(this.getProfileName()).getDescription())
         
-        renameProfileButton := this.Add("Button", "Default w150 xs ys+40", "Change Name")
+        renameProfileButton := this.Add("Button", "Default w150 xs ys+40", "&Change Name")
         renameProfileButton.OnEvent("Click", (*) => this.CreateRenameProfileInputBox())
         
-        deleteProfileButton := this.Add("Button", "w150 xs yp+35", "Delete Profile")
+        deleteProfileButton := this.Add("Button", "w150 xs yp+35", "&Delete Profile")
         deleteProfileButton.OnEvent("Click", (*) => this.CreateDeleteProfileInputBox())
         
-        updateProfileDescriptionButton := this.Add("Button", "w150 xs yp+35", "Update description")
+        updateProfileDescriptionButton := this.Add("Button", "w150 xs yp+35", "&Update description")
         updateProfileDescriptionButton.OnEvent("Click", (*) => this.updateProfileDescription())
 
         this.Show()

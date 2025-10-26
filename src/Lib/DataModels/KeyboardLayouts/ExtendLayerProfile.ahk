@@ -93,7 +93,7 @@ class ExtendLayerProfile {
             layerToReturn := this.hotkeysLayer[layerIdentifier]
         }
         else {
-            throw ("No registry found for layer identifier: " . layerIdentifier)
+            throw Error("No registry found for layer identifier: " . layerIdentifier)
         }
         return layerToReturn
     }
@@ -103,7 +103,7 @@ class ExtendLayerProfile {
             return this.keyboardOverlayLayers[layerIdentifier]
         }
         else {
-            throw ("No keyboard overlay found for layer identifier: " . layerIdentifier)
+            throw Error("No keyboard overlay found for layer identifier: " . layerIdentifier)
         }
     }
 
@@ -112,7 +112,7 @@ class ExtendLayerProfile {
             return this.hotkeysLayer[layerIdentifier]
         }
         else {
-            throw ("No hotkey layer found for layer identifier: " . layerIdentifier)
+            throw Error("No hotkey layer found for layer identifier: " . layerIdentifier)
         }
     }
 

@@ -37,11 +37,11 @@ class AddProfileDialog extends DomainSpecificGui{
         this.profileNameField := this.Add("Edit", "r1 w180 xp yp+25", "")
         this.profileNameField.OnEvent("Change", (*) => this.HandleInputFieldChange(this.profileNameField.Text))
 
-        this.addProfileButton := this.Add("Button", "Default w90 xp yp+50", "Add Profile")
+        this.addProfileButton := this.Add("Button", "Default w90 xp yp+50", "&Add Profile")
         this.addProfileButton.OnEvent("Click", (*) => this.addProfile())
         this.DisableAddProfileButton()
 
-        cancelButton := this.Add("Button", "w90 yp ", "Cancel")
+        cancelButton := this.Add("Button", "w90 yp ", "&Cancel")
         cancelButton.OnEvent("Click", (*) => this.destroy())
     }
 

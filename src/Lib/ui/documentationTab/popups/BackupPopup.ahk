@@ -22,7 +22,7 @@ class BackupPopup extends DocumentationPopup {
         findingFeaturesParagraph := "Going to the 'Updates and Backups' tab will display a button called 'View Backups' which when clicked will display a list of your backups and buttons for creating, deleting and restoring a backup. See the image below for reference."
 
         managingTitle := "Managing"
-        managingParagraph := "Clicking the 'Create Backup' button will create a backup of the application as is. It will include the source code of the version you are currently using, so that you may restore this version in the future if an update breaks something or you are unhappy with a newer version. The backup will also include a copy of you user profiles as they are when you created the backup, however restoring the user profiles as they were is optional."
+        managingParagraph := "Clicking the 'Make Backup' button will create a backup of the application as is. It will include the source code of the version you are currently using, so that you may restore this version in the future if an update breaks something or you are unhappy with a newer version. The backup will also include a copy of you user profiles as they are when you created the backup, however restoring the user profiles as they were is optional."
         managingParagraph .= this.NEW_LINE
         managingParagraph .= "If you wish to delete a backup you can select the desired backup and click the 'Delete Backup' button. You will be prompted for a confirmation and this action cannot be undone."
 

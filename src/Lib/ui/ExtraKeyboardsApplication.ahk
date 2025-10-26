@@ -112,7 +112,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     ; Creates the tabs for the application
     CreateTabs(){
-        Tab := this.Add("Tab3", "yp+40 xm", ["&Keyboards","&Change Action Settings","Documentation", "&Updates and Backups"])
+        Tab := this.Add("Tab3", "yp+40 xm", ["Keyboards","Change Action Settings","Documentation", "Updates and Backups"])
         Tab.UseTab(1)
         this.CreateKeyboardsTab()
 
@@ -146,20 +146,19 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     ; Creates the buttons for adding/editing/deleting a hotkey.
     CreateConfigurationButtons(){
-        
-        this.ButtonForAddingInfo := this.Add("Button", "", "Add")
+        this.ButtonForAddingInfo := this.Add("Button", "", "&Add")
         this.ButtonForAddingInfo.OnEvent("Click", (*) => this.controller.DoAddOrEditHotkey())
         this.ButtonForAddingInfo.Opt("Hidden1")
 
-        this.ButtonForEditingInfo := this.Add("Button", " Yp", "Edit")
+        this.ButtonForEditingInfo := this.Add("Button", " Yp", "&Edit")
         this.ButtonForEditingInfo.OnEvent("Click", (*) => this.controller.DoAddOrEditHotkey(this.hotkeysListView.GetSelectionText()))
         this.ButtonForEditingInfo.Opt("Hidden1")
+        this.ButtonForEditingInfo.Enabled := false
 
-        this.ButtonForDeletingInfo := this.Add("Button", "Yp", "Delete")
+        this.ButtonForDeletingInfo := this.Add("Button", "Yp", "&Delete")
         this.ButtonForDeletingInfo.OnEvent("Click", (*) => this.controller.deleteHotkey(HotkeyFormatter.convertFromFriendlyName(this.hotkeysListView.GetSelectionText())))
-
         this.ButtonForDeletingInfo.Opt("Hidden1")
-
+        this.ButtonForDeletingInfo.Enabled := false
     }
 
     ; Disables the buttons for editing/deleting a hotkey.

@@ -39,7 +39,7 @@ class UpdatesAndBackupsTab {
     }
 
     createCheckForUpdatesButton() {
-        button := this.guiToAddTo.Add("Button", "xs y+10 w200", "🔄 Check for Updates")
+        button := this.guiToAddTo.Add("Button", "xs y+10 w200", "🔄 Check for &Updates")
         button.OnEvent("Click", (*) => this.checkForUpdates())
     }
 
@@ -81,7 +81,7 @@ class UpdatesAndBackupsTab {
 
     ; Release Notes Button
     createReleaseNotesButton() {
-        button := this.guiToAddTo.Add("Button", "xs y+10 w200", "📃 View Release Notes")
+        button := this.guiToAddTo.Add("Button", "xs y+10 w200", "📃 View &Release Notes")
         button.OnEvent("Click", (*) => this.showReleaseNotes())
     }
 
@@ -91,7 +91,7 @@ class UpdatesAndBackupsTab {
     }
 
     createBackupsButton() {
-        button := this.guiToAddTo.Add("Button", "xs y+10 w200", "📂 View Backups")
+        button := this.guiToAddTo.Add("Button", "xs y+10 w200", "📂 View &Backups")
         button.OnEvent("Click", (*) => this.showBackups())
     }
 

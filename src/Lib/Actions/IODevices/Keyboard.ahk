@@ -31,13 +31,14 @@ class Keyboard extends HotkeyAction {
     ; Takes a key or a key scan code.
     ; This key can also have modifiers such as #, !, +, ^.
     EnableKey(key) {
-        Hotkey("*" . key, this.DoNothing, "Off UseErrorLevel")
+        MsgBox("enagls")
+        Hotkey("*" . key, this.DoNothing, "Off")
     }
 
     ; Takes a key or a key scan code.
     ; This key can also have modifiers such as #, !, +, ^.
     DisableKey(key) {
-        Hotkey("*" . key, this.DoNothing, "On UseErrorLevel")
+        Hotkey("*" . key, this.DoNothing, "On")
     }
 
     DoNothing() {

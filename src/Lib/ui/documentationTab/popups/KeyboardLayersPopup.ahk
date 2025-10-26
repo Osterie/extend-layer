@@ -27,12 +27,12 @@ class KeyboardLayersPopup extends DocumentationPopup {
 
         aboutParagraph .= "- Normal Layer"
         aboutParagraph .= this.NEW_LINE
-            aboutParagraph .= "Default hotkeys active when neither Secondary nor Teritary layer is active."
+            aboutParagraph .= "Default hotkeys active when neither Secondary nor Tertiary layer is active."
             aboutParagraph .= this.SPACING
         
         aboutParagraph .= "- Secondary Layer"
         aboutParagraph .= this.NEW_LINE
-            aboutParagraph .= "Hotkeys which are active when this layer is activated, by default by pressing CapsLock. When this is active, Normal and Teritary layer hotkeys are not active."
+            aboutParagraph .= "Hotkeys which are active when this layer is activated, by default by pressing CapsLock. When this is active, Normal and Tertiary layer hotkeys are not active."
             aboutParagraph .= this.SPACING
         
         aboutParagraph .= "- Tertiary Layer"

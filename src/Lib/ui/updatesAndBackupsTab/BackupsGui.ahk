@@ -69,10 +69,10 @@ class BackupsGui extends DomainSpecificGui {
     }
 
     createBackupControls() {
-        this.Add("Button", "xs y+5 w150", "🔁 Restore Backup").OnEvent("Click", (*) => this.restoreBackup())
-        this.Add("Button", "x+10 w150", "➕ Create Backup").OnEvent("Click", (*) => this.createBackup())
-        this.Add("Button", "x+10 w150", "❌ Delete Backup").OnEvent("Click", (*) => this.deleteBackup())
-        this.Add("Button", "Default x+10 w120", "Cancel").OnEvent("Click", (*) => this.destroy())
+        this.Add("Button", "xs y+5 w150", "🔁 &Restore Backup").OnEvent("Click", (*) => this.restoreBackup())
+        this.Add("Button", "x+10 w150", "➕ &Make Backup").OnEvent("Click", (*) => this.createBackup())
+        this.Add("Button", "x+10 w150", "❌ &Delete Backup").OnEvent("Click", (*) => this.deleteBackup())
+        this.Add("Button", "Default x+10 w120", "&Cancel").OnEvent("Click", (*) => this.destroy())
     }
 
     restoreBackup() {
