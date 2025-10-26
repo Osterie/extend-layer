@@ -153,10 +153,12 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
         this.ButtonForEditingInfo := this.Add("Button", " Yp", "&Edit")
         this.ButtonForEditingInfo.OnEvent("Click", (*) => this.controller.DoAddOrEditHotkey(this.hotkeysListView.GetSelectionText()))
         this.ButtonForEditingInfo.Opt("Hidden1")
+        this.ButtonForEditingInfo.Enabled := false
 
         this.ButtonForDeletingInfo := this.Add("Button", "Yp", "&Delete")
         this.ButtonForDeletingInfo.OnEvent("Click", (*) => this.controller.deleteHotkey(HotkeyFormatter.convertFromFriendlyName(this.hotkeysListView.GetSelectionText())))
         this.ButtonForDeletingInfo.Opt("Hidden1")
+        this.ButtonForDeletingInfo.Enabled := false
     }
 
     ; Disables the buttons for editing/deleting a hotkey.
