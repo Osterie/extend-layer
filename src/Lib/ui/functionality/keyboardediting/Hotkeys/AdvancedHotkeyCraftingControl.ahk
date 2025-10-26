@@ -30,7 +30,7 @@ class AdvancedHotkeyCraftingControl{
     }
 
     CreateModifierControls(){
-        groupBoxForModifiers := this.guiToAddTo.Add("GroupBox", "Section w300 h50 xp+30 yp+20", "Modifiers:")
+        groupBoxForModifiers := this.guiToAddTo.Add("GroupBox", "Section w300 h50 xp+30 yp+20", "&Modifiers:")
         
         if (this.destinationKeyMode = false){
             anyModifierCheckbox := this.guiToAddTo.Add("CheckBox","xs+10 ys+20", "Any")
@@ -58,7 +58,7 @@ class AdvancedHotkeyCraftingControl{
     }
 
     CreateHotkeySelectionControls(availableKeyNames){
-        groupBoxForHotkey := this.guiToAddTo.Add("GroupBox", "section w300 h50 xs ys+80", "Hotkey:")
+        groupBoxForHotkey := this.guiToAddTo.Add("GroupBox", "section w300 h50 xs ys+80", "&Hotkey:")
         availableKeyNamesDropDown := this.guiToAddTo.Add("DropDownList", "xs+20 ys+20", availableKeyNames)
         availableKeyNamesDropDown.OnEvent("Change", (*) => this.NotifyListenersHotkeyChanged())
         this.controlsForAdvancedHotkeys.addControl("GroupBoxForHotkey", groupBoxForHotkey)

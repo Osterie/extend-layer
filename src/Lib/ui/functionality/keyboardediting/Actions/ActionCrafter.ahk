@@ -7,6 +7,7 @@
 #Include ".\ParameterControl.ahk"
 #Include <ui\util\GuiSizeChanger>
 
+; TODO refactor this and HOtkeycrafter
 class ActionCrafter extends HotkeyCrafter{
 
     saveEventSubscribers := Array()
@@ -19,6 +20,9 @@ class ActionCrafter extends HotkeyCrafter{
         this.Opt("+Resize +MinSize840x580")
         this.controlsForAllSpecialActionCrafting := GuiControlsRegistry()
         this.controlsForSpecificSpecialActionCrafting := GuiControlsRegistry()
+
+        this.saveButtonOptions := "w100 h20 x300 y0"
+        this.cancelButtonOptions := "w100 h20"
     }
 
     Create(){
@@ -36,6 +40,9 @@ class ActionCrafter extends HotkeyCrafter{
 
         this.AddItemsToListView(specialActions, this.controller.GetSpecialActions())
         specialActions.OnEvent("ItemFocus", (*) => this.controller.handleActionSelected(specialActions.GetText(specialActions.GetNext( , "Focused"))))
+        specialActions.OnEvent("ItemFocus", (*) => this.updateSaveButtonStatus((specialActions.GetText(specialActions.GetNext( , "Focused")))))
+        this.SimpleHotkeyCrafter.SubscribeToHotkeySelectedEvent(ObjBindMethod(this, "updateSaveButtonStatus"))
+
         specialActions.ModifyCol(1, "AutoHdr", )
 
         this.controlsForAllSpecialActionCrafting.AddControl("specialActions", specialActions)
@@ -48,9 +55,9 @@ class ActionCrafter extends HotkeyCrafter{
     }
 
     CreateCrafterTypeRadioButtons(){
-        specialActionRadio := this.Add("Radio", "Checked y30 x10", "Special Action")
+        specialActionRadio := this.Add("Radio", "Checked y30 x10", "Special &Action")
         specialActionRadio.OnEvent("Click", (*) => this.controller.doSpecialActionCrafting())
-        newKeyRadio := this.Add("Radio", "", "New Key")
+        newKeyRadio := this.Add("Radio", "", "New &Key")
         newKeyRadio.OnEvent("Click", (*) => this.controller.doNewKeyActionCrafting())
     }
 
@@ -78,15 +85,7 @@ class ActionCrafter extends HotkeyCrafter{
         this.parameterControls.hide()
     }
 
-    CreateButtons(){
-        saveButton := this.Add("Button", " w100 h20 x300 y0 ", "Save")
-        saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
-        
-        cancelButton := this.Add("Button", "w100 h20", "Cancel")
-        cancelButton.OnEvent("Click", (*) => this.destroy())
-    }
-
-    CreateSpecialActionMaker(){
+    createSpecialActionMaker(){
 
         this.CreateActionToDoControls("ym w400 h500")
         
@@ -157,7 +156,7 @@ class ActionCrafter extends HotkeyCrafter{
 
     createParameterControls(amountOfParameters){
         ; TODO add this group box to the ParameterControlGroup2
-        groupBoxForParameters := this.Add("GroupBox", " Section xp-15 yp+50 w360 h400", "Parameters")
+        groupBoxForParameters := this.Add("GroupBox", " Section xp-15 yp+50 w360 h400", "&Parameters")
         this.parameterControls := ParameterControlsGroup(this, "xs+10 ys+30 w335")
 
         this.controlsForAllSpecialActionCrafting.AddControl("groupBoxForParameters", groupBoxForParameters)
@@ -188,8 +187,15 @@ class ActionCrafter extends HotkeyCrafter{
     }
 
     NotifyListenersSave(){
+        try{
+            action := this.getNewAction()
+        }
+        catch Error as e{
+            MsgBox("Please select a new action")
+            return
+        }
         Loop this.saveEventSubscribers.Length{
-            this.saveEventSubscribers[A_Index](this.getNewAction())
+            this.saveEventSubscribers[A_Index](action)
         }
         this.destroy()
     }

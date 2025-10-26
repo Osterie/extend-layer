@@ -16,6 +16,9 @@ class HotkeyCrafter extends DomainSpecificGui {
     controller := ""
     advancedHotkeyCrafter := ""
 
+    saveButtonOptions := "w100 h20 xM+20 yp+50"
+    cancelButtonOptions := "w100 h20"
+
     __New(controller) {
         super.__New(, "HotkeyCrafterGui")
 
@@ -24,7 +27,7 @@ class HotkeyCrafter extends DomainSpecificGui {
     }
 
     Create(originalHotkey := "", destinationKeyMode := false) {
-        this.advancedModeCheckBox := this.Add("Checkbox", "xp yp+30", "Advanced Mode")
+        this.advancedModeCheckBox := this.Add("Checkbox", "xp yp+30", "A&dvanced Mode")
         this.advancedModeCheckBox.onEvent("Click", (*) => this.advancedModeButtonChangedEvent())
 
         this.SimpleHotkeyCrafter := SimpleHotkeyCraftingControl(this, "w300 h50", HotkeyFormatter.convertFromFriendlyName(
@@ -36,6 +39,8 @@ class HotkeyCrafter extends DomainSpecificGui {
         this.advancedHotkeyCrafter.SubscribeToHotkeySelectedEvent(ObjBindMethod(this, "updateSaveButtonStatus"))
 
         this.advancedHotkeyCrafter.hide()
+
+        this.createButtons()
     }
 
     ; This is usefol for example setting "Original hotkey: shift + a"  at the top of the window
@@ -44,10 +49,10 @@ class HotkeyCrafter extends DomainSpecificGui {
     }
 
     createButtons() {
-        saveButton := this.Add("Button", " w100 h20 xM+20 yp+50", "Save")
+        saveButton := this.Add("Button", this.saveButtonOptions, "&Save")
         saveButton.OnEvent("Click", (*) => this.NotifyListenersSave())
-
-        cancelButton := this.Add("Button", "w100 h20", "Cancel")
+        
+        cancelButton := this.Add("Button", this.cancelButtonOptions, "&Cancel")
         cancelButton.OnEvent("Click", (*) => this.destroy())
 
         this.controlsForButtons.addControl("saveButton", saveButton)
@@ -122,7 +127,7 @@ class HotkeyCrafter extends DomainSpecificGui {
 
     hide() {
         this.HideHotkeyCrafterControls()
-        this.hideButtons()
+        ; this.hideButtons()
     }
 
     hideButtons() {
