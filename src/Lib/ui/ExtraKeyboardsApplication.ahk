@@ -112,7 +112,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     ; Creates the tabs for the application
     CreateTabs(){
-        Tab := this.Add("Tab3", "yp+40 xm", ["&Keyboards","&Change Action Settings","Documentation", "&Updates and Backups"])
+        Tab := this.Add("Tab3", "yp+40 xm", ["Keyboards","Change Action Settings","Documentation", "Updates and Backups"])
         Tab.UseTab(1)
         this.CreateKeyboardsTab()
 
