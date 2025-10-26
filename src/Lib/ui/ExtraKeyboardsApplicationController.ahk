@@ -72,7 +72,12 @@ Class ExtraKeyboardsApplicationController{
     ; TODO change name for this...
     DoAddOrEditHotkey(hotkeyBuild := ""){
 
-        layerInformation := this.GetCurrentLayerInfo()
+        try{
+            layerInformation := this.GetCurrentLayerInfo()
+        }
+        catch Error as e{
+            layerInformation := ""
+        }
 
         if (Type(layerInformation) == "HotkeyLayer"){
             hotkeyInformation := HotKeyInfo()
