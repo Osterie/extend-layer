@@ -25,7 +25,7 @@ class ProfileRegion{
         
         this.profilesDropDownMenu.OnEvent("Change", (*) => this.NotifyListenersProfileChanged(this.profilesDropDownMenu.Text))
 
-        this.editProfilesButton := guiObject.Add("Button", "w80 ym+1", "Edi&t Profiles")
+        this.editProfilesButton := guiObject.Add("Button", "w80 ym+1", "Edit &Profiles")
         addProfileButton := guiObject.Add("Button", "w80 ym+1", "Add Pr&ofile")
         importProfileButton := guiObject.Add("Button", "w90 ym+1", "&Import Profile")
         exportProfileButton := guiObject.Add("Button", "w90 ym+1", "E&xport Profile")
