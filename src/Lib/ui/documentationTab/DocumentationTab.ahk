@@ -56,10 +56,14 @@ class DocumentationTab{
 
         documentationTreeView := treeViewMaker_.createElementsForGui(guiToAddTo, root, "Section w200 r20 w" . this.TREE_VIEW_WIDTH)
 
+        selectedDocumentationTitle := guiToAddTo.Add("Text", "w400 h25 ys", "")
+        selectedDocumentationTitle.setFont("s16")
+
         showDocumentationButton := guiToAddTo.Add("Button", "w200 h100 ys+" 25 . " xs+" . this.TREE_VIEW_WIDTH + 5, "Show &Documentation")
         showDocumentationButton.setFont("s16")
         showDocumentationButton.OnEvent("Click", (*) => this.handleDocumentationItemSelected(treeViewMaker_.GetSelectionText()))
 
+        treeViewMaker_.AddEventAction("ItemSelect", (*) => selectedDocumentationTitle.value := treeViewMaker_.GetSelectionText())
         treeViewMaker_.AddEventAction("Click", (guiControlObject, selectedItemId) => guiControlObject.Modify(selectedItemId, "+Expand"))
     }
 
