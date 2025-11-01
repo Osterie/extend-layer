@@ -20,7 +20,8 @@
 #Include <Shared\Logger>
 
 ; TODO fix issue with multiple dialogs being possible to open at the same time
-
+; TODO refactor
+; TODO create edit button for action settings.
 Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     Logger := Logger.getInstance()

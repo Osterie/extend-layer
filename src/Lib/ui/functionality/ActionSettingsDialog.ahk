@@ -23,12 +23,12 @@ class ActionSettingsDialog extends DomainSpecificGui {
         this.Add("Text", "w300 h20", "Action Setting:")
         this.settingNameEdit := this.Add("Edit", "xm w300 h20", settingName)
 
-        this.Add("Text", "xm w300 h20", "Action Setting value:")
+        this.Add("Text", "xm w300 h20", "&Action Setting Value:")
         this.settingValueEdit := this.Add("Edit", "xm w300 h20", settingValue)
 
-        SaveButton := this.Add("Button", "w100 h20", "Save")
+        SaveButton := this.Add("Button", "w100 h20", "&Save")
         SaveButton.onEvent("Click", (*) => this.NotifyListenersSave())
-        CancelButton := this.Add("Button", "w100 h20", "Cancel")
+        CancelButton := this.Add("Button", "w100 h20", "&Cancel")
         CancelButton.onEvent("Click", (*) => this.destroy())
     }
 
