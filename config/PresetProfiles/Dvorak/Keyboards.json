@@ -1,0 +1,197 @@
+﻿{
+	"Description": "Activating the Secondary Layer will change the key mappings to Dvorak layout. When no layer is active (the Normal Layer), the keyboard behaves like your standard layout.",
+	"GlobalLayer-Hotkeys": {
+		"+CapsLock": {
+			"MethodName": "cycleLayers",
+			"ObjectName": "layers",
+			"Parameters": [
+				2
+			],
+			"isObject": 1
+		},
+		"CapsLock": {
+			"MethodName": "toggleLayer",
+			"ObjectName": "layers",
+			"Parameters": [
+				1
+			],
+			"isObject": 1
+		}
+	},
+	"NormalLayer-Hotkeys": {},
+	"SecondaryLayer-Hotkeys": {
+		"*-": {
+			"isObject": 0,
+			"key": "[",
+			"modifiers": ""
+		},
+		"*=": {
+			"isObject": 0,
+			"key": "]",
+			"modifiers": ""
+		},
+		"*q": {
+			"isObject": 0,
+			"key": "'",
+			"modifiers": ""
+		},
+		"*w": {
+			"isObject": 0,
+			"key": ",",
+			"modifiers": ""
+		},
+		"*e": {
+			"isObject": 0,
+			"key": ".",
+			"modifiers": ""
+		},
+		"*r": {
+			"isObject": 0,
+			"key": "p",
+			"modifiers": ""
+		},
+		"*t": {
+			"isObject": 0,
+			"key": "y",
+			"modifiers": ""
+		},
+		"*y": {
+			"isObject": 0,
+			"key": "f",
+			"modifiers": ""
+		},
+		"*u": {
+			"isObject": 0,
+			"key": "g",
+			"modifiers": ""
+		},
+		"*i": {
+			"isObject": 0,
+			"key": "c",
+			"modifiers": ""
+		},
+		"*o": {
+			"isObject": 0,
+			"key": "r",
+			"modifiers": ""
+		},
+		"*p": {
+			"isObject": 0,
+			"key": "l",
+			"modifiers": ""
+		},
+		"*[": {
+			"isObject": 0,
+			"key": "/",
+			"modifiers": ""
+		},
+		"*]": {
+			"isObject": 0,
+			"key": "=",
+			"modifiers": ""
+		},
+		"*s": {
+			"isObject": 0,
+			"key": "o",
+			"modifiers": ""
+		},
+		"*d": {
+			"isObject": 0,
+			"key": "e",
+			"modifiers": ""
+		},
+		"*f": {
+			"isObject": 0,
+			"key": "u",
+			"modifiers": ""
+		},
+		"*g": {
+			"isObject": 0,
+			"key": "i",
+			"modifiers": ""
+		},
+		"*h": {
+			"isObject": 0,
+			"key": "d",
+			"modifiers": ""
+		},
+		"*j": {
+			"isObject": 0,
+			"key": "h",
+			"modifiers": ""
+		},
+		"*k": {
+			"isObject": 0,
+			"key": "t",
+			"modifiers": ""
+		},
+		"*l": {
+			"isObject": 0,
+			"key": "n",
+			"modifiers": ""
+		},
+		"*`;": {
+			"isObject": 0,
+			"key": "s",
+			"modifiers": ""
+		},
+		"*'": {
+			"isObject": 0,
+			"key": "-",
+			"modifiers": ""
+		},
+		"*z": {
+			"isObject": 0,
+			"key": "`;",
+			"modifiers": ""
+		},
+		"*x": {
+			"isObject": 0,
+			"key": "q",
+			"modifiers": ""
+		},
+		"*c": {
+			"isObject": 0,
+			"key": "j",
+			"modifiers": ""
+		},
+		"*v": {
+			"isObject": 0,
+			"key": "k",
+			"modifiers": ""
+		},
+		"*b": {
+			"isObject": 0,
+			"key": "x",
+			"modifiers": ""
+		},
+		"*n": {
+			"isObject": 0,
+			"key": "b",
+			"modifiers": ""
+		},
+		"*,": {
+			"isObject": 0,
+			"key": "w",
+			"modifiers": ""
+		},
+		"*.": {
+			"isObject": 0,
+			"key": "v",
+			"modifiers": ""
+		},
+		"*/": {
+			"isObject": 0,
+			"key": "z",
+			"modifiers": ""
+		}
+	},
+	"TertiaryLayer-Hotkeys": {
+		"Esc": {
+			"MethodName": "CloseActiveAutohotkeyScript",
+			"ObjectName": "ProcessManagerInstance",
+			"Parameters": [],
+			"isObject": 1
+		}
+	}
+}
