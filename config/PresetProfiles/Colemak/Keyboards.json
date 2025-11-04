@@ -1,5 +1,5 @@
 ﻿{
-	"Description": "Activating the Secondary Layer will change the key mappings to Dvorak layout. When no layer is active (the Normal Layer), the keyboard behaves like your standard layout.",
+	"Description": "Activating the Secondary Layer will change the key mappings to Colemak layout. When no layer is active (the Normal Layer), the keyboard behaves like your standard layout.",
 	"GlobalLayer-Hotkeys": {
 		"+CapsLock": {
 			"MethodName": "cycleLayers",
