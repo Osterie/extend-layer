@@ -1,5 +1,5 @@
 ﻿{
-	"Description":"Empty keyboard layout with 3 layers. Capslock to activate the secondary layer, Shift+Capslock to toggle tertiary layer and secondary layer.",
+	"Description": "Activating the Secondary Layer will change the key mappings to Norwegian Dvorak layout. When no layer is active (the Normal Layer), the keyboard behaves like your standard layout.",
 	"GlobalLayer-Hotkeys":{
 		"+CapsLock":{
 			"MethodName":"cycleLayers",
