@@ -130,7 +130,7 @@
 			"key": "n",
 			"modifiers": ""
 		},
-		"*`;": {
+		"*;": {
 			"isObject": 0,
 			"key": "s",
 			"modifiers": ""
@@ -142,7 +142,7 @@
 		},
 		"*z": {
 			"isObject": 0,
-			"key": "`;",
+			"key": ";",
 			"modifiers": ""
 		},
 		"*x": {
