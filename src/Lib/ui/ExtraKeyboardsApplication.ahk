@@ -77,7 +77,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
         try{
             UpdateChecker_ := UpdateChecker()
             if (UpdateChecker_.updateAvailable()){
-                MyMenuBar.Add("🔄Update available!", (ItemName, ItemPos, MyMenuBar) => this.HandleupdateAvailableClicked(ItemName, ItemPos, MyMenuBar))
+                MyMenuBar.Add("🔄Update a&vailable!", (ItemName, ItemPos, MyMenuBar) => this.HandleupdateAvailableClicked(ItemName, ItemPos, MyMenuBar))
             }
         }
         catch Error as e{

@@ -70,12 +70,12 @@ class UpdateDialog extends DomainSpecificGui{
             "Click the button below to update Extend Layer to the latest version. `n" .
             "The script will automatically restart after the update is complete."
         )
-        buttonToChangeOriginalHotkey := this.Add("Button", "Default w150 xm", "Update Extend Layer")
+        buttonToChangeOriginalHotkey := this.Add("Button", "Default w150 xm", "&Update Extend Layer")
         buttonToChangeOriginalHotkey.onEvent("Click", (*) => this.doUpdate())
     }
 
     createCancelButton(){
-        buttonToClose := this.Add("Button", "w150 xs+160 yp", "Cancel")
+        buttonToClose := this.Add("Button", "w150 xs+160 yp", "&Cancel")
         buttonToClose.onEvent("Click", (*) => this.destroy())
     }
 
