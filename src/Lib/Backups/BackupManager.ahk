@@ -110,7 +110,7 @@ class BackupManager {
         this.UnZipper.zip(this.TEMPORARY_DIR_CREATION, backupLocation)
 
         ; Done
-        Sleep(1000)
+        Sleep(5000)
         ProgressBar_.destroy()
     }
 
