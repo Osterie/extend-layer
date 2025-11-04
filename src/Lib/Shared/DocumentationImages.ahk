@@ -25,4 +25,12 @@ class DocumentationImages {
     static HOTKEY_ADVANCED_CRAFTING_DIALOG := "HotkeyCraftingAdvanced.png"
     static HOTKEY_SET_ACTION := "HotkeySetAction.png"
     static HOTKEY_SET_ACTION_KEY := "HotkeySetActionKey.png"
+
+    static ALT_NAVIGATION_GROUP_BOX := "AltNavigationGroupBox.png"
+    static ALT_NAVIGATION_MENU_BAR := "AltNavigationMenuBar.png"
+    static ALT_NAVIGATION_BUTTONS_1 := "AltNavigationButtons1.png"
+    static ALT_NAVIGATION_BUTTONS_2 := "AltNavigationButtons2.png"
+    static ALT_NAVIGATION_RADIO_BUTTONS := "AltNavigationRadioButtons.png"
+    static ALT_NAVIGATION_CHECKBOX := "AltNavigationCheckbox.png"
+    static TAB_CONTROL := "TabControl.png"
 }
