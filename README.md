@@ -51,8 +51,9 @@ To run this script, do the following:
 - Create multiple custom virtual keyboards
 - Choose between predefined virtual keyboards
 - Rebind keys to other keys or special actions
+- Can choose Colemak and Dvorak keyboard layouts
 
-### Example of a predefined virtual keyboard
+### Examples of a predefined virtual keyboard
 
 Below is an example of a predefined virtual keyboard, found in the **Default** profile. The image shows the layout of the second virtual keyboard of this profile, which is activated by hitting **CapsLock**.
 
@@ -61,6 +62,12 @@ Below is an example of a predefined virtual keyboard, found in the **Default** p
 This profile moves the keys used for text navigation, text editing, browser navigation, and such, often found far from the center of the keyboard, to the center of the keyboard.
 
 The program has multiple of these predefined profiles with predefined virtual keyboards, and you can create your own custom profiles with virtual keyboards.
+
+Other examples of predefined profiles are:
+- Dvorak profile
+- Colemak profile
+  
+When one of these profiles are active, you can press **CapsLock** to change the qwerty layout to dvorak or colemak layout respectively.
 
 ### How the gui looks
 
