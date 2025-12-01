@@ -54,7 +54,8 @@ class DocumentationTab{
         root.Push(this.createUpdatesNode())
         root.Push(this.createLaunchingTheScriptNode())
 
-        documentationTreeView := treeViewMaker_.createElementsForGui(guiToAddTo, root, "Section w200 r20 w" . this.TREE_VIEW_WIDTH)
+        imageListIcon := 2
+        documentationTreeView := treeViewMaker_.createElementsForGui(guiToAddTo, root, "Section w200 r20 w" . this.TREE_VIEW_WIDTH, imageListIcon)
 
         selectedDocumentationTitle := guiToAddTo.Add("Text", "w400 h25 ys", "")
         selectedDocumentationTitle.setFont("s16")

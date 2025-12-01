@@ -77,7 +77,7 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
         try{
             UpdateChecker_ := UpdateChecker()
             if (UpdateChecker_.updateAvailable()){
-                MyMenuBar.Add("🔄Update available!", (ItemName, ItemPos, MyMenuBar) => this.HandleupdateAvailableClicked(ItemName, ItemPos, MyMenuBar))
+                MyMenuBar.Add("🔄Update a&vailable!", (ItemName, ItemPos, MyMenuBar) => this.HandleupdateAvailableClicked(ItemName, ItemPos, MyMenuBar))
             }
         }
         catch Error as e{
@@ -131,8 +131,9 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     ; Creates the tab for the keyboard settings
     CreateKeyboardsTab(){
+        imageListIcon := 4
         keyboardLayoutChanger := TreeViewMaker()
-        keyboardLayoutChanger.createElementsForGuiOld(this, this.controller.GetKeyboardLayerIdentifiers())
+        keyboardLayoutChanger.createElementsForGuiOld(this, this.controller.GetKeyboardLayerIdentifiers(), imageListIcon)
         
         this.hotkeysListView := ListViewMaker()
         this.hotkeysListView.CreateListView(this, "r20 w600 x+10 -multi" , ["KeyCombo","Action"])
@@ -227,8 +228,9 @@ Class ExtraKeyboardsApplication extends DomainSpecificGui{
 
     ; Creates the tab for the action settings
     CreateFunctionSettingsTab(){
+        imageListIcon := 4
         functionsNamesTreeView := TreeViewMaker()
-        functionsNamesTreeView.createElementsForGuiOld(this, this.controller.getActionGroupNames())
+        functionsNamesTreeView.createElementsForGuiOld(this, this.controller.getActionGroupNames(), imageListIcon)
         
         this.settingsValuesListView := ListViewMaker()
         this.settingsValuesListView.CreateListView(this, "r20 w600 x+10 -multi",  ["ActionSetting","Value"])

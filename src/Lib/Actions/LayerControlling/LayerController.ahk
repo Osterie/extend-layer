@@ -87,7 +87,7 @@ Class LayerController extends HotkeyAction{
     }
 
     showLayerIndicator(layer){
-        this.activeLayer := layer
+        this._setActiveLayer(layer)
 
         layerIndicatorInstances := this.layers.Get(this.activeLayer)
         if (layerIndicatorInstances == 0){
@@ -200,7 +200,7 @@ Class LayerController extends HotkeyAction{
         if (this.activeLayer == activeLayer){
             return
         }
-        this.activeLayer := activeLayer
+        this._setActiveLayer(activeLayer)
         if (activeLayer != 0){
             this.showLayerIndicator(activeLayer)
         }
@@ -213,11 +213,11 @@ Class LayerController extends HotkeyAction{
     ; sets the layer to toggleValue if layer is 0, or to 0 if active laye is not zero
     toggleLayer(toggleValue){
         if (this.activeLayer == 0){
-            this.activeLayer := toggleValue
+            this._setActiveLayer(toggleValue)
             this.showLayerIndicator(this.activeLayer)
         }
         else{
-            this.activeLayer := 0
+            this._setActiveLayer(0)
             this.hideInactiveLayers()
         }
     }
@@ -227,12 +227,12 @@ Class LayerController extends HotkeyAction{
     cycleLayers(defaultSetLayer){
         layersAmount := this.layers.Count
         if (this.activeLayer == 0){
-            this.activeLayer := defaultSetLayer
+            this._setActiveLayer(defaultSetLayer)
         }
         else{
-            this.activeLayer := this.activeLayer+1 
+            this._setActiveLayer(this.activeLayer+1)
             if(this.activeLayer == layersAmount+1){
-                this.activeLayer := 1
+                this._setActiveLayer(1)
             }
         }
         this.showLayerIndicator(this.activeLayer)
@@ -241,7 +241,7 @@ Class LayerController extends HotkeyAction{
 
     ; sets activeLayer to 0
     resetLayerIndicators(){
-        this.activeLayer := 0
+        this._setActiveLayer(0)
     }
 
     getLayerIndicators(){
@@ -250,6 +250,23 @@ Class LayerController extends HotkeyAction{
 
     getActiveLayer(){
         return this.activeLayer
+    }
+
+    _setActiveLayer(activeLayer){
+        this.activeLayer := activeLayer
+        ; Unstucks any modifiers, if there are any.
+        if (GetKeyState("Shift")){
+            Send('{Shift Up}') 
+        }
+        if (GetKeyState("Ctrl")){
+            Send('{Ctrl Up}')
+        }
+        if (GetKeyState("LWin") || GetKeyState("RWin")){
+            Send('{Win Up}')
+        }
+        if (GetKeyState("Alt")){
+            Send('{Alt Up}')
+        }
     }
 
     destroy(){
