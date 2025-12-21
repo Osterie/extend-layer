@@ -18,6 +18,10 @@
 
 #Include <Shared\Logger>
 
+try{
+    TraySetIcon(FilePaths.TRAY_ICON)
+}
+
 
 
 ; Test if this project is in a protected location
