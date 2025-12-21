@@ -42,6 +42,8 @@ class FilePaths {
     static ASSETS := "..\assets"
     static ASSETS_IMAGES := "..\assets\img"
     static ASSETS_DOCUMENTATION_IMAGES := "..\assets\img\documentation"
+
+    static TRAY_ICON := "..\assets\trayicon.ico"
     
     static IMG_NOT_FOUND := "..\assets\img\NotFound.jpg"
 
