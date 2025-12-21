@@ -31,7 +31,6 @@ class Keyboard extends HotkeyAction {
     ; Takes a key or a key scan code.
     ; This key can also have modifiers such as #, !, +, ^.
     EnableKey(key) {
-        MsgBox("enagls")
         Hotkey("*" . key, this.DoNothing, "Off")
     }
 
