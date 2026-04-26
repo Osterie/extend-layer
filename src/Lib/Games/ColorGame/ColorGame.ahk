@@ -11,9 +11,9 @@ class ColorGame {
 
     interval := 16
 
-    timerIsRunning := false
+    isRunning := false
 
-    drawer := 0
+    _ScreenDrawer := 0
 
     fillCanvasStrategy := ScreenColorStrategy()
 
@@ -24,43 +24,44 @@ class ColorGame {
 
     Initialize() {
         this.timer := ObjBindMethod(this, "MutateCanvas")
-        this.timerIsRunning := false
+        this.isRunning := false
 
-        cellSize := 10
-        this.drawer := ScreenDrawer(cellSize)
+        cellSize := 5
+        this._ScreenDrawer := ScreenDrawer(cellSize)
     }
 
     Start() {
-        if (this.timerIsRunning) {
+        if (this.isRunning) {
             return
         }
 
-        this.timerIsRunning := true
+        this.isRunning := true
 
         this.FillCanvas()
         SetTimer(this.timer, this.interval)
     }
 
     Stop() {
-        this.timerIsRunning := false
+        this.isRunning := false
         SetTimer(this.timer, 0)
     }
 
     Reset() {
-        this.drawer.Reset()
+        this._ScreenDrawer.Reset()
     }
 
     FillCanvas() {
-        while (!this.drawer.canvasIsFilled() && this.timerIsRunning) {
-            this.drawer.FillCanvasStep()
+        while (!this._ScreenDrawer.canvasIsFilled() && this.isRunning) {
+            this._ScreenDrawer.fillCanvasStep()
         }
     }
 
     MutateCanvas() {
-        this.drawer.MutateCanvas()
+        steps := 200
+        this._ScreenDrawer.MutateCanvas(steps)
     }
 
-    SetFillCanvasStrategy(strategy) {
-        this.fillCanvasStrategy := strategy
+    setFillCanvasStrategy(strategy) {
+        this._ScreenDrawer.setFillCanvasStrategy(strategy)
     }
 }

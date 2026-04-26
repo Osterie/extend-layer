@@ -3,11 +3,9 @@
 class ArrayUtils {
 
     ; Creates a one dimensional array that represents a grid,
-    ; where each item is a list with a position.
+    ; where each item is a list with a position.    ; Example creation: [ [1,1], [1,2], [2,1], [2,2] ]
     ; Example creation: [ [1,1], [1,2], [2,1], [2,2] ]
-    ; After randomizing might look like:
-    ;[ [2,1], [2,2], [1,1], [1,2] ]
-    static CreateRandomOneDimensionalGrid(rows, cols) {
+    static CreateOneDimensionalGrid(rows, cols) {
         gridToFill := []
         loop rows {
             row := A_Index
@@ -17,11 +15,21 @@ class ArrayUtils {
             }
         }
 
+        return gridToFill
+    }
+
+    ; Creates a one dimensional array that represents a grid,
+    ; where each item is a list with a position.
+    ; Example creation: [ [1,1], [1,2], [2,1], [2,2] ]
+    ; After randomizing might look like:
+    ;[ [2,1], [2,2], [1,1], [1,2] ]
+    static CreateRandomOneDimensionalGrid(rows, cols) {
+        gridToFill := ArrayUtils.CreateOneDimensionalGrid(rows, cols)
         ArrayUtils.Shuffle(gridToFill)
         return gridToFill
     }
 
-    ; Shuffles the original given array, does not return a copy
+    ; Shuffles the original given array, does not return a copy,
     ; just shuffles the original array.
     static Shuffle(arr) {
         loop arr.Length {

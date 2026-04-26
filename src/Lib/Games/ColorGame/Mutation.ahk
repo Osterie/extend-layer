@@ -10,10 +10,17 @@ class IMutationStrategy {
     }
 
     Scale(val) {
-        ; return Floor(Sqrt(Abs(val)) * (val < 0 ? -1 : 1))
-        return Floor(Log(Abs(val) + 1) * (val < 0 ? -1 : 1))
-
+        ; Can be changed between 0.5 and 1.0
+        p := 0.8
+        return Floor((Abs(val) ** p) * (val < 0 ? -1 : 1))
     }
+
+    ; Scale(val) {
+    ;     ; return val
+    ;     return Floor(Sqrt(Abs(val)) * (val < 0 ? -1 : 1))
+    ;     ; return Floor(Log(Abs(val) + 1) * (val < 0 ? -1 : 1))
+
+    ; }
 }
 
 class StrengthBasedMutationStrategy extends IMutationStrategy {
@@ -50,21 +57,21 @@ class StrengthBasedMutationStrategy extends IMutationStrategy {
             delta := this.Scale(strength.getRedStrength())
 
             r := this.Clamp(r + delta, 0, 255)
-            g := this.Clamp(g - delta, 0, 255)
-            b := this.Clamp(b - delta, 0, 255)
+            ; g := this.Clamp(g - delta, 0, 255)
+            ; b := this.Clamp(b - delta, 0, 255)
         }
         else if (channel < (redChance + greenChance)) {
             delta := this.Scale(strength.getGreenStrength())
 
-            r := this.Clamp(r - delta, 0, 255)
+            ; r := this.Clamp(r - delta, 0, 255)
             g := this.Clamp(g + delta, 0, 255)
-            b := this.Clamp(b - delta, 0, 255)
+            ; b := this.Clamp(b - delta, 0, 255)
         }
         else {
             delta := this.Scale(strength.getBlueStrength())
 
-            r := this.Clamp(r - delta, 0, 255)
-            g := this.Clamp(g - delta, 0, 255)
+            ; r := this.Clamp(r - delta, 0, 255)
+            ; g := this.Clamp(g - delta, 0, 255)
             b := this.Clamp(b + delta, 0, 255)
         }
 
@@ -233,8 +240,8 @@ class MutationStrengthCalculator {
                 if (ny < 1 || ny > this.cols)
                     continue
 
-                squareObj := this.grid[nx][ny]
-                totalStrength.addStrength(this.GetMutationStrength(squareObj.getColor()))
+                color := this.grid.getSquare()
+                totalStrength.addStrength(this.GetMutationStrength(color))
                 count++
             }
         }
@@ -264,8 +271,8 @@ class MutationStrengthCalculator {
                 if (ny < 1 || ny > this.cols)
                     continue
 
-                squareObject := this.grid.getSquare(nx, ny)
-                strength := this.GetMutationStrength(squareObject.getColor())
+                color := this.grid.getSquare(nx, ny)
+                strength := this.GetMutationStrength(color)
 
                 ; TODO can also change this to largerThanSingular and check if that gives cool results
                 if (strength.largerThanTotal(max)) {
@@ -295,7 +302,7 @@ class MutationStrengthCalculator {
     ;                 continue
 
     ;             squareObject := this.grid.getSquare(nx, ny)
-    ;             color := squareObject.getColor()
+    ;             color := squareObject.getSquare()
     ;             strength := this.GetMutationStrength(color)
 
     ;             if (strength > max) {

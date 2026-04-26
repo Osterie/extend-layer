@@ -81,11 +81,14 @@ class GdipDrawer {
     ; Draws a pixel at the given location with the size given when initializing screen drawer, or which was later set.
     ; Note that this method does not visually update the drawing, Update must be called for that.
     DrawPixel(x, y, pBrush, pixelSize := this.pixelSize) {
-        if (!this.G)
-            throw Error("Graphics is NULL")
+        if (!this.G) {
+            throw Error("Graphics is invalid")
+        }
 
-        if (!pBrush)
-            throw Error("pBrush is NULL")
+        if (!pBrush) {
+            throw Error("pBrush is invalid")
+        }
+
         Gdip_FillRectangle(this.G, pBrush, x, y, pixelSize, pixelSize)
     }
 

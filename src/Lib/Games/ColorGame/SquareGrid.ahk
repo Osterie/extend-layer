@@ -28,7 +28,6 @@ class SquareGrid {
         loop this.rows {
             row := A_Index
             this.grid[row] := []
-            ; initialize row as array
             this.grid[row].Length := this.cols
         }
     }
@@ -41,47 +40,14 @@ class SquareGrid {
         return this.cols
     }
 
-    ; Takes parameter of type Square
-    setSquare(row, col, squareObject) {
-        try {
-            this.grid[row][col] := squareObject
-            return 1
-        }
-        catch {
-            return -1
-        }
+    setSquare(row, col, color) {
+        this.grid[row][col] := color
     }
 
     getSquare(row, col) {
-        try {
-            return this.grid[row][col]
+        if (row < 1 || row > this.rows || col < 1 || col > this.cols) {
+            throw ValueError("Out of bounds")
         }
-        catch {
-            return -1
-        }
-    }
-}
-
-class Square {
-    x := 0
-    y := 0
-    color := 0xffffffff
-
-    __New(x, y, color) {
-        this.x := x
-        this.y := y
-        this.color := color
-    }
-
-    getX() {
-        return this.x
-    }
-
-    getY() {
-        return this.y
-    }
-
-    getColor() {
-        return this.color
+        return this.grid[row][col]
     }
 }
