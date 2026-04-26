@@ -14,16 +14,21 @@ class SquareGrid {
         this.rows := rows
         this.cols := cols
 
-        this.Init()
+        this.init()
     }
 
-    Init() {
+    init() {
+        this.reset()
+    }
+
+    reset() {
         this.grid := []
 
         this.grid.Length := this.rows
         loop this.rows {
             row := A_Index
-            this.grid[row] := []  ; initialize row as array
+            this.grid[row] := []
+            ; initialize row as array
             this.grid[row].Length := this.cols
         }
     }

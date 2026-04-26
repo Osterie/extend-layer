@@ -1,7 +1,5 @@
 #Requires AutoHotkey v2.0
 
-#Requires AutoHotkey v2.0
-
 #Include <Util\ArrayUtils>
 
 #Include <Games\Gdip\Tariq_Porter_GDIP_Library\Gdip_All>
@@ -10,87 +8,164 @@
 #Include <Games\ColorGame\Mutation>
 #Include <Games\ColorGame\ColorStrategies>
 #Include <Games\ColorGame\SquareGrid>
+#Include <Games\ColorGame\GdipDrawer>
 
 ; Thanks to tic (Tariq Porter) for his GDI+ Library
-; http://www.autohotkey.com/forum/viewtopic.php?t=32238
+; http://www.autohotkey.com/boards/viewtopic.php?t=6517
 
 class ScreenDrawer {
 
-    WALeft := 0
-    WATop := 0
-    WARight := 0
-    WABottom := 0
-    WAWidth := 0
-    WAHeight := 0
+    gridToFill := 0
 
-    hwnd1 := 0
-    hdc := 0
-    G := 0
+    filledGrid := 0 ; SquareGrid object
+    cols := 0
+    rows := 0
+    pixelSize := 10
 
-    pBitmap := 0
-    pixelSize := 1
+    mutatorObject := StrengthBasedMutationStrategy()
+    mutationCalculator := 0
+
+    drawer := 0
+
+    fillCanvasStrategy := ScreenColorStrategy()
 
     __New(pixelSize) {
         this.pixelSize := pixelSize
         this.Initialize()
     }
 
-    setPixelSize(pixelSize) {
-        this.pixelSize := pixelSize
-    }
-
     Initialize() {
         MonitorPrimary := GetPrimaryMonitor()
         M := GetMonitorInfo(MonitorPrimary)
-        this.WALeft := M.WALeft
-        this.WATop := M.WATop
-        this.WARight := M.WARight
-        this.WABottom := M.WABottom
-        this.WAWidth := M.WARight - M.WALeft
-        this.WAHeight := M.WABottom - M.WATop
 
-        this.InitializeGuiRelated()
-    }
+        WALeft := M.WALeft
+        WATop := M.WATop
+        WARight := M.WARight
+        WABottom := M.WABottom
+        WAWidth := M.WARight - M.WALeft
+        WAHeight := M.WABottom - M.WATop
 
-    InitializeGuiRelated() {
-        if !pToken := Gdip_Startup() {
-            MsgBox("Gdiplus failed to start. Please ensure you have gdiplus on your system")
-        }
+        this.cols := Floor(WAWidth / this.pixelSize)
+        this.rows := Floor(WAHeight / this.pixelSize)
 
-        ; Create a layered window (+E0x80000) that is always on top (+AlwaysOnTop), has no taskbar entry or caption
-        Gui1 := Gui("-Caption +E0x80000 +LastFound +AlwaysOnTop +ToolWindow +OwnDialogs")
-        Gui1.Show("NA")
+        this.filledGrid := SquareGrid(this.rows, this.cols)
+        this.mutationCalculator := MutationStrengthCalculator(this.filledGrid)
 
-        ; Get a handle to this window we have created in order to update it later
-        this.hwnd1 := WinExist()
+        this.timer := ObjBindMethod(this, "MutateCanvas")
+        this.timerIsRunning := false
 
-        hbm := CreateDIBSection(this.WAWidth, this.WAHeight)
-        this.hdc := CreateCompatibleDC()
-        obm := SelectObject(this.hdc, hbm)
+        this.drawer := GdipDrawer(this.pixelSize)
 
-        this.pBitmap := Gdip_CreateBitmapFromHBITMAP(hbm) ; keep for GetPixel
-        this.G := Gdip_GraphicsFromHDC(this.hdc)          ; draw directly to HDC
+        this.gridToFill := ArrayUtils.CreateRandomOneDimensionalGrid(this.rows, this.cols)
+
     }
 
     Reset() {
-        Gdip_GraphicsClear(this.G)
-        UpdateLayeredWindow(this.hwnd1, this.hdc, this.WALeft, this.WATop, this.WAWidth, this.WAHeight)
+        this.drawer.Reset()
+        this.ResetGrid()
     }
 
-    ; Draws a pixel at the given location with the size given when initializing screen drawer, or which was later set.
-    ; Note that this method does not visually update the drawing, Update must be called for that.
-    DrawPixel(x, y, pBrush, pixelSize := this.pixelSize) {
-        if (!this.G)
-            throw Error("Graphics is NULL")
+    ResetGrid() {
+        this.filledGrid.reset()
+        this.gridToFill := ArrayUtils.CreateRandomOneDimensionalGrid(this.rows, this.cols)
 
-        if (!pBrush)
-            throw Error("pBrush is NULL")
-        Gdip_FillRectangle(this.G, pBrush, x, y, pixelSize, pixelSize)
     }
 
-    ; Updates the drawing with the changes that were previously made.
-    ; If this method is not called then you will not see anything you have drawn.
-    Update() {
-        UpdateLayeredWindow(this.hwnd1, this.hdc, this.WALeft, this.WATop, this.WAWidth, this.WAHeight)
+    SetFillCanvasStrategy(strategy) {
+        this.fillCanvasStrategy := strategy
+    }
+
+    FillCanvasStep(batchSize := 1000) {
+        lastColor := ""
+        pBrush := 0
+
+        range := Min(batchSize, this.gridToFill.Length)
+
+        loop range {
+            if (this.gridToFill.Length = 0) {
+                break
+            }
+
+            cell := this.gridToFill.Pop()
+            row := cell[1]
+            col := cell[2]
+
+            x := (col - 1) * this.pixelSize
+            y := (row - 1) * this.pixelSize
+
+            color := this.fillCanvasStrategy.GetColor(x, y, row, col)
+            color := 0xFF000000 | color ; Bit operation to force opaqueness
+
+            if (!pBrush || color != lastColor) {
+                if (pBrush) {
+                    Gdip_DeleteBrush(pBrush)
+                }
+
+                pBrush := Gdip_BrushCreateSolid(color)
+                lastColor := color
+            }
+
+            squareObject := Square(row, col, color)
+            this.filledGrid.setSquare(row, col, squareObject)
+
+            this.drawer.DrawPixel(x, y, pBrush)
+        }
+        this.drawer.Update()
+        if (pBrush) {
+            Gdip_DeleteBrush(pBrush)
+        }
+    }
+
+    canvasIsFilled() {
+        return this.gridToFill.Length == 0
+    }
+
+    MutateCanvas() {
+        lastColor := ""
+        pBrush := 0
+        numberOfNeighbors := 5
+
+        loop 200 {
+            row := Random(1, this.rows)
+            col := Random(1, this.cols)
+
+            squareObj := this.filledGrid.getSquare(row, col)
+            baseColor := squareObj.getColor()
+            ; baseColor := this.mutationCalculator.GetStrongestNeighborColor(row, col)
+
+            ; Of type MutationStrength
+            maxStrengthMutationStrength := this.mutationCalculator.GetMaxNeighborStrength(row, col, numberOfNeighbors)
+
+            ; ---- 1. Mutation probability ----
+            chance := 1 + (maxStrengthMutationStrength.getTotalStrength() / 0.2)
+            if (Random(0, 10) > chance)
+                continue
+
+            randomMutation := Floor(Random(0.0, 2) ** 2)
+            maxStrengthMutationStrength.addStrengthNumber(randomMutation)
+            ; ---- 2. Mutation strength ----
+            ; stronger neighbors = stronger mutation
+            ; deltaBoost := maxStrengthMutationStrength / 40
+
+            color := this.mutatorObject.Mutate(baseColor, maxStrengthMutationStrength)
+
+            ; ---- 3. Apply ----
+            squareObject := Square(row, col, color)
+            this.filledGrid.setSquare(row, col, squareObject)
+
+            x := (col - 1) * this.pixelSize
+            y := (row - 1) * this.pixelSize
+
+            if (color != lastColor) {
+                if (pBrush)
+                    Gdip_DeleteBrush(pBrush)
+                pBrush := Gdip_BrushCreateSolid(color)
+                lastColor := color
+            }
+
+            this.drawer.DrawPixel(x, y, pBrush)
+        }
+        Gdip_DeleteBrush(pBrush)
+        this.drawer.Update()
     }
 }

@@ -18,7 +18,6 @@ class IMutationStrategy {
 
 class StrengthBasedMutationStrategy extends IMutationStrategy {
     Mutate(color, strength, context?) {
-        mutationStr := strength / 40
         a := (color >> 24) & 0xFF
         r := (color >> 16) & 0xFF
         g := (color >> 8) & 0xFF
@@ -26,18 +25,18 @@ class StrengthBasedMutationStrategy extends IMutationStrategy {
 
         channel := Random(1, 100)
 
-        totalStrength := mutationStr.getTotalStrength()
+        totalStrength := strength.getTotalStrength()
         if (totalStrength == 0) {
             return color
         }
 
-        redStrength := mutationStr.getRedStrength()
-        greenStrength := mutationStr.getGreenStrength()
-        blueStrength := mutationStr.getBlueStrength()
+        redStrength := strength.getRedStrength()
+        greenStrength := strength.getGreenStrength()
+        blueStrength := strength.getBlueStrength()
 
-        ; base mutation + mutationStr from neighbors
-        ; delta := Random(-10, 10) + mutationStr
-        ; delta := Round(Random(-10, 10) + mutationStr)
+        ; base mutation + strength from neighbors
+        ; delta := Random(-10, 10) + strength
+        ; delta := Round(Random(-10, 10) + strength)
 
         ; redChance := 100 * (redStrength / totalStrength)
         ; greenChance := 100 * (greenStrength / totalStrength)
@@ -48,21 +47,21 @@ class StrengthBasedMutationStrategy extends IMutationStrategy {
         blueChance := 100 * (Abs(blueStrength) / totalStrength)
 
         if (channel < redChance) {
-            delta := this.Scale(mutationStr.getRedStrength())
+            delta := this.Scale(strength.getRedStrength())
 
             r := this.Clamp(r + delta, 0, 255)
             g := this.Clamp(g - delta, 0, 255)
             b := this.Clamp(b - delta, 0, 255)
         }
         else if (channel < (redChance + greenChance)) {
-            delta := this.Scale(mutationStr.getGreenStrength())
+            delta := this.Scale(strength.getGreenStrength())
 
             r := this.Clamp(r - delta, 0, 255)
             g := this.Clamp(g + delta, 0, 255)
             b := this.Clamp(b - delta, 0, 255)
         }
         else {
-            delta := this.Scale(mutationStr.getBlueStrength())
+            delta := this.Scale(strength.getBlueStrength())
 
             r := this.Clamp(r - delta, 0, 255)
             g := this.Clamp(g - delta, 0, 255)
