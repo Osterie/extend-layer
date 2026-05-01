@@ -10,7 +10,6 @@
 class ColorGame {
 
     interval := 16
-    pixelSize := 5
 
     isRunning := false
 
@@ -20,24 +19,19 @@ class ColorGame {
     fillTimer := 0
 
     fillCanvasStepsPerFrame := 200
-
-
-    fillCanvasStrategy := IColorStrategy()
-
+    mutateCanvasStepsPerFrame := 200
 
     __New(fillCanvasStrategy, targetFPS := 10, pixelSize := 5) {
         this.interval := 1000 // targetFPS
-        this.pixelSize := pixelSize
-        this.fillCanvasStrategy := fillCanvasStrategy
-        this.Initialize()
+        this.Initialize(pixelSize, fillCanvasStrategy)
     }
 
-    Initialize() {
+    Initialize(pixelSize, fillCanvasStrategy) {
         this.timer := ObjBindMethod(this, "mutateCanvas")
         this.fillTimer := ObjBindMethod(this, "fillCanvasStepLoop")
         this.isRunning := false
 
-        this._ScreenDrawer := ScreenDrawer(this.fillCanvasStrategy, this.pixelSize)
+        this._ScreenDrawer := ScreenDrawer(fillCanvasStrategy, pixelSize)
     }
 
     Start() {
@@ -76,18 +70,29 @@ class ColorGame {
         if (!this.isRunning) {
             return
         }
-        steps := 200
-        this._ScreenDrawer.mutateCanvas(steps)
+        this._ScreenDrawer.mutateCanvas(this.mutateCanvasStepsPerFrame)
     }
 
-    setFillCanvasStepsPerFrame(fillCanvasStepsPerFrame){
-        if (!IsInteger(fillCanvasStepsPerFrame)){
+    setFillCanvasStepsPerFrame(fillCanvasStepsPerFrame) {
+        if (!IsInteger(fillCanvasStepsPerFrame)) {
             throw TypeError("setFillCanvasStepsPerFrame expected a number, but got: " . type(fillCanvasStepsPerFrame))
         }
-        if (fillCanvasStepsPerFrame < 0){
+        if (fillCanvasStepsPerFrame < 0) {
             throw ValueError("fillCanvasStepsPerFrame must be a positive number")
         }
-            
+
         this.fillCanvasStepsPerFrame := fillCanvasStepsPerFrame
+    }
+
+    setMutateCanvasStepsPerFrame(mutateCanvasStepsPerFrame) {
+        if (!IsInteger(mutateCanvasStepsPerFrame)) {
+            throw TypeError("setMutateCanvasStepsPerFrame expected a number, but got: " . type(
+                mutateCanvasStepsPerFrame))
+        }
+        if (mutateCanvasStepsPerFrame < 0) {
+            throw ValueError("mutateCanvasStepsPerFrame must be a positive number")
+        }
+
+        this.mutateCanvasStepsPerFrame := mutateCanvasStepsPerFrame
     }
 }
