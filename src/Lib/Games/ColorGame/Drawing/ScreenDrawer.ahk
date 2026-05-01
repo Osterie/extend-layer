@@ -2,18 +2,19 @@
 
 #Include <Util\ArrayUtils>
 #Include <Util\ScreenDimensions>
+#Include <Util\PerformanceUtils>
 
 #Include <Games\Gdip\Tariq_Porter_GDIP_Library\Gdip_All>
 #Include <Games\Gdip\Tariq_Porter_GDIP_Library\Gdip_Toolbox>
 
-#Include <Games\ColorGame\Mutation>
-#Include <Games\ColorGame\OrderStrategies>
-#Include <Games\ColorGame\ColorStrategies>
-#Include <Games\ColorGame\SquareGrid>
-#Include <Games\ColorGame\GdipDrawer>
-#Include <Games\ColorGame\CanvasFillingEngine>
-#Include <Games\ColorGame\MutationEngine>
-#Include <Games\ColorGame\utils>
+#Include <Games\ColorGame\Mutation\Mutation>
+#Include <Games\ColorGame\Mutation\MutationEngine>
+#Include <Games\ColorGame\Fill\OrderStrategies>
+#Include <Games\ColorGame\Fill\ColorStrategies>
+#Include <Games\ColorGame\Util\SquareGrid>
+#Include <Games\ColorGame\Drawing\GdipDrawer>
+#Include <Games\ColorGame\Fill\CanvasFillingEngine>
+#Include <Games\ColorGame\Util\utils>
 
 ; Thanks to tic (Tariq Porter) for his GDI+ Library
 ; http://www.autohotkey.com/boards/viewtopic.php?t=6517
@@ -36,10 +37,11 @@ class ScreenDrawer {
 
     drawer := 0
 
-    fillCanvasStrategy := ScreenColorStrategy()
+    fillCanvasStrategy := IColorStrategy()
 
-    __New(squareSize) {
-        this.setSquareSize(squareSize)
+    __New(fillCanvasStrategy, squareSize) {
+        this.squareSize := squareSize
+        this.fillCanvasStrategy := fillCanvasStrategy
         this.Initialize()
     }
 
@@ -55,31 +57,14 @@ class ScreenDrawer {
         this.drawer := GdipDrawer(this.squareSize)
 
         this._MutationEngine := MutationEngine(this.filledGrid, this.squareSize)
+
         this._CanvasFillingEngine := CanvasFillingEngine(this.filledGrid, this.gridToFill, this.fillCanvasStrategy,
             this.squareSize)
-    }
-
-    setSquareSize(squareSize) {
-        this.squareSize := squareSize
-        if (this._MutationEngine) {
-            this._MutationEngine.setPixel(squareSize)
-        }
-
-        if (this._CanvasFillingEngine) {
-            this._CanvasFillingEngine.setSquareSize(squareSize)
-        }
-        if (this.drawer) {
-            this.drawer.setPixelSize(squareSize)
-        }
     }
 
     Reset() {
         this.drawer.Reset()
         this.resetGrid()
-    }
-
-    setFillCanvasStrategy(strategy) {
-        this.fillCanvasStrategy := strategy
     }
 
     fillCanvasStep(batchSize := 1000) {
@@ -88,8 +73,13 @@ class ScreenDrawer {
     }
 
     mutateCanvas(steps := 200) {
+        ; Timer.start()
         changes := this._MutationEngine.Mutate(steps)
+        ; MsgBox("Elapsed QPC time is " . Timer.Stop())
+
+        ; Timer.start()
         this.renderChanges(changes)
+        ; MsgBox("Elapsed QPC time is " . Timer.Stop())
     }
 
     renderChanges(changes) {

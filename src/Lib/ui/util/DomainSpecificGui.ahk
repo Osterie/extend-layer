@@ -14,9 +14,11 @@ class DomainSpecificGui extends Gui{
 
     Logger := Logger.getInstance()
 
-    __New(options := "", title := "", eventObj := this){
+    __New(options := "", title := "", eventObj := this, closeOnEscape := true){
         super.__New(options, title, eventObj)
-        this.OnEvent('Escape', (*) => this.destroy())
+        if (closeOnEscape){
+            this.OnEvent('Escape', (*) => this.destroy())
+        }
         this.UpdateColorTheme()
         this.SetFont("s8", "Verdana")
     }

@@ -1,15 +1,7 @@
 #Requires AutoHotkey v2.0
 
-#Requires AutoHotkey v2.0
-
-#Include <Util\ArrayUtils>
-
 #Include <Games\Gdip\Tariq_Porter_GDIP_Library\Gdip_All>
 #Include <Games\Gdip\Tariq_Porter_GDIP_Library\Gdip_Toolbox>
-
-#Include <Games\ColorGame\Mutation>
-#Include <Games\ColorGame\ColorStrategies>
-#Include <Games\ColorGame\SquareGrid>
 
 ; Thanks to tic (Tariq Porter) for his GDI+ Library
 ; http://www.autohotkey.com/boards/viewtopic.php?t=6517
@@ -58,7 +50,8 @@ class GdipDrawer {
         }
 
         ; Create a layered window (+E0x80000) that is always on top (+AlwaysOnTop), has no taskbar entry or caption
-        Gui1 := Gui("-Caption +E0x80000 +LastFound +AlwaysOnTop +ToolWindow +OwnDialogs")
+        ; Gui1 := Gui("-Caption +E0x80000 +LastFound +AlwaysOnTop +ToolWindow +OwnDialogs")
+        Gui1 := Gui("-Caption +E0x80000 +LastFound +ToolWindow +OwnDialogs")
         Gui1.Show("NA")
 
         ; Get a handle to this window we have created in order to update it later

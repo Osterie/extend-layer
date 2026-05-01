@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <Games\ColorGame\Mutation>
+#Include <Games\ColorGame\Mutation\Mutation>
 
 class MutationEngine {
 
@@ -17,9 +17,7 @@ class MutationEngine {
         this.mutationCalculator := MutationStrengthCalculator(this.grid)
     }
 
-    setSquareSize(squareSize) {
-        this.squareSize := squareSize
-    }
+    ; TODO able to change strategy
 
     Mutate(steps := 200) {
 
@@ -39,7 +37,6 @@ class MutationEngine {
 
             ; type is MutationStrength
             maxStrengthMutationStrength := this.mutationCalculator.GetMaxNeighborStrength(row, col, numberOfNeighbors)
-
             ; Chance to mutate
             ; chance := 1 + (maxStrengthMutationStrength.getTotalStrength() / 0.2)
             ; if (Random(0, 10) > chance) {
